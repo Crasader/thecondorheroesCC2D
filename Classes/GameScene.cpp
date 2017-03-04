@@ -43,7 +43,7 @@ bool GameScene::init()
 
 	initB2World();
 	loadBackground();
-	//createGroundBody();
+	createGroundBody();
 
 	createDuongQua("duong_qua/DuongQua.json", "duong_qua/DuongQua.atlas", visibleSize / 2);
 
@@ -55,9 +55,9 @@ bool GameScene::init()
 
 void GameScene::createDuongQua(string path_Json, string path_Atlas, Point position)
 {
-	hero = DuongQua::create(path_Json, path_Atlas, 0.5f);
+	hero = DuongQua::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 1024);
 	hero->setPosition(position);
-
+	hero->initCirclePhysic(world, hero->getPosition());
 	addChild(hero);
 
 }

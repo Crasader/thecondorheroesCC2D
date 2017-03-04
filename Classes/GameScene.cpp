@@ -44,60 +44,13 @@ bool GameScene::init()
 
     // add a "close" icon to exit the progress. it's an autorelease object
 
-	/**
-	* test json
-	*/
+	initB2World();
+	loadBackground();
+	createGroundBody();
 
-	Document heroJsonFile;
-	string herobuffer = FileUtils::getInstance()->getStringFromFile("Hero.json");
-	heroJsonFile.Parse(herobuffer.c_str());
-	assert(heroJsonFile.IsObject());
-	heroJsonFile["hero"][0]["level"].SetInt(2);
-	log("doi tuong thu nhat:%d", heroJsonFile["hero"][0]["level"].GetInt());
 
-	StringBuffer buffer;
-	Writer<StringBuffer> writer(buffer);
-	heroJsonFile.Accept(writer);
-	const char* output = buffer.GetString();
 
-	FileUtils::getInstance()->writeStringToFile(output, "Hero.json");
-
-    auto closeItem = MenuItemImage::create(
-                                           "CloseNormal.png",
-                                           "CloseSelected.png",
-                                           CC_CALLBACK_1(GameScene::menuCloseCallback, this));
-    
-    closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
-                                origin.y + closeItem->getContentSize().height/2));
-
-    // create menu, it's an autorelease object
-    auto menu = Menu::create(closeItem, NULL);
-    menu->setPosition(Vec2::ZERO);
-    this->addChild(menu, 1);
-
-    /////////////////////////////
-    // 3. add your codes below...
-
-    // add a label shows "Hello World"
-    // create and initialize a label
-    
-    auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
-    
-    // position the label on the center of the screen
-    label->setPosition(Vec2(origin.x + visibleSize.width/2,
-                            origin.y + visibleSize.height - label->getContentSize().height));
-
-    // add the label as a child to this layer
-    this->addChild(label, 1);
-
-    // add "HelloWorld" splash screen"
-    auto sprite = Sprite::create("HelloWorld.png");
-
-    // position the sprite on the center of the screen
-    sprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
-
-    // add the sprite as a child to this layer
-    this->addChild(sprite, 0);
+  
     
     return true;
 }
@@ -118,4 +71,138 @@ void GameScene::menuCloseCallback(Ref* pSender)
     //_eventDispatcher->dispatchEvent(&customEndEvent);
     
     
+}
+
+void GameScene::initB2World()
+{
+	world = new b2World(b2Vec2(0, -SCREEN_SIZE.height * 8.0f / 3.0f / PTM_RATIO));
+
+	// draw debug
+	auto debugDraw = new (std::nothrow) GLESDebugDraw(PTM_RATIO);
+	world->SetDebugDraw(debugDraw);
+	uint32 flags = 0;
+	flags += b2Draw::e_shapeBit;
+	flags += b2Draw::e_jointBit;
+	flags += b2Draw::e_aabbBit;
+	flags += b2Draw::e_pairBit;
+	flags += b2Draw::e_centerOfMassBit;
+	debugDraw->SetFlags(flags);
+
+	world->SetAllowSleeping(true);
+	world->SetContinuousPhysics(true);
+}
+
+void GameScene::updateB2World(float dt)
+{
+	int positionIterations = 3;		// position
+	int velocityIterations = 8;		// velocity
+
+	world->Step(dt, velocityIterations, positionIterations);
+}
+
+void GameScene::draw(Renderer * renderer, const Mat4 & transform, uint32_t flags)
+{
+	//
+	// IMPORTANT:
+	// This is only for debug purposes
+	// It is recommend to disable it
+	//
+	Layer::draw(renderer, transform, flags);
+
+	GL::enableVertexAttribs(cocos2d::GL::VERTEX_ATTRIB_FLAG_POSITION);
+	Director* director = Director::getInstance();
+	CCASSERT(nullptr != director, "Director is null when seting matrix stack");
+	director->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+
+	_modelViewMV = director->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+
+	_customCommand.init(_globalZOrder);
+	_customCommand.func = CC_CALLBACK_0(GameScene::onDraw, this);
+	renderer->addCommand(&_customCommand);
+
+	director->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+}
+
+void GameScene::onDraw()
+{
+	Director* director = Director::getInstance();
+	CCASSERT(nullptr != director, "Director is null when seting matrix stack");
+
+	auto oldMV = director->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+	director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, _modelViewMV);
+	world->DrawDebugData();
+	director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, oldMV);
+}
+
+
+void GameScene::loadBackground()
+{
+	tmx_map = TMXTiledMap::create("Map/map1/map.tmx");
+	tmx_map->setAnchorPoint(Point::ZERO);
+	scale = SCREEN_SIZE.height / tmx_map->getContentSize().height;
+	tmx_map->setScale(scale);
+	tmx_map->setPosition(Point::ZERO);
+	//tmx_map->setVisible(false);
+	this->addChild(tmx_map,ZORDER_BG);
+}
+
+void GameScene::createGroundBody()
+{
+	auto groupGround = tmx_map->getObjectGroup("ground");
+	for (auto child : groupGround->getObjects()) {
+		auto mObject = child.asValueMap();
+		Point origin = Point(mObject["x"].asFloat() *scale, mObject["y"].asFloat()* scale);
+		Size sizeOfBound = Size(mObject["width"].asFloat() *scale, mObject["height"].asFloat() *scale);
+		Point pos = Point(origin.x + sizeOfBound.width / 2,origin.y);
+		initPhysic(world,pos,sizeOfBound);
+	}
+}
+
+void GameScene::initPhysic(b2World * world, Point pos, Size size)
+{
+	b2Body * body;
+	b2BodyDef bodyDef;
+	b2PolygonShape shape;
+	b2FixtureDef fixtureDef;
+
+	//auto size = this->getBoundingBox().size;
+	shape.SetAsBox(size.width / 2 / PTM_RATIO, 0 / PTM_RATIO);
+
+	fixtureDef.density = 1.0f;
+	fixtureDef.friction = 1.0f;
+	fixtureDef.restitution = 0.0f;
+	fixtureDef.shape = &shape;
+
+	bodyDef.type = b2_staticBody;
+	//bodyDef.userData = this;		// pass sprite to bodyDef with argument: userData
+
+	bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);
+
+	body = world->CreateBody(&bodyDef);
+	body->CreateFixture(&fixtureDef);
+}
+
+void GameScene::readWriteJson()
+{
+	/**
+	* test json
+	*/
+	Document heroJsonFile;
+	string herobuffer = FileUtils::getInstance()->getStringFromFile("Hero.json");
+	heroJsonFile.Parse(herobuffer.c_str());
+	assert(heroJsonFile.IsObject());
+	heroJsonFile["hero"][0]["level"].SetInt(2);
+	log("doi tuong thu nhat:%d", heroJsonFile["hero"][0]["level"].GetInt());
+
+	StringBuffer buffer;
+	Writer<StringBuffer> writer(buffer);
+	heroJsonFile.Accept(writer);
+	const char* output = buffer.GetString();
+
+	FileUtils::getInstance()->writeStringToFile(output, "Hero.json");
+}
+
+void GameScene::update(float dt)
+{
+	updateB2World(dt);
 }

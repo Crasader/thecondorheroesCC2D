@@ -49,24 +49,13 @@ using namespace std;
 #define TAG_GAME							58
 
 
-#define TAG_ENEMY_SOLDIER					101
-#define TAG_ENEMY_AUTOGUN					102
-#define TAG_ENEMY_FORTMINI					103
-#define TAG_ENEMY_FORT						104
-#define TAG_ENEMY_TANK						105
-#define TAG_ENEMY_TANK_STUPID				106
-#define TAG_ENEMY_HELICOPTER_SHOOT			107
-#define TAG_ENEMY_HELICOPTER_BOOM			108
+#define TAG_ENEMY_WOODER					101
 
 
 // z-order
-#define ZORDER_BG_1						0
-#define ZORDER_BG_2						1
-#define ZORDER_BG_3						2
-#define ZORDER_BULLET					3
-#define ZORDER_ENEMY					6
-#define ZORDER_SOLDIER					7
-#define ZORDER_ITEM						11
+#define ZORDER_BG							0
+#define ZORDER_ENEMY						1
+
 
 
 #define PTM_RATIO							32

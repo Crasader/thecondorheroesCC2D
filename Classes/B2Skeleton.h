@@ -39,7 +39,8 @@ public:
 	virtual void initPhysicWithShapeCache(b2World *world, Point pos, string key);
 	virtual void changeBodyCategoryBits(uint16 mask);
 	virtual void changeBodyMaskBits(uint16 mask);
-	virtual void die();
+	//virtual void update();
+	virtual void update(float dt);
 };
 
 #endif // __B2_SKELETON_H__

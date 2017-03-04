@@ -7,25 +7,17 @@ USING_NS_CC;
 
 using namespace spine;
 
-class Enemy : public B2Skeleton
+class BaseEnemy : public B2Skeleton
 {
 public:
-	bool isDie;
-	Enemy(string jsonFile, string atlasFile, float scale);
-	static Enemy* create(string jsonFile, string atlasFile, float scale);
-	Size sizeEnemy;
+	BaseEnemy(string jsonFile, string atlasFile, float scale);
+	static BaseEnemy* create(string jsonFile, string atlasFile, float scale);
 
-	virtual void getHit();
-	virtual void move();
-	virtual void shoot();
-	virtual void shoot(Point posOfHuman);
+	virtual void run();
+	virtual void attack();
 	virtual void die();
-	virtual void updateEnemy(float dt);
-	virtual void initCirclePhysic(b2World *world, Point pos) override;
-
-//protected:
-	virtual bool checkOutScreen(Point posCamera);
-	virtual void resetEnemy();
+	virtual void update(float dt);
+	virtual void initCirclePhysic(b2World *world, Point pos);
 };
 
 #endif // __ENEMY_H__

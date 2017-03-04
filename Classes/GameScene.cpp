@@ -48,10 +48,12 @@ bool GameScene::init()
 	loadBackground();
 	createGroundBody();
 
+	creatEnemyWooder();
+
 
 
   
-    
+	this->scheduleUpdate();
     return true;
 }
 
@@ -139,10 +141,10 @@ void GameScene::loadBackground()
 {
 	tmx_map = TMXTiledMap::create("Map/map1/map.tmx");
 	tmx_map->setAnchorPoint(Point::ZERO);
-	scale = SCREEN_SIZE.height / tmx_map->getContentSize().height;
-	tmx_map->setScale(scale);
+	scaleOfMap = SCREEN_SIZE.height / tmx_map->getContentSize().height;
+	tmx_map->setScale(scaleOfMap);
 	tmx_map->setPosition(Point::ZERO);
-	//tmx_map->setVisible(false);
+	tmx_map->setVisible(false);
 	this->addChild(tmx_map,ZORDER_BG);
 }
 
@@ -151,14 +153,33 @@ void GameScene::createGroundBody()
 	auto groupGround = tmx_map->getObjectGroup("ground");
 	for (auto child : groupGround->getObjects()) {
 		auto mObject = child.asValueMap();
-		Point origin = Point(mObject["x"].asFloat() *scale, mObject["y"].asFloat()* scale);
-		Size sizeOfBound = Size(mObject["width"].asFloat() *scale, mObject["height"].asFloat() *scale);
+		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+		Size sizeOfBound = Size(mObject["width"].asFloat() *scaleOfMap, mObject["height"].asFloat() *scaleOfMap);
 		Point pos = Point(origin.x + sizeOfBound.width / 2,origin.y);
-		initPhysic(world,pos,sizeOfBound);
+		initBoxPhysic(world,pos,sizeOfBound);
 	}
 }
 
-void GameScene::initPhysic(b2World * world, Point pos, Size size)
+void GameScene::creatEnemyWooder()
+{
+	auto groupGround = tmx_map->getObjectGroup("wooder");
+	for (auto child : groupGround->getObjects()) {
+		auto mObject = child.asValueMap();
+		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+		//Size sizeOfBound = Size(mObject["width"].asFloat() *scale, mObject["height"].asFloat() *scale);
+		//Point pos = Point(origin.x + sizeOfBound.width / 2, origin.y);
+		//initPhysic(world, pos, sizeOfBound);
+		auto scaleOfWooder = SCREEN_SIZE.height / 5 / 490; // 490 la height cua spine
+		auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json", "Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
+		enemy->setPosition(origin);
+		//enemy->setVisible(false);
+		this->addChild(enemy, ZORDER_ENEMY);
+		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
+		log("height of boundingbox,%f", enemy->getBoundingBox().size.height);
+	}
+}
+
+void GameScene::initBoxPhysic(b2World * world, Point pos, Size size)
 {
 	b2Body * body;
 	b2BodyDef bodyDef;
@@ -205,4 +226,16 @@ void GameScene::readWriteJson()
 void GameScene::update(float dt)
 {
 	updateB2World(dt);
+
+	updateEnemy();
+}
+
+void GameScene::updateEnemy()
+{
+	for (auto child : this->getChildren()) {
+		if (child->getTag() > 100) {
+			auto tmp = (B2Skeleton*) child;
+			tmp->update(1.0f);
+		}
+	}
 }

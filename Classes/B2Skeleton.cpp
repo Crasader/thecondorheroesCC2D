@@ -4,7 +4,7 @@
 
 B2Skeleton::B2Skeleton(string jsonFile, string atlasFile, float scale) : SkeletonAnimation(jsonFile, atlasFile, scale)
 {
-
+	body = nullptr;
 }
 
 B2Skeleton * B2Skeleton::create(string jsonFile, string atlasFile, float scale)
@@ -95,11 +95,20 @@ void B2Skeleton::changeBodyMaskBits(uint16 mask)
 	fixture->SetFilterData(filter);
 }
 
-void B2Skeleton::die()
+void B2Skeleton::update(float dt)
 {
-
-	
+	SkeletonAnimation::update(dt);
+	if (body != nullptr) {
+		this->setPositionX(body->GetPosition().x * PTM_RATIO);
+		this->setPositionY(body->GetPosition().y * PTM_RATIO - this->getBoundingBox().size.height / 2);
+		this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
+	}
 }
+
+
+
+
+
 
 //void B2Skeleton::changeBodyBitMask(uint16 mask)
 //{

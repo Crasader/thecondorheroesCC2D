@@ -5,6 +5,7 @@
 #include "Global.h"
 #include "Box2D\Box2D.h"
 #include "GLES-Render.h" 
+#include "EnemyWooder.h"
 
 USING_NS_CC;
 
@@ -14,7 +15,7 @@ public:
 	static cocos2d::Scene* createScene();
 private:
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
-	float scale;
+	float scaleOfMap;
 	TMXTiledMap* tmx_map;
 
 	b2World *world;
@@ -36,19 +37,21 @@ private:
 	void onDraw();
 	void initB2World();
 	void updateB2World(float dt);
-	void initPhysic(b2World *world, Point pos, Size size);
+	void initBoxPhysic(b2World *world, Point pos, Size size);
 
 	// function for process map
 	void loadBackground();
 	void createGroundBody();
+	void creatEnemyWooder();
 
 	
 
 
 	void readWriteJson();
 
+	// gia dinh nha update
 	void update(float dt);
-    
+	void updateEnemy();
     // implement the "static create()" method manually
     CREATE_FUNC(GameScene);
 };

@@ -1,16 +1,16 @@
-#include "HelloWorldScene.h"
+#include "GameScene.h"
 #include "SimpleAudioEngine.h"
 
 
 Hud *hud;
 
-Scene* HelloWorld::createScene()
+Scene* GameScene::createScene()
 {
     // 'scene' is an autorelease object
     auto scene = Scene::create();
     
     // 'layer' is an autorelease object
-    auto layer = HelloWorld::create();
+    auto layer = GameScene::create();
 	hud = Hud::create();
 
     // add layer as a child to scene
@@ -22,7 +22,7 @@ Scene* HelloWorld::createScene()
 }
 
 // on "init" you need to initialize your instance
-bool HelloWorld::init()
+bool GameScene::init()
 {
     //////////////////////////////
     // 1. super init first
@@ -34,11 +34,14 @@ bool HelloWorld::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	auto bg = Sprite::create("map_1/bg.jpg");
+	auto bg = Sprite::create("map1/bg.jpg");
 	bg->setScaleX(visibleSize.width / bg->getContentSize().width);
 	bg->setScaleY(visibleSize.height / bg->getContentSize().height);
 	bg->setPosition(origin + visibleSize / 2);
 	addChild(bg);
+
+
+	createDuongQua("duong_qua/DuongQua.json", "duong_qua/DuongQua.atlas", visibleSize / 2);
 
 	this->scheduleUpdate();
 
@@ -46,15 +49,24 @@ bool HelloWorld::init()
 }
 
 
-void HelloWorld::listener()
+void GameScene::createDuongQua(string path_Json, string path_Atlas, Point position)
+{
+	hero = DuongQua::create(path_Json, path_Atlas, 0.5f);
+	hero->setPosition(position);
+
+	addChild(hero);
+}
+
+void GameScene::listener()
 {
 	if (hud->getBtnAttack()->getIsActive()) {
-		log("Ahihi");
+		hero->getCurrentState()->jump(hero);
 		hud->getBtnAttack()->setIsActive(false);
 	}
 }
 
-void HelloWorld::update(float dt)
+void GameScene::update(float dt)
 {
 	listener();
+	hero->update();
 }

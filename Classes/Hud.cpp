@@ -1,5 +1,6 @@
 #include "Hud.h"
 
+
 bool Hud::init()
 {
 	//////////////////////////////
@@ -30,6 +31,3 @@ void Hud::addButton()
 	btnSKill_1->setScale(SCREEN_SIZE.height / 5.5f / btnSKill_1->getContentSize().height);
 	addChild(btnSKill_1);
 }
-
-
-

@@ -12,8 +12,7 @@ using namespace std;
 
 // define
 #define PI								3.1415926
-#define PTM_RATIO							32
-
+#define PTM_RATIO						32
 
 
 #endif // __GLOBAL_H__

@@ -3,6 +3,7 @@
 
 #include "Button.h"
 
+
 class Hud : public Layer
 {
 public:
@@ -18,6 +19,7 @@ protected:
 
 private:
 	void addButton();
+
 };
 
 #endif // __HUD_H__

@@ -35,6 +35,9 @@ void Button::addEvents()
 				canTouch = false;
 				isActive = true;
 			}
+			else {
+				log("Cool Down, B*tch");
+			}
 		}
 
 		return false;

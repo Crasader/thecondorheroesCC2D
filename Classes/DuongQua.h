@@ -2,12 +2,9 @@
 #define __DUONG_QUA_H__
 
 #include "B2Skeleton.h"
+#include "BaseHero.h"
 
-USING_NS_CC;
-
-using namespace spine;
-
-class DuongQua : public B2Skeleton
+class DuongQua : public BaseHero
 {
 public:
 
@@ -15,6 +12,18 @@ public:
 	static DuongQua* create(string jsonFile, string atlasFile, float scale);
 
 protected:
+	void run();
+	void normalJump();
+	void doubleJump();
+	void landing();
+	void die();
+	void attacknormal();
+	void attackBySkill1();
+	void attackBySkill2();
+	void attackBySkill3();
+	void injured();
+	void die(Point posOfCammera);
+	void listener();
 	void update();
 
 };

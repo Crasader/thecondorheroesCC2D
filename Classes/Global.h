@@ -15,4 +15,7 @@ using namespace std;
 #define PTM_RATIO						32
 
 
+#define ZORDER_BG						0
+
+
 #endif // __GLOBAL_H__

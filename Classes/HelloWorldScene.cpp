@@ -79,6 +79,7 @@ bool HelloWorld::init()
 
 void HelloWorld::menuCloseCallback(Ref* pSender)
 {
+
     //Close the cocos2d-x game scene and quit the application
     Director::getInstance()->end();
 
@@ -90,6 +91,5 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
     
     //EventCustom customEndEvent("game_scene_close_event");
     //_eventDispatcher->dispatchEvent(&customEndEvent);
-    
     
 }

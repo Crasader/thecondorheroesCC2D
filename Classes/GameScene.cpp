@@ -40,12 +40,19 @@ bool GameScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+	
+	danceWithCamera();
 
 	initB2World();
 	loadBackground();
 	createGroundBody();
 
-	createDuongQua("duong_qua/DuongQua.json", "duong_qua/DuongQua.atlas", visibleSize / 2);
+	createDuongQua("duong_qua/DuongQua.json", "duong_qua/DuongQua.atlas", Point(visibleSize.width * 0.3f, visibleSize.height));
+	//creatEnemyWooder();
+
+	auto touch_listener = EventListenerTouchOneByOne::create();
+	touch_listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(touch_listener, this);
 
 	this->scheduleUpdate();
 
@@ -55,17 +62,15 @@ bool GameScene::init()
 
 void GameScene::createDuongQua(string path_Json, string path_Atlas, Point position)
 {
-	hero = DuongQua::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 1024);
+	hero = DuongQua::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 340);
 	hero->setPosition(position);
 	hero->initCirclePhysic(world, hero->getPosition());
 	addChild(hero);
-
 }
 
 void GameScene::listener()
 {
 	if (hud->getBtnAttack()->getIsActive()) {
-		hero->getCurrentState()->jump(hero);
 		hud->getBtnAttack()->setIsActive(false);
 	}
 }
@@ -74,7 +79,12 @@ void GameScene::update(float dt)
 {
 	updateB2World(dt);
 	listener();
-	hero->update();
+	hero->update(dt);
+
+	updateEnemy();
+
+	if (follow->getPositionX() <= hero->getPositionX())
+		follow->setPositionX(hero->getPositionX());
 }
 
 void GameScene::initB2World()
@@ -94,6 +104,9 @@ void GameScene::initB2World()
 
 	world->SetAllowSleeping(true);
 	world->SetContinuousPhysics(true);
+
+	auto collisionListener = new CollisionListener();
+	world->SetContactListener(collisionListener);
 }
 
 void GameScene::updateB2World(float dt)
@@ -143,11 +156,12 @@ void GameScene::loadBackground()
 {
 	tmx_map = TMXTiledMap::create("map1/map.tmx");
 	tmx_map->setAnchorPoint(Point::ZERO);
-	scale = SCREEN_SIZE.height / tmx_map->getContentSize().height;
-	tmx_map->setScale(scale);
-	tmx_map->setPosition(Point::ZERO);
+	scaleOfMap = SCREEN_SIZE.height / tmx_map->getContentSize().height;
+	tmx_map->setScale(scaleOfMap);
 	tmx_map->setVisible(false);
+	tmx_map->setPosition(Point::ZERO);
 	this->addChild(tmx_map, ZORDER_BG);
+
 }
 
 void GameScene::createGroundBody()
@@ -155,21 +169,48 @@ void GameScene::createGroundBody()
 	auto groupGround = tmx_map->getObjectGroup("ground");
 	for (auto child : groupGround->getObjects()) {
 		auto mObject = child.asValueMap();
-		Point origin = Point(mObject["x"].asFloat() *scale, mObject["y"].asFloat()* scale);
-		Size sizeOfBound = Size(mObject["width"].asFloat() *scale, mObject["height"].asFloat() *scale);
+		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+		Size sizeOfBound = Size(mObject["width"].asFloat() *scaleOfMap, mObject["height"].asFloat() *scaleOfMap);
 		Point pos = Point(origin.x + sizeOfBound.width / 2,origin.y);
-		initPhysic(world,pos,sizeOfBound);
+		initGroundPhysic(world, pos, sizeOfBound);
 	}
 }
 
-void GameScene::initPhysic(b2World * world, Point pos, Size size)
+void GameScene::creatEnemyWooder()
+{
+	auto groupGround = tmx_map->getObjectGroup("wooder");
+	for (auto child : groupGround->getObjects()) {
+		auto mObject = child.asValueMap();
+		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+		auto scaleOfWooder = SCREEN_SIZE.height / 5 / 490; // 490 la height cua spine
+		auto enemy = EnemyWooder::create("enemy-moc_nhan/MocNhan.json", "enemy-moc_nhan/MocNhan.atlas", scaleOfWooder);
+		enemy->setPosition(origin);
+		this->addChild(enemy, ZORDER_ENEMY);
+		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
+	}
+}
+
+void GameScene::danceWithCamera()
+{
+	auto origin = Director::getInstance()->getVisibleOrigin();
+	follow = Node::create();
+	follow->setPosition(origin + SCREEN_SIZE / 2);
+	addChild(follow);
+
+	camera = Follow::create(follow);
+	runAction(camera);
+
+	left_corner = CCRectMake(0, 0, SCREEN_SIZE.width / 2, SCREEN_SIZE.height);
+	
+}
+
+void GameScene::initGroundPhysic(b2World * world, Point pos, Size size)
 {
 	b2Body * body;
 	b2BodyDef bodyDef;
 	b2PolygonShape shape;
 	b2FixtureDef fixtureDef;
 
-	//auto size = this->getBoundingBox().size;
 	shape.SetAsBox(size.width / 2 / PTM_RATIO, 0 / PTM_RATIO);
 
 	fixtureDef.density = 1.0f;
@@ -177,8 +218,10 @@ void GameScene::initPhysic(b2World * world, Point pos, Size size)
 	fixtureDef.restitution = 0.0f;
 	fixtureDef.shape = &shape;
 
+	fixtureDef.filter.categoryBits = BITMASK_FLOOR;
+	fixtureDef.filter.maskBits = BITMASK_HERO;
+
 	bodyDef.type = b2_staticBody;
-	//bodyDef.userData = this;		// pass sprite to bodyDef with argument: userData
 
 	bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);
 
@@ -206,3 +249,31 @@ void GameScene::readWriteJson()
 
 	FileUtils::getInstance()->writeStringToFile(output, "Hero.json");
 }
+
+bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
+{
+	if (left_corner.containsPoint(touch->getLocation())) {
+		if (hero->getNumberOfJump() > 0) {
+			hero->setNumberOfJump(hero->getNumberOfJump() - 1);
+			hero->setOnGround(false);
+
+			hero->getBody()->SetLinearVelocity(b2Vec2(0.0f, hero->getJumpVel()));
+			
+			hero->getCurrentState()->jump(hero);
+		}
+		
+	}
+
+	return false;
+}
+
+void GameScene::updateEnemy()
+{
+	for (auto child : this->getChildren()) {
+		if (child->getTag() > 100) {
+			auto tmp = (B2Skeleton*) child;
+			tmp->update(1.0f);
+		}
+	}
+}
+

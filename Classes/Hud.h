@@ -14,8 +14,9 @@ public:
 
 protected:
 	CC_SYNTHESIZE(Button*, btnAttack, BtnAttack);
-	CC_SYNTHESIZE(Button*, btnSKill_1, BtnSkil_1);
-
+	CC_SYNTHESIZE(Button*, btnSkill_1, BtnSkil_1);
+	CC_SYNTHESIZE(Button*, btnSkill_2, BtnSkill_2);
+	CC_SYNTHESIZE(Button*, btnSkill_3, BtnSkill_3);
 
 private:
 	void addButton();

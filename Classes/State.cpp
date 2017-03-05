@@ -25,6 +25,9 @@ void State::land(BaseHero *hero)
 	// do nothing
 }
 
+
+
+// RUNNING
 Running::Running()
 {
 }
@@ -41,8 +44,14 @@ void Running::jump(BaseHero * hero)
 
 void Running::land(BaseHero * hero)
 {
+	hero->landing();
+	hero->changeState(new Landing());
 }
 
+
+
+
+// IDLE
 Idling::Idling()
 {
 }
@@ -57,6 +66,10 @@ void Idling::run(BaseHero * hero)
 	hero->changeState(new Running());
 }
 
+
+
+
+// JUMP
 Jumping::Jumping()
 {
 }
@@ -67,12 +80,19 @@ Jumping::~Jumping()
 
 void Jumping::jump(BaseHero * hero)
 {
+	hero->doubleJump();
+	hero->changeState(new DoupleJumping());
 }
 
 void Jumping::land(BaseHero * hero)
 {
+	hero->landing();
+	hero->changeState(new Landing());
 }
 
+
+
+// DOUBLE JUMPP
 DoupleJumping::DoupleJumping()
 {
 }
@@ -83,8 +103,13 @@ DoupleJumping::~DoupleJumping()
 
 void DoupleJumping::land(BaseHero * hero)
 {
+	hero->landing();
+	hero->changeState(new Landing2());
 }
 
+
+
+// LANDING
 Landing::Landing()
 {
 }
@@ -95,12 +120,19 @@ Landing::~Landing()
 
 void Landing::jump(BaseHero * hero)
 {
+	hero->doubleJump();
+	hero->changeState(new DoupleJumping());
 }
 
 void Landing::run(BaseHero * hero)
 {
+	hero->run();
+	hero->changeState(new Running());
 }
 
+
+
+// LANDING 2
 Landing2::Landing2()
 {
 }
@@ -111,4 +143,6 @@ Landing2::~Landing2()
 
 void Landing2::run(BaseHero * hero)
 {
+	hero->run();
+	hero->changeState(new Running());
 }

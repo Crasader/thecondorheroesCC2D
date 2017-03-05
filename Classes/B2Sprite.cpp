@@ -98,9 +98,12 @@ void B2Sprite::changeBodyMaskBits(uint16 mask)
 
 void B2Sprite::update(float dt)
 {
-	this->setPositionX(body->GetPosition().x * PTM_RATIO);
-	this->setPositionY(body->GetPosition().y * PTM_RATIO);
-	this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));	// rotate
+	Sprite::update(dt);
+	if (body != nullptr) {
+		this->setPositionX(body->GetPosition().x * PTM_RATIO);
+		this->setPositionY(body->GetPosition().y * PTM_RATIO);
+		this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));	// rotate
+	}
 }
 
 //void B2Sprite::explosion()

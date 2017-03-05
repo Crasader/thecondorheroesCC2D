@@ -15,6 +15,10 @@ class BaseHero : public B2Skeleton
 protected:
 	State* stateMachine;
 
+	CC_SYNTHESIZE(float, trueRadiusOfHero, TrueRadiusOfHero);
+	CC_SYNTHESIZE(int, numberOfJump, NumberOfJump);
+	CC_SYNTHESIZE(bool, onGround, OnGround);
+	CC_SYNTHESIZE(float, jump_vel, JumpVel);
 
 public:
 
@@ -33,7 +37,7 @@ public:
 	virtual void injured();
 	virtual void die(Point posOfCammera);
 	virtual void listener();
-	virtual void update();
+	virtual void update(float dt);
 
 	void changeState(State *newState);
 	State* getCurrentState();

@@ -12,6 +12,9 @@ public:
 	static DuongQua* create(string jsonFile, string atlasFile, float scale);
 
 protected:
+
+	void initCirclePhysic(b2World *world, Point pos);
+
 	void run();
 	void normalJump();
 	void doubleJump();
@@ -24,7 +27,7 @@ protected:
 	void injured();
 	void die(Point posOfCammera);
 	void listener();
-	void update();
+	void update(float dt);
 
 };
 #endif // __DuongQua_H__

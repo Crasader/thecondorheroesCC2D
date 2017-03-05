@@ -21,13 +21,13 @@ bool Hud::init()
 
 void Hud::addButton()
 {
-	btnAttack = Button::create("ui/btn_attack.png", Point(SCREEN_SIZE.width * 0.15f, SCREEN_SIZE.height * 0.165f));
-	btnAttack->setTimeCoolDown(3.0f);
-	btnAttack->setScale(SCREEN_SIZE.height / 5.5f / btnAttack->getContentSize().height);
+	btnAttack = Button::create("ui/btn_attack.png", Point(SCREEN_SIZE.width * 0.85f, SCREEN_SIZE.height * 0.165f));
+	btnAttack->setTimeCoolDown(0.2f);
+	btnAttack->setScale(SCREEN_SIZE.height / 6.3f / btnAttack->getContentSize().height);
 	addChild(btnAttack);
 
-	btnSKill_1 = Button::create("ui/btn_jump.png", Point(SCREEN_SIZE.width * 0.3f, SCREEN_SIZE.height * 0.165f));
-	btnSKill_1->setTimeCoolDown(0.77f);
-	btnSKill_1->setScale(SCREEN_SIZE.height / 5.5f / btnSKill_1->getContentSize().height);
-	addChild(btnSKill_1);
+	/*btnSkill_1 = Button::create("ui/btn_jump.png", Point(SCREEN_SIZE.width * 0.3f, SCREEN_SIZE.height * 0.165f));
+	btnSkill_1->setTimeCoolDown(0.77f);
+	btnSkill_1->setScale(SCREEN_SIZE.height / 5.5f / btnSkill_1->getContentSize().height);
+	addChild(btnSkill_1);*/
 }

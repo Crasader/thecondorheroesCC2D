@@ -1,47 +1,35 @@
 #include "BaseEnemy.h"
 
-Enemy::Enemy(string jsonFile, string atlasFile, float scale):B2Skeleton(jsonFile, atlasFile, scale)
+BaseEnemy::BaseEnemy(string jsonFile, string atlasFile, float scale):B2Skeleton(jsonFile, atlasFile, scale)
 {
 }
 
-Enemy * Enemy::create(string jsonFile, string atlasFile, float scale)
+BaseEnemy * BaseEnemy::create(string jsonFile, string atlasFile, float scale)
 {
 	return nullptr;
 }
 
-void Enemy::getHit()
+void BaseEnemy::run()
 {
 }
 
-void Enemy::run()
+void BaseEnemy::attack()
 {
 }
 
-void Enemy::shoot()
+void BaseEnemy::die()
 {
 }
 
-void Enemy::shoot(Point posOfHuman)
+void BaseEnemy::update(float dt)
 {
+	B2Skeleton::update(dt);
 }
 
-void Enemy::die()
+void BaseEnemy::initCirclePhysic(b2World * world, Point pos)
 {
+	B2Skeleton::initCirclePhysic(world, pos);
+	this->getBody()->SetType(b2_staticBody);
+	this->getBody()->GetFixtureList()->SetSensor(true);
 }
 
-void Enemy::updateEnemy(float dt)
-{
-}
-
-void Enemy::initCirclePhysic(b2World * world, Point pos)
-{
-}
-
-bool Enemy::checkOutScreen(Point posCamera)
-{
-	return false;
-}
-
-void Enemy::resetEnemy()
-{
-}

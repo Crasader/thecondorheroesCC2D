@@ -11,7 +11,6 @@ BaseHero::BaseHero(string jsonFile, string atlasFile, float scale) : B2Skeleton(
 BaseHero * BaseHero::create(string jsonFile, string atlasFile, float scale)
 {
 	BaseHero* baseHero = new BaseHero(jsonFile, atlasFile, scale);
-	
 	return baseHero;
 }
 
@@ -67,9 +66,13 @@ void BaseHero::listener()
 {
 }
 
-void BaseHero::update()
+void BaseHero::update(float dt)
 {
-
+	B2Skeleton::update(dt);
+	if (getBody() != nullptr) {
+		this->setPositionX(this->getBody()->GetPosition().x * PTM_RATIO);
+		this->setPositionY(this->getBody()->GetPosition().y * PTM_RATIO - trueRadiusOfHero);
+	}
 }
 
 void BaseHero::changeState(State * newState)

@@ -6,6 +6,8 @@
 #include "DuongQua.h"
 #include "Global.h"
 #include "GLES-Render.h"
+#include "EnemyWooder.h"
+#include "CollisionListener.h"
 
 USING_NS_CC;
 
@@ -20,7 +22,7 @@ private:
 
 	// props
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
-	float scale;
+	float scaleOfMap;
 	TMXTiledMap* tmx_map;
 
 	b2World *world;
@@ -30,15 +32,13 @@ private:
 
 	Follow *camera;
 	Node* follow;
+	CCRect left_corner;
+
 
 	BaseHero *hero;
 
 	// Create Function
 	void createDuongQua(string path_Json, string path_Atlas, Point position);
-
-	// Update Function
-	void listener();
-	void update(float dt);
 
 
 	// function for process box2d
@@ -46,21 +46,33 @@ private:
 	void onDraw();
 	void initB2World();
 	void updateB2World(float dt);
-	void initPhysic(b2World *world, Point pos, Size size);
+
+	/**
+	* Only create ground physic                                                                     
+	*/
+	void initGroundPhysic(b2World *world, Point pos, Size size);
 
 	// function for process map
 	void loadBackground();
 	void createGroundBody();
+	void creatEnemyWooder();
+
+	void danceWithCamera();
 
 
 	// read file Json
 	void readWriteJson();
 
-
-
+	// touch listener
+	bool onTouchBegan(Touch *touch, Event *unused_event);
 
 public:
     
+	// update functions
+	void listener();		// attack button listener | see update function
+	void update(float dt);
+	void updateEnemy();
+
     // implement the "static create()" method manually
     CREATE_FUNC(GameScene);
 };

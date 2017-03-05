@@ -25,6 +25,8 @@ public:
 	virtual void changeBodyCategoryBits(uint16 mask);
 	virtual void changeBodyMaskBits(uint16 mask);
 
+	virtual void update(float dt);
+
 protected:
 	CC_SYNTHESIZE(b2Body*, body, Body);
 
@@ -33,12 +35,7 @@ protected:
 	CC_SYNTHESIZE(bool, facingRight, FacingRight);
 
 
-private:
-
-	// SCREEN_SIZE
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
-
-
 };
 
 #endif // __B2_SKELETON_H__

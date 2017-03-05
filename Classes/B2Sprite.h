@@ -22,8 +22,6 @@ public:
 
 	// SCREEN_SIZE
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
-	//b2FixtureDef fixtureDef;
-	//Sprite* boom;
 
 	
 	b2Body* getB2Body();
@@ -46,7 +44,6 @@ public:
 	virtual void changeBodyCategoryBits(uint16 mask);
 	virtual void changeBodyMaskBits(uint16 mask);
 	virtual void update(float dt);
-	//void explosion();
 
 };
 

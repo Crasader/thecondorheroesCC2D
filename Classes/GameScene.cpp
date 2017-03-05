@@ -56,7 +56,7 @@ bool GameScene::init()
 	creatEnemyWooder();
 	createCoint();
 
-
+	
   
 	this->scheduleUpdate();
     return true;
@@ -209,6 +209,7 @@ void GameScene::createTimCoin()
 			coin->setPosition(origin + origin2);
 			this->addChild(coin, ZORDER_ENEMY);
 			coin->initCirclePhysic(world, origin);
+			coin->runAnimation();
 		}
 	}
 }
@@ -230,6 +231,7 @@ void GameScene::createParapolCoin()
 			coin->setPosition(origin + origin2);
 			this->addChild(coin, ZORDER_ENEMY);
 			coin->initCirclePhysic(world, origin);
+			coin->runAnimation();
 		}
 	}
 }
@@ -251,6 +253,7 @@ void GameScene::createCircleCoin()
 			coin->setPosition(origin+origin2);
 			this->addChild(coin, ZORDER_ENEMY);
 			coin->initCirclePhysic(world, origin);
+			coin->runAnimation();
 		}
 	}
 }

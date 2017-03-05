@@ -11,10 +11,11 @@ class Coin : public B2Sprite
 public:
 	Coin();
 	~Coin();
-
+	Animate *animate;
 
 	static Coin* create();
 	virtual void initCirclePhysic(b2World *world, Point pos);
+	void runAnimation();
 	
 };
 

@@ -12,14 +12,20 @@ using namespace spine;
 
 class BaseHero : public B2Skeleton
 {
-private:
+protected:
 	State* stateMachine;
+
+	CC_SYNTHESIZE(float, trueRadiusOfHero, TrueRadiusOfHero);
+	CC_SYNTHESIZE(int, numberOfJump, NumberOfJump);
+	CC_SYNTHESIZE(bool, onGround, OnGround);
+	CC_SYNTHESIZE(float, jump_vel, JumpVel);
+
 public:
 
 	BaseHero(string jsonFile, string atlasFile, float scale);
 	static BaseHero* create(string jsonFile, string atlasFile, float scale);
 
-	virtual void move();
+	virtual void run();
 	virtual void normalJump();
 	virtual void doubleJump();
 	virtual void landing();
@@ -33,6 +39,7 @@ public:
 	virtual void listener();
 	virtual void update(float dt);
 
-	virtual void changeState(State *newState);
+	void changeState(State *newState);
+	State* getCurrentState();
 };
 #endif // __SOLDIER_H__

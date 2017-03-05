@@ -1,14 +1,14 @@
 #include "GameScene.h"
 #include "SimpleAudioEngine.h"
+
 #include "json/rapidjson.h"
 #include "json/document.h"
 #include "json/writer.h"
 #include "json/stringbuffer.h"
-#include <string>
 
-using namespace std;
-USING_NS_CC;
 using namespace rapidjson;
+
+Hud *hud;
 
 Scene* GameScene::createScene()
 {
@@ -17,9 +17,11 @@ Scene* GameScene::createScene()
     
     // 'layer' is an autorelease object
     auto layer = GameScene::create();
+	hud = Hud::create();
 
     // add layer as a child to scene
     scene->addChild(layer);
+	scene->addChild(hud);
 
     // return the scene
     return scene;
@@ -38,46 +40,72 @@ bool GameScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	follow = Node::create();
+
+	/*follow = Node::create();
 	follow->setPosition(SCREEN_SIZE / 2);
 	this->addChild(follow);
 	camera= Follow::create(follow);
-	this->runAction(camera);
+	this->runAction(camera);*/
     /////////////////////////////
     // 2. add a menu item with "X" image, which is clicked to quit the program
     //    you may modify it.
 
     // add a "close" icon to exit the progress. it's an autorelease object
 	cachePlist();
+
+	
+	danceWithCamera();
+
+
 	initB2World();
 	loadBackground();
 	createGroundBody();
+
 
 	creatEnemyWooder();
 	createCoint();
 
 	
   
+
+	createDuongQua("Animation/DuongQua/DuongQua.json", "Animation/DuongQua/DuongQua.atlas", Point(visibleSize.width * 0.3f, visibleSize.height));
+	//creatEnemyWooder();
+
+	auto touch_listener = EventListenerTouchOneByOne::create();
+	touch_listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(touch_listener, this);
+
 	this->scheduleUpdate();
+
     return true;
 }
 
 
-void GameScene::menuCloseCallback(Ref* pSender)
+void GameScene::createDuongQua(string path_Json, string path_Atlas, Point position)
 {
-    //Close the cocos2d-x game scene and quit the application
-    Director::getInstance()->end();
+	hero = DuongQua::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 340);
+	hero->setPosition(position);
+	hero->initCirclePhysic(world, hero->getPosition());
+	addChild(hero);
+}
 
-    #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-    exit(0);
-#endif
-    
-    /*To navigate back to native iOS screen(if present) without quitting the application  ,do not use Director::getInstance()->end() and exit(0) as given above,instead trigger a custom event created in RootViewController.mm as below*/
-    
-    //EventCustom customEndEvent("game_scene_close_event");
-    //_eventDispatcher->dispatchEvent(&customEndEvent);
-    
-    
+void GameScene::listener()
+{
+	if (hud->getBtnAttack()->getIsActive()) {
+		hud->getBtnAttack()->setIsActive(false);
+	}
+}
+
+void GameScene::update(float dt)
+{
+	updateB2World(dt);
+	listener();
+	hero->update(dt);
+
+	updateEnemy();
+
+	if (follow->getPositionX() <= hero->getPositionX())
+		follow->setPositionX(hero->getPositionX());
 }
 
 void GameScene::initB2World()
@@ -90,13 +118,16 @@ void GameScene::initB2World()
 	uint32 flags = 0;
 	flags += b2Draw::e_shapeBit;
 	flags += b2Draw::e_jointBit;
-	flags += b2Draw::e_aabbBit;
-	flags += b2Draw::e_pairBit;
-	flags += b2Draw::e_centerOfMassBit;
+	//flags += b2Draw::e_aabbBit;
+	//flags += b2Draw::e_pairBit;
+	//flags += b2Draw::e_centerOfMassBit;
 	debugDraw->SetFlags(flags);
 
 	world->SetAllowSleeping(true);
 	world->SetContinuousPhysics(true);
+
+	auto collisionListener = new CollisionListener();
+	world->SetContactListener(collisionListener);
 }
 
 void GameScene::updateB2World(float dt)
@@ -161,7 +192,7 @@ void GameScene::createGroundBody()
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
 		Size sizeOfBound = Size(mObject["width"].asFloat() *scaleOfMap, mObject["height"].asFloat() *scaleOfMap);
 		Point pos = Point(origin.x + sizeOfBound.width / 2,origin.y);
-		initBoxPhysic(world,pos,sizeOfBound);
+		initGroundPhysic(world, pos, sizeOfBound);
 	}
 }
 
@@ -171,16 +202,11 @@ void GameScene::creatEnemyWooder()
 	for (auto child : groupGround->getObjects()) {
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		//Size sizeOfBound = Size(mObject["width"].asFloat() *scale, mObject["height"].asFloat() *scale);
-		//Point pos = Point(origin.x + sizeOfBound.width / 2, origin.y);
-		//initPhysic(world, pos, sizeOfBound);
 		auto scaleOfWooder = SCREEN_SIZE.height / 5 / 490; // 490 la height cua spine
 		auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json", "Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
 		enemy->setPosition(origin);
-		//enemy->setVisible(false);
 		this->addChild(enemy, ZORDER_ENEMY);
 		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
-		log("height of boundingbox,%f", enemy->getBoundingBox().size.height);
 	}
 }
 
@@ -258,14 +284,29 @@ void GameScene::createCircleCoin()
 	}
 }
 
-void GameScene::initBoxPhysic(b2World * world, Point pos, Size size)
+//void GameScene::initBoxPhysic(b2World * world, Point pos, Size size)
+
+void GameScene::danceWithCamera()
+{
+	auto origin = Director::getInstance()->getVisibleOrigin();
+	follow = Node::create();
+	follow->setPosition(origin + SCREEN_SIZE / 2);
+	addChild(follow);
+
+	camera = Follow::create(follow);
+	runAction(camera);
+
+	left_corner = CCRectMake(0, 0, SCREEN_SIZE.width / 2, SCREEN_SIZE.height);
+	
+}
+
+void GameScene::initGroundPhysic(b2World * world, Point pos, Size size)
 {
 	b2Body * body;
 	b2BodyDef bodyDef;
 	b2PolygonShape shape;
 	b2FixtureDef fixtureDef;
 
-	//auto size = this->getBoundingBox().size;
 	shape.SetAsBox(size.width / 2 / PTM_RATIO, 0 / PTM_RATIO);
 
 	fixtureDef.density = 1.0f;
@@ -273,8 +314,10 @@ void GameScene::initBoxPhysic(b2World * world, Point pos, Size size)
 	fixtureDef.restitution = 0.0f;
 	fixtureDef.shape = &shape;
 
+	fixtureDef.filter.categoryBits = BITMASK_FLOOR;
+	fixtureDef.filter.maskBits = BITMASK_HERO;
+
 	bodyDef.type = b2_staticBody;
-	//bodyDef.userData = this;		// pass sprite to bodyDef with argument: userData
 
 	bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);
 
@@ -287,6 +330,7 @@ void GameScene::readWriteJson()
 	/**
 	* test json
 	*/
+	
 	Document heroJsonFile;
 	string herobuffer = FileUtils::getInstance()->getStringFromFile("Hero.json");
 	heroJsonFile.Parse(herobuffer.c_str());
@@ -302,12 +346,26 @@ void GameScene::readWriteJson()
 	FileUtils::getInstance()->writeStringToFile(output, "Hero.json");
 }
 
-void GameScene::update(float dt)
+bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 {
-	updateB2World(dt);
+	if (left_corner.containsPoint(touch->getLocation())) {
+		if (hero->getNumberOfJump() > 0) {
+			hero->setNumberOfJump(hero->getNumberOfJump() - 1);
+			hero->setOnGround(false);
 
-	updateEnemy();
-	follow->setPosition(follow->getPositionX() + 2, follow->getPositionY() );
+			hero->getBody()->SetLinearVelocity(b2Vec2(0.0f, hero->getJumpVel()));
+			
+			hero->getCurrentState()->jump(hero);
+		}
+		
+	}
+
+
+	/*updateEnemy();
+	follow->setPosition(follow->getPositionX() + 2, follow->getPositionY() );*/
+
+	return false;
+
 }
 
 void GameScene::updateEnemy()
@@ -319,6 +377,7 @@ void GameScene::updateEnemy()
 		}
 	}
 }
+
 
 void GameScene::cachePlist()
 {

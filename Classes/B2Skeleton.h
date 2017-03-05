@@ -7,40 +7,35 @@
 #include "GB2ShapeCache-x.h"
 
 using namespace std;
-
 using namespace spine;
 
 class B2Skeleton : public SkeletonAnimation
 {
-private:
-	b2Body *body;
-public:
-	//	Sprite *boom;
 
+public:
 
 	B2Skeleton(string jsonFile, string atlasFile, float scale);
 
 	static B2Skeleton* create(string jsonFile, string atlasFile, float scale);
 
-	// SCREEN_SIZE
-	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
-
-
-	//b2FixtureDef fixtureDef;
-
-	//int health;
-	//float move_vel;
-	//bool facingRight;
-
-	b2Body* getB2Body();
-
 	virtual void initBoxPhysic(b2World *world, Point pos);
 	virtual void initCirclePhysic(b2World *world, Point pos);
-	virtual void initPhysicWithShapeCache(b2World *world, Point pos, string key);
+	virtual void initPhysicWithShapeCache(b2World * world, Point pos, string key);
+	virtual void die();
 	virtual void changeBodyCategoryBits(uint16 mask);
 	virtual void changeBodyMaskBits(uint16 mask);
-	//virtual void update();
+
 	virtual void update(float dt);
+
+protected:
+	CC_SYNTHESIZE(b2Body*, body, Body);
+
+	CC_SYNTHESIZE(int, health, Health);
+	CC_SYNTHESIZE(float, move_vel, MoveVel);
+	CC_SYNTHESIZE(bool, facingRight, FacingRight);
+
+
+	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
 };
 
 #endif // __B2_SKELETON_H__

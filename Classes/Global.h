@@ -12,22 +12,11 @@ using namespace std;
 
 // define
 #define PI								3.1415926
-#define Y_INCREMENT_RATIO				10
-#define KEYJOYSTICK_X					"KEYJSX"
-#define KEYJOYSTICK_Y					"KEYJSY"
-#define KEYBTNFIRE_X					"KEYFIREX"
-#define KEYBTNFIRE_Y					"KEYFIREY"
-#define KEYBTNJUMP_X					"KEYJUMPX"
-#define KEYBTNJUMP_Y					"KEYJUMPY"
-#define KEY_CHOICE						"GAMEPLAY"
-#define KEY_HEALTH						"KEYHEALTH"
-#define KEY_ID_BG_MUSIC					"KEYMUSIC"
-#define KEYGUIDE						"KEYGUIDE"
-#define KEYSOUND						"KEYSOUND"
+#define PTM_RATIO						32
 
 
 // bitmask
-#define BITMASK_SOLDIER					0x0001
+#define BITMASK_HERO					0x0001
 #define BITMASK_ENEMY					0x0002
 #define BITMASK_FLOOR					0x0004
 #define BITMASK_BULLET_HERO				0x0008
@@ -38,9 +27,9 @@ using namespace std;
 #define BITMASK_BOMB_ENEMY				0x0100
 
 // tag
-#define TAG_SOLDIER							50
-#define TAG_COIN							51
-#define TAG_BULLET_HERO						52
+#define TAG_HERO							50
+#define TAG_FLOOR							51
+#define TAG_COIN							52
 #define TAG_BULLET_ENEMY					53
 #define TAG_ITEM							54
 #define TAG_BOMB							55
@@ -55,7 +44,6 @@ using namespace std;
 // z-order
 #define ZORDER_BG							0
 #define ZORDER_ENEMY						1
-
 
 
 #define PTM_RATIO							32

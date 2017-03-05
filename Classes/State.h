@@ -1,8 +1,12 @@
 #ifndef __STATE_H__
 #define __STATE_H__
 
+
 class BaseHero;
 
+/**
+* Class State                                                                     
+*/
 class State
 {
 public:
@@ -13,6 +17,9 @@ public:
 	virtual void land(BaseHero *hero);
 };
 
+/**
+* Class Running                                                                     
+*/
 class Running: public State
 {
 public:
@@ -25,6 +32,9 @@ public:
 
 };
 
+/**
+* Class Idling                                                                     
+*/
 class Idling:  public State
 {
 public:
@@ -36,6 +46,9 @@ private:
 
 };
 
+/**
+* Class Jumping                                                                     
+*/
 class Jumping : public State
 {
 public:
@@ -46,6 +59,9 @@ public:
 
 };
 
+/**
+* Class DoupleJumping                                                                     
+*/
 class DoupleJumping : public State
 {
 public:
@@ -56,6 +72,9 @@ public:
 
 };
 
+/**
+* Class Landing                                                                     
+*/
 class Landing : public State
 {
 public:
@@ -67,6 +86,9 @@ public:
 
 };
 
+/**
+* Class Landing2                                                                     
+*/
 class Landing2 : public State
 {
 public:

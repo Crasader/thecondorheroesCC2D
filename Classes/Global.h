@@ -39,7 +39,7 @@ using namespace std;
 
 // tag
 #define TAG_SOLDIER							50
-#define TAG_FLOOR							51
+#define TAG_COIN							51
 #define TAG_BULLET_HERO						52
 #define TAG_BULLET_ENEMY					53
 #define TAG_ITEM							54

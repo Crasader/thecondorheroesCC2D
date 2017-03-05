@@ -6,6 +6,7 @@
 #include "Box2D\Box2D.h"
 #include "GLES-Render.h" 
 #include "EnemyWooder.h"
+#include "Coin.h"
 
 USING_NS_CC;
 
@@ -44,6 +45,12 @@ private:
 	void createGroundBody();
 	void creatEnemyWooder();
 
+	void createCoint();
+	void createTimCoin();
+	void createParapolCoin();
+	void createCircleCoin();
+
+
 	
 
 
@@ -52,6 +59,10 @@ private:
 	// gia dinh nha update
 	void update(float dt);
 	void updateEnemy();
+
+
+	// cache function
+	void cachePlist();
     // implement the "static create()" method manually
     CREATE_FUNC(GameScene);
 };

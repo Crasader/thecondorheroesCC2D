@@ -44,7 +44,7 @@ void B2Sprite::initBoxPhysic(b2World * world, Point pos)
 	body->CreateFixture(&fixtureDef);
 }
 
-void B2Sprite::initCirlePhysic(b2World * world, Point pos)
+void B2Sprite::initCirclePhysic(b2World * world, Point pos)
 {
 	b2BodyDef bodyDef;
 	b2CircleShape shape;
@@ -102,7 +102,7 @@ void B2Sprite::update(float dt)
 	if (body != nullptr) {
 		this->setPositionX(body->GetPosition().x * PTM_RATIO);
 		this->setPositionY(body->GetPosition().y * PTM_RATIO);
-		this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));	// rotate
+		//this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));	// rotate
 	}
 }
 

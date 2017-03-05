@@ -38,18 +38,23 @@ bool GameScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+	follow = Node::create();
+	follow->setPosition(SCREEN_SIZE / 2);
+	this->addChild(follow);
+	camera= Follow::create(follow);
+	this->runAction(camera);
     /////////////////////////////
     // 2. add a menu item with "X" image, which is clicked to quit the program
     //    you may modify it.
 
     // add a "close" icon to exit the progress. it's an autorelease object
-
+	cachePlist();
 	initB2World();
 	loadBackground();
 	createGroundBody();
 
 	creatEnemyWooder();
-
+	createCoint();
 
 
   
@@ -144,7 +149,7 @@ void GameScene::loadBackground()
 	scaleOfMap = SCREEN_SIZE.height / tmx_map->getContentSize().height;
 	tmx_map->setScale(scaleOfMap);
 	tmx_map->setPosition(Point::ZERO);
-	tmx_map->setVisible(false);
+	//tmx_map->setVisible(false);
 	this->addChild(tmx_map,ZORDER_BG);
 }
 
@@ -176,6 +181,77 @@ void GameScene::creatEnemyWooder()
 		this->addChild(enemy, ZORDER_ENEMY);
 		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
 		log("height of boundingbox,%f", enemy->getBoundingBox().size.height);
+	}
+}
+
+void GameScene::createCoint()
+{
+	createTimCoin();
+	createParapolCoin();
+	createCircleCoin();
+
+}
+
+void GameScene::createTimCoin()
+{
+	auto group = tmx_map->getObjectGroup("coin_tim");
+	for (auto child : group->getObjects()) {
+		auto mObject = child.asValueMap();
+		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+		auto tmx = TMXTiledMap::create("Map/tim.tmx");
+		auto groupCoin = tmx->getObjectGroup("tim");
+		for (auto c : groupCoin->getObjects()) {
+			auto mObject2 = c.asValueMap();
+			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
+			auto coin = Coin::create();
+			auto scale = SCREEN_SIZE.height / 20 / coin->getContentSize().height;
+			coin->setScale(scale);
+			coin->setPosition(origin + origin2);
+			this->addChild(coin, ZORDER_ENEMY);
+			coin->initCirclePhysic(world, origin);
+		}
+	}
+}
+
+void GameScene::createParapolCoin()
+{
+	auto group = tmx_map->getObjectGroup("coin_parapol");
+	for (auto child : group->getObjects()) {
+		auto mObject = child.asValueMap();
+		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+		auto tmx = TMXTiledMap::create("Map/parapol.tmx");
+		auto groupCoin = tmx->getObjectGroup("parapol");
+		for (auto c : groupCoin->getObjects()) {
+			auto mObject2 = c.asValueMap();
+			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
+			auto coin = Coin::create();
+			auto scale = SCREEN_SIZE.height / 20 / coin->getContentSize().height;
+			coin->setScale(scale);
+			coin->setPosition(origin + origin2);
+			this->addChild(coin, ZORDER_ENEMY);
+			coin->initCirclePhysic(world, origin);
+		}
+	}
+}
+
+void GameScene::createCircleCoin()
+{
+	auto group = tmx_map->getObjectGroup("coin_circle");
+	for (auto child : group->getObjects()) {
+		auto mObject = child.asValueMap();
+		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+		auto tmx = TMXTiledMap::create("Map/circle.tmx");
+		auto groupCoin = tmx->getObjectGroup("circle");
+		for (auto c : groupCoin->getObjects()) {
+			auto mObject2 = c.asValueMap();
+			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
+			auto coin = Coin::create();
+			auto scale = SCREEN_SIZE.height / 20 / coin->getContentSize().height;
+			coin->setScale(scale);
+			coin->setPosition(origin+origin2);
+			this->addChild(coin, ZORDER_ENEMY);
+			coin->initCirclePhysic(world, origin);
+		}
 	}
 }
 
@@ -228,6 +304,7 @@ void GameScene::update(float dt)
 	updateB2World(dt);
 
 	updateEnemy();
+	follow->setPosition(follow->getPositionX() + 2, follow->getPositionY() );
 }
 
 void GameScene::updateEnemy()
@@ -238,4 +315,9 @@ void GameScene::updateEnemy()
 			tmp->update(1.0f);
 		}
 	}
+}
+
+void GameScene::cachePlist()
+{
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("item/coin.plist");
 }

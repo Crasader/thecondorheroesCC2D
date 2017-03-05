@@ -36,7 +36,7 @@ public:
 	* world: world containt this->body
 	* pos: position to add body in pixel
 	*/
-	virtual void initCirlePhysic(b2World *world, Point pos);
+	virtual void initCirclePhysic(b2World *world, Point pos);
 	/**
 	* world: world containt this->body
 	* pos: position to add body in pixel

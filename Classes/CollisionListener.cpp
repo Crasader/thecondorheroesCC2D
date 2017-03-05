@@ -90,14 +90,14 @@ void CollisionListener::PreSolve(b2Contact * contact, const b2Manifold * oldMani
 		if (!sA) {
 			auto dentaX = fabs(collidePoint.x - bodyB->GetPosition().x);
 			auto radius = (hero->getTrueRadiusOfHero() / PTM_RATIO);
-			if (bodyB->GetPosition().y < collidePoint.y || dentaX > radius / 2) {
+			if (fabs(bodyB->GetPosition().y - radius * 0.99f) < collidePoint.y || dentaX > radius / 2) {
 				contact->SetEnabled(false);
 			}
 		}
 		else {
 			auto dentaX = fabs(collidePoint.x - bodyA->GetPosition().x);
 			auto radius = (hero->getTrueRadiusOfHero() / PTM_RATIO);
-			if (bodyA->GetPosition().y < collidePoint.y || dentaX > radius / 2) {
+			if (fabs(bodyA->GetPosition().y - radius * 0.99f)< collidePoint.y || dentaX > radius / 2) {
 				contact->SetEnabled(false);
 			}
 		}

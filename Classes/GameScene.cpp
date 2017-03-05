@@ -158,7 +158,7 @@ void GameScene::loadBackground()
 	tmx_map->setAnchorPoint(Point::ZERO);
 	scaleOfMap = SCREEN_SIZE.height / tmx_map->getContentSize().height;
 	tmx_map->setScale(scaleOfMap);
-	tmx_map->setVisible(false);
+	//tmx_map->setVisible(false);
 	tmx_map->setPosition(Point::ZERO);
 	this->addChild(tmx_map, ZORDER_BG);
 

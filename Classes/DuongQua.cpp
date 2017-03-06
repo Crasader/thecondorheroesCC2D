@@ -12,7 +12,7 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 	DuongQua* duongQua = new DuongQua(jsonFile, atlasFile, scale);
 	duongQua->setTag(TAG_HERO);
 	duongQua->stateMachine = new Running();
-	duongQua->setMoveVel(duongQua->SCREEN_SIZE.width / PTM_RATIO / 4.0f);
+	duongQua->setMoveVel(duongQua->SCREEN_SIZE.width / PTM_RATIO / 2.7f);
 	duongQua->setJumpVel(duongQua->SCREEN_SIZE.height * 1.2f / PTM_RATIO);
 	duongQua->facingRight = true;
 
@@ -24,6 +24,12 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 	duongQua->setScaleX(1);		// facing right
 
 	duongQua->setTimeScale(0.8f);
+
+	// splash
+	duongQua->slash = Sprite::create("Animation/DuongQua/slash2.png");
+	duongQua->slash->setScale(scale);
+	duongQua->slash->setVisible(false);
+	//
 
 	return duongQua;
 }
@@ -44,7 +50,7 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 	fixtureDef.shape = &circle_shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_HERO;
-	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR;
+	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR| BITMASK_WOODER;
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -136,10 +142,12 @@ void DuongQua::listener()
 {
 	this->setCompleteListener([&](int trackIndex, int loopCount) {
 		if (strcmp(getCurrent()->animation->name, "attack2") == 0 && loopCount == 1) {
+			getSlash()->setVisible(false);
 			setIsAttacking(false);
 		}
 
 		else if (strcmp(getCurrent()->animation->name, "attack3") == 0 && loopCount == 1) {
+			getSlash()->setVisible(false);
 			setIsAttacking(false);
 		}
 	});
@@ -172,10 +180,11 @@ void DuongQua::update(float dt)
 void DuongQua::checkNearBy(BaseEnemy * enemy)
 {
 	if ((enemy->getPositionX() - this->getPositionX() > 0) && 
-		(enemy->getPositionX() - this->getPositionX() < getTrueRadiusOfHero() * 2.2f)) {
+		(enemy->getPositionX() - this->getPositionX() < getTrueRadiusOfHero() * 2.5f)) {
 		if (fabs(this->getPositionY() - enemy->getPositionY()) < getTrueRadiusOfHero() / 4) {
 			// enemy die
 			log("Enemy Die");
+			enemy->die();
 		}
 	}
 }

@@ -7,6 +7,7 @@
 #include "Global.h"
 #include "GLES-Render.h"
 #include "EnemyWooder.h"
+#include "Coin.h"
 #include "CollisionListener.h"
 
 USING_NS_CC;
@@ -57,9 +58,21 @@ private:
 	void createGroundBody();
 	void creatEnemyWooder();
 
-	void danceWithCamera();
+
+	void createCoint();
+	void createTimCoin();
+	void createParapolCoin();
+	void createCircleCoin();
+
+	// sau va cham body cua cac quai khong con static nua
+	// do do se bi roi xuong
+	// bat su kien roi xuong qua man hinh de don dep map
+	void cleanMap();
 
 	
+
+	void danceWithCamera();
+
 	// read file Json
 	void readWriteJson();
 
@@ -72,6 +85,9 @@ public:
 	void listener();		// attack button listener | see update function
 	void update(float dt);
 	void updateEnemy();
+
+	// cache function
+	void cachePlist();
 
     // implement the "static create()" method manually
     CREATE_FUNC(GameScene);

@@ -40,15 +40,22 @@ bool GameScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+	cachePlist();
+
 	
 	danceWithCamera();
+
 
 	initB2World();
 	loadBackground();
 	createGroundBody();
 
-	createDuongQua("duong_qua/DuongQua.json", "duong_qua/DuongQua.atlas", Point(visibleSize.width * 0.3f, visibleSize.height));
+	createDuongQua("Animation/DuongQua/DuongQua.json", "Animation/DuongQua/DuongQua.atlas", 
+					Point(visibleSize.width * 0.3f, visibleSize.height));
+
 	creatEnemyWooder();
+	createCoint();
+
 
 	auto touch_listener = EventListenerTouchOneByOne::create();
 	touch_listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
@@ -66,13 +73,20 @@ void GameScene::createDuongQua(string path_Json, string path_Atlas, Point positi
 	hero->listener();
 	hero->setPosition(position);
 	hero->initCirclePhysic(world, hero->getPosition());
-	addChild(hero , 3);
+	addChild(hero, 3);
+	addChild(hero->getSlash(), 2);
 }
 
 void GameScene::listener()
 {
 	if (hud->getBtnAttack()->getIsActive()) {
 		// for here
+
+		hero->getSlash()->setPosition(hero->getPositionX() + hero->getTrueRadiusOfHero(), 
+										hero->getPositionY() + hero->getTrueRadiusOfHero());
+		hero->getSlash()->setVisible(true);
+
+
 		for (auto child : this->getChildren()) {
 			if (child->getTag() > 100) {
 				auto enemy = (BaseEnemy *)child;
@@ -164,14 +178,14 @@ void GameScene::onDraw()
 
 void GameScene::loadBackground()
 {
-	tmx_map = TMXTiledMap::create("map1/map.tmx");
+	tmx_map = TMXTiledMap::create("Map/map1/map.tmx");
 	tmx_map->setAnchorPoint(Point::ZERO);
 	scaleOfMap = SCREEN_SIZE.height / tmx_map->getContentSize().height;
 	tmx_map->setScale(scaleOfMap);
-	tmx_map->setVisible(false);
-	tmx_map->setPosition(Point::ZERO);
-	this->addChild(tmx_map, ZORDER_BG);
 
+	tmx_map->setPosition(Point::ZERO);
+	tmx_map->setVisible(false);
+	this->addChild(tmx_map,ZORDER_BG);
 }
 
 void GameScene::createGroundBody()
@@ -193,12 +207,90 @@ void GameScene::creatEnemyWooder()
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
 		auto scaleOfWooder = SCREEN_SIZE.height / 5 / 490; // 490 la height cua spine
-		auto enemy = EnemyWooder::create("enemy-moc_nhan/MocNhan.json", "enemy-moc_nhan/MocNhan.atlas", scaleOfWooder);
+		auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json", 
+										"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
 		enemy->setPosition(origin);
 		this->addChild(enemy, ZORDER_ENEMY);
 		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
+		enemy->changeBodyCategoryBits(BITMASK_WOODER);
+		enemy->changeBodyMaskBits(BITMASK_HERO);
 	}
 }
+
+void GameScene::createCoint()
+{
+	createTimCoin();
+	createParapolCoin();
+	createCircleCoin();
+}
+
+void GameScene::createTimCoin()
+{
+	auto group = tmx_map->getObjectGroup("coin_tim");
+	for (auto child : group->getObjects()) {
+		auto mObject = child.asValueMap();
+		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+		auto tmx = TMXTiledMap::create("Map/tim.tmx");
+		auto groupCoin = tmx->getObjectGroup("tim");
+		for (auto c : groupCoin->getObjects()) {
+			auto mObject2 = c.asValueMap();
+			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
+			auto coin = Coin::create();
+			auto scale = SCREEN_SIZE.height / 20 / coin->getContentSize().height;
+			coin->setScale(scale);
+			coin->setPosition(origin + origin2);
+			this->addChild(coin, ZORDER_ENEMY);
+			coin->initCirclePhysic(world, origin + origin2);
+			coin->runAnimation();
+		}
+	}
+}
+
+void GameScene::createParapolCoin()
+{
+	auto group = tmx_map->getObjectGroup("coin_parapol");
+	for (auto child : group->getObjects()) {
+		auto mObject = child.asValueMap();
+		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+		auto tmx = TMXTiledMap::create("Map/parapol.tmx");
+		auto groupCoin = tmx->getObjectGroup("parapol");
+		for (auto c : groupCoin->getObjects()) {
+			auto mObject2 = c.asValueMap();
+			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
+			auto coin = Coin::create();
+			auto scale = SCREEN_SIZE.height / 20 / coin->getContentSize().height;
+			coin->setScale(scale);
+			coin->setPosition(origin + origin2);
+			this->addChild(coin, ZORDER_ENEMY);
+			coin->initCirclePhysic(world, origin + origin2);
+			coin->runAnimation();
+		}
+	}
+}
+
+void GameScene::createCircleCoin()
+{
+	auto group = tmx_map->getObjectGroup("coin_circle");
+	for (auto child : group->getObjects()) {
+		auto mObject = child.asValueMap();
+		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+		auto tmx = TMXTiledMap::create("Map/circle.tmx");
+		auto groupCoin = tmx->getObjectGroup("circle");
+		for (auto c : groupCoin->getObjects()) {
+			auto mObject2 = c.asValueMap();
+			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
+			auto coin = Coin::create();
+			auto scale = SCREEN_SIZE.height / 20 / coin->getContentSize().height;
+			coin->setScale(scale);
+			coin->setPosition(origin+origin2);
+			this->addChild(coin, ZORDER_ENEMY);
+			coin->initCirclePhysic(world, origin + origin2);
+			coin->runAnimation();
+		}
+	}
+}
+
+//void GameScene::initBoxPhysic(b2World * world, Point pos, Size size)
 
 void GameScene::danceWithCamera()
 {
@@ -250,7 +342,7 @@ void GameScene::readWriteJson()
 	heroJsonFile.Parse(herobuffer.c_str());
 	assert(heroJsonFile.IsObject());
 	heroJsonFile["hero"][0]["level"].SetInt(2);
-	log("doi tuong thu nhat:%d", heroJsonFile["hero"][0]["level"].GetInt());
+	//log("doi tuong thu nhat:%d", heroJsonFile["hero"][0]["level"].GetInt());
 
 	StringBuffer buffer;
 	Writer<StringBuffer> writer(buffer);
@@ -274,16 +366,37 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 		
 	}
 
+
+	/*updateEnemy();
+	follow->setPosition(follow->getPositionX() + 2, follow->getPositionY() );*/
+
 	return false;
+
 }
 
 void GameScene::updateEnemy()
 {
 	for (auto child : this->getChildren()) {
 		if (child->getTag() > 100) {
-			auto tmp = (B2Skeleton*) child;
+			auto tmp = (BaseEnemy*) child;
 			tmp->update(1.0f);
+			if (tmp->getBody() != nullptr) {
+				if (tmp->getBody()->GetPosition().y < 0) {
+					tmp->setVisible(false);
+					world->DestroyBody(tmp->getBody());
+					tmp->setBody(nullptr);
+				}
+			}
+			if (tmp->getIsDie()&& tmp->getBody() != nullptr) {
+				tmp->getBody()->SetType(b2_dynamicBody);
+			}
+			
 		}
 	}
 }
 
+
+void GameScene::cachePlist()
+{
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("item/coin.plist");
+}

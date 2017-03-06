@@ -23,6 +23,8 @@ protected:
 	CC_SYNTHESIZE(bool, isAttacking, IsAttacking);
 	CC_SYNTHESIZE(float, jump_vel, JumpVel);
 
+	CC_SYNTHESIZE(Sprite*, slash, Slash);
+
 public:
 
 	BaseHero(string jsonFile, string atlasFile, float scale);

@@ -37,3 +37,8 @@ void Coin::runAnimation()
 	animate = Animate::create(animation);
 	this->runAction(RepeatForever::create(animate));
 }
+
+void Coin::picked()
+{
+	this->setVisible(false);
+}

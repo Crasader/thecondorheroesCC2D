@@ -67,7 +67,7 @@ private:
 	// sau va cham body cua cac quai khong con static nua
 	// do do se bi roi xuong
 	// bat su kien roi xuong qua man hinh de don dep map
-	void cleanMap();
+	
 
 	
 
@@ -87,7 +87,7 @@ public:
 	void listener();		// attack button listener | see update function
 	void update(float dt);
 	void updateEnemy();
-
+	//void cleanMap();
 	// cache function
 	void cachePlist();
 

@@ -1,6 +1,7 @@
 ﻿#include "CollisionListener.h"
 #include "BaseHero.h"
 #include "BaseEnemy.h"
+#include "Coin.h"
 
 CollisionListener::CollisionListener() {
 
@@ -73,6 +74,16 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		
 	}
 
+	if ((bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_HERO && bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_COIN) ||
+		(bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_HERO && bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_COIN)
+		) {
+
+		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
+		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
+		auto coin = sA->getTag() == TAG_COIN ? (Coin *)sA : (Coin *)sB;
+		coin->picked();
+
+	}
 	//// neu hero va cham coin
 	//else if ((sA->getTag() == TAG_HERO && (sB->getTag() > 100)) ||
 	//	(sB->getTag() == TAG_HERO && (sA->getTag() > 100))) {

@@ -181,7 +181,7 @@ void GameScene::loadBackground()
 	scaleOfMap = SCREEN_SIZE.height / tmx_map->getContentSize().height;
 	tmx_map->setScale(scaleOfMap);
 	tmx_map->setPosition(Point::ZERO);
-	tmx_map->setVisible(false);
+	//tmx_map->setVisible(false);
 	this->addChild(tmx_map,ZORDER_BG);
 }
 

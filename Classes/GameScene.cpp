@@ -106,6 +106,7 @@ void GameScene::update(float dt)
 	hero->update(dt);
 
 	updateEnemy();
+	//cleanMap();
 
 	if (follow->getPositionX() <= hero->getPositionX())
 		follow->setPositionX(hero->getPositionX());
@@ -241,6 +242,8 @@ void GameScene::createTimCoin()
 			coin->setPosition(origin + origin2);
 			this->addChild(coin, ZORDER_ENEMY);
 			coin->initCirclePhysic(world, origin + origin2);
+			coin->changeBodyCategoryBits(BITMASK_COIN);
+			coin->changeBodyMaskBits(BITMASK_HERO);
 			coin->runAnimation();
 		}
 	}
@@ -263,6 +266,8 @@ void GameScene::createParapolCoin()
 			coin->setPosition(origin + origin2);
 			this->addChild(coin, ZORDER_ENEMY);
 			coin->initCirclePhysic(world, origin + origin2);
+			coin->changeBodyCategoryBits(BITMASK_COIN);
+			coin->changeBodyMaskBits(BITMASK_HERO);
 			coin->runAnimation();
 		}
 	}
@@ -285,12 +290,16 @@ void GameScene::createCircleCoin()
 			coin->setPosition(origin+origin2);
 			this->addChild(coin, ZORDER_ENEMY);
 			coin->initCirclePhysic(world, origin + origin2);
+			coin->changeBodyCategoryBits(BITMASK_COIN);
+			coin->changeBodyMaskBits(BITMASK_HERO);
 			coin->runAnimation();
 		}
 	}
 }
 
 //void GameScene::initBoxPhysic(b2World * world, Point pos, Size size)
+
+
 
 void GameScene::danceWithCamera()
 {
@@ -394,6 +403,20 @@ void GameScene::updateEnemy()
 		}
 	}
 }
+
+//void GameScene::cleanMap()
+//{
+//	for (auto body = world->GetBodyList(); ; body != NULL) {
+//		log("a");
+//		auto tmp = body;
+//		body->GetNext();
+//		if (tmp->GetPosition().y < 0) {
+//			auto data = (Node*)tmp->GetUserData();
+//			data->removeFromParentAndCleanup(true);
+//			world->DestroyBody(tmp);
+//		}
+//	}
+//}
 
 
 void GameScene::cachePlist()

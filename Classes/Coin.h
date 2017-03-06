@@ -16,6 +16,7 @@ public:
 	static Coin* create();
 	virtual void initCirclePhysic(b2World *world, Point pos);
 	void runAnimation();
+	void picked();
 	
 };
 

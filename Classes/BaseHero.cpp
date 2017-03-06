@@ -38,7 +38,11 @@ void BaseHero::die()
 {
 }
 
-void BaseHero::attacknormal()
+void BaseHero::attackNormal()
+{
+}
+
+void BaseHero::attackLanding()
 {
 }
 
@@ -73,6 +77,10 @@ void BaseHero::update(float dt)
 		this->setPositionX(this->getBody()->GetPosition().x * PTM_RATIO);
 		this->setPositionY(this->getBody()->GetPosition().y * PTM_RATIO - trueRadiusOfHero);
 	}
+}
+
+void BaseHero::checkNearBy(BaseEnemy * enemy)
+{
 }
 
 void BaseHero::changeState(State * newState)

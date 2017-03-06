@@ -59,7 +59,7 @@ private:
 
 	void danceWithCamera();
 
-
+	
 	// read file Json
 	void readWriteJson();
 

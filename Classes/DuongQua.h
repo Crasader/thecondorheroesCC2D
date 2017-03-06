@@ -20,7 +20,8 @@ protected:
 	void doubleJump();
 	void landing();
 	void die();
-	void attacknormal();
+	void attackNormal();
+	void attackLanding();
 	void attackBySkill1();
 	void attackBySkill2();
 	void attackBySkill3();
@@ -28,6 +29,8 @@ protected:
 	void die(Point posOfCammera);
 	void listener();
 	void update(float dt);
+
+	void checkNearBy(BaseEnemy *enemy);
 
 };
 #endif // __DuongQua_H__

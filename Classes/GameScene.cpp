@@ -48,7 +48,7 @@ bool GameScene::init()
 	createGroundBody();
 
 	createDuongQua("duong_qua/DuongQua.json", "duong_qua/DuongQua.atlas", Point(visibleSize.width * 0.3f, visibleSize.height));
-	//creatEnemyWooder();
+	creatEnemyWooder();
 
 	auto touch_listener = EventListenerTouchOneByOne::create();
 	touch_listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
@@ -63,14 +63,24 @@ bool GameScene::init()
 void GameScene::createDuongQua(string path_Json, string path_Atlas, Point position)
 {
 	hero = DuongQua::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 340);
+	hero->listener();
 	hero->setPosition(position);
 	hero->initCirclePhysic(world, hero->getPosition());
-	addChild(hero);
+	addChild(hero , 3);
 }
 
 void GameScene::listener()
 {
 	if (hud->getBtnAttack()->getIsActive()) {
+		// for here
+		for (auto child : this->getChildren()) {
+			if (child->getTag() > 100) {
+				auto enemy = (BaseEnemy *)child;
+				hero->checkNearBy(enemy);
+			}
+		}
+		hero->setIsAttacking(true);
+		hero->getCurrentState()->attack(hero);
 		hud->getBtnAttack()->setIsActive(false);
 	}
 }
@@ -158,7 +168,7 @@ void GameScene::loadBackground()
 	tmx_map->setAnchorPoint(Point::ZERO);
 	scaleOfMap = SCREEN_SIZE.height / tmx_map->getContentSize().height;
 	tmx_map->setScale(scaleOfMap);
-	//tmx_map->setVisible(false);
+	tmx_map->setVisible(false);
 	tmx_map->setPosition(Point::ZERO);
 	this->addChild(tmx_map, ZORDER_BG);
 

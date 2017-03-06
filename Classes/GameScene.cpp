@@ -40,17 +40,6 @@ bool GameScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-
-	/*follow = Node::create();
-	follow->setPosition(SCREEN_SIZE / 2);
-	this->addChild(follow);
-	camera= Follow::create(follow);
-	this->runAction(camera);*/
-    /////////////////////////////
-    // 2. add a menu item with "X" image, which is clicked to quit the program
-    //    you may modify it.
-
-    // add a "close" icon to exit the progress. it's an autorelease object
 	cachePlist();
 
 	
@@ -61,15 +50,12 @@ bool GameScene::init()
 	loadBackground();
 	createGroundBody();
 
+	createDuongQua("Animation/DuongQua/DuongQua.json", "Animation/DuongQua/DuongQua.atlas", 
+					Point(visibleSize.width * 0.3f, visibleSize.height));
 
 	creatEnemyWooder();
 	createCoint();
 
-	
-  
-
-	createDuongQua("Animation/DuongQua/DuongQua.json", "Animation/DuongQua/DuongQua.atlas", Point(visibleSize.width * 0.3f, visibleSize.height));
-	//creatEnemyWooder();
 
 	auto touch_listener = EventListenerTouchOneByOne::create();
 	touch_listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
@@ -84,14 +70,31 @@ bool GameScene::init()
 void GameScene::createDuongQua(string path_Json, string path_Atlas, Point position)
 {
 	hero = DuongQua::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 340);
+	hero->listener();
 	hero->setPosition(position);
 	hero->initCirclePhysic(world, hero->getPosition());
-	addChild(hero);
+	addChild(hero, 3);
+	addChild(hero->getSlash(), 2);
 }
 
 void GameScene::listener()
 {
 	if (hud->getBtnAttack()->getIsActive()) {
+		// for here
+
+		hero->getSlash()->setPosition(hero->getPositionX() + hero->getTrueRadiusOfHero(), 
+										hero->getPositionY() + hero->getTrueRadiusOfHero());
+		hero->getSlash()->setVisible(true);
+
+
+		for (auto child : this->getChildren()) {
+			if (child->getTag() > 100) {
+				auto enemy = (BaseEnemy *)child;
+				hero->checkNearBy(enemy);
+			}
+		}
+		hero->setIsAttacking(true);
+		hero->getCurrentState()->attack(hero);
 		hud->getBtnAttack()->setIsActive(false);
 	}
 }
@@ -180,6 +183,7 @@ void GameScene::loadBackground()
 	tmx_map->setAnchorPoint(Point::ZERO);
 	scaleOfMap = SCREEN_SIZE.height / tmx_map->getContentSize().height;
 	tmx_map->setScale(scaleOfMap);
+
 	tmx_map->setPosition(Point::ZERO);
 	//tmx_map->setVisible(false);
 	this->addChild(tmx_map,ZORDER_BG);
@@ -204,15 +208,13 @@ void GameScene::creatEnemyWooder()
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
 		auto scaleOfWooder = SCREEN_SIZE.height / 5 / 490; // 490 la height cua spine
-		auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json", "Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
+		auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json", 
+										"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
 		enemy->setPosition(origin);
 		this->addChild(enemy, ZORDER_ENEMY);
 		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
 		enemy->changeBodyCategoryBits(BITMASK_WOODER);
 		enemy->changeBodyMaskBits(BITMASK_HERO);
-
-		//log("Category bitmask: %d", enemy->getBody()->GetFixtureList()->GetFilterData().categoryBits);
-		//log("Mask bitmask: %d", enemy->getBody()->GetFixtureList()->GetFilterData().maskBits);
 	}
 }
 
@@ -221,7 +223,6 @@ void GameScene::createCoint()
 	createTimCoin();
 	createParapolCoin();
 	createCircleCoin();
-
 }
 
 void GameScene::createTimCoin()

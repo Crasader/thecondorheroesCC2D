@@ -25,6 +25,11 @@ void State::land(BaseHero *hero)
 	// do nothing
 }
 
+void State::attack(BaseHero * hero)
+{
+	// do nothing
+}
+
 
 
 // RUNNING
@@ -46,6 +51,12 @@ void Running::land(BaseHero * hero)
 {
 	hero->landing();
 	hero->changeState(new Landing());
+}
+
+void Running::attack(BaseHero * hero)
+{
+	hero->attackNormal();
+	hero->changeState(new Attack());
 }
 
 
@@ -90,6 +101,12 @@ void Jumping::land(BaseHero * hero)
 	hero->changeState(new Landing());
 }
 
+void Jumping::attack(BaseHero * hero)
+{
+	hero->attackNormal();
+	hero->changeState(new Attack());
+}
+
 
 
 // DOUBLE JUMPP
@@ -130,6 +147,12 @@ void Landing::run(BaseHero * hero)
 	hero->changeState(new Running());
 }
 
+void Landing::attack(BaseHero * hero)
+{
+	hero->attackLanding();
+	//hero->changeState(new Attack());
+}
+
 
 
 // LANDING 2
@@ -145,4 +168,38 @@ void Landing2::run(BaseHero * hero)
 {
 	hero->run();
 	hero->changeState(new Running());
+}
+
+void Landing2::attack(BaseHero * hero)
+{
+	hero->attackLanding();
+	//hero->changeState(new Attack());
+}
+
+
+// ATTACK
+Attack::Attack()
+{
+}
+
+Attack::~Attack()
+{
+}
+
+void Attack::run(BaseHero * hero)
+{
+	hero->run();
+	hero->changeState(new Running());
+}
+
+void Attack::jump(BaseHero * hero)
+{
+	hero->normalJump();
+	hero->changeState(new Jumping());
+}
+
+void Attack::land(BaseHero * hero)
+{
+	hero->landing();
+	hero->changeState(new Landing());
 }

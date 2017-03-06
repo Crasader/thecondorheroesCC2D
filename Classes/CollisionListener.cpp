@@ -23,12 +23,6 @@ void CollisionListener::BeginContact(b2Contact * contact)
 	auto collidePoint = worldManifold.points[0];
 	//worldManifold.
 
-	log("Category bitmask A %d", bodyA->GetFixtureList()->GetFilterData().categoryBits);
-	log("Mask bitmask A: %d", bodyA->GetFixtureList()->GetFilterData().maskBits);
-	log("Category bitmask B: %d", bodyB->GetFixtureList()->GetFilterData().categoryBits);
-	log("Mask bitmask B: %d", bodyB->GetFixtureList()->GetFilterData().maskBits);
-	log("------------------------------------------------------------");
-
 	if ((bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_HERO && bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_FLOOR) ||
 		(bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_HERO && bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_FLOOR)
 		) {
@@ -63,7 +57,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 	}
 
-	if ((bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_HERO && bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_WOODER) ||
+	/*if ((bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_HERO && bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_WOODER) ||
 		(bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_HERO && bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_WOODER)
 		) {
 
@@ -72,7 +66,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		auto wooder = sA->getTag() == TAG_ENEMY_WOODER ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 		wooder->die();
 		
-	}
+	}*/
 
 	if ((bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_HERO && bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_COIN) ||
 		(bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_HERO && bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_COIN)

@@ -4,6 +4,7 @@
 #include "B2Skeleton.h"
 #include "GB2ShapeCache-x.h"
 #include "State.h"
+#include "BaseEnemy.h"
 
 
 USING_NS_CC;
@@ -18,7 +19,11 @@ protected:
 	CC_SYNTHESIZE(float, trueRadiusOfHero, TrueRadiusOfHero);
 	CC_SYNTHESIZE(int, numberOfJump, NumberOfJump);
 	CC_SYNTHESIZE(bool, onGround, OnGround);
+
+	CC_SYNTHESIZE(bool, isAttacking, IsAttacking);
 	CC_SYNTHESIZE(float, jump_vel, JumpVel);
+
+	CC_SYNTHESIZE(Sprite*, slash, Slash);
 
 public:
 
@@ -30,7 +35,8 @@ public:
 	virtual void doubleJump();
 	virtual void landing();
 	virtual void die();
-	virtual void attacknormal();
+	virtual void attackNormal();
+	virtual void attackLanding();
 	virtual void attackBySkill1();
 	virtual void attackBySkill2();
 	virtual void attackBySkill3();
@@ -38,6 +44,9 @@ public:
 	virtual void die(Point posOfCammera);
 	virtual void listener();
 	virtual void update(float dt);
+
+	// check attack near by
+	virtual void checkNearBy(BaseEnemy *enemy);
 
 	void changeState(State *newState);
 	State* getCurrentState();

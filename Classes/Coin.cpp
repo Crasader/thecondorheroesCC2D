@@ -29,7 +29,7 @@ void Coin::runAnimation()
 	for (int i = 1; i < 9; i++)
 	{
 		string frameName = StringUtils::format("coin_0%d.png", i);
-		log(frameName.c_str());
+		//log(frameName.c_str());
 		aniframes.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName));
 	}
 

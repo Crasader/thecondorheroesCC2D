@@ -19,8 +19,8 @@ using namespace std;
 #define BITMASK_HERO					0x0001
 #define BITMASK_ENEMY					0x0002
 #define BITMASK_FLOOR					0x0004
-#define BITMASK_BULLET_HERO				0x0008
-#define BITMASK_BULLET_ENEMY			0x0010
+#define BITMASK_WOODER					0x0008
+#define BITMASK_COIN					0x0010
 #define BITMASK_ITEM					0x0020
 #define BITMASK_BOMB_HERO				0x0040
 #define BITMASK_BLINK					0x0080

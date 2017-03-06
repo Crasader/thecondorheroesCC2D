@@ -1,5 +1,6 @@
 ﻿#include "CollisionListener.h"
 #include "BaseHero.h"
+#include "BaseEnemy.h"
 
 CollisionListener::CollisionListener() {
 
@@ -21,6 +22,11 @@ void CollisionListener::BeginContact(b2Contact * contact)
 	auto collidePoint = worldManifold.points[0];
 	//worldManifold.
 
+	log("Category bitmask A %d", bodyA->GetFixtureList()->GetFilterData().categoryBits);
+	log("Mask bitmask A: %d", bodyA->GetFixtureList()->GetFilterData().maskBits);
+	log("Category bitmask B: %d", bodyB->GetFixtureList()->GetFilterData().categoryBits);
+	log("Mask bitmask B: %d", bodyB->GetFixtureList()->GetFilterData().maskBits);
+	log("------------------------------------------------------------");
 
 	if ((bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_HERO && bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_FLOOR) ||
 		(bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_HERO && bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_FLOOR)
@@ -30,7 +36,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		B2Skeleton* sB = (BaseHero*)bodyB->GetUserData();
 		auto hero = sA ? (BaseHero *)sA : (BaseHero *)sB;
 
-
+		// neu sa la floor
 		if (!sA) {
 			auto dentaX = fabs(collidePoint.x - bodyB->GetPosition().x);
 			auto radius = (hero->getTrueRadiusOfHero() / PTM_RATIO);
@@ -54,6 +60,17 @@ void CollisionListener::BeginContact(b2Contact * contact)
 			}
 		}
 
+	}
+
+	if ((bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_HERO && bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_WOODER) ||
+		(bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_HERO && bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_WOODER)
+		) {
+
+		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
+		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
+		auto wooder = sA->getTag() == TAG_ENEMY_WOODER ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+		wooder->die();
+		
 	}
 
 	//// neu hero va cham coin

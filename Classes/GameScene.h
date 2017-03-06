@@ -64,6 +64,10 @@ private:
 	void createParapolCoin();
 	void createCircleCoin();
 
+	// sau va cham body cua cac quai khong con static nua
+	// do do se bi roi xuong
+	// bat su kien roi xuong qua man hinh de don dep map
+	void cleanMap();
 
 	
 

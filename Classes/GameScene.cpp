@@ -180,7 +180,7 @@ void GameScene::loadBackground()
 	scaleOfMap = SCREEN_SIZE.height / tmx_map->getContentSize().height;
 	tmx_map->setScale(scaleOfMap);
 	tmx_map->setPosition(Point::ZERO);
-	//tmx_map->setVisible(false);
+	tmx_map->setVisible(false);
 	this->addChild(tmx_map,ZORDER_BG);
 }
 
@@ -207,6 +207,11 @@ void GameScene::creatEnemyWooder()
 		enemy->setPosition(origin);
 		this->addChild(enemy, ZORDER_ENEMY);
 		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
+		enemy->changeBodyCategoryBits(BITMASK_WOODER);
+		enemy->changeBodyMaskBits(BITMASK_HERO);
+
+		//log("Category bitmask: %d", enemy->getBody()->GetFixtureList()->GetFilterData().categoryBits);
+		//log("Mask bitmask: %d", enemy->getBody()->GetFixtureList()->GetFilterData().maskBits);
 	}
 }
 
@@ -234,7 +239,7 @@ void GameScene::createTimCoin()
 			coin->setScale(scale);
 			coin->setPosition(origin + origin2);
 			this->addChild(coin, ZORDER_ENEMY);
-			coin->initCirclePhysic(world, origin);
+			coin->initCirclePhysic(world, origin + origin2);
 			coin->runAnimation();
 		}
 	}
@@ -256,7 +261,7 @@ void GameScene::createParapolCoin()
 			coin->setScale(scale);
 			coin->setPosition(origin + origin2);
 			this->addChild(coin, ZORDER_ENEMY);
-			coin->initCirclePhysic(world, origin);
+			coin->initCirclePhysic(world, origin + origin2);
 			coin->runAnimation();
 		}
 	}
@@ -278,7 +283,7 @@ void GameScene::createCircleCoin()
 			coin->setScale(scale);
 			coin->setPosition(origin+origin2);
 			this->addChild(coin, ZORDER_ENEMY);
-			coin->initCirclePhysic(world, origin);
+			coin->initCirclePhysic(world, origin + origin2);
 			coin->runAnimation();
 		}
 	}
@@ -336,7 +341,7 @@ void GameScene::readWriteJson()
 	heroJsonFile.Parse(herobuffer.c_str());
 	assert(heroJsonFile.IsObject());
 	heroJsonFile["hero"][0]["level"].SetInt(2);
-	log("doi tuong thu nhat:%d", heroJsonFile["hero"][0]["level"].GetInt());
+	//log("doi tuong thu nhat:%d", heroJsonFile["hero"][0]["level"].GetInt());
 
 	StringBuffer buffer;
 	Writer<StringBuffer> writer(buffer);
@@ -372,8 +377,19 @@ void GameScene::updateEnemy()
 {
 	for (auto child : this->getChildren()) {
 		if (child->getTag() > 100) {
-			auto tmp = (B2Skeleton*) child;
+			auto tmp = (BaseEnemy*) child;
 			tmp->update(1.0f);
+			if (tmp->getBody() != nullptr) {
+				if (tmp->getBody()->GetPosition().y < 0) {
+					tmp->setVisible(false);
+					world->DestroyBody(tmp->getBody());
+					tmp->setBody(nullptr);
+				}
+			}
+			if (tmp->getIsDie()&& tmp->getBody() != nullptr) {
+				tmp->getBody()->SetType(b2_dynamicBody);
+			}
+			
 		}
 	}
 }

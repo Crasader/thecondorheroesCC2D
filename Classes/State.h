@@ -15,7 +15,7 @@ public:
 	virtual void run(BaseHero* hero);
 	virtual void jump(BaseHero *hero);
 	virtual void land(BaseHero *hero);
-	virtual void attack(BaseHero *hero);
+	virtual void attack(BaseHero *hero);		// normal attack
 };
 
 /**
@@ -30,7 +30,6 @@ public:
 	void jump(BaseHero *hero);
 	void land(BaseHero* hero);
 	void attack(BaseHero *hero);
-
 };
 
 /**
@@ -96,24 +95,8 @@ public:
 
 	void run(BaseHero *hero);
 	void attack(BaseHero *hero);
-
 };
 
-
-/**
-* Class Attack
-*/
-class Attack : public State
-{
-public:
-	Attack();
-	~Attack();
-
-	void run(BaseHero *hero);
-	void jump(BaseHero *hero);
-	void land(BaseHero *hero);
-
-};
 
 
 #endif 

@@ -22,7 +22,7 @@ using namespace std;
 #define BITMASK_WOODER					0x0008
 #define BITMASK_COIN					0x0010
 #define BITMASK_ITEM					0x0020
-#define BITMASK_BOMB_HERO				0x0040
+#define BITMASK_SWORD					0x0040
 #define BITMASK_BLINK					0x0080
 #define BITMASK_BOMB_ENEMY				0x0100
 

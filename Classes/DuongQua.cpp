@@ -11,14 +11,13 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 {
 	DuongQua* duongQua = new DuongQua(jsonFile, atlasFile, scale);
 	duongQua->setTag(TAG_HERO);
+	duongQua->previous_state = new Idling();
 	duongQua->stateMachine = new Running();
-	duongQua->setMoveVel(duongQua->SCREEN_SIZE.width / PTM_RATIO / 2.7f);
-	duongQua->setJumpVel(duongQua->SCREEN_SIZE.height * 1.2f / PTM_RATIO);
+	duongQua->setMoveVel(duongQua->SCREEN_SIZE.width / PTM_RATIO / 2.0f);
+	duongQua->setJumpVel(duongQua->SCREEN_SIZE.height * 1.4f / PTM_RATIO);
 	duongQua->facingRight = true;
 
 	duongQua->numberOfJump = 2;
-	duongQua->onGround = false;
-	duongQua->isAttacking = false;
 
 	duongQua->update(0.0f);
 	duongQua->setScaleX(1);		// facing right
@@ -60,6 +59,10 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 
 	body = world->CreateBody(&bodyDef);
 	body->CreateFixture(&fixtureDef);
+
+
+	// connect sword with body
+	initSwordPhysic(world, Point(pos.x + trueRadiusOfHero * 1.3f, pos.y), trueRadiusOfHero);
 }
 
 void DuongQua::run()
@@ -103,8 +106,13 @@ void DuongQua::die()
 void DuongQua::attackNormal()
 {
 	clearTracks();
-	//setAnimation(0, "attack1", false);
-	addAnimation(0, "attack2", false);
+	auto r = rand() % 2;
+	if (r) {
+		addAnimation(0, "attack1", false);
+	} else 
+		addAnimation(0, "attack2", false);
+
+	
 	setToSetupPose();
 }
 
@@ -141,14 +149,17 @@ void DuongQua::die(Point posOfCammera)
 void DuongQua::listener()
 {
 	this->setCompleteListener([&](int trackIndex, int loopCount) {
-		if (strcmp(getCurrent()->animation->name, "attack2") == 0 && loopCount == 1) {
-			getSlash()->setVisible(false);
-			setIsAttacking(false);
+		if ((strcmp(getCurrent()->animation->name, "attack1") == 0 && loopCount == 1) || 
+		(strcmp(getCurrent()->animation->name, "attack2") == 0 && loopCount == 1))
+		{
+			changeSwordCategoryBitmask(BITMASK_ENEMY);
+			//getSlash()->setVisible(false);
+			getPreviousState()->run(this);
 		}
 
 		else if (strcmp(getCurrent()->animation->name, "attack3") == 0 && loopCount == 1) {
-			getSlash()->setVisible(false);
-			setIsAttacking(false);
+			changeSwordCategoryBitmask(BITMASK_ENEMY);
+			//getSlash()->setVisible(false);
 		}
 	});
 }
@@ -160,7 +171,7 @@ void DuongQua::update(float dt)
 	if (stateMachine && getBody()) {
 
 		if (getPositionY() + getTrueRadiusOfHero() * 2 < 0) {
-			getBody()->SetTransform(b2Vec2(getPositionX() / PTM_RATIO, SCREEN_SIZE.height / PTM_RATIO), getBody()->GetAngle());
+			getBody()->SetTransform(b2Vec2(SCREEN_SIZE.width * 0.3f / PTM_RATIO, SCREEN_SIZE.height / PTM_RATIO), getBody()->GetAngle());
 			return;
 		}
 
@@ -168,24 +179,10 @@ void DuongQua::update(float dt)
 			stateMachine->land(this);
 			return;
 		}
+		
 		auto currentVelY = getBody()->GetLinearVelocity().y;
-
 		getBody()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
 
-		if (getOnGround() && !getIsAttacking())
-			stateMachine->run(this);
-	}
-}
-
-void DuongQua::checkNearBy(BaseEnemy * enemy)
-{
-	if ((enemy->getPositionX() - this->getPositionX() > 0) && 
-		(enemy->getPositionX() - this->getPositionX() < getTrueRadiusOfHero() * 2.5f)) {
-		if (fabs(this->getPositionY() - enemy->getPositionY()) < getTrueRadiusOfHero() / 4) {
-			// enemy die
-			log("Enemy Die");
-			enemy->die();
-		}
 	}
 }
 

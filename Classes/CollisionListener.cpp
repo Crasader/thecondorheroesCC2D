@@ -39,7 +39,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 			}
 			else {
-				hero->setOnGround(true);
+				hero->getCurrentState()->run(hero);
 				hero->setNumberOfJump(2);
 			}
 		}
@@ -50,7 +50,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 			}
 			else {
-				hero->setOnGround(true);
+				hero->getCurrentState()->run(hero);
 				hero->setNumberOfJump(2);
 			}
 		}
@@ -78,13 +78,17 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		coin->picked();
 
 	}
-	//// neu hero va cham coin
-	//else if ((sA->getTag() == TAG_HERO && (sB->getTag() > 100)) ||
-	//	(sB->getTag() == TAG_HERO && (sA->getTag() > 100))) {
-	//	log("Enemy");
-	//}
 
+	if ((bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_WOODER && bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_SWORD) ||
+		(bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_WOODER && bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_SWORD)
+		) {
 
+		BaseEnemy* sA = (BaseEnemy*)bodyA->GetUserData();
+		BaseEnemy* sB = (BaseEnemy*)bodyB->GetUserData();
+		auto enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+		
+		enemy->die();
+	}
 }
 
 

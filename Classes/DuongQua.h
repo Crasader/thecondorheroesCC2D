@@ -30,7 +30,5 @@ protected:
 	void listener();
 	void update(float dt);
 
-	void checkNearBy(BaseEnemy *enemy);
-
 };
 #endif // __DuongQua_H__

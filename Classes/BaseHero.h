@@ -16,11 +16,10 @@ class BaseHero : public B2Skeleton
 protected:
 	State* stateMachine;
 
+	CC_SYNTHESIZE(b2Body*, swordBody, SwordBody);
+	CC_SYNTHESIZE(State*, previous_state, PreviousState);
 	CC_SYNTHESIZE(float, trueRadiusOfHero, TrueRadiusOfHero);
 	CC_SYNTHESIZE(int, numberOfJump, NumberOfJump);
-	CC_SYNTHESIZE(bool, onGround, OnGround);
-
-	CC_SYNTHESIZE(bool, isAttacking, IsAttacking);
 	CC_SYNTHESIZE(float, jump_vel, JumpVel);
 
 	CC_SYNTHESIZE(Sprite*, slash, Slash);
@@ -29,6 +28,9 @@ public:
 
 	BaseHero(string jsonFile, string atlasFile, float scale);
 	static BaseHero* create(string jsonFile, string atlasFile, float scale);
+
+	virtual void initSwordPhysic(b2World *world, Point position, float width);
+	void changeSwordCategoryBitmask(uint16 bit);
 
 	virtual void run();
 	virtual void normalJump();

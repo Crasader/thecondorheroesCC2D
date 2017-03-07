@@ -74,7 +74,7 @@ void GameScene::createDuongQua(string path_Json, string path_Atlas, Point positi
 	hero->setPosition(position);
 	hero->initCirclePhysic(world, hero->getPosition());
 	addChild(hero, 3);
-	addChild(hero->getSlash(), 2);
+	//addChild(hero->getSlash(), 2);
 }
 
 void GameScene::listener()
@@ -82,18 +82,13 @@ void GameScene::listener()
 	if (hud->getBtnAttack()->getIsActive()) {
 		// for here
 
-		hero->getSlash()->setPosition(hero->getPositionX() + hero->getTrueRadiusOfHero(), 
-										hero->getPositionY() + hero->getTrueRadiusOfHero());
-		hero->getSlash()->setVisible(true);
+		hero->changeSwordCategoryBitmask(BITMASK_SWORD);
 
+		//hero->getSlash()->setPosition(hero->getPositionX() + hero->getTrueRadiusOfHero(), 
+										//hero->getPositionY() + hero->getTrueRadiusOfHero());
+		//hero->getSlash()->setVisible(true);
 
-		for (auto child : this->getChildren()) {
-			if (child->getTag() > 100) {
-				auto enemy = (BaseEnemy *)child;
-				hero->checkNearBy(enemy);
-			}
-		}
-		hero->setIsAttacking(true);
+		
 		hero->getCurrentState()->attack(hero);
 		hud->getBtnAttack()->setIsActive(false);
 	}
@@ -108,13 +103,12 @@ void GameScene::update(float dt)
 	updateEnemy();
 	//cleanMap();
 
-	if (follow->getPositionX() <= hero->getPositionX())
-		follow->setPositionX(hero->getPositionX());
+	follow->setPositionX(hero->getPositionX());
 }
 
 void GameScene::initB2World()
 {
-	world = new b2World(b2Vec2(0, -SCREEN_SIZE.height * 8.0f / 3.0f / PTM_RATIO));
+	world = new b2World(b2Vec2(0, -SCREEN_SIZE.height * 10.0f / 3.0f / PTM_RATIO));
 
 	// draw debug
 	auto debugDraw = new (std::nothrow) GLESDebugDraw(PTM_RATIO);
@@ -186,7 +180,7 @@ void GameScene::loadBackground()
 
 	tmx_map->setPosition(Point::ZERO);
 	tmx_map->setVisible(false);
-	this->addChild(tmx_map,ZORDER_BG);
+	this->addChild(tmx_map, ZORDER_BG);
 }
 
 void GameScene::createGroundBody()
@@ -214,7 +208,7 @@ void GameScene::creatEnemyWooder()
 		this->addChild(enemy, ZORDER_ENEMY);
 		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
 		enemy->changeBodyCategoryBits(BITMASK_WOODER);
-		enemy->changeBodyMaskBits(BITMASK_HERO);
+		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
 	}
 }
 
@@ -297,10 +291,6 @@ void GameScene::createCircleCoin()
 	}
 }
 
-//void GameScene::initBoxPhysic(b2World * world, Point pos, Size size)
-
-
-
 void GameScene::danceWithCamera()
 {
 	auto origin = Director::getInstance()->getVisibleOrigin();
@@ -366,18 +356,12 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 	if (left_corner.containsPoint(touch->getLocation())) {
 		if (hero->getNumberOfJump() > 0) {
 			hero->setNumberOfJump(hero->getNumberOfJump() - 1);
-			hero->setOnGround(false);
-
 			hero->getBody()->SetLinearVelocity(b2Vec2(0.0f, hero->getJumpVel()));
-			
+
 			hero->getCurrentState()->jump(hero);
 		}
 		
 	}
-
-
-	/*updateEnemy();
-	follow->setPosition(follow->getPositionX() + 2, follow->getPositionY() );*/
 
 	return false;
 

@@ -5,6 +5,7 @@
 #include "json/document.h"
 #include "json/writer.h"
 #include "json/stringbuffer.h"
+//#include "InfiniteParallaxNode.h"
 
 using namespace rapidjson;
 
@@ -12,37 +13,37 @@ Hud *hud;
 
 Scene* GameScene::createScene()
 {
-    // 'scene' is an autorelease object
-    auto scene = Scene::create();
-    
-    // 'layer' is an autorelease object
-    auto layer = GameScene::create();
+	// 'scene' is an autorelease object
+	auto scene = Scene::create();
+
+	// 'layer' is an autorelease object
+	auto layer = GameScene::create();
 	hud = Hud::create();
 
-    // add layer as a child to scene
-    scene->addChild(layer);
+	// add layer as a child to scene
+	scene->addChild(layer);
 	scene->addChild(hud);
 
-    // return the scene
-    return scene;
+	// return the scene
+	return scene;
 }
 
 // on "init" you need to initialize your instance
 bool GameScene::init()
 {
-    //////////////////////////////
-    // 1. super init first
-    if ( !Layer::init() )
-    {
-        return false;
-    }
-    
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	//////////////////////////////
+	// 1. super init first
+	if (!Layer::init())
+	{
+		return false;
+	}
+
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	cachePlist();
 
-	
+
 	danceWithCamera();
 
 
@@ -50,10 +51,11 @@ bool GameScene::init()
 	loadBackground();
 	createGroundBody();
 
-	createDuongQua("Animation/DuongQua/DuongQua.json", "Animation/DuongQua/DuongQua.atlas", 
-					Point(visibleSize.width * 0.3f, visibleSize.height));
+	createDuongQua("Animation/DuongQua/DuongQua.json", "Animation/DuongQua/DuongQua.atlas",
+		Point(visibleSize.width * 0.3f, visibleSize.height));
 
 	creatEnemyWooder();
+	creatEnemyToanChanStudent();
 	createCoint();
 
 
@@ -63,7 +65,7 @@ bool GameScene::init()
 
 	this->scheduleUpdate();
 
-    return true;
+	return true;
 }
 
 
@@ -82,8 +84,8 @@ void GameScene::listener()
 	if (hud->getBtnAttack()->getIsActive()) {
 		// for here
 
-		hero->getSlash()->setPosition(hero->getPositionX() + hero->getTrueRadiusOfHero(), 
-										hero->getPositionY() + hero->getTrueRadiusOfHero());
+		hero->getSlash()->setPosition(hero->getPositionX() + hero->getTrueRadiusOfHero(),
+			hero->getPositionY() + hero->getTrueRadiusOfHero());
 		hero->getSlash()->setVisible(true);
 
 
@@ -108,8 +110,9 @@ void GameScene::update(float dt)
 	updateEnemy();
 	//cleanMap();
 
-	if (follow->getPositionX() <= hero->getPositionX())
-		follow->setPositionX(hero->getPositionX());
+	//if (follow->getPositionX() <= hero->getPositionX())
+	follow->setPositionX(hero->getPositionX());
+	background->updatePosition();
 }
 
 void GameScene::initB2World()
@@ -186,7 +189,55 @@ void GameScene::loadBackground()
 
 	tmx_map->setPosition(Point::ZERO);
 	//tmx_map->setVisible(false);
-	this->addChild(tmx_map,ZORDER_BG);
+	this->addChild(tmx_map, ZORDER_BG2);
+	createInfiniteNode();
+}
+void GameScene::createInfiniteNode()
+{
+	background = InfiniteParallaxNode::create();
+
+	auto bg1_1 = Sprite::create("Map/bg1.png");
+	//auto bg1_1 = Sprite::create("bg-4.png");
+	bg1_1->setScaleX(SCREEN_SIZE.width / bg1_1->getContentSize().width);
+	bg1_1->setScaleY(SCREEN_SIZE.height / bg1_1->getContentSize().height);
+	bg1_1->setAnchorPoint(Point(0, 0.5f));
+
+	auto bg1_2 = Sprite::create("Map/bg1.png");
+	//auto bg1_2 = Sprite::create("bg-4.png");
+	bg1_2->setScaleX(SCREEN_SIZE.width / bg1_2->getContentSize().width);
+	bg1_2->setScaleY(SCREEN_SIZE.height / bg1_2->getContentSize().height);
+	bg1_2->setAnchorPoint(Point(0, 0.5f));
+
+	auto bg2_1 = Sprite::create("Map/bg2.png");
+	bg2_1->setScaleX(SCREEN_SIZE.width / bg2_1->getContentSize().width);
+	bg2_1->setScaleY(SCREEN_SIZE.height / bg2_1->getContentSize().height);
+	bg2_1->setAnchorPoint(Point(0, 0.5f));
+
+	auto bg2_2 = Sprite::create("Map/bg2.png");
+	bg2_2->setScaleX(SCREEN_SIZE.width / bg2_2->getContentSize().width);
+	bg2_2->setScaleY(SCREEN_SIZE.height / bg2_2->getContentSize().height);
+	bg2_2->setAnchorPoint(Point(0, 0.5f));
+
+	/*auto bg3_1 = Sprite::create("bg-3.png");
+	bg3_1->setScaleX(SCREEN_SIZE.width / bg3_1->getContentSize().width);
+	bg3_1->setScaleY(SCREEN_SIZE.height / bg3_1->getContentSize().height);
+	bg3_1->setAnchorPoint(Point(0, 0.5f));
+
+	auto bg3_2 = Sprite::create("bg-3.png");
+	bg3_2->setScaleX(SCREEN_SIZE.width / bg3_2->getContentSize().width);
+	bg3_2->setScaleY(SCREEN_SIZE.height / bg3_2->getContentSize().height);
+	bg3_2->setAnchorPoint(Point(0, 0.5f));*/
+
+
+	background->addChild(bg1_1, 0, Vec2(0.3f, 1), Vec2(0, 0));
+	background->addChild(bg1_2, 0, Vec2(0.3f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
+	background->addChild(bg2_1, 0, Vec2(0.7f, 1), Vec2(0, 0));
+	background->addChild(bg2_2, 0, Vec2(0.7f, 1), Vec2(bg2_1->getBoundingBox().size.width, 0));
+	//background->addChild(bg3_1, 0, Vec2(1, 1), Vec2(0, 0));
+	//background->addChild(bg3_2, 0, Vec2(1, 1), Vec2(bg3_1->getBoundingBox().size.width, 0));
+	background->setPosition(Point(0, SCREEN_SIZE.height / 2));
+	background->setAnchorPoint(Point(0, 0.5f));
+	this->addChild(background, ZORDER_BG);
 }
 
 void GameScene::createGroundBody()
@@ -196,7 +247,7 @@ void GameScene::createGroundBody()
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
 		Size sizeOfBound = Size(mObject["width"].asFloat() *scaleOfMap, mObject["height"].asFloat() *scaleOfMap);
-		Point pos = Point(origin.x + sizeOfBound.width / 2,origin.y);
+		Point pos = Point(origin.x + sizeOfBound.width / 2, origin.y);
 		initGroundPhysic(world, pos, sizeOfBound);
 	}
 }
@@ -208,13 +259,32 @@ void GameScene::creatEnemyWooder()
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
 		auto scaleOfWooder = SCREEN_SIZE.height / 5 / 490; // 490 la height cua spine
-		auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json", 
-										"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
+		auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json",
+			"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
 		enemy->setPosition(origin);
 		this->addChild(enemy, ZORDER_ENEMY);
 		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
 		enemy->changeBodyCategoryBits(BITMASK_WOODER);
 		enemy->changeBodyMaskBits(BITMASK_HERO);
+	}
+}
+
+void GameScene::creatEnemyToanChanStudent()
+{
+	auto groupGround = tmx_map->getObjectGroup("toanchan_student");
+	for (auto child : groupGround->getObjects()) {
+		auto mObject = child.asValueMap();
+		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+		auto scaleOfEnemy = SCREEN_SIZE.height / 5 / 401; // 401 la height cua spine
+		auto enemy = EnemyToanChanStudent::create("Animation/Enemy_DeTuToanChan1/ToanChan1.json",
+			"Animation/Enemy_DeTuToanChan1/ToanChan1.atlas", scaleOfEnemy);
+		enemy->setPosition(origin);
+		this->addChild(enemy, ZORDER_ENEMY);
+		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
+		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
+		enemy->changeBodyMaskBits(BITMASK_HERO);
+		enemy->genSplash();
+		enemy->listener();
 	}
 }
 
@@ -287,7 +357,7 @@ void GameScene::createCircleCoin()
 			auto coin = Coin::create();
 			auto scale = SCREEN_SIZE.height / 20 / coin->getContentSize().height;
 			coin->setScale(scale);
-			coin->setPosition(origin+origin2);
+			coin->setPosition(origin + origin2);
 			this->addChild(coin, ZORDER_ENEMY);
 			coin->initCirclePhysic(world, origin + origin2);
 			coin->changeBodyCategoryBits(BITMASK_COIN);
@@ -312,7 +382,7 @@ void GameScene::danceWithCamera()
 	runAction(camera);
 
 	left_corner = CCRectMake(0, 0, SCREEN_SIZE.width / 2, SCREEN_SIZE.height);
-	
+
 }
 
 void GameScene::initGroundPhysic(b2World * world, Point pos, Size size)
@@ -345,7 +415,7 @@ void GameScene::readWriteJson()
 	/**
 	* test json
 	*/
-	
+
 	Document heroJsonFile;
 	string herobuffer = FileUtils::getInstance()->getStringFromFile("Hero.json");
 	heroJsonFile.Parse(herobuffer.c_str());
@@ -369,10 +439,10 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 			hero->setOnGround(false);
 
 			hero->getBody()->SetLinearVelocity(b2Vec2(0.0f, hero->getJumpVel()));
-			
+
 			hero->getCurrentState()->jump(hero);
 		}
-		
+
 	}
 
 
@@ -387,7 +457,7 @@ void GameScene::updateEnemy()
 {
 	for (auto child : this->getChildren()) {
 		if (child->getTag() > 100) {
-			auto tmp = (BaseEnemy*) child;
+			auto tmp = (BaseEnemy*)child;
 			tmp->update(1.0f);
 			if (tmp->getBody() != nullptr) {
 				if (tmp->getBody()->GetPosition().y < 0) {
@@ -396,10 +466,10 @@ void GameScene::updateEnemy()
 					tmp->setBody(nullptr);
 				}
 			}
-			if (tmp->getIsDie()&& tmp->getBody() != nullptr) {
+			if (tmp->getIsDie() && tmp->getBody() != nullptr) {
 				tmp->getBody()->SetType(b2_dynamicBody);
 			}
-			
+
 		}
 	}
 }

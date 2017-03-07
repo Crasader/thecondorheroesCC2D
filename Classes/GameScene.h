@@ -7,8 +7,11 @@
 #include "Global.h"
 #include "GLES-Render.h"
 #include "EnemyWooder.h"
+#include "EnemyToanChanStudent.h"
 #include "Coin.h"
 #include "CollisionListener.h"
+#include "InfiniteParallaxNode.h"
+
 
 USING_NS_CC;
 
@@ -37,6 +40,7 @@ private:
 
 
 	BaseHero *hero;
+	InfiniteParallaxNode *background;
 
 	// Create Function
 	void createDuongQua(string path_Json, string path_Atlas, Point position);
@@ -55,8 +59,10 @@ private:
 
 	// function for process map
 	void loadBackground();
+	void createInfiniteNode();
 	void createGroundBody();
 	void creatEnemyWooder();
+	void creatEnemyToanChanStudent();
 
 
 	void createCoint();

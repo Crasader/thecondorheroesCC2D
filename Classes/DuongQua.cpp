@@ -50,7 +50,7 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 	fixtureDef.shape = &circle_shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_HERO;
-	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR| BITMASK_WOODER | BITMASK_COIN;
+	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR| BITMASK_WOODER | BITMASK_COIN|BITMASK_TOANCHAN1;
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -98,6 +98,7 @@ void DuongQua::die()
 	clearTracks();
 	addAnimation(0, "die", false);
 	setToSetupPose();
+	getBody()->SetTransform(b2Vec2(SCREEN_SIZE.width / 2 / PTM_RATIO, SCREEN_SIZE.height / PTM_RATIO), getBody()->GetAngle());
 }
 
 void DuongQua::attackNormal()
@@ -136,6 +137,7 @@ void DuongQua::injured()
 
 void DuongQua::die(Point posOfCammera)
 {
+	
 }
 
 void DuongQua::listener()
@@ -160,7 +162,8 @@ void DuongQua::update(float dt)
 	if (stateMachine && getBody()) {
 
 		if (getPositionY() + getTrueRadiusOfHero() * 2 < 0) {
-			getBody()->SetTransform(b2Vec2(getPositionX() / PTM_RATIO, SCREEN_SIZE.height / PTM_RATIO), getBody()->GetAngle());
+			this->die();
+			
 			return;
 		}
 

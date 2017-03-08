@@ -39,7 +39,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 			}
 			else {
-				hero->getCurrentState()->run(hero);
+				hero->setOnGround(true);
 				hero->setNumberOfJump(2);
 			}
 		}
@@ -50,7 +50,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 			}
 			else {
-				hero->getCurrentState()->run(hero);
+				hero->setOnGround(true);
 				hero->setNumberOfJump(2);
 			}
 		}

@@ -12,10 +12,11 @@ class State
 public:
 	State();
 	~State();
-	virtual void run(BaseHero* hero);
-	virtual void jump(BaseHero *hero);
-	virtual void land(BaseHero *hero);
-	virtual void attack(BaseHero *hero);		// normal attack
+	virtual void execute(BaseHero* hero);
+
+	static State* m_state;
+
+	static State* getInstance();
 };
 
 /**
@@ -27,9 +28,11 @@ public:
 	Running();
 	~Running();
 
-	void jump(BaseHero *hero);
-	void land(BaseHero* hero);
-	void attack(BaseHero *hero);
+	void execute(BaseHero *hero);
+
+	static Running* m_run;
+
+	static Running* getInstance();
 };
 
 /**
@@ -40,9 +43,10 @@ class Idling : public State
 public:
 	Idling();
 	~Idling();
-	void run(BaseHero *hero);
+	void execute(BaseHero *hero);
+	static Idling *m_idle;
 
-
+	static Idling* getInstance();
 };
 
 /**
@@ -53,21 +57,10 @@ class Jumping : public State
 public:
 	Jumping();
 	~Jumping();
-	void jump(BaseHero *hero);
-	void land(BaseHero* hero);
-	void attack(BaseHero *hero);
-};
+	void execute(BaseHero *hero);
+	static Jumping* m_jump;
 
-/**
-* Class DoupleJumping
-*/
-class DoupleJumping : public State
-{
-public:
-	DoupleJumping();
-	~DoupleJumping();
-
-	void land(BaseHero* hero);
+	static Jumping* getInstance();
 };
 
 /**
@@ -79,24 +72,33 @@ public:
 	Landing();
 	~Landing();
 
-	void jump(BaseHero* hero);
-	void run(BaseHero* hero);
-	void attack(BaseHero *hero);
+	void execute(BaseHero *hero);
+
+	static Landing* m_land;
+
+	static Landing* getInstance();
 };
+
 
 /**
-* Class Landing2
+* Class Global                                                                     
 */
-class Landing2 : public State
+class AttackNormal : public State 
 {
 public:
-	Landing2();
-	~Landing2();
+	AttackNormal();
+	~AttackNormal();
 
-	void run(BaseHero *hero);
-	void attack(BaseHero *hero);
+	void execute(BaseHero *hero);
+	static AttackNormal * m_attack;
+	static AttackNormal* getInstance();
 };
 
-
+//// make life easier
+//#define MIdle Idling::getInstance()
+//#define MRun Running::getInstance()
+//#define MJump Jumping::getInstance()
+//#define MLand Landing::getInstance()
+//#define MAttack AttackNormal::getInstance()
 
 #endif 

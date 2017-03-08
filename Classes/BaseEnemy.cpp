@@ -22,9 +22,8 @@ void BaseEnemy::die()
 {
 }
 
-void BaseEnemy::update(float dt)
+void BaseEnemy::updateMe(float dt)
 {
-	SkeletonAnimation::update(dt);
 	if (body != nullptr && body->GetType() == b2_staticBody) {
 		this->setPositionX(body->GetPosition().x * PTM_RATIO);
 		this->setPositionY(body->GetPosition().y * PTM_RATIO - this->body->GetFixtureList()->GetShape()->m_radius*PTM_RATIO);

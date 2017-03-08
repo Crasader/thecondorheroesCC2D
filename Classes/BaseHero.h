@@ -3,7 +3,7 @@
 
 #include "B2Skeleton.h"
 #include "GB2ShapeCache-x.h"
-#include "State.h"
+#include "StateMachine.h"
 #include "BaseEnemy.h"
 
 
@@ -14,15 +14,19 @@ using namespace spine;
 class BaseHero : public B2Skeleton
 {
 protected:
-	State* stateMachine;
+	StateMachine* stateMachine;
+
 
 	CC_SYNTHESIZE(b2Body*, swordBody, SwordBody);
-	CC_SYNTHESIZE(State*, previous_state, PreviousState);
 	CC_SYNTHESIZE(float, trueRadiusOfHero, TrueRadiusOfHero);
+
+	CC_SYNTHESIZE(bool, onGround, OnGround);
 	CC_SYNTHESIZE(int, numberOfJump, NumberOfJump);
 	CC_SYNTHESIZE(float, jump_vel, JumpVel);
 
 	CC_SYNTHESIZE(Sprite*, slash, Slash);
+
+	CC_SYNTHESIZE(bool, isPriorSkill, IsPriorSkill);
 
 public:
 
@@ -45,12 +49,11 @@ public:
 	virtual void injured();
 	virtual void die(Point posOfCammera);
 	virtual void listener();
-	virtual void update(float dt);
+	virtual void updateMe(float dt);
 
 	// check attack near by
 	virtual void checkNearBy(BaseEnemy *enemy);
 
-	void changeState(State *newState);
-	State* getCurrentState();
+	StateMachine* getFSM();
 };
 #endif // __SOLDIER_H__

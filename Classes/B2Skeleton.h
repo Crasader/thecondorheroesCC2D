@@ -25,8 +25,6 @@ public:
 	virtual void changeBodyCategoryBits(uint16 mask);
 	virtual void changeBodyMaskBits(uint16 mask);
 
-	virtual void update(float dt);
-
 protected:
 	CC_SYNTHESIZE(b2Body*, body, Body);
 

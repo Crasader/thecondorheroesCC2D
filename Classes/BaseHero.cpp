@@ -101,9 +101,8 @@ void BaseHero::listener()
 {
 }
 
-void BaseHero::update(float dt)
+void BaseHero::updateMe(float dt)
 {
-	B2Skeleton::update(dt);
 	if (getBody() != nullptr) {
 		this->setPositionX(this->getBody()->GetPosition().x * PTM_RATIO);
 		this->setPositionY(this->getBody()->GetPosition().y * PTM_RATIO - trueRadiusOfHero);
@@ -113,18 +112,13 @@ void BaseHero::update(float dt)
 	}
 }
 
+
 void BaseHero::checkNearBy(BaseEnemy * enemy)
 {
 }
 
-void BaseHero::changeState(State * newState)
-{
-	delete previous_state;
-	delete stateMachine;
-	stateMachine = newState;
-}
 
-State * BaseHero::getCurrentState()
+StateMachine * BaseHero::getFSM()
 {
 	return stateMachine;
 }

@@ -28,7 +28,8 @@ protected:
 	void injured();
 	void die(Point posOfCammera);
 	void listener();
-	void update(float dt);
+
+	void updateMe(float dt);
 
 };
 #endif // __DuongQua_H__

@@ -17,7 +17,7 @@ public:
 	virtual void run();
 	virtual void attack();
 	virtual void die();
-	virtual void update(float dt);
+	virtual void updateMe(float dt);
 	virtual void initCirclePhysic(b2World *world, Point pos);
 };
 

@@ -96,9 +96,9 @@ void B2Sprite::changeBodyMaskBits(uint16 mask)
 	fixture->SetFilterData(filter);
 }
 
-void B2Sprite::update(float dt)
+void B2Sprite::updateMe(float dt)
 {
-	Sprite::update(dt);
+	//Sprite::update(dt);
 	if (body != nullptr) {
 		this->setPositionX(body->GetPosition().x * PTM_RATIO);
 		this->setPositionY(body->GetPosition().y * PTM_RATIO);

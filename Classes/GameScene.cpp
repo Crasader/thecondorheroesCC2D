@@ -74,7 +74,7 @@ void GameScene::createDuongQua(string path_Json, string path_Atlas, Point positi
 	hero->setPosition(position);
 	hero->initCirclePhysic(world, hero->getPosition());
 	addChild(hero, 3);
-	//addChild(hero->getSlash(), 2);
+	addChild(hero->getSlash(), 2);
 }
 
 void GameScene::listener()
@@ -84,12 +84,11 @@ void GameScene::listener()
 
 		hero->changeSwordCategoryBitmask(BITMASK_SWORD);
 
-		//hero->getSlash()->setPosition(hero->getPositionX() + hero->getTrueRadiusOfHero(), 
-										//hero->getPositionY() + hero->getTrueRadiusOfHero());
-		//hero->getSlash()->setVisible(true);
-
-		
-		hero->getCurrentState()->attack(hero);
+		hero->getSlash()->setPosition(hero->getPositionX() + hero->getTrueRadiusOfHero(), 
+										hero->getPositionY() + hero->getTrueRadiusOfHero());
+		hero->getSlash()->setVisible(true);
+		hero->getFSM()->changeState(AttackNormal::getInstance());
+		hero->setIsPriorSkill(true);
 		hud->getBtnAttack()->setIsActive(false);
 	}
 }
@@ -98,7 +97,7 @@ void GameScene::update(float dt)
 {
 	updateB2World(dt);
 	listener();
-	hero->update(dt);
+	hero->updateMe(dt);
 
 	updateEnemy();
 	//cleanMap();
@@ -179,7 +178,7 @@ void GameScene::loadBackground()
 	tmx_map->setScale(scaleOfMap);
 
 	tmx_map->setPosition(Point::ZERO);
-	tmx_map->setVisible(false);
+	//tmx_map->setVisible(false);
 	this->addChild(tmx_map, ZORDER_BG);
 }
 
@@ -358,7 +357,8 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 			hero->setNumberOfJump(hero->getNumberOfJump() - 1);
 			hero->getBody()->SetLinearVelocity(b2Vec2(0.0f, hero->getJumpVel()));
 
-			hero->getCurrentState()->jump(hero);
+			hero->setOnGround(false);
+			hero->getFSM()->changeState(Jumping::getInstance());
 		}
 		
 	}
@@ -372,7 +372,7 @@ void GameScene::updateEnemy()
 	for (auto child : this->getChildren()) {
 		if (child->getTag() > 100) {
 			auto tmp = (BaseEnemy*) child;
-			tmp->update(1.0f);
+			tmp->updateMe(1.0f);
 			if (tmp->getBody() != nullptr) {
 				if (tmp->getBody()->GetPosition().y < 0) {
 					tmp->setVisible(false);

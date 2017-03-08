@@ -16,7 +16,7 @@ public:
 	void run();
 	void attack();
 	void die();
-	void update(float dt);
+	void updateMe(float dt);
 };
 
 #endif // __ENEMY_H__

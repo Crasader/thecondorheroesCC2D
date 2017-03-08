@@ -11,18 +11,20 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 {
 	DuongQua* duongQua = new DuongQua(jsonFile, atlasFile, scale);
 	duongQua->setTag(TAG_HERO);
-	duongQua->previous_state = new Idling();
-	duongQua->stateMachine = new Running();
-	duongQua->setMoveVel(duongQua->SCREEN_SIZE.width / PTM_RATIO / 2.0f);
-	duongQua->setJumpVel(duongQua->SCREEN_SIZE.height * 1.4f / PTM_RATIO);
+
+	duongQua->update(0.0f);
+
+	duongQua->stateMachine = new StateMachine(duongQua);
+	duongQua->stateMachine->setCurrentState(Landing::getInstance());
+
+	duongQua->setMoveVel(duongQua->SCREEN_SIZE.width / PTM_RATIO / 2.1f);
+	duongQua->setJumpVel(duongQua->SCREEN_SIZE.height * 1.2f / PTM_RATIO);
 	duongQua->facingRight = true;
 
 	duongQua->numberOfJump = 2;
 
-	duongQua->update(0.0f);
-	duongQua->setScaleX(1);		// facing right
-
-	duongQua->setTimeScale(0.8f);
+	duongQua->setOnGround(false);
+	duongQua->setIsPriorSkill(false);
 
 	// splash
 	duongQua->slash = Sprite::create("Animation/DuongQua/slash2.png");
@@ -36,7 +38,7 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 void DuongQua::initCirclePhysic(b2World * world, Point pos)
 {
 	b2CircleShape circle_shape;
-	circle_shape.m_radius = this->getBoundingBox().size.height / 6.6f / PTM_RATIO;
+	circle_shape.m_radius = this->getBoundingBox().size.height / 6.7f / PTM_RATIO;
 
 	// True radius of hero is here
 	setTrueRadiusOfHero(circle_shape.m_radius * PTM_RATIO);
@@ -49,7 +51,7 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 	fixtureDef.shape = &circle_shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_HERO;
-	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR| BITMASK_WOODER | BITMASK_COIN;
+	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR | BITMASK_WOODER | BITMASK_COIN;
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -78,7 +80,7 @@ void DuongQua::normalJump()
 {
 
 	clearTracks();
-	addAnimation(0, "jump", false);
+	addAnimation(0, "jump", true);
 	setToSetupPose();
 }
 
@@ -92,7 +94,7 @@ void DuongQua::doubleJump()
 void DuongQua::landing()
 {
 	clearTracks();
-	addAnimation(0, "landing", false);
+	addAnimation(0, "landing", true);
 	setToSetupPose();
 }
 
@@ -109,8 +111,10 @@ void DuongQua::attackNormal()
 	auto r = rand() % 2;
 	if (r) {
 		addAnimation(0, "attack1", false);
-	} else 
+	}
+	else {
 		addAnimation(0, "attack2", false);
+	}
 
 	
 	setToSetupPose();
@@ -149,24 +153,28 @@ void DuongQua::die(Point posOfCammera)
 void DuongQua::listener()
 {
 	this->setCompleteListener([&](int trackIndex, int loopCount) {
-		if ((strcmp(getCurrent()->animation->name, "attack1") == 0 && loopCount == 1) || 
-		(strcmp(getCurrent()->animation->name, "attack2") == 0 && loopCount == 1))
-		{
-			changeSwordCategoryBitmask(BITMASK_ENEMY);
-			//getSlash()->setVisible(false);
-			getPreviousState()->run(this);
+		if ((strcmp(getCurrent()->animation->name, "jumpx2") == 0) && loopCount == 1) {
+			getFSM()->changeState(Landing::getInstance());
 		}
-
-		else if (strcmp(getCurrent()->animation->name, "attack3") == 0 && loopCount == 1) {
-			changeSwordCategoryBitmask(BITMASK_ENEMY);
-			//getSlash()->setVisible(false);
+		
+		else if ((strcmp(getCurrent()->animation->name, "attack1") == 0) || 
+		(strcmp(getCurrent()->animation->name, "attack2") == 0) || 
+		(strcmp(getCurrent()->animation->name, "attack3") == 0)) {
+			if (loopCount == 1) {
+				changeSwordCategoryBitmask(BITMASK_ENEMY);
+				getSlash()->setVisible(false);
+				getFSM()->revertToPreviousState();
+				setIsPriorSkill(false);
+			}
 		}
+		
 	});
 }
 
-void DuongQua::update(float dt)
+
+void DuongQua::updateMe(float dt)
 {
-	BaseHero::update(dt);
+	BaseHero::updateMe(dt);
 
 	if (stateMachine && getBody()) {
 
@@ -175,14 +183,25 @@ void DuongQua::update(float dt)
 			return;
 		}
 
-		if (getBody()->GetLinearVelocity().y < 0) {
-			stateMachine->land(this);
-			return;
-		}
-		
 		auto currentVelY = getBody()->GetLinearVelocity().y;
 		getBody()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
 
+		getFSM()->Update();
+
+		if (! getIsPriorSkill()) {
+			
+			if (getBody()->GetLinearVelocity().y < 0) {
+				if(getNumberOfJump() > 0)
+					getFSM()->changeState(Landing::getInstance());
+				return;
+			}
+
+			if (getOnGround()) {
+				getFSM()->changeState(Running::getInstance());
+			}
+
+			
+		}
 	}
 }
 

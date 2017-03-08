@@ -76,7 +76,7 @@ void GameScene::createDuongQua(string path_Json, string path_Atlas, Point positi
 	hero->setPosition(position);
 	hero->initCirclePhysic(world, hero->getPosition());
 	addChild(hero, 3);
-	addChild(hero->getSlash(), 2);
+	//addChild(hero->getSlash(), 2);
 }
 
 void GameScene::listener()
@@ -84,18 +84,15 @@ void GameScene::listener()
 	if (hud->getBtnAttack()->getIsActive()) {
 		// for here
 
-		hero->getSlash()->setPosition(hero->getPositionX() + hero->getTrueRadiusOfHero(),
-			hero->getPositionY() + hero->getTrueRadiusOfHero());
-		hero->getSlash()->setVisible(true);
+
+		hero->changeSwordCategoryBitmask(BITMASK_SWORD);
 
 
-		for (auto child : this->getChildren()) {
-			if (child->getTag() > 100) {
-				auto enemy = (BaseEnemy *)child;
-				hero->checkNearBy(enemy);
-			}
-		}
-		hero->setIsAttacking(true);
+		//hero->getSlash()->setPosition(hero->getPositionX() + hero->getTrueRadiusOfHero(), 
+										//hero->getPositionY() + hero->getTrueRadiusOfHero());
+		//hero->getSlash()->setVisible(true);
+
+
 		hero->getCurrentState()->attack(hero);
 		hud->getBtnAttack()->setIsActive(false);
 	}
@@ -105,26 +102,30 @@ void GameScene::update(float dt)
 {
 	updateB2World(dt);
 	listener();
-	hero->update(dt);
+	hero->updateMe(dt);
 
 	updateEnemy();
 	//cleanMap();
-
-	//if (follow->getPositionX() <= hero->getPositionX())
+	if (hero->getPositionX() < SCREEN_SIZE.width / 2) {
+		follow->setPositionX(SCREEN_SIZE.width / 2);
+	}
+	else
 	follow->setPositionX(hero->getPositionX());
+
 	background->updatePosition();
+
 }
 
 void GameScene::initB2World()
 {
-	world = new b2World(b2Vec2(0, -SCREEN_SIZE.height * 8.0f / 3.0f / PTM_RATIO));
+	world = new b2World(b2Vec2(0, -SCREEN_SIZE.height * 10.0f / 3.0f / PTM_RATIO));
 
 	// draw debug
 	auto debugDraw = new (std::nothrow) GLESDebugDraw(PTM_RATIO);
 	world->SetDebugDraw(debugDraw);
 	uint32 flags = 0;
-	flags += b2Draw::e_shapeBit;
-	flags += b2Draw::e_jointBit;
+	//flags += b2Draw::e_shapeBit;
+	//flags += b2Draw::e_jointBit;
 	//flags += b2Draw::e_aabbBit;
 	//flags += b2Draw::e_pairBit;
 	//flags += b2Draw::e_centerOfMassBit;
@@ -218,6 +219,16 @@ void GameScene::createInfiniteNode()
 	bg2_2->setScaleY(SCREEN_SIZE.height / bg2_2->getContentSize().height);
 	bg2_2->setAnchorPoint(Point(0, 0.5f));
 
+	auto bg3_1 = Sprite::create("Map/bg3.png");
+	bg3_1->setScaleX(SCREEN_SIZE.width / bg3_1->getContentSize().width);
+	bg3_1->setScaleY(SCREEN_SIZE.height / bg3_1->getContentSize().height);
+	bg3_1->setAnchorPoint(Point(0, 0.5f));
+
+	auto bg3_2 = Sprite::create("Map/bg3.png");
+	bg3_2->setScaleX(SCREEN_SIZE.width / bg3_2->getContentSize().width);
+	bg3_2->setScaleY(SCREEN_SIZE.height / bg3_2->getContentSize().height);
+	bg3_2->setAnchorPoint(Point(0, 0.5f));
+
 	/*auto bg3_1 = Sprite::create("bg-3.png");
 	bg3_1->setScaleX(SCREEN_SIZE.width / bg3_1->getContentSize().width);
 	bg3_1->setScaleY(SCREEN_SIZE.height / bg3_1->getContentSize().height);
@@ -229,13 +240,13 @@ void GameScene::createInfiniteNode()
 	bg3_2->setAnchorPoint(Point(0, 0.5f));*/
 
 
-	background->addChild(bg1_1, 0, Vec2(0.3f, 1), Vec2(0, 0));
-	background->addChild(bg1_2, 0, Vec2(0.3f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
-	background->addChild(bg2_1, 0, Vec2(0.7f, 1), Vec2(0, 0));
-	background->addChild(bg2_2, 0, Vec2(0.7f, 1), Vec2(bg2_1->getBoundingBox().size.width, 0));
-	//background->addChild(bg3_1, 0, Vec2(1, 1), Vec2(0, 0));
-	//background->addChild(bg3_2, 0, Vec2(1, 1), Vec2(bg3_1->getBoundingBox().size.width, 0));
-	background->setPosition(Point(0, SCREEN_SIZE.height / 2));
+	background->addChild(bg1_1, 0, Vec2(1.0f, 1), Vec2(0, 0));
+	background->addChild(bg1_2, 0, Vec2(1.0f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
+	background->addChild(bg2_1, 0, Vec2(1.3f, 1), Vec2(0, 0));
+	background->addChild(bg2_2, 0, Vec2(1.3f, 1), Vec2(bg2_1->getBoundingBox().size.width, 0));
+	background->addChild(bg3_1, 0, Vec2(2.0f, 1), Vec2(0, 0));
+	background->addChild(bg3_2, 0, Vec2(2.0f, 1), Vec2(bg3_1->getBoundingBox().size.width, 0));
+	background->setPosition(Point(-SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 	background->setAnchorPoint(Point(0, 0.5f));
 	this->addChild(background, ZORDER_BG);
 }
@@ -262,10 +273,11 @@ void GameScene::creatEnemyWooder()
 		auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json",
 			"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
 		enemy->setPosition(origin);
+		enemy->setVisible(false);
 		this->addChild(enemy, ZORDER_ENEMY);
 		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
 		enemy->changeBodyCategoryBits(BITMASK_WOODER);
-		enemy->changeBodyMaskBits(BITMASK_HERO);
+		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
 	}
 }
 
@@ -279,10 +291,11 @@ void GameScene::creatEnemyToanChanStudent()
 		auto enemy = EnemyToanChanStudent::create("Animation/Enemy_DeTuToanChan1/ToanChan1.json",
 			"Animation/Enemy_DeTuToanChan1/ToanChan1.atlas", scaleOfEnemy);
 		enemy->setPosition(origin);
+		enemy->setVisible(false);
 		this->addChild(enemy, ZORDER_ENEMY);
 		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
 		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
-		enemy->changeBodyMaskBits(BITMASK_HERO);
+		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
 		enemy->genSplash();
 		enemy->listener();
 	}
@@ -307,7 +320,7 @@ void GameScene::createTimCoin()
 			auto mObject2 = c.asValueMap();
 			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
 			auto coin = Coin::create();
-			auto scale = SCREEN_SIZE.height / 20 / coin->getContentSize().height;
+			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
 			coin->setScale(scale);
 			coin->setPosition(origin + origin2);
 			this->addChild(coin, ZORDER_ENEMY);
@@ -331,7 +344,7 @@ void GameScene::createParapolCoin()
 			auto mObject2 = c.asValueMap();
 			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
 			auto coin = Coin::create();
-			auto scale = SCREEN_SIZE.height / 20 / coin->getContentSize().height;
+			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
 			coin->setScale(scale);
 			coin->setPosition(origin + origin2);
 			this->addChild(coin, ZORDER_ENEMY);
@@ -355,7 +368,7 @@ void GameScene::createCircleCoin()
 			auto mObject2 = c.asValueMap();
 			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
 			auto coin = Coin::create();
-			auto scale = SCREEN_SIZE.height / 20 / coin->getContentSize().height;
+			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
 			coin->setScale(scale);
 			coin->setPosition(origin + origin2);
 			this->addChild(coin, ZORDER_ENEMY);
@@ -366,10 +379,6 @@ void GameScene::createCircleCoin()
 		}
 	}
 }
-
-//void GameScene::initBoxPhysic(b2World * world, Point pos, Size size)
-
-
 
 void GameScene::danceWithCamera()
 {
@@ -436,8 +445,6 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 	if (left_corner.containsPoint(touch->getLocation())) {
 		if (hero->getNumberOfJump() > 0) {
 			hero->setNumberOfJump(hero->getNumberOfJump() - 1);
-			hero->setOnGround(false);
-
 			hero->getBody()->SetLinearVelocity(b2Vec2(0.0f, hero->getJumpVel()));
 
 			hero->getCurrentState()->jump(hero);
@@ -445,29 +452,36 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 
 	}
 
-
-	/*updateEnemy();
-	follow->setPosition(follow->getPositionX() + 2, follow->getPositionY() );*/
-
 	return false;
 
 }
 
 void GameScene::updateEnemy()
 {
-	for (auto child : this->getChildren()) {
-		if (child->getTag() > 100) {
-			auto tmp = (BaseEnemy*)child;
-			tmp->update(1.0f);
+	auto child = this->getChildren();
+	for (int i = 0; i < child.size(); i++) {
+		if (child.at(i)->getTag() > 100) {
+			auto tmp = (BaseEnemy*)child.at(i);
+			tmp->updateMe(1.0f);
 			if (tmp->getBody() != nullptr) {
-				if (tmp->getBody()->GetPosition().y < 0) {
-					tmp->setVisible(false);
-					world->DestroyBody(tmp->getBody());
-					tmp->setBody(nullptr);
+				if (tmp->getIsDie()) {
+					tmp->getBody()->SetType(b2_dynamicBody);
+
+					if (tmp->getBody()->GetPosition().y < -SCREEN_SIZE.height/PTM_RATIO) {
+						world->DestroyBody(tmp->getBody());
+						tmp->setBody(nullptr);
+						tmp->removeFromParentAndCleanup(true);
+					}
 				}
-			}
-			if (tmp->getIsDie() && tmp->getBody() != nullptr) {
-				tmp->getBody()->SetType(b2_dynamicBody);
+				else {
+					if (tmp->getPositionX() < follow->getPositionX() - SCREEN_SIZE.width / 2) {
+						tmp->setIsDie(true);
+					}
+
+					if (tmp->getPositionX() < follow->getPositionX() + SCREEN_SIZE.width) {
+						tmp->setVisible(true);
+					}
+				}
 			}
 
 		}

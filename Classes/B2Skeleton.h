@@ -13,6 +13,7 @@ class B2Skeleton : public SkeletonAnimation
 {
 
 public:
+	//static Map<std::string, SkeletonRenderer *> skeleRendererCache;
 
 	B2Skeleton(string jsonFile, string atlasFile, float scale);
 
@@ -25,7 +26,7 @@ public:
 	virtual void changeBodyCategoryBits(uint16 mask);
 	virtual void changeBodyMaskBits(uint16 mask);
 
-	virtual void update(float dt);
+	//virtual void update(float dt);
 
 protected:
 	CC_SYNTHESIZE(b2Body*, body, Body);

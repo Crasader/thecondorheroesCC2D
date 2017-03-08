@@ -17,14 +17,17 @@ void CollisionListener::BeginContact(b2Contact * contact)
 	b2Body *bodyA = contact->GetFixtureA()->GetBody();
 	b2Body *bodyB = contact->GetFixtureB()->GetBody();
 
+	uint16 bitmaskA = bodyA->GetFixtureList()->GetFilterData().categoryBits;
+	uint16 bitmaskB = bodyB->GetFixtureList()->GetFilterData().categoryBits;
+
 	//// dùng để tính toán các vị trí contact
 	b2WorldManifold	worldManifold;
 	contact->GetWorldManifold(&worldManifold);
 	auto collidePoint = worldManifold.points[0];
 	//worldManifold.
 
-	if ((bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_HERO && bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_FLOOR) ||
-		(bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_HERO && bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_FLOOR)
+	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_FLOOR) ||
+		(bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_FLOOR)
 		) {
 
 		B2Skeleton* sA = (BaseHero*)bodyA->GetUserData();
@@ -39,7 +42,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 			}
 			else {
-				hero->setOnGround(true);
+				hero->getCurrentState()->run(hero);
 				hero->setNumberOfJump(2);
 			}
 		}
@@ -50,15 +53,15 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 			}
 			else {
-				hero->setOnGround(true);
+				hero->getCurrentState()->run(hero);
 				hero->setNumberOfJump(2);
 			}
 		}
 
 	}
 
-	if ((bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_HERO && bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_TOANCHAN1) ||
-		(bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_HERO && bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_TOANCHAN1)
+	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_TOANCHAN1) ||
+		(bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_TOANCHAN1)
 		) {
 
 		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
@@ -68,8 +71,8 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		
 	}
 
-	if ((bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_HERO && bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_COIN) ||
-		(bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_HERO && bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_COIN)
+	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_COIN) ||
+		(bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_COIN)
 		) {
 
 		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
@@ -78,13 +81,28 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		coin->picked();
 
 	}
-	//// neu hero va cham coin
-	//else if ((sA->getTag() == TAG_HERO && (sB->getTag() > 100)) ||
-	//	(sB->getTag() == TAG_HERO && (sA->getTag() > 100))) {
-	//	log("Enemy");
-	//}
 
+	if ((bitmaskA == BITMASK_WOODER && bitmaskB == BITMASK_SWORD) ||
+		(bitmaskB == BITMASK_WOODER && bitmaskA == BITMASK_SWORD)
+		) {
 
+		BaseEnemy* sA = (BaseEnemy*)bodyA->GetUserData();
+		BaseEnemy* sB = (BaseEnemy*)bodyB->GetUserData();
+		auto enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+		
+		enemy->die();
+	}
+
+	if ((bitmaskA == BITMASK_TOANCHAN1 && bitmaskB == BITMASK_SWORD) ||
+		(bitmaskB == BITMASK_TOANCHAN1 && bitmaskA == BITMASK_SWORD)
+		) {
+
+		BaseEnemy* sA = (BaseEnemy*)bodyA->GetUserData();
+		BaseEnemy* sB = (BaseEnemy*)bodyB->GetUserData();
+		auto enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+
+		enemy->die();
+	}
 }
 
 

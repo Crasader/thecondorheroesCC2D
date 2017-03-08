@@ -10,14 +10,14 @@ using namespace spine;
 class BaseEnemy : public B2Skeleton
 {
 public:
-	CC_SYNTHESIZE(bool,isDie,IsDie);
+	CC_SYNTHESIZE(bool, isDie, IsDie);
 	BaseEnemy(string jsonFile, string atlasFile, float scale);
 	static BaseEnemy* create(string jsonFile, string atlasFile, float scale);
 
 	virtual void run();
 	virtual void attack();
 	virtual void die();
-	virtual void update(float dt);
+	virtual void updateMe(float dt);
 	virtual void initCirclePhysic(b2World *world, Point pos);
 };
 

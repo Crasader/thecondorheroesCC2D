@@ -28,14 +28,9 @@ void EnemyWooder::die()
 	//world->DestroyBody(this->body);
 	//body->SetType(b2_dynamicBody);
 	this->setIsDie(true);
-	this->setTimeScale(0.05f);
+	//this->setTimeScale(0.05f);
 	this->clearTracks();
 	this->addAnimation(0,"broken",false);
 	this->setToSetupPose();
 }
 
-void EnemyWooder::update(float dt)
-{
-	BaseEnemy::update(dt);
-	
-}

@@ -95,13 +95,13 @@ void B2Skeleton::changeBodyMaskBits(uint16 mask)
 }
 
 
-void B2Skeleton::update(float dt)
-{
-	SkeletonAnimation::update(dt);
-	if (body != nullptr) {
-		this->setPositionX(body->GetPosition().x * PTM_RATIO);
-		this->setPositionY(body->GetPosition().y * PTM_RATIO - this->getBoundingBox().size.height / 2);
-		this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
-	}
-}
+//void B2Skeleton::updateSkeleton(float dt)
+//{
+//	//SkeletonAnimation::update(dt);
+//	if (body != nullptr) {
+//		this->setPositionX(body->GetPosition().x * PTM_RATIO);
+//		this->setPositionY(body->GetPosition().y * PTM_RATIO - this->getBoundingBox().size.height / 2);
+//		this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
+//	}
+//}
 

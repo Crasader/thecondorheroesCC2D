@@ -28,9 +28,7 @@ protected:
 	void injured();
 	void die(Point posOfCammera);
 	void listener();
-	void update(float dt);
-
-	void checkNearBy(BaseEnemy *enemy);
+	void updateMe(float dt);
 
 };
 #endif // __DuongQua_H__

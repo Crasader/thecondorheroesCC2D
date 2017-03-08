@@ -1,5 +1,5 @@
-#ifndef __ENEMY_TOANCHAN_STUDENT_H__
-#define __ENEMY_TOANCHAN_STUDENT_H__
+#ifndef __ENEMY_TOANCHAN_STUDENT2_H__
+#define __ENEMY_TOANCHAN_STUDENT2_H__
 
 #include "BaseEnemy.h"
 
@@ -17,11 +17,11 @@ public:
 	static EnemyToanChanStudent* create(string jsonFile, string atlasFile, float scale);
 
 	void run();
-	virtual void attack();
-	virtual void die();
+	void attack();
+	void die();
 	//void updateMe(float dt);
-	virtual void genSplash();
-	virtual void listener();
+	void genSplash();
+	void listener();
 };
 
 #endif // __ENEMY_H__

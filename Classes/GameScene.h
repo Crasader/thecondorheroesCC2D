@@ -75,8 +75,6 @@ private:
 	// bat su kien roi xuong qua man hinh de don dep map
 	
 
-	
-
 	void danceWithCamera();
 
 	// read file Json

@@ -93,3 +93,4 @@ void B2Skeleton::changeBodyMaskBits(uint16 mask)
 	filter.maskBits = mask;
 	fixture->SetFilterData(filter);
 }
+

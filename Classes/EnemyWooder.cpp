@@ -28,7 +28,6 @@ void EnemyWooder::die()
 	//world->DestroyBody(this->body);
 	//body->SetType(b2_dynamicBody);
 	this->setIsDie(true);
-	//this->setTimeScale(0.03f);
 	this->clearTracks();
 	this->addAnimation(0,"broken",false);
 	this->setToSetupPose();

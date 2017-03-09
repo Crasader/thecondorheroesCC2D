@@ -1,13 +1,17 @@
 #include "State.h"
 #include "BaseHero.h"
 
-
+// define static state here
 State* State::m_state;
 Idling* Idling::m_idle;
 Running* Running::m_run;
 Landing* Landing::m_land;
 Jumping* Jumping::m_jump;
+DoubleJumping* DoubleJumping::m_doubleJump;
 AttackNormal* AttackNormal::m_attack;
+Injuring* Injuring::m_injured;
+
+
 
 State::State()
 {
@@ -90,12 +94,7 @@ Jumping::~Jumping()
 
 void Jumping::execute(BaseHero * hero)
 {
-	if (hero->getNumberOfJump() > 0) {
-		hero->normalJump();
-	}
-	else {
-		hero->doubleJump();
-	}
+	hero->normalJump();
 }
 
 Jumping * Jumping::getInstance()
@@ -153,4 +152,49 @@ AttackNormal * AttackNormal::getInstance()
 	if (m_attack == nullptr)
 		m_attack = new AttackNormal();
 	return m_attack;
+}
+
+
+// Injured
+Injuring::Injuring()
+{
+}
+
+Injuring::~Injuring()
+{
+}
+
+void Injuring::execute(BaseHero * hero)
+{
+	hero->injured();
+}
+
+Injuring * Injuring::getInstance()
+{
+	if (m_injured == nullptr)
+		m_injured = new Injuring();
+	return m_injured;
+}
+
+
+
+// Double jump
+DoubleJumping::DoubleJumping()
+{
+}
+
+DoubleJumping::~DoubleJumping()
+{
+}
+
+void DoubleJumping::execute(BaseHero * hero)
+{
+	hero->doubleJump();
+}
+
+DoubleJumping * DoubleJumping::getInstance()
+{
+	if (m_doubleJump == nullptr)
+		m_doubleJump = new DoubleJumping();
+	return m_doubleJump;
 }

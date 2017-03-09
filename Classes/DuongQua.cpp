@@ -15,10 +15,11 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 	duongQua->update(0.0f);
 
 	duongQua->stateMachine = new StateMachine(duongQua);
-	duongQua->stateMachine->setCurrentState(Landing::getInstance());
+	duongQua->stateMachine->setCurrentState(MLand);
 
-	duongQua->setMoveVel(duongQua->SCREEN_SIZE.width / PTM_RATIO / 2.1f);
-	duongQua->setJumpVel(duongQua->SCREEN_SIZE.height * 1.2f / PTM_RATIO);
+	duongQua->setMoveVel(duongQua->SCREEN_SIZE.width / PTM_RATIO / 2.5f);
+	duongQua->setJumpVel(duongQua->SCREEN_SIZE.height * 1.4f / PTM_RATIO);
+
 	duongQua->facingRight = true;
 
 	duongQua->numberOfJump = 2;
@@ -51,7 +52,7 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 	fixtureDef.shape = &circle_shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_HERO;
-	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR | BITMASK_WOODER | BITMASK_COIN;
+	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR| BITMASK_WOODER | BITMASK_COIN | BITMASK_TOANCHAN1;
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -80,7 +81,8 @@ void DuongQua::normalJump()
 {
 
 	clearTracks();
-	addAnimation(0, "jump", true);
+	addAnimation(0, "jump", false);
+
 	setToSetupPose();
 }
 
@@ -103,6 +105,7 @@ void DuongQua::die()
 	clearTracks();
 	addAnimation(0, "die", false);
 	setToSetupPose();
+	getBody()->SetTransform(b2Vec2(SCREEN_SIZE.width / 2 / PTM_RATIO, SCREEN_SIZE.height / PTM_RATIO), getBody()->GetAngle());
 }
 
 void DuongQua::attackNormal()
@@ -148,29 +151,42 @@ void DuongQua::injured()
 
 void DuongQua::die(Point posOfCammera)
 {
+	
 }
 
 void DuongQua::listener()
 {
 	this->setCompleteListener([&](int trackIndex, int loopCount) {
 		if ((strcmp(getCurrent()->animation->name, "jumpx2") == 0) && loopCount == 1) {
-			getFSM()->changeState(Landing::getInstance());
+			getFSM()->changeState(MLand);
 		}
+
+		/*else if ((strcmp(getCurrent()->animation->name, "injured") == 0)) {
+			getFSM()->revertToGlobalState();
+			if (loopCount == 1) {
+				setIsPriorSkill(false);
+			}
+		}*/
 		
 		else if ((strcmp(getCurrent()->animation->name, "attack1") == 0) || 
 		(strcmp(getCurrent()->animation->name, "attack2") == 0) || 
 		(strcmp(getCurrent()->animation->name, "attack3") == 0)) {
+
+			changeSwordCategoryBitmask(BITMASK_ENEMY);
+			if (getFSM()->globalState != MDoubleJump)
+				getFSM()->revertToGlobalState();
+			else
+				getFSM()->changeState(MLand);
+
+			getSlash()->setVisible(false);
+			
 			if (loopCount == 1) {
-				changeSwordCategoryBitmask(BITMASK_ENEMY);
-				getSlash()->setVisible(false);
-				getFSM()->revertToPreviousState();
 				setIsPriorSkill(false);
 			}
 		}
 		
 	});
 }
-
 
 void DuongQua::updateMe(float dt)
 {
@@ -179,7 +195,7 @@ void DuongQua::updateMe(float dt)
 	if (stateMachine && getBody()) {
 
 		if (getPositionY() + getTrueRadiusOfHero() * 2 < 0) {
-			getBody()->SetTransform(b2Vec2(SCREEN_SIZE.width * 0.3f / PTM_RATIO, SCREEN_SIZE.height / PTM_RATIO), getBody()->GetAngle());
+			this->die();
 			return;
 		}
 
@@ -192,15 +208,13 @@ void DuongQua::updateMe(float dt)
 			
 			if (getBody()->GetLinearVelocity().y < 0) {
 				if(getNumberOfJump() > 0)
-					getFSM()->changeState(Landing::getInstance());
+					getFSM()->changeState(MLand);
 				return;
 			}
 
 			if (getOnGround()) {
-				getFSM()->changeState(Running::getInstance());
+				getFSM()->changeState(MRun);
 			}
-
-			
 		}
 	}
 }

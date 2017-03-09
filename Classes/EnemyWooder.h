@@ -17,6 +17,7 @@ public:
 	void attack();
 	void die();
 	void updateMe(float dt);
+
 };
 
 #endif // __ENEMY_H__

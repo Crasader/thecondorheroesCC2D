@@ -19,15 +19,17 @@ public:
 
 	BaseHero *owner;
 
+	State* globalState;
 	State* currentState;
 	State* previousState;
 
+	void setGlobalState(State *m_global);
 	void setCurrentState(State *m_current);
 	void setPreviousState(State *m_previous);
 
 	void Update();
 	void changeState(State* state);
-	void revertToPreviousState();
+	void revertToGlobalState();
 };
 
 #endif

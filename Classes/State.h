@@ -64,6 +64,20 @@ public:
 };
 
 /**
+* Double jump                                                                     
+*/
+class DoubleJumping : public State
+{
+public:
+	DoubleJumping();
+	~DoubleJumping();
+	void execute(BaseHero *hero);
+	static DoubleJumping* m_doubleJump;
+
+	static DoubleJumping* getInstance();
+};
+
+/**
 * Class Landing
 */
 class Landing : public State
@@ -79,9 +93,23 @@ public:
 	static Landing* getInstance();
 };
 
+/**
+* Class Injured                                                                     
+*/
+class Injuring : public State
+{
+public:
+	Injuring();
+	~Injuring();
+
+	void execute(BaseHero *hero);
+	static Injuring * m_injured;
+	static Injuring* getInstance();
+};
+
 
 /**
-* Class Global                                                                     
+* Class Attack                                                                    
 */
 class AttackNormal : public State 
 {
@@ -94,11 +122,13 @@ public:
 	static AttackNormal* getInstance();
 };
 
-//// make life easier
-//#define MIdle Idling::getInstance()
-//#define MRun Running::getInstance()
-//#define MJump Jumping::getInstance()
-//#define MLand Landing::getInstance()
-//#define MAttack AttackNormal::getInstance()
+// make life easier
+#define MIdle Idling::getInstance()
+#define MRun Running::getInstance()
+#define MJump Jumping::getInstance()
+#define MLand Landing::getInstance()
+#define MAttack AttackNormal::getInstance()
+#define MInjured Injuring::getInstance()
+#define MDoubleJump DoubleJumping::getInstance()
 
 #endif 

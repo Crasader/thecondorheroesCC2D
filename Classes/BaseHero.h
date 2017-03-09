@@ -51,8 +51,6 @@ public:
 	virtual void listener();
 	virtual void updateMe(float dt);
 
-	// check attack near by
-	virtual void checkNearBy(BaseEnemy *enemy);
 
 	StateMachine* getFSM();
 };

@@ -12,6 +12,11 @@ StateMachine::~StateMachine()
 }
 
 
+void StateMachine::setGlobalState(State * m_global)
+{
+	globalState = m_global;
+}
+
 void StateMachine::setCurrentState(State * m_current)
 {
 	currentState = m_current;
@@ -26,7 +31,7 @@ void StateMachine::Update()
 {
 	if (currentState != previousState) {
 		currentState->execute(owner);
-
+		globalState = previousState;
 		previousState = currentState;
 	}
 	
@@ -37,7 +42,7 @@ void StateMachine::changeState(State * state)
 	currentState = state;
 }
 
-void StateMachine::revertToPreviousState()
+void StateMachine::revertToGlobalState()
 {
-	changeState(previousState);
+	changeState(globalState);
 }

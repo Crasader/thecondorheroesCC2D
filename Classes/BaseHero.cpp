@@ -28,7 +28,7 @@ void BaseHero::initSwordPhysic(b2World *world, Point position, float width)
 	fixtureDef.shape = &shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_WOODER;
-	fixtureDef.filter.maskBits = BITMASK_WOODER;
+	fixtureDef.filter.maskBits = BITMASK_WOODER | BITMASK_TOANCHAN1;
 
 	bodyDef.position.Set(position.x / PTM_RATIO, position.y / PTM_RATIO);
 	bodyDef.type = b2_dynamicBody;
@@ -110,11 +110,6 @@ void BaseHero::updateMe(float dt)
 		getSwordBody()->SetTransform(b2Vec2(getBody()->GetPosition().x + getTrueRadiusOfHero() * 1.3f / PTM_RATIO, getBody()->GetPosition().y), 
 										getSwordBody()->GetAngle());
 	}
-}
-
-
-void BaseHero::checkNearBy(BaseEnemy * enemy)
-{
 }
 
 

@@ -5,7 +5,16 @@ B2Skeleton::B2Skeleton(string jsonFile, string atlasFile, float scale) : Skeleto
 	body = nullptr;
 }
 
+B2Skeleton::B2Skeleton(spSkeletonData * data):SkeletonAnimation(data)
+{
+}
+
 B2Skeleton * B2Skeleton::create(string jsonFile, string atlasFile, float scale)
+{
+	return nullptr;
+}
+
+B2Skeleton * B2Skeleton::create(spSkeletonData * data)
 {
 	return nullptr;
 }

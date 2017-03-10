@@ -13,7 +13,7 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 	duongQua->setTag(TAG_HERO);
 	duongQua->previous_state = new Idling();
 	duongQua->stateMachine = new Running();
-	duongQua->setMoveVel(duongQua->SCREEN_SIZE.width / PTM_RATIO / 3.3f);
+	duongQua->setMoveVel(duongQua->SCREEN_SIZE.width / PTM_RATIO / 2.5f);
 	duongQua->setJumpVel(duongQua->SCREEN_SIZE.height * 1.4f / PTM_RATIO);
 	duongQua->facingRight = true;
 

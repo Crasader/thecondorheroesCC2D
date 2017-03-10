@@ -1,11 +1,20 @@
 #include "BaseEnemy.h"
 
+BaseEnemy::BaseEnemy(spSkeletonData * data):B2Skeleton(data)
+{
+}
+
 BaseEnemy::BaseEnemy(string jsonFile, string atlasFile, float scale):B2Skeleton(jsonFile, atlasFile, scale)
 {
 	isDie = false;
 }
 
 BaseEnemy * BaseEnemy::create(string jsonFile, string atlasFile, float scale)
+{
+	return nullptr;
+}
+
+BaseEnemy * BaseEnemy::create(spSkeletonData * data)
 {
 	return nullptr;
 }

@@ -42,6 +42,7 @@ bool GameScene::init()
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	cachePlist();
+	cacheSkeleton();
 
 
 	danceWithCamera();
@@ -58,6 +59,30 @@ bool GameScene::init()
 	creatEnemyToanChanStudent();
 	createCoint();
 
+	//auto skeleRenderer = SkeletonRenderer::createWithFile("MocNhan.json", "MocNhan.atlas",1);
+	//auto cacheData = skeleRenderer->getSkeleton()->data;
+
+	////SkeletonAnimation* skelly = SkeletonAnimation::createWithData(cacheData);
+	//SkeletonAnimation* skelly = SkeletonAnimation::createWithFile("MocNhan.json", "MocNhan.atlas", 1);
+	////skelly->setSkin(skin.c_str());
+	//skelly->setSlotsToSetupPose();
+	////skelly->setAnimation(0, "idle-simple", true);
+	//skelly->update(0);
+	//skelly->setPosition(SCREEN_SIZE/2);
+	//skelly->setVisible(false);
+	//this->addChild(skelly,100);
+
+	auto enemy = SkeletonAnimation::createWithFile("ToanChan1.json",
+		"ToanChan1.atlas", 0.5f);
+	//auto enemy = EnemyWooder::create(sr_wooder);
+	//enemy->setIsDie(false);
+	//enemy->setSkin("MocNhan");
+	//enemy->setSlotsToSetupPose();
+	enemy->setPosition(SCREEN_SIZE / 2);
+	enemy->setVisible(false);
+	enemy->setAnimation(0, "idle", true);
+	enemy->update(0.0);
+	this->addChild(enemy, ZORDER_ENEMY);
 
 	auto touch_listener = EventListenerTouchOneByOne::create();
 	touch_listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
@@ -124,8 +149,8 @@ void GameScene::initB2World()
 	auto debugDraw = new (std::nothrow) GLESDebugDraw(PTM_RATIO);
 	world->SetDebugDraw(debugDraw);
 	uint32 flags = 0;
-	//flags += b2Draw::e_shapeBit;
-	//flags += b2Draw::e_jointBit;
+	flags += b2Draw::e_shapeBit;
+	flags += b2Draw::e_jointBit;
 	//flags += b2Draw::e_aabbBit;
 	//flags += b2Draw::e_pairBit;
 	//flags += b2Draw::e_centerOfMassBit;
@@ -189,7 +214,7 @@ void GameScene::loadBackground()
 	tmx_map->setScale(scaleOfMap);
 
 	tmx_map->setPosition(Point::ZERO);
-	//tmx_map->setVisible(false);
+	tmx_map->setVisible(false);
 	this->addChild(tmx_map, ZORDER_BG2);
 	createInfiniteNode();
 }
@@ -240,14 +265,15 @@ void GameScene::createInfiniteNode()
 	bg3_2->setAnchorPoint(Point(0, 0.5f));*/
 
 
-	background->addChild(bg1_1, 0, Vec2(1.0f, 1), Vec2(0, 0));
-	background->addChild(bg1_2, 0, Vec2(1.0f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
-	background->addChild(bg2_1, 0, Vec2(1.3f, 1), Vec2(0, 0));
-	background->addChild(bg2_2, 0, Vec2(1.3f, 1), Vec2(bg2_1->getBoundingBox().size.width, 0));
-	background->addChild(bg3_1, 0, Vec2(2.0f, 1), Vec2(0, 0));
-	background->addChild(bg3_2, 0, Vec2(2.0f, 1), Vec2(bg3_1->getBoundingBox().size.width, 0));
+	background->addChild(bg1_1, 0, Vec2(0.5f, 1), Vec2(0, 0));
+	background->addChild(bg1_2, 0, Vec2(0.5f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
+	background->addChild(bg2_1, 0, Vec2(0.7f, 1), Vec2(0, 0));
+	background->addChild(bg2_2, 0, Vec2(0.7f, 1), Vec2(bg2_1->getBoundingBox().size.width, 0));
+	//background->addChild(bg3_1, 0, Vec2(1.5f, 1), Vec2(0, 0));
+	//background->addChild(bg3_2, 0, Vec2(1.5f, 1), Vec2(bg3_1->getBoundingBox().size.width, 0));
 	background->setPosition(Point(-SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 	background->setAnchorPoint(Point(0, 0.5f));
+	background->setVisible(false);
 	this->addChild(background, ZORDER_BG);
 }
 
@@ -272,6 +298,10 @@ void GameScene::creatEnemyWooder()
 		auto scaleOfWooder = SCREEN_SIZE.height / 5 / 490; // 490 la height cua spine
 		auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json",
 			"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
+		//auto enemy = EnemyWooder::create(sr_wooder);
+		enemy->setIsDie(false);
+		//enemy->setSkin("MocNhan");
+		enemy->setSlotsToSetupPose();
 		enemy->setPosition(origin);
 		enemy->setVisible(false);
 		this->addChild(enemy, ZORDER_ENEMY);
@@ -290,13 +320,17 @@ void GameScene::creatEnemyToanChanStudent()
 		auto scaleOfEnemy = SCREEN_SIZE.height / 5 / 401; // 401 la height cua spine
 		auto enemy = EnemyToanChanStudent::create("Animation/Enemy_DeTuToanChan1/ToanChan1.json",
 			"Animation/Enemy_DeTuToanChan1/ToanChan1.atlas", scaleOfEnemy);
+		//auto enemy = EnemyToanChanStudent::create(sr_toanchan1);
+		enemy->setIsDie(false);
+		//log("Skin: %d",enemy->setSkin("ToanChan1"));
+		enemy->setSlotsToSetupPose();
 		enemy->setPosition(origin);
 		enemy->setVisible(false);
 		this->addChild(enemy, ZORDER_ENEMY);
 		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
 		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
 		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
-		enemy->genSplash();
+		//enemy->genSplash();
 		enemy->listener();
 	}
 }
@@ -378,6 +412,22 @@ void GameScene::createCircleCoin()
 			coin->runAnimation();
 		}
 	}
+}
+
+spSkeletonData * GameScene::createSkeletonData(string atlasFileName, string jsonFileName)
+{
+	std::string atlasFile = atlasFileName;
+	std::string skeletonDataFile = jsonFileName;
+	float timeScale = 1.0;
+	auto _atlas = spAtlas_createFromFile(atlasFile.c_str(), 0);
+	CCASSERT(_atlas, "Error reading atlas file.");
+
+	spSkeletonJson* json = spSkeletonJson_create(_atlas);
+	json->scale = timeScale;
+	spSkeletonData* skeletonData = spSkeletonJson_readSkeletonDataFile(json, skeletonDataFile.c_str());
+	CCASSERT(skeletonData, json->error ? json->error : "Error reading skeleton data file.");
+	spSkeletonJson_dispose(json);
+	return skeletonData;
 }
 
 void GameScene::danceWithCamera()
@@ -506,4 +556,18 @@ void GameScene::updateEnemy()
 void GameScene::cachePlist()
 {
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("item/coin.plist");
+}
+
+void GameScene::cacheSkeleton()
+{
+	
+
+	//auto scaleOfToanchan1 = SCREEN_SIZE.height / 5 / 401; // 401 la height cua spine
+	//sr_toanchan1 = createSkeletonData("Animation/Enemy_DeTuToanChan1/ToanChan1.atlas", "Animation/Enemy_DeTuToanChan1/ToanChan1.json");
+
+//	sr_wooder = createSkeletonData("Animation/Enemy_MocNhan/MocNhan.atlas","Animation/Enemy_MocNhan/MocNhan.json");
+	sr_toanchan1 = createSkeletonData("ToanChan1.atlas", "ToanChan1.json");
+
+	sr_wooder = createSkeletonData("MocNhan.atlas", "MocNhan.json");
+	
 }

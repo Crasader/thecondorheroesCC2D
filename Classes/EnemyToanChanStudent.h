@@ -10,17 +10,18 @@ using namespace spine;
 class EnemyToanChanStudent : public BaseEnemy
 {
 private:
-	CC_SYNTHESIZE(float, scaleEnemy, ScaleEnemy);
-	CC_SYNTHESIZE(Sprite*, splash, Splash);
+	//CC_SYNTHESIZE(float, scaleEnemy, ScaleEnemy);
+	//CC_SYNTHESIZE(Sprite*, splash, Splash);
 public:
+	EnemyToanChanStudent(spSkeletonData*data);
 	EnemyToanChanStudent(string jsonFile, string atlasFile, float scale);
 	static EnemyToanChanStudent* create(string jsonFile, string atlasFile, float scale);
-
+	static EnemyToanChanStudent* create(spSkeletonData*data);
 	void run();
 	virtual void attack();
 	virtual void die();
 	//void updateMe(float dt);
-	virtual void genSplash();
+	//virtual void genSplash();
 	virtual void listener();
 };
 

@@ -16,9 +16,9 @@ public:
 	//static Map<std::string, SkeletonRenderer *> skeleRendererCache;
 
 	B2Skeleton(string jsonFile, string atlasFile, float scale);
-
+	B2Skeleton(spSkeletonData *data);
 	static B2Skeleton* create(string jsonFile, string atlasFile, float scale);
-
+	static B2Skeleton* create(spSkeletonData *data);
 	virtual void initBoxPhysic(b2World *world, Point pos);
 	virtual void initCirclePhysic(b2World *world, Point pos);
 	virtual void initPhysicWithShapeCache(b2World * world, Point pos, string key);

@@ -1,5 +1,9 @@
 #include "EnemyWooder.h"
 
+EnemyWooder::EnemyWooder(spSkeletonData * data) :BaseEnemy(data)
+{
+}
+
 EnemyWooder::EnemyWooder(string jsonFile, string atlasFile, float scale):BaseEnemy(jsonFile, atlasFile,scale)
 {
 }
@@ -12,6 +16,15 @@ EnemyWooder * EnemyWooder::create(string jsonFile, string atlasFile, float scale
 	enemy->setScaleX(1);
 	return enemy;
 
+}
+
+EnemyWooder * EnemyWooder::create(spSkeletonData * data)
+{
+	EnemyWooder *enemy = new EnemyWooder(data);
+	enemy->update(0.0f);
+	enemy->setTag(TAG_ENEMY_WOODER);
+	enemy->setScaleX(1);
+	return enemy;
 }
 
 void EnemyWooder::run()

@@ -10,9 +10,10 @@ using namespace spine;
 class EnemyWooder : public BaseEnemy
 {
 public:
+	EnemyWooder(spSkeletonData *data);
 	EnemyWooder(string jsonFile, string atlasFile, float scale);
 	static EnemyWooder* create(string jsonFile, string atlasFile, float scale);
-
+	static EnemyWooder* create(spSkeletonData*data);
 	void run();
 	void attack();
 	void die();

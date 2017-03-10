@@ -1,5 +1,9 @@
 #include "EnemyToanChanStudent.h"
 
+EnemyToanChanStudent::EnemyToanChanStudent(spSkeletonData * data):BaseEnemy(data)
+{
+}
+
 EnemyToanChanStudent::EnemyToanChanStudent(string jsonFile, string atlasFile, float scale):BaseEnemy(jsonFile, atlasFile,scale)
 {
 }
@@ -12,9 +16,21 @@ EnemyToanChanStudent * EnemyToanChanStudent::create(string jsonFile, string atla
 	enemy->setScaleX(1);
 	//enemy->setTimeScale(0.05f);
 	enemy->setAnimation(0, "idle", true);
-	enemy->setScaleEnemy(scale);
+	//enemy->setScaleEnemy(scale);
 	return enemy;
 
+}
+
+EnemyToanChanStudent * EnemyToanChanStudent::create(spSkeletonData * data)
+{
+	EnemyToanChanStudent *enemy = new EnemyToanChanStudent(data);
+	enemy->update(0.0f);
+	enemy->setTag(TAG_ENEMY_TOANCHAN1);
+	enemy->setScaleX(1);
+	//enemy->setTimeScale(0.05f);
+	enemy->setAnimation(0, "idle", true);
+	//enemy->setScaleEnemy(scale);
+	return enemy;
 }
 
 void EnemyToanChanStudent::run()
@@ -28,7 +44,7 @@ void EnemyToanChanStudent::attack()
 		this->clearTracks();
 		this->addAnimation(0, "attack", false);
 		//	this->addAnimation(0, "idle", true);
-		this->splash->setVisible(true);
+		//this->splash->setVisible(true);
 		this->setToSetupPose();
 	}
 }
@@ -51,22 +67,22 @@ void EnemyToanChanStudent::die()
 //	
 //}
 
-void EnemyToanChanStudent::genSplash()
-{
-	splash = Sprite::create("Animation/Enemy_DeTuToanChan1/slashenemy.png");
-	splash->setScale(SCREEN_SIZE.height/5/splash->getContentSize().height);
-	splash->setAnchorPoint(Point(1, 0));
-	
-	splash->setPosition(-this->getBody()->GetFixtureList()->GetShape()->m_radius*PTM_RATIO, 0);
-	splash->setVisible(false);
-	this->addChild(splash);
-}
+//void EnemyToanChanStudent::genSplash()
+//{
+//	splash = Sprite::create("Animation/Enemy_DeTuToanChan1/slashenemy.png");
+//	splash->setScale(SCREEN_SIZE.height/5/splash->getContentSize().height);
+//	splash->setAnchorPoint(Point(1, 0));
+//	
+//	splash->setPosition(-this->getBody()->GetFixtureList()->GetShape()->m_radius*PTM_RATIO, 0);
+//	splash->setVisible(false);
+//	this->addChild(splash);
+//}
 
 void EnemyToanChanStudent::listener()
 {
 	this->setCompleteListener([&](int trackIndex, int loopCount) {
 		if (strcmp(getCurrent()->animation->name, "attack") == 0 && loopCount == 1) {
-			getSplash()->setVisible(false);
+			//getSplash()->setVisible(false);
 			//setIsAttacking(false);
 		}
 

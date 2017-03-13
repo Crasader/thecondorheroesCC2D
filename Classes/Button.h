@@ -11,16 +11,20 @@ class Button : public Sprite
 {
 public:
 	Button();
-	static Button* create(string file_name, Point pos);
+	static Button* create(string file_name_main, string file_name_CoolDown, Point pos);
 
 private:
+	
 	void addEvents();
 	void checkInterval(float dt);
-	bool canTouch;
 
 protected:
 	CC_SYNTHESIZE(float, timeCoolDown, TimeCoolDown);
 	CC_SYNTHESIZE(bool, isActive, IsActive);
+	CC_SYNTHESIZE(bool, canTouch, CanTouch);
+	CC_SYNTHESIZE(Sprite*, coolDown, CoolDownSprite);
+	CC_SYNTHESIZE(Sprite*, block, BlockSprite);
+	CC_SYNTHESIZE(bool, isBlocked, IsBlocked);
 };
 
 #endif // __BUTTON_LEFT_H__

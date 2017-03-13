@@ -86,6 +86,7 @@ private:
 public:
     
 	// update functions
+	void checkActiveButton();
 	void listener();		// attack button listener | see update function
 	void update(float dt);
 	void updateEnemy();

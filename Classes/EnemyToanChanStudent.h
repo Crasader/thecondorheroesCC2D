@@ -16,6 +16,7 @@ private:
 public:
 	EnemyToanChanStudent(string jsonFile, string atlasFile, float scale);
 	static EnemyToanChanStudent* create(string jsonFile, string atlasFile, float scale);
+	void initCirclePhysic(b2World * world, Point pos);
 
 	void run();
 	virtual void attack();

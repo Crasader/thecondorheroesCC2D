@@ -107,8 +107,12 @@ void BaseHero::updateMe(float dt)
 		this->setPositionX(this->getBody()->GetPosition().x * PTM_RATIO);
 		this->setPositionY(this->getBody()->GetPosition().y * PTM_RATIO - trueRadiusOfHero);
 
-		getSwordBody()->SetTransform(b2Vec2(getBody()->GetPosition().x + getTrueRadiusOfHero() * 1.3f / PTM_RATIO, getBody()->GetPosition().y), 
+		getSwordBody()->SetTransform(b2Vec2(getBody()->GetPosition().x + getTrueRadiusOfHero() * 2 / PTM_RATIO, getBody()->GetPosition().y), 
 										getSwordBody()->GetAngle());
+	}
+
+	if (health <= 0 /* || getPositionY() + getTrueRadiusOfHero() * 2 < 0 */) {
+		getFSM()->changeState(MDie);
 	}
 }
 

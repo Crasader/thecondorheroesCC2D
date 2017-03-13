@@ -69,11 +69,19 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		auto enemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
 		enemy->attack();
-		//if (!enemy->getIsDie()) {
-		//	//hero->setIsPriorSkill(true);
-		//	hero->getFSM()->changeState(MInjured);
-		//}
-		
+		if (!enemy->getIsDie()) {
+			log("AAA");
+			//if (hero->getFSM()->currentState != MInjured) {
+				log("AAAAAA");
+				hero->setIsPrior(true);
+				hero->getFSM()->changeState(MInjured);
+			//}
+			//else
+				//log("BBBBB");
+			hero->setHealth(hero->getHealth() - 1);
+			
+		}
+
 	}
 
 	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_COIN) ||
@@ -94,7 +102,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		BaseEnemy* sA = (BaseEnemy*)bodyA->GetUserData();
 		BaseEnemy* sB = (BaseEnemy*)bodyB->GetUserData();
 		auto enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
-		
+
 		enemy->die();
 	}
 
@@ -121,7 +129,7 @@ void CollisionListener::PreSolve(b2Contact * contact, const b2Manifold * oldMani
 	contact->GetWorldManifold(&worldManifold);
 	auto collidePoint = worldManifold.points[0];
 
-	
+
 
 	if ((bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_HERO && bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_FLOOR) ||
 		(bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_HERO && bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_FLOOR)
@@ -129,7 +137,7 @@ void CollisionListener::PreSolve(b2Contact * contact, const b2Manifold * oldMani
 
 		B2Skeleton* sA = (BaseHero*)bodyA->GetUserData();
 		B2Skeleton* sB = (BaseHero*)bodyB->GetUserData();
-		
+
 		auto hero = sA ? (BaseHero *)sA : (BaseHero *)sB;
 
 		if (!sA) {
@@ -142,7 +150,7 @@ void CollisionListener::PreSolve(b2Contact * contact, const b2Manifold * oldMani
 		else {
 			auto dentaX = fabs(collidePoint.x - bodyA->GetPosition().x);
 			auto radius = (hero->getTrueRadiusOfHero() / PTM_RATIO);
-			if (fabs(bodyA->GetPosition().y - radius * 0.99f)< collidePoint.y || dentaX > radius / 2) {
+			if (fabs(bodyA->GetPosition().y - radius * 0.99f) < collidePoint.y || dentaX > radius / 2) {
 				contact->SetEnabled(false);
 			}
 		}

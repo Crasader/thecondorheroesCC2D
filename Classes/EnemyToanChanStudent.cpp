@@ -16,8 +16,31 @@ EnemyToanChanStudent * EnemyToanChanStudent::create(string jsonFile, string atla
 
 }
 
+void EnemyToanChanStudent::initCirclePhysic(b2World * world, Point pos)
+{
+	b2CircleShape circle_shape;
+	circle_shape.m_radius = this->getBoundingBox().size.height / 4 / PTM_RATIO;
+
+	b2FixtureDef fixtureDef;
+	fixtureDef.density = 0.0f;
+	fixtureDef.friction = 0.5f;
+	fixtureDef.restitution = 0.0f;
+	fixtureDef.shape = &circle_shape;
+	fixtureDef.isSensor = true;
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_staticBody;
+	bodyDef.userData = this;			// pass sprite to bodyDef with argument: userData
+
+	bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);
+
+	body = world->CreateBody(&bodyDef);
+	body->CreateFixture(&fixtureDef);
+}
+
 void EnemyToanChanStudent::run()
 {
+
 }
 
 void EnemyToanChanStudent::attack()

@@ -10,6 +10,7 @@ EnemyWooder * EnemyWooder::create(string jsonFile, string atlasFile, float scale
 	enemy->update(0.0f);
 	enemy->setTag(TAG_ENEMY_WOODER);
 	enemy->setScaleX(1);
+	enemy->setTimeScale(1.4f);
 	return enemy;
 
 }

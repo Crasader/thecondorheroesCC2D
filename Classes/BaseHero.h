@@ -26,7 +26,10 @@ protected:
 
 	CC_SYNTHESIZE(Sprite*, slash, Slash);
 
-	CC_SYNTHESIZE(bool, isPriorSkill, IsPriorSkill);
+	CC_SYNTHESIZE(bool, isPrior, IsPrior);
+	CC_SYNTHESIZE(bool, isPriorSkill1, IsPriorSkill1);
+	CC_SYNTHESIZE(bool, isPriorSkill2, IsPriorSkill2);
+	CC_SYNTHESIZE(bool, isPriorSkill3, IsPriorSkill3);
 
 public:
 

@@ -37,13 +37,29 @@ void EnemyWooder::attack()
 
 void EnemyWooder::die()
 {
-//	auto world = this->body->GetWorld();
+	//auto world = this->body->GetWorld();
 	//world->DestroyBody(this->body);
 	//body->SetType(b2_dynamicBody);
 	this->setIsDie(true);
-	//this->setTimeScale(0.05f);
 	this->clearTracks();
 	this->addAnimation(0,"broken",false);
 	this->setToSetupPose();
 }
 
+void EnemyWooder::updateMe(float dt)
+{
+	BaseEnemy::updateMe(dt);
+	
+}
+
+void EnemyWooder::listener()
+{
+	this->setCompleteListener([&](int trackIndex, int loopCount) {
+		if (strcmp(getCurrent()->animation->name, "broken") == 0 && loopCount == 1) {
+			//getSplash()->setVisible(false);
+			//setIsAttacking(false);
+			this->removeFromParentAndCleanup(true);
+		}
+
+	});
+}

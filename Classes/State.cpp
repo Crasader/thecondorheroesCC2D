@@ -1,33 +1,38 @@
 #include "State.h"
 #include "BaseHero.h"
 
+// define static state here
+State* State::m_state;
+Idling* Idling::m_idle;
+Running* Running::m_run;
+Landing* Landing::m_land;
+Jumping* Jumping::m_jump;
+DoubleJumping* DoubleJumping::m_doubleJump;
+AttackNormal* AttackNormal::m_attack;
+Injuring* Injuring::m_injured;
+
+
 
 State::State()
 {
+	
 }
 
 State::~State()
 {
 }
 
-void State::run(BaseHero *hero)
+void State::execute(BaseHero *hero)
 {
 	// do nothing
 }
 
-void State::jump(BaseHero *hero)
-{
-	// do nothing
-}
 
-void State::land(BaseHero *hero)
+State * State::getInstance()
 {
-	// do nothing
-}
-
-void State::attack(BaseHero * hero)
-{
-	// do nothing
+	if (m_state == nullptr)
+		m_state = new State();
+	return m_state;
 }
 
 
@@ -41,29 +46,17 @@ Running::~Running()
 {
 }
 
-void Running::jump(BaseHero * hero)
+void Running::execute(BaseHero * hero)
 {
-	hero->normalJump();
-	hero->changeState(new Jumping());
-	hero->setPreviousState(new Running());
-	
+	hero->run();
 }
 
-void Running::land(BaseHero * hero)
+Running * Running::getInstance()
 {
-	hero->landing();
-	hero->changeState(new Landing());
-	hero->setPreviousState(new Running());
-	
+	if (m_run == nullptr)
+		m_run = new Running();
+	return m_run;
 }
-
-void Running::attack(BaseHero * hero)
-{
-	hero->attackNormal();
-}
-
-
-
 
 
 // IDLE
@@ -75,14 +68,18 @@ Idling::~Idling()
 {
 }
 
-void Idling::run(BaseHero * hero)
+void Idling::execute(BaseHero * hero)
 {
 	hero->run();
-	hero->changeState(new Running());
-	hero->setPreviousState(new Idling());
 	
 }
 
+Idling * Idling::getInstance()
+{
+	if (m_idle == nullptr)
+		m_idle = new Idling();
+	return m_idle;
+}
 
 
 
@@ -95,43 +92,16 @@ Jumping::~Jumping()
 {
 }
 
-void Jumping::jump(BaseHero * hero)
+void Jumping::execute(BaseHero * hero)
 {
-	hero->doubleJump();
-	hero->changeState(new DoupleJumping());
-	hero->setPreviousState(new Jumping());
-	
+	hero->normalJump();
 }
 
-void Jumping::land(BaseHero * hero)
+Jumping * Jumping::getInstance()
 {
-	hero->landing();
-	hero->changeState(new Landing());
-	hero->setPreviousState(new Jumping());
-	
-}
-
-void Jumping::attack(BaseHero * hero)
-{
-	hero->attackLanding();
-}
-
-
-// DOUBLE JUMPP
-DoupleJumping::DoupleJumping()
-{
-}
-
-DoupleJumping::~DoupleJumping()
-{
-}
-
-void DoupleJumping::land(BaseHero * hero)
-{
-	hero->landing();
-	hero->changeState(new Landing2());
-	hero->setPreviousState(new DoupleJumping());
-	
+	if (m_jump == nullptr)
+		m_jump = new Jumping();
+	return m_jump;
 }
 
 
@@ -145,56 +115,86 @@ Landing::~Landing()
 {
 }
 
-void Landing::jump(BaseHero * hero)
+void Landing::execute(BaseHero * hero)
 {
-	if (hero->getNumberOfJump() > 0) {
-		hero->normalJump();
-		hero->changeState(new Jumping());
-		
-	}
-	else {
-		hero->doubleJump();
-		hero->changeState(new DoupleJumping());
-	}
-	
-	hero->setPreviousState(new Landing());
+	hero->landing();
 }
 
-void Landing::run(BaseHero * hero)
+Landing * Landing::getInstance()
 {
-	hero->run();
-	hero->changeState(new Running());
-	hero->setPreviousState(new Landing());
-	
+	if (m_land == nullptr)
+		m_land = new Landing();
+	return m_land;
 }
 
-void Landing::attack(BaseHero * hero)
-{
-	hero->attackLanding();
-}
-
-
-
-
-// LANDING 2
-Landing2::Landing2()
+/**
+*                                                                      
+*/
+AttackNormal::AttackNormal()
 {
 }
 
-Landing2::~Landing2()
+AttackNormal::~AttackNormal()
 {
 }
 
-void Landing2::run(BaseHero * hero)
+void AttackNormal::execute(BaseHero * hero)
 {
-	hero->run();
-
-	hero->changeState(new Running());
-	hero->setPreviousState(new Landing2());
+	if (hero->getOnGround())
+		hero->attackNormal();
+	else
+		hero->attackLanding();
 }
 
-void Landing2::attack(BaseHero * hero)
+
+AttackNormal * AttackNormal::getInstance()
 {
-	hero->attackLanding();
+	if (m_attack == nullptr)
+		m_attack = new AttackNormal();
+	return m_attack;
 }
 
+
+// Injured
+Injuring::Injuring()
+{
+}
+
+Injuring::~Injuring()
+{
+}
+
+void Injuring::execute(BaseHero * hero)
+{
+	hero->injured();
+}
+
+Injuring * Injuring::getInstance()
+{
+	if (m_injured == nullptr)
+		m_injured = new Injuring();
+	return m_injured;
+}
+
+
+
+// Double jump
+DoubleJumping::DoubleJumping()
+{
+}
+
+DoubleJumping::~DoubleJumping()
+{
+}
+
+void DoubleJumping::execute(BaseHero * hero)
+{
+	hero->doubleJump();
+}
+
+DoubleJumping * DoubleJumping::getInstance()
+{
+	if (m_doubleJump == nullptr)
+		m_doubleJump = new DoubleJumping();
+	return m_doubleJump;
+}

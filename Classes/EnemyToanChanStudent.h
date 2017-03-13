@@ -20,6 +20,7 @@ public:
 	void run();
 	virtual void attack();
 	virtual void die();
+	virtual void initCirclePhysic(b2World * world, Point pos);
 	//void updateMe(float dt);
 	//virtual void genSplash();
 	virtual void listener();

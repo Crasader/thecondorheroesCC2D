@@ -8,6 +8,7 @@
 #include "GLES-Render.h"
 #include "EnemyWooder.h"
 #include "EnemyToanChanStudent.h"
+#include "EnemyToanChanStudent2.h"
 #include "Coin.h"
 #include "CollisionListener.h"
 #include "InfiniteParallaxNode.h"
@@ -69,12 +70,14 @@ private:
 	void createGroundBody();
 	void creatEnemyWooder();
 	void creatEnemyToanChanStudent();
+	void creatEnemyToanChanStudent2();
 
 
 	void createCoint();
 	void createTimCoin();
 	void createParapolCoin();
 	void createCircleCoin();
+	void createSquareCoin();
 
 
 	//skeleton data

@@ -103,14 +103,11 @@ void B2Skeleton::changeBodyMaskBits(uint16 mask)
 	fixture->SetFilterData(filter);
 }
 
-
-//void B2Skeleton::updateSkeleton(float dt)
-//{
-//	//SkeletonAnimation::update(dt);
-//	if (body != nullptr) {
-//		this->setPositionX(body->GetPosition().x * PTM_RATIO);
-//		this->setPositionY(body->GetPosition().y * PTM_RATIO - this->getBoundingBox().size.height / 2);
-//		this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
-//	}
-//}
+Point B2Skeleton::getBoneLocation(string boneName)
+{
+	auto gun = findBone(boneName);
+	auto pos = Vec2(this->getScaleX()*gun->worldX, gun->worldY);
+	pos = pos + this->getPosition();
+	return pos;
+}
 

@@ -42,7 +42,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 			}
 			else {
-				hero->getCurrentState()->run(hero);
+				hero->setOnGround(true);
 				hero->setNumberOfJump(2);
 			}
 		}
@@ -53,7 +53,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 			}
 			else {
-				hero->getCurrentState()->run(hero);
+				hero->setOnGround(true);
 				hero->setNumberOfJump(2);
 			}
 		}
@@ -67,7 +67,12 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
 		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
 		auto enemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
 		enemy->attack();
+		//if (!enemy->getIsDie()) {
+		//	//hero->setIsPriorSkill(true);
+		//	hero->getFSM()->changeState(MInjured);
+		//}
 		
 	}
 
@@ -95,6 +100,17 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 	if ((bitmaskA == BITMASK_TOANCHAN1 && bitmaskB == BITMASK_SWORD) ||
 		(bitmaskB == BITMASK_TOANCHAN1 && bitmaskA == BITMASK_SWORD)
+		) {
+
+		BaseEnemy* sA = (BaseEnemy*)bodyA->GetUserData();
+		BaseEnemy* sB = (BaseEnemy*)bodyB->GetUserData();
+		auto enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+
+		enemy->die();
+	}
+
+	if ((bitmaskA == BITMASK_TOANCHAN2 && bitmaskB == BITMASK_SWORD) ||
+		(bitmaskB == BITMASK_TOANCHAN2 && bitmaskA == BITMASK_SWORD)
 		) {
 
 		BaseEnemy* sA = (BaseEnemy*)bodyA->GetUserData();

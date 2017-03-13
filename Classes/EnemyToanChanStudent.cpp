@@ -14,7 +14,6 @@ EnemyToanChanStudent * EnemyToanChanStudent::create(string jsonFile, string atla
 	enemy->update(0.0f);
 	enemy->setTag(TAG_ENEMY_TOANCHAN1);
 	enemy->setScaleX(1);
-	//enemy->setTimeScale(0.05f);
 	enemy->setAnimation(0, "idle", true);
 	//enemy->setScaleEnemy(scale);
 	return enemy;
@@ -39,11 +38,9 @@ void EnemyToanChanStudent::run()
 
 void EnemyToanChanStudent::attack()
 {
-	//this->setTimeScale(0.05f);
 	if (!this->getIsDie()) {
 		this->clearTracks();
 		this->addAnimation(0, "attack", false);
-		//	this->addAnimation(0, "idle", true);
 		//this->splash->setVisible(true);
 		this->setToSetupPose();
 	}
@@ -55,21 +52,37 @@ void EnemyToanChanStudent::die()
 	//world->DestroyBody(this->body);
 	//body->SetType(b2_dynamicBody);
 	this->setIsDie(true);
-	//this->setTimeScale(0.01f);
 	this->clearTracks();
 	this->setAnimation(0,"die",false);
-	//this->setToSetupPose();
+	this->setToSetupPose();
 }
 
-//void EnemyToanChanStudent::update(float dt)
-//{
-//	BaseEnemy::update(dt);
-//	
-//}
+void EnemyToanChanStudent::initCirclePhysic(b2World * world, Point pos)
+{
+	b2CircleShape circle_shape;
+	circle_shape.m_radius = this->getBoundingBox().size.height / 4 / PTM_RATIO;
+
+	b2FixtureDef fixtureDef;
+	fixtureDef.density = 0.0f;
+	fixtureDef.friction = 0.5f;
+	fixtureDef.restitution = 0.0f;
+	fixtureDef.shape = &circle_shape;
+	fixtureDef.isSensor = true;
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_staticBody;
+	bodyDef.userData = this;			// pass sprite to bodyDef with argument: userData
+
+	bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);
+
+	body = world->CreateBody(&bodyDef);
+	body->CreateFixture(&fixtureDef);
+}
+
 
 //void EnemyToanChanStudent::genSplash()
 //{
-//	splash = Sprite::create("Animation/Enemy_DeTuToanChan1/slashenemy.png");
+//	splash = Sprite::create("Animation/Enemy-DeTuToanChan1/slashenemy.png");
 //	splash->setScale(SCREEN_SIZE.height/5/splash->getContentSize().height);
 //	splash->setAnchorPoint(Point(1, 0));
 //	
@@ -84,6 +97,12 @@ void EnemyToanChanStudent::listener()
 		if (strcmp(getCurrent()->animation->name, "attack") == 0 && loopCount == 1) {
 			//getSplash()->setVisible(false);
 			//setIsAttacking(false);
+			this->clearTracks();
+			this->addAnimation(0, "idle", true);
+			this->setToSetupPose();
+		}
+		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
+			this->removeFromParentAndCleanup(true);
 		}
 
 	});

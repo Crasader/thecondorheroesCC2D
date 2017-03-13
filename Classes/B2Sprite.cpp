@@ -28,12 +28,13 @@ void B2Sprite::initBoxPhysic(b2World * world, Point pos)
 	b2FixtureDef fixtureDef;
 
 	auto size = this->getBoundingBox().size;
-	shape.SetAsBox(size.width / 2 / PTM_RATIO, 0 / PTM_RATIO);
+	shape.SetAsBox(size.width / 2 / PTM_RATIO, size.height/2 / PTM_RATIO);
 
 	fixtureDef.density = 1.0f;
 	fixtureDef.friction = 1.0f;
 	fixtureDef.restitution = 0.0f;
 	fixtureDef.shape = &shape;
+	
 
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.userData = this;		// pass sprite to bodyDef with argument: userData
@@ -96,9 +97,9 @@ void B2Sprite::changeBodyMaskBits(uint16 mask)
 	fixture->SetFilterData(filter);
 }
 
-void B2Sprite::update(float dt)
+void B2Sprite::updateMe(float dt)
 {
-	Sprite::update(dt);
+	//Sprite::update(dt);
 	if (body != nullptr) {
 		this->setPositionX(body->GetPosition().x * PTM_RATIO);
 		this->setPositionY(body->GetPosition().y * PTM_RATIO);

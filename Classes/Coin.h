@@ -12,11 +12,14 @@ public:
 	Coin();
 	~Coin();
 	Animate *animate;
+	SkeletonAnimation *effect;
 
 	static Coin* create();
 	virtual void initCirclePhysic(b2World *world, Point pos);
 	void runAnimation();
 	void picked();
+	void listener();
+	void onExit();
 	
 };
 

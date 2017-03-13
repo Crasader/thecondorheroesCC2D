@@ -28,6 +28,7 @@ protected:
 	void injured();
 	void die(Point posOfCammera);
 	void listener();
+
 	void updateMe(float dt);
 
 };

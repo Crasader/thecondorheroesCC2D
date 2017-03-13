@@ -26,7 +26,8 @@ public:
 	virtual void changeBodyCategoryBits(uint16 mask);
 	virtual void changeBodyMaskBits(uint16 mask);
 
-	//virtual void update(float dt);
+	// return Pos bone in parent of this skeleton
+	virtual Point getBoneLocation(string boneName);
 
 protected:
 	CC_SYNTHESIZE(b2Body*, body, Body);

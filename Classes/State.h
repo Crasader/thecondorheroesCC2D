@@ -12,10 +12,11 @@ class State
 public:
 	State();
 	~State();
-	virtual void run(BaseHero* hero);
-	virtual void jump(BaseHero *hero);
-	virtual void land(BaseHero *hero);
-	virtual void attack(BaseHero *hero);		// normal attack
+	virtual void execute(BaseHero* hero);
+
+	static State* m_state;
+
+	static State* getInstance();
 };
 
 /**
@@ -27,9 +28,11 @@ public:
 	Running();
 	~Running();
 
-	void jump(BaseHero *hero);
-	void land(BaseHero* hero);
-	void attack(BaseHero *hero);
+	void execute(BaseHero *hero);
+
+	static Running* m_run;
+
+	static Running* getInstance();
 };
 
 /**
@@ -40,9 +43,10 @@ class Idling : public State
 public:
 	Idling();
 	~Idling();
-	void run(BaseHero *hero);
+	void execute(BaseHero *hero);
+	static Idling *m_idle;
 
-
+	static Idling* getInstance();
 };
 
 /**
@@ -53,21 +57,24 @@ class Jumping : public State
 public:
 	Jumping();
 	~Jumping();
-	void jump(BaseHero *hero);
-	void land(BaseHero* hero);
-	void attack(BaseHero *hero);
+	void execute(BaseHero *hero);
+	static Jumping* m_jump;
+
+	static Jumping* getInstance();
 };
 
 /**
-* Class DoupleJumping
+* Double jump                                                                     
 */
-class DoupleJumping : public State
+class DoubleJumping : public State
 {
 public:
-	DoupleJumping();
-	~DoupleJumping();
+	DoubleJumping();
+	~DoubleJumping();
+	void execute(BaseHero *hero);
+	static DoubleJumping* m_doubleJump;
 
-	void land(BaseHero* hero);
+	static DoubleJumping* getInstance();
 };
 
 /**
@@ -79,24 +86,49 @@ public:
 	Landing();
 	~Landing();
 
-	void jump(BaseHero* hero);
-	void run(BaseHero* hero);
-	void attack(BaseHero *hero);
+	void execute(BaseHero *hero);
+
+	static Landing* m_land;
+
+	static Landing* getInstance();
 };
 
 /**
-* Class Landing2
+* Class Injured                                                                     
 */
-class Landing2 : public State
+class Injuring : public State
 {
 public:
-	Landing2();
-	~Landing2();
+	Injuring();
+	~Injuring();
 
-	void run(BaseHero *hero);
-	void attack(BaseHero *hero);
+	void execute(BaseHero *hero);
+	static Injuring * m_injured;
+	static Injuring* getInstance();
 };
 
 
+/**
+* Class Attack                                                                    
+*/
+class AttackNormal : public State 
+{
+public:
+	AttackNormal();
+	~AttackNormal();
+
+	void execute(BaseHero *hero);
+	static AttackNormal * m_attack;
+	static AttackNormal* getInstance();
+};
+
+// make life easier
+#define MIdle Idling::getInstance()
+#define MRun Running::getInstance()
+#define MJump Jumping::getInstance()
+#define MLand Landing::getInstance()
+#define MAttack AttackNormal::getInstance()
+#define MInjured Injuring::getInstance()
+#define MDoubleJump DoubleJumping::getInstance()
 
 #endif 

@@ -17,8 +17,10 @@ protected:
 	CCArray *poolTieuHonChuong;	// 1 bool of Tieu Hon Chuong
 	int indexOfTieuHonChuong;
 	void createPool();
+	void createTieuHonChuong(Point posHand);
 	void shoot();
 	int checkCanShoot;
+	
 
 	//////////////////////////////////////////////////////////////////////////
 

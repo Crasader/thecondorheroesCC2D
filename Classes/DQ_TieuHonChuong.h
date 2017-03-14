@@ -18,6 +18,6 @@ public:
 	
 };
 
-//#define TieuHonChuong DQ_TieuHonChuong
+#define TieuHonChuong DQ_TieuHonChuong
 
 #endif // __DQ_TIEU_HON_CHUONG_H__

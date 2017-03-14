@@ -69,5 +69,5 @@ void Coin::onExit()
 	auto world = this->getB2Body()->GetWorld();
 	world->DestroyBody(this->getB2Body());
 	//this->removeFromParentAndCleanup(true);
-	log("delete coin");
+	//log("delete coin");
 }

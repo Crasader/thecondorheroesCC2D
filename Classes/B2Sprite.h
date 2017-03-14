@@ -41,6 +41,7 @@ public:
 	virtual void initPhysicWithShapeCache(b2World *world, Point pos, string key);
 	virtual void changeBodyCategoryBits(uint16 mask);
 	virtual void changeBodyMaskBits(uint16 mask);
+	virtual void setAngel(float radian);
 	virtual void updateMe(float dt);
 
 };

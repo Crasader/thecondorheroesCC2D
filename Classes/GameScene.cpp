@@ -76,8 +76,12 @@ void GameScene::createDuongQua(string path_Json, string path_Atlas, Point positi
 	hero->listener();
 	hero->setPosition(position);
 	hero->initCirclePhysic(world, hero->getPosition());
+	
 	addChild(hero, ZORDER_HERO);
-	addChild(hero->getSlash(), 4);
+	addChild(hero->getSlash_1(), 4);
+	addChild(hero->getSlash_2(), 4);
+
+	hero->createPool();
 }
 
 void GameScene::checkActiveButton()
@@ -141,13 +145,6 @@ void GameScene::listener()
 		}
 
 		hero->changeSwordCategoryBitmask(BITMASK_SWORD);
-
-		hero->getSlash()->setPosition(hero->getPositionX() + hero->getTrueRadiusOfHero() * 2 +
-											hero->getSlash()->getBoundingBox().size.height / 4,
-											hero->getPositionY() + hero->getTrueRadiusOfHero());
-		hero->getSlash()->setVisible(true);
-
-
 
 		hero->getFSM()->changeState(MAttack);
 		hero->setIsPrior(true);
@@ -227,8 +224,11 @@ void GameScene::update(float dt)
 	updateEnemy();
 	//cleanMap();
 
-	//if (follow->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width / 4)
-	follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4);
+	if (hero->getPositionX() < SCREEN_SIZE.width / 4) {
+		follow->setPositionX(SCREEN_SIZE.width / 2);
+	}
+	else
+		follow->setPositionX(hero->getPositionX()+ SCREEN_SIZE.width / 4);
 
 	background->updatePosition();
 
@@ -445,7 +445,7 @@ void GameScene::creatEnemyToanChanStudent2()
 		auto slash = enemy->getSlash();
 		slash->initCirclePhysic(world, slash->getPosition());
 		slash->changeBodyCategoryBits(BITMASK_SLASH);
-		slash->changeBodyMaskBits(BITMASK_HERO);
+		slash->changeBodyMaskBits(BITMASK_HERO|BITMASK_SWORD);
 		slash->getB2Body()->GetFixtureList()->SetSensor(true);
 	}
 }
@@ -634,6 +634,7 @@ void GameScene::readWriteJson()
 bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 {
 	if (left_corner.containsPoint(touch->getLocation())) {
+
 		// cannot jump while attacking or being injured
 		if (hero->getFSM()->currentState == MAttack || hero->getFSM()->currentState == MInjured ||
 			hero->getFSM()->currentState == MDie || hero->getFSM()->currentState == MSKill1 ||
@@ -672,11 +673,15 @@ void GameScene::updateEnemy()
 			auto tmp = (BaseEnemy*)child.at(i);
 			if (tmp->getB2Body() != nullptr) {
 				if (tmp->getIsDie()) {
+					tmp->getB2Body()->SetType(b2_dynamicBody);
+
 					world->DestroyBody(tmp->getB2Body());
 					tmp->setB2Body(nullptr);
+					//tmp->removeFromParentAndCleanup(true);
+					//}
 				}
 				else {
-					if (tmp->getPositionX() < follow->getPositionX() - SCREEN_SIZE.width / 2) {
+					if (tmp->getPositionX() < follow->getPositionX() - SCREEN_SIZE.width) {
 						//tmp->setIsDie(true);
 						world->DestroyBody(tmp->getB2Body());
 						tmp->removeFromParentAndCleanup(true);

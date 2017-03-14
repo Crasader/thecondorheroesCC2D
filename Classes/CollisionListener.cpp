@@ -2,6 +2,7 @@
 #include "BaseHero.h"
 #include "BaseEnemy.h"
 #include "Coin.h"
+#include "Slash.h"
 
 CollisionListener::CollisionListener() {
 
@@ -136,6 +137,17 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		hero->setHealth(hero->getHealth() - 1);
 
 	}
+	if ((bitmaskA == BITMASK_SWORD && bitmaskB == BITMASK_SLASH) ||
+		(bitmaskB == BITMASK_SWORD && bitmaskA == BITMASK_SLASH)
+		) {
+
+		Slash* sA = (Slash*)bodyA->GetUserData();
+		Slash* sB = (Slash*)bodyB->GetUserData();
+		auto slash = sA  ? (Slash *)sA : (Slash *)sB;
+
+		slash->setIsDie(true);
+
+	}
 }
 
 
@@ -150,7 +162,7 @@ void CollisionListener::PreSolve(b2Contact * contact, const b2Manifold * oldMani
 	auto collidePoint = worldManifold.points[0];
 
 
-
+	// one way collision
 	if ((bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_HERO && bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_FLOOR) ||
 		(bodyB->GetFixtureList()->GetFilterData().categoryBits == BITMASK_HERO && bodyA->GetFixtureList()->GetFilterData().categoryBits == BITMASK_FLOOR)
 		) {

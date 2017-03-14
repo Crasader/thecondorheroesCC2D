@@ -194,4 +194,4 @@ public:
 #define MSKill2 Skill2::getInstance()
 #define MSKill3 Skill3::getInstance()
 
-#endif 
+#endif

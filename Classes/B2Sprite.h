@@ -11,8 +11,8 @@ using namespace std;
 
 class B2Sprite : public Sprite
 {
-private:
-	b2Body *body;
+protected:
+	CC_SYNTHESIZE(b2Body*, body, B2Body);
 public:
 	B2Sprite();
 	~B2Sprite();
@@ -23,8 +23,6 @@ public:
 	// SCREEN_SIZE
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
 
-	
-	b2Body* getB2Body();
 	/**
 	* world: world containt this->body
 	* pos: position to add body in pixel

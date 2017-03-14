@@ -1,5 +1,5 @@
-#ifndef __BASE_HERO_H_
-#define __BASE_HERO_H_
+#ifndef __BASE_HERO_H__
+#define __BASE_HERO_H__
 
 #include "B2Skeleton.h"
 #include "GB2ShapeCache-x.h"

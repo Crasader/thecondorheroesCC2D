@@ -13,6 +13,15 @@ public:
 
 protected:
 
+	// Skill 3
+	CCArray *poolTieuHonChuong;	// 1 bool of Tieu Hon Chuong
+	int indexOfTieuHonChuong;
+	void createPool();
+	void shoot();
+	int checkCanShoot;
+
+	//////////////////////////////////////////////////////////////////////////
+
 	void initCirclePhysic(b2World *world, Point pos);
 
 	void run();

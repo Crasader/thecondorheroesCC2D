@@ -1,5 +1,5 @@
-#ifndef __BUTTON_LEFT_H__
-#define __BUTTON_LEFT_H__
+#ifndef __BUTTON_H__
+#define __BUTTON_H__
 
 #include "cocos2d.h"
 #include <string>

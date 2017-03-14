@@ -645,8 +645,9 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 			hero->setNumberOfJump(hero->getNumberOfJump() - 1);
 			hero->setOnGround(false);
 
+			hero->getB2Body()->SetLinearVelocity(b2Vec2(0.0f, hero->getJumpVel()));
+
 			if (hero->getFSM()->currentState == MSKill3) {		// skill 3, can jump
-				hero->getB2Body()->SetLinearVelocity(b2Vec2(0.0f, hero->getJumpVel()));
 				return false;
 			}
 

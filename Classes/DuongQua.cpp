@@ -1,10 +1,12 @@
 #include "DuongQua.h"
+#include "DQ_TieuHonChuong.h"
 #include "AudioEngine.h"
 #include "Global.h"
 
 
 DuongQua::DuongQua(string jsonFile, string atlasFile, float scale) : BaseHero(jsonFile, atlasFile, scale)
 {
+	checkCanShoot = 0;
 }
 
 DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
@@ -33,12 +35,48 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 	duongQua->setIsPriorSkill3(false);
 
 	// splash
-	duongQua->slash = Sprite::create("Animation/DuongQua/slash2.png");
-	duongQua->slash->setScale(scale * 1.5f);
+	duongQua->slash = Sprite::create("Animation/DuongQua/slash2-2.png");
 	duongQua->slash->setVisible(false);
 	//
 
 	return duongQua;
+}
+
+void DuongQua::createPool()
+{
+	poolTieuHonChuong = CCArray::createWithCapacity(5);		// 5
+	poolTieuHonChuong->retain();
+
+	for (int i = 0; i < 5; ++i) {
+		auto thc = DQ_TieuHonChuong::create("");
+		thc->setB2Body(nullptr);
+		poolTieuHonChuong->addObject(thc);
+	}
+
+	indexOfTieuHonChuong = 0;
+}
+
+void DuongQua::createTieuHonChuong(Point posHand)
+{
+	auto thc = (DQ_TieuHonChuong*)poolTieuHonChuong->getObjectAtIndex(indexOfTieuHonChuong);
+	auto world = thc->getB2Body()->GetWorld();
+	if (thc->getB2Body() != nullptr) {
+		world->DestroyBody(thc->getB2Body());
+	}
+
+	thc->setVisible(true);
+	thc->setPosition(posHand);
+	thc->changeBodyCategoryBits(BITMASK_SWORD);
+	thc->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2);
+	thc->initCirclePhysic(world, thc->getPosition());
+
+	this->getParent()->addChild(thc, 5);
+	
+}
+
+void DuongQua::shoot()
+{
+	
 }
 
 void DuongQua::initCirclePhysic(b2World * world, Point pos)

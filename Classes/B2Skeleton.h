@@ -30,7 +30,7 @@ public:
 	virtual Point getBoneLocation(string boneName);
 
 protected:
-	CC_SYNTHESIZE(b2Body*, body, Body);
+	CC_SYNTHESIZE(b2Body*, body, B2Body);
 
 	CC_SYNTHESIZE(int, health, Health);
 	CC_SYNTHESIZE(float, move_vel, MoveVel);

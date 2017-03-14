@@ -103,11 +103,11 @@ void BaseHero::listener()
 
 void BaseHero::updateMe(float dt)
 {
-	if (getBody() != nullptr) {
-		this->setPositionX(this->getBody()->GetPosition().x * PTM_RATIO);
-		this->setPositionY(this->getBody()->GetPosition().y * PTM_RATIO - trueRadiusOfHero);
+	if (getB2Body() != nullptr) {
+		this->setPositionX(this->getB2Body()->GetPosition().x * PTM_RATIO);
+		this->setPositionY(this->getB2Body()->GetPosition().y * PTM_RATIO - trueRadiusOfHero);
 
-		getSwordBody()->SetTransform(b2Vec2(getBody()->GetPosition().x + getTrueRadiusOfHero() * 1.3f / PTM_RATIO, getBody()->GetPosition().y), 
+		getSwordBody()->SetTransform(b2Vec2(getB2Body()->GetPosition().x + getTrueRadiusOfHero() * 1.3f / PTM_RATIO, getB2Body()->GetPosition().y),
 										getSwordBody()->GetAngle());
 	}
 }

@@ -105,7 +105,7 @@ void DuongQua::die()
 	clearTracks();
 	addAnimation(0, "die", false);
 	setToSetupPose();
-	getBody()->SetTransform(b2Vec2(SCREEN_SIZE.width / 2 / PTM_RATIO, SCREEN_SIZE.height / PTM_RATIO), getBody()->GetAngle());
+	getB2Body()->SetTransform(b2Vec2(SCREEN_SIZE.width / 2 / PTM_RATIO, SCREEN_SIZE.height / PTM_RATIO), getB2Body()->GetAngle());
 }
 
 void DuongQua::attackNormal()
@@ -192,21 +192,21 @@ void DuongQua::updateMe(float dt)
 {
 	BaseHero::updateMe(dt);
 
-	if (stateMachine && getBody()) {
+	if (stateMachine && getB2Body()) {
 
 		if (getPositionY() + getTrueRadiusOfHero() * 2 < 0) {
 			this->die();
 			return;
 		}
 
-		auto currentVelY = getBody()->GetLinearVelocity().y;
-		getBody()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
+		auto currentVelY = getB2Body()->GetLinearVelocity().y;
+		getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
 
 		getFSM()->Update();
 
 		if (! getIsPriorSkill()) {
 			
-			if (getBody()->GetLinearVelocity().y < 0) {
+			if (getB2Body()->GetLinearVelocity().y < 0) {
 				if(getNumberOfJump() > 0)
 					getFSM()->changeState(MLand);
 				return;

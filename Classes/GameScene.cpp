@@ -105,11 +105,11 @@ void GameScene::update(float dt)
 
 	updateEnemy();
 	//cleanMap();
-	if (hero->getPositionX() < SCREEN_SIZE.width / 2) {
+	if (hero->getPositionX() < SCREEN_SIZE.width / 4) {
 		follow->setPositionX(SCREEN_SIZE.width / 2);
 	}
 	else
-		follow->setPositionX(hero->getPositionX());
+		follow->setPositionX(hero->getPositionX()+ SCREEN_SIZE.width / 4);
 
 	background->updatePosition();
 
@@ -520,7 +520,7 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 		if (hero->getFSM()->currentState != MAttack) {
 			if (hero->getNumberOfJump() > 0) {
 				hero->setNumberOfJump(hero->getNumberOfJump() - 1);
-				hero->getBody()->SetLinearVelocity(b2Vec2(0.0f, hero->getJumpVel()));
+				hero->getB2Body()->SetLinearVelocity(b2Vec2(0.0f, hero->getJumpVel()));
 
 				hero->setOnGround(false);
 				if (hero->getNumberOfJump() == 1)
@@ -542,23 +542,23 @@ void GameScene::updateEnemy()
 	for (int i = 0; i < child.size(); i++) {
 		if (child.at(i)->getTag() > 100) {
 			auto tmp = (BaseEnemy*)child.at(i);
-			if (tmp->getBody() != nullptr) {
+			if (tmp->getB2Body() != nullptr) {
 				if (tmp->getIsDie()) {
-					tmp->getBody()->SetType(b2_dynamicBody);
+					tmp->getB2Body()->SetType(b2_dynamicBody);
 
-					world->DestroyBody(tmp->getBody());
-					tmp->setBody(nullptr);
+					world->DestroyBody(tmp->getB2Body());
+					tmp->setB2Body(nullptr);
 					//tmp->removeFromParentAndCleanup(true);
 					//}
 				}
 				else {
-					if (tmp->getPositionX() < follow->getPositionX() - SCREEN_SIZE.width / 2) {
+					if (tmp->getPositionX() < follow->getPositionX() - SCREEN_SIZE.width) {
 						//tmp->setIsDie(true);
-						world->DestroyBody(tmp->getBody());
+						world->DestroyBody(tmp->getB2Body());
 						tmp->removeFromParentAndCleanup(true);
 					}
 
-					if (tmp->getPositionX() < follow->getPositionX() + SCREEN_SIZE.width &&
+					else if (tmp->getPositionX() < follow->getPositionX() + SCREEN_SIZE.width &&
 						tmp->getPositionX() > hero->getPositionX()- SCREEN_SIZE.width/2) {
 						tmp->setVisible(true);
 						tmp->updateMe(1.0f);

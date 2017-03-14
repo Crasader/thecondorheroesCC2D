@@ -34,7 +34,7 @@ void EnemyToanChanStudent2::die()
 void EnemyToanChanStudent2::genSlash()
 {
 	slash = Slash::create("Animation/Enemy_DeTuToanChan2/slashenemy.png");
-	slash->setScale(scaleEnemy*1.5f);
+	slash->setScale(scaleEnemy);
 	//slash->setAnchorPoint(Point(1, 0));
 	
 	slash->setPosition(this->getBoneLocation("bone32"));
@@ -74,10 +74,19 @@ void EnemyToanChanStudent2::updateMe(float dt)
 	}
 }
 
+void EnemyToanChanStudent2::removeFromParentAndCleanup(bool cleanup)
+{
+	BaseEnemy::removeFromParentAndCleanup(cleanup);
+	auto world = slash->getB2Body()->GetWorld();
+	world->DestroyBody(slash->getB2Body());
+	slash->removeFromParentAndCleanup(cleanup);
+	log("delete slash");
+}
+
 void EnemyToanChanStudent2::onExit()
 {
 	BaseEnemy::onExit();
-	auto world = slash->getB2Body()->GetWorld();
+	/*auto world = slash->getB2Body()->GetWorld();
 	world->DestroyBody(slash->getB2Body());
-	log("delete slash");
+	log("delete slash");*/
 }

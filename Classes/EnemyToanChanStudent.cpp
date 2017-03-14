@@ -20,6 +20,7 @@ EnemyToanChanStudent * EnemyToanChanStudent::create(string jsonFile, string atla
 
 }
 
+
 EnemyToanChanStudent * EnemyToanChanStudent::create(spSkeletonData * data)
 {
 	EnemyToanChanStudent *enemy = new EnemyToanChanStudent(data);
@@ -34,6 +35,7 @@ EnemyToanChanStudent * EnemyToanChanStudent::create(spSkeletonData * data)
 
 void EnemyToanChanStudent::run()
 {
+
 }
 
 void EnemyToanChanStudent::attack()

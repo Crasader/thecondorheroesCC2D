@@ -7,7 +7,8 @@
 
 class Slash : public B2Sprite
 {
-
+private:
+	CC_SYNTHESIZE(bool, isDie, IsDie);
 public:
 	Slash();
 	~Slash();
@@ -16,7 +17,7 @@ public:
 	static Slash* create(string file);
 	virtual void initCirclePhysic(b2World *world, Point pos);
 	//void runAnimation();
-	void die();
+	//void die();
 	
 };
 

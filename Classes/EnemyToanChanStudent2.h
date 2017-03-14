@@ -24,7 +24,9 @@ public:
 	void genSlash();
 	void listener();
 	void updateMe(float dt);
-	void removeFromParentAndCleanup(bool cleanup);
+
+	//void removeFromParentAndCleanup(bool cleanup);
+
 	void onExit();
 };
 

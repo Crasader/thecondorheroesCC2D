@@ -41,7 +41,7 @@ bool GameScene::init()
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	cachePlist();
-	cacheSkeleton();
+	//cacheSkeleton();
 
 
 	danceWithCamera();
@@ -52,7 +52,7 @@ bool GameScene::init()
 	createGroundBody();
 
 	createDuongQua("Animation/DuongQua/DuongQua.json", "Animation/DuongQua/DuongQua.atlas",
-		Point(visibleSize.width * 0.3f, visibleSize.height));
+		Point(visibleSize.width * 0.25f, visibleSize.height));
 
 	creatEnemyWooder();
 	creatEnemyToanChanStudent();
@@ -80,21 +80,140 @@ void GameScene::createDuongQua(string path_Json, string path_Atlas, Point positi
 	addChild(hero->getSlash(), 4);
 }
 
+void GameScene::checkActiveButton()
+{
+
+	if (hud->getBtnAttack()->getIsBlocked()) {		// 2 and 3 active
+
+		if (!hud->getBtnSkill_1()->getCanTouch() && !hero->getIsPriorSkill1()) {
+			hud->getBtnAttack()->setIsBlocked(false);
+		}
+		else if (!hud->getBtnSkill_2()->getCanTouch() && !hero->getIsPriorSkill2()) {
+			hud->getBtnAttack()->setIsBlocked(false);
+		}
+		else if (!hud->getBtnSkill_3()->getCanTouch() && !hero->getIsPriorSkill3()) {
+			hud->getBtnAttack()->setIsBlocked(false);
+		}
+
+	}
+
+	if (hud->getBtnSkill_1()->getIsBlocked()) {		// 2 and 3 active
+		if (!hud->getBtnSkill_2()->getCanTouch() && !hero->getIsPriorSkill2()) {
+			hud->getBtnSkill_1()->setIsBlocked(false);
+		}
+		else if (!hud->getBtnSkill_3()->getCanTouch() && !hero->getIsPriorSkill3()) {
+			hud->getBtnSkill_1()->setIsBlocked(false);
+		}
+
+	}
+
+	if (hud->getBtnSkill_2()->getIsBlocked()) {		// 2 and 3 active
+		if (!hud->getBtnSkill_1()->getCanTouch() && !hero->getIsPriorSkill1()) {
+			hud->getBtnSkill_2()->setIsBlocked(false);
+		}
+		else if (!hud->getBtnSkill_3()->getCanTouch() && !hero->getIsPriorSkill3()) {
+			hud->getBtnSkill_2()->setIsBlocked(false);
+		}
+
+	}
+
+	if (hud->getBtnSkill_3()->getIsBlocked()) {		// 2 and 3 active
+		if (!hud->getBtnSkill_2()->getCanTouch() && !hero->getIsPriorSkill2()) {
+			hud->getBtnSkill_3()->setIsBlocked(false);
+		}
+		else if (!hud->getBtnSkill_1()->getCanTouch() && !hero->getIsPriorSkill1()) {
+			hud->getBtnSkill_3()->setIsBlocked(false);
+		}
+
+	}
+
+}
+
 void GameScene::listener()
 {
-	if (hud->getBtnAttack()->getIsActive()) {
-		// for here
+	if (hud->getBtnAttack()->getIsActive() && !hud->getBtnAttack()->getIsBlocked()) {
 
+		// you cannot attack while being dead
+		if (hero->getFSM()->currentState == MDie) {
+			log("You cannot");
+			hud->getBtnAttack()->setIsActive(false);
+			return;
+		}
 
 		hero->changeSwordCategoryBitmask(BITMASK_SWORD);
-		hero->getSlash()->setPosition(hero->getPositionX() + hero->getTrueRadiusOfHero() * 2,
-			hero->getPositionY() + hero->getTrueRadiusOfHero());
+
+		hero->getSlash()->setPosition(hero->getPositionX() + hero->getTrueRadiusOfHero() * 2 +
+											hero->getSlash()->getBoundingBox().size.height / 4,
+											hero->getPositionY() + hero->getTrueRadiusOfHero());
 		hero->getSlash()->setVisible(true);
+
+
+
 		hero->getFSM()->changeState(MAttack);
-		hero->setIsPriorSkill(true);
+		hero->setIsPrior(true);
 
 		hud->getBtnAttack()->setIsActive(false);
 	}
+
+	if (hud->getBtnSkill_1()->getIsActive() && !hud->getBtnSkill_1()->getIsBlocked()) {
+
+		// you cannot attack while being dead
+		if (hero->getFSM()->currentState == MDie) {
+			log("You cannot");
+			hud->getBtnAttack()->setIsActive(false);
+			return;
+		}
+
+		hero->getFSM()->changeState(MSKill1);
+		hero->setIsPriorSkill1(true);
+
+		hud->getBtnAttack()->setIsBlocked(true);
+		hud->getBtnSkill_2()->setIsBlocked(true);
+		hud->getBtnSkill_3()->setIsBlocked(true);
+
+		hud->getBtnSkill_1()->setIsActive(false);
+	}
+
+	if (hud->getBtnSkill_2()->getIsActive() && !hud->getBtnSkill_2()->getIsBlocked()) {
+
+		// you cannot attack while being dead
+		if (hero->getFSM()->currentState == MDie) {
+			log("You cannot");
+			hud->getBtnAttack()->setIsActive(false);
+			return;
+		}
+
+		hero->getFSM()->changeState(MSKill2);
+		hero->setIsPriorSkill2(true);
+
+		hud->getBtnAttack()->setIsBlocked(true);
+		hud->getBtnSkill_1()->setIsBlocked(true);
+		hud->getBtnSkill_3()->setIsBlocked(true);
+
+		hud->getBtnSkill_2()->setIsActive(false);
+	}
+
+	if (hud->getBtnSkill_3()->getIsActive() && !hud->getBtnSkill_3()->getIsBlocked()) {
+
+		// you cannot attack while being dead
+		if (hero->getFSM()->currentState == MDie) {
+			log("You cannot");
+			hud->getBtnAttack()->setIsActive(false);
+			return;
+		}
+
+		hero->getFSM()->changeState(MSKill3);
+		hero->setIsPriorSkill3(true);
+
+		// block
+		hud->getBtnAttack()->setIsBlocked(true);
+		hud->getBtnSkill_1()->setIsBlocked(true);
+		hud->getBtnSkill_2()->setIsBlocked(true);
+
+		hud->getBtnSkill_3()->setIsActive(false);
+	}
+
+
 }
 
 void GameScene::update(float dt)
@@ -103,8 +222,11 @@ void GameScene::update(float dt)
 	listener();
 	hero->updateMe(dt);
 
+	checkActiveButton();
+
 	updateEnemy();
 	//cleanMap();
+
 	if (hero->getPositionX() < SCREEN_SIZE.width / 4) {
 		follow->setPositionX(SCREEN_SIZE.width / 2);
 	}
@@ -121,13 +243,14 @@ void GameScene::initB2World()
 
 	// draw debug
 	auto debugDraw = new (std::nothrow) GLESDebugDraw(PTM_RATIO);
-	world->SetDebugDraw(debugDraw);
+	//world->SetDebugDraw(debugDraw);
 	uint32 flags = 0;
 	flags += b2Draw::e_shapeBit;
 	flags += b2Draw::e_jointBit;
-	/*flags += b2Draw::e_aabbBit;
-	flags += b2Draw::e_pairBit;
-	flags += b2Draw::e_centerOfMassBit;*/
+	//flags += b2Draw::e_aabbBit;
+	//flags += b2Draw::e_pairBit;
+	//flags += b2Draw::e_centerOfMassBit;
+
 	debugDraw->SetFlags(flags);
 
 	world->SetAllowSleeping(true);
@@ -189,7 +312,7 @@ void GameScene::loadBackground()
 
 	tmx_map->setPosition(Point::ZERO);
 
-	tmx_map->setVisible(false);
+	//tmx_map->setVisible(false);
 
 	this->addChild(tmx_map, ZORDER_BG2);
 	createInfiniteNode();
@@ -250,7 +373,7 @@ void GameScene::createInfiniteNode()
 	//background->addChild(bg3_2, 0, Vec2(1.5f, 1), Vec2(bg3_1->getBoundingBox().size.width, 0));
 	background->setPosition(Point(-SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 	background->setAnchorPoint(Point(0, 0.5f));
-	background->setVisible(false);
+	//background->setVisible(false);
 	this->addChild(background, ZORDER_BG);
 }
 
@@ -275,10 +398,6 @@ void GameScene::creatEnemyWooder()
 		auto scaleOfWooder = (SCREEN_SIZE.height / 3.5) / 490; // 490 la height cua spine
 		auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json",
 			"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
-		////auto enemy = EnemyWooder::create(sr_wooder);
-		//enemy->setIsDie(false);
-		////enemy->setSkin("MocNhan");
-		//enemy->setSlotsToSetupPose();
 		enemy->setPosition(origin);
 		enemy->setVisible(false);
 		this->addChild(enemy, ZORDER_ENEMY);
@@ -295,7 +414,7 @@ void GameScene::creatEnemyToanChanStudent()
 	for (auto child : groupGround->getObjects()) {
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		auto scaleOfEnemy = SCREEN_SIZE.height / 4 / 401; // 401 la height cua spine
+		auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401; // 401 la height cua spine
 		auto enemy = EnemyToanChanStudent::create("Animation/Enemy_DeTuToanChan1/ToanChan1.json",
 			"Animation/Enemy_DeTuToanChan1/ToanChan1.atlas", scaleOfEnemy);
 		enemy->setPosition(origin);
@@ -315,7 +434,7 @@ void GameScene::creatEnemyToanChanStudent2()
 	for (auto child : groupGround->getObjects()) {
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		auto scaleOfEnemy = SCREEN_SIZE.height / 4 / 401; // 401 la height cua spine
+		auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401; // 401 la height cua spine
 		auto enemy = EnemyToanChanStudent2::create("Animation/Enemy_DeTuToanChan2/ToanChan2.json",
 			"Animation/Enemy_DeTuToanChan2/ToanChan2.atlas", scaleOfEnemy);
 		enemy->setPosition(origin);
@@ -329,7 +448,7 @@ void GameScene::creatEnemyToanChanStudent2()
 		auto slash = enemy->getSlash();
 		slash->initCirclePhysic(world, slash->getPosition());
 		slash->changeBodyCategoryBits(BITMASK_SLASH);
-		slash->changeBodyMaskBits(BITMASK_HERO);
+		slash->changeBodyMaskBits(BITMASK_HERO|BITMASK_SWORD);
 		slash->getB2Body()->GetFixtureList()->SetSensor(true);
 	}
 }
@@ -438,21 +557,21 @@ void GameScene::createSquareCoin()
 	}
 }
 
-spSkeletonData * GameScene::createSkeletonData(string atlasFileName, string jsonFileName)
-{
-	std::string atlasFile = atlasFileName;
-	std::string skeletonDataFile = jsonFileName;
-	float timeScale = 1.0;
-	auto _atlas = spAtlas_createFromFile(atlasFile.c_str(), 0);
-	CCASSERT(_atlas, "Error reading atlas file.");
-
-	spSkeletonJson* json = spSkeletonJson_create(_atlas);
-	json->scale = timeScale;
-	spSkeletonData* skeletonData = spSkeletonJson_readSkeletonDataFile(json, skeletonDataFile.c_str());
-	CCASSERT(skeletonData, json->error ? json->error : "Error reading skeleton data file.");
-	spSkeletonJson_dispose(json);
-	return skeletonData;
-}
+//spSkeletonData * GameScene::createSkeletonData(string atlasFileName, string jsonFileName)
+//{
+//	/*std::string atlasFile = atlasFileName;
+//	std::string skeletonDataFile = jsonFileName;
+//	float timeScale = 1.0;
+//	auto _atlas = spAtlas_createFromFile(atlasFile.c_str(), 0);
+//	CCASSERT(_atlas, "Error reading atlas file.");
+//
+//	spSkeletonJson* json = spSkeletonJson_create(_atlas);
+//	json->scale = timeScale;
+//	spSkeletonData* skeletonData = spSkeletonJson_readSkeletonDataFile(json, skeletonDataFile.c_str());
+//	CCASSERT(skeletonData, json->error ? json->error : "Error reading skeleton data file.");
+//	spSkeletonJson_dispose(json);
+//	return skeletonData;*/
+//}
 
 void GameScene::danceWithCamera()
 {
@@ -462,6 +581,7 @@ void GameScene::danceWithCamera()
 	addChild(follow);
 
 	camera = Follow::create(follow);
+	camera->setTarget(follow);
 	runAction(camera);
 
 	left_corner = CCRectMake(0, 0, SCREEN_SIZE.width / 2, SCREEN_SIZE.height);
@@ -517,18 +637,30 @@ void GameScene::readWriteJson()
 bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 {
 	if (left_corner.containsPoint(touch->getLocation())) {
-		if (hero->getFSM()->currentState != MAttack) {
-			if (hero->getNumberOfJump() > 0) {
-				hero->setNumberOfJump(hero->getNumberOfJump() - 1);
-				hero->getB2Body()->SetLinearVelocity(b2Vec2(0.0f, hero->getJumpVel()));
 
-				hero->setOnGround(false);
-				if (hero->getNumberOfJump() == 1)
-					hero->getFSM()->changeState(MJump);
-				if (hero->getNumberOfJump() == 0)
-					hero->getFSM()->changeState(MDoubleJump);
-			}
+		// cannot jump while attacking or being injured
+		if (hero->getFSM()->currentState == MAttack || hero->getFSM()->currentState == MInjured ||
+			hero->getFSM()->currentState == MDie || hero->getFSM()->currentState == MSKill1 ||
+			hero->getFSM()->currentState == MSKill2)
+
+			return false;
+
+		if (hero->getNumberOfJump() > 0) {
+			hero->setNumberOfJump(hero->getNumberOfJump() - 1);
+			hero->setOnGround(false);
+
+			//if (hero->getFSM()->currentState == MSKill3) {		// skill 3, can jump
+			hero->getB2Body()->SetLinearVelocity(b2Vec2(0.0f, hero->getJumpVel()));
+			//	return false;
+			//}
+
+			
+			if (hero->getNumberOfJump() == 1)
+				hero->getFSM()->changeState(MJump);
+			if (hero->getNumberOfJump() == 0)
+				hero->getFSM()->changeState(MDoubleJump);
 		}
+
 	}
 
 	return false;
@@ -537,7 +669,6 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 
 void GameScene::updateEnemy()
 {
-
 	auto child = this->getChildren();
 	for (int i = 0; i < child.size(); i++) {
 		if (child.at(i)->getTag() > 100) {
@@ -556,10 +687,11 @@ void GameScene::updateEnemy()
 						//tmp->setIsDie(true);
 						world->DestroyBody(tmp->getB2Body());
 						tmp->removeFromParentAndCleanup(true);
+
 					}
 
 					else if (tmp->getPositionX() < follow->getPositionX() + SCREEN_SIZE.width &&
-						tmp->getPositionX() > hero->getPositionX()- SCREEN_SIZE.width/2) {
+						tmp->getPositionX() > follow->getPositionX() - SCREEN_SIZE.width / 2) {
 						tmp->setVisible(true);
 						tmp->updateMe(1.0f);
 					}
@@ -598,8 +730,8 @@ void GameScene::cacheSkeleton()
 	//sr_toanchan1 = createSkeletonData("Animation/Enemy_DeTuToanChan1/ToanChan1.atlas", "Animation/Enemy_DeTuToanChan1/ToanChan1.json");
 
 //	sr_wooder = createSkeletonData("Animation/Enemy_MocNhan/MocNhan.atlas","Animation/Enemy_MocNhan/MocNhan.json");
-	sr_toanchan1 = createSkeletonData("ToanChan1.atlas", "ToanChan1.json");
+	//sr_toanchan1 = createSkeletonData("ToanChan1.atlas", "ToanChan1.json");
 
-	sr_wooder = createSkeletonData("MocNhan.atlas", "MocNhan.json");
+	//sr_wooder = createSkeletonData("MocNhan.atlas", "MocNhan.json");
 
 }

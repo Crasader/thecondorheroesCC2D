@@ -1,5 +1,5 @@
-#ifndef __BASE_HERO_H_
-#define __BASE_HERO_H_
+#ifndef __BASE_HERO_H__
+#define __BASE_HERO_H__
 
 #include "B2Skeleton.h"
 #include "GB2ShapeCache-x.h"
@@ -26,7 +26,10 @@ protected:
 
 	CC_SYNTHESIZE(Sprite*, slash, Slash);
 
-	CC_SYNTHESIZE(bool, isPriorSkill, IsPriorSkill);
+	CC_SYNTHESIZE(bool, isPrior, IsPrior);
+	CC_SYNTHESIZE(bool, isPriorSkill1, IsPriorSkill1);
+	CC_SYNTHESIZE(bool, isPriorSkill2, IsPriorSkill2);
+	CC_SYNTHESIZE(bool, isPriorSkill3, IsPriorSkill3);
 
 public:
 

@@ -28,7 +28,7 @@ void BaseHero::initSwordPhysic(b2World *world, Point position, float width)
 	fixtureDef.shape = &shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_WOODER;
-	fixtureDef.filter.maskBits = BITMASK_WOODER | BITMASK_TOANCHAN1 |BITMASK_TOANCHAN2;
+	fixtureDef.filter.maskBits = BITMASK_WOODER | BITMASK_TOANCHAN1 |BITMASK_TOANCHAN2 |BITMASK_SLASH;
 
 	bodyDef.position.Set(position.x / PTM_RATIO, position.y / PTM_RATIO);
 	bodyDef.type = b2_dynamicBody;
@@ -107,8 +107,13 @@ void BaseHero::updateMe(float dt)
 		this->setPositionX(this->getB2Body()->GetPosition().x * PTM_RATIO);
 		this->setPositionY(this->getB2Body()->GetPosition().y * PTM_RATIO - trueRadiusOfHero);
 
-		getSwordBody()->SetTransform(b2Vec2(getB2Body()->GetPosition().x + getTrueRadiusOfHero() * 1.3f / PTM_RATIO, getB2Body()->GetPosition().y),
-										getSwordBody()->GetAngle());
+
+		getSwordBody()->SetTransform(b2Vec2(getB2Body()->GetPosition().x + getTrueRadiusOfHero() * 2.2f / PTM_RATIO, getB2Body()->GetPosition().y)
+			,getSwordBody()->GetAngle());
+	}
+
+	if (health <= 0 /* || getPositionY() + getTrueRadiusOfHero() * 2 < 0 */) {
+		getFSM()->changeState(MDie);
 	}
 }
 

@@ -26,7 +26,7 @@ void Slash::initCirclePhysic(b2World * world, Point pos)
 }
 
 
-void Slash::die()
-{
-	this->setVisible(false);
-}
+//void Slash::die()
+//{
+//	this->setVisible(false);
+//}

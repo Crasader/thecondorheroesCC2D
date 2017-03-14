@@ -2,7 +2,8 @@
 
 EnemyToanChanStudent2::EnemyToanChanStudent2(string jsonFile, string atlasFile, float scale):EnemyToanChanStudent(jsonFile, atlasFile,scale)
 {
-	controlAttack = 0;
+	controlAttack = 60;
+	isDie = false;
 }
 
 EnemyToanChanStudent2 * EnemyToanChanStudent2::create(string jsonFile, string atlasFile, float scale)
@@ -22,7 +23,7 @@ void EnemyToanChanStudent2::attack()
 	EnemyToanChanStudent::attack();
 	slash->getB2Body()->SetTransform(b2Vec2(this->getBoneLocation("bone32").x/PTM_RATIO, this->getBoneLocation("bone32").y/PTM_RATIO),0);
 	slash->setVisible(true);
-	slash->getB2Body()->SetLinearVelocity(b2Vec2(-SCREEN_SIZE.width/PTM_RATIO,0));
+	slash->getB2Body()->SetLinearVelocity(b2Vec2(-SCREEN_SIZE.width/3/PTM_RATIO,0));
 }
 
 void EnemyToanChanStudent2::die()
@@ -34,8 +35,9 @@ void EnemyToanChanStudent2::die()
 void EnemyToanChanStudent2::genSlash()
 {
 	slash = Slash::create("Animation/Enemy_DeTuToanChan2/slashenemy.png");
+
 	slash->setScale(scaleEnemy);
-	//slash->setAnchorPoint(Point(1, 0));
+	slash->setAnchorPoint(Point(0.5f, 0.4f));
 	
 	slash->setPosition(this->getBoneLocation("bone32"));
 	slash->setVisible(false);
@@ -48,6 +50,9 @@ void EnemyToanChanStudent2::listener()
 		if (strcmp(getCurrent()->animation->name, "attack") == 0 && loopCount == 1) {
 			//getSlash()->setVisible(false);
 			//setIsAttacking(false);
+			this->clearTracks();
+			this->addAnimation(0, "idle", true);
+			this->setToSetupPose();
 		}
 
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
@@ -62,26 +67,44 @@ void EnemyToanChanStudent2::updateMe(float dt)
 {
 	BaseEnemy::updateMe(dt);
 	slash->updateMe(dt);
+	if (slash->getIsDie()) {
+		slash->getB2Body()->SetTransform(b2Vec2(-10, -10), 0);
+		slash->getB2Body()->SetLinearVelocity(b2Vec2(0, 0));
+		slash->setVisible(false);
+		slash->setIsDie(false);
+	}
 	if (slash->getPositionX() < this->getPositionX() - SCREEN_SIZE.width) {
-		slash->getB2Body()->SetTransform(b2Vec2(this->getBoneLocation("bone32").x / PTM_RATIO, this->getBoneLocation("bone32").y / PTM_RATIO), 0);
+		//slash->getB2Body()->SetTransform(b2Vec2(this->getBoneLocation("bone32").x / PTM_RATIO, this->getBoneLocation("bone32").y / PTM_RATIO), 0);
+		slash->getB2Body()->SetTransform(b2Vec2(-10,-10), 0);
 		slash->getB2Body()->SetLinearVelocity(b2Vec2(0,0));
 		slash->setVisible(false);
 	}
 	controlAttack++;
-	if (controlAttack > 90) {
-		controlAttack = 0;// 2 giay 1 nhat
+	if (controlAttack > 120) {
+		controlAttack = 0;	// 2 giay 1 nhat
 		this->attack();
 	}
 }
 
-void EnemyToanChanStudent2::removeFromParentAndCleanup(bool cleanup)
-{
-	BaseEnemy::removeFromParentAndCleanup(cleanup);
-	auto world = slash->getB2Body()->GetWorld();
-	world->DestroyBody(slash->getB2Body());
-	slash->removeFromParentAndCleanup(cleanup);
-	log("delete slash");
-}
+
+
+//void EnemyToanChanStudent2::removeFromParentAndCleanup(bool cleanup)
+//{
+//	BaseEnemy::removeAllChildrenWithCleanup(cleanup);
+//	auto world = slash->getB2Body()->GetWorld();
+//	world->DestroyBody(slash->getB2Body());
+//	slash->removeAllChildrenWithCleanup(cleanup);
+//	log("delete slash");
+//}
+
+//void EnemyToanChanStudent2::onExit()
+//{
+//	BaseEnemy::removeFromParentAndCleanup(cleanup);
+//	auto world = slash->getB2Body()->GetWorld();
+//	world->DestroyBody(slash->getB2Body());
+//	slash->removeFromParentAndCleanup(cleanup);
+//	log("delete slash");
+//}
 
 void EnemyToanChanStudent2::onExit()
 {

@@ -16,9 +16,9 @@ public:
 	//static Map<std::string, SkeletonRenderer *> skeleRendererCache;
 
 	B2Skeleton(string jsonFile, string atlasFile, float scale);
-
+	B2Skeleton(spSkeletonData *data);
 	static B2Skeleton* create(string jsonFile, string atlasFile, float scale);
-
+	static B2Skeleton* create(spSkeletonData *data);
 	virtual void initBoxPhysic(b2World *world, Point pos);
 	virtual void initCirclePhysic(b2World *world, Point pos);
 	virtual void initPhysicWithShapeCache(b2World * world, Point pos, string key);
@@ -26,8 +26,11 @@ public:
 	virtual void changeBodyCategoryBits(uint16 mask);
 	virtual void changeBodyMaskBits(uint16 mask);
 
+	// return Pos bone in parent of this skeleton
+	virtual Point getBoneLocation(string boneName);
+
 protected:
-	CC_SYNTHESIZE(b2Body*, body, Body);
+	CC_SYNTHESIZE(b2Body*, body, B2Body);
 
 	CC_SYNTHESIZE(int, health, Health);
 	CC_SYNTHESIZE(float, move_vel, MoveVel);

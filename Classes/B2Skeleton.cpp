@@ -5,7 +5,16 @@ B2Skeleton::B2Skeleton(string jsonFile, string atlasFile, float scale) : Skeleto
 	body = nullptr;
 }
 
+B2Skeleton::B2Skeleton(spSkeletonData * data):SkeletonAnimation(data)
+{
+}
+
 B2Skeleton * B2Skeleton::create(string jsonFile, string atlasFile, float scale)
+{
+	return nullptr;
+}
+
+B2Skeleton * B2Skeleton::create(spSkeletonData * data)
 {
 	return nullptr;
 }
@@ -92,5 +101,13 @@ void B2Skeleton::changeBodyMaskBits(uint16 mask)
 	b2Filter filter = fixture->GetFilterData();
 	filter.maskBits = mask;
 	fixture->SetFilterData(filter);
+}
+
+Point B2Skeleton::getBoneLocation(string boneName)
+{
+	auto gun = findBone(boneName);
+	auto pos = Vec2(this->getScaleX()*gun->worldX, gun->worldY);
+	pos = pos + this->getPosition();
+	return pos;
 }
 

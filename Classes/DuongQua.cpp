@@ -34,7 +34,7 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 
 	// splash
 	duongQua->slash = Sprite::create("Animation/DuongQua/slash2.png");
-	duongQua->slash->setScale(scale);
+	duongQua->slash->setScale(scale * 1.5f);
 	duongQua->slash->setVisible(false);
 	//
 
@@ -57,7 +57,9 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 	fixtureDef.shape = &circle_shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_HERO;
-	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR | BITMASK_WOODER | BITMASK_COIN | BITMASK_TOANCHAN1;
+	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR| BITMASK_WOODER | BITMASK_COIN | 
+									BITMASK_TOANCHAN1 | BITMASK_SLASH;
+
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -70,7 +72,7 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 
 
 	// connect sword with body
-	initSwordPhysic(world, Point(pos.x + trueRadiusOfHero * 2, pos.y), trueRadiusOfHero);
+	initSwordPhysic(world, Point(pos.x + trueRadiusOfHero * 2.2f, pos.y), trueRadiusOfHero);
 }
 
 void DuongQua::run()
@@ -223,27 +225,28 @@ void DuongQua::updateMe(float dt)
 	BaseHero::updateMe(dt);
 	getFSM()->Update();
 
-	auto currentVelY = getBody()->GetLinearVelocity().y;
+	auto currentVelY = getB2Body()->GetLinearVelocity().y;
 
 	if (getFSM()->currentState == MDie) {
-		getBody()->SetLinearVelocity(b2Vec2(0, currentVelY));
+		getB2Body()->SetLinearVelocity(b2Vec2(0, currentVelY));
 		return;
 	}
 
 	if (getPositionY() + getTrueRadiusOfHero() * 2 < 0) {
-		getBody()->SetTransform(b2Vec2(SCREEN_SIZE.width / 2 / PTM_RATIO, SCREEN_SIZE.height / PTM_RATIO), getBody()->GetAngle());
+		setNumberOfJump(2);
+		getB2Body()->SetTransform(b2Vec2(getPositionX() / PTM_RATIO, SCREEN_SIZE.height / PTM_RATIO), getB2Body()->GetAngle());
 		return;
 	}
 
-	getBody()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
-	if (getBody()) {
+	getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
+	if (getB2Body()) {
 
-		auto currentVelY = getBody()->GetLinearVelocity().y;
-		getBody()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
+		auto currentVelY = getB2Body()->GetLinearVelocity().y;
+		getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
 
 		if (!getIsPrior() && !getIsPriorSkill1() && !getIsPriorSkill2() && !getIsPriorSkill3()) {
 
-			if (getBody()->GetLinearVelocity().y < 0) {
+			if (getB2Body()->GetLinearVelocity().y < 0) {
 				if (getNumberOfJump() > 0)
 					getFSM()->changeState(MLand);
 				return;

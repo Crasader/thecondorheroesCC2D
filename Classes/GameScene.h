@@ -8,6 +8,7 @@
 #include "GLES-Render.h"
 #include "EnemyWooder.h"
 #include "EnemyToanChanStudent.h"
+#include "EnemyToanChanStudent2.h"
 #include "Coin.h"
 #include "CollisionListener.h"
 #include "InfiniteParallaxNode.h"
@@ -42,6 +43,12 @@ private:
 	BaseHero *hero;
 	InfiniteParallaxNode *background;
 
+	// skeleton cache
+	spSkeletonData *sr_toanchan1;
+	spSkeletonData *sr_wooder;
+	//end skeleton cache
+
+
 	// Create Function
 	void createDuongQua(string path_Json, string path_Atlas, Point position);
 
@@ -63,13 +70,18 @@ private:
 	void createGroundBody();
 	void creatEnemyWooder();
 	void creatEnemyToanChanStudent();
+	void creatEnemyToanChanStudent2();
 
 
 	void createCoint();
 	void createTimCoin();
 	void createParapolCoin();
 	void createCircleCoin();
+	void createSquareCoin();
 
+
+	//skeleton data
+	spSkeletonData* createSkeletonData(string atlasFile, string jsonFile);
 	// sau va cham body cua cac quai khong con static nua
 	// do do se bi roi xuong
 	// bat su kien roi xuong qua man hinh de don dep map
@@ -93,6 +105,7 @@ public:
 	//void cleanMap();
 	// cache function
 	void cachePlist();
+	void cacheSkeleton();
 
     // implement the "static create()" method manually
     CREATE_FUNC(GameScene);

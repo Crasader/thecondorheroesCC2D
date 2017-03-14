@@ -1,11 +1,20 @@
 #include "BaseEnemy.h"
 
+BaseEnemy::BaseEnemy(spSkeletonData * data):B2Skeleton(data)
+{
+}
+
 BaseEnemy::BaseEnemy(string jsonFile, string atlasFile, float scale):B2Skeleton(jsonFile, atlasFile, scale)
 {
 	isDie = false;
 }
 
 BaseEnemy * BaseEnemy::create(string jsonFile, string atlasFile, float scale)
+{
+	return nullptr;
+}
+
+BaseEnemy * BaseEnemy::create(spSkeletonData * data)
 {
 	return nullptr;
 }
@@ -34,7 +43,7 @@ void BaseEnemy::updateMe(float dt)
 void BaseEnemy::initCirclePhysic(b2World * world, Point pos)
 {
 	B2Skeleton::initCirclePhysic(world, pos);
-	this->getBody()->SetType(b2_staticBody);
-	this->getBody()->GetFixtureList()->SetSensor(true);
+	this->getB2Body()->SetType(b2_staticBody);
+	this->getB2Body()->GetFixtureList()->SetSensor(true);
 }
 

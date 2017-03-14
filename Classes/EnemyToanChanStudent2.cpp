@@ -1,14 +1,15 @@
-#include "EnemyToanChanStudent.h"
+#include "EnemyToanChanStudent2.h"
 
-EnemyToanChanStudent::EnemyToanChanStudent(string jsonFile, string atlasFile, float scale):BaseEnemy(jsonFile, atlasFile,scale)
+EnemyToanChanStudent2::EnemyToanChanStudent2(string jsonFile, string atlasFile, float scale):EnemyToanChanStudent(jsonFile, atlasFile,scale)
 {
+	controlAttack = 0;
 }
 
-EnemyToanChanStudent * EnemyToanChanStudent::create(string jsonFile, string atlasFile, float scale)
+EnemyToanChanStudent2 * EnemyToanChanStudent2::create(string jsonFile, string atlasFile, float scale)
 {
-	EnemyToanChanStudent *enemy = new EnemyToanChanStudent(jsonFile, atlasFile,scale);
+	EnemyToanChanStudent2 *enemy = new EnemyToanChanStudent2(jsonFile, atlasFile,scale);
 	enemy->update(0.0f);
-	enemy->setTag(TAG_ENEMY_TOANCHAN1);
+	enemy->setTag(TAG_ENEMY_TOANCHAN2);
 	enemy->setScaleX(1);
 	enemy->setAnimation(0, "idle", true);
 	enemy->setScaleEnemy(scale);
@@ -16,52 +17,76 @@ EnemyToanChanStudent * EnemyToanChanStudent::create(string jsonFile, string atla
 
 }
 
-void EnemyToanChanStudent::run()
+void EnemyToanChanStudent2::attack()
 {
+	EnemyToanChanStudent::attack();
+	slash->getB2Body()->SetTransform(b2Vec2(this->getBoneLocation("bone32").x/PTM_RATIO, this->getBoneLocation("bone32").y/PTM_RATIO),0);
+	slash->setVisible(true);
+	slash->getB2Body()->SetLinearVelocity(b2Vec2(-SCREEN_SIZE.width/PTM_RATIO,0));
 }
 
-void EnemyToanChanStudent::attack()
+void EnemyToanChanStudent2::die()
 {
-	//this->setTimeScale(0.05f);
-	if (!this->getIsDie()) {
-		this->clearTracks();
-		this->addAnimation(0, "attack", false);
-		//	this->addAnimation(0, "idle", true);
-		this->splash->setVisible(true);
-		this->setToSetupPose();
-	}
+	EnemyToanChanStudent::die();
+
 }
 
-void EnemyToanChanStudent::die()
+void EnemyToanChanStudent2::genSlash()
 {
-//	auto world = this->body->GetWorld();
-	//world->DestroyBody(this->body);
-	//body->SetType(b2_dynamicBody);
-	this->setIsDie(true);
-	this->clearTracks();
-	this->setAnimation(0,"die",false);
-	//this->setToSetupPose();
-}
-
-
-void EnemyToanChanStudent::genSplash()
-{
-	splash = Sprite::create("Animation/Enemy_DeTuToanChan1/slashenemy.png");
-	splash->setScale(SCREEN_SIZE.height/5/splash->getContentSize().height);
-	splash->setAnchorPoint(Point(1, 0));
+	slash = Slash::create("Animation/Enemy_DeTuToanChan2/slashenemy.png");
+	slash->setScale(scaleEnemy*1.2f);
+	//slash->setAnchorPoint(Point(1, 0));
 	
-	splash->setPosition(-this->getBody()->GetFixtureList()->GetShape()->m_radius*PTM_RATIO, 0);
-	splash->setVisible(false);
-	this->addChild(splash);
+	slash->setPosition(this->getBoneLocation("bone32"));
+	slash->setVisible(false);
+	this->getParent()->addChild(slash,ZORDER_ENEMY);
 }
 
-void EnemyToanChanStudent::listener()
+void EnemyToanChanStudent2::listener()
 {
 	this->setCompleteListener([&](int trackIndex, int loopCount) {
 		if (strcmp(getCurrent()->animation->name, "attack") == 0 && loopCount == 1) {
-			getSplash()->setVisible(false);
+			//getSlash()->setVisible(false);
 			//setIsAttacking(false);
 		}
 
+		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
+			slash->removeFromParentAndCleanup(true);
+			this->removeFromParentAndCleanup(true);
+		}
+
 	});
+}
+
+void EnemyToanChanStudent2::updateMe(float dt)
+{
+	BaseEnemy::updateMe(dt);
+	slash->updateMe(dt);
+	if (slash->getPositionX() < this->getPositionX() - SCREEN_SIZE.width) {
+		slash->getB2Body()->SetTransform(b2Vec2(this->getBoneLocation("bone32").x / PTM_RATIO, this->getBoneLocation("bone32").y / PTM_RATIO), 0);
+		slash->getB2Body()->SetLinearVelocity(b2Vec2(0,0));
+		slash->setVisible(false);
+	}
+	controlAttack++;
+	if (controlAttack > 120) {
+		controlAttack = 0;	// 2 giay 1 nhat
+		this->attack();
+	}
+}
+
+//void EnemyToanChanStudent2::removeFromParentAndCleanup(bool cleanup)
+//{
+//	BaseEnemy::removeAllChildrenWithCleanup(cleanup);
+//	auto world = slash->getB2Body()->GetWorld();
+//	world->DestroyBody(slash->getB2Body());
+//	slash->removeAllChildrenWithCleanup(cleanup);
+//	log("delete slash");
+//}
+
+void EnemyToanChanStudent2::onExit()
+{
+	BaseEnemy::onExit();
+	auto world = slash->getB2Body()->GetWorld();
+	world->DestroyBody(slash->getB2Body());
+	log("delete slash");
 }

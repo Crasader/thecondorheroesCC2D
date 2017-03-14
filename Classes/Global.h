@@ -22,14 +22,15 @@ using namespace std;
 #define BITMASK_WOODER					0x0008
 #define BITMASK_COIN					0x0010
 #define BITMASK_TOANCHAN1				0x0020
-#define BITMASK_ITEM					0x0040
+#define BITMASK_TOANCHAN2				0x0040
 #define BITMASK_SWORD					0x0080
+#define BITMASK_SLASH					0x0100
 
 // tag
 #define TAG_HERO							50
 #define TAG_FLOOR							51
 #define TAG_COIN							52
-#define TAG_BULLET_ENEMY					53
+#define TAG_SLASH							53
 #define TAG_ITEM							54
 #define TAG_BOMB							55
 #define TAG_BLINK							56
@@ -39,6 +40,7 @@ using namespace std;
 
 #define TAG_ENEMY_WOODER					101
 #define TAG_ENEMY_TOANCHAN1					102
+#define TAG_ENEMY_TOANCHAN2					103
 
 
 // z-order

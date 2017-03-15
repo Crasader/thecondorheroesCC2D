@@ -24,6 +24,7 @@ public:
 	void genSlash();
 	void listener();
 	void updateMe(float dt);
+	void initCirclePhysic(b2World * world, Point pos);
 
 	//void removeFromParentAndCleanup(bool cleanup);
 

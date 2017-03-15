@@ -54,6 +54,8 @@ bool GameScene::init()
 	createDuongQua("Animation/DuongQua/DuongQua.json", "Animation/DuongQua/DuongQua.atlas",
 		Point(visibleSize.width * 0.25f, visibleSize.height));
 
+	danceWithEffect();
+
 	creatEnemyWooder();
 	creatEnemyToanChanStudent();
 	creatEnemyToanChanStudent2();
@@ -78,10 +80,8 @@ void GameScene::createDuongQua(string path_Json, string path_Atlas, Point positi
 	hero->initCirclePhysic(world, hero->getPosition());
 	
 	addChild(hero, ZORDER_HERO);
-	addChild(hero->getSlash_1(), 4);
+	//addChild(hero->getSlash_1(), 4);
 	addChild(hero->getSlash_2(), 4);
-
-	hero->createPool();
 }
 
 void GameScene::checkActiveButton()
@@ -569,6 +569,15 @@ void GameScene::createSquareCoin()
 //	spSkeletonJson_dispose(json);
 //	return skeletonData;*/
 //}
+
+void GameScene::danceWithEffect()
+{
+	EM->createWithFile(hero->getScale() / 3);
+	addChild(EM->getSlashBreak(), 4);
+	addChild(EM->getSmokeJumpX2(), 4);
+	addChild(EM->getSmokeLanding(), 4);
+	addChild(EM->getSmokeRun(), 4);
+}
 
 void GameScene::danceWithCamera()
 {

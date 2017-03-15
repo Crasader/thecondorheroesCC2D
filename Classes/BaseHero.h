@@ -61,8 +61,6 @@ public:
 
 	// getBoneLocation
 	Point getBoneXLocation(string boneName);
-	virtual void createPool();
-	virtual void shoot();
 
 	StateMachine* getFSM();
 };

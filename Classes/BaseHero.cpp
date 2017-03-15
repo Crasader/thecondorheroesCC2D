@@ -20,7 +20,7 @@ void BaseHero::initSwordPhysic(b2World *world, Point position, float width)
 	b2PolygonShape shape;
 	b2FixtureDef fixtureDef;
 
-	shape.SetAsBox(width / PTM_RATIO, getTrueRadiusOfHero() / 5 / PTM_RATIO);
+	shape.SetAsBox(width / PTM_RATIO, getTrueRadiusOfHero()* 0.85f / PTM_RATIO);
 
 	fixtureDef.density = 0.0f;
 	fixtureDef.friction = 0.0f;
@@ -122,14 +122,6 @@ Point BaseHero::getBoneXLocation(string boneName)
 	auto boneX = findBone(boneName);
 	auto pos = Vec2(this->getScaleX() * boneX->worldX, boneX->worldY);
 	return pos + this->getPosition();
-}
-
-void BaseHero::createPool()
-{
-}
-
-void BaseHero::shoot()
-{
 }
 
 

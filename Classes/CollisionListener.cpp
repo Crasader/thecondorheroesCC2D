@@ -3,6 +3,7 @@
 #include "BaseEnemy.h"
 #include "Coin.h"
 #include "Slash.h"
+#include "EffectManager.h"
 
 CollisionListener::CollisionListener() {
 
@@ -45,6 +46,10 @@ void CollisionListener::BeginContact(b2Contact * contact)
 			else {
 				hero->setOnGround(true);
 				hero->setNumberOfJump(2);
+
+				EM->getSmokeLanding()->setPosition(hero->getPosition());
+				EM->getSmokeLanding()->setVisible(true);
+				EM->smokeLandingAni();
 			}
 		}
 		else {
@@ -54,8 +59,13 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 			}
 			else {
+				
 				hero->setOnGround(true);
 				hero->setNumberOfJump(2);
+
+				EM->getSmokeLanding()->setPosition(hero->getPosition());
+				EM->getSmokeLanding()->setVisible(true);
+				EM->smokeLandingAni();
 			}
 		}
 
@@ -108,7 +118,13 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		BaseEnemy* sA = (BaseEnemy*)bodyA->GetUserData();
 		BaseEnemy* sB = (BaseEnemy*)bodyB->GetUserData();
-		auto enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+
+		BaseEnemy *enemy;
+
+		if (sA && sB)		// sA and sB != nullptr
+			enemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+		else
+			enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 
 		enemy->die();
 	}
@@ -119,7 +135,13 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		BaseEnemy* sA = (BaseEnemy*)bodyA->GetUserData();
 		BaseEnemy* sB = (BaseEnemy*)bodyB->GetUserData();
-		auto enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+
+		BaseEnemy *enemy;
+
+		if (sA && sB)		// sA and sB != nullptr
+			enemy = sA->getTag() == TAG_ENEMY_TOANCHAN2 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+		else
+			enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 
 		enemy->die();
 	}
@@ -143,9 +165,19 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		Slash* sA = (Slash*)bodyA->GetUserData();
 		Slash* sB = (Slash*)bodyB->GetUserData();
-		auto slash = sA  ? (Slash *)sA : (Slash *)sB;
+		Slash *slash;
+
+		if (sA && sB)		// sA and sB != nullptr
+			slash = sA->getTag() == TAG_SLASH ? (Slash *)sA : (Slash *)sB;
+		else
+			slash = sA ? (Slash *)sA : (Slash *)sB;
+
 
 		slash->setIsDie(true);
+
+		EM->getSlashBreak()->setPosition(slash->getPosition());
+		EM->getSlashBreak()->setVisible(true);
+		EM->slashBreakAni();
 
 	}
 }

@@ -1,7 +1,8 @@
 #ifndef __DUONG_QUA_H__
 #define __DUONG_QUA_H__
 
-#include "B2Skeleton.h"
+#include "EffectManager.h"
+#include "DQ_TieuHonChuong.h"
 #include "BaseHero.h"
 
 class DuongQua : public BaseHero
@@ -14,9 +15,8 @@ public:
 protected:
 
 	// Skill 3
-	CCArray *poolTieuHonChuong;	// 1 bool of Tieu Hon Chuong
-	int indexOfTieuHonChuong;
-	void createPool();
+	list<TieuHonChuong*> listTieuHonChuong;
+	int numberOfListTHC;
 	void createTieuHonChuong(Point posHand);
 	void shoot();
 	int checkCanShoot;

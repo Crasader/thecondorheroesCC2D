@@ -9,6 +9,7 @@
 #include "EnemyWooder.h"
 #include "EnemyToanChanStudent.h"
 #include "EnemyToanChanStudent2.h"
+#include "EffectManager.h"
 #include "Coin.h"
 #include "CollisionListener.h"
 #include "InfiniteParallaxNode.h"
@@ -86,7 +87,7 @@ private:
 	// do do se bi roi xuong
 	// bat su kien roi xuong qua man hinh de don dep map
 	
-
+	void danceWithEffect();
 	void danceWithCamera();
 
 	// read file Json

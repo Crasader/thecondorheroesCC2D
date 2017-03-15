@@ -52,7 +52,7 @@ void Hud::addButton()
 	btnSkill_3 = Button::create("UI/btnDQ_skill3_up.png", "UI/btnDQ_skill3_down.png",
 		Point(btnAttack->getPositionX() + btnAttack->getBoundingBox().size.width / 7,
 			btnSkill_2->getPositionY() + btnSkill_2->getBoundingBox().size.height / 2.5f));
-	btnSkill_3->setTimeCoolDown(4.77f);
+	btnSkill_3->setTimeCoolDown(6.77f);
 	btnSkill_3->setScale(SCREEN_SIZE.height / 6.5f / btnSkill_3->getContentSize().height);
 	btnSkill_3->getCoolDownSprite()->setScale(btnSkill_3->getScale());
 	addChild(btnSkill_3);

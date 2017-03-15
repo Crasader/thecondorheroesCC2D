@@ -15,12 +15,6 @@ B2Sprite * B2Sprite::create()
 }
 
 
-
-b2Body * B2Sprite::getB2Body()
-{
-	return body;
-}
-
 void B2Sprite::initBoxPhysic(b2World * world, Point pos)
 {
 	b2BodyDef bodyDef;
@@ -53,7 +47,7 @@ void B2Sprite::initCirclePhysic(b2World * world, Point pos)
 
 	auto size = this->getBoundingBox().size;
 	shape.m_p.SetZero();
-	shape.m_radius = size.height/2/ PTM_RATIO;
+	shape.m_radius = size.width / 2 / PTM_RATIO;
 	fixtureDef.density = 1.0f;
 	fixtureDef.friction = 1.0f;
 	fixtureDef.restitution = 0.0f;
@@ -95,6 +89,13 @@ void B2Sprite::changeBodyMaskBits(uint16 mask)
 	b2Filter filter = fixture->GetFilterData();
 	filter.maskBits = mask;
 	fixture->SetFilterData(filter);
+}
+
+void B2Sprite::setAngel(float radian)
+{
+	float vx = SCREEN_SIZE.width / PTM_RATIO * cosf(radian);
+	float vy = SCREEN_SIZE.width / PTM_RATIO * sinf(radian);
+	this->body->SetLinearVelocity(b2Vec2(vx, vy));
 }
 
 void B2Sprite::updateMe(float dt)

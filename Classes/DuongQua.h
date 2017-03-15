@@ -1,7 +1,8 @@
 #ifndef __DUONG_QUA_H__
 #define __DUONG_QUA_H__
 
-#include "B2Skeleton.h"
+#include "EffectManager.h"
+#include "DQ_TieuHonChuong.h"
 #include "BaseHero.h"
 
 class DuongQua : public BaseHero
@@ -12,6 +13,16 @@ public:
 	static DuongQua* create(string jsonFile, string atlasFile, float scale);
 
 protected:
+
+	// Skill 3
+	list<TieuHonChuong*> listTieuHonChuong;
+	int numberOfListTHC;
+	void createTieuHonChuong(Point posHand);
+	void shoot();
+	int checkCanShoot;
+	
+
+	//////////////////////////////////////////////////////////////////////////
 
 	void initCirclePhysic(b2World *world, Point pos);
 

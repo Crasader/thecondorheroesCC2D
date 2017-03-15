@@ -55,6 +55,8 @@ bool GameScene::init()
 	createDuongQua("Animation/DuongQua/DuongQua.json", "Animation/DuongQua/DuongQua.atlas",
 		Point(visibleSize.width * 0.25f, visibleSize.height));
 
+	danceWithEffect();
+
 	creatEnemyWooder();
 	creatEnemyToanChanStudent();
 	creatEnemyToanChanStudent2();
@@ -80,8 +82,10 @@ void GameScene::createDuongQua(string path_Json, string path_Atlas, Point positi
 	hero->listener();
 	hero->setPosition(position);
 	hero->initCirclePhysic(world, hero->getPosition());
+	
 	addChild(hero, ZORDER_HERO);
-	addChild(hero->getSlash(), 4);
+	//addChild(hero->getSlash_1(), 4);
+	addChild(hero->getSlash_2(), 4);
 }
 
 void GameScene::checkActiveButton()
@@ -145,13 +149,6 @@ void GameScene::listener()
 		}
 
 		hero->changeSwordCategoryBitmask(BITMASK_SWORD);
-
-		hero->getSlash()->setPosition(hero->getPositionX() + hero->getTrueRadiusOfHero() * 2 +
-											hero->getSlash()->getBoundingBox().size.height / 4,
-											hero->getPositionY() + hero->getTrueRadiusOfHero());
-		hero->getSlash()->setVisible(true);
-
-
 
 		hero->getFSM()->changeState(MAttack);
 		hero->setIsPrior(true);
@@ -577,6 +574,15 @@ void GameScene::createSquareCoin()
 //	return skeletonData;*/
 //}
 
+void GameScene::danceWithEffect()
+{
+	EM->createWithFile(hero->getScale() / 3);
+	addChild(EM->getSlashBreak(), 4);
+	addChild(EM->getSmokeJumpX2(), 4);
+	addChild(EM->getSmokeLanding(), 4);
+	addChild(EM->getSmokeRun(), 4);
+}
+
 void GameScene::danceWithCamera()
 {
 	auto origin = Director::getInstance()->getVisibleOrigin();
@@ -653,10 +659,11 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 			hero->setNumberOfJump(hero->getNumberOfJump() - 1);
 			hero->setOnGround(false);
 
-			//if (hero->getFSM()->currentState == MSKill3) {		// skill 3, can jump
 			hero->getB2Body()->SetLinearVelocity(b2Vec2(0.0f, hero->getJumpVel()));
-			//	return false;
-			//}
+
+			if (hero->getFSM()->currentState == MSKill3) {		// skill 3, can jump
+				return false;
+			}
 
 			
 			if (hero->getNumberOfJump() == 1)

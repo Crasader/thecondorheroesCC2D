@@ -1,21 +1,19 @@
 #ifndef __SLASH_H__
 #define __SLASH_H__
 
-#include "B2Sprite.h"
+#include "B2Skeleton.h"
 
 
 
-class Slash : public B2Sprite
+class Slash : public B2Skeleton
 {
 private:
 	CC_SYNTHESIZE(bool, isDie, IsDie);
 public:
-	Slash();
-	~Slash();
-	//Animate *animate;
-
-	static Slash* create(string file);
+	Slash(string jsonFile, string atlasFile, float scale);
+	static Slash* create(string jsonFile, string atlasFile, float scale);
 	virtual void initCirclePhysic(b2World *world, Point pos);
+	void updateMe(float dt);
 	//void runAnimation();
 	//void die();
 	

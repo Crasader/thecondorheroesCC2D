@@ -1,5 +1,7 @@
 #include "B2Skeleton.h"
 
+
+
 B2Skeleton::B2Skeleton(string jsonFile, string atlasFile, float scale) : SkeletonAnimation(jsonFile, atlasFile, scale)
 {
 	body = nullptr;
@@ -109,5 +111,13 @@ Point B2Skeleton::getBoneLocation(string boneName)
 	auto pos = Vec2(this->getScaleX()*gun->worldX, gun->worldY);
 	pos = pos + this->getPosition();
 	return pos;
+}
+
+void B2Skeleton::updateMe(float dt)
+{
+	if (body != nullptr) {
+		this->setPositionX(this->getB2Body()->GetPosition().x * PTM_RATIO);
+		this->setPositionY(this->getB2Body()->GetPosition().y * PTM_RATIO - this->getBoundingBox().size.height/2);
+	}
 }
 

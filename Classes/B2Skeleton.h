@@ -28,6 +28,7 @@ public:
 
 	// return Pos bone in parent of this skeleton
 	virtual Point getBoneLocation(string boneName);
+	virtual void updateMe(float dt);
 
 protected:
 	CC_SYNTHESIZE(b2Body*, body, B2Body);

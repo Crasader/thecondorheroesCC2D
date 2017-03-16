@@ -5,6 +5,7 @@
 #include "json/document.h"
 #include "json/writer.h"
 #include "json/stringbuffer.h"
+#include "MenuScene.h"
 
 using namespace rapidjson;
 
@@ -63,8 +64,11 @@ bool GameScene::init()
 
 
 	auto touch_listener = EventListenerTouchOneByOne::create();
+	auto keylistener = EventListenerKeyboard::create();
 	touch_listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
+	keylistener->onKeyPressed = CC_CALLBACK_2(GameScene::onKeyPressed, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(touch_listener, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(keylistener, this);
 
 	this->scheduleUpdate();
 
@@ -244,9 +248,9 @@ void GameScene::initB2World()
 	uint32 flags = 0;
 	flags += b2Draw::e_shapeBit;
 	flags += b2Draw::e_jointBit;
-	//flags += b2Draw::e_aabbBit;
-	//flags += b2Draw::e_pairBit;
-	//flags += b2Draw::e_centerOfMassBit;
+	flags += b2Draw::e_aabbBit;
+	flags += b2Draw::e_pairBit;
+	flags += b2Draw::e_centerOfMassBit;
 
 	debugDraw->SetFlags(flags);
 
@@ -437,7 +441,7 @@ void GameScene::creatEnemyToanChanStudent2()
 		enemy->setPosition(origin);
 		enemy->setVisible(false);
 		this->addChild(enemy, ZORDER_ENEMY);
-		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 4));
+		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
 		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN2);
 		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
 		enemy->genSlash();
@@ -672,6 +676,13 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 
 	return false;
 
+}
+
+void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
+{
+	if (keyCode == EventKeyboard::KeyCode::KEY_BACK) {
+		Director::getInstance()->replaceScene(MenuLayer::createScene());
+	}
 }
 
 void GameScene::updateEnemy()

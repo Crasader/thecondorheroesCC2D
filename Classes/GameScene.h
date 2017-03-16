@@ -82,7 +82,7 @@ private:
 
 
 	//skeleton data
-	spSkeletonData* createSkeletonData(string atlasFile, string jsonFile);
+	//spSkeletonData* createSkeletonData(string atlasFile, string jsonFile);
 	// sau va cham body cua cac quai khong con static nua
 	// do do se bi roi xuong
 	// bat su kien roi xuong qua man hinh de don dep map
@@ -95,6 +95,7 @@ private:
 
 	// touch listener
 	bool onTouchBegan(Touch *touch, Event *unused_event);
+	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
 
 public:
     

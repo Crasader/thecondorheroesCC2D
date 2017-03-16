@@ -4,6 +4,7 @@
 
 DuongQua::DuongQua(string jsonFile, string atlasFile, float scale) : BaseHero(jsonFile, atlasFile, scale)
 {
+	checkDurationSkill1 = 0;
 	checkCanShoot = 0;
 }
 
@@ -32,6 +33,10 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 	duongQua->setIsPriorSkill2(false);
 	duongQua->setIsPriorSkill3(false);
 
+	duongQua->setIsDoneDuration1(true);
+	duongQua->setIsDoneDuration2(true);
+	duongQua->setIsDoneDuration3(true);
+
 	// splash
 	/*duongQua->slash_1 = Sprite::create("Animation/DuongQua/slash1-1.png");
 	duongQua->slash_1->setScale(scale * 3);
@@ -45,31 +50,88 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 	return duongQua;
 }
 
-void DuongQua::createTieuHonChuong(Point posHand)
+void DuongQua::createToanChanKiemPhap(Point posSword)
+{
+	auto tckp = ToanChanKiemPhap::create("Animation/DuongQua/skill1.png");
+	tckp->setScale(this->getTrueRadiusOfHero() * 2 / tckp->getContentSize().width);
+	auto world = this->getB2Body()->GetWorld();
+
+	tckp->setPosition(posSword.x + this->getTrueRadiusOfHero() / 2, posSword.y);
+	tckp->initCirclePhysic(world, tckp->getPosition());
+	tckp->changeBodyCategoryBits(BITMASK_SWORD);
+	tckp->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH);
+
+	this->getParent()->addChild(tckp, 5);
+
+	tckp->setAngel(0);
+	listToanChanKiemPhap.push_back(tckp);
+}
+
+void DuongQua::slashToanChanKiemPhap()
+{
+	this->schedule([&](float dt) {
+		checkDurationSkill1++;
+
+		if (!getIsDoneDuration1() && checkDurationSkill1 >= getDurationSkill1() * 59) {
+			setIsDoneDuration1(true);
+		}
+
+		// only to update
+		if (!listToanChanKiemPhap.empty()) {
+			for (auto tckp : listToanChanKiemPhap) {
+				if (!tckp->getB2Body()) continue;
+				if (tckp->getPositionX() - (this->getPositionX() + SCREEN_SIZE.width * 0.35f) > SCREEN_SIZE.width / 2) {
+					this->getB2Body()->GetWorld()->DestroyBody(tckp->getB2Body());
+					tckp->setB2Body(nullptr);
+
+					tckp->removeFromParentAndCleanup(true);
+				}
+				else
+					tckp->updateMe(dt);
+			}
+		}
+
+		// get more time to update
+		if (checkDurationSkill1 > getDurationSkill1() * 90) {
+			listToanChanKiemPhap.clear();
+			checkDurationSkill1 = 0;
+			unschedule("KeySkill1");
+		}
+
+	}, 1.0f/ 60, "KeySkill1");		//  run every delta second
+}
+
+void DuongQua::doCounterSkill1()
+{
+	slashToanChanKiemPhap();
+}
+
+void DuongQua::createTieuHonChuong(float angle, Point posHand)
 {
 	auto thc = TieuHonChuong::create("Animation/DuongQua/tieuhonchuong.png");
 	thc->setScale(this->getTrueRadiusOfHero() / thc->getContentSize().width);
 	auto world = this->getB2Body()->GetWorld();
 
-	thc->setVisible(true);
 	thc->setPosition(posHand.x + this->getTrueRadiusOfHero() / 2, posHand.y);
 	thc->initCirclePhysic(world, thc->getPosition());
 	thc->changeBodyCategoryBits(BITMASK_SWORD);
 	thc->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH);
 
-
 	this->getParent()->addChild(thc, 5);
 
-	thc->setAngel(0);
+	thc->getB2Body()->SetTransform(thc->getB2Body()->GetPosition(), angle);
+	thc->setAngel(angle);
 
 	listTieuHonChuong.push_back(thc);
 }
 
-void DuongQua::shoot()
+void DuongQua::shootTieuHonChuong()
 {
 	this->schedule([&](float dt) {
 		if (checkCanShoot % 3 == 0) {
-			createTieuHonChuong(getBoneXLocation("bone47"));
+			createTieuHonChuong(PI / 15, getBoneLocation("bone47"));
+			createTieuHonChuong(0, getBoneLocation("bone47"));
+			createTieuHonChuong(-PI / 15, getBoneLocation("bone47"));
 		}
 
 		checkCanShoot++;
@@ -203,6 +265,8 @@ void DuongQua::attackBySkill1()
 	clearTracks();
 	addAnimation(0, "skill1", false);
 	setToSetupPose();
+
+	createToanChanKiemPhap(getBoneLocation("bone47"));
 }
 
 void DuongQua::attackBySkill2()
@@ -218,7 +282,7 @@ void DuongQua::attackBySkill3()
 	addAnimation(0, "skill3", false);
 	setToSetupPose();
 
-	shoot();
+	shootTieuHonChuong();
 }
 
 void DuongQua::injured()
@@ -236,9 +300,9 @@ void DuongQua::die(Point posOfCammera)
 
 void DuongQua::listener()
 {
-	// get Duration here
-	this->setDurationSkill1(spSkeletonData_findAnimation(this->getSkeleton()->data, "skill1")->duration);
-	this->setDurationSkill2(spSkeletonData_findAnimation(this->getSkeleton()->data, "skill2")->duration);
+	// set Duration here
+	this->setDurationSkill1(4.0f);
+	//this->setDurationSkill2(spSkeletonData_findAnimation(this->getSkeleton()->data, "skill2")->duration);
 	this->setDurationSkill3(spSkeletonData_findAnimation(this->getSkeleton()->data, "skill3")->duration);
 
 

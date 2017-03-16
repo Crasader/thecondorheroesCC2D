@@ -117,11 +117,8 @@ void BaseHero::updateMe(float dt)
 	}
 }
 
-Point BaseHero::getBoneXLocation(string boneName)
+void BaseHero::doCounterSkill1()
 {
-	auto boneX = findBone(boneName);
-	auto pos = Vec2(this->getScaleX() * boneX->worldX, boneX->worldY);
-	return pos + this->getPosition();
 }
 
 

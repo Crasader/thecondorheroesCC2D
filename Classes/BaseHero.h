@@ -27,6 +27,7 @@ protected:
 	CC_SYNTHESIZE(Sprite*, slash_1, Slash_1);
 	CC_SYNTHESIZE(Sprite*, slash_2, Slash_2);
 
+	// bool to make separate animation
 	CC_SYNTHESIZE(bool, isPrior, IsPrior);
 	CC_SYNTHESIZE(bool, isPriorSkill1, IsPriorSkill1);
 	CC_SYNTHESIZE(bool, isPriorSkill2, IsPriorSkill2);
@@ -35,6 +36,11 @@ protected:
 	CC_SYNTHESIZE(float, durationSkill1, DurationSkill1);
 	CC_SYNTHESIZE(float, durationSkill2, DurationSkill2);
 	CC_SYNTHESIZE(float, durationSkill3, DurationSkill3);
+
+	// bool to counter blocked button
+	CC_SYNTHESIZE(bool, isDoneDuration1, IsDoneDuration1);
+	CC_SYNTHESIZE(bool, isDoneDuration2, IsDoneDuration2);
+	CC_SYNTHESIZE(bool, isDoneDuration3, IsDoneDuration3);
 
 public:
 
@@ -59,8 +65,7 @@ public:
 	virtual void listener();
 	virtual void updateMe(float dt);
 
-	// getBoneLocation
-	Point getBoneXLocation(string boneName);
+	virtual void doCounterSkill1();
 
 	StateMachine* getFSM();
 };

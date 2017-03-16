@@ -87,15 +87,8 @@ void GameScene::createDuongQua(string path_Json, string path_Atlas, Point positi
 void GameScene::checkActiveButton()
 {
 
-	if (hud->getBtnAttack()->getIsBlocked()) {		// 2 and 3 active
-
-		if (!hud->getBtnSkill_1()->getCanTouch() && !hero->getIsPriorSkill1()) {
-			hud->getBtnAttack()->setIsBlocked(false);
-		}
-		else if (!hud->getBtnSkill_2()->getCanTouch() && !hero->getIsPriorSkill2()) {
-			hud->getBtnAttack()->setIsBlocked(false);
-		}
-		else if (!hud->getBtnSkill_3()->getCanTouch() && !hero->getIsPriorSkill3()) {
+	if (hud->getBtnAttack()->getIsBlocked()) {
+		if (!hud->getBtnSkill_3()->getCanTouch() && !hero->getIsPriorSkill3()) { // check later
 			hud->getBtnAttack()->setIsBlocked(false);
 		}
 
@@ -111,8 +104,9 @@ void GameScene::checkActiveButton()
 
 	}
 
-	if (hud->getBtnSkill_2()->getIsBlocked()) {		// 2 and 3 active
-		if (!hud->getBtnSkill_1()->getCanTouch() && !hero->getIsPriorSkill1()) {
+	if (hud->getBtnSkill_2()->getIsBlocked()) {		// 1 and 3 active
+		if (!hud->getBtnSkill_1()->getCanTouch() && hero->getIsDoneDuration1()) {
+			log("Done duration 1");
 			hud->getBtnSkill_2()->setIsBlocked(false);
 		}
 		else if (!hud->getBtnSkill_3()->getCanTouch() && !hero->getIsPriorSkill3()) {
@@ -121,11 +115,12 @@ void GameScene::checkActiveButton()
 
 	}
 
-	if (hud->getBtnSkill_3()->getIsBlocked()) {		// 2 and 3 active
+	if (hud->getBtnSkill_3()->getIsBlocked()) {		// 2 and 1 active
 		if (!hud->getBtnSkill_2()->getCanTouch() && !hero->getIsPriorSkill2()) {
 			hud->getBtnSkill_3()->setIsBlocked(false);
 		}
-		else if (!hud->getBtnSkill_1()->getCanTouch() && !hero->getIsPriorSkill1()) {
+		else if (!hud->getBtnSkill_1()->getCanTouch() && hero->getIsDoneDuration1()) {
+			log("Done duration 1");
 			hud->getBtnSkill_3()->setIsBlocked(false);
 		}
 
@@ -144,10 +139,16 @@ void GameScene::listener()
 			return;
 		}
 
-		hero->changeSwordCategoryBitmask(BITMASK_SWORD);
+		if (! hero->getIsDoneDuration1()) {
+			hero->getFSM()->changeState(MSKill1);  // move to attack
+			hero->setIsPriorSkill1(true);			// move to attack
+		}
+		else {
+			hero->changeSwordCategoryBitmask(BITMASK_SWORD);
 
-		hero->getFSM()->changeState(MAttack);
-		hero->setIsPrior(true);
+			hero->getFSM()->changeState(MAttack);
+			hero->setIsPrior(true);
+		}
 
 		hud->getBtnAttack()->setIsActive(false);
 	}
@@ -161,10 +162,10 @@ void GameScene::listener()
 			return;
 		}
 
-		hero->getFSM()->changeState(MSKill1);
-		hero->setIsPriorSkill1(true);
+		hero->setIsDoneDuration1(false);
+		hero->doCounterSkill1();
+		
 
-		hud->getBtnAttack()->setIsBlocked(true);
 		hud->getBtnSkill_2()->setIsBlocked(true);
 		hud->getBtnSkill_3()->setIsBlocked(true);
 
@@ -183,7 +184,6 @@ void GameScene::listener()
 		hero->getFSM()->changeState(MSKill2);
 		hero->setIsPriorSkill2(true);
 
-		hud->getBtnAttack()->setIsBlocked(true);
 		hud->getBtnSkill_1()->setIsBlocked(true);
 		hud->getBtnSkill_3()->setIsBlocked(true);
 
@@ -240,7 +240,7 @@ void GameScene::initB2World()
 
 	// draw debug
 	auto debugDraw = new (std::nothrow) GLESDebugDraw(PTM_RATIO);
-	//world->SetDebugDraw(debugDraw);
+	world->SetDebugDraw(debugDraw);
 	uint32 flags = 0;
 	flags += b2Draw::e_shapeBit;
 	flags += b2Draw::e_jointBit;
@@ -309,7 +309,7 @@ void GameScene::loadBackground()
 
 	tmx_map->setPosition(Point::ZERO);
 
-	//tmx_map->setVisible(false);
+	tmx_map->setVisible(false);
 
 	this->addChild(tmx_map, ZORDER_BG2);
 	createInfiniteNode();
@@ -370,7 +370,7 @@ void GameScene::createInfiniteNode()
 	//background->addChild(bg3_2, 0, Vec2(1.5f, 1), Vec2(bg3_1->getBoundingBox().size.width, 0));
 	background->setPosition(Point(-SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 	background->setAnchorPoint(Point(0, 0.5f));
-	//background->setVisible(false);
+	background->setVisible(false);
 	this->addChild(background, ZORDER_BG);
 }
 

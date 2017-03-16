@@ -1,5 +1,4 @@
 #include "DQ_TieuHonChuong.h"
-#include "DQ_TieuHonChuong.h"
 
 DQ_TieuHonChuong::DQ_TieuHonChuong()
 {

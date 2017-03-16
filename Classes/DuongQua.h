@@ -3,6 +3,7 @@
 
 #include "EffectManager.h"
 #include "DQ_TieuHonChuong.h"
+#include "DQ_ToanChanKiemPhap.h"
 #include "BaseHero.h"
 
 class DuongQua : public BaseHero
@@ -14,11 +15,18 @@ public:
 
 protected:
 
+	// Skill 1
+	list<ToanChanKiemPhap*> listToanChanKiemPhap;
+	int checkDurationSkill1;
+	void createToanChanKiemPhap(Point posSword);
+	void slashToanChanKiemPhap();
+	void doCounterSkill1();
+
 	// Skill 3
 	list<TieuHonChuong*> listTieuHonChuong;
 	int numberOfListTHC;
-	void createTieuHonChuong(Point posHand);
-	void shoot();
+	void createTieuHonChuong(float angle, Point posHand);
+	void shootTieuHonChuong();
 	int checkCanShoot;
 	
 

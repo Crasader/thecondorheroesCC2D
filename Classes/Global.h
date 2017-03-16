@@ -33,7 +33,7 @@ using namespace std;
 #define TAG_SLASH							53
 #define TAG_ITEM							54
 #define TAG_DQ_TIEU_HON_CHUONG				55
-#define TAG_BLINK							56
+#define TAG_DQ_TOAN_CHAN_KIEM_PHAP			56
 #define TAG_BOMB_ENEMY						57
 #define TAG_GAME							58
 

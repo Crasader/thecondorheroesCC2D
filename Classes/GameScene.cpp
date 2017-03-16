@@ -244,7 +244,7 @@ void GameScene::initB2World()
 
 	// draw debug
 	auto debugDraw = new (std::nothrow) GLESDebugDraw(PTM_RATIO);
-	world->SetDebugDraw(debugDraw);
+	//world->SetDebugDraw(debugDraw);
 	uint32 flags = 0;
 	flags += b2Draw::e_shapeBit;
 	flags += b2Draw::e_jointBit;

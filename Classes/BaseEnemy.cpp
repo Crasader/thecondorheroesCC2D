@@ -43,7 +43,8 @@ void BaseEnemy::updateMe(float dt)
 void BaseEnemy::initCirclePhysic(b2World * world, Point pos)
 {
 	B2Skeleton::initCirclePhysic(world, pos);
-	this->getB2Body()->SetType(b2_staticBody);
+	this->getB2Body()->SetType(b2_dynamicBody);
 	this->getB2Body()->GetFixtureList()->SetSensor(true);
+	this->getB2Body()->SetGravityScale(0);
 }
 

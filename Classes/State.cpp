@@ -63,7 +63,6 @@ Running * Running::getInstance()
 }
 
 
-// IDLE
 Idling::Idling()
 {
 }
@@ -72,6 +71,7 @@ Idling::~Idling()
 {
 }
 
+// IDLE
 void Idling::execute(BaseHero * hero)
 {
 	hero->run();

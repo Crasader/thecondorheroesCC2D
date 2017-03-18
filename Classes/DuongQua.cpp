@@ -20,7 +20,7 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 	duongQua->setMoveVel(duongQua->SCREEN_SIZE.width / PTM_RATIO / 2.3f);
 	duongQua->setJumpVel(duongQua->SCREEN_SIZE.height * 1.4f / PTM_RATIO);
 
-	duongQua->health = 4;
+	duongQua->health = 100;
 
 	duongQua->facingRight = true;
 
@@ -93,7 +93,7 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 0.0f;
-	fixtureDef.friction = 0.5f;
+	fixtureDef.friction = 0.0f;
 	fixtureDef.restitution = 0.0f;
 	fixtureDef.shape = &circle_shape;
 

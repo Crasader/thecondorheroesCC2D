@@ -1,6 +1,8 @@
 ﻿#include "CollisionListener.h"
 #include "BaseHero.h"
 #include "BaseEnemy.h"
+#include "DQ_DocCoKiemPhap.h"
+#include "GameScene.h"
 #include "Coin.h"
 #include "Slash.h"
 #include "EffectManager.h"
@@ -84,6 +86,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		if (!enemy->getIsDie()) {
 			hero->setIsPrior(true);
 			hero->getFSM()->changeState(MInjured);
+			hero->getBloodScreen()->setVisible(true);
 			hero->setHealth(hero->getHealth() - 1);
 		}
 
@@ -155,6 +158,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
 
 		hero->setIsPrior(true);
+		hero->getBloodScreen()->setVisible(true);
 		hero->getFSM()->changeState(MInjured);
 		hero->setHealth(hero->getHealth() - 1);
 
@@ -179,6 +183,46 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		EM->getSlashBreak()->setVisible(true);
 		EM->slashBreakAni();
 
+	}
+
+
+	if ((bitmaskA == BITMASK_SPECIAL_SWORD && bitmaskB == BITMASK_TOANCHAN1) ||
+		(bitmaskB == BITMASK_SPECIAL_SWORD && bitmaskA == BITMASK_TOANCHAN1)
+		) {
+
+		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
+		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
+		auto enemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+
+		enemy->die();
+
+	}
+
+	if ((bitmaskA == BITMASK_SPECIAL_SWORD && bitmaskB == BITMASK_TOANCHAN2) ||
+		(bitmaskB == BITMASK_SPECIAL_SWORD && bitmaskA == BITMASK_TOANCHAN2)
+		) {
+
+		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
+		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
+		auto enemy = sA->getTag() == TAG_ENEMY_TOANCHAN2 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+
+		enemy->die();
+
+	}
+
+	if ((bitmaskA == BITMASK_SPECIAL_SWORD && bitmaskB == BITMASK_FLOOR) ||
+		(bitmaskB == BITMASK_SPECIAL_SWORD && bitmaskA == BITMASK_FLOOR)
+		) {
+
+		KiemPhap* sA = (KiemPhap*) bodyA->GetUserData();
+		KiemPhap* sB = (KiemPhap*) bodyB->GetUserData();
+		auto kp = sA ? (KiemPhap *)sA : (KiemPhap *)sB;
+
+		auto parentGameScene = (GameScene*) kp->getParent();
+		parentGameScene->shakeTheScreen();
+
+		//kp->hitGround();
+		
 	}
 }
 

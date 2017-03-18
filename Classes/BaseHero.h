@@ -24,8 +24,8 @@ protected:
 	CC_SYNTHESIZE(int, numberOfJump, NumberOfJump);
 	CC_SYNTHESIZE(float, jump_vel, JumpVel);
 
-	CC_SYNTHESIZE(Sprite*, slash_1, Slash_1);
-	CC_SYNTHESIZE(Sprite*, slash_2, Slash_2);
+	CC_SYNTHESIZE(Sprite*, bloodScreen, BloodScreen);
+	CC_SYNTHESIZE(Sprite*, slash, Slash);
 
 	// bool to make separate animation
 	CC_SYNTHESIZE(bool, isPrior, IsPrior);
@@ -66,6 +66,8 @@ public:
 	virtual void updateMe(float dt);
 
 	virtual void doCounterSkill1();
+	virtual void doCounterSkill2();
+	virtual void doCounterSkill3();
 
 	StateMachine* getFSM();
 };

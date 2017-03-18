@@ -4,6 +4,7 @@
 #include "EffectManager.h"
 #include "DQ_TieuHonChuong.h"
 #include "DQ_ToanChanKiemPhap.h"
+#include "DQ_DocCoKiemPhap.h"
 #include "BaseHero.h"
 
 class DuongQua : public BaseHero
@@ -22,12 +23,21 @@ protected:
 	void slashToanChanKiemPhap();
 	void doCounterSkill1();
 
+
+	// Skill 2
+	list<KiemPhap*> listKiemPhap;
+	int checkDurationSkill2;
+	int numberOfDeadSword;
+	void createKiemPhap(float posX);
+	void landKiemPhap();
+	void doCounterSkill2();
+
 	// Skill 3
 	list<TieuHonChuong*> listTieuHonChuong;
-	int numberOfListTHC;
 	void createTieuHonChuong(float angle, Point posHand);
 	void shootTieuHonChuong();
-	int checkCanShoot;
+	int checkDurationSkill3;
+	void doCounterSkill3();
 	
 
 	//////////////////////////////////////////////////////////////////////////

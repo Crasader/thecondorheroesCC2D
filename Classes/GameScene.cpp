@@ -53,7 +53,7 @@ bool GameScene::init()
 	createGroundBody();
 
 	createDuongQua("Animation/DuongQua/DuongQua.json", "Animation/DuongQua/DuongQua.atlas",
-		Point(visibleSize.width * 0.25f, visibleSize.height));
+		Point(origin.x, visibleSize.height));
 
 	danceWithEffect();
 
@@ -82,27 +82,29 @@ void GameScene::createDuongQua(string path_Json, string path_Atlas, Point positi
 	hero->listener();
 	hero->setPosition(position);
 	hero->initCirclePhysic(world, hero->getPosition());
-	
+
 	addChild(hero, ZORDER_HERO);
-	//addChild(hero->getSlash_1(), 4);
-	addChild(hero->getSlash_2(), 4);
+	addChild(hero->getSlash(), ZORDER_SMT);
+
+	hero->getBloodScreen()->setPosition(follow->getPosition());
+	addChild(hero->getBloodScreen(), ZORDER_SMT);
 }
 
 void GameScene::checkActiveButton()
 {
 
-	if (hud->getBtnAttack()->getIsBlocked()) {
-		if (!hud->getBtnSkill_3()->getCanTouch() && !hero->getIsPriorSkill3()) { // check later
-			hud->getBtnAttack()->setIsBlocked(false);
-		}
+	//if (hud->getBtnAttack()->getIsBlocked()) {
+	//	if (!hud->getBtnSkill_3()->getCanTouch() && !hero->getIsPriorSkill3()) { // check later
+	//		hud->getBtnAttack()->setIsBlocked(false);
+	//	}
 
-	}
+	//}
 
 	if (hud->getBtnSkill_1()->getIsBlocked()) {		// 2 and 3 active
-		if (!hud->getBtnSkill_2()->getCanTouch() && !hero->getIsPriorSkill2()) {
+		if (!hud->getBtnSkill_2()->getCanTouch() && hero->getIsDoneDuration2()) {		// check later
 			hud->getBtnSkill_1()->setIsBlocked(false);
 		}
-		else if (!hud->getBtnSkill_3()->getCanTouch() && !hero->getIsPriorSkill3()) {
+		else if (!hud->getBtnSkill_3()->getCanTouch() && hero->getIsDoneDuration3()) {
 			hud->getBtnSkill_1()->setIsBlocked(false);
 		}
 
@@ -113,14 +115,14 @@ void GameScene::checkActiveButton()
 			log("Done duration 1");
 			hud->getBtnSkill_2()->setIsBlocked(false);
 		}
-		else if (!hud->getBtnSkill_3()->getCanTouch() && !hero->getIsPriorSkill3()) {
+		else if (!hud->getBtnSkill_3()->getCanTouch() && hero->getIsDoneDuration3()) {
 			hud->getBtnSkill_2()->setIsBlocked(false);
 		}
 
 	}
 
 	if (hud->getBtnSkill_3()->getIsBlocked()) {		// 2 and 1 active
-		if (!hud->getBtnSkill_2()->getCanTouch() && !hero->getIsPriorSkill2()) {
+		if (!hud->getBtnSkill_2()->getCanTouch() && hero->getIsDoneDuration2()) {		// check later
 			hud->getBtnSkill_3()->setIsBlocked(false);
 		}
 		else if (!hud->getBtnSkill_1()->getCanTouch() && hero->getIsDoneDuration1()) {
@@ -143,10 +145,18 @@ void GameScene::listener()
 			return;
 		}
 
-		if (! hero->getIsDoneDuration1()) {
+		if (!hero->getIsDoneDuration1()) {
 			hero->getFSM()->changeState(MSKill1);  // move to attack
 			hero->setIsPriorSkill1(true);			// move to attack
 		}
+		else if (!hero->getIsDoneDuration3()) {
+			hero->attackBySkill3();
+			hero->changeSwordCategoryBitmask(BITMASK_SWORD);
+
+			hero->getFSM()->changeState(MAttack);
+			hero->setIsPrior(true);
+		}
+
 		else {
 			hero->changeSwordCategoryBitmask(BITMASK_SWORD);
 
@@ -158,17 +168,15 @@ void GameScene::listener()
 	}
 
 	if (hud->getBtnSkill_1()->getIsActive() && !hud->getBtnSkill_1()->getIsBlocked()) {
-
-		// you cannot attack while being dead
 		if (hero->getFSM()->currentState == MDie) {
-			log("You cannot");
-			hud->getBtnAttack()->setIsActive(false);
+
+			hud->getBtnSkill_1()->setIsActive(false);
 			return;
 		}
 
 		hero->setIsDoneDuration1(false);
 		hero->doCounterSkill1();
-		
+
 
 		hud->getBtnSkill_2()->setIsBlocked(true);
 		hud->getBtnSkill_3()->setIsBlocked(true);
@@ -178,15 +186,17 @@ void GameScene::listener()
 
 	if (hud->getBtnSkill_2()->getIsActive() && !hud->getBtnSkill_2()->getIsBlocked()) {
 
-		// you cannot attack while being dead
 		if (hero->getFSM()->currentState == MDie) {
-			log("You cannot");
-			hud->getBtnAttack()->setIsActive(false);
+
+			hud->getBtnSkill_2()->setIsActive(false);
 			return;
 		}
 
-		hero->getFSM()->changeState(MSKill2);
-		hero->setIsPriorSkill2(true);
+		/*hero->getFSM()->changeState(MSKill2);
+		hero->setIsPriorSkill2(true);*/
+
+		hero->setIsDoneDuration2(false);
+		hero->doCounterSkill2();
 
 		hud->getBtnSkill_1()->setIsBlocked(true);
 		hud->getBtnSkill_3()->setIsBlocked(true);
@@ -196,18 +206,19 @@ void GameScene::listener()
 
 	if (hud->getBtnSkill_3()->getIsActive() && !hud->getBtnSkill_3()->getIsBlocked()) {
 
-		// you cannot attack while being dead
 		if (hero->getFSM()->currentState == MDie) {
-			log("You cannot");
-			hud->getBtnAttack()->setIsActive(false);
+
+			hud->getBtnSkill_3()->setIsActive(false);
 			return;
 		}
 
-		hero->getFSM()->changeState(MSKill3);
-		hero->setIsPriorSkill3(true);
+		/*hero->getFSM()->changeState(MSKill3);
+		hero->setIsPriorSkill3(true);*/
+
+		hero->setIsDoneDuration3(false);
+		hero->doCounterSkill3();
 
 		// block
-		hud->getBtnAttack()->setIsBlocked(true);
 		hud->getBtnSkill_1()->setIsBlocked(true);
 		hud->getBtnSkill_2()->setIsBlocked(true);
 
@@ -228,14 +239,11 @@ void GameScene::update(float dt)
 	updateEnemy();
 	//cleanMap();
 
-	if (hero->getPositionX() < SCREEN_SIZE.width / 4) {
-		follow->setPositionX(SCREEN_SIZE.width / 2);
-	}
-	else
-		follow->setPositionX(hero->getPositionX()+ SCREEN_SIZE.width / 4);
+	if (hero->getPositionX() >= SCREEN_SIZE.width / 4)
+		follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4);
 
 	background->updatePosition();
-
+	hero->getBloodScreen()->setPositionX(follow->getPositionX());
 }
 
 void GameScene::initB2World()
@@ -248,9 +256,9 @@ void GameScene::initB2World()
 	uint32 flags = 0;
 	flags += b2Draw::e_shapeBit;
 	flags += b2Draw::e_jointBit;
-	flags += b2Draw::e_aabbBit;
-	flags += b2Draw::e_pairBit;
-	flags += b2Draw::e_centerOfMassBit;
+	//flags += b2Draw::e_aabbBit;
+	//flags += b2Draw::e_pairBit;
+	//flags += b2Draw::e_centerOfMassBit;
 
 	debugDraw->SetFlags(flags);
 
@@ -313,7 +321,7 @@ void GameScene::loadBackground()
 
 	tmx_map->setPosition(Point::ZERO);
 
-	tmx_map->setVisible(false);
+	//tmx_map->setVisible(false);
 
 	this->addChild(tmx_map, ZORDER_BG2);
 	createInfiniteNode();
@@ -355,16 +363,6 @@ void GameScene::createInfiniteNode()
 	bg3_2->setScaleY(SCREEN_SIZE.height / bg3_2->getContentSize().height);
 	bg3_2->setAnchorPoint(Point(0, 0.5f));
 
-	/*auto bg3_1 = Sprite::create("bg-3.png");
-	bg3_1->setScaleX(SCREEN_SIZE.width / bg3_1->getContentSize().width);
-	bg3_1->setScaleY(SCREEN_SIZE.height / bg3_1->getContentSize().height);
-	bg3_1->setAnchorPoint(Point(0, 0.5f));
-
-	auto bg3_2 = Sprite::create("bg-3.png");
-	bg3_2->setScaleX(SCREEN_SIZE.width / bg3_2->getContentSize().width);
-	bg3_2->setScaleY(SCREEN_SIZE.height / bg3_2->getContentSize().height);
-	bg3_2->setAnchorPoint(Point(0, 0.5f));*/
-
 
 	background->addChild(bg1_1, 0, Vec2(0.5f, 1), Vec2(0, 0));
 	background->addChild(bg1_2, 0, Vec2(0.5f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
@@ -374,7 +372,7 @@ void GameScene::createInfiniteNode()
 	//background->addChild(bg3_2, 0, Vec2(1.5f, 1), Vec2(bg3_1->getBoundingBox().size.width, 0));
 	background->setPosition(Point(-SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 	background->setAnchorPoint(Point(0, 0.5f));
-	background->setVisible(false);
+	//background->setVisible(false);
 	this->addChild(background, ZORDER_BG);
 }
 
@@ -423,7 +421,7 @@ void GameScene::creatEnemyToanChanStudent()
 		this->addChild(enemy, ZORDER_ENEMY);
 		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 4));
 		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
+		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_SPECIAL_SWORD);
 		//enemy->genSplash();
 		enemy->listener();
 	}
@@ -443,13 +441,13 @@ void GameScene::creatEnemyToanChanStudent2()
 		this->addChild(enemy, ZORDER_ENEMY);
 		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
 		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN2);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
+		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_SPECIAL_SWORD);
 		enemy->genSlash();
 		enemy->listener();
 		auto slash = enemy->getSlash();
 		slash->initCirclePhysic(world, slash->getPosition());
 		slash->changeBodyCategoryBits(BITMASK_SLASH);
-		slash->changeBodyMaskBits(BITMASK_HERO|BITMASK_SWORD);
+		slash->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
 		slash->getB2Body()->GetFixtureList()->SetSensor(true);
 	}
 }
@@ -613,7 +611,7 @@ void GameScene::initGroundPhysic(b2World * world, Point pos, Size size)
 	fixtureDef.shape = &shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_FLOOR;
-	fixtureDef.filter.maskBits = BITMASK_HERO;
+	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_SPECIAL_SWORD;
 
 	bodyDef.type = b2_staticBody;
 
@@ -650,8 +648,7 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 
 		// cannot jump while attacking or being injured
 		if (hero->getFSM()->currentState == MAttack || hero->getFSM()->currentState == MInjured ||
-			hero->getFSM()->currentState == MDie || hero->getFSM()->currentState == MSKill1 ||
-			hero->getFSM()->currentState == MSKill2)
+			hero->getFSM()->currentState == MDie || hero->getFSM()->currentState == MSKill2)
 
 			return false;
 
@@ -661,11 +658,24 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 
 			hero->getB2Body()->SetLinearVelocity(b2Vec2(0.0f, hero->getJumpVel()));
 
-			if (hero->getFSM()->currentState == MSKill3) {		// skill 3, can jump
+			if (hero->getFSM()->currentState == MLand && hero->getNumberOfJump() > 0) {
+				EM->getSmokeJumpX2()->setPosition(hero->getPosition());
+				EM->getSmokeJumpX2()->setVisible(true);
+				EM->smokeJumpX2Ani();
+			}
+
+			if (hero->getFSM()->currentState == MSKill1) {		// skill 1, can jump
+				EM->getSmokeRun()->setVisible(false);
+				if (hero->getNumberOfJump() == 0) {
+
+					EM->getSmokeJumpX2()->setPosition(hero->getPosition());
+					EM->getSmokeJumpX2()->setVisible(true);
+					EM->smokeJumpX2Ani();
+				}
 				return false;
 			}
 
-			
+
 			if (hero->getNumberOfJump() == 1)
 				hero->getFSM()->changeState(MJump);
 			if (hero->getNumberOfJump() == 0)
@@ -752,4 +762,11 @@ void GameScene::cacheSkeleton()
 
 	//sr_wooder = createSkeletonData("MocNhan.atlas", "MocNhan.json");
 
+}
+
+void GameScene::shakeTheScreen()
+{
+	log("SHAKING ME");
+	auto shake = MoveBy::create(0.01f, Vec2(0, -0.005f * SCREEN_SIZE.height));
+	this->runAction(Sequence::create(shake, shake->reverse(), shake, shake->reverse(), nullptr));
 }

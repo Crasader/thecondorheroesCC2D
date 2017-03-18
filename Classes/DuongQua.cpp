@@ -5,7 +5,8 @@
 DuongQua::DuongQua(string jsonFile, string atlasFile, float scale) : BaseHero(jsonFile, atlasFile, scale)
 {
 	checkDurationSkill1 = 0;
-	checkCanShoot = 0;
+	checkDurationSkill2 = 0;
+	checkDurationSkill3 = 0;
 }
 
 DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
@@ -42,14 +43,16 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 	duongQua->slash_1->setScale(scale * 3);
 	duongQua->slash_1->setVisible(false);*/
 
-	duongQua->slash_2 = Sprite::create("Animation/DuongQua/slash2-2.png");
-	duongQua->slash_2->setScale(scale * 3);
-	duongQua->slash_2->setVisible(false);
+	duongQua->slash = Sprite::create("Animation/DuongQua/slash2-2.png");
+	duongQua->slash->setScale(scale * 1.2f);
+	duongQua->slash->setVisible(false);
 	//
 
 	return duongQua;
 }
 
+
+// SKILL 1
 void DuongQua::createToanChanKiemPhap(Point posSword)
 {
 	auto tckp = ToanChanKiemPhap::create("Animation/DuongQua/skill1.png");
@@ -61,7 +64,7 @@ void DuongQua::createToanChanKiemPhap(Point posSword)
 	tckp->changeBodyCategoryBits(BITMASK_SWORD);
 	tckp->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH);
 
-	this->getParent()->addChild(tckp, 5);
+	this->getParent()->addChild(tckp, ZORDER_SMT);
 
 	tckp->setAngel(0);
 	listToanChanKiemPhap.push_back(tckp);
@@ -72,7 +75,7 @@ void DuongQua::slashToanChanKiemPhap()
 	this->schedule([&](float dt) {
 		checkDurationSkill1++;
 
-		if (!getIsDoneDuration1() && checkDurationSkill1 >= getDurationSkill1() * 59) {
+		if (checkDurationSkill1 >= getDurationSkill1() * 60) {
 			setIsDoneDuration1(true);
 		}
 
@@ -80,7 +83,7 @@ void DuongQua::slashToanChanKiemPhap()
 		if (!listToanChanKiemPhap.empty()) {
 			for (auto tckp : listToanChanKiemPhap) {
 				if (!tckp->getB2Body()) continue;
-				if (tckp->getPositionX() - (this->getPositionX() + SCREEN_SIZE.width * 0.35f) > SCREEN_SIZE.width / 2) {
+				if (tckp->getPositionX() - (this->getPositionX() + SCREEN_SIZE.width * 0.26f) > SCREEN_SIZE.width / 2) {
 					this->getB2Body()->GetWorld()->DestroyBody(tckp->getB2Body());
 					tckp->setB2Body(nullptr);
 
@@ -92,13 +95,13 @@ void DuongQua::slashToanChanKiemPhap()
 		}
 
 		// get more time to update
-		if (checkDurationSkill1 > getDurationSkill1() * 90) {
+		if (checkDurationSkill1 > getDurationSkill1() * 100) {
 			listToanChanKiemPhap.clear();
 			checkDurationSkill1 = 0;
 			unschedule("KeySkill1");
 		}
 
-	}, 1.0f/ 60, "KeySkill1");		//  run every delta second
+	}, 1.0f / 60, "KeySkill1");		//  run every delta second
 }
 
 void DuongQua::doCounterSkill1()
@@ -106,10 +109,51 @@ void DuongQua::doCounterSkill1()
 	slashToanChanKiemPhap();
 }
 
+
+// SKILL 2
+void DuongQua::createKiemPhap(float posX)
+{
+	auto kp = KiemPhap::create("Animation/DuongQua/Sword.png");
+	kp->setScale(this->getTrueRadiusOfHero() / kp->getContentSize().width);
+	auto world = this->getB2Body()->GetWorld();
+
+	kp->setPosition(posX, SCREEN_SIZE.height + kp->getBoundingBox().size.height);
+	kp->initBoxPhysic(world, kp->getPosition());
+
+	this->getParent()->addChild(kp, ZORDER_ENEMY);
+
+
+	listKiemPhap.push_back(kp);
+}
+
+void DuongQua::landKiemPhap()
+{
+	this->schedule([&](float dt) {
+		if (checkDurationSkill2 % 2 == 0) {		// every 0.2 second
+			createKiemPhap(this->getPositionX() + SCREEN_SIZE.width * (0.05f * (checkDurationSkill2 / 2 + 2)));
+		}
+
+		checkDurationSkill2++;
+		
+		if ((checkDurationSkill2 >= getDurationSkill2() * 10)) {
+			setIsDoneDuration2(true);
+			checkDurationSkill2 = 0;
+			unschedule("KeySkill2");
+		}
+
+	}, 0.1f, "KeySkill2");		//  run every 0.1 second
+}
+
+void DuongQua::doCounterSkill2()
+{
+	landKiemPhap();
+}
+
+// SKILL 3
 void DuongQua::createTieuHonChuong(float angle, Point posHand)
 {
 	auto thc = TieuHonChuong::create("Animation/DuongQua/tieuhonchuong.png");
-	thc->setScale(this->getTrueRadiusOfHero() / thc->getContentSize().width);
+	thc->setScale(this->getTrueRadiusOfHero() * 1.5f / thc->getContentSize().width);
 	auto world = this->getB2Body()->GetWorld();
 
 	thc->setPosition(posHand.x + this->getTrueRadiusOfHero() / 2, posHand.y);
@@ -117,7 +161,7 @@ void DuongQua::createTieuHonChuong(float angle, Point posHand)
 	thc->changeBodyCategoryBits(BITMASK_SWORD);
 	thc->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH);
 
-	this->getParent()->addChild(thc, 5);
+	this->getParent()->addChild(thc, ZORDER_SMT);
 
 	thc->getB2Body()->SetTransform(thc->getB2Body()->GetPosition(), angle);
 	thc->setAngel(angle);
@@ -128,20 +172,40 @@ void DuongQua::createTieuHonChuong(float angle, Point posHand)
 void DuongQua::shootTieuHonChuong()
 {
 	this->schedule([&](float dt) {
-		if (checkCanShoot % 3 == 0) {
-			createTieuHonChuong(PI / 15, getBoneLocation("bone47"));
-			createTieuHonChuong(0, getBoneLocation("bone47"));
-			createTieuHonChuong(-PI / 15, getBoneLocation("bone47"));
+
+		checkDurationSkill3++;
+
+		if (checkDurationSkill3 >= getDurationSkill3() * 60) {
+			setIsDoneDuration3(true);
 		}
 
-		checkCanShoot++;
+		if (!listTieuHonChuong.empty()) {
 
-		if ((checkCanShoot >= getDurationSkill3() * 10 - 1)){
-			checkCanShoot = 0;
+			for (auto thc : listTieuHonChuong) {
+				if (!thc->getB2Body()) continue;
+				if (thc->getPositionX() - (this->getPositionX() + SCREEN_SIZE.width * 0.26f) > SCREEN_SIZE.width / 2) {
+					this->getB2Body()->GetWorld()->DestroyBody(thc->getB2Body());
+					thc->setB2Body(nullptr);
+
+					thc->removeFromParentAndCleanup(true);
+				}
+				else
+					thc->updateMe(dt);
+			}
+		}
+
+		if ((checkDurationSkill3 >= getDurationSkill3() * 100)){
+			listTieuHonChuong.clear();
+			checkDurationSkill3 = 0;
 			unschedule("KeySkill3");
 		}
 
-	}, 0.1f, "KeySkill3");		//  run every 0.1 second
+	}, 1.0f / 60, "KeySkill3");		//  run every delta second
+}
+
+void DuongQua::doCounterSkill3()
+{
+	shootTieuHonChuong();
 }
 
 void DuongQua::initCirclePhysic(b2World * world, Point pos)
@@ -231,7 +295,7 @@ void DuongQua::die()
 
 void DuongQua::attackNormal()
 {
-	getSlash_2()->setVisible(true);
+	getSlash()->setVisible(true);
 
 	clearTracks();
 	auto r = rand() % 2;
@@ -251,7 +315,7 @@ void DuongQua::attackNormal()
 
 void DuongQua::attackLanding()
 {
-	getSlash_2()->setVisible(true);
+	getSlash()->setVisible(true);
 
 	clearTracks();
 	addAnimation(0, "attack3", false);
@@ -263,26 +327,28 @@ void DuongQua::attackLanding()
 void DuongQua::attackBySkill1()
 {
 	clearTracks();
-	addAnimation(0, "skill1", false);
+	addAnimation(0, "attack4", false);
 	setToSetupPose();
 
-	createToanChanKiemPhap(getBoneLocation("bone47"));
+	createToanChanKiemPhap(getBoneLocation("bone52"));
 }
 
 void DuongQua::attackBySkill2()
 {
-	clearTracks();
+	/*clearTracks();
 	addAnimation(0, "skill2", false);
-	setToSetupPose();
+	setToSetupPose();*/
 }
 
 void DuongQua::attackBySkill3()
 {
-	clearTracks();
+	/*clearTracks();
 	addAnimation(0, "skill3", false);
-	setToSetupPose();
+	setToSetupPose();*/
 
-	shootTieuHonChuong();
+	createTieuHonChuong(PI / 12, getSlash()->getPosition());
+	createTieuHonChuong(0, getSlash()->getPosition());
+	createTieuHonChuong(-PI / 12, getSlash()->getPosition());
 }
 
 void DuongQua::injured()
@@ -302,20 +368,24 @@ void DuongQua::listener()
 {
 	// set Duration here
 	this->setDurationSkill1(4.0f);
+	this->setDurationSkill2(2.5f);
 	//this->setDurationSkill2(spSkeletonData_findAnimation(this->getSkeleton()->data, "skill2")->duration);
-	this->setDurationSkill3(spSkeletonData_findAnimation(this->getSkeleton()->data, "skill3")->duration);
+	//this->setDurationSkill3(spSkeletonData_findAnimation(this->getSkeleton()->data, "skill3")->duration);
+	this->setDurationSkill3(3.0f);
 
 
 	this->setEndListener([&](int trackIndex) {
 		if ((strcmp(getCurrent()->animation->name, "jumpx2") == 0)) {
-			this->setTimeScale(1.0f);
 			getFSM()->changeState(MLand);
 		}
 
 		else if ((strcmp(getCurrent()->animation->name, "injured") == 0)) {
+			this->getBloodScreen()->setVisible(false);
 			this->setTimeScale(1.0f);
-			if (getFSM()->globalState == MSKill3)
-				log("SKILL3");
+			if (getFSM()->globalState == MSKill3) {
+				checkDurationSkill3 = 0;
+				unschedule("KeySkill3");
+			}
 			getFSM()->revertToGlobalState();
 			setIsPrior(false);
 		}
@@ -326,9 +396,9 @@ void DuongQua::listener()
 
 			changeSwordCategoryBitmask(BITMASK_ENEMY);
 			//getSlash_1()->setVisible(false);
-			getSlash_2()->setVisible(false);
+			getSlash()->setVisible(false);
 
-			if (getFSM()->globalState != MDoubleJump)
+			if (getFSM()->globalState != MSKill1)
 				getFSM()->revertToGlobalState();
 			else
 				getFSM()->changeState(MLand);
@@ -337,17 +407,20 @@ void DuongQua::listener()
 
 		}
 
-		else if (strcmp(getCurrent()->animation->name, "skill1") == 0) {
+		else if (strcmp(getCurrent()->animation->name, "attack4") == 0) {
+			getFSM()->revertToGlobalState();
 			setIsPriorSkill1(false);
 		}
 
-		else if (strcmp(getCurrent()->animation->name, "skill2") == 0) {
+		/*else if (strcmp(getCurrent()->animation->name, "skill2") == 0) {
+			getFSM()->revertToGlobalState();
 			setIsPriorSkill2(false);
-		}
+		}*/
 
-		else if (strcmp(getCurrent()->animation->name, "skill3") == 0) {
-			setIsPriorSkill3(false);
-		}
+		//else if (strcmp(getCurrent()->animation->name, "skill3") == 0) {
+		//	//getFSM()->revertToGlobalState();
+		//	setIsPriorSkill3(false);
+		//}
 
 	});
 
@@ -366,23 +439,23 @@ void DuongQua::updateMe(float dt)
 
 	auto currentVelY = getB2Body()->GetLinearVelocity().y;
 
-	if (!listTieuHonChuong.empty()) {
-		if (numberOfListTHC == listTieuHonChuong.size()) {
-			listTieuHonChuong.clear();
+	if (!listKiemPhap.empty()) {
+		if (numberOfDeadSword == listKiemPhap.size()) {
+			listKiemPhap.clear();
 		}
 
-		for (auto thc : listTieuHonChuong) {
+		for (auto kp : listKiemPhap) {
+			if (!kp->getB2Body()) continue;
+			if (this->getPositionX() - kp->getPositionX() > SCREEN_SIZE.width * 0.26f || kp->getPositionY() + kp->getBoundingBox().size.height / 2 < 0) {
+				log("DEAD SWORD");
+				this->getB2Body()->GetWorld()->DestroyBody(kp->getB2Body());
+				kp->setB2Body(nullptr);
 
-			if (!thc->getB2Body()) continue;
-			if (thc->getPositionX() - (this->getPositionX() + SCREEN_SIZE.width * 0.35f) > SCREEN_SIZE.width / 2) {
-				this->getB2Body()->GetWorld()->DestroyBody(thc->getB2Body());
-				thc->setB2Body(nullptr);
-
-				thc->removeFromParentAndCleanup(true);
-				numberOfListTHC++;
+				kp->removeFromParentAndCleanup(true);
+				numberOfDeadSword++;
 			}
 			else
-				thc->updateMe(dt);
+				kp->updateMe(dt);
 		}
 	}
 
@@ -390,7 +463,6 @@ void DuongQua::updateMe(float dt)
 		getB2Body()->SetLinearVelocity(b2Vec2(0, currentVelY));
 		return;
 	}
-
 
 	if (getPositionY() + getTrueRadiusOfHero() * 2 < 0) {
 		getB2Body()->SetTransform(b2Vec2(SCREEN_SIZE.width * 0.25f / PTM_RATIO, SCREEN_SIZE.height / PTM_RATIO), getB2Body()->GetAngle());
@@ -400,13 +472,13 @@ void DuongQua::updateMe(float dt)
 	EM->getSmokeRun()->setPosition(this->getPosition());
 	getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
 
-	getSlash_2()->setPosition(this->getPositionX() + this->getTrueRadiusOfHero() * 1.5f,
+	getSlash()->setPosition(this->getPositionX() + this->getTrueRadiusOfHero() * 1.5f,
 		this->getPositionY() + this->getTrueRadiusOfHero());
 
-	if (!getIsPrior() && !getIsPriorSkill1() && !getIsPriorSkill2() && !getIsPriorSkill3()) {
+	if (!getIsPrior() && !getIsPriorSkill1() /*&& !getIsPriorSkill2() && !getIsPriorSkill3()*/) {
 
 		if (getB2Body()->GetLinearVelocity().y < 0) {
-			if (getNumberOfJump() > 0)
+			//if (getNumberOfJump() > 0)
 				getFSM()->changeState(MLand);
 			return;
 		}

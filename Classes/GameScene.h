@@ -105,9 +105,14 @@ public:
 	void update(float dt);
 	void updateEnemy();
 	//void cleanMap();
+
 	// cache function
 	void cachePlist();
 	void cacheSkeleton();
+
+
+	// shaking
+	void shakeTheScreen();
 
     // implement the "static create()" method manually
     CREATE_FUNC(GameScene);

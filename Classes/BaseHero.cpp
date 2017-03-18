@@ -5,7 +5,10 @@
 
 BaseHero::BaseHero(string jsonFile, string atlasFile, float scale) : B2Skeleton(jsonFile, atlasFile, scale)
 {
-	
+	bloodScreen = Sprite::create("red-screen.png");
+	bloodScreen->setScaleX(SCREEN_SIZE.width / bloodScreen->getContentSize().width);
+	bloodScreen->setScaleY(SCREEN_SIZE.height / bloodScreen->getContentSize().height);
+	bloodScreen->setVisible(false);
 }
 
 BaseHero * BaseHero::create(string jsonFile, string atlasFile, float scale)
@@ -118,6 +121,14 @@ void BaseHero::updateMe(float dt)
 }
 
 void BaseHero::doCounterSkill1()
+{
+}
+
+void BaseHero::doCounterSkill2()
+{
+}
+
+void BaseHero::doCounterSkill3()
 {
 }
 

@@ -25,6 +25,7 @@ using namespace std;
 #define BITMASK_TOANCHAN2				0x0040
 #define BITMASK_SWORD					0x0080
 #define BITMASK_SLASH					0x0100
+#define BITMASK_SPECIAL_SWORD			0x0200
 
 // tag
 #define TAG_HERO							50
@@ -34,7 +35,7 @@ using namespace std;
 #define TAG_ITEM							54
 #define TAG_DQ_TIEU_HON_CHUONG				55
 #define TAG_DQ_TOAN_CHAN_KIEM_PHAP			56
-#define TAG_BOMB_ENEMY						57
+#define TAG_DQ_DOC_CO_KIEM_PHAP				57
 #define TAG_GAME							58
 
 
@@ -48,6 +49,7 @@ using namespace std;
 #define ZORDER_BG2							1
 #define ZORDER_ENEMY						2
 #define ZORDER_HERO							3
+#define ZORDER_SMT							4
 
 
 #define PTM_RATIO							32

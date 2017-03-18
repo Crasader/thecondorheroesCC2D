@@ -23,7 +23,7 @@ void Hud::addButton()
 {
 	btnAttack = Button::create("UI/btn_attack.png", "UI/btn_attack.png",
 		Point(SCREEN_SIZE.width * 0.9f, SCREEN_SIZE.height * 0.14f));
-	btnAttack->setTimeCoolDown(0.25f);
+	btnAttack->setTimeCoolDown(0.5f);
 	btnAttack->setScale(SCREEN_SIZE.height / 4.5f / btnAttack->getContentSize().height);
 	btnAttack->getCoolDownSprite()->setScale(btnAttack->getScale());
 	addChild(btnAttack);

@@ -99,7 +99,7 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 
 	fixtureDef.filter.categoryBits = BITMASK_HERO;
 	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR | BITMASK_WOODER | BITMASK_COIN |
-		BITMASK_TOANCHAN1 | BITMASK_SLASH;
+		BITMASK_TOANCHAN1 | BITMASK_SLASH | BITMASK_BOSS;
 
 
 	b2BodyDef bodyDef;

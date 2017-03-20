@@ -14,10 +14,6 @@ DQ_DocCoKiemPhap * DQ_DocCoKiemPhap::create(string file)
 	kp->initWithFile(file);
 	kp->setTag(TAG_DQ_DOC_CO_KIEM_PHAP);
 
-	/*kp->hitGroundEffect = Sprite::create("Animation/DuongQua/halfball.png");
-	kp->hitGroundEffect->setAnchorPoint(Vec2(0.5f, 0));
-	kp->addChild(kp->hitGroundEffect);*/
-
 	return kp;
 }
 
@@ -39,7 +35,7 @@ void DQ_DocCoKiemPhap::initBoxPhysic(b2World * world, Point pos)
 	fixtureDef.shape = &shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_SPECIAL_SWORD;
-	fixtureDef.filter.maskBits = BITMASK_FLOOR | BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_WOODER;
+	fixtureDef.filter.maskBits = BITMASK_UNDER_GROUND | BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2;
 
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.userData = this;		// pass sprite to bodyDef with argument: userData
@@ -50,7 +46,7 @@ void DQ_DocCoKiemPhap::initBoxPhysic(b2World * world, Point pos)
 	body->CreateFixture(&fixtureDef);
 
 	body->SetFixedRotation(true);
-	body->SetLinearVelocity(b2Vec2(0, -SCREEN_SIZE.height * 3 / PTM_RATIO));
+	body->SetLinearVelocity(b2Vec2(0, -SCREEN_SIZE.height * 4 / PTM_RATIO));
 }
 
 
@@ -62,18 +58,35 @@ void DQ_DocCoKiemPhap::die()
 
 void DQ_DocCoKiemPhap::hitGround()
 {
-	particle = ParticleSystemQuad::create("Effect/particle.plist");
-	particle->setTag(999);
+	auto gameLayer = this->getParent();
 
-	particle->setPosition(this->getPosition());
-	this->getParent()->addChild(particle, ZORDER_ENEMY);
+	/*hitGroundEffect = Sprite::create("Animation/DuongQua/halfball.png");
+	hitGroundEffect->setAnchorPoint(Vec2(0.5f, 0));
 
-	/*auto hideMe = CallFunc::create([&]() {
-		particle->removeAllChildrenWithCleanup(true);
+	auto hideFX = CallFunc::create([&]() {
+		hitGroundEffect->removeFromParentAndCleanup(true);
 	});
 
-	auto seq = Sequence::create(DelayTime::create(0.5f), hideMe, nullptr);
-	particle->runAction(seq);*/
+	hitGroundEffect->setScale(this->getScale() * 0.75f);
+	hitGroundEffect->setPosition(this->getPositionX(), this->getPositionY() - this->getBoundingBox().size.height * 0.65f);
+	gameLayer->addChild(hitGroundEffect, ZORDER_ENEMY);
+	auto action = ScaleBy::create(0.3f, 1.6f);
+
+	auto seq = Sequence::create(action, hideFX, nullptr);
+	hitGroundEffect->runAction(seq);*/
+
+
+	particle = ParticleSystemQuad::create("Effect/breakearth.plist");
+	particle->setScale(this->getScale() / 2);
+	particle->setPosition(this->getPositionX(), this->getPositionY() - this->getBoundingBox().size.height * 0.5f);
+	gameLayer->addChild(particle, ZORDER_ENEMY);
+
+	auto hideParticle = CallFunc::create([&]() {
+		particle->removeFromParentAndCleanup(true);
+	});
+
+	auto seq2 = Sequence::create(DelayTime::create(0.5f), hideParticle, nullptr);
+	particle->runAction(seq2);
 }
 
 
@@ -81,7 +94,7 @@ void DQ_DocCoKiemPhap::updateMe(float dt)
 {
 	if (body != nullptr) {
 		this->setPositionX(body->GetPosition().x * PTM_RATIO);
-		this->setPositionY(body->GetPosition().y * PTM_RATIO - this->getBoundingBox().size.height * 0.05f);
+		this->setPositionY(body->GetPosition().y * PTM_RATIO);
 	}
 }
 //

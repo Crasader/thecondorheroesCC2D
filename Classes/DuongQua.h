@@ -33,10 +33,14 @@ protected:
 	void doCounterSkill2();
 
 	// Skill 3
+	Sprite* spiritHole;
+	Vector<SpriteFrame*> spiritHoleFrames;
+	int checkDurationSkill3;
 	list<TieuHonChuong*> listTieuHonChuong;
+	void createSpiritHole();
+	void runSpiritHole();
 	void createTieuHonChuong(float angle, Point posHand);
 	void shootTieuHonChuong();
-	int checkDurationSkill3;
 	void doCounterSkill3();
 	
 

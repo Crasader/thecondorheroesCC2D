@@ -22,7 +22,7 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 	duongQua->setMoveVel(duongQua->SCREEN_SIZE.width / PTM_RATIO / 2.3f);
 	duongQua->setJumpVel(duongQua->SCREEN_SIZE.height * 1.4f / PTM_RATIO);
 
-	duongQua->health = 4;
+	duongQua->health = 100;
 
 	duongQua->facingRight = true;
 
@@ -43,11 +43,14 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 	duongQua->slash_1->setScale(scale * 3);
 	duongQua->slash_1->setVisible(false);*/
 
-	duongQua->slash = Sprite::create("Animation/DuongQua/slash2-2.png");
-	duongQua->slash->setScale(scale * 1.2f);
+	duongQua->slash = Sprite::create("Animation/DuongQua/slash2.png");
+	duongQua->slash->setScale(duongQua->SCREEN_SIZE.height / 2.7f / duongQua->slash->getContentSize().width);
 	duongQua->slash->setVisible(false);
 	//
 
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/DuongQua/spirit.plist");
+
+	duongQua->createSpiritHole();
 	return duongQua;
 }
 
@@ -56,7 +59,7 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 void DuongQua::createToanChanKiemPhap(Point posSword)
 {
 	auto tckp = ToanChanKiemPhap::create("Animation/DuongQua/skill1.png");
-	tckp->setScale(this->getTrueRadiusOfHero() * 2 / tckp->getContentSize().width);
+	tckp->setScale(this->getTrueRadiusOfHero() * 3 / tckp->getContentSize().width);
 	auto world = this->getB2Body()->GetWorld();
 
 	tckp->setPosition(posSword.x + this->getTrueRadiusOfHero() / 2, posSword.y);
@@ -114,13 +117,13 @@ void DuongQua::doCounterSkill1()
 void DuongQua::createKiemPhap(float posX)
 {
 	auto kp = KiemPhap::create("Animation/DuongQua/Sword.png");
-	kp->setScale(this->getTrueRadiusOfHero() / kp->getContentSize().width);
+	kp->setScale(this->getTrueRadiusOfHero() * 1.5f / kp->getContentSize().width);
 	auto world = this->getB2Body()->GetWorld();
 
 	kp->setPosition(posX, SCREEN_SIZE.height + kp->getBoundingBox().size.height);
 	kp->initBoxPhysic(world, kp->getPosition());
 
-	this->getParent()->addChild(kp, ZORDER_ENEMY);
+	this->getParent()->addChild(kp, 1);
 
 
 	listKiemPhap.push_back(kp);
@@ -129,19 +132,19 @@ void DuongQua::createKiemPhap(float posX)
 void DuongQua::landKiemPhap()
 {
 	this->schedule([&](float dt) {
-		if (checkDurationSkill2 % 2 == 0) {		// every 0.2 second
-			createKiemPhap(this->getPositionX() + SCREEN_SIZE.width * (0.05f * (checkDurationSkill2 / 2 + 2)));
+		if (checkDurationSkill2 % 5 == 0) {		// every 0.2 second
+			createKiemPhap(this->getPositionX() + SCREEN_SIZE.width * (0.05f * (checkDurationSkill2 / 5 + 6)));
 		}
 
 		checkDurationSkill2++;
 		
-		if ((checkDurationSkill2 >= getDurationSkill2() * 10)) {
+		if ((checkDurationSkill2 >= getDurationSkill2() * 20)) {
 			setIsDoneDuration2(true);
 			checkDurationSkill2 = 0;
 			unschedule("KeySkill2");
 		}
 
-	}, 0.1f, "KeySkill2");		//  run every 0.1 second
+	}, 0.05f, "KeySkill2");		//  run every 0.1 second
 }
 
 void DuongQua::doCounterSkill2()
@@ -150,6 +153,27 @@ void DuongQua::doCounterSkill2()
 }
 
 // SKILL 3
+void DuongQua::createSpiritHole() {
+	spiritHole = Sprite::createWithSpriteFrameName("cicrleslash1.png");
+	spiritHole->setScale(SCREEN_SIZE.height / 3 / spiritHole->getContentSize().height);
+	spiritHole->setVisible(false);
+
+	// spirit Hole frames
+	for (int i = 1; i <= 12; i++) {
+		std::string name = StringUtils::format("cicrleslash%01d.png", i);
+		auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(name);
+		spiritHoleFrames.pushBack(frame);
+	}
+}
+
+void DuongQua::runSpiritHole() {
+	auto animation = Animation::createWithSpriteFrames(spiritHoleFrames, 0.1f);
+	auto animate = Animate::create(animation);
+	
+	spiritHole->runAction(animate);
+}
+
+
 void DuongQua::createTieuHonChuong(float angle, Point posHand)
 {
 	auto thc = TieuHonChuong::create("Animation/DuongQua/tieuhonchuong.png");
@@ -219,7 +243,7 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 0.0f;
-	fixtureDef.friction = 0.5f;
+	fixtureDef.friction = 0.0f;
 	fixtureDef.restitution = 0.0f;
 	fixtureDef.shape = &circle_shape;
 
@@ -247,6 +271,9 @@ void DuongQua::run()
 	clearTracks();
 	addAnimation(0, "run", true);
 	setToSetupPose();
+
+	if (getBloodScreen()->isVisible())
+		getBloodScreen()->setVisible(false);
 
 	if (! EM->getSmokeRun()->isVisible()) {
 		EM->getSmokeRun()->setVisible(true);

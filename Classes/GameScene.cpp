@@ -37,7 +37,7 @@ bool GameScene::init()
 	{
 		return false;
 	}
-
+	indexOfNextMapBoss = -1;
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -60,6 +60,7 @@ bool GameScene::init()
 	creatEnemyWooder();
 	creatEnemyToanChanStudent();
 	creatEnemyToanChanStudent2();
+	creatBoss();
 	createCoint();
 
 
@@ -242,6 +243,19 @@ void GameScene::update(float dt)
 	if (hero->getPositionX() >= SCREEN_SIZE.width / 4)
 		follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4);
 
+
+	if (hero->getPositionX() > tmx_map->getBoundingBox().size.width - SCREEN_SIZE.width / 4 && indexOfNextMapBoss < 0) {
+		createGroundForMapBoss();
+		indexOfNextMapBoss = 1;
+	} 
+
+	if (hero->getPositionX() > tmx_mapboss[indexOfNextMapBoss]->getPositionX()+SCREEN_SIZE.width && indexOfNextMapBoss >= 0) {
+		TMXTiledMap* tmpmap;
+		indexOfNextMapBoss == 1 ? tmpmap = tmx_mapboss[0] : tmpmap = tmx_mapboss[1];
+		tmpmap->setPositionX(tmx_mapboss[indexOfNextMapBoss]->getPositionX() + tmx_mapboss[indexOfNextMapBoss]->getBoundingBox().size.width);
+		indexOfNextMapBoss == 1 ? indexOfNextMapBoss = 0 : indexOfNextMapBoss = 1;
+	}
+
 	background->updatePosition();
 	hero->getBloodScreen()->setPositionX(follow->getPositionX());
 }
@@ -252,7 +266,7 @@ void GameScene::initB2World()
 
 	// draw debug
 	auto debugDraw = new (std::nothrow) GLESDebugDraw(PTM_RATIO);
-	world->SetDebugDraw(debugDraw);
+	//world->SetDebugDraw(debugDraw);
 	uint32 flags = 0;
 	flags += b2Draw::e_shapeBit;
 	flags += b2Draw::e_jointBit;
@@ -314,6 +328,7 @@ void GameScene::onDraw()
 
 void GameScene::loadBackground()
 {
+	// khoi tao map
 	tmx_map = TMXTiledMap::create("Map/map1/map.tmx");
 	tmx_map->setAnchorPoint(Point::ZERO);
 	scaleOfMap = SCREEN_SIZE.height / tmx_map->getContentSize().height;
@@ -324,6 +339,16 @@ void GameScene::loadBackground()
 	//tmx_map->setVisible(false);
 
 	this->addChild(tmx_map, ZORDER_BG2);
+	for (int i = 0; i < 2; i++) {
+		tmx_mapboss[i] = TMXTiledMap::create("Map/map1/mapboss.tmx");
+		tmx_mapboss[i]->setAnchorPoint(Point::ZERO);
+		tmx_mapboss[i]->setScale(scaleOfMap);
+	}
+
+	tmx_mapboss[0]->setPosition(tmx_map->getPosition() + Vec2(tmx_map->getBoundingBox().size.width,0));
+	tmx_mapboss[1]->setPosition(tmx_mapboss[0]->getPosition() + Vec2(tmx_mapboss[0]->getBoundingBox().size.width, 0));
+	this->addChild(tmx_mapboss[0], ZORDER_BG2);
+	this->addChild(tmx_mapboss[1], ZORDER_BG2);
 	createInfiniteNode();
 }
 
@@ -385,6 +410,36 @@ void GameScene::createGroundBody()
 		Size sizeOfBound = Size(mObject["width"].asFloat() *scaleOfMap, mObject["height"].asFloat() *scaleOfMap);
 		Point pos = Point(origin.x + sizeOfBound.width / 2, origin.y);
 		initGroundPhysic(world, pos, sizeOfBound);
+	}
+
+	auto groupUnderGround = tmx_map->getObjectGroup("under_ground");
+	for (auto child : groupUnderGround->getObjects()) {
+		auto mObject = child.asValueMap();
+		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+		Size sizeOfBound = Size(mObject["width"].asFloat() *scaleOfMap, mObject["height"].asFloat() *scaleOfMap);
+		Point pos = Point(origin.x + sizeOfBound.width / 2, origin.y);
+		initUnderGroundPhysic(world, pos, sizeOfBound);
+	}
+}
+
+void GameScene::createGroundForMapBoss()
+{
+	auto groupGround = tmx_mapboss[0]->getObjectGroup("ground");
+	for (auto child : groupGround->getObjects()) {
+		auto mObject = child.asValueMap();
+		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap) + tmx_mapboss[0]->getPosition();
+		Size sizeOfBound = Size(mObject["width"].asFloat() *scaleOfMap, mObject["height"].asFloat() *scaleOfMap);
+		//Point pos = Point(origin.x + sizeOfBound.width / 2, origin.y);
+		initGroundPhysic(world, origin, Size(INT_MAX / 4, sizeOfBound.height));
+	}
+
+	auto groupUnderGround = tmx_mapboss[0]->getObjectGroup("under_ground");
+	for (auto child : groupUnderGround->getObjects()) {
+		auto mObject = child.asValueMap();
+		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap) + tmx_mapboss[0]->getPosition();
+		Size sizeOfBound = Size(mObject["width"].asFloat() *scaleOfMap, mObject["height"].asFloat() *scaleOfMap);
+		//Point pos = Point(origin.x + sizeOfBound.width / 2, origin.y);
+		initUnderGroundPhysic(world, origin, Size(INT_MAX / 4, sizeOfBound.height));
 	}
 }
 
@@ -449,6 +504,27 @@ void GameScene::creatEnemyToanChanStudent2()
 		slash->changeBodyCategoryBits(BITMASK_SLASH);
 		slash->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
 		slash->getB2Body()->GetFixtureList()->SetSensor(true);
+	}
+}
+
+void GameScene::creatBoss()
+{
+	auto groupGround = tmx_map->getObjectGroup("boss");
+	for (auto child : groupGround->getObjects()) {
+		auto mObject = child.asValueMap();
+		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+		auto scaleOfEnemy = SCREEN_SIZE.height / 4.0f / 560; // 560 la height cua spine
+		auto enemy = EnemyBoss1::create("Animation/Enemy_Boss1/Boss1.json",
+			"Animation/Enemy_Boss1/Boss1.atlas", scaleOfEnemy);
+		enemy->setPosition(origin);
+		//enemy->setVisible(false);
+		this->addChild(enemy, ZORDER_ENEMY);
+		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
+		enemy->changeBodyCategoryBits(BITMASK_BOSS);
+		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
+		//enemy->listener();
+		enemy->createPool();
+		enemy->listener();
 	}
 }
 
@@ -611,7 +687,7 @@ void GameScene::initGroundPhysic(b2World * world, Point pos, Size size)
 	fixtureDef.shape = &shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_FLOOR;
-	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_SPECIAL_SWORD;
+	fixtureDef.filter.maskBits = BITMASK_HERO;
 
 	bodyDef.type = b2_staticBody;
 
@@ -620,6 +696,33 @@ void GameScene::initGroundPhysic(b2World * world, Point pos, Size size)
 	body = world->CreateBody(&bodyDef);
 	body->CreateFixture(&fixtureDef);
 }
+
+void GameScene::initUnderGroundPhysic(b2World * world, Point pos, Size size)
+{
+	b2Body * body;
+	b2BodyDef bodyDef;
+	b2PolygonShape shape;
+	b2FixtureDef fixtureDef;
+
+	shape.SetAsBox(size.width / 2 / PTM_RATIO, 0 / PTM_RATIO);
+
+	fixtureDef.density = 1.0f;
+	fixtureDef.friction = 1.0f;
+	fixtureDef.restitution = 0.0f;
+	fixtureDef.shape = &shape;
+
+	fixtureDef.filter.categoryBits = BITMASK_UNDER_GROUND;
+	fixtureDef.filter.maskBits = BITMASK_SPECIAL_SWORD;
+
+	bodyDef.type = b2_staticBody;
+
+	bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);
+
+	body = world->CreateBody(&bodyDef);
+	body->CreateFixture(&fixtureDef);
+}
+
+
 
 void GameScene::readWriteJson()
 {
@@ -655,8 +758,8 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 		if (hero->getNumberOfJump() > 0) {
 			hero->setNumberOfJump(hero->getNumberOfJump() - 1);
 			hero->setOnGround(false);
-
-			hero->getB2Body()->SetLinearVelocity(b2Vec2(0.0f, hero->getJumpVel()));
+			auto currentVelX = hero->getB2Body()->GetLinearVelocity().x;
+			hero->getB2Body()->SetLinearVelocity(b2Vec2(currentVelX, hero->getJumpVel()));
 
 			if (hero->getFSM()->currentState == MLand && hero->getNumberOfJump() > 0) {
 				EM->getSmokeJumpX2()->setPosition(hero->getPosition());
@@ -701,7 +804,23 @@ void GameScene::updateEnemy()
 	for (int i = 0; i < child.size(); i++) {
 		if (child.at(i)->getTag() > 100) {
 			auto tmp = (BaseEnemy*)child.at(i);
-			if (tmp->getB2Body() != nullptr) {
+			if (tmp->getTag() == TAG_BOSS) {
+				if (tmp->getIsDie()) {
+
+				}
+				else {
+					auto boss = (EnemyBoss1*)tmp;
+					if (tmp->getB2Body()->GetLinearVelocity().x != 0)
+					{
+						boss->updateMe(hero->getPosition());
+					}
+					else if (tmp->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width / 2) {
+						auto boss = (EnemyBoss1*)tmp;
+						boss->updateMe(hero->getPosition());
+					}
+				}
+			}
+			else if (tmp->getB2Body() != nullptr) {
 				if (tmp->getIsDie()) {
 					tmp->getB2Body()->SetType(b2_dynamicBody);
 
@@ -728,6 +847,10 @@ void GameScene::updateEnemy()
 
 		}
 	}
+}
+
+void GameScene::updateBoss()
+{
 }
 
 //void GameScene::cleanMap()

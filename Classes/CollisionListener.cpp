@@ -210,8 +210,8 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 	}
 
-	if ((bitmaskA == BITMASK_SPECIAL_SWORD && bitmaskB == BITMASK_FLOOR) ||
-		(bitmaskB == BITMASK_SPECIAL_SWORD && bitmaskA == BITMASK_FLOOR)
+	if ((bitmaskA == BITMASK_SPECIAL_SWORD && bitmaskB == BITMASK_UNDER_GROUND) ||
+		(bitmaskB == BITMASK_SPECIAL_SWORD && bitmaskA == BITMASK_UNDER_GROUND)
 		) {
 
 		KiemPhap* sA = (KiemPhap*) bodyA->GetUserData();
@@ -221,7 +221,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		auto parentGameScene = (GameScene*) kp->getParent();
 		parentGameScene->shakeTheScreen();
 
-		//kp->hitGround();
+		kp->hitGround();
 		
 	}
 }

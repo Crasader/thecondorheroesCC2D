@@ -14,7 +14,7 @@ private:
 	CC_SYNTHESIZE(Vec2, realtimeVec, RealtimeVec);
 	CC_SYNTHESIZE(Vec2, realMoveVelocity, RealMoveVelocity);
 	CC_SYNTHESIZE(int, controlAttack, ControlAttack);
-	const int maxControl = 1000;
+	const int maxControl = 960;
 	int control;
 public:
 	Vec2 heroLocation;

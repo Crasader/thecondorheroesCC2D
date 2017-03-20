@@ -46,7 +46,7 @@ void EnemyBoss1::fixStupid()
 {
 	state->fixStupid(this);
 	srand(time(NULL));
-	controlAttack = rand()%4+1;
+	controlAttack = rand()%3+1;
 }
 
 void EnemyBoss1::die()
@@ -101,16 +101,6 @@ void EnemyBoss1::updateMe(Point posHero)
 		this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
 	}
 
-
-	// update van toc
-	/*if (this->getPositionY() <= posHero.y || this->getPositionY() >= SCREEN_SIZE.height/4*3) {
-		realMoveVelocity.y = 0;
-	}
-
-	if (this->getPositionY() >= SCREEN_SIZE.height / 4 * 3) {
-		this->idle();
-	}*/
-
 	state->updateVec(this);
 	
 	this->getB2Body()->SetLinearVelocity(b2Vec2(this->realtimeVec.x / PTM_RATIO, this->realtimeVec.y*cosf(control / 120.0f * 2 * PI) / PTM_RATIO) +
@@ -133,9 +123,9 @@ void EnemyBoss1::updateMe(Point posHero)
 	}
 	
 	
-	if (this->getPositionX() >= posHero.x + SCREEN_SIZE.width/2) {
+	/*if (this->getPositionX() >= posHero.x + SCREEN_SIZE.width/2) {
 		this->idle();
-	}
+	}*/
 
 	for (int i = 0; i < slashPool->count(); i++) {
 		auto slash = (SlashBoss*)slashPool->getObjectAtIndex(i);

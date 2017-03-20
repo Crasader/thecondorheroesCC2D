@@ -6,6 +6,7 @@
 #include "Coin.h"
 #include "Slash.h"
 #include "EffectManager.h"
+#include "boss1/EnemyBoss1.h"
 
 CollisionListener::CollisionListener() {
 
@@ -87,6 +88,24 @@ void CollisionListener::BeginContact(b2Contact * contact)
 			hero->setIsPrior(true);
 			hero->getFSM()->changeState(MInjured);
 			hero->getBloodScreen()->setVisible(true);
+			hero->setHealth(hero->getHealth() - 1);
+		}
+
+	}
+
+	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_BOSS) ||
+		(bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_BOSS)
+		) {
+
+		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
+		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
+		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
+		auto enemy = sA->getTag() == TAG_BOSS ? (EnemyBoss1 *)sA : (EnemyBoss1 *)sB;
+
+		enemy->attack();
+		if (!enemy->getIsDie()) {
+			hero->setIsPrior(true);
+			hero->getFSM()->changeState(MInjured);
 			hero->setHealth(hero->getHealth() - 1);
 		}
 

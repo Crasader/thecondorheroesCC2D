@@ -513,7 +513,7 @@ void GameScene::creatBoss()
 	for (auto child : groupGround->getObjects()) {
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		auto scaleOfEnemy = SCREEN_SIZE.height / 4.0f / 560; // 560 la height cua spine
+		auto scaleOfEnemy = SCREEN_SIZE.height / 3.0f / 560; // 560 la height cua spine
 		auto enemy = EnemyBoss1::create("Animation/Enemy_Boss1/Boss1.json",
 			"Animation/Enemy_Boss1/Boss1.atlas", scaleOfEnemy);
 		enemy->setPosition(origin);

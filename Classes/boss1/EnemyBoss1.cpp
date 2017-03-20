@@ -3,9 +3,12 @@
 EnemyBoss1::EnemyBoss1(string jsonFile, string atlasFile, float scale):BaseEnemy(jsonFile,atlasFile,scale)
 {
 	control = 0;
+	controlAttack = 2;
 	hp = 15;
 	baseVelocity =Vec2(SCREEN_SIZE.width/2.3f, SCREEN_SIZE.height/10);
+	moveVelocity = Vec2(SCREEN_SIZE.height/2,SCREEN_SIZE.height/2);
 	realtimeVec = Vec2(SCREEN_SIZE.width / 2.3f, SCREEN_SIZE.height / 10);
+	realMoveVelocity = Vec2::ZERO;
 }
 
 EnemyBoss1 * EnemyBoss1::create(string jsonFile, string atlasFile, float scale)
@@ -24,7 +27,7 @@ void EnemyBoss1::idle()
 	state->idle(this);
 }
 
-void EnemyBoss1::attack1()
+void EnemyBoss1::attack()
 {
 	state->attack1(this);
 }
@@ -42,6 +45,8 @@ void EnemyBoss1::stupid()
 void EnemyBoss1::fixStupid()
 {
 	state->fixStupid(this);
+	srand(time(NULL));
+	controlAttack = rand()%3+1;
 }
 
 void EnemyBoss1::die()
@@ -89,11 +94,18 @@ void EnemyBoss1::creatSlash()
 
 void EnemyBoss1::updateMe(Point posHero)
 {
+	this->heroLocation = posHero;
 	if (body != nullptr) {
 		this->setPositionX(body->GetPosition().x * PTM_RATIO);
 		this->setPositionY(body->GetPosition().y * PTM_RATIO - this->body->GetFixtureList()->GetShape()->m_radius*PTM_RATIO);
 		this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
 	}
+
+	state->updateVec(this);
+	
+	this->getB2Body()->SetLinearVelocity(b2Vec2(this->realtimeVec.x / PTM_RATIO, this->realtimeVec.y*cosf(control / 120.0f * 2 * PI) / PTM_RATIO) +
+		b2Vec2(realMoveVelocity.x / PTM_RATIO, realMoveVelocity.y / PTM_RATIO));
+	//////////////
 	control++;
 	if (control > maxControl) {
 		control = 0;
@@ -105,10 +117,15 @@ void EnemyBoss1::updateMe(Point posHero)
 	if (control == 255 || control == 270|| control == 285) {
 		this->creatSlash();
 	}
-	this->getB2Body()->SetLinearVelocity(b2Vec2(this->realtimeVec.x/PTM_RATIO,this->realtimeVec.y*cosf(control/120.0f*2*PI)/PTM_RATIO));
-	if (this->getPositionX() >= posHero.x + SCREEN_SIZE.width/2) {
-		this->idle();
+
+	if (control == 360) {
+		this->stupid();
 	}
+	
+	
+	/*if (this->getPositionX() >= posHero.x + SCREEN_SIZE.width/2) {
+		this->idle();
+	}*/
 
 	for (int i = 0; i < slashPool->count(); i++) {
 		auto slash = (SlashBoss*)slashPool->getObjectAtIndex(i);
@@ -125,9 +142,19 @@ void EnemyBoss1::listener()
 		if ((strcmp(getCurrent()->animation->name, "attack2") == 0 && loopCount == 1)) {
 			idle();
 		}
-		else if ((strcmp(getCurrent()->animation->name, "attack1") == 0 && loopCount == 1)) {
+		else if ((strcmp(getCurrent()->animation->name, "attack") == 0 && loopCount == 1)) {
+			this->setControlAttack(this->getControlAttack() - 1);
+			if(this->getControlAttack() == 0)
 			fixStupid();
 		}
 	});
+}
+
+bool EnemyBoss1::checkStop()
+{
+	if (this->getPositionX() - heroLocation.x > SCREEN_SIZE.width/1.8f) {
+		return true;
+	}
+	return false;
 }
 

@@ -2,6 +2,7 @@
 #include "BaseHero.h"
 #include "BaseEnemy.h"
 #include "DQ_DocCoKiemPhap.h"
+#include "DQ_TieuHonChuong.h"
 #include "GameScene.h"
 #include "Coin.h"
 #include "Slash.h"
@@ -143,8 +144,12 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		BaseEnemy *enemy;
 
-		if (sA && sB)		// sA and sB != nullptr
+		if (sA && sB) {	// sA and sB != nullptr
 			enemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+			auto thc = sA->getTag() == TAG_DQ_TIEU_HON_CHUONG ? (TieuHonChuong*)sA : (TieuHonChuong*)sB;
+			if(thc->getTag() == TAG_DQ_TIEU_HON_CHUONG)
+				thc->setIsCollide(true);
+		}
 		else
 			enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 
@@ -160,8 +165,12 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		BaseEnemy *enemy;
 
-		if (sA && sB)		// sA and sB != nullptr
+		if (sA && sB) {		// sA and sB != nullptr
 			enemy = sA->getTag() == TAG_ENEMY_TOANCHAN2 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+			auto thc = sA->getTag() == TAG_DQ_TIEU_HON_CHUONG ? (TieuHonChuong*)sA : (TieuHonChuong*)sB;
+			if(thc->getTag() == TAG_DQ_TIEU_HON_CHUONG)
+				thc->setIsCollide(true);
+		}
 		else
 			enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 
@@ -205,32 +214,8 @@ void CollisionListener::BeginContact(b2Contact * contact)
 	}
 
 
-	if ((bitmaskA == BITMASK_SPECIAL_SWORD && bitmaskB == BITMASK_TOANCHAN1) ||
-		(bitmaskB == BITMASK_SPECIAL_SWORD && bitmaskA == BITMASK_TOANCHAN1)
-		) {
-
-		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
-		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
-		auto enemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
-
-		enemy->die();
-
-	}
-
-	if ((bitmaskA == BITMASK_SPECIAL_SWORD && bitmaskB == BITMASK_TOANCHAN2) ||
-		(bitmaskB == BITMASK_SPECIAL_SWORD && bitmaskA == BITMASK_TOANCHAN2)
-		) {
-
-		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
-		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
-		auto enemy = sA->getTag() == TAG_ENEMY_TOANCHAN2 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
-
-		enemy->die();
-
-	}
-
-	if ((bitmaskA == BITMASK_SPECIAL_SWORD && bitmaskB == BITMASK_UNDER_GROUND) ||
-		(bitmaskB == BITMASK_SPECIAL_SWORD && bitmaskA == BITMASK_UNDER_GROUND)
+	if ((bitmaskA == BITMASK_SWORD && bitmaskB == BITMASK_UNDER_GROUND) ||
+		(bitmaskB == BITMASK_SWORD && bitmaskA == BITMASK_UNDER_GROUND)
 		) {
 
 		KiemPhap* sA = (KiemPhap*) bodyA->GetUserData();

@@ -25,9 +25,8 @@ using namespace std;
 #define BITMASK_TOANCHAN2				0x0040
 #define BITMASK_SWORD					0x0080
 #define BITMASK_SLASH					0x0100
-#define BITMASK_SPECIAL_SWORD			0x0200
-#define BITMASK_BOSS					0x0400
-#define BITMASK_UNDER_GROUND			0x0800
+#define BITMASK_BOSS					0x0200
+#define BITMASK_UNDER_GROUND			0x0400
 
 // tag
 #define TAG_HERO							50

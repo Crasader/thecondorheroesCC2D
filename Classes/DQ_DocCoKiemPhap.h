@@ -16,7 +16,6 @@ public:
 
 	static DQ_DocCoKiemPhap* create(string file);
 	virtual void initBoxPhysic(b2World *world, Point pos);
-	void die();
 
 	void hitGround();
 	void updateMe(float dt);

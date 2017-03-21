@@ -13,7 +13,10 @@ public:
 
 	static DQ_TieuHonChuong* create(string file);
 	virtual void initCirclePhysic(b2World *world, Point pos);
-	void die();
+	
+
+protected:
+	CC_SYNTHESIZE(bool, isCollide, IsCollide);
 	
 };
 

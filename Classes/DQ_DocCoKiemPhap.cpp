@@ -34,7 +34,7 @@ void DQ_DocCoKiemPhap::initBoxPhysic(b2World * world, Point pos)
 	fixtureDef.restitution = 0.0f;
 	fixtureDef.shape = &shape;
 
-	fixtureDef.filter.categoryBits = BITMASK_SPECIAL_SWORD;
+	fixtureDef.filter.categoryBits = BITMASK_SWORD;
 	fixtureDef.filter.maskBits = BITMASK_UNDER_GROUND | BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2;
 
 	bodyDef.type = b2_dynamicBody;
@@ -47,12 +47,6 @@ void DQ_DocCoKiemPhap::initBoxPhysic(b2World * world, Point pos)
 
 	body->SetFixedRotation(true);
 	body->SetLinearVelocity(b2Vec2(0, -SCREEN_SIZE.height * 4 / PTM_RATIO));
-}
-
-
-void DQ_DocCoKiemPhap::die()
-{
-	this->setVisible(false);
 }
 
 
@@ -77,7 +71,7 @@ void DQ_DocCoKiemPhap::hitGround()
 
 
 	particle = ParticleSystemQuad::create("Effect/breakearth.plist");
-	particle->setScale(this->getScale() / 2);
+	particle->setScale(this->getScale());
 	particle->setPosition(this->getPositionX(), this->getPositionY() - this->getBoundingBox().size.height * 0.5f);
 	gameLayer->addChild(particle, ZORDER_ENEMY);
 

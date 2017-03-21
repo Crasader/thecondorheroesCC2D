@@ -33,13 +33,14 @@ protected:
 	void doCounterSkill2();
 
 	// Skill 3
-	Sprite* spiritHole;
-	Vector<SpriteFrame*> spiritHoleFrames;
+	SkeletonAnimation* spiritHole;
 	int checkDurationSkill3;
+	int numberOfDeadTHC;
 	list<TieuHonChuong*> listTieuHonChuong;
 	void createSpiritHole();
 	void runSpiritHole();
-	void createTieuHonChuong(float angle, Point posHand);
+	Point getLocalSpiritBonePos(string boneName);
+	void createTieuHonChuong(Point posHand, int Zoder);
 	void shootTieuHonChuong();
 	void doCounterSkill3();
 	

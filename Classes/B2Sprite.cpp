@@ -93,8 +93,8 @@ void B2Sprite::changeBodyMaskBits(uint16 mask)
 
 void B2Sprite::setAngel(float radian)
 {
-	float vx = SCREEN_SIZE.width / PTM_RATIO * cosf(radian);
-	float vy = SCREEN_SIZE.width / PTM_RATIO * sinf(radian);
+	float vx = SCREEN_SIZE.width * 1.3f / PTM_RATIO * cosf(radian);
+	float vy = SCREEN_SIZE.width * 1.3f / PTM_RATIO * sinf(radian);
 	this->body->SetLinearVelocity(b2Vec2(vx, vy));
 }
 

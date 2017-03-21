@@ -82,10 +82,11 @@ void GameScene::createDuongQua(string path_Json, string path_Atlas, Point positi
 	hero = DuongQua::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 340);
 	hero->listener();
 	hero->setPosition(position);
-	hero->initCirclePhysic(world, hero->getPosition());
 
 	addChild(hero, ZORDER_HERO);
 	addChild(hero->getSlash(), ZORDER_SMT);
+
+	hero->initCirclePhysic(world, hero->getPosition());
 
 	hero->getBloodScreen()->setPosition(follow->getPosition());
 	addChild(hero->getBloodScreen(), ZORDER_SMT);
@@ -149,13 +150,6 @@ void GameScene::listener()
 		if (!hero->getIsDoneDuration1()) {
 			hero->getFSM()->changeState(MSKill1);  // move to attack
 			hero->setIsPriorSkill1(true);			// move to attack
-		}
-		else if (!hero->getIsDoneDuration3()) {
-			hero->attackBySkill3();
-			hero->changeSwordCategoryBitmask(BITMASK_SWORD);
-
-			hero->getFSM()->changeState(MAttack);
-			hero->setIsPrior(true);
 		}
 
 		else {
@@ -233,10 +227,10 @@ void GameScene::update(float dt)
 {
 	updateB2World(dt);
 	listener();
-	hero->updateMe(dt);
 
 	checkActiveButton();
 
+	hero->updateMe(dt);
 	updateEnemy();
 	//cleanMap();
 
@@ -257,7 +251,8 @@ void GameScene::update(float dt)
 	}
 
 	background->updatePosition();
-	hero->getBloodScreen()->setPositionX(follow->getPositionX());
+	if(hero->getBloodScreen()->isVisible())
+		hero->getBloodScreen()->setPositionX(follow->getPositionX());
 }
 
 void GameScene::initB2World()
@@ -476,7 +471,7 @@ void GameScene::creatEnemyToanChanStudent()
 		this->addChild(enemy, ZORDER_ENEMY);
 		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 4));
 		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_SPECIAL_SWORD);
+		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
 		//enemy->genSplash();
 		enemy->listener();
 	}
@@ -496,7 +491,7 @@ void GameScene::creatEnemyToanChanStudent2()
 		this->addChild(enemy, ZORDER_ENEMY);
 		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
 		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN2);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_SPECIAL_SWORD);
+		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
 		enemy->genSlash();
 		enemy->listener();
 		auto slash = enemy->getSlash();
@@ -712,7 +707,7 @@ void GameScene::initUnderGroundPhysic(b2World * world, Point pos, Size size)
 	fixtureDef.shape = &shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_UNDER_GROUND;
-	fixtureDef.filter.maskBits = BITMASK_SPECIAL_SWORD;
+	fixtureDef.filter.maskBits = BITMASK_SWORD;
 
 	bodyDef.type = b2_staticBody;
 
@@ -889,7 +884,7 @@ void GameScene::cacheSkeleton()
 
 void GameScene::shakeTheScreen()
 {
-	log("SHAKING ME");
+	//log("SHAKING ME");
 	auto shake = MoveBy::create(0.01f, Vec2(0, -0.005f * SCREEN_SIZE.height));
 	this->runAction(Sequence::create(shake, shake->reverse(), shake, shake->reverse(), nullptr));
 }

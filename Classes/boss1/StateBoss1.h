@@ -62,4 +62,5 @@ public:
 	void updateVec(EnemyBoss1 *boss);
 };
 
+
 #endif // __ENEMY_H__

@@ -49,8 +49,8 @@ void Boss1Attacking1::attack1(EnemyBoss1 * boss)
 	boss->setAnimation(0, "attack", false);
 	boss->setToSetupPose();
 	boss->setRealMoveVelocity(Vec2::ZERO);
-	boss->state = new Boss1Attacking1();
-	delete this;
+	//boss->state = new Boss1Attacking1();
+	//delete this;
 }
 
 void Boss1Attacking1::idle(EnemyBoss1 * boss)
@@ -69,7 +69,7 @@ void Boss1Attacking1::fixStupid(EnemyBoss1 * boss)
 	boss->clearTracks();
 	boss->setAnimation(0, "idle", true);
 	boss->setToSetupPose();
-	boss->setRealMoveVelocity(boss->getmoveVelocity());
+	boss->setRealMoveVelocity(Vec2(boss->getmoveVelocity().x,boss->getmoveVelocity().y*CCRANDOM_0_1()));
 	boss->state = new Boss1FixingStupid();
 	delete this;
 }
@@ -77,6 +77,15 @@ void Boss1Attacking1::fixStupid(EnemyBoss1 * boss)
 void Boss1Attacking1::updateVec(EnemyBoss1 * boss)
 {
 	boss->setRealMoveVelocity(Vec2::ZERO);
+	if (boss->control % 120 == 0) {
+		boss->setControlAttack(boss->getControlAttack() - 1);
+		boss->attack();
+		boss->creatHidenSlash(PI);
+		if (boss->getControlAttack()<= 0) {
+			boss->fixStupid();
+			boss->lockState = false;
+		}
+	}
 }
 
 Boss1Attacking2::Boss1Attacking2()

@@ -5,6 +5,7 @@
 #include "Slash.h"
 #include "EffectManager.h"
 #include "boss1/EnemyBoss1.h"
+#include "boss1\StateBoss1.h"
 
 CollisionListener::CollisionListener() {
 
@@ -99,12 +100,15 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
 		auto enemy = sA->getTag() == TAG_BOSS ? (EnemyBoss1 *)sA : (EnemyBoss1 *)sB;
 
-		enemy->attack();
-		if (!enemy->getIsDie()) {
+		if (!enemy->lockState) {
+			enemy->changeState(new Boss1Attacking1);
+			enemy->lockState = true;
+		}
+		/*if (!enemy->getIsDie()) {
 			hero->setIsPrior(true);
 			hero->getFSM()->changeState(MInjured);
 			hero->setHealth(hero->getHealth() - 1);
-		}
+		}*/
 
 	}
 
@@ -159,6 +163,23 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		if (sA && sB)		// sA and sB != nullptr
 			enemy = sA->getTag() == TAG_ENEMY_TOANCHAN2 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+		else
+			enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+
+		enemy->die();
+	}
+
+	if ((bitmaskA == BITMASK_BOSS && bitmaskB == BITMASK_SWORD) ||
+		(bitmaskB == BITMASK_BOSS && bitmaskA == BITMASK_SWORD)
+		) {
+
+		BaseEnemy* sA = (BaseEnemy*)bodyA->GetUserData();
+		BaseEnemy* sB = (BaseEnemy*)bodyB->GetUserData();
+
+		BaseEnemy *enemy;
+
+		if (sA && sB)		// sA and sB != nullptr
+			enemy = sA->getTag() == BITMASK_BOSS ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 		else
 			enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 

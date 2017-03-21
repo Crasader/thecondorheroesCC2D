@@ -4,6 +4,7 @@
 #include "BaseEnemy.h"
 #include "StateBoss1.h"
 #include "SlashBoss.h"
+#include "StateBoss1.h"
 
 class EnemyBoss1 : public BaseEnemy
 {
@@ -17,9 +18,11 @@ private:
 	const int maxControl = 960;
 	int control;
 public:
+	bool lockState;
 	Vec2 heroLocation;
 	StateBoss1 *state;
 	CCArray *slashPool;
+	Sprite *spHp;
 	int indexSlash;
 	EnemyBoss1(string jsonFile, string atlasFile, float scale);
 	static EnemyBoss1* create(string jsonFile, string atlasFile, float scale);
@@ -31,12 +34,15 @@ public:
 	 void die();
 
 	 void createPool();
-	 void creatSlash();
+	 void creatSlash( float angel);
+	 void creatHidenSlash(float angel); // tao check chem
+	 void creatHpSprite();
 
 	 void updateMe(Point posHero);
 
 	 void listener();
 	 bool checkStop();
+	 void changeState(StateBoss1 *state);
 	// void initCirclePhysic(b2World *world, Point pos);
 };
 

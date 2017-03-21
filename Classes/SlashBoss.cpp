@@ -38,8 +38,8 @@ void SlashBoss::die()
 void SlashBoss::setAngel(float radian)
 {
 	if (this->getB2Body() != nullptr) {
-		float vx = SCREEN_SIZE.width / 2 / PTM_RATIO * cosf(radian);
-		float vy = SCREEN_SIZE.width / 2 / PTM_RATIO * sinf(radian);
+		float vx = SCREEN_SIZE.width / 1 / PTM_RATIO * cosf(radian);
+		float vy = SCREEN_SIZE.width / 1 / PTM_RATIO * sinf(radian);
 		this->body->SetLinearVelocity(b2Vec2(vx, vy));
 	}
 }

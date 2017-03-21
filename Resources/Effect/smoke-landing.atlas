@@ -1,0 +1,41 @@
+
+smoke-landing.png
+size: 1577,712
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+vfx-landing-1
+  rotate: true
+  xy: 317, 2
+  size: 708, 313
+  orig: 708, 313
+  offset: 0, 0
+  index: -1
+vfx-landing-2
+  rotate: true
+  xy: 632, 2
+  size: 708, 313
+  orig: 708, 313
+  offset: 0, 0
+  index: -1
+vfx-landing-3
+  rotate: true
+  xy: 947, 2
+  size: 708, 313
+  orig: 708, 313
+  offset: 0, 0
+  index: -1
+vfx-landing-4
+  rotate: true
+  xy: 1262, 2
+  size: 708, 313
+  orig: 708, 313
+  offset: 0, 0
+  index: -1
+vfx-landing-5
+  rotate: true
+  xy: 2, 2
+  size: 708, 313
+  orig: 708, 313
+  offset: 0, 0
+  index: -1

@@ -61,7 +61,7 @@ void DuongQua::createToanChanKiemPhap(Point posSword)
 	tckp->setPosition(posSword.x + this->getTrueRadiusOfHero() / 2, posSword.y);
 	tckp->initCirclePhysic(world, tckp->getPosition());
 	tckp->changeBodyCategoryBits(BITMASK_SWORD);
-	tckp->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH);
+	tckp->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS);
 
 	this->getParent()->addChild(tckp, ZORDER_SMT);
 
@@ -184,7 +184,7 @@ void DuongQua::createTieuHonChuong(Point posHand, int Zoder)
 	thc->setPosition(posHand.x + this->getTrueRadiusOfHero() / 2, posHand.y);
 	thc->initCirclePhysic(world, thc->getPosition());
 	thc->changeBodyCategoryBits(BITMASK_SWORD);
-	thc->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH);
+	thc->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS);
 
 	this->getParent()->addChild(thc, Zoder);
 

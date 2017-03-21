@@ -1,7 +1,9 @@
 #include "EnemyBoss1.h"
+#include "MenuScene.h"
 
 EnemyBoss1::EnemyBoss1(string jsonFile, string atlasFile, float scale):BaseEnemy(jsonFile,atlasFile,scale)
 {
+	isDie = false;
 	control = 0;
 	controlAttack = 2;
 	hp = 15;
@@ -9,6 +11,7 @@ EnemyBoss1::EnemyBoss1(string jsonFile, string atlasFile, float scale):BaseEnemy
 	moveVelocity = Vec2(SCREEN_SIZE.height/2,SCREEN_SIZE.height/2);
 	realtimeVec = Vec2(SCREEN_SIZE.width / 2.3f, SCREEN_SIZE.height / 10);
 	realMoveVelocity = Vec2::ZERO;
+	lockState = false;
 }
 
 EnemyBoss1 * EnemyBoss1::create(string jsonFile, string atlasFile, float scale)
@@ -51,7 +54,29 @@ void EnemyBoss1::fixStupid()
 
 void EnemyBoss1::die()
 {
+	if (!isDie) {
+		hp--;
+		if (hp > 0) {
+			this->clearTracks();
+			this->setAnimation(0, "injured", false);
+			this->setToSetupPose();
+		}
+		else {
+			this->clearTracks();
+			this->setAnimation(0, "injured-red", false);
+			this->setToSetupPose();
+		}
+		if (hp <= 0) {
+			spHp->setVisible(false);
+			isDie = true;
+		}
+		else {
+			auto scale1 = spHp->getScaleX();
+			auto scale2 = ((float)this->hp / (float)(this->hp + 1))*spHp->getScaleX();
+			spHp->setScaleX(scale2);
 
+		}
+	}
 }
 
 void EnemyBoss1::createPool()
@@ -72,7 +97,7 @@ void EnemyBoss1::createPool()
 	indexSlash = 0;
 }
 
-void EnemyBoss1::creatSlash()
+void EnemyBoss1::creatSlash(float angel)
 {
 	auto slash = (SlashBoss*)slashPool->getObjectAtIndex(indexSlash);
 	slash->setVisible(true);
@@ -88,8 +113,41 @@ void EnemyBoss1::creatSlash()
 	slash->initCirclePhysic(world,this->getBoneLocation("bone65"));
 	slash->changeBodyCategoryBits(BITMASK_SLASH);
 	slash->changeBodyMaskBits(BITMASK_HERO);
-	slash->setRotation(180 - 180 / 4);
-	slash->setAngel(PI + PI/4);
+	//slash->setRotation(180 - 180 / 4);
+	slash->setAngel(angel);
+	slash->getB2Body()->SetLinearVelocity(slash->getB2Body()->GetLinearVelocity() + this->getB2Body()->GetLinearVelocity());
+}
+
+void EnemyBoss1::creatHidenSlash(float angel)
+{
+	auto slash = (SlashBoss*)slashPool->getObjectAtIndex(indexSlash);
+	slash->setVisible(false);
+	indexSlash++;
+	if (indexSlash >= slashPool->count()) {
+		indexSlash = 0;
+	}
+	if (slash->getB2Body() != nullptr) {
+		auto world = slash->getB2Body()->GetWorld();
+		world->DestroyBody(slash->getB2Body());
+	}
+	auto world = this->getB2Body()->GetWorld();
+	slash->initCirclePhysic(world,this->getPosition());
+	slash->changeBodyCategoryBits(BITMASK_SLASH);
+	slash->changeBodyMaskBits(BITMASK_HERO);
+	//slash->setRotation(180 - 180 / 4);
+	slash->setAngel(angel);
+	//slash->getB2Body()->SetLinearVelocity(slash->getB2Body()->GetLinearVelocity() + this->getB2Body()->GetLinearVelocity());
+}
+
+void EnemyBoss1::creatHpSprite()
+{
+	spHp = Sprite::create("UI/hp.png");
+	auto tmp = SCREEN_SIZE.width / 6 / spHp->getContentSize().width;
+	spHp->setScaleX(SCREEN_SIZE.width/6/spHp->getContentSize().width);
+	spHp->setScaleY(SCREEN_SIZE.height / 100 / spHp->getContentSize().height);
+	spHp->setPosition(0,0);
+	this->addChild(spHp);
+	spHp->update(0.0f);
 }
 
 void EnemyBoss1::updateMe(Point posHero)
@@ -115,7 +173,8 @@ void EnemyBoss1::updateMe(Point posHero)
 	}
 
 	if (control == 255 || control == 270|| control == 285) {
-		this->creatSlash();
+		auto tmpVec = posHero - this->getBoneLocation("bone65");
+		this->creatSlash(tmpVec.getAngle());
 	}
 
 	if (control == 360) {
@@ -143,9 +202,19 @@ void EnemyBoss1::listener()
 			idle();
 		}
 		else if ((strcmp(getCurrent()->animation->name, "attack") == 0 && loopCount == 1)) {
-			this->setControlAttack(this->getControlAttack() - 1);
-			if(this->getControlAttack() == 0)
-			fixStupid();
+			//this->setControlAttack(this->getControlAttack() - 1);
+			/*if (this->getControlAttack() == 0) {
+				fixStupid();
+				lockState = false;
+			}*/
+		}
+		else if ((strcmp(getCurrent()->animation->name, "injured") == 0 && loopCount == 1)) {
+			this->clearTracks();
+			this->setAnimation(0, "idle", true);
+			this->setToSetupPose();
+		}
+		else if ((strcmp(getCurrent()->animation->name, "injured-red") == 0 && loopCount == 1)) {
+			Director::getInstance()->replaceScene(MenuLayer::createScene());
 		}
 	});
 }
@@ -156,5 +225,11 @@ bool EnemyBoss1::checkStop()
 		return true;
 	}
 	return false;
+}
+
+void EnemyBoss1::changeState(StateBoss1 * state)
+{
+	delete this->state;
+	this->state = state;
 }
 

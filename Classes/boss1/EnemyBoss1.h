@@ -26,23 +26,23 @@ public:
 	int indexSlash;
 	EnemyBoss1(string jsonFile, string atlasFile, float scale);
 	static EnemyBoss1* create(string jsonFile, string atlasFile, float scale);
-	 void idle();
-	 void attack();
-	 void attack2();
-	 void stupid();
-	 void fixStupid();
-	 void die();
+	void idle();
+	void attack();
+	void attack2();
+	void stupid();
+	void fixStupid();
+	void die();
 
-	 void createPool();
-	 void creatSlash( float angel);
-	 void creatHidenSlash(float angel); // tao check chem
-	 void creatHpSprite();
+	void createPool();
+	void creatSlash(float angel);
+	void creatHidenSlash(float angel); // tao check chem
+	void creatHpSprite();
 
-	 void updateMe(Point posHero);
+	void updateMe(Point posHero);
 
-	 void listener();
-	 bool checkStop();
-	 void changeState(StateBoss1 *state);
+	void listener();
+	bool checkStop();
+	void changeState(StateBoss1 *state);
 	// void initCirclePhysic(b2World *world, Point pos);
 };
 

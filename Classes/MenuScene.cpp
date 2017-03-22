@@ -18,6 +18,7 @@ cocos2d::Scene * MenuLayer::createScene()
 bool MenuLayer::init()
 {
 	auto screenSize = Director::getInstance()->getVisibleSize();
+
 	auto tmxMap = TMXTiledMap::create("config_menu_scene.tmx");
 	tmxMap->setPosition(0,0);
 	auto scalex = screenSize.width / tmxMap->getContentSize().width;

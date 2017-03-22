@@ -1,6 +1,9 @@
 ﻿#include "CollisionListener.h"
 #include "BaseHero.h"
 #include "BaseEnemy.h"
+#include "DQ_DocCoKiemPhap.h"
+#include "DQ_TieuHonChuong.h"
+#include "GameScene.h"
 #include "Coin.h"
 #include "Slash.h"
 #include "EffectManager.h"
@@ -86,6 +89,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		if (!enemy->getIsDie()) {
 			hero->setIsPrior(true);
 			hero->getFSM()->changeState(MInjured);
+			hero->getBloodScreen()->setVisible(true);
 			hero->setHealth(hero->getHealth() - 1);
 		}
 
@@ -124,6 +128,28 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 	}
 
+	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_COIN_BULLION) ||
+		(bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_COIN_BULLION)
+		) {
+
+		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
+		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
+		auto coin = sA->getTag() == TAG_COINBULLION ? (CoinBullion *)sA : (CoinBullion *)sB;
+		coin->picked();
+
+	}
+
+	if ((bitmaskA == BITMASK_COIN_BAG && bitmaskB == BITMASK_SWORD) ||
+		(bitmaskB == BITMASK_COIN_BAG && bitmaskA == BITMASK_SWORD)
+		) {
+
+		B2Skeleton* sA = (BaseEnemy*)bodyA->GetUserData();
+		B2Skeleton* sB = (BaseEnemy*)bodyB->GetUserData();
+		auto coin = sA ? (B2Skeleton *)sA : (B2Skeleton *)sB;
+
+		coin->die();
+	}
+
 	if ((bitmaskA == BITMASK_WOODER && bitmaskB == BITMASK_SWORD) ||
 		(bitmaskB == BITMASK_WOODER && bitmaskA == BITMASK_SWORD)
 		) {
@@ -144,8 +170,12 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		BaseEnemy *enemy;
 
-		if (sA && sB)		// sA and sB != nullptr
+		if (sA && sB) {	// sA and sB != nullptr
 			enemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+			auto thc = sA->getTag() == TAG_DQ_TIEU_HON_CHUONG ? (TieuHonChuong*)sA : (TieuHonChuong*)sB;
+			if(thc->getTag() == TAG_DQ_TIEU_HON_CHUONG)
+				thc->setIsCollide(true);
+		}
 		else
 			enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 
@@ -161,8 +191,12 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		BaseEnemy *enemy;
 
-		if (sA && sB)		// sA and sB != nullptr
+		if (sA && sB) {		// sA and sB != nullptr
 			enemy = sA->getTag() == TAG_ENEMY_TOANCHAN2 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+			auto thc = sA->getTag() == TAG_DQ_TIEU_HON_CHUONG ? (TieuHonChuong*)sA : (TieuHonChuong*)sB;
+			if(thc->getTag() == TAG_DQ_TIEU_HON_CHUONG)
+				thc->setIsCollide(true);
+		}
 		else
 			enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 
@@ -178,8 +212,12 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		BaseEnemy *enemy;
 
-		if (sA && sB)		// sA and sB != nullptr
-			enemy = sA->getTag() == BITMASK_BOSS ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+		if (sA && sB) {		// sA and sB != nullptr
+			enemy = sA->getTag() == TAG_BOSS ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+			auto thc = sA->getTag() == TAG_DQ_TIEU_HON_CHUONG ? (TieuHonChuong*)sA : (TieuHonChuong*)sB;
+			if (thc->getTag() == TAG_DQ_TIEU_HON_CHUONG)
+				thc->setIsCollide(true);
+		}
 		else
 			enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 
@@ -195,6 +233,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
 
 		hero->setIsPrior(true);
+		hero->getBloodScreen()->setVisible(true);
 		hero->getFSM()->changeState(MInjured);
 		hero->setHealth(hero->getHealth() - 1);
 
@@ -219,6 +258,22 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		EM->getSlashBreak()->setVisible(true);
 		EM->slashBreakAni();
 
+	}
+
+
+	if ((bitmaskA == BITMASK_SWORD && bitmaskB == BITMASK_UNDER_GROUND) ||
+		(bitmaskB == BITMASK_SWORD && bitmaskA == BITMASK_UNDER_GROUND)
+		) {
+
+		KiemPhap* sA = (KiemPhap*) bodyA->GetUserData();
+		KiemPhap* sB = (KiemPhap*) bodyB->GetUserData();
+		auto kp = sA ? (KiemPhap *)sA : (KiemPhap *)sB;
+
+		auto parentGameScene = (GameScene*) kp->getParent();
+		parentGameScene->shakeTheScreen();
+
+		kp->hitGround();
+		
 	}
 }
 

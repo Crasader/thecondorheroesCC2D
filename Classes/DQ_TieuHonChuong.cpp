@@ -1,5 +1,4 @@
 #include "DQ_TieuHonChuong.h"
-#include "DQ_TieuHonChuong.h"
 
 DQ_TieuHonChuong::DQ_TieuHonChuong()
 {
@@ -14,6 +13,7 @@ DQ_TieuHonChuong * DQ_TieuHonChuong::create(string file)
 	DQ_TieuHonChuong* thc = new DQ_TieuHonChuong();
 	thc->initWithFile(file);
 	thc->setTag(TAG_DQ_TIEU_HON_CHUONG);
+	thc->isCollide = false;
 	return thc;
 }
 
@@ -26,9 +26,4 @@ void DQ_TieuHonChuong::initCirclePhysic(b2World * world, Point pos)
 	this->getB2Body()->SetUserData(this);
 }
 
-
-void DQ_TieuHonChuong::die()
-{
-	this->setVisible(false);
-}
 

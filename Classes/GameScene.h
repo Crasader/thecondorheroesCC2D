@@ -14,6 +14,8 @@
 #include "Coin.h"
 #include "CollisionListener.h"
 #include "InfiniteParallaxNode.h"
+#include "CoinBag.h"
+#include "CoinBullion.h"
 
 
 USING_NS_CC;
@@ -67,6 +69,7 @@ private:
 	* Only create ground physic                                                                     
 	*/
 	void initGroundPhysic(b2World *world, Point pos, Size size);
+	void initUnderGroundPhysic(b2World *world, Point pos, Size size);
 
 	// function for process map
 	void loadBackground();
@@ -80,6 +83,8 @@ private:
 
 
 	void createCoint();
+	void createCointBag();
+	void createCoinBullion();
 	void createTimCoin();
 	void createParapolCoin();
 	void createCircleCoin();
@@ -111,9 +116,14 @@ public:
 	void updateEnemy();
 	void updateBoss();
 	//void cleanMap();
+
 	// cache function
 	void cachePlist();
 	void cacheSkeleton();
+
+
+	// shaking
+	void shakeTheScreen();
 
     // implement the "static create()" method manually
     CREATE_FUNC(GameScene);

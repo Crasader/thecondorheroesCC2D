@@ -1,0 +1,48 @@
+
+slash-break.png
+size: 1768,1318
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+break1a
+  rotate: true
+  xy: 2, 490
+  size: 826, 486
+  orig: 826, 486
+  offset: 0, 0
+  index: -1
+break2a
+  rotate: false
+  xy: 2, 2
+  size: 826, 486
+  orig: 826, 486
+  offset: 0, 0
+  index: -1
+break3a
+  rotate: true
+  xy: 490, 490
+  size: 826, 486
+  orig: 826, 486
+  offset: 0, 0
+  index: -1
+break4a
+  rotate: false
+  xy: 830, 2
+  size: 826, 486
+  orig: 826, 486
+  offset: 0, 0
+  index: -1
+break5a
+  rotate: true
+  xy: 978, 490
+  size: 826, 486
+  orig: 826, 486
+  offset: 0, 0
+  index: -1
+shining-sword
+  rotate: true
+  xy: 1466, 1023
+  size: 293, 300
+  orig: 293, 300
+  offset: 0, 0
+  index: -1

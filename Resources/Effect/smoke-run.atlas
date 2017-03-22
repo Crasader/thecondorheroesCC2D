@@ -1,0 +1,55 @@
+
+smoke-run.png
+size: 986,698
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+smoke1
+  rotate: false
+  xy: 2, 2
+  size: 530, 162
+  orig: 530, 162
+  offset: 0, 0
+  index: -1
+smoke10
+  rotate: true
+  xy: 658, 166
+  size: 530, 162
+  orig: 530, 162
+  offset: 0, 0
+  index: -1
+smoke12
+  rotate: true
+  xy: 822, 166
+  size: 530, 162
+  orig: 530, 162
+  offset: 0, 0
+  index: -1
+smoke2
+  rotate: true
+  xy: 166, 166
+  size: 530, 162
+  orig: 530, 162
+  offset: 0, 0
+  index: -1
+smoke4
+  rotate: true
+  xy: 330, 166
+  size: 530, 162
+  orig: 530, 162
+  offset: 0, 0
+  index: -1
+smoke6
+  rotate: true
+  xy: 494, 166
+  size: 530, 162
+  orig: 530, 162
+  offset: 0, 0
+  index: -1
+smoke8
+  rotate: true
+  xy: 2, 166
+  size: 530, 162
+  orig: 530, 162
+  offset: 0, 0
+  index: -1

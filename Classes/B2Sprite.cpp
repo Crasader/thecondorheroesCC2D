@@ -93,8 +93,8 @@ void B2Sprite::changeBodyMaskBits(uint16 mask)
 
 void B2Sprite::setAngel(float radian)
 {
-	float vx = SCREEN_SIZE.width / PTM_RATIO * cosf(radian);
-	float vy = SCREEN_SIZE.width / PTM_RATIO * sinf(radian);
+	float vx = SCREEN_SIZE.width * 1.3f / PTM_RATIO * cosf(radian);
+	float vy = SCREEN_SIZE.width * 1.3f / PTM_RATIO * sinf(radian);
 	this->body->SetLinearVelocity(b2Vec2(vx, vy));
 }
 
@@ -104,7 +104,7 @@ void B2Sprite::updateMe(float dt)
 	if (body != nullptr) {
 		this->setPositionX(body->GetPosition().x * PTM_RATIO);
 		this->setPositionY(body->GetPosition().y * PTM_RATIO);
-		//this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));	// rotate
+		this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));	// rotate
 	}
 }
 

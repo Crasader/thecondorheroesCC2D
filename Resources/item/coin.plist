@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+			<key>coin_01.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,0},{52,56}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{4,2},{52,56}}</string>
+				<key>sourceSize</key>
+				<string>{60,60}</string>
+			</dict>
+
+			<key>coin_02.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,57},{51,55}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{5,3},{51,55}}</string>
+				<key>sourceSize</key>
+				<string>{60,60}</string>
+			</dict>
+
+			<key>coin_03.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,169},{49,55}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{6,3},{49,55}}</string>
+				<key>sourceSize</key>
+				<string>{60,60}</string>
+			</dict>
+
+			<key>coin_04.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{52,57},{38,56}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{11,2},{38,56}}</string>
+				<key>sourceSize</key>
+				<string>{60,60}</string>
+			</dict>
+
+			<key>coin_05.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{91,57},{20,56}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{20,2},{20,56}}</string>
+				<key>sourceSize</key>
+				<string>{60,60}</string>
+			</dict>
+
+			<key>coin_06.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{53,0},{38,56}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{11,2},{38,56}}</string>
+				<key>sourceSize</key>
+				<string>{60,60}</string>
+			</dict>
+
+			<key>coin_07.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{50,169},{49,55}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{6,3},{49,55}}</string>
+				<key>sourceSize</key>
+				<string>{60,60}</string>
+			</dict>
+
+			<key>coin_08.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,113},{51,55}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{5,3},{51,55}}</string>
+				<key>sourceSize</key>
+				<string>{60,60}</string>
+			</dict>
+
+		</dict>
+
+		<key>metadata</key>
+		<dict>
+			<key>format</key>
+			<integer>2</integer>
+			<key>size</key>
+			<string>{128,256}</string>
+			<key>textureFileName</key>
+			<string>coin.png</string>
+			</dict>
+		</dict>
+</plist>

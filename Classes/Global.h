@@ -26,6 +26,9 @@ using namespace std;
 #define BITMASK_SWORD					0x0080
 #define BITMASK_SLASH					0x0100
 #define BITMASK_BOSS					0x0200
+#define BITMASK_UNDER_GROUND			0x0400
+#define BITMASK_COIN_BAG				0x0800
+#define BITMASK_COIN_BULLION			0x1000
 
 // tag
 #define TAG_HERO							50
@@ -34,9 +37,11 @@ using namespace std;
 #define TAG_SLASH							53
 #define TAG_ITEM							54
 #define TAG_DQ_TIEU_HON_CHUONG				55
-#define TAG_BLINK							56
-#define TAG_BOMB_ENEMY						57
+#define TAG_DQ_TOAN_CHAN_KIEM_PHAP			56
+#define TAG_DQ_DOC_CO_KIEM_PHAP				57
 #define TAG_GAME							58
+#define TAG_COINBULLION						59
+#define TAG_COINBAG							60
 
 
 #define TAG_ENEMY_WOODER					101
@@ -51,6 +56,7 @@ using namespace std;
 #define ZORDER_BG2							1
 #define ZORDER_ENEMY						2
 #define ZORDER_HERO							3
+#define ZORDER_SMT							4
 
 
 #define PTM_RATIO							32

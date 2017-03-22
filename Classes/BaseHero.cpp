@@ -5,7 +5,10 @@
 
 BaseHero::BaseHero(string jsonFile, string atlasFile, float scale) : B2Skeleton(jsonFile, atlasFile, scale)
 {
-	
+	bloodScreen = Sprite::create("red-screen.png");
+	bloodScreen->setScaleX(SCREEN_SIZE.width / bloodScreen->getContentSize().width);
+	bloodScreen->setScaleY(SCREEN_SIZE.height / bloodScreen->getContentSize().height);
+	bloodScreen->setVisible(false);
 }
 
 BaseHero * BaseHero::create(string jsonFile, string atlasFile, float scale)
@@ -28,7 +31,7 @@ void BaseHero::initSwordPhysic(b2World *world, Point position, float width)
 	fixtureDef.shape = &shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_WOODER;
-	fixtureDef.filter.maskBits = BITMASK_WOODER | BITMASK_TOANCHAN1 |BITMASK_TOANCHAN2 |BITMASK_SLASH | BITMASK_BOSS;
+	fixtureDef.filter.maskBits = BITMASK_WOODER | BITMASK_TOANCHAN1 |BITMASK_TOANCHAN2 |BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BAG;
 
 	bodyDef.position.Set(position.x / PTM_RATIO, position.y / PTM_RATIO);
 	bodyDef.type = b2_dynamicBody;
@@ -117,11 +120,16 @@ void BaseHero::updateMe(float dt)
 	}
 }
 
-Point BaseHero::getBoneXLocation(string boneName)
+void BaseHero::doCounterSkill1()
 {
-	auto boneX = findBone(boneName);
-	auto pos = Vec2(this->getScaleX() * boneX->worldX, boneX->worldY);
-	return pos + this->getPosition();
+}
+
+void BaseHero::doCounterSkill2()
+{
+}
+
+void BaseHero::doCounterSkill3()
+{
 }
 
 

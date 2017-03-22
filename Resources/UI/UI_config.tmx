@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="10" tilewidth="80" tileheight="80" nextobjectid="13">
+ <tileset firstgid="1" name="transparent" tilewidth="80" tileheight="80" tilecount="20" columns="5">
+  <image source="transparent.png" width="466" height="349"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="16" height="10">
+  <data encoding="csv">
+15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup name="avatar">
+  <object id="1" x="101.152" y="55.2121" width="51.5152" height="42.4242"/>
+ </objectgroup>
+ <objectgroup name="blood_board">
+  <object id="3" x="168.788" y="58.303" width="95.2121" height="12.1212"/>
+ </objectgroup>
+ <objectgroup name="money_board">
+  <object id="5" x="605" y="38" width="186" height="28"/>
+ </objectgroup>
+ <objectgroup name="score_board">
+  <object id="6" x="1007" y="38" width="188" height="28"/>
+ </objectgroup>
+ <objectgroup name="btn_attack">
+  <object id="8" x="1156" y="648" width="50" height="45"/>
+ </objectgroup>
+ <objectgroup name="btn_skill1">
+  <object id="10" x="982" y="692" width="28" height="26"/>
+ </objectgroup>
+ <objectgroup name="btn_skill2">
+  <object id="11" x="1029" y="531" width="30" height="32"/>
+ </objectgroup>
+ <objectgroup name="btn_skill3">
+  <object id="12" x="1172" y="478" width="30" height="28"/>
+ </objectgroup>
+</map>

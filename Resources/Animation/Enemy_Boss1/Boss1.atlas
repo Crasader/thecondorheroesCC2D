@@ -1,0 +1,251 @@
+
+Boss1.png
+size: 1009,669
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Kiem
+  rotate: true
+  xy: 2, 49
+  size: 74, 417
+  orig: 74, 417
+  offset: 0, 0
+  index: -1
+caidau
+  rotate: true
+  xy: 842, 353
+  size: 123, 145
+  orig: 123, 145
+  offset: 0, 0
+  index: -1
+caidau2
+  rotate: false
+  xy: 707, 265
+  size: 123, 145
+  orig: 123, 145
+  offset: 0, 0
+  index: -1
+caidau3
+  rotate: true
+  xy: 832, 228
+  size: 123, 145
+  orig: 123, 145
+  offset: 0, 0
+  index: -1
+caimu
+  rotate: true
+  xy: 788, 30
+  size: 67, 55
+  orig: 67, 55
+  offset: 0, 0
+  index: -1
+canhtayphai1a
+  rotate: true
+  xy: 827, 137
+  size: 89, 128
+  orig: 135, 155
+  offset: 22, 1
+  index: -1
+canhtayphai2
+  rotate: true
+  xy: 701, 163
+  size: 100, 124
+  orig: 100, 124
+  offset: 0, 0
+  index: -1
+canhtaytrai1a
+  rotate: true
+  xy: 300, 132
+  size: 72, 128
+  orig: 108, 186
+  offset: 16, 27
+  index: -1
+canhtaytrai2
+  rotate: true
+  xy: 517, 25
+  size: 84, 128
+  orig: 84, 128
+  offset: 0, 0
+  index: -1
+chanphai1
+  rotate: false
+  xy: 421, 2
+  size: 94, 125
+  orig: 94, 125
+  offset: 0, 0
+  index: -1
+chanphai2
+  rotate: false
+  xy: 430, 130
+  size: 95, 80
+  orig: 95, 80
+  offset: 0, 0
+  index: -1
+chantrai1
+  rotate: true
+  xy: 588, 166
+  size: 105, 111
+  orig: 105, 111
+  offset: 0, 0
+  index: -1
+chantrai2
+  rotate: false
+  xy: 845, 77
+  size: 67, 58
+  orig: 67, 58
+  offset: 0, 0
+  index: -1
+eslash2
+  rotate: false
+  xy: 2, 125
+  size: 296, 280
+  orig: 354, 362
+  offset: 57, 21
+  index: -1
+eslash3
+  rotate: false
+  xy: 2, 407
+  size: 346, 260
+  orig: 346, 260
+  offset: 0, 0
+  index: -1
+giayphai
+  rotate: false
+  xy: 527, 111
+  size: 58, 99
+  orig: 58, 99
+  offset: 0, 0
+  index: -1
+giaytrai
+  rotate: true
+  xy: 700, 99
+  size: 62, 92
+  orig: 62, 92
+  offset: 0, 0
+  index: -1
+manhphai
+  rotate: false
+  xy: 634, 412
+  size: 206, 255
+  orig: 206, 255
+  offset: 0, 0
+  index: -1
+manhsau
+  rotate: false
+  xy: 388, 265
+  size: 181, 144
+  orig: 181, 144
+  offset: 0, 0
+  index: -1
+manhsausau
+  rotate: false
+  xy: 350, 411
+  size: 282, 256
+  orig: 318, 256
+  offset: 36, 0
+  index: -1
+manhtrai
+  rotate: false
+  xy: 300, 206
+  size: 86, 199
+  orig: 86, 199
+  offset: 0, 0
+  index: -1
+manhtraiaa
+  rotate: true
+  xy: 388, 212
+  size: 51, 198
+  orig: 86, 199
+  offset: 35, 0
+  index: -1
+manhtruoc
+  rotate: true
+  xy: 842, 478
+  size: 189, 160
+  orig: 189, 160
+  offset: 0, 0
+  index: -1
+ongtayphai
+  rotate: false
+  xy: 147, 10
+  size: 67, 37
+  orig: 67, 37
+  offset: 0, 0
+  index: -1
+ongtaytrai
+  rotate: false
+  xy: 845, 29
+  size: 54, 46
+  orig: 54, 46
+  offset: 0, 0
+  index: -1
+rau
+  rotate: false
+  xy: 957, 129
+  size: 50, 97
+  orig: 50, 97
+  offset: 0, 0
+  index: -1
+tayphai
+  rotate: false
+  xy: 647, 46
+  size: 51, 63
+  orig: 51, 63
+  offset: 0, 0
+  index: -1
+tayphai1
+  rotate: true
+  xy: 914, 78
+  size: 49, 54
+  orig: 77, 95
+  offset: 14, 25
+  index: -1
+taytrai
+  rotate: false
+  xy: 901, 21
+  size: 46, 54
+  orig: 46, 54
+  offset: 0, 0
+  index: -1
+taytrai2
+  rotate: false
+  xy: 949, 22
+  size: 49, 54
+  orig: 77, 95
+  offset: 14, 25
+  index: -1
+taytraiaa
+  rotate: true
+  xy: 216, 8
+  size: 39, 47
+  orig: 46, 54
+  offset: 0, 0
+  index: -1
+thantren
+  rotate: false
+  xy: 571, 273
+  size: 134, 136
+  orig: 134, 136
+  offset: 0, 0
+  index: -1
+thatlung
+  rotate: false
+  xy: 587, 111
+  size: 111, 53
+  orig: 111, 53
+  offset: 0, 0
+  index: -1
+toc
+  rotate: true
+  xy: 2, 16
+  size: 31, 143
+  orig: 31, 143
+  offset: 0, 0
+  index: -1
+tocsau
+  rotate: true
+  xy: 700, 14
+  size: 83, 86
+  orig: 83, 86
+  offset: 0, 0
+  index: -1

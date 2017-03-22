@@ -27,6 +27,8 @@ using namespace std;
 #define BITMASK_SLASH					0x0100
 #define BITMASK_BOSS					0x0200
 #define BITMASK_UNDER_GROUND			0x0400
+#define BITMASK_COIN_BAG				0x0800
+#define BITMASK_COIN_BULLION			0x1000
 
 // tag
 #define TAG_HERO							50
@@ -38,6 +40,8 @@ using namespace std;
 #define TAG_DQ_TOAN_CHAN_KIEM_PHAP			56
 #define TAG_DQ_DOC_CO_KIEM_PHAP				57
 #define TAG_GAME							58
+#define TAG_COINBULLION						59
+#define TAG_COINBAG							60
 
 
 #define TAG_ENEMY_WOODER					101

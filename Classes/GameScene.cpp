@@ -528,6 +528,50 @@ void GameScene::createCoint()
 	createParapolCoin();
 	createCircleCoin();
 	createSquareCoin();
+	createCointBag();
+	createCoinBullion();
+}
+
+void GameScene::createCointBag()
+{
+	auto groupGround = tmx_map->getObjectGroup("coin_bag");
+	for (auto child : groupGround->getObjects()) {
+		auto mObject = child.asValueMap();
+		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+		auto scaleOfEnemy = SCREEN_SIZE.height / 6.0f / 123; // 123 la height cua spine
+		auto coin = CoinBag::create("Gold_bag.json",
+			"Gold_bag.atlas", scaleOfEnemy);
+		coin->setPosition(origin);
+		//enemy->setVisible(false);
+		this->addChild(coin, ZORDER_ENEMY);
+		coin->initCirclePhysic(world, Point(origin.x, origin.y));
+		coin->getB2Body()->SetType(b2_staticBody);
+		coin->getB2Body()->GetFixtureList()->SetSensor(true);
+		coin->changeBodyCategoryBits(BITMASK_COIN_BAG);
+		coin->changeBodyMaskBits(BITMASK_SWORD);
+		//enemy->listener();
+	}
+}
+
+void GameScene::createCoinBullion()
+{
+	auto groupGround = tmx_map->getObjectGroup("coin_bullion");
+	for (auto child : groupGround->getObjects()) {
+		auto mObject = child.asValueMap();
+		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+		auto scaleOfEnemy = SCREEN_SIZE.height / 8.0f / 87; // 87 la height cua spine
+		auto coin = CoinBullion::create("gold.json",
+			"gold.atlas", scaleOfEnemy);
+		coin->setPosition(origin);
+		//enemy->setVisible(false);
+		this->addChild(coin, ZORDER_ENEMY);
+		coin->initCirclePhysic(world, Point(origin.x, origin.y));
+		coin->getB2Body()->SetType(b2_staticBody);
+		coin->getB2Body()->GetFixtureList()->SetSensor(true);
+		coin->changeBodyCategoryBits(BITMASK_COIN_BULLION);
+		coin->changeBodyMaskBits(BITMASK_HERO);
+		//enemy->listener();
+	}
 }
 
 void GameScene::createTimCoin()

@@ -31,7 +31,7 @@ void BaseHero::initSwordPhysic(b2World *world, Point position, float width)
 	fixtureDef.shape = &shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_WOODER;
-	fixtureDef.filter.maskBits = BITMASK_WOODER | BITMASK_TOANCHAN1 |BITMASK_TOANCHAN2 |BITMASK_SLASH | BITMASK_BOSS;
+	fixtureDef.filter.maskBits = BITMASK_WOODER | BITMASK_TOANCHAN1 |BITMASK_TOANCHAN2 |BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BAG;
 
 	bodyDef.position.Set(position.x / PTM_RATIO, position.y / PTM_RATIO);
 	bodyDef.type = b2_dynamicBody;

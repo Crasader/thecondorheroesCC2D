@@ -128,6 +128,28 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 	}
 
+	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_COIN_BULLION) ||
+		(bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_COIN_BULLION)
+		) {
+
+		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
+		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
+		auto coin = sA->getTag() == TAG_COINBULLION ? (CoinBullion *)sA : (CoinBullion *)sB;
+		coin->picked();
+
+	}
+
+	if ((bitmaskA == BITMASK_COIN_BAG && bitmaskB == BITMASK_SWORD) ||
+		(bitmaskB == BITMASK_COIN_BAG && bitmaskA == BITMASK_SWORD)
+		) {
+
+		B2Skeleton* sA = (BaseEnemy*)bodyA->GetUserData();
+		B2Skeleton* sB = (BaseEnemy*)bodyB->GetUserData();
+		auto coin = sA ? (B2Skeleton *)sA : (B2Skeleton *)sB;
+
+		coin->die();
+	}
+
 	if ((bitmaskA == BITMASK_WOODER && bitmaskB == BITMASK_SWORD) ||
 		(bitmaskB == BITMASK_WOODER && bitmaskA == BITMASK_SWORD)
 		) {

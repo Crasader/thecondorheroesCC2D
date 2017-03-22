@@ -14,6 +14,8 @@
 #include "Coin.h"
 #include "CollisionListener.h"
 #include "InfiniteParallaxNode.h"
+#include "CoinBag.h"
+#include "CoinBullion.h"
 
 
 USING_NS_CC;
@@ -81,6 +83,8 @@ private:
 
 
 	void createCoint();
+	void createCointBag();
+	void createCoinBullion();
 	void createTimCoin();
 	void createParapolCoin();
 	void createCircleCoin();

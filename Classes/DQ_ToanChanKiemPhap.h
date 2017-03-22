@@ -14,7 +14,6 @@ public:
 
 	static DQ_ToanChanKiemPhap* create(string file);
 	virtual void initCirclePhysic(b2World *world, Point pos);
-	void die();
 	
 };
 

@@ -25,9 +25,3 @@ void DQ_ToanChanKiemPhap::initCirclePhysic(b2World * world, Point pos)
 	this->getB2Body()->SetUserData(this);
 }
 
-
-void DQ_ToanChanKiemPhap::die()
-{
-	this->setVisible(false);
-}
-

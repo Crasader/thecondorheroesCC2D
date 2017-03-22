@@ -13,7 +13,7 @@ DQ_DocCoKiemPhap * DQ_DocCoKiemPhap::create(string file)
 	DQ_DocCoKiemPhap* kp = new DQ_DocCoKiemPhap();
 	kp->initWithFile(file);
 	kp->setTag(TAG_DQ_DOC_CO_KIEM_PHAP);
-
+	kp->isCollide = false;
 	return kp;
 }
 

@@ -84,7 +84,6 @@ void GameScene::createDuongQua(string path_Json, string path_Atlas, Point positi
 	hero->setPosition(position);
 
 	addChild(hero, ZORDER_HERO);
-	addChild(hero->getSlash(), ZORDER_SMT);
 
 	hero->initCirclePhysic(world, hero->getPosition());
 
@@ -253,6 +252,8 @@ void GameScene::update(float dt)
 	background->updatePosition();
 	if(hero->getBloodScreen()->isVisible())
 		hero->getBloodScreen()->setPositionX(follow->getPositionX());
+
+	updateCharacterPoint();
 }
 
 void GameScene::initB2World()
@@ -663,6 +664,17 @@ void GameScene::danceWithCamera()
 
 	left_corner = CCRectMake(0, 0, SCREEN_SIZE.width / 2, SCREEN_SIZE.height);
 
+}
+
+void GameScene::updateCharacterPoint()
+{
+	if (previousPercentPosition < 1.0f) {
+		auto map_distance = tmx_map->getBoundingBox().size.width;
+		auto currentPercent = hero->getPositionX() / map_distance;
+		auto deltaPos = (currentPercent - previousPercentPosition) * hud->getDistanceBar()->getBoundingBox().size.width * 0.84f;
+		hud->getCharacterPoint()->setPositionX(hud->getCharacterPoint()->getPositionX() + deltaPos);
+		previousPercentPosition = currentPercent;
+	}
 }
 
 void GameScene::initGroundPhysic(b2World * world, Point pos, Size size)

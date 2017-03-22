@@ -17,8 +17,12 @@ public:
 	static DQ_DocCoKiemPhap* create(string file);
 	virtual void initBoxPhysic(b2World *world, Point pos);
 
+
 	void hitGround();
 	void updateMe(float dt);
+
+protected:
+	CC_SYNTHESIZE(bool, isCollide, IsCollide);
 	
 };
 

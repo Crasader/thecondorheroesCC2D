@@ -25,7 +25,7 @@ protected:
 	CC_SYNTHESIZE(float, jump_vel, JumpVel);
 
 	CC_SYNTHESIZE(Sprite*, bloodScreen, BloodScreen);
-	CC_SYNTHESIZE(Sprite*, slash, Slash);
+	CC_SYNTHESIZE(SkeletonAnimation*, slash, Slash);
 
 	// bool to make separate animation
 	CC_SYNTHESIZE(bool, isPrior, IsPrior);

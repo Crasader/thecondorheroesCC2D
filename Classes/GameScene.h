@@ -95,6 +95,8 @@ private:
 	
 	void danceWithEffect();
 	void danceWithCamera();
+	float previousPercentPosition = 0.0f;
+	void updateCharacterPoint();
 
 	// read file Json
 	void readWriteJson();

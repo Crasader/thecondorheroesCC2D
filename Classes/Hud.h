@@ -17,10 +17,13 @@ protected:
 	CC_SYNTHESIZE(Sprite*, bloodBoard, BloodBoard);
 	CC_SYNTHESIZE(Sprite*, moneyBoard, MoneyBoard);
 	CC_SYNTHESIZE(Sprite*, scoreBoard, ScoreBoard);
+	CC_SYNTHESIZE(Sprite*, distanceBar, DistanceBar);
+	CC_SYNTHESIZE(Sprite*, characterPoint, CharacterPoint);
 	CC_SYNTHESIZE(Button*, btnAttack, BtnAttack);
 	CC_SYNTHESIZE(Button*, btnSkill_1, BtnSkill_1);
 	CC_SYNTHESIZE(Button*, btnSkill_2, BtnSkill_2);
 	CC_SYNTHESIZE(Button*, btnSkill_3, BtnSkill_3);
+	CC_SYNTHESIZE(Button*, btnCalling, BtnCalling);
 
 private:
 	TMXTiledMap *tmxMap;

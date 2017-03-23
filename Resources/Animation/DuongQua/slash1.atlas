@@ -1,0 +1,41 @@
+
+slash1.png
+size: 1138,1572
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+slashy1
+  rotate: false
+  xy: 2, 1258
+  size: 1134, 312
+  orig: 1134, 312
+  offset: 0, 0
+  index: -1
+slashy2
+  rotate: false
+  xy: 2, 944
+  size: 1134, 312
+  orig: 1134, 312
+  offset: 0, 0
+  index: -1
+slashy3
+  rotate: false
+  xy: 2, 630
+  size: 1134, 312
+  orig: 1134, 312
+  offset: 0, 0
+  index: -1
+slashy4
+  rotate: false
+  xy: 2, 316
+  size: 1134, 312
+  orig: 1134, 312
+  offset: 0, 0
+  index: -1
+slashy5
+  rotate: false
+  xy: 2, 2
+  size: 1134, 312
+  orig: 1134, 312
+  offset: 0, 0
+  index: -1

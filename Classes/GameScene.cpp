@@ -707,7 +707,6 @@ void GameScene::danceWithCamera()
 	runAction(camera);
 
 	left_corner = CCRectMake(0, 0, SCREEN_SIZE.width / 2, SCREEN_SIZE.height);
-
 }
 
 void GameScene::updateCharacterPoint()
@@ -796,11 +795,13 @@ void GameScene::readWriteJson()
 
 bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 {
-	if (left_corner.containsPoint(touch->getLocation())) {
+	if (left_corner.containsPoint(touch->getLocation())
+		&& !hud->getBtnCalling()->getBoundingBox().containsPoint(touch->getLocation())
+		) {
 
 		// cannot jump while attacking or being injured
 		if (hero->getFSM()->currentState == MAttack || hero->getFSM()->currentState == MInjured ||
-			hero->getFSM()->currentState == MDie || hero->getFSM()->currentState == MSKill2)
+			hero->getFSM()->currentState == MDie)
 
 			return false;
 

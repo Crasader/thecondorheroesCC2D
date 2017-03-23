@@ -14,16 +14,18 @@ public:
 	static Button* create(string file_name_main, string file_name_CoolDown, Point pos);
 
 private:
-	
+	int timer;
 	void addEvents();
 	void checkInterval(float dt);
+	void runTimer();
 
 protected:
+	CC_SYNTHESIZE(Label*, number, NumberCoolDown);
 	CC_SYNTHESIZE(float, timeCoolDown, TimeCoolDown);
 	CC_SYNTHESIZE(bool, isActive, IsActive);
 	CC_SYNTHESIZE(bool, canTouch, CanTouch);
 	CC_SYNTHESIZE(Sprite*, coolDown, CoolDownSprite);
-	CC_SYNTHESIZE(Sprite*, block, BlockSprite);
+	CC_SYNTHESIZE(Sprite*, effectCoolDown, EffectCoolDown);
 	CC_SYNTHESIZE(bool, isBlocked, IsBlocked);
 };
 

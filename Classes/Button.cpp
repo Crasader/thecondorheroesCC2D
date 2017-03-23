@@ -14,6 +14,17 @@ Button * Button::create(string file_name_main, string file_name_CoolDown, Point 
 	mNode->coolDown->setPosition(pos);
 	mNode->coolDown->setVisible(false);
 
+	/*mNode->effectCoolDown = Sprite::create("UI/effect_fullskill.png");
+	mNode->effectCoolDown->setVisible(false);
+	mNode->effectCoolDown->setPosition(mNode->getBoundingBox().size.width / 2, mNode->getBoundingBox().size.height / 2);
+	mNode->addChild(mNode->effectCoolDown);*/
+
+	mNode->number = Label::createWithTTF("0", "fonts/BAUHS93.ttf", 200);
+	mNode->number->setVisible(false);
+	mNode->number->setPosition(mNode->getBoundingBox().size.width / 2, mNode->getBoundingBox().size.height / 2);
+	mNode->addChild(mNode->number);
+
+
 	mNode->isBlocked = false;
 	mNode->canTouch = true;
 	mNode->setIsActive(false);
@@ -37,6 +48,7 @@ void Button::addEvents()
 		if (rect.containsPoint(p) && !isBlocked)	// if this button is blocked (smt while another button is active), cannot active
 		{	
 			if (canTouch) {
+				runTimer();
 				coolDown->setVisible(true);
 				this->schedule(schedule_selector(Button::checkInterval), timeCoolDown, 1, 0);
 				canTouch = false;
@@ -59,5 +71,23 @@ void Button::checkInterval(float dt)
 	canTouch = true;
 	isActive = false;
 	coolDown->setVisible(false);
+}
+
+void Button::runTimer()
+{
+	if (timeCoolDown < 1)
+		return;
+	timer = timeCoolDown;
+	number->setString(StringUtils::format("%i", timer));
+	number->setVisible(true);
+	this->schedule([&](float dt) {
+		--timer;
+		number->setString(StringUtils::format("%i", timer));
+		if (timer <= 0) {
+			number->setVisible(false);
+			this->unschedule("Key_timer");
+		}
+	}, 1.0f, "Key_timer");
+
 }
 

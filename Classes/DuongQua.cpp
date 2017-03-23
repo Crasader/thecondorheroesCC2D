@@ -231,11 +231,17 @@ void DuongQua::doCounterSkill3()
 // SLASH
 void DuongQua::createSlash()
 {
-	auto scale = this->getTrueRadiusOfHero() * 1.7f / 400;  // 400: width of spine
+	auto scale = this->getTrueRadiusOfHero() * 1.8f / 400;  // 400: hieght of spine
 	slash = SkeletonAnimation::createWithFile("Animation/DuongQua/slash2.json", "Animation/DuongQua/slash2.atlas", scale);
 	slash->update(0.0f);
 	slash->setVisible(false);
 	this->getParent()->addChild(slash, ZORDER_SMT);
+
+	auto scaleLand = this->getTrueRadiusOfHero() * 1.8f / 400;  // 400: hieght of spine
+	slashLand = SkeletonAnimation::createWithFile("Animation/DuongQua/slash1.json", "Animation/DuongQua/slash1.atlas", scaleLand);
+	slashLand->update(0.0f);
+	slashLand->setVisible(false);
+	this->getParent()->addChild(slashLand, ZORDER_SMT);
 }
 
 void DuongQua::runSlash()

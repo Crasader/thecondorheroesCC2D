@@ -8,7 +8,6 @@
 #include "Slash.h"
 #include "EffectManager.h"
 #include "boss1/EnemyBoss1.h"
-#include "boss1\StateBoss1.h"
 
 CollisionListener::CollisionListener() {
 
@@ -275,7 +274,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		kp->hitGround();
 		kp->setIsCollide(true);
 		kp->setTextureRect(Rect(Vec2::ZERO, 
-			Size(kp->getContentSize().width, kp->getContentSize().height * random(0.49f, 0.51f))));
+			Size(kp->getContentSize().width, kp->getContentSize().height * random(0.65f, 0.67f))));
 		
 	}
 }

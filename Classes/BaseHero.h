@@ -26,6 +26,7 @@ protected:
 
 	CC_SYNTHESIZE(Sprite*, bloodScreen, BloodScreen);
 	CC_SYNTHESIZE(SkeletonAnimation*, slash, Slash);
+	CC_SYNTHESIZE(SkeletonAnimation*, slashLand, SlashLand);
 
 	// bool to make separate animation
 	CC_SYNTHESIZE(bool, isPrior, IsPrior);

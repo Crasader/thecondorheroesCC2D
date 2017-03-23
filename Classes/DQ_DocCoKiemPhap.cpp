@@ -71,7 +71,7 @@ void DQ_DocCoKiemPhap::hitGround()
 
 
 	particle = ParticleSystemQuad::create("Effect/breakearth.plist");
-	particle->setScale(this->getScale());
+	particle->setScale(this->getScale() * 0.7f);
 	particle->setPosition(this->getPositionX(), this->getPositionY() - this->getBoundingBox().size.height * 0.5f);
 	gameLayer->addChild(particle, ZORDER_ENEMY);
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="10" tilewidth="80" tileheight="80" nextobjectid="13">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="10" tilewidth="80" tileheight="80" nextobjectid="15">
  <tileset firstgid="1" name="transparent" tilewidth="80" tileheight="80" tilecount="20" columns="5">
   <image source="transparent.png" width="466" height="349"/>
  </tileset>
@@ -18,27 +18,33 @@
 </data>
  </layer>
  <objectgroup name="avatar">
-  <object id="1" x="101.152" y="55.2121" width="51.5152" height="42.4242"/>
+  <object id="1" name="avatar" x="101.152" y="55.2121" width="38.848" height="30.7879"/>
  </objectgroup>
  <objectgroup name="blood_board">
-  <object id="3" x="168.788" y="58.303" width="95.2121" height="12.1212"/>
+  <object id="3" name="blood_board" x="246" y="58.303" width="18.0001" height="12.1212"/>
  </objectgroup>
  <objectgroup name="money_board">
-  <object id="5" x="605" y="38" width="186" height="28"/>
+  <object id="5" name="money_board" x="645" y="47" width="37" height="28"/>
  </objectgroup>
  <objectgroup name="score_board">
-  <object id="6" x="1007" y="38" width="188" height="28"/>
+  <object id="6" name="score_board" x="883" y="44" width="31" height="28"/>
  </objectgroup>
  <objectgroup name="btn_attack">
-  <object id="8" x="1156" y="648" width="50" height="45"/>
+  <object id="8" name="btn_attack" x="1156" y="648" width="30" height="28"/>
  </objectgroup>
  <objectgroup name="btn_skill1">
-  <object id="10" x="982" y="692" width="28" height="26"/>
+  <object id="10" name="btn_skill1" x="989" y="691" width="22" height="22"/>
  </objectgroup>
  <objectgroup name="btn_skill2">
-  <object id="11" x="1029" y="531" width="30" height="32"/>
+  <object id="11" name="btn_skill2" x="1029" y="531" width="21" height="27"/>
  </objectgroup>
  <objectgroup name="btn_skill3">
-  <object id="12" x="1172" y="478" width="30" height="28"/>
+  <object id="12" name="btn_skill3" x="1172" y="478" width="26" height="20"/>
+ </objectgroup>
+ <objectgroup name="distance_bar">
+  <object id="13" name="distance_bar" x="520" y="741" width="20" height="14"/>
+ </objectgroup>
+ <objectgroup name="btn_calling">
+  <object id="14" name="btn_calling" x="106" y="241" width="30" height="24"/>
  </objectgroup>
 </map>

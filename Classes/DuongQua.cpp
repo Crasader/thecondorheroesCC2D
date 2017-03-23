@@ -437,6 +437,7 @@ void DuongQua::listener()
 		else if ((strcmp(getCurrent()->animation->name, "injured") == 0)) {
 
 			this->getBloodScreen()->setVisible(false);
+			// you fucked
 			getFSM()->revertToGlobalState();
 
 			setIsPrior(false);

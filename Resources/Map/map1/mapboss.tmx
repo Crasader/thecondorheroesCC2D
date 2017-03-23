@@ -115,6 +115,6 @@
   <object id="87" x="0" y="606.061" width="2556" height="1"/>
  </objectgroup>
  <objectgroup name="under_ground">
-  <object id="91" x="0" y="666" width="2556"/>
+  <object id="91" x="0" y="644.667" width="2556"/>
  </objectgroup>
 </map>

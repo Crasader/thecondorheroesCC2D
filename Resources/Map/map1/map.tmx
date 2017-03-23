@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="300" height="10" tilewidth="80" tileheight="80" nextobjectid="100">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="300" height="10" tilewidth="80" tileheight="80" nextobjectid="105">
  <tileset firstgid="1" name="bg" tilewidth="1280" tileheight="800" tilecount="1" columns="1">
   <image source="bg.jpg" trans="ff00ff" width="1280" height="800"/>
  </tileset>
@@ -193,15 +193,22 @@
   <object id="87" x="23839.4" y="161.818" width="78.7879" height="75.7576"/>
  </objectgroup>
  <objectgroup name="under_ground">
-  <object id="88" x="2.66667" y="637.333" width="1053.33"/>
-  <object id="91" x="1065.64" y="662.485" width="1504.06"/>
-  <object id="92" x="2863.64" y="655.182" width="2018.18"/>
-  <object id="93" x="4878.79" y="670.333" width="1125.21" height="1.57576"/>
-  <object id="94" x="6384.85" y="659.879" width="4344.48"/>
-  <object id="95" x="10945.1" y="670.545" width="2339.39"/>
-  <object id="96" x="13500.8" y="661.879" width="2193.91"/>
-  <object id="97" x="15915.2" y="672.879" width="3606.06"/>
-  <object id="98" x="19740" y="660.788" width="3631.58"/>
-  <object id="99" x="23600" y="659.515" width="440"/>
+  <object id="91" x="24.2424" y="643.485" width="2525.76"/>
+  <object id="93" x="2872.73" y="644.333" width="3119.27"/>
+  <object id="94" x="6398" y="646.879" width="4318"/>
+  <object id="95" x="10960" y="646.545" width="2312"/>
+  <object id="96" x="13516" y="647.879" width="2160"/>
+  <object id="97" x="15928" y="646.879" width="3584"/>
+  <object id="98" x="19764" y="646.788" width="3584"/>
+  <object id="99" x="23604" y="646.515" width="436"/>
+ </objectgroup>
+ <objectgroup name="coin_bullion">
+  <object id="100" x="1280" y="304" width="76" height="68"/>
+  <object id="101" x="8012" y="308" width="64" height="60"/>
+  <object id="102" x="8620" y="540" width="56" height="48"/>
+ </objectgroup>
+ <objectgroup name="coin_bag">
+  <object id="103" x="1888" y="313" width="72" height="64"/>
+  <object id="104" x="9524" y="336" width="60" height="40"/>
  </objectgroup>
 </map>

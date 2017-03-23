@@ -172,7 +172,7 @@ void EnemyBoss1::updateMe(Point posHero)
 		this->attack2();
 	}
 
-	if (control == 255 || control == 270|| control == 285) {
+	if (control == 245 || control == 250|| control == 255) {
 		auto tmpVec = posHero - this->getBoneLocation("bone65");
 		this->creatSlash(tmpVec.getAngle());
 	}

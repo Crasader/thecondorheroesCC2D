@@ -252,6 +252,14 @@ void DuongQua::runSlash()
 	slash->setToSetupPose();
 }
 
+void DuongQua::runSlashLand()
+{
+	slashLand->setVisible(true);
+	slashLand->clearTracks();
+	slashLand->addAnimation(0, "slash1", false);
+	slashLand->setToSetupPose();
+}
+
 void DuongQua::initCirclePhysic(b2World * world, Point pos)
 {
 	b2CircleShape circle_shape;
@@ -368,7 +376,7 @@ void DuongQua::attackNormal()
 
 void DuongQua::attackLanding()
 {
-	runSlash();
+	runSlashLand();
 
 	clearTracks();
 	addAnimation(0, "attack3", false);
@@ -417,7 +425,6 @@ void DuongQua::listener()
 	// set Duration here
 	this->setDurationSkill1(4.0f);
 	this->setDurationSkill2(2.5f);
-	//this->setDurationSkill2(spSkeletonData_findAnimation(this->getSkeleton()->data, "skill2")->duration);
 	//this->setDurationSkill3(spSkeletonData_findAnimation(this->getSkeleton()->data, "skill3")->duration);
 	this->setDurationSkill3(2.5f);
 
@@ -428,14 +435,11 @@ void DuongQua::listener()
 		}
 
 		else if ((strcmp(getCurrent()->animation->name, "injured") == 0)) {
+
 			this->getBloodScreen()->setVisible(false);
-			if (getFSM()->globalState == MSKill1 || getFSM()->globalState == MAttack)
-				getFSM()->setGlobalState(MRun);
-
 			getFSM()->revertToGlobalState();
+
 			setIsPrior(false);
-
-
 		}
 
 		else if ((strcmp(getCurrent()->animation->name, "attack1") == 0) ||
@@ -444,17 +448,14 @@ void DuongQua::listener()
 
 			changeSwordCategoryBitmask(BITMASK_ENEMY);
 
-			if (getFSM()->globalState != MSKill1)
-				getFSM()->revertToGlobalState();
-			else
-				getFSM()->changeState(MLand);
+			getFSM()->revertToGlobalState();
 
 			setIsPrior(false);
 
 		}
 
 		else if (strcmp(getCurrent()->animation->name, "attack4") == 0) {
-			//getFSM()->revertToGlobalState();
+			getFSM()->revertToGlobalState();
 			setIsPriorSkill1(false);
 		}
 
@@ -462,7 +463,6 @@ void DuongQua::listener()
 
 
 	/*this->setCompleteListener([&](int trackIndex, int loopCount) {
-
 
 	});*/
 }
@@ -530,7 +530,8 @@ void DuongQua::updateMe(float dt)
 	}
 
 	if (getPositionY() + getTrueRadiusOfHero() * 2 < 0) {
-		getB2Body()->SetTransform(b2Vec2(SCREEN_SIZE.width * 0.25f / PTM_RATIO, SCREEN_SIZE.height / PTM_RATIO), getB2Body()->GetAngle());
+		getB2Body()->SetTransform(b2Vec2(SCREEN_SIZE.width * 0.25f / PTM_RATIO,
+			SCREEN_SIZE.height / PTM_RATIO), getB2Body()->GetAngle());
 		return;
 	}
 
@@ -539,7 +540,13 @@ void DuongQua::updateMe(float dt)
 
 	getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
 
-	getSlash()->setPosition(this->getPositionX() + this->getTrueRadiusOfHero() * 1.5f, this->getPositionY());
+	if (getSlash()->isVisible())
+		getSlash()->setPosition(this->getPositionX() + this->getTrueRadiusOfHero(),
+			this->getPositionY() + this->getTrueRadiusOfHero() * 0.7f);
+
+	if (getSlashLand()->isVisible())
+		getSlashLand()->setPosition(this->getPositionX() + this->getTrueRadiusOfHero() * 0.3f,
+			this->getPositionY() + this->getTrueRadiusOfHero() * 0.7f);
 
 	if (spiritHole->isVisible()) {
 		spiritHole->setPosition(this->getPositionX() - 2 * this->getTrueRadiusOfHero(),
@@ -549,7 +556,6 @@ void DuongQua::updateMe(float dt)
 	if (!getIsPrior() && !getIsPriorSkill1() /*&& !getIsPriorSkill2() && !getIsPriorSkill3()*/) {
 
 		if (getB2Body()->GetLinearVelocity().y < 0) {
-			//if (getNumberOfJump() > 0)
 			getFSM()->changeState(MLand);
 			return;
 		}

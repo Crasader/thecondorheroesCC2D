@@ -20,9 +20,8 @@ Button * Button::create(string file_name_main, string file_name_CoolDown, Point 
 	mNode->addChild(mNode->effectCoolDown);*/
 
 	mNode->number = Label::createWithTTF("0", "fonts/BAUHS93.ttf", 200);
+	mNode->number->setPosition(pos);
 	mNode->number->setVisible(false);
-	mNode->number->setPosition(mNode->getBoundingBox().size.width / 2, mNode->getBoundingBox().size.height / 2);
-	mNode->addChild(mNode->number);
 
 
 	mNode->isBlocked = false;

@@ -714,7 +714,7 @@ void GameScene::updateCharacterPoint()
 	if (previousPercentPosition < 1.0f) {
 		auto map_distance = tmx_map->getBoundingBox().size.width;
 		auto currentPercent = hero->getPositionX() / map_distance;
-		auto deltaPos = (currentPercent - previousPercentPosition) * hud->getDistanceBar()->getBoundingBox().size.width * 0.84f;
+		auto deltaPos = (currentPercent - previousPercentPosition) * hud->getDistanceBar()->getBoundingBox().size.width * 0.82f;
 		hud->getCharacterPoint()->setPositionX(hud->getCharacterPoint()->getPositionX() + deltaPos);
 		previousPercentPosition = currentPercent;
 	}

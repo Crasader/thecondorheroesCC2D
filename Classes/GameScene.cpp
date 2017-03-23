@@ -405,14 +405,14 @@ void GameScene::createGroundBody()
 		initGroundPhysic(world, pos, sizeOfBound);
 	}
 
-	/*auto groupUnderGround = tmx_map->getObjectGroup("under_ground");
+	auto groupUnderGround = tmx_map->getObjectGroup("under_ground");
 	for (auto child : groupUnderGround->getObjects()) {
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
 		Size sizeOfBound = Size(mObject["width"].asFloat() *scaleOfMap, mObject["height"].asFloat() *scaleOfMap);
 		Point pos = Point(origin.x + sizeOfBound.width / 2, origin.y);
 		initUnderGroundPhysic(world, pos, sizeOfBound);
-	}*/
+	}
 }
 
 void GameScene::createGroundForMapBoss()
@@ -815,7 +815,7 @@ void GameScene::updateCharacterPoint()
 	if (previousPercentPosition < 1.0f) {
 		auto map_distance = tmx_map->getBoundingBox().size.width;
 		auto currentPercent = hero->getPositionX() / map_distance;
-		auto deltaPos = (currentPercent - previousPercentPosition) * hud->getDistanceBar()->getBoundingBox().size.width * 0.84f;
+		auto deltaPos = (currentPercent - previousPercentPosition) * hud->getDistanceBar()->getBoundingBox().size.width * 0.82f;
 		hud->getCharacterPoint()->setPositionX(hud->getCharacterPoint()->getPositionX() + deltaPos);
 		previousPercentPosition = currentPercent;
 	}

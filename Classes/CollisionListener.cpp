@@ -274,7 +274,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		kp->hitGround();
 		kp->setIsCollide(true);
 		kp->setTextureRect(Rect(Vec2::ZERO, 
-			Size(kp->getContentSize().width, kp->getContentSize().height * random(0.65f, 0.67f))));
+			Size(kp->getContentSize().width, kp->getContentSize().height * random(0.61f, 0.63f))));
 		
 	}
 }

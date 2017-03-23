@@ -100,7 +100,6 @@ void Hud::addButton()
 	btnAttack->setTimeCoolDown(0.5f);
 	btnAttack->setScale(SCREEN_SIZE.height / 4.5f / btnAttack->getContentSize().height);
 	btnAttack->getCoolDownSprite()->setScale(btnAttack->getScale());
-	btnAttack->getNumberCoolDown()->setScale(btnAttack->getScale() / 5);
 	addChild(btnAttack);
 	addChild(btnAttack->getCoolDownSprite());
 
@@ -110,12 +109,13 @@ void Hud::addButton()
 	Point origin_1 = Point(mObject_1["x"].asFloat() * tmxMap->getScaleX(), mObject_1["y"].asFloat()* tmxMap->getScaleY());
 
 	btnSkill_1 = Button::create("UI/btnDQ_skill1_up.png", "UI/btnDQ_skill1_down.png", origin_1);
-	btnSkill_1->setTimeCoolDown(9);
+	btnSkill_1->setTimeCoolDown(20);
 	btnSkill_1->setScale(SCREEN_SIZE.height / 6.5f / btnSkill_1->getContentSize().height);
 	btnSkill_1->getCoolDownSprite()->setScale(btnSkill_1->getScale());
-	btnSkill_1->getNumberCoolDown()->setScale(btnSkill_1->getScale() / 5);
+	btnSkill_1->getNumberCoolDown()->setScale(btnSkill_1->getBoundingBox().size.height / 2 / btnSkill_1->getNumberCoolDown()->getContentSize().height);
 	addChild(btnSkill_1);
 	addChild(btnSkill_1->getCoolDownSprite());
+	addChild(btnSkill_1->getNumberCoolDown());
 
 
 	auto groupBtnSkill2 = tmxMap->getObjectGroup("btn_skill2");
@@ -123,12 +123,13 @@ void Hud::addButton()
 	Point origin_2 = Point(mObject_2["x"].asFloat() * tmxMap->getScaleX(), mObject_2["y"].asFloat()* tmxMap->getScaleY());
 
 	btnSkill_2 = Button::create("UI/btnDQ_skill2_up.png", "UI/btnDQ_skill2_down.png", origin_2);
-	btnSkill_2->setTimeCoolDown(8);
+	btnSkill_2->setTimeCoolDown(22);
 	btnSkill_2->setScale(SCREEN_SIZE.height / 6.5f / btnSkill_2->getContentSize().height);
 	btnSkill_2->getCoolDownSprite()->setScale(btnSkill_2->getScale());
-	btnSkill_2->getNumberCoolDown()->setScale(btnSkill_2->getScale() / 5);
+	btnSkill_2->getNumberCoolDown()->setScale(btnSkill_2->getBoundingBox().size.height / 2 / btnSkill_2->getNumberCoolDown()->getContentSize().height);
 	addChild(btnSkill_2);
 	addChild(btnSkill_2->getCoolDownSprite());
+	addChild(btnSkill_2->getNumberCoolDown());
 
 
 	auto groupBtnSkill3 = tmxMap->getObjectGroup("btn_skill3");
@@ -136,12 +137,13 @@ void Hud::addButton()
 	Point origin_3 = Point(mObject_3["x"].asFloat() * tmxMap->getScaleX(), mObject_3["y"].asFloat()* tmxMap->getScaleY());
 
 	btnSkill_3 = Button::create("UI/btnDQ_skill3_up.png", "UI/btnDQ_skill3_down.png", origin_3);
-	btnSkill_3->setTimeCoolDown(11);
+	btnSkill_3->setTimeCoolDown(30);
 	btnSkill_3->setScale(SCREEN_SIZE.height / 6.5f / btnSkill_3->getContentSize().height);
 	btnSkill_3->getCoolDownSprite()->setScale(btnSkill_3->getScale());
-	btnSkill_3->getNumberCoolDown()->setScale(btnSkill_3->getScale() / 5);
+	btnSkill_3->getNumberCoolDown()->setScale(btnSkill_3->getBoundingBox().size.height / 2 / btnSkill_3->getNumberCoolDown()->getContentSize().height);
 	addChild(btnSkill_3);
 	addChild(btnSkill_3->getCoolDownSprite());
+	addChild(btnSkill_3->getNumberCoolDown());
 
 	auto groupBtnCalling = tmxMap->getObjectGroup("btn_calling");
 	auto mObject_4 = groupBtnCalling->getObject("btn_calling");
@@ -149,10 +151,11 @@ void Hud::addButton()
 
 	btnCalling = Button::create("UI/btn_callbird.png", "UI/btn_callbird_off.png", origin_4);
 	btnCalling->setTimeCoolDown(40);
-	btnCalling->setScale(SCREEN_SIZE.height / 6 / btnCalling->getContentSize().height);
+	btnCalling->setScale(SCREEN_SIZE.height / 7 / btnCalling->getContentSize().height);
 	btnCalling->getCoolDownSprite()->setScale(btnCalling->getScale());
-	btnCalling->getNumberCoolDown()->setScale(btnCalling->getScale() / 5);
+	btnCalling->getNumberCoolDown()->setScale(btnCalling->getBoundingBox().size.height / 2 / btnCalling->getNumberCoolDown()->getContentSize().height);
 	addChild(btnCalling);
 	addChild(btnCalling->getCoolDownSprite());
+	addChild(btnCalling->getNumberCoolDown());
 
 }

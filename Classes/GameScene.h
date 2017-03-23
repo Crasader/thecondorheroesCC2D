@@ -85,11 +85,14 @@ private:
 	void createCoint();
 	void createCointBag();
 	void createCoinBullion();
-	void createTimCoin();
+	/*void createTimCoin();
 	void createParapolCoin();
 	void createCircleCoin();
 	void createSquareCoin();
-
+	void createStraightCoin();
+	void createZigzagCoin();
+	void createZigzagCoin2();*/
+	void createFormCoin(string objectName, string objectMap, string objectInform);
 
 	//skeleton data
 	//spSkeletonData* createSkeletonData(string atlasFile, string jsonFile);

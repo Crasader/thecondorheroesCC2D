@@ -240,9 +240,9 @@ void GameScene::update(float dt)
 	if (hero->getPositionX() > tmx_map->getBoundingBox().size.width - SCREEN_SIZE.width / 4 && indexOfNextMapBoss < 0) {
 		createGroundForMapBoss();
 		indexOfNextMapBoss = 1;
-	} 
+	}
 
-	if (hero->getPositionX() > tmx_mapboss[indexOfNextMapBoss]->getPositionX()+SCREEN_SIZE.width && indexOfNextMapBoss >= 0) {
+	if (hero->getPositionX() > tmx_mapboss[indexOfNextMapBoss]->getPositionX() + SCREEN_SIZE.width && indexOfNextMapBoss >= 0) {
 		TMXTiledMap* tmpmap;
 		indexOfNextMapBoss == 1 ? tmpmap = tmx_mapboss[0] : tmpmap = tmx_mapboss[1];
 		tmpmap->setPositionX(tmx_mapboss[indexOfNextMapBoss]->getPositionX() + tmx_mapboss[indexOfNextMapBoss]->getBoundingBox().size.width);
@@ -250,7 +250,7 @@ void GameScene::update(float dt)
 	}
 
 	background->updatePosition();
-	if(hero->getBloodScreen()->isVisible())
+	if (hero->getBloodScreen()->isVisible())
 		hero->getBloodScreen()->setPositionX(follow->getPositionX());
 
 	updateCharacterPoint();
@@ -338,7 +338,7 @@ void GameScene::loadBackground()
 		tmx_mapboss[i]->setScale(scaleOfMap);
 	}
 
-	tmx_mapboss[0]->setPosition(tmx_map->getPosition() + Vec2(tmx_map->getBoundingBox().size.width,0));
+	tmx_mapboss[0]->setPosition(tmx_map->getPosition() + Vec2(tmx_map->getBoundingBox().size.width, 0));
 	tmx_mapboss[1]->setPosition(tmx_mapboss[0]->getPosition() + Vec2(tmx_mapboss[0]->getBoundingBox().size.width, 0));
 	this->addChild(tmx_mapboss[0], ZORDER_BG2);
 	this->addChild(tmx_mapboss[1], ZORDER_BG2);
@@ -405,14 +405,14 @@ void GameScene::createGroundBody()
 		initGroundPhysic(world, pos, sizeOfBound);
 	}
 
-	auto groupUnderGround = tmx_map->getObjectGroup("under_ground");
+	/*auto groupUnderGround = tmx_map->getObjectGroup("under_ground");
 	for (auto child : groupUnderGround->getObjects()) {
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
 		Size sizeOfBound = Size(mObject["width"].asFloat() *scaleOfMap, mObject["height"].asFloat() *scaleOfMap);
 		Point pos = Point(origin.x + sizeOfBound.width / 2, origin.y);
 		initUnderGroundPhysic(world, pos, sizeOfBound);
-	}
+	}*/
 }
 
 void GameScene::createGroundForMapBoss()
@@ -507,8 +507,10 @@ void GameScene::creatBoss()
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
 		auto scaleOfEnemy = SCREEN_SIZE.height / 3.0f / 560; // 560 la height cua spine
+		/*auto enemy = EnemyBoss1::create("Animation/Enemy_Boss1/Boss1.json",
+			"Animation/Enemy_Boss1/Boss1.atlas", scaleOfEnemy);*/
 		auto enemy = EnemyBoss1::create("Animation/Enemy_Boss1/Boss1.json",
-			"Animation/Enemy_Boss1/Boss1.atlas", scaleOfEnemy);
+			"Animation/Enemy_Boss1/Boss1.atlas", scaleOfEnemy); 
 		enemy->setPosition(origin);
 		//enemy->setVisible(false);
 		this->addChild(enemy, ZORDER_ENEMY);
@@ -524,10 +526,13 @@ void GameScene::creatBoss()
 
 void GameScene::createCoint()
 {
-	createTimCoin();
-	createParapolCoin();
-	createCircleCoin();
-	createSquareCoin();
+	createFormCoin("coin_tim", "Map/tim.tmx", "tim");
+	createFormCoin("coin_straight", "Map/straight.tmx", "straight");
+	createFormCoin("coin_parabol", "Map/parapol.tmx", "parapol");
+	createFormCoin("coin_square", "Map/square.tmx", "square");
+	createFormCoin("coin_zigzag", "Map/zigzag.tmx", "zigzag");
+	createFormCoin("coin_zigzag2", "Map/zigzag2.tmx", "zigzag2");
+	createFormCoin("coin_circle", "Map/circle.tmx", "circle");
 	createCointBag();
 	createCoinBullion();
 }
@@ -538,7 +543,7 @@ void GameScene::createCointBag()
 	for (auto child : groupGround->getObjects()) {
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		auto scaleOfEnemy = SCREEN_SIZE.height / 6.0f / 123; // 123 la height cua spine
+		auto scaleOfEnemy = SCREEN_SIZE.height / 8.0f / 170; //  la height cua spine
 		auto coin = CoinBag::create("Gold_bag.json",
 			"Gold_bag.atlas", scaleOfEnemy);
 		coin->setPosition(origin);
@@ -559,7 +564,7 @@ void GameScene::createCoinBullion()
 	for (auto child : groupGround->getObjects()) {
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		auto scaleOfEnemy = SCREEN_SIZE.height / 8.0f / 87; // 87 la height cua spine
+		auto scaleOfEnemy = SCREEN_SIZE.height / 12.0f / 118; //  la height cua spine
 		auto coin = CoinBullion::create("gold.json",
 			"gold.atlas", scaleOfEnemy);
 		coin->setPosition(origin);
@@ -574,101 +579,173 @@ void GameScene::createCoinBullion()
 	}
 }
 
-void GameScene::createTimCoin()
-{
-	auto group = tmx_map->getObjectGroup("coin_tim");
-	for (auto child : group->getObjects()) {
-		auto mObject = child.asValueMap();
-		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		auto tmx = TMXTiledMap::create("Map/tim.tmx");
-		auto groupCoin = tmx->getObjectGroup("tim");
-		for (auto c : groupCoin->getObjects()) {
-			auto mObject2 = c.asValueMap();
-			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
-			auto coin = Coin::create();
-			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
-			coin->setScale(scale);
-			coin->setPosition(origin + origin2);
-			this->addChild(coin, ZORDER_ENEMY);
-			coin->initCirclePhysic(world, origin + origin2);
-			coin->changeBodyCategoryBits(BITMASK_COIN);
-			coin->changeBodyMaskBits(BITMASK_HERO);
-			coin->runAnimation();
-		}
-	}
-}
-
-void GameScene::createParapolCoin()
-{
-	auto group = tmx_map->getObjectGroup("coin_parapol");
-	for (auto child : group->getObjects()) {
-		auto mObject = child.asValueMap();
-		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		auto tmx = TMXTiledMap::create("Map/parapol.tmx");
-		auto groupCoin = tmx->getObjectGroup("parapol");
-		for (auto c : groupCoin->getObjects()) {
-			auto mObject2 = c.asValueMap();
-			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
-			auto coin = Coin::create();
-			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
-			coin->setScale(scale);
-			coin->setPosition(origin + origin2);
-			this->addChild(coin, ZORDER_ENEMY);
-			coin->initCirclePhysic(world, origin + origin2);
-			coin->changeBodyCategoryBits(BITMASK_COIN);
-			coin->changeBodyMaskBits(BITMASK_HERO);
-			coin->runAnimation();
-		}
-	}
-}
-
-void GameScene::createCircleCoin()
-{
-	auto group = tmx_map->getObjectGroup("coin_circle");
-	for (auto child : group->getObjects()) {
-		auto mObject = child.asValueMap();
-		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		auto tmx = TMXTiledMap::create("Map/circle.tmx");
-		auto groupCoin = tmx->getObjectGroup("circle");
-		for (auto c : groupCoin->getObjects()) {
-			auto mObject2 = c.asValueMap();
-			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
-			auto coin = Coin::create();
-			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
-			coin->setScale(scale);
-			coin->setPosition(origin + origin2);
-			this->addChild(coin, ZORDER_ENEMY);
-			coin->initCirclePhysic(world, origin + origin2);
-			coin->changeBodyCategoryBits(BITMASK_COIN);
-			coin->changeBodyMaskBits(BITMASK_HERO);
-			coin->runAnimation();
-		}
-	}
-}
-
-void GameScene::createSquareCoin()
-{
-	auto group = tmx_map->getObjectGroup("coin_square");
-	for (auto child : group->getObjects()) {
-		auto mObject = child.asValueMap();
-		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		auto tmx = TMXTiledMap::create("Map/square.tmx");
-		auto groupCoin = tmx->getObjectGroup("square");
-		for (auto c : groupCoin->getObjects()) {
-			auto mObject2 = c.asValueMap();
-			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
-			auto coin = Coin::create();
-			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
-			coin->setScale(scale);
-			coin->setPosition(origin + origin2);
-			this->addChild(coin, ZORDER_ENEMY);
-			coin->initCirclePhysic(world, origin + origin2);
-			coin->changeBodyCategoryBits(BITMASK_COIN);
-			coin->changeBodyMaskBits(BITMASK_HERO);
-			coin->runAnimation();
-		}
-	}
-}
+//void GameScene::createTimCoin()
+//{
+//	auto group = tmx_map->getObjectGroup("coin_tim");
+//	for (auto child : group->getObjects()) {
+//		auto mObject = child.asValueMap();
+//		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+//		auto tmx = TMXTiledMap::create("Map/tim.tmx");
+//		auto groupCoin = tmx->getObjectGroup("tim");
+//		for (auto c : groupCoin->getObjects()) {
+//			auto mObject2 = c.asValueMap();
+//			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
+//			auto coin = Coin::create();
+//			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
+//			coin->setScale(scale);
+//			coin->setPosition(origin + origin2);
+//			this->addChild(coin, ZORDER_ENEMY);
+//			coin->initCirclePhysic(world, origin + origin2);
+//			coin->changeBodyCategoryBits(BITMASK_COIN);
+//			coin->changeBodyMaskBits(BITMASK_HERO);
+//			coin->runAnimation();
+//		}
+//	}
+//}
+//
+//void GameScene::createParapolCoin()
+//{
+//	auto group = tmx_map->getObjectGroup("coin_parapol");
+//	for (auto child : group->getObjects()) {
+//		auto mObject = child.asValueMap();
+//		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+//		auto tmx = TMXTiledMap::create("Map/parapol.tmx");
+//		auto groupCoin = tmx->getObjectGroup("parapol");
+//		for (auto c : groupCoin->getObjects()) {
+//			auto mObject2 = c.asValueMap();
+//			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
+//			auto coin = Coin::create();
+//			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
+//			coin->setScale(scale);
+//			coin->setPosition(origin + origin2);
+//			this->addChild(coin, ZORDER_ENEMY);
+//			coin->initCirclePhysic(world, origin + origin2);
+//			coin->changeBodyCategoryBits(BITMASK_COIN);
+//			coin->changeBodyMaskBits(BITMASK_HERO);
+//			coin->runAnimation();
+//		}
+//	}
+//}
+//
+//void GameScene::createCircleCoin()
+//{
+//	auto group = tmx_map->getObjectGroup("coin_circle");
+//	for (auto child : group->getObjects()) {
+//		auto mObject = child.asValueMap();
+//		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+//		auto tmx = TMXTiledMap::create("Map/circle.tmx");
+//		auto groupCoin = tmx->getObjectGroup("circle");
+//		for (auto c : groupCoin->getObjects()) {
+//			auto mObject2 = c.asValueMap();
+//			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
+//			auto coin = Coin::create();
+//			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
+//			coin->setScale(scale);
+//			coin->setPosition(origin + origin2);
+//			this->addChild(coin, ZORDER_ENEMY);
+//			coin->initCirclePhysic(world, origin + origin2);
+//			coin->changeBodyCategoryBits(BITMASK_COIN);
+//			coin->changeBodyMaskBits(BITMASK_HERO);
+//			coin->runAnimation();
+//		}
+//	}
+//}
+//
+//void GameScene::createSquareCoin()
+//{
+//	auto group = tmx_map->getObjectGroup("coin_square");
+//	for (auto child : group->getObjects()) {
+//		auto mObject = child.asValueMap();
+//		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+//		auto tmx = TMXTiledMap::create("Map/square.tmx");
+//		auto groupCoin = tmx->getObjectGroup("square");
+//		for (auto c : groupCoin->getObjects()) {
+//			auto mObject2 = c.asValueMap();
+//			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
+//			auto coin = Coin::create();
+//			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
+//			coin->setScale(scale);
+//			coin->setPosition(origin + origin2);
+//			this->addChild(coin, ZORDER_ENEMY);
+//			coin->initCirclePhysic(world, origin + origin2);
+//			coin->changeBodyCategoryBits(BITMASK_COIN);
+//			coin->changeBodyMaskBits(BITMASK_HERO);
+//			coin->runAnimation();
+//		}
+//	}
+//}
+//
+//void GameScene::createStraightCoin()
+//{
+//	auto group = tmx_map->getObjectGroup("coin_straight");
+//	for (auto child : group->getObjects()) {
+//		auto mObject = child.asValueMap();
+//		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+//		auto tmx = TMXTiledMap::create("Map/straight.tmx");
+//		auto groupCoin = tmx->getObjectGroup("straight");
+//		for (auto c : groupCoin->getObjects()) {
+//			auto mObject2 = c.asValueMap();
+//			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
+//			auto coin = Coin::create();
+//			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
+//			coin->setScale(scale);
+//			coin->setPosition(origin + origin2);
+//			this->addChild(coin, ZORDER_ENEMY);
+//			coin->initCirclePhysic(world, origin + origin2);
+//			coin->changeBodyCategoryBits(BITMASK_COIN);
+//			coin->changeBodyMaskBits(BITMASK_HERO);
+//			coin->runAnimation();
+//		}
+//	}
+//}
+//
+//void GameScene::createZigzagCoin()
+//{
+//	auto group = tmx_map->getObjectGroup("coin_straight");
+//	for (auto child : group->getObjects()) {
+//		auto mObject = child.asValueMap();
+//		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+//		auto tmx = TMXTiledMap::create("Map/straight.tmx");
+//		auto groupCoin = tmx->getObjectGroup("straight");
+//		for (auto c : groupCoin->getObjects()) {
+//			auto mObject2 = c.asValueMap();
+//			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
+//			auto coin = Coin::create();
+//			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
+//			coin->setScale(scale);
+//			coin->setPosition(origin + origin2);
+//			this->addChild(coin, ZORDER_ENEMY);
+//			coin->initCirclePhysic(world, origin + origin2);
+//			coin->changeBodyCategoryBits(BITMASK_COIN);
+//			coin->changeBodyMaskBits(BITMASK_HERO);
+//			coin->runAnimation();
+//		}
+//	}
+//}
+//
+//void GameScene::createZigzagCoin2()
+//{
+//	auto group = tmx_map->getObjectGroup("coin_straight");
+//	for (auto child : group->getObjects()) {
+//		auto mObject = child.asValueMap();
+//		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+//		auto tmx = TMXTiledMap::create("Map/straight.tmx");
+//		auto groupCoin = tmx->getObjectGroup("straight");
+//		for (auto c : groupCoin->getObjects()) {
+//			auto mObject2 = c.asValueMap();
+//			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
+//			auto coin = Coin::create();
+//			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
+//			coin->setScale(scale);
+//			coin->setPosition(origin + origin2);
+//			this->addChild(coin, ZORDER_ENEMY);
+//			coin->initCirclePhysic(world, origin + origin2);
+//			coin->changeBodyCategoryBits(BITMASK_COIN);
+//			coin->changeBodyMaskBits(BITMASK_HERO);
+//			coin->runAnimation();
+//		}
+//	}
+//}
 
 //spSkeletonData * GameScene::createSkeletonData(string atlasFileName, string jsonFileName)
 //{
@@ -685,6 +762,30 @@ void GameScene::createSquareCoin()
 //	spSkeletonJson_dispose(json);
 //	return skeletonData;*/
 //}
+
+void GameScene::createFormCoin(string objectName, string objectMap, string objectInForm)
+{
+	auto group = tmx_map->getObjectGroup(objectName);
+	for (auto child : group->getObjects()) {
+		auto mObject = child.asValueMap();
+		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+		auto tmx = TMXTiledMap::create(objectMap);
+		auto groupCoin = tmx->getObjectGroup(objectInForm);
+		for (auto c : groupCoin->getObjects()) {
+			auto mObject2 = c.asValueMap();
+			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
+			auto coin = Coin::create();
+			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
+			coin->setScale(scale);
+			coin->setPosition(origin + origin2);
+			this->addChild(coin, ZORDER_ENEMY);
+			coin->initCirclePhysic(world, origin + origin2);
+			coin->changeBodyCategoryBits(BITMASK_COIN);
+			coin->changeBodyMaskBits(BITMASK_HERO);
+			coin->runAnimation();
+		}
+	}
+}
 
 void GameScene::danceWithEffect()
 {
@@ -901,6 +1002,7 @@ void GameScene::updateEnemy()
 
 void GameScene::updateBoss()
 {
+
 }
 
 //void GameScene::cleanMap()

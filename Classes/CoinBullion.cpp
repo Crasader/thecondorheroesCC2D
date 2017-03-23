@@ -26,7 +26,7 @@ void CoinBullion::picked()
 	effect = SkeletonAnimation::createWithFile("Effect_getgolden.json", "Effect_getgolden.atlas", SCREEN_SIZE.height / 3 / 291);
 	effect->setAnimation(0, "Effect_gold", false);
 	effect->setPosition(this->getPosition());
-	this->getParent()->addChild(effect);
+	this->getParent()->addChild(effect, ZORDER_ENEMY);
 	CallFunc *call = CallFunc::create([&]() {
 		effect->removeFromParentAndCleanup(true);
 		this->removeFromParentAndCleanup(true);

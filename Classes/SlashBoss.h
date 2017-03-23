@@ -1,18 +1,18 @@
 #ifndef __SLASH_BOSS_H__
 #define __SLASH_BOSS_H__
 
-#include "B2Sprite.h"
+#include "B2Skeleton.h"
 
 
 
-class SlashBoss : public B2Sprite
+class SlashBoss : public B2Skeleton
 {
 public:
-	SlashBoss();
+	SlashBoss(string json, string atlas, float scale);
 	~SlashBoss();
 	//Animate *animate;
 
-	static SlashBoss* create(string file);
+	static SlashBoss* create(string json, string atlas, float scale);
 	virtual void initCirclePhysic(b2World *world, Point pos);
 	//void runAnimation();
 	void die();

@@ -29,6 +29,9 @@ void EnemyToanChanStudent2::attack()
 void EnemyToanChanStudent2::die()
 {
 	EnemyToanChanStudent::die();
+	/*slash->removeFromParentAndCleanup(true);
+	auto world = slash->getB2Body()->GetWorld();
+	world->DestroyBody(slash->getB2Body());*/
 
 }
 
@@ -55,7 +58,7 @@ void EnemyToanChanStudent2::listener()
 		}
 
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
-			slash->removeFromParentAndCleanup(true);
+			//slash->removeFromParentAndCleanup(true);
 			this->removeFromParentAndCleanup(true);
 		}
 

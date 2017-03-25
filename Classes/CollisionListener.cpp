@@ -103,10 +103,8 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
 		auto enemy = sA->getTag() == TAG_BOSS ? (EnemyBoss1 *)sA : (EnemyBoss1 *)sB;
 
-		if (!enemy->lockState) {
-			enemy->changeState(new Boss1Attacking1);
-			enemy->lockState = true;
-		}
+		if (enemy->getControlState() < 0)
+			enemy->changeState(new Boss1Attacking1());
 		/*if (!enemy->getIsDie()) {
 			hero->setIsPrior(true);
 			hero->getFSM()->changeState(MInjured);

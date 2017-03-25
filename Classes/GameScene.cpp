@@ -11,13 +11,13 @@ using namespace rapidjson;
 
 Hud *hud;
 
-Scene* GameScene::createScene()
+Scene* GameScene::createScene(int map, int haveboss)
 {
 	// 'scene' is an autorelease object
 	auto scene = Scene::create();
 
 	// 'layer' is an autorelease object
-	auto layer = GameScene::create();
+	auto layer = GameScene::create(map, haveboss);
 	hud = Hud::create();
 
 	// add layer as a child to scene
@@ -29,7 +29,7 @@ Scene* GameScene::createScene()
 }
 
 // on "init" you need to initialize your instance
-bool GameScene::init()
+bool GameScene::init(int map, int haveboss)
 {
 	//////////////////////////////
 	// 1. super init first
@@ -49,7 +49,7 @@ bool GameScene::init()
 
 
 	initB2World();
-	loadBackground();
+	loadBackground(map);
 	createGroundBody();
 
 	createDuongQua("Animation/DuongQua/DuongQua.json", "Animation/DuongQua/DuongQua.atlas",
@@ -60,7 +60,8 @@ bool GameScene::init()
 	creatEnemyWooder();
 	creatEnemyToanChanStudent();
 	creatEnemyToanChanStudent2();
-	creatBoss();
+	if (haveboss)
+		creatBoss();
 	createCoint();
 
 
@@ -74,6 +75,22 @@ bool GameScene::init()
 	this->scheduleUpdate();
 
 	return true;
+}
+
+GameScene * GameScene::create(int map, int haveboss)
+{
+	GameScene *pRet = new(std::nothrow) GameScene();
+	if (pRet && pRet->init(map, haveboss))
+	{
+		pRet->autorelease();
+		return pRet;
+	}
+	else
+	{
+		delete pRet;
+		pRet = NULL;
+		return NULL;
+	}
 }
 
 
@@ -113,7 +130,7 @@ void GameScene::checkActiveButton()
 
 	if (hud->getBtnSkill_2()->getIsBlocked()) {		// 1 and 3 active
 		if (!hud->getBtnSkill_1()->getCanTouch() && hero->getIsDoneDuration1()) {
-			log("Done duration 1");
+			//log("Done duration 1");
 			hud->getBtnSkill_2()->setIsBlocked(false);
 		}
 		else if (!hud->getBtnSkill_3()->getCanTouch() && hero->getIsDoneDuration3()) {
@@ -127,7 +144,7 @@ void GameScene::checkActiveButton()
 			hud->getBtnSkill_3()->setIsBlocked(false);
 		}
 		else if (!hud->getBtnSkill_1()->getCanTouch() && hero->getIsDoneDuration1()) {
-			log("Done duration 1");
+			//log("Done duration 1");
 			hud->getBtnSkill_3()->setIsBlocked(false);
 		}
 
@@ -141,7 +158,7 @@ void GameScene::listener()
 
 		// you cannot attack while being dead
 		if (hero->getFSM()->currentState == MDie) {
-			log("You cannot");
+			//log("You cannot");
 			hud->getBtnAttack()->setIsActive(false);
 			return;
 		}
@@ -233,8 +250,10 @@ void GameScene::update(float dt)
 	updateEnemy();
 	//cleanMap();
 
-	if (hero->getPositionX() >= SCREEN_SIZE.width / 4)
+	if (hero->getPositionX() >= SCREEN_SIZE.width / 4) {
 		follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4);
+		//follow->setPositionY(background->getPositionY());
+	}
 
 
 	if (hero->getPositionX() > tmx_map->getBoundingBox().size.width - SCREEN_SIZE.width / 4 && indexOfNextMapBoss < 0) {
@@ -250,6 +269,13 @@ void GameScene::update(float dt)
 	}
 
 	background->updatePosition();
+	/*if (hero->getPositionY() > SCREEN_SIZE.height / 2) {
+		background->setPositionY(hero->getPositionY());
+	}
+	else
+	{
+		background->setPositionY(SCREEN_SIZE.height/2);
+	}*/
 	if (hero->getBloodScreen()->isVisible())
 		hero->getBloodScreen()->setPositionX(follow->getPositionX());
 
@@ -319,10 +345,11 @@ void GameScene::onDraw()
 }
 
 
-void GameScene::loadBackground()
+void GameScene::loadBackground(int map)
 {
 	// khoi tao map
-	tmx_map = TMXTiledMap::create("Map/map1/map.tmx");
+
+	tmx_map = TMXTiledMap::create(StringUtils::format("Map/map1/map%d.tmx", map));
 	tmx_map->setAnchorPoint(Point::ZERO);
 	scaleOfMap = SCREEN_SIZE.height / tmx_map->getContentSize().height;
 	tmx_map->setScale(scaleOfMap);
@@ -332,6 +359,7 @@ void GameScene::loadBackground()
 	//tmx_map->setVisible(false);
 
 	this->addChild(tmx_map, ZORDER_BG2);
+
 	for (int i = 0; i < 2; i++) {
 		tmx_mapboss[i] = TMXTiledMap::create("Map/map1/mapboss.tmx");
 		tmx_mapboss[i]->setAnchorPoint(Point::ZERO);
@@ -342,6 +370,8 @@ void GameScene::loadBackground()
 	tmx_mapboss[1]->setPosition(tmx_mapboss[0]->getPosition() + Vec2(tmx_mapboss[0]->getBoundingBox().size.width, 0));
 	this->addChild(tmx_mapboss[0], ZORDER_BG2);
 	this->addChild(tmx_mapboss[1], ZORDER_BG2);
+
+
 	createInfiniteNode();
 }
 
@@ -397,6 +427,7 @@ void GameScene::createInfiniteNode()
 void GameScene::createGroundBody()
 {
 	auto groupGround = tmx_map->getObjectGroup("ground");
+	if (!groupGround) return;
 	for (auto child : groupGround->getObjects()) {
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
@@ -406,6 +437,7 @@ void GameScene::createGroundBody()
 	}
 
 	auto groupUnderGround = tmx_map->getObjectGroup("under_ground");
+	if (!groupGround) return;
 	for (auto child : groupUnderGround->getObjects()) {
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
@@ -418,6 +450,7 @@ void GameScene::createGroundBody()
 void GameScene::createGroundForMapBoss()
 {
 	auto groupGround = tmx_mapboss[0]->getObjectGroup("ground");
+	if (!groupGround) return;
 	for (auto child : groupGround->getObjects()) {
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap) + tmx_mapboss[0]->getPosition();
@@ -427,6 +460,7 @@ void GameScene::createGroundForMapBoss()
 	}
 
 	auto groupUnderGround = tmx_mapboss[0]->getObjectGroup("under_ground");
+	if (!groupGround) return;
 	for (auto child : groupUnderGround->getObjects()) {
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap) + tmx_mapboss[0]->getPosition();
@@ -439,6 +473,7 @@ void GameScene::createGroundForMapBoss()
 void GameScene::creatEnemyWooder()
 {
 	auto groupGround = tmx_map->getObjectGroup("wooder");
+	if (!groupGround) return;
 	for (auto child : groupGround->getObjects()) {
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
@@ -458,6 +493,7 @@ void GameScene::creatEnemyWooder()
 void GameScene::creatEnemyToanChanStudent()
 {
 	auto groupGround = tmx_map->getObjectGroup("toanchan_student");
+	if (!groupGround) return;
 	for (auto child : groupGround->getObjects()) {
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
@@ -477,7 +513,7 @@ void GameScene::creatEnemyToanChanStudent()
 
 void GameScene::creatEnemyToanChanStudent2()
 {
-	auto groupGround = tmx_map->getObjectGroup("toanchan_student2");
+	auto groupGround = tmx_map->getObjectGroup("toanchan_student2"); if (!groupGround) return;
 	for (auto child : groupGround->getObjects()) {
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
@@ -503,6 +539,7 @@ void GameScene::creatEnemyToanChanStudent2()
 void GameScene::creatBoss()
 {
 	auto groupGround = tmx_map->getObjectGroup("boss");
+	if (!groupGround) return;
 	for (auto child : groupGround->getObjects()) {
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
@@ -510,7 +547,7 @@ void GameScene::creatBoss()
 		/*auto enemy = EnemyBoss1::create("Animation/Enemy_Boss1/Boss1.json",
 			"Animation/Enemy_Boss1/Boss1.atlas", scaleOfEnemy);*/
 		auto enemy = EnemyBoss1::create("Animation/Enemy_Boss1/Boss1.json",
-			"Animation/Enemy_Boss1/Boss1.atlas", scaleOfEnemy); 
+			"Animation/Enemy_Boss1/Boss1.atlas", scaleOfEnemy);
 		enemy->setPosition(origin);
 		//enemy->setVisible(false);
 		this->addChild(enemy, ZORDER_ENEMY);
@@ -540,10 +577,11 @@ void GameScene::createCoint()
 void GameScene::createCointBag()
 {
 	auto groupGround = tmx_map->getObjectGroup("coin_bag");
+	if (!groupGround) return;
 	for (auto child : groupGround->getObjects()) {
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		auto scaleOfEnemy = SCREEN_SIZE.height / 8.0f / 170; //  la height cua spine
+		auto scaleOfEnemy = SCREEN_SIZE.height / 5.0f / 123; //  la height cua spine
 		auto coin = CoinBag::create("Gold_bag.json",
 			"Gold_bag.atlas", scaleOfEnemy);
 		coin->setPosition(origin);
@@ -554,6 +592,7 @@ void GameScene::createCointBag()
 		coin->getB2Body()->GetFixtureList()->SetSensor(true);
 		coin->changeBodyCategoryBits(BITMASK_COIN_BAG);
 		coin->changeBodyMaskBits(BITMASK_SWORD);
+		coin->updateMe(0.0f);
 		//enemy->listener();
 	}
 }
@@ -561,10 +600,11 @@ void GameScene::createCointBag()
 void GameScene::createCoinBullion()
 {
 	auto groupGround = tmx_map->getObjectGroup("coin_bullion");
+	if (!groupGround) return;
 	for (auto child : groupGround->getObjects()) {
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		auto scaleOfEnemy = SCREEN_SIZE.height / 12.0f / 118; //  la height cua spine
+		auto scaleOfEnemy = SCREEN_SIZE.height / 6.0f / 118; //  la height cua spine
 		auto coin = CoinBullion::create("gold.json",
 			"gold.atlas", scaleOfEnemy);
 		coin->setPosition(origin);
@@ -575,6 +615,7 @@ void GameScene::createCoinBullion()
 		coin->getB2Body()->GetFixtureList()->SetSensor(true);
 		coin->changeBodyCategoryBits(BITMASK_COIN_BULLION);
 		coin->changeBodyMaskBits(BITMASK_HERO);
+		coin->updateMe(0.0f);
 		//enemy->listener();
 	}
 }
@@ -766,6 +807,7 @@ void GameScene::createCoinBullion()
 void GameScene::createFormCoin(string objectName, string objectMap, string objectInForm)
 {
 	auto group = tmx_map->getObjectGroup(objectName);
+	if (!group) return;
 	for (auto child : group->getObjects()) {
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
@@ -982,9 +1024,9 @@ void GameScene::updateEnemy()
 				}
 				else {
 					if (tmp->getPositionX() < follow->getPositionX() - SCREEN_SIZE.width) {
-						//tmp->setIsDie(true);
-						world->DestroyBody(tmp->getB2Body());
-						tmp->removeFromParentAndCleanup(true);
+						tmp->setIsDie(true);
+						/*world->DestroyBody(tmp->getB2Body());
+						tmp->removeFromParentAndCleanup(true);*/
 
 					}
 

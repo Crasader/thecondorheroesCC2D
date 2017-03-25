@@ -24,8 +24,9 @@ class GameScene : public cocos2d::Layer
 {
 public:
 	
-	static cocos2d::Scene* createScene();
-	virtual bool init();
+	static cocos2d::Scene* createScene(int map, int haveboss);
+	virtual bool init(int map, int haveboss);
+	static GameScene* create(int map, int haveboss );
 
 private:
 
@@ -72,7 +73,7 @@ private:
 	void initUnderGroundPhysic(b2World *world, Point pos, Size size);
 
 	// function for process map
-	void loadBackground();
+	void loadBackground(int map);
 	void createInfiniteNode();
 	void createGroundBody();
 	void createGroundForMapBoss();
@@ -131,7 +132,7 @@ public:
 	void shakeTheScreen();
 
     // implement the "static create()" method manually
-    CREATE_FUNC(GameScene);
+   // CREATE_FUNC(GameScene);
 };
 
 #endif // __GAME_SCENE_H__

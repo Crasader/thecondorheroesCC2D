@@ -19,7 +19,7 @@ Button * Button::create(string file_name_main, string file_name_CoolDown, Point 
 	mNode->effectCoolDown->setPosition(mNode->getBoundingBox().size.width / 2, mNode->getBoundingBox().size.height / 2);
 	mNode->addChild(mNode->effectCoolDown);*/
 
-	mNode->number = Label::createWithTTF("0", "fonts/BAUHS93.ttf", 200);
+	mNode->number = Label::createWithTTF("0", "fonts/BAUHS93.TTF", 200);
 	mNode->number->setPosition(pos);
 	mNode->number->setVisible(false);
 
@@ -54,7 +54,7 @@ void Button::addEvents()
 				isActive = true;
 			}
 			else {
-				log("Cool Down, B*tch");
+				//log("Cool Down, B*tch");
 			}
 		}
 

@@ -9,16 +9,18 @@
 class EnemyBoss1 : public BaseEnemy
 {
 private:
+	CC_SYNTHESIZE(bool, isNodie, IsNodie);
 	CC_SYNTHESIZE(int, hp, HP);
 	CC_SYNTHESIZE_READONLY(Vec2, baseVelocity, BaseVelocity);
 	CC_SYNTHESIZE_READONLY(Vec2, moveVelocity, moveVelocity);
 	CC_SYNTHESIZE(Vec2, realtimeVec, RealtimeVec);
 	CC_SYNTHESIZE(Vec2, realMoveVelocity, RealMoveVelocity);
 	CC_SYNTHESIZE(int, controlAttack, ControlAttack);
+	CC_SYNTHESIZE(int, controlState, ControlState);
 	const int maxControl = 960;
 	int control;
 public:
-	bool lockState;
+	//bool lockState;
 	Vec2 heroLocation;
 	StateBoss1 *state;
 	CCArray *slashPool;
@@ -30,8 +32,7 @@ public:
 	void idle();
 	void attack();
 	void attack2();
-	void stupid();
-	void fixStupid();
+	
 	void die();
 	void createPool();
 	void creatSlash(float angel);

@@ -9,8 +9,9 @@
 #include "EnemyWooder.h"
 #include "EnemyToanChanStudent.h"
 #include "EnemyToanChanStudent2.h"
-#include "boss1\EnemyBoss1.h"
+#include "boss1/EnemyBoss1.h"
 #include "EffectManager.h"
+#include "JSonHeroManager.h"
 #include "Coin.h"
 #include "CollisionListener.h"
 #include "InfiniteParallaxNode.h"
@@ -35,6 +36,7 @@ private:
 	TMXTiledMap* tmx_map;
 	TMXTiledMap *tmx_mapboss[2];
 	int indexOfNextMapBoss;// chi so cua map boss cuoi, khoi dau la -1, khi danh boss chuyen 1 va 0(0101010101)
+	int currentButton = 0;
 
 	b2World *world;
 	GLESDebugDraw *debugDraw;
@@ -85,11 +87,14 @@ private:
 	void createCoint();
 	void createCointBag();
 	void createCoinBullion();
-	void createTimCoin();
+	/*void createTimCoin();
 	void createParapolCoin();
 	void createCircleCoin();
 	void createSquareCoin();
-
+	void createStraightCoin();
+	void createZigzagCoin();
+	void createZigzagCoin2();*/
+	void createFormCoin(string objectName, string objectMap, string objectInform);
 
 	//skeleton data
 	//spSkeletonData* createSkeletonData(string atlasFile, string jsonFile);
@@ -101,9 +106,6 @@ private:
 	void danceWithCamera();
 	float previousPercentPosition = 0.0f;
 	void updateCharacterPoint();
-
-	// read file Json
-	void readWriteJson();
 
 	// touch listener
 	bool onTouchBegan(Touch *touch, Event *unused_event);
@@ -117,6 +119,7 @@ public:
 	void update(float dt);
 	void updateEnemy();
 	void updateBoss();
+	void updateBloodBar(int numberOfHealth, bool isVisible);
 	//void cleanMap();
 
 	// cache function

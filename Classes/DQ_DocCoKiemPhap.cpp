@@ -14,6 +14,8 @@ DQ_DocCoKiemPhap * DQ_DocCoKiemPhap::create(string file)
 	kp->initWithFile(file);
 	kp->setTag(TAG_DQ_DOC_CO_KIEM_PHAP);
 	kp->isCollide = false;
+
+	kp->effectLand = Sprite::create("Animation/DuongQua/star2.png");
 	return kp;
 }
 
@@ -50,25 +52,22 @@ void DQ_DocCoKiemPhap::initBoxPhysic(b2World * world, Point pos)
 }
 
 
+void DQ_DocCoKiemPhap::landingEffect()
+{
+	auto hideFX = CallFunc::create([&]() {
+		effectLand->setVisible(false);
+	});
+
+	effectLand->setScale(this->getScale() * 0.5f);
+	auto action = ScaleBy::create(0.3f, 3);
+
+	auto seq = Sequence::create(action, hideFX, nullptr);
+	effectLand->runAction(seq);
+}
+
 void DQ_DocCoKiemPhap::hitGround()
 {
 	auto gameLayer = this->getParent();
-
-	/*hitGroundEffect = Sprite::create("Animation/DuongQua/halfball.png");
-	hitGroundEffect->setAnchorPoint(Vec2(0.5f, 0));
-
-	auto hideFX = CallFunc::create([&]() {
-		hitGroundEffect->removeFromParentAndCleanup(true);
-	});
-
-	hitGroundEffect->setScale(this->getScale() * 0.75f);
-	hitGroundEffect->setPosition(this->getPositionX(), this->getPositionY() - this->getBoundingBox().size.height * 0.65f);
-	gameLayer->addChild(hitGroundEffect, ZORDER_ENEMY);
-	auto action = ScaleBy::create(0.3f, 1.6f);
-
-	auto seq = Sequence::create(action, hideFX, nullptr);
-	hitGroundEffect->runAction(seq);*/
-
 
 	particle = ParticleSystemQuad::create("Effect/breakearth.plist");
 	particle->setScale(this->getScale() * 0.7f);
@@ -89,10 +88,9 @@ void DQ_DocCoKiemPhap::updateMe(float dt)
 	if (body != nullptr) {
 		this->setPositionX(body->GetPosition().x * PTM_RATIO);
 		this->setPositionY(body->GetPosition().y * PTM_RATIO);
+
+		if(effectLand->isVisible())
+			effectLand->setPosition(this->getPositionX(), this->getPositionY() + this->getBoundingBox().size.height * 0.5f);		
 	}
 }
-//
-//void DQ_DocCoKiemPhap::updateMe(float dt)
-//{
-//}
 

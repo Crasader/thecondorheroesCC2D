@@ -1,13 +1,6 @@
 #include "GameScene.h"
 #include "SimpleAudioEngine.h"
-
-#include "json/rapidjson.h"
-#include "json/document.h"
-#include "json/writer.h"
-#include "json/stringbuffer.h"
 #include "MenuScene.h"
-
-using namespace rapidjson;
 
 Hud *hud;
 
@@ -79,6 +72,7 @@ bool GameScene::init()
 
 void GameScene::createDuongQua(string path_Json, string path_Atlas, Point position)
 {
+	JSHERO->readFile(0);
 	hero = DuongQua::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 340);
 	hero->listener();
 	hero->setPosition(position);
@@ -94,41 +88,59 @@ void GameScene::createDuongQua(string path_Json, string path_Atlas, Point positi
 void GameScene::checkActiveButton()
 {
 
-	//if (hud->getBtnAttack()->getIsBlocked()) {
-	//	if (!hud->getBtnSkill_3()->getCanTouch() && !hero->getIsPriorSkill3()) { // check later
-	//		hud->getBtnAttack()->setIsBlocked(false);
-	//	}
-
-	//}
-
 	if (hud->getBtnSkill_1()->getIsBlocked()) {		// 2 and 3 active
-		if (!hud->getBtnSkill_2()->getCanTouch() && hero->getIsDoneDuration2()) {		// check later
-			hud->getBtnSkill_1()->setIsBlocked(false);
+		if (currentButton == 2) {
+			if (hero->getIsDoneDuration2()) {
+				if (!hud->getBtnSkill_1()->getNumberCoolDown()->isVisible())
+					hud->getBtnSkill_1()->getCoolDownSprite()->setVisible(false);
+				hud->getBtnSkill_1()->setIsBlocked(false);
+			}
+
 		}
-		else if (!hud->getBtnSkill_3()->getCanTouch() && hero->getIsDoneDuration3()) {
-			hud->getBtnSkill_1()->setIsBlocked(false);
+		else if (currentButton == 3) {
+			if (hero->getIsDoneDuration3()) {
+				if (!hud->getBtnSkill_1()->getNumberCoolDown()->isVisible())
+					hud->getBtnSkill_1()->getCoolDownSprite()->setVisible(false);
+				hud->getBtnSkill_1()->setIsBlocked(false);
+			}
 		}
 
 	}
 
 	if (hud->getBtnSkill_2()->getIsBlocked()) {		// 1 and 3 active
-		if (!hud->getBtnSkill_1()->getCanTouch() && hero->getIsDoneDuration1()) {
-			log("Done duration 1");
-			hud->getBtnSkill_2()->setIsBlocked(false);
+		if (currentButton == 1) {
+			if (hero->getIsDoneDuration1()) {
+				if (!hud->getBtnSkill_2()->getNumberCoolDown()->isVisible())
+					hud->getBtnSkill_2()->getCoolDownSprite()->setVisible(false);
+				hud->getBtnSkill_2()->setIsBlocked(false);
+			}
+
 		}
-		else if (!hud->getBtnSkill_3()->getCanTouch() && hero->getIsDoneDuration3()) {
-			hud->getBtnSkill_2()->setIsBlocked(false);
+		else if (currentButton == 3) {
+			if (hero->getIsDoneDuration3()) {
+				if (!hud->getBtnSkill_2()->getNumberCoolDown()->isVisible())
+					hud->getBtnSkill_2()->getCoolDownSprite()->setVisible(false);
+				hud->getBtnSkill_2()->setIsBlocked(false);
+			}
 		}
 
 	}
 
 	if (hud->getBtnSkill_3()->getIsBlocked()) {		// 2 and 1 active
-		if (!hud->getBtnSkill_2()->getCanTouch() && hero->getIsDoneDuration2()) {		// check later
-			hud->getBtnSkill_3()->setIsBlocked(false);
+		if (currentButton == 2) {
+			if (hero->getIsDoneDuration2()) {
+				if (!hud->getBtnSkill_3()->getNumberCoolDown()->isVisible())
+					hud->getBtnSkill_3()->getCoolDownSprite()->setVisible(false);
+				hud->getBtnSkill_3()->setIsBlocked(false);
+			}
+
 		}
-		else if (!hud->getBtnSkill_1()->getCanTouch() && hero->getIsDoneDuration1()) {
-			log("Done duration 1");
-			hud->getBtnSkill_3()->setIsBlocked(false);
+		else if (currentButton == 1) {
+			if (hero->getIsDoneDuration1()) {
+				if (!hud->getBtnSkill_3()->getNumberCoolDown()->isVisible())
+					hud->getBtnSkill_3()->getCoolDownSprite()->setVisible(false);
+				hud->getBtnSkill_3()->setIsBlocked(false);
+			}
 		}
 
 	}
@@ -137,14 +149,9 @@ void GameScene::checkActiveButton()
 
 void GameScene::listener()
 {
-	if (hud->getBtnAttack()->getIsActive() && !hud->getBtnAttack()->getIsBlocked()) {
+	if (hud->getBtnAttack()->getIsActive() && !hud->getBtnAttack()->getIsBlocked() &&
+		hero->getFSM()->currentState != MDie && hero->getFSM()->currentState != MInjured) {
 
-		// you cannot attack while being dead
-		if (hero->getFSM()->currentState == MDie) {
-			log("You cannot");
-			hud->getBtnAttack()->setIsActive(false);
-			return;
-		}
 
 		if (!hero->getIsDoneDuration1()) {
 			hero->getFSM()->changeState(MSKill1);  // move to attack
@@ -155,66 +162,63 @@ void GameScene::listener()
 			hero->changeSwordCategoryBitmask(BITMASK_SWORD);
 
 			hero->getFSM()->changeState(MAttack);
-			hero->setIsPrior(true);
+			hero->setIsPriorAttack(true);
 		}
 
 		hud->getBtnAttack()->setIsActive(false);
 	}
 
-	if (hud->getBtnSkill_1()->getIsActive() && !hud->getBtnSkill_1()->getIsBlocked()) {
-		if (hero->getFSM()->currentState == MDie) {
+	if (hud->getBtnSkill_1()->getIsActive() && !hud->getBtnSkill_1()->getIsBlocked() &&
+		hero->getFSM()->currentState != MDie && hero->getFSM()->currentState != MInjured) {
 
-			hud->getBtnSkill_1()->setIsActive(false);
-			return;
-		}
+		currentButton = 1;
 
 		hero->setIsDoneDuration1(false);
 		hero->doCounterSkill1();
 
-
 		hud->getBtnSkill_2()->setIsBlocked(true);
+		hud->getBtnSkill_2()->getCoolDownSprite()->setVisible(true);
+
+
 		hud->getBtnSkill_3()->setIsBlocked(true);
+		hud->getBtnSkill_3()->getCoolDownSprite()->setVisible(true);
+
 
 		hud->getBtnSkill_1()->setIsActive(false);
 	}
 
-	if (hud->getBtnSkill_2()->getIsActive() && !hud->getBtnSkill_2()->getIsBlocked()) {
+	if (hud->getBtnSkill_2()->getIsActive() && !hud->getBtnSkill_2()->getIsBlocked() &&
+		hero->getFSM()->currentState != MDie && hero->getFSM()->currentState != MInjured) {
 
-		if (hero->getFSM()->currentState == MDie) {
-
-			hud->getBtnSkill_2()->setIsActive(false);
-			return;
-		}
-
-		/*hero->getFSM()->changeState(MSKill2);
-		hero->setIsPriorSkill2(true);*/
+		currentButton = 2;
 
 		hero->setIsDoneDuration2(false);
 		hero->doCounterSkill2();
 
 		hud->getBtnSkill_1()->setIsBlocked(true);
+		hud->getBtnSkill_1()->getCoolDownSprite()->setVisible(true);
+
 		hud->getBtnSkill_3()->setIsBlocked(true);
+		hud->getBtnSkill_3()->getCoolDownSprite()->setVisible(true);
+
 
 		hud->getBtnSkill_2()->setIsActive(false);
 	}
 
-	if (hud->getBtnSkill_3()->getIsActive() && !hud->getBtnSkill_3()->getIsBlocked()) {
+	if (hud->getBtnSkill_3()->getIsActive() && !hud->getBtnSkill_3()->getIsBlocked() &&
+		hero->getFSM()->currentState != MDie && hero->getFSM()->currentState != MInjured) {
 
-		if (hero->getFSM()->currentState == MDie) {
-
-			hud->getBtnSkill_3()->setIsActive(false);
-			return;
-		}
-
-		/*hero->getFSM()->changeState(MSKill3);
-		hero->setIsPriorSkill3(true);*/
+		currentButton = 3;
 
 		hero->setIsDoneDuration3(false);
 		hero->doCounterSkill3();
 
 		// block
 		hud->getBtnSkill_1()->setIsBlocked(true);
+		hud->getBtnSkill_1()->getCoolDownSprite()->setVisible(true);
+
 		hud->getBtnSkill_2()->setIsBlocked(true);
+		hud->getBtnSkill_2()->getCoolDownSprite()->setVisible(true);
 
 		hud->getBtnSkill_3()->setIsActive(false);
 	}
@@ -240,9 +244,9 @@ void GameScene::update(float dt)
 	if (hero->getPositionX() > tmx_map->getBoundingBox().size.width - SCREEN_SIZE.width / 4 && indexOfNextMapBoss < 0) {
 		createGroundForMapBoss();
 		indexOfNextMapBoss = 1;
-	} 
+	}
 
-	if (hero->getPositionX() > tmx_mapboss[indexOfNextMapBoss]->getPositionX()+SCREEN_SIZE.width && indexOfNextMapBoss >= 0) {
+	if (hero->getPositionX() > tmx_mapboss[indexOfNextMapBoss]->getPositionX() + SCREEN_SIZE.width && indexOfNextMapBoss >= 0) {
 		TMXTiledMap* tmpmap;
 		indexOfNextMapBoss == 1 ? tmpmap = tmx_mapboss[0] : tmpmap = tmx_mapboss[1];
 		tmpmap->setPositionX(tmx_mapboss[indexOfNextMapBoss]->getPositionX() + tmx_mapboss[indexOfNextMapBoss]->getBoundingBox().size.width);
@@ -250,7 +254,7 @@ void GameScene::update(float dt)
 	}
 
 	background->updatePosition();
-	if(hero->getBloodScreen()->isVisible())
+	if (hero->getBloodScreen()->isVisible())
 		hero->getBloodScreen()->setPositionX(follow->getPositionX());
 
 	updateCharacterPoint();
@@ -338,7 +342,7 @@ void GameScene::loadBackground()
 		tmx_mapboss[i]->setScale(scaleOfMap);
 	}
 
-	tmx_mapboss[0]->setPosition(tmx_map->getPosition() + Vec2(tmx_map->getBoundingBox().size.width,0));
+	tmx_mapboss[0]->setPosition(tmx_map->getPosition() + Vec2(tmx_map->getBoundingBox().size.width, 0));
 	tmx_mapboss[1]->setPosition(tmx_mapboss[0]->getPosition() + Vec2(tmx_mapboss[0]->getBoundingBox().size.width, 0));
 	this->addChild(tmx_mapboss[0], ZORDER_BG2);
 	this->addChild(tmx_mapboss[1], ZORDER_BG2);
@@ -507,6 +511,8 @@ void GameScene::creatBoss()
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
 		auto scaleOfEnemy = SCREEN_SIZE.height / 3.0f / 560; // 560 la height cua spine
+		/*auto enemy = EnemyBoss1::create("Animation/Enemy_Boss1/Boss1.json",
+			"Animation/Enemy_Boss1/Boss1.atlas", scaleOfEnemy);*/
 		auto enemy = EnemyBoss1::create("Animation/Enemy_Boss1/Boss1.json",
 			"Animation/Enemy_Boss1/Boss1.atlas", scaleOfEnemy);
 		enemy->setPosition(origin);
@@ -524,10 +530,13 @@ void GameScene::creatBoss()
 
 void GameScene::createCoint()
 {
-	createTimCoin();
-	createParapolCoin();
-	createCircleCoin();
-	createSquareCoin();
+	createFormCoin("coin_tim", "Map/tim.tmx", "tim");
+	createFormCoin("coin_straight", "Map/straight.tmx", "straight");
+	createFormCoin("coin_parabol", "Map/parapol.tmx", "parapol");
+	createFormCoin("coin_square", "Map/square.tmx", "square");
+	createFormCoin("coin_zigzag", "Map/zigzag.tmx", "zigzag");
+	createFormCoin("coin_zigzag2", "Map/zigzag2.tmx", "zigzag2");
+	createFormCoin("coin_circle", "Map/circle.tmx", "circle");
 	createCointBag();
 	createCoinBullion();
 }
@@ -538,7 +547,7 @@ void GameScene::createCointBag()
 	for (auto child : groupGround->getObjects()) {
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		auto scaleOfEnemy = SCREEN_SIZE.height / 6.0f / 123; // 123 la height cua spine
+		auto scaleOfEnemy = SCREEN_SIZE.height / 8.0f / 170; //  la height cua spine
 		auto coin = CoinBag::create("Gold_bag.json",
 			"Gold_bag.atlas", scaleOfEnemy);
 		coin->setPosition(origin);
@@ -559,9 +568,8 @@ void GameScene::createCoinBullion()
 	for (auto child : groupGround->getObjects()) {
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		auto scaleOfEnemy = SCREEN_SIZE.height / 8.0f / 87; // 87 la height cua spine
-		auto coin = CoinBullion::create("gold.json",
-			"gold.atlas", scaleOfEnemy);
+		auto scaleOfEnemy = SCREEN_SIZE.height / 12.0f / 118; //  la height cua spine
+		auto coin = CoinBullion::create("gold.json", "gold.atlas", scaleOfEnemy);
 		coin->setPosition(origin);
 		//enemy->setVisible(false);
 		this->addChild(coin, ZORDER_ENEMY);
@@ -574,101 +582,173 @@ void GameScene::createCoinBullion()
 	}
 }
 
-void GameScene::createTimCoin()
-{
-	auto group = tmx_map->getObjectGroup("coin_tim");
-	for (auto child : group->getObjects()) {
-		auto mObject = child.asValueMap();
-		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		auto tmx = TMXTiledMap::create("Map/tim.tmx");
-		auto groupCoin = tmx->getObjectGroup("tim");
-		for (auto c : groupCoin->getObjects()) {
-			auto mObject2 = c.asValueMap();
-			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
-			auto coin = Coin::create();
-			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
-			coin->setScale(scale);
-			coin->setPosition(origin + origin2);
-			this->addChild(coin, ZORDER_ENEMY);
-			coin->initCirclePhysic(world, origin + origin2);
-			coin->changeBodyCategoryBits(BITMASK_COIN);
-			coin->changeBodyMaskBits(BITMASK_HERO);
-			coin->runAnimation();
-		}
-	}
-}
-
-void GameScene::createParapolCoin()
-{
-	auto group = tmx_map->getObjectGroup("coin_parapol");
-	for (auto child : group->getObjects()) {
-		auto mObject = child.asValueMap();
-		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		auto tmx = TMXTiledMap::create("Map/parapol.tmx");
-		auto groupCoin = tmx->getObjectGroup("parapol");
-		for (auto c : groupCoin->getObjects()) {
-			auto mObject2 = c.asValueMap();
-			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
-			auto coin = Coin::create();
-			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
-			coin->setScale(scale);
-			coin->setPosition(origin + origin2);
-			this->addChild(coin, ZORDER_ENEMY);
-			coin->initCirclePhysic(world, origin + origin2);
-			coin->changeBodyCategoryBits(BITMASK_COIN);
-			coin->changeBodyMaskBits(BITMASK_HERO);
-			coin->runAnimation();
-		}
-	}
-}
-
-void GameScene::createCircleCoin()
-{
-	auto group = tmx_map->getObjectGroup("coin_circle");
-	for (auto child : group->getObjects()) {
-		auto mObject = child.asValueMap();
-		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		auto tmx = TMXTiledMap::create("Map/circle.tmx");
-		auto groupCoin = tmx->getObjectGroup("circle");
-		for (auto c : groupCoin->getObjects()) {
-			auto mObject2 = c.asValueMap();
-			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
-			auto coin = Coin::create();
-			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
-			coin->setScale(scale);
-			coin->setPosition(origin + origin2);
-			this->addChild(coin, ZORDER_ENEMY);
-			coin->initCirclePhysic(world, origin + origin2);
-			coin->changeBodyCategoryBits(BITMASK_COIN);
-			coin->changeBodyMaskBits(BITMASK_HERO);
-			coin->runAnimation();
-		}
-	}
-}
-
-void GameScene::createSquareCoin()
-{
-	auto group = tmx_map->getObjectGroup("coin_square");
-	for (auto child : group->getObjects()) {
-		auto mObject = child.asValueMap();
-		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		auto tmx = TMXTiledMap::create("Map/square.tmx");
-		auto groupCoin = tmx->getObjectGroup("square");
-		for (auto c : groupCoin->getObjects()) {
-			auto mObject2 = c.asValueMap();
-			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
-			auto coin = Coin::create();
-			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
-			coin->setScale(scale);
-			coin->setPosition(origin + origin2);
-			this->addChild(coin, ZORDER_ENEMY);
-			coin->initCirclePhysic(world, origin + origin2);
-			coin->changeBodyCategoryBits(BITMASK_COIN);
-			coin->changeBodyMaskBits(BITMASK_HERO);
-			coin->runAnimation();
-		}
-	}
-}
+//void GameScene::createTimCoin()
+//{
+//	auto group = tmx_map->getObjectGroup("coin_tim");
+//	for (auto child : group->getObjects()) {
+//		auto mObject = child.asValueMap();
+//		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+//		auto tmx = TMXTiledMap::create("Map/tim.tmx");
+//		auto groupCoin = tmx->getObjectGroup("tim");
+//		for (auto c : groupCoin->getObjects()) {
+//			auto mObject2 = c.asValueMap();
+//			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
+//			auto coin = Coin::create();
+//			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
+//			coin->setScale(scale);
+//			coin->setPosition(origin + origin2);
+//			this->addChild(coin, ZORDER_ENEMY);
+//			coin->initCirclePhysic(world, origin + origin2);
+//			coin->changeBodyCategoryBits(BITMASK_COIN);
+//			coin->changeBodyMaskBits(BITMASK_HERO);
+//			coin->runAnimation();
+//		}
+//	}
+//}
+//
+//void GameScene::createParapolCoin()
+//{
+//	auto group = tmx_map->getObjectGroup("coin_parapol");
+//	for (auto child : group->getObjects()) {
+//		auto mObject = child.asValueMap();
+//		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+//		auto tmx = TMXTiledMap::create("Map/parapol.tmx");
+//		auto groupCoin = tmx->getObjectGroup("parapol");
+//		for (auto c : groupCoin->getObjects()) {
+//			auto mObject2 = c.asValueMap();
+//			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
+//			auto coin = Coin::create();
+//			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
+//			coin->setScale(scale);
+//			coin->setPosition(origin + origin2);
+//			this->addChild(coin, ZORDER_ENEMY);
+//			coin->initCirclePhysic(world, origin + origin2);
+//			coin->changeBodyCategoryBits(BITMASK_COIN);
+//			coin->changeBodyMaskBits(BITMASK_HERO);
+//			coin->runAnimation();
+//		}
+//	}
+//}
+//
+//void GameScene::createCircleCoin()
+//{
+//	auto group = tmx_map->getObjectGroup("coin_circle");
+//	for (auto child : group->getObjects()) {
+//		auto mObject = child.asValueMap();
+//		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+//		auto tmx = TMXTiledMap::create("Map/circle.tmx");
+//		auto groupCoin = tmx->getObjectGroup("circle");
+//		for (auto c : groupCoin->getObjects()) {
+//			auto mObject2 = c.asValueMap();
+//			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
+//			auto coin = Coin::create();
+//			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
+//			coin->setScale(scale);
+//			coin->setPosition(origin + origin2);
+//			this->addChild(coin, ZORDER_ENEMY);
+//			coin->initCirclePhysic(world, origin + origin2);
+//			coin->changeBodyCategoryBits(BITMASK_COIN);
+//			coin->changeBodyMaskBits(BITMASK_HERO);
+//			coin->runAnimation();
+//		}
+//	}
+//}
+//
+//void GameScene::createSquareCoin()
+//{
+//	auto group = tmx_map->getObjectGroup("coin_square");
+//	for (auto child : group->getObjects()) {
+//		auto mObject = child.asValueMap();
+//		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+//		auto tmx = TMXTiledMap::create("Map/square.tmx");
+//		auto groupCoin = tmx->getObjectGroup("square");
+//		for (auto c : groupCoin->getObjects()) {
+//			auto mObject2 = c.asValueMap();
+//			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
+//			auto coin = Coin::create();
+//			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
+//			coin->setScale(scale);
+//			coin->setPosition(origin + origin2);
+//			this->addChild(coin, ZORDER_ENEMY);
+//			coin->initCirclePhysic(world, origin + origin2);
+//			coin->changeBodyCategoryBits(BITMASK_COIN);
+//			coin->changeBodyMaskBits(BITMASK_HERO);
+//			coin->runAnimation();
+//		}
+//	}
+//}
+//
+//void GameScene::createStraightCoin()
+//{
+//	auto group = tmx_map->getObjectGroup("coin_straight");
+//	for (auto child : group->getObjects()) {
+//		auto mObject = child.asValueMap();
+//		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+//		auto tmx = TMXTiledMap::create("Map/straight.tmx");
+//		auto groupCoin = tmx->getObjectGroup("straight");
+//		for (auto c : groupCoin->getObjects()) {
+//			auto mObject2 = c.asValueMap();
+//			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
+//			auto coin = Coin::create();
+//			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
+//			coin->setScale(scale);
+//			coin->setPosition(origin + origin2);
+//			this->addChild(coin, ZORDER_ENEMY);
+//			coin->initCirclePhysic(world, origin + origin2);
+//			coin->changeBodyCategoryBits(BITMASK_COIN);
+//			coin->changeBodyMaskBits(BITMASK_HERO);
+//			coin->runAnimation();
+//		}
+//	}
+//}
+//
+//void GameScene::createZigzagCoin()
+//{
+//	auto group = tmx_map->getObjectGroup("coin_straight");
+//	for (auto child : group->getObjects()) {
+//		auto mObject = child.asValueMap();
+//		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+//		auto tmx = TMXTiledMap::create("Map/straight.tmx");
+//		auto groupCoin = tmx->getObjectGroup("straight");
+//		for (auto c : groupCoin->getObjects()) {
+//			auto mObject2 = c.asValueMap();
+//			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
+//			auto coin = Coin::create();
+//			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
+//			coin->setScale(scale);
+//			coin->setPosition(origin + origin2);
+//			this->addChild(coin, ZORDER_ENEMY);
+//			coin->initCirclePhysic(world, origin + origin2);
+//			coin->changeBodyCategoryBits(BITMASK_COIN);
+//			coin->changeBodyMaskBits(BITMASK_HERO);
+//			coin->runAnimation();
+//		}
+//	}
+//}
+//
+//void GameScene::createZigzagCoin2()
+//{
+//	auto group = tmx_map->getObjectGroup("coin_straight");
+//	for (auto child : group->getObjects()) {
+//		auto mObject = child.asValueMap();
+//		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+//		auto tmx = TMXTiledMap::create("Map/straight.tmx");
+//		auto groupCoin = tmx->getObjectGroup("straight");
+//		for (auto c : groupCoin->getObjects()) {
+//			auto mObject2 = c.asValueMap();
+//			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
+//			auto coin = Coin::create();
+//			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
+//			coin->setScale(scale);
+//			coin->setPosition(origin + origin2);
+//			this->addChild(coin, ZORDER_ENEMY);
+//			coin->initCirclePhysic(world, origin + origin2);
+//			coin->changeBodyCategoryBits(BITMASK_COIN);
+//			coin->changeBodyMaskBits(BITMASK_HERO);
+//			coin->runAnimation();
+//		}
+//	}
+//}
 
 //spSkeletonData * GameScene::createSkeletonData(string atlasFileName, string jsonFileName)
 //{
@@ -685,6 +765,30 @@ void GameScene::createSquareCoin()
 //	spSkeletonJson_dispose(json);
 //	return skeletonData;*/
 //}
+
+void GameScene::createFormCoin(string objectName, string objectMap, string objectInForm)
+{
+	auto group = tmx_map->getObjectGroup(objectName);
+	for (auto child : group->getObjects()) {
+		auto mObject = child.asValueMap();
+		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+		auto tmx = TMXTiledMap::create(objectMap);
+		auto groupCoin = tmx->getObjectGroup(objectInForm);
+		for (auto c : groupCoin->getObjects()) {
+			auto mObject2 = c.asValueMap();
+			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
+			auto coin = Coin::create();
+			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
+			coin->setScale(scale);
+			coin->setPosition(origin + origin2);
+			this->addChild(coin, ZORDER_ENEMY);
+			coin->initCirclePhysic(world, origin + origin2);
+			coin->changeBodyCategoryBits(BITMASK_COIN);
+			coin->changeBodyMaskBits(BITMASK_HERO);
+			coin->runAnimation();
+		}
+	}
+}
 
 void GameScene::danceWithEffect()
 {
@@ -760,7 +864,7 @@ void GameScene::initUnderGroundPhysic(b2World * world, Point pos, Size size)
 	fixtureDef.shape = &shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_UNDER_GROUND;
-	fixtureDef.filter.maskBits = BITMASK_SWORD;
+	fixtureDef.filter.maskBits = BITMASK_SWORD | BITMASK_UNDER_GROUND;
 
 	bodyDef.type = b2_staticBody;
 
@@ -772,26 +876,26 @@ void GameScene::initUnderGroundPhysic(b2World * world, Point pos, Size size)
 
 
 
-void GameScene::readWriteJson()
-{
-	/**
-	* test json
-	*/
-
-	Document heroJsonFile;
-	string herobuffer = FileUtils::getInstance()->getStringFromFile("Hero.json");
-	heroJsonFile.Parse(herobuffer.c_str());
-	assert(heroJsonFile.IsObject());
-	heroJsonFile["hero"][0]["level"].SetInt(2);
-	//log("doi tuong thu nhat:%d", heroJsonFile["hero"][0]["level"].GetInt());
-
-	StringBuffer buffer;
-	Writer<StringBuffer> writer(buffer);
-	heroJsonFile.Accept(writer);
-	const char* output = buffer.GetString();
-
-	FileUtils::getInstance()->writeStringToFile(output, "Hero.json");
-}
+//void GameScene::readWriteJson()
+//{
+//	/**
+//	* test json
+//	*/
+//
+//	Document heroJsonFile;
+//	string herobuffer = FileUtils::getInstance()->getStringFromFile("Hero.json");
+//	heroJsonFile.Parse(herobuffer.c_str());
+//	assert(heroJsonFile.IsObject());
+//	heroJsonFile["hero"][0]["level"].SetInt(2);
+//	//log("doi tuong thu nhat:%d", heroJsonFile["hero"][0]["level"].GetInt());
+//
+//	StringBuffer buffer;
+//	Writer<StringBuffer> writer(buffer);
+//	heroJsonFile.Accept(writer);
+//	const char* output = buffer.GetString();
+//
+//	FileUtils::getInstance()->writeStringToFile(output, "Hero.json");
+//}
 
 bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 {
@@ -801,7 +905,7 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 
 		// cannot jump while attacking or being injured
 		if (hero->getFSM()->currentState == MAttack || hero->getFSM()->currentState == MInjured ||
-			hero->getFSM()->currentState == MDie)
+			hero->getFSM()->currentState == MDie || hero->getFSM()->currentState == MSKill1)
 
 			return false;
 
@@ -901,6 +1005,15 @@ void GameScene::updateEnemy()
 
 void GameScene::updateBoss()
 {
+
+}
+
+void GameScene::updateBloodBar(int numberOfHealth, bool isVisible)
+{
+	if (numberOfHealth >= 0) {
+		auto blood = (Sprite*)hud->getListBlood()->getObjectAtIndex(numberOfHealth);
+		blood->setVisible(isVisible);
+	}
 }
 
 //void GameScene::cleanMap()

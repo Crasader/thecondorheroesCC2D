@@ -29,7 +29,8 @@ protected:
 	CC_SYNTHESIZE(SkeletonAnimation*, slashLand, SlashLand);
 
 	// bool to make separate animation
-	CC_SYNTHESIZE(bool, isPrior, IsPrior);
+	CC_SYNTHESIZE(bool, isPriorInjured, IsPriorInjured);
+	CC_SYNTHESIZE(bool, isPriorAttack, IsPriorAttack);
 	CC_SYNTHESIZE(bool, isPriorSkill1, IsPriorSkill1);
 	CC_SYNTHESIZE(bool, isPriorSkill2, IsPriorSkill2);
 	CC_SYNTHESIZE(bool, isPriorSkill3, IsPriorSkill3);

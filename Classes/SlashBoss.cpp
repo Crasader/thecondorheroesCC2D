@@ -1,6 +1,7 @@
 #include "SlashBoss.h"
 
-SlashBoss::SlashBoss()
+
+SlashBoss::SlashBoss(string json, string atlas, float scale):B2Skeleton(json,atlas,scale)
 {
 }
 
@@ -8,18 +9,19 @@ SlashBoss::~SlashBoss()
 {
 }
 
-SlashBoss * SlashBoss::create(string file)
+SlashBoss * SlashBoss::create(string json, string atlas, float scale)
 {
-	SlashBoss* slash = new SlashBoss();
-	slash->initWithFile(file);
-	slash->setB2Body(nullptr);
+	SlashBoss *slash = new SlashBoss(json, atlas, scale);
 	slash->setTag(TAG_SLASH);
+	slash->setScaleX(1);
+	slash->setAnimation(0, "skill-boss", true);
+	slash->update(0.0f);
 	return slash;
 }
 
 void SlashBoss::initCirclePhysic(b2World * world, Point pos)
 {
-	B2Sprite::initCirclePhysic(world, pos);
+	B2Skeleton::initCirclePhysic(world, pos);
 	this->getB2Body()->SetType(b2_dynamicBody);
 	this->getB2Body()->GetFixtureList()->SetSensor(true);
 	this->getB2Body()->SetGravityScale(0);

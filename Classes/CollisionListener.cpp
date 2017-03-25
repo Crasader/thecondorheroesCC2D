@@ -86,10 +86,13 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		enemy->attack();
 		if (!enemy->getIsDie()) {
-			hero->setIsPrior(true);
+			hero->setIsPriorInjured(true);
 			hero->getFSM()->changeState(MInjured);
 			hero->getBloodScreen()->setVisible(true);
 			hero->setHealth(hero->getHealth() - 1);
+
+			auto parentGameScene = (GameScene*)hero->getParent();
+			parentGameScene->updateBloodBar(hero->getHealth(), false);
 		}
 
 	}
@@ -231,10 +234,12 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		B2Skeleton* sB = (BaseHero*)bodyB->GetUserData();
 		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
 
-		hero->setIsPrior(true);
+		hero->setIsPriorInjured(true);
 		hero->getBloodScreen()->setVisible(true);
 		hero->getFSM()->changeState(MInjured);
 		hero->setHealth(hero->getHealth() - 1);
+		auto parentGameScene = (GameScene*)hero->getParent();
+		parentGameScene->updateBloodBar(hero->getHealth(), false);
 
 	}
 	if ((bitmaskA == BITMASK_SWORD && bitmaskB == BITMASK_SLASH) ||
@@ -274,7 +279,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		kp->hitGround();
 		kp->setIsCollide(true);
 		kp->setTextureRect(Rect(Vec2::ZERO, 
-			Size(kp->getContentSize().width, kp->getContentSize().height * random(0.65f, 0.67f))));
+			Size(kp->getContentSize().width, kp->getContentSize().height * random(0.61f, 0.63f))));
 		
 	}
 }

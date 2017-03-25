@@ -84,10 +84,11 @@ void EnemyBoss1::createPool()
 	slashPool = CCArray::createWithCapacity(3);
 	slashPool->retain();
 	for (int i = 0; i < 3; i++) {
-		auto slash = SlashBoss::create("Animation/Enemy_Boss1/slash.png");
+		auto scale = SCREEN_SIZE.height / 5 / 367;
+		auto slash = SlashBoss::create("Animation/Enemy_Boss1/skill-boss.json", "Animation/Enemy_Boss1/skill-boss.atlas",scale);
 		slash->setVisible(false);
 		slash->setPosition(this->getPosition());
-		slash->setScale(SCREEN_SIZE.height / 8 / slash->getContentSize().height);
+		//slash->setScale(SCREEN_SIZE.height / 8 / slash->getContentSize().height);
 		this->getParent()->addChild(slash, ZORDER_ENEMY);
 		auto tmpbody = slash->getB2Body();
 		tmpbody = nullptr;
@@ -172,8 +173,8 @@ void EnemyBoss1::updateMe(Point posHero)
 		this->attack2();
 	}
 
-	if (control == 245 || control == 250|| control == 255) {
-		auto tmpVec = posHero - this->getBoneLocation("bone65");
+	if (control == 255 || control == 270|| control == 280) {
+		auto tmpVec = (posHero+Vec2(0, SCREEN_SIZE.height/4)) - ((this->getBoneLocation("bone65")+ this->getBoneLocation("bone68"))/2);
 		this->creatSlash(tmpVec.getAngle());
 	}
 
@@ -198,23 +199,25 @@ void EnemyBoss1::updateMe(Point posHero)
 void EnemyBoss1::listener()
 {
 	this->setCompleteListener([&](int trackIndex, int loopCount) {
-		if ((strcmp(getCurrent()->animation->name, "attack2") == 0 && loopCount == 1)) {
-			idle();
-		}
-		else if ((strcmp(getCurrent()->animation->name, "attack") == 0 && loopCount == 1)) {
-			//this->setControlAttack(this->getControlAttack() - 1);
-			/*if (this->getControlAttack() == 0) {
-				fixStupid();
-				lockState = false;
-			}*/
-		}
-		else if ((strcmp(getCurrent()->animation->name, "injured") == 0 && loopCount == 1)) {
-			this->clearTracks();
-			this->setAnimation(0, "idle", true);
-			this->setToSetupPose();
-		}
-		else if ((strcmp(getCurrent()->animation->name, "injured-red") == 0 && loopCount == 1)) {
-			Director::getInstance()->replaceScene(MenuLayer::createScene());
+		if (getCurrent()) {
+			if ((strcmp(getCurrent()->animation->name, "attack2") == 0 && loopCount == 1)) {
+				idle();
+			}
+			else if ((strcmp(getCurrent()->animation->name, "attack") == 0 && loopCount == 1)) {
+				//this->setControlAttack(this->getControlAttack() - 1);
+				/*if (this->getControlAttack() == 0) {
+					fixStupid();
+					lockState = false;
+				}*/
+			}
+			else if ((strcmp(getCurrent()->animation->name, "injured") == 0 && loopCount == 1)) {
+				this->clearTracks();
+				this->setAnimation(0, "idle", true);
+				this->setToSetupPose();
+			}
+			else if ((strcmp(getCurrent()->animation->name, "injured-red") == 0 && loopCount == 1)) {
+				Director::getInstance()->replaceScene(MenuLayer::createScene());
+			}
 		}
 	});
 }

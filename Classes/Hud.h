@@ -15,6 +15,7 @@ public:
 protected:
 	CC_SYNTHESIZE(Sprite*, avatar, AvatarSprite);
 	CC_SYNTHESIZE(Sprite*, bloodBoard, BloodBoard);
+	CC_SYNTHESIZE(CCArray*, listBlood, ListBlood);
 	CC_SYNTHESIZE(Sprite*, moneyBoard, MoneyBoard);
 	CC_SYNTHESIZE(Sprite*, scoreBoard, ScoreBoard);
 	CC_SYNTHESIZE(Sprite*, distanceBar, DistanceBar);
@@ -29,7 +30,7 @@ private:
 	TMXTiledMap *tmxMap;
 	void addProfile();
 	void addButton();
-
+	void createBloodBar();
 };
 
 #endif // __HUD_H__

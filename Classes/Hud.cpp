@@ -39,19 +39,17 @@ void Hud::addProfile()
 	avatar = Sprite::create(JSHERO->getavatarPath());
 	avatar->setScale(SCREEN_SIZE.height / 4.7f / avatar->getContentSize().height);
 	avatar->setPosition(origin_1);
-
 	addChild(avatar, 1);
 
-
+	// BLOOD BAR
 	bloodBoard = Sprite::create("UI/UI_info_ingame/blood_board.png");
 	bloodBoard->setAnchorPoint(Vec2::ZERO);
 	bloodBoard->setScale(SCREEN_SIZE.width / 4 / bloodBoard->getContentSize().width);
 	bloodBoard->setPosition(avatar->getPositionX() + avatar->getBoundingBox().size.width * 0.2f, 
 							avatar->getPositionY() - avatar->getBoundingBox().size.height * 0.1f);
-
 	addChild(bloodBoard);
 
-
+	// MONEY BOARD HERE
 	auto groupMoney = tmxMap->getObjectGroup("money_board");
 	auto mObject_2 = groupMoney->getObject("money_board");
 	float pos_2X = mObject_2["x"].asFloat() * tmxMap->getScaleX();
@@ -60,9 +58,17 @@ void Hud::addProfile()
 	moneyBoard->setAnchorPoint(Vec2::ZERO);
 	moneyBoard->setScale(SCREEN_SIZE.height / 10 / moneyBoard->getContentSize().height);
 	moneyBoard->setPosition(pos_2X, bloodBoard->getPositionY());
-
 	addChild(moneyBoard);
 
+	lbMoney = Label::createWithTTF("0", "fonts/BAUHS93.TTF", 200);
+	lbMoney->setAnchorPoint(Vec2::ZERO);
+	lbMoney->setScale(moneyBoard->getBoundingBox().size.height / lbMoney->getContentSize().height);
+	lbMoney->setPosition(moneyBoard->getPositionX() + 1.4f * moneyBoard->getBoundingBox().size.width, 
+						moneyBoard->getPositionY());
+	addChild(lbMoney);
+
+
+	// SCORE BOARD HERE
 	auto groupScore = tmxMap->getObjectGroup("score_board");
 	auto mObject_3 = groupScore->getObject("score_board");
 	float pos_3X = mObject_3["x"].asFloat() * tmxMap->getScaleX();
@@ -71,9 +77,17 @@ void Hud::addProfile()
 	scoreBoard->setAnchorPoint(Vec2::ZERO);
 	scoreBoard->setScale(SCREEN_SIZE.height / 9 / scoreBoard->getContentSize().height);
 	scoreBoard->setPosition(pos_3X, bloodBoard->getPositionY());
-
 	addChild(scoreBoard);
 
+	lbScore = Label::createWithTTF("0", "fonts/BAUHS93.TTF", 200);
+	lbScore->setAnchorPoint(Vec2::ZERO);
+	lbScore->setScale(lbMoney->getScale());
+	lbScore->setPosition(scoreBoard->getPositionX() + 1.2f * scoreBoard->getBoundingBox().size.width, 
+						scoreBoard->getPositionY());
+	addChild(lbScore);
+
+
+	// DISTANCE BAR + CHARACTER POINT
 	auto groupDistanceBar = tmxMap->getObjectGroup("distance_bar");
 	auto mObject_4 = groupDistanceBar->getObject("distance_bar");
 	Point origin_4 = Point(mObject_4["x"].asFloat() * tmxMap->getScaleX(), mObject_4["y"].asFloat()* tmxMap->getScaleY());

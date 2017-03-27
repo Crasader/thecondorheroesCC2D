@@ -128,6 +128,9 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		auto coin = sA->getTag() == TAG_COIN ? (Coin *)sA : (Coin *)sB;
 		coin->picked();
 
+		auto parentGameScene = (GameScene*)coin->getParent();
+		parentGameScene->updateMoney(1);
+
 	}
 
 	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_COIN_BULLION) ||
@@ -138,6 +141,9 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
 		auto coin = sA->getTag() == TAG_COINBULLION ? (CoinBullion *)sA : (CoinBullion *)sB;
 		coin->picked();
+
+		auto parentGameScene = (GameScene*)coin->getParent();
+		parentGameScene->updateMoney(5);
 
 	}
 
@@ -150,6 +156,9 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		auto coin = sA ? (B2Skeleton *)sA : (B2Skeleton *)sB;
 
 		coin->die();
+
+		auto parentGameScene = (GameScene*)coin->getParent();
+		parentGameScene->updateMoney(10);
 	}
 
 	if ((bitmaskA == BITMASK_WOODER && bitmaskB == BITMASK_SWORD) ||
@@ -161,6 +170,9 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		auto enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 
 		enemy->die();
+
+		auto parentGameScene = (GameScene*)enemy->getParent();
+		parentGameScene->updateScore(5);
 	}
 
 	if ((bitmaskA == BITMASK_TOANCHAN1 && bitmaskB == BITMASK_SWORD) ||
@@ -182,6 +194,9 @@ void CollisionListener::BeginContact(b2Contact * contact)
 			enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 
 		enemy->die();
+
+		auto parentGameScene = (GameScene*)enemy->getParent();
+		parentGameScene->updateScore(12);
 	}
 
 	if ((bitmaskA == BITMASK_TOANCHAN2 && bitmaskB == BITMASK_SWORD) ||
@@ -203,6 +218,9 @@ void CollisionListener::BeginContact(b2Contact * contact)
 			enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 
 		enemy->die();
+
+		auto parentGameScene = (GameScene*)enemy->getParent();
+		parentGameScene->updateScore(16);
 	}
 
 	if ((bitmaskA == BITMASK_BOSS && bitmaskB == BITMASK_SWORD) ||

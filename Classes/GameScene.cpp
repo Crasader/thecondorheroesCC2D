@@ -1,8 +1,12 @@
 #include "GameScene.h"
 #include "SimpleAudioEngine.h"
 #include "MenuScene.h"
+#include "Hud.h"
+#include "LoadingLayer.h"
 
 Hud *hud;
+LoadingLayer* loadingLayer;
+
 
 Scene* GameScene::createScene()
 {
@@ -11,11 +15,16 @@ Scene* GameScene::createScene()
 
 	// 'layer' is an autorelease object
 	auto layer = GameScene::create();
+	layer->setName("gameLayer");
 	hud = Hud::create();
+	hud->setName("hud");
+	loadingLayer = LoadingLayer::create();
 
 	// add layer as a child to scene
 	scene->addChild(layer);
 	scene->addChild(hud);
+	scene->addChild(loadingLayer);
+
 
 	// return the scene
 	return scene;
@@ -30,6 +39,7 @@ bool GameScene::init()
 	{
 		return false;
 	}
+
 	indexOfNextMapBoss = -1;
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -57,14 +67,14 @@ bool GameScene::init()
 	createCoint();
 
 
-	auto touch_listener = EventListenerTouchOneByOne::create();
-	auto keylistener = EventListenerKeyboard::create();
+	touch_listener = EventListenerTouchOneByOne::create();
+	key_listener = EventListenerKeyboard::create();
 	touch_listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
-	keylistener->onKeyPressed = CC_CALLBACK_2(GameScene::onKeyPressed, this);
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(touch_listener, this);
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(keylistener, this);
+	key_listener->onKeyPressed = CC_CALLBACK_2(GameScene::onKeyPressed, this);
 
-	this->scheduleUpdate();
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(touch_listener, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(key_listener, this);
+
 
 	return true;
 }
@@ -83,6 +93,11 @@ void GameScene::createDuongQua(string path_Json, string path_Atlas, Point positi
 
 	hero->getBloodScreen()->setPosition(follow->getPosition());
 	addChild(hero->getBloodScreen(), ZORDER_SMT);
+}
+
+void GameScene::onBegin()
+{
+	this->scheduleUpdate();
 }
 
 void GameScene::checkActiveButton()
@@ -1006,6 +1021,18 @@ void GameScene::updateEnemy()
 void GameScene::updateBoss()
 {
 
+}
+
+void GameScene::updateMoney(int numberOfCoin)
+{
+	hero->setCoinExplored(hero->getCoinExplored() + numberOfCoin);
+	hud->getLbMoney()->setString(StringUtils::format("%i", hero->getCoinExplored()));
+}
+
+void GameScene::updateScore(int score)
+{
+	hero->setScore(hero->getScore() + score);
+	hud->getLbScore()->setString(StringUtils::format("%i", hero->getScore()));
 }
 
 void GameScene::updateBloodBar(int numberOfHealth, bool isVisible)

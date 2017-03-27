@@ -31,8 +31,10 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 	duongQua->setDurationSkill3(JSHERO->getDurationSkill3());
 
 	duongQua->facingRight = true;
-
 	duongQua->numberOfJump = 2;
+	duongQua->coinExplored = 0;
+	duongQua->score = 0;
+
 
 	duongQua->setOnGround(false);
 	duongQua->setIsPriorInjured(false);		// future, we need to add props into base class
@@ -81,7 +83,7 @@ void DuongQua::slashToanChanKiemPhap()
 		if (!listToanChanKiemPhap.empty()) {
 			for (auto tckp : listToanChanKiemPhap) {
 				if (!tckp->getB2Body()) continue;
-				if (tckp->getPositionX() - (this->getPositionX() + SCREEN_SIZE.width * 0.26f) > SCREEN_SIZE.width / 2) {
+				if (tckp->getPositionX() - (this->getPositionX() + SCREEN_SIZE.width * 0.255f) > SCREEN_SIZE.width / 2) {
 					this->getB2Body()->GetWorld()->DestroyBody(tckp->getB2Body());
 					tckp->setB2Body(nullptr);
 

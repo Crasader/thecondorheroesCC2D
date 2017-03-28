@@ -19,8 +19,7 @@ Button * Button::create(string file_name_main, string file_name_CoolDown, Point 
 	mNode->effectCoolDown->setPosition(mNode->getBoundingBox().size.width / 2, mNode->getBoundingBox().size.height / 2);
 	mNode->addChild(mNode->effectCoolDown);*/
 
-	mNode->number = Label::createWithTTF("0", "fonts/Marker Felt.ttf", 200);
-	mNode->number->getFontAtlas()->setAliasTexParameters();
+	mNode->number = Label::createWithTTF("0", "fonts/Marker Felt.ttf", 32);
 	mNode->number->setPosition(pos);
 	mNode->number->setVisible(false);
 
@@ -28,7 +27,7 @@ Button * Button::create(string file_name_main, string file_name_CoolDown, Point 
 	mNode->isBlocked = false;
 	mNode->canTouch = true;
 	mNode->setIsActive(false);
-	mNode->addEvents();
+	//mNode->addEvents();
 	return mNode;
 }
 

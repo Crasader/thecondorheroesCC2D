@@ -60,6 +60,13 @@ void LoadingLayer::addStuff()
 
 	addChild(avatarHero);
 
+	lbGuide = Label::create("Guide here", "fonts/Maker Felt.ttf", 32);
+	lbGuide->setAnchorPoint(Vec2::ZERO);
+	lbGuide->setScale(boardTime->getBoundingBox().size.height / lbGuide->getContentSize().height);
+	lbGuide->setPosition(boardTime->getPositionX(), boardTime->getPositionY() - boardTime->getBoundingBox().size.height * 1.3f);
+	addChild(lbGuide);
+
+
 	doLoading();
 
 }
@@ -74,6 +81,7 @@ void LoadingLayer::doLoading()
 			boardTime->setVisible(false);
 			loading->setVisible(false);
 			avatarHero->setVisible(false);
+			lbGuide->setVisible(false);
 
 			doOpen();
 			unschedule("Key_loading");
@@ -104,5 +112,6 @@ void LoadingLayer::doOpen()
 
 void LoadingLayer::addGuide(string guideWhat)
 {
+	lbGuide->setString(guideWhat);
 }
 

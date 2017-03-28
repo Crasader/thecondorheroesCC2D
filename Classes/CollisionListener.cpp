@@ -86,13 +86,15 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		enemy->attack();
 		if (!enemy->getIsDie()) {
-			hero->setIsPriorInjured(true);
-			hero->getFSM()->changeState(MInjured);
-			hero->getBloodScreen()->setVisible(true);
-			hero->setHealth(hero->getHealth() - 1);
+			if (!hero->getIsPriorInjured()) {
+				hero->setIsPriorInjured(true);
+				hero->getFSM()->changeState(MInjured);
+				hero->getBloodScreen()->setVisible(true);
+				hero->setHealth(hero->getHealth() - 1);
 
-			auto parentGameScene = (GameScene*)hero->getParent();
-			parentGameScene->updateBloodBar(hero->getHealth(), false);
+				auto parentGameScene = (GameScene*)hero->getParent();
+				parentGameScene->updateBloodBar(hero->getHealth(), false);
+			}
 		}
 
 	}
@@ -251,13 +253,15 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		B2Skeleton* sA = (BaseHero*)bodyA->GetUserData();
 		B2Skeleton* sB = (BaseHero*)bodyB->GetUserData();
 		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
+		if (!hero->getIsPriorInjured()) {
+			hero->setIsPriorInjured(true);
+			hero->getFSM()->changeState(MInjured);
+			hero->getBloodScreen()->setVisible(true);
+			hero->setHealth(hero->getHealth() - 1);
 
-		hero->setIsPriorInjured(true);
-		hero->getBloodScreen()->setVisible(true);
-		hero->getFSM()->changeState(MInjured);
-		hero->setHealth(hero->getHealth() - 1);
-		auto parentGameScene = (GameScene*)hero->getParent();
-		parentGameScene->updateBloodBar(hero->getHealth(), false);
+			auto parentGameScene = (GameScene*)hero->getParent();
+			parentGameScene->updateBloodBar(hero->getHealth(), false);
+		}
 
 	}
 	if ((bitmaskA == BITMASK_SWORD && bitmaskB == BITMASK_SLASH) ||

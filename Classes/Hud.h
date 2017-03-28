@@ -12,6 +12,14 @@ public:
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();	
 	CREATE_FUNC(Hud);
 
+	void addEvents();
+
+	void removeSpecial();
+	void hintSpecial(Vec2 p_ptCenterScreen);
+	void cooldownSpecial();
+	bool specialCooldown();
+
+
 protected:
 	CC_SYNTHESIZE(Sprite*, avatar, AvatarSprite);
 
@@ -33,7 +41,8 @@ protected:
 	CC_SYNTHESIZE(Button*, btnSkill_2, BtnSkill_2);
 	CC_SYNTHESIZE(Button*, btnSkill_3, BtnSkill_3);
 
-	CC_SYNTHESIZE(Button*, btnCalling, BtnCalling);
+	CC_SYNTHESIZE(Button*, btnSpecial, BtnSpecial);
+	CC_SYNTHESIZE(bool, btnSpecialHintDone, BtnSpecialHintDone);
 
 private:
 	TMXTiledMap *tmxMap;

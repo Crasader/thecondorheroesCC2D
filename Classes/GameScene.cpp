@@ -3,9 +3,11 @@
 #include "MenuScene.h"
 #include "Hud.h"
 #include "LoadingLayer.h"
+#include "chimdieu/ChimDieu.h"
 
 Hud *hud;
 LoadingLayer* loadingLayer;
+ChimDieu* _aEagle;
 
 
 Scene* GameScene::createScene()
@@ -17,7 +19,6 @@ Scene* GameScene::createScene()
 	auto layer = GameScene::create();
 	layer->setName("gameLayer");
 	hud = Hud::create();
-	hud->setName("hud");
 	loadingLayer = LoadingLayer::create();
 
 	// add layer as a child to scene
@@ -58,6 +59,13 @@ bool GameScene::init()
 	createDuongQua("Animation/DuongQua/DuongQua.json", "Animation/DuongQua/DuongQua.atlas",
 		Point(origin.x, visibleSize.height));
 
+	_aEagle = ChimDieu::create("Animation/ChimDieu/ChimDieu-DuongQua.json",
+		"Animation/ChimDieu/ChimDieu-DuongQua.atlas", SCREEN_SIZE.height / 2048);
+	_aEagle->initCirclePhysic(world, Point(hero->getB2Body()->GetPosition().x - visibleSize.width, visibleSize.height / 2));
+	this->addChild(_aEagle, ZORDER_HERO);
+	_aEagle->getB2Body()->SetGravityScale(0);
+
+
 	danceWithEffect();
 
 	creatEnemyWooder();
@@ -65,15 +73,6 @@ bool GameScene::init()
 	creatEnemyToanChanStudent2();
 	creatBoss();
 	createCoint();
-
-
-	touch_listener = EventListenerTouchOneByOne::create();
-	key_listener = EventListenerKeyboard::create();
-	touch_listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
-	key_listener->onKeyPressed = CC_CALLBACK_2(GameScene::onKeyPressed, this);
-
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(touch_listener, this);
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(key_listener, this);
 
 
 	return true;
@@ -97,6 +96,15 @@ void GameScene::createDuongQua(string path_Json, string path_Atlas, Point positi
 
 void GameScene::onBegin()
 {
+	hud->addEvents();
+
+	touch_listener = EventListenerTouchOneByOne::create();
+	key_listener = EventListenerKeyboard::create();
+	touch_listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
+	key_listener->onKeyPressed = CC_CALLBACK_2(GameScene::onKeyPressed, this);
+
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(touch_listener, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(key_listener, this);
 	this->scheduleUpdate();
 }
 
@@ -238,7 +246,37 @@ void GameScene::listener()
 		hud->getBtnSkill_3()->setIsActive(false);
 	}
 
+	if (hud->getBtnSpecial()->getIsActive() && !hud->getBtnSpecial()->getIsBlocked()) {
+		if (!hero->getIsDriverEagle()) {
+			Vec2 screenSize = Director::getInstance()->getVisibleSize();
+			hero->setIsDriverEagle(true);
+			hero->setOnGround(false);
+			hero->getFSM()->changeState(MIdle);
+			hero->setVisible(false);
+			hud->setBtnSpecialHintDone(false);
+			_aEagle->setVisible(true);
+			_aEagle->getB2Body()->SetTransform(hero->getB2Body()->GetPosition(), 0.0f);
+			_aEagle->flyUp(b2Vec2(hero->getMoveVel(), 7.0f));
 
+			auto _aEagleFlyDown = Sequence::create(DelayTime::create(4.0f), CallFunc::create([&]() {
+				_aEagle->flyDown(b2Vec2(hero->getMoveVel(), -7.0f));
+			}), nullptr);
+			auto _aHeroGetOffEagle = Sequence::create(DelayTime::create(6.0f), CallFunc::create([&]() { heroGetOffEagle(); }), nullptr);
+			runAction(_aEagleFlyDown);
+			runAction(_aHeroGetOffEagle);
+		}
+		hud->getBtnSpecial()->setIsActive(false);
+		hud->removeSpecial();
+	}
+}
+
+void GameScene::heroGetOffEagle() {
+	hero->setIsDriverEagle(false);
+	hero->getB2Body()->SetTransform(b2Vec2(_aEagle->getB2Body()->GetPosition().x, _aEagle->getB2Body()->GetPosition().y - 100.0f / PTM_RATIO), 0.0f);
+	hero->setVisible(true);
+	hero->getB2Body()->SetGravityScale(1);
+	hero->getFSM()->changeState(MLand);
+	_aEagle->flyAway();
 }
 
 void GameScene::update(float dt)
@@ -248,13 +286,65 @@ void GameScene::update(float dt)
 
 	checkActiveButton();
 
+	_aEagle->updateMe(dt);
+	if (hero->getIsDriverEagle()) {
+		hero->getB2Body()->SetGravityScale(0);
+		hero->getB2Body()->SetLinearVelocity(b2Vec2_zero);
+		hero->getB2Body()->SetTransform(b2Vec2(_aEagle->getB2Body()->GetPosition().x, _aEagle->getB2Body()->GetPosition().y - 100.0f / PTM_RATIO), 0.0f);
+	}
+
 	hero->updateMe(dt);
+
+	if (hero->getCurrentRunDis() - hero->getPreRunDis() > 10.0f) {
+		updateScore(15);
+		hero->setPreRunDis(hero->getCurrentRunDis());
+	}
+
 	updateEnemy();
 	//cleanMap();
 
-	if (hero->getPositionX() >= SCREEN_SIZE.width / 4)
-		follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4);
+	// fall down some hold
+	if (hero->getPositionY() < 0) {
+		hero->getFSM()->changeState(MDie);
+		hero->getB2Body()->SetGravityScale(0);
+		hero->setOnGround(false);
+		hero->getB2Body()->SetTransform(b2Vec2(hero->getB2Body()->GetPosition().x, SCREEN_SIZE.height / 10 / PTM_RATIO), 0.0f);
+		hud->hintSpecial(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
+	}
 
+	if (hud->getBtnSpecialHintDone()) {
+		static float g_fTimeCounter = 0.0f;
+		g_fTimeCounter += dt;
+		if (g_fTimeCounter > 5.0f / 180) {
+			bool _bResult = hud->specialCooldown();
+			if (!_bResult) {
+				hud->setBtnSpecialHintDone(false);
+				Director::getInstance()->replaceScene(MenuLayer::createScene());
+			}
+			g_fTimeCounter = 0.0f;
+		}
+	}
+
+	if (hero->getPositionX() >= SCREEN_SIZE.width / 4) {
+		if (_aEagle->getIsUp() && this->getPositionZ() < 100.0f) {
+			this->setPositionZ(this->getPositionZ() + 5.0f);
+			_aEagle->setSequenceCloud(_aEagle->getSequenceCloud() - 0.04f);
+		}
+		if (_aEagle->getIsDown() && this->getPositionZ() > 0.0f) {
+			this->setPositionZ(this->getPositionZ() - 5.0f);
+			_aEagle->setSequenceCloud(_aEagle->getSequenceCloud() + 0.04f);
+		}
+		/*if (hero->getIsDriverEagle()) {
+		follow->setPositionX(_aEagle->getPositionX() + SCREEN_SIZE.width / 10);
+		follow->setPositionY(_aEagle->getPositionY() + SCREEN_SIZE.height / 10);
+		}
+		else {
+		follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 3);
+		follow->setPositionY(hero->getPositionY() + SCREEN_SIZE.height / 4);
+		}*/
+		follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4 - SCREEN_SIZE.width * 3 / 20 * this->getPositionZ() / 100.0f);
+		follow->setPositionY(hero->getPositionY() + SCREEN_SIZE.height / 4 - SCREEN_SIZE.height * 3 / 20 * this->getPositionZ() / 100.0f);
+	}
 
 	if (hero->getPositionX() > tmx_map->getBoundingBox().size.width - SCREEN_SIZE.width / 4 && indexOfNextMapBoss < 0) {
 		createGroundForMapBoss();
@@ -915,7 +1005,7 @@ void GameScene::initUnderGroundPhysic(b2World * world, Point pos, Size size)
 bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 {
 	if (left_corner.containsPoint(touch->getLocation())
-		&& !hud->getBtnCalling()->getBoundingBox().containsPoint(touch->getLocation())
+		&& !hud->getBtnSpecial()->getBoundingBox().containsPoint(touch->getLocation())
 		) {
 
 		// cannot jump while attacking or being injured

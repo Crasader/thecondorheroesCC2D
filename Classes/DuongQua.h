@@ -53,6 +53,7 @@ protected:
 
 	void initCirclePhysic(b2World *world, Point pos);
 
+	void idle();
 	void run();
 	void normalJump();
 	void doubleJump();

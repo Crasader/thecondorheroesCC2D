@@ -1,6 +1,7 @@
 #include "Hud.h"
 #include "JSonHeroManager.h"
 
+list<Sprite*> g_lTemp;
 
 bool Hud::init()
 {
@@ -27,6 +28,16 @@ bool Hud::init()
 	createBloodBar();
 
 	return true;
+}
+
+void Hud::addEvents()
+{
+	btnAttack->addEvents();
+	btnSkill_1->addEvents();
+	btnSkill_2->addEvents();
+	btnSkill_3->addEvents();
+
+	btnSpecial->addEvents();
 }
 
 
@@ -60,9 +71,9 @@ void Hud::addProfile()
 	moneyBoard->setPosition(pos_2X, bloodBoard->getPositionY());
 	addChild(moneyBoard);
 
-	lbMoney = Label::createWithTTF("0", "fonts/BAUHS93.TTF", 200);
+	lbMoney = Label::createWithTTF("0", "fonts/BAUHS93.TTF", 32);
 	lbMoney->setAnchorPoint(Vec2::ZERO);
-	lbMoney->setScale(moneyBoard->getBoundingBox().size.height / lbMoney->getContentSize().height);
+	lbMoney->setScale(moneyBoard->getBoundingBox().size.height * 0.8f / lbMoney->getContentSize().height);
 	lbMoney->setPosition(moneyBoard->getPositionX() + 1.4f * moneyBoard->getBoundingBox().size.width, 
 						moneyBoard->getPositionY());
 	addChild(lbMoney);
@@ -79,7 +90,7 @@ void Hud::addProfile()
 	scoreBoard->setPosition(pos_3X, bloodBoard->getPositionY());
 	addChild(scoreBoard);
 
-	lbScore = Label::createWithTTF("0", "fonts/BAUHS93.TTF", 200);
+	lbScore = Label::createWithTTF("0", "fonts/BAUHS93.TTF", 32);
 	lbScore->setAnchorPoint(Vec2::ZERO);
 	lbScore->setScale(lbMoney->getScale());
 	lbScore->setPosition(scoreBoard->getPositionX() + 1.2f * scoreBoard->getBoundingBox().size.width, 
@@ -166,14 +177,14 @@ void Hud::addButton()
 	auto mObject_4 = groupBtnCalling->getObject("btn_calling");
 	Point origin_4 = Point(mObject_4["x"].asFloat() * tmxMap->getScaleX(), mObject_4["y"].asFloat()* tmxMap->getScaleY());
 
-	btnCalling = Button::create("UI/btn_callbird.png", "UI/btn_callbird_off.png", origin_4);
-	btnCalling->setTimeCoolDown(40);
-	btnCalling->setScale(SCREEN_SIZE.height / 7 / btnCalling->getContentSize().height);
-	btnCalling->getCoolDownSprite()->setScale(btnCalling->getScale());
-	btnCalling->getNumberCoolDown()->setScale(btnCalling->getBoundingBox().size.height / 2 / btnCalling->getNumberCoolDown()->getContentSize().height);
-	addChild(btnCalling);
-	addChild(btnCalling->getCoolDownSprite());
-	addChild(btnCalling->getNumberCoolDown());
+	btnSpecial = Button::create("UI/btn_callbird.png", "UI/btn_callbird_off.png", origin_4);
+	btnSpecial->setTimeCoolDown(40);
+	btnSpecial->setScale(SCREEN_SIZE.height / 7 / btnSpecial->getContentSize().height);
+	btnSpecial->getCoolDownSprite()->setScale(btnSpecial->getScale());
+	btnSpecial->getNumberCoolDown()->setScale(btnSpecial->getBoundingBox().size.height / 2 / btnSpecial->getNumberCoolDown()->getContentSize().height);
+	addChild(btnSpecial);
+	addChild(btnSpecial->getCoolDownSprite());
+	addChild(btnSpecial->getNumberCoolDown());
 
 }
 
@@ -188,10 +199,46 @@ void Hud::createBloodBar()
 		auto blood = Sprite::create("UI/UI_info_ingame/blood.png");
 		blood->setAnchorPoint(Vec2::ZERO);
 		blood->setScaleX(bloodBoard->getBoundingBox().size.width * (8.0f / 11.4f) / arraySize / blood->getContentSize().width);
-		blood->setScaleY(bloodBoard->getBoundingBox().size.height * 0.4f / blood->getContentSize().height);
+		blood->setScaleY(bloodBoard->getBoundingBox().size.height * 0.33f / blood->getContentSize().height);
 		blood->setPosition(Point(i * blood->getBoundingBox().size.width + bloodBoard->getBoundingBox().size.width / 11 + bloodBoard->getPositionX(),
-								bloodBoard->getPositionY() + bloodBoard->getBoundingBox().size.height * 0.25f));
+								bloodBoard->getPositionY() + bloodBoard->getBoundingBox().size.height * 0.295f));
 		addChild(blood, 1);
 		listBlood->addObject(blood);
 	}
+}
+
+void Hud::removeSpecial() {
+	removeChild(btnSpecial->getNumberCoolDown(), true);
+	removeChild(btnSpecial->getCoolDownSprite(), true);
+	removeChild(btnSpecial, true);
+}
+
+void Hud::hintSpecial(Vec2 p_ptCenterScreen) {
+	MoveTo *_pStageSpecialButton = MoveTo::create(0.3f, p_ptCenterScreen);
+	auto _aStageSpecialButtonCallback = CallFunc::create([&]() {
+		btnSpecialHintDone = true;
+	});
+	btnSpecial->runAction(Sequence::create(_pStageSpecialButton, _aStageSpecialButtonCallback, NULL));
+	cooldownSpecial();
+}
+
+void Hud::cooldownSpecial() {
+	float _fRadius = btnSpecial->getContentSize().width / 2;
+	for (int i = 0; i < 180; i++) {
+		auto _aCooldownStep = Sprite::create("UI/green.png");
+		_aCooldownStep->setScale(_fRadius / _aCooldownStep->getContentSize().width * 2 * 0.1f);
+		float _fAngle = i * 2 * 3.141592653589793 / 180.0;
+		_aCooldownStep->setPosition(Vec2(_fRadius * sinf(_fAngle) + _fRadius, _fRadius * cosf(_fAngle) + _fRadius) * 1.05f);
+		btnSpecial->addChild(_aCooldownStep, -1);
+		g_lTemp.push_back(_aCooldownStep);
+	}
+}
+
+bool Hud::specialCooldown() {
+	if (g_lTemp.empty()) {
+		return false;
+	}
+	btnSpecial->removeChild(g_lTemp.front(), true);
+	g_lTemp.pop_front();
+	return true;
 }

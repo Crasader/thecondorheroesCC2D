@@ -15,7 +15,6 @@ public:
 
 private:
 	int timer;
-	void addEvents();
 	void checkInterval(float dt);
 	void runTimer();
 
@@ -27,6 +26,8 @@ protected:
 	CC_SYNTHESIZE(Sprite*, coolDown, CoolDownSprite);
 	CC_SYNTHESIZE(Sprite*, effectCoolDown, EffectCoolDown);
 	CC_SYNTHESIZE(bool, isBlocked, IsBlocked);
+
+	void addEvents();
 };
 
 #endif // __BUTTON_LEFT_H__

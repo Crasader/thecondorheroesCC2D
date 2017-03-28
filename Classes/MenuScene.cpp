@@ -56,6 +56,7 @@ bool MenuLayer::init()
 		menu->setPosition(Vec2::ZERO);
 		this->addChild(menu);
 	}
+
 	return true;
 }
 

@@ -61,6 +61,7 @@ private:
 
 	// Create Function
 	void createDuongQua(string path_Json, string path_Atlas, Point position);
+	void heroGetOffEagle();
 
 
 	// function for process box2d

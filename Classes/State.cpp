@@ -74,8 +74,7 @@ Idling::~Idling()
 // IDLE
 void Idling::execute(BaseHero * hero)
 {
-	hero->run();
-	
+	hero->idle();
 }
 
 Idling * Idling::getInstance()

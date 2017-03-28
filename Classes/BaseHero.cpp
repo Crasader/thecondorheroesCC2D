@@ -9,6 +9,9 @@ BaseHero::BaseHero(string jsonFile, string atlasFile, float scale) : B2Skeleton(
 	bloodScreen->setScaleX(SCREEN_SIZE.width / bloodScreen->getContentSize().width);
 	bloodScreen->setScaleY(SCREEN_SIZE.height / bloodScreen->getContentSize().height);
 	bloodScreen->setVisible(false);
+	isDriverEagle = false;
+	currentRunDis = 0.0f;
+	preRunDis = 0.0f;
 }
 
 BaseHero * BaseHero::create(string jsonFile, string atlasFile, float scale)
@@ -50,6 +53,10 @@ void BaseHero::changeSwordCategoryBitmask(uint16 bit)
 
 
 
+
+void BaseHero::idle()
+{
+}
 
 void BaseHero::run()
 {
@@ -107,6 +114,10 @@ void BaseHero::listener()
 void BaseHero::updateMe(float dt)
 {
 	if (getB2Body() != nullptr) {
+
+		currentRunDis = this->getPositionX() / (SCREEN_SIZE.width / 23);
+		log("cur: %f", currentRunDis);
+
 		this->setPositionX(this->getB2Body()->GetPosition().x * PTM_RATIO);
 		this->setPositionY(this->getB2Body()->GetPosition().y * PTM_RATIO - trueRadiusOfHero);
 

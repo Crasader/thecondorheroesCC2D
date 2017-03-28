@@ -311,6 +311,15 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 	createSlash();
 }
 
+void DuongQua::idle()
+{
+	clearTracks();
+	addAnimation(0, "idle", true);
+	setToSetupPose();
+
+	EM->getSmokeRun()->setVisible(false);
+}
+
 void DuongQua::run()
 {
 	clearTracks();
@@ -449,8 +458,12 @@ void DuongQua::listener()
 				getFSM()->setGlobalState(MRun);
 			}
 
-			getFSM()->revertToGlobalState();
+			if (getFSM()->globalState == MDoubleJump) {
+				getFSM()->setPreviousState(MInjured);
+				getFSM()->setGlobalState(MLand);
+			}
 
+			getFSM()->revertToGlobalState();
 
 		}
 
@@ -464,6 +477,11 @@ void DuongQua::listener()
 			if (getFSM()->globalState == MSKill1 || getFSM()->globalState == MInjured) {
 				getFSM()->setPreviousState(MAttack);
 				getFSM()->setGlobalState(MRun);
+			}
+
+			if (getFSM()->globalState == MDoubleJump) {
+				getFSM()->setPreviousState(MAttack);
+				getFSM()->setGlobalState(MLand);
 			}
 
 			getFSM()->revertToGlobalState();

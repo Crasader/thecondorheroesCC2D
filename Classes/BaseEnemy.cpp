@@ -1,7 +1,17 @@
 #include "BaseEnemy.h"
 
+BaseEnemy::BaseEnemy() :B2Skeleton()
+{
+	isDie = false;
+}
+
+BaseEnemy::~BaseEnemy()
+{
+}
+
 BaseEnemy::BaseEnemy(spSkeletonData * data):B2Skeleton(data)
 {
+	isDie = false;
 }
 
 BaseEnemy::BaseEnemy(string jsonFile, string atlasFile, float scale):B2Skeleton(jsonFile, atlasFile, scale)
@@ -16,7 +26,10 @@ BaseEnemy * BaseEnemy::create(string jsonFile, string atlasFile, float scale)
 
 BaseEnemy * BaseEnemy::create(spSkeletonData * data)
 {
-	return nullptr;
+	auto skeleton = new BaseEnemy(data);
+	//skeleton->initWithData(data);
+	skeleton->update(1.0f);
+	return skeleton;
 }
 
 void BaseEnemy::run()

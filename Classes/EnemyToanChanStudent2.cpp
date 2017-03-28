@@ -1,10 +1,18 @@
 #include "EnemyToanChanStudent2.h"
+#include "SkeletonManager.h"
+
 
 EnemyToanChanStudent2::EnemyToanChanStudent2(string jsonFile, string atlasFile, float scale):EnemyToanChanStudent(jsonFile, atlasFile,scale)
 {
 	controlAttack = 60;
 	isDie = false;
 }
+
+EnemyToanChanStudent2::EnemyToanChanStudent2(spSkeletonData*data):EnemyToanChanStudent(data)
+{
+
+}
+
 
 EnemyToanChanStudent2 * EnemyToanChanStudent2::create(string jsonFile, string atlasFile, float scale)
 {
@@ -18,6 +26,22 @@ EnemyToanChanStudent2 * EnemyToanChanStudent2::create(string jsonFile, string at
 
 }
 
+EnemyToanChanStudent2 * EnemyToanChanStudent2::create(string filename, float scale)
+{
+	if (!SkeletonManager::getSkeletonData(filename)) {
+		SkeletonManager::getInstance()->cacheSkeleton(filename, scale);
+	}
+	auto data = SkeletonManager::getSkeletonData(filename);
+	auto enemy = new EnemyToanChanStudent2(data);
+	enemy->update(0.0f);
+	enemy->setTag(TAG_ENEMY_TOANCHAN2);
+	enemy->setScaleX(1);
+	enemy->setAnimation(0, "idle", true);
+	enemy->setScaleEnemy(scale);
+	//enemy->setTimeScale(1.4f);
+	return enemy;
+}
+
 void EnemyToanChanStudent2::attack()
 {
 	EnemyToanChanStudent::attack();
@@ -29,9 +53,9 @@ void EnemyToanChanStudent2::attack()
 void EnemyToanChanStudent2::die()
 {
 	EnemyToanChanStudent::die();
-	/*slash->removeFromParentAndCleanup(true);
 	auto world = slash->getB2Body()->GetWorld();
-	world->DestroyBody(slash->getB2Body());*/
+	world->DestroyBody(slash->getB2Body());
+	slash->removeFromParentAndCleanup(true);
 
 }
 

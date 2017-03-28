@@ -1,4 +1,5 @@
 #include "Hud.h"
+#include "JSonHeroManager.h"
 
 
 bool Hud::init()
@@ -23,6 +24,8 @@ bool Hud::init()
 	addProfile();
 	addButton();
 
+	createBloodBar();
+
 	return true;
 }
 
@@ -33,7 +36,7 @@ void Hud::addProfile()
 	auto mObject_1 = groupAvatar->getObject("avatar");
 	Point origin_1 = Point(mObject_1["x"].asFloat() * tmxMap->getScaleX(), mObject_1["y"].asFloat()* tmxMap->getScaleY());
 
-	avatar = Sprite::create("UI/UI_info_ingame/avatar_DuongQua.png");
+	avatar = Sprite::create(JSHERO->getavatarPath());
 	avatar->setScale(SCREEN_SIZE.height / 4.7f / avatar->getContentSize().height);
 	avatar->setPosition(origin_1);
 
@@ -81,7 +84,7 @@ void Hud::addProfile()
 
 	addChild(distanceBar);
 
-	characterPoint = Sprite::create("UI/UI_info_ingame/character_point.png");
+	characterPoint = Sprite::create(JSHERO->getCharacterPointPath());
 	characterPoint->setScale(SCREEN_SIZE.height / 8 / characterPoint->getContentSize().width);
 	characterPoint->setPosition(distanceBar->getPositionX() - distanceBar->getBoundingBox().size.width * 0.41f, 
 								distanceBar->getPositionY());
@@ -97,7 +100,7 @@ void Hud::addButton()
 	Point origin = Point(mObject["x"].asFloat() * tmxMap->getScaleX(), mObject["y"].asFloat()* tmxMap->getScaleY());
 
 	btnAttack = Button::create("UI/btn_attack.png", "UI/btn_attack.png", origin);
-	btnAttack->setTimeCoolDown(0.5f);
+	btnAttack->setTimeCoolDown(0.33f);
 	btnAttack->setScale(SCREEN_SIZE.height / 4.5f / btnAttack->getContentSize().height);
 	btnAttack->getCoolDownSprite()->setScale(btnAttack->getScale());
 	addChild(btnAttack);
@@ -108,8 +111,8 @@ void Hud::addButton()
 	auto mObject_1 = groupBtnSkill1->getObject("btn_skill1");
 	Point origin_1 = Point(mObject_1["x"].asFloat() * tmxMap->getScaleX(), mObject_1["y"].asFloat()* tmxMap->getScaleY());
 
-	btnSkill_1 = Button::create("UI/btnDQ_skill1_up.png", "UI/btnDQ_skill1_down.png", origin_1);
-	btnSkill_1->setTimeCoolDown(20);
+	btnSkill_1 = Button::create(JSHERO->getPathMainImageSkill1(), JSHERO->getPathSubImageSkill1(), origin_1);
+	btnSkill_1->setTimeCoolDown(JSHERO->getCoolDownSkill1());
 	btnSkill_1->setScale(SCREEN_SIZE.height / 6.5f / btnSkill_1->getContentSize().height);
 	btnSkill_1->getCoolDownSprite()->setScale(btnSkill_1->getScale());
 	btnSkill_1->getNumberCoolDown()->setScale(btnSkill_1->getBoundingBox().size.height / 2 / btnSkill_1->getNumberCoolDown()->getContentSize().height);
@@ -122,8 +125,8 @@ void Hud::addButton()
 	auto mObject_2 = groupBtnSkill2->getObject("btn_skill2");
 	Point origin_2 = Point(mObject_2["x"].asFloat() * tmxMap->getScaleX(), mObject_2["y"].asFloat()* tmxMap->getScaleY());
 
-	btnSkill_2 = Button::create("UI/btnDQ_skill2_up.png", "UI/btnDQ_skill2_down.png", origin_2);
-	btnSkill_2->setTimeCoolDown(22);
+	btnSkill_2 = Button::create(JSHERO->getPathMainImageSkill2(), JSHERO->getPathSubImageSkill2(), origin_2);
+	btnSkill_2->setTimeCoolDown(JSHERO->getCoolDownSkill2());
 	btnSkill_2->setScale(SCREEN_SIZE.height / 6.5f / btnSkill_2->getContentSize().height);
 	btnSkill_2->getCoolDownSprite()->setScale(btnSkill_2->getScale());
 	btnSkill_2->getNumberCoolDown()->setScale(btnSkill_2->getBoundingBox().size.height / 2 / btnSkill_2->getNumberCoolDown()->getContentSize().height);
@@ -136,8 +139,8 @@ void Hud::addButton()
 	auto mObject_3 = groupBtnSkill3->getObject("btn_skill3");
 	Point origin_3 = Point(mObject_3["x"].asFloat() * tmxMap->getScaleX(), mObject_3["y"].asFloat()* tmxMap->getScaleY());
 
-	btnSkill_3 = Button::create("UI/btnDQ_skill3_up.png", "UI/btnDQ_skill3_down.png", origin_3);
-	btnSkill_3->setTimeCoolDown(30);
+	btnSkill_3 = Button::create(JSHERO->getPathMainImageSkill3(), JSHERO->getPathSubImageSkill3(), origin_3);
+	btnSkill_3->setTimeCoolDown(JSHERO->getCoolDownSkill3());
 	btnSkill_3->setScale(SCREEN_SIZE.height / 6.5f / btnSkill_3->getContentSize().height);
 	btnSkill_3->getCoolDownSprite()->setScale(btnSkill_3->getScale());
 	btnSkill_3->getNumberCoolDown()->setScale(btnSkill_3->getBoundingBox().size.height / 2 / btnSkill_3->getNumberCoolDown()->getContentSize().height);
@@ -158,4 +161,23 @@ void Hud::addButton()
 	addChild(btnCalling->getCoolDownSprite());
 	addChild(btnCalling->getNumberCoolDown());
 
+}
+
+
+void Hud::createBloodBar()
+{
+	listBlood = CCArray::createWithCapacity(JSHERO->getBaseHP());
+	listBlood->retain();
+
+	int arraySize = listBlood->capacity();
+	for (int i = 0; i < arraySize; ++i) {
+		auto blood = Sprite::create("UI/UI_info_ingame/blood.png");
+		blood->setAnchorPoint(Vec2::ZERO);
+		blood->setScaleX(bloodBoard->getBoundingBox().size.width * (8.0f / 11.4f) / arraySize / blood->getContentSize().width);
+		blood->setScaleY(bloodBoard->getBoundingBox().size.height * 0.4f / blood->getContentSize().height);
+		blood->setPosition(Point(i * blood->getBoundingBox().size.width + bloodBoard->getBoundingBox().size.width / 11 + bloodBoard->getPositionX(),
+								bloodBoard->getPositionY() + bloodBoard->getBoundingBox().size.height * 0.25f));
+		addChild(blood, 1);
+		listBlood->addObject(blood);
+	}
 }

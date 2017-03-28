@@ -86,10 +86,13 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		enemy->attack();
 		if (!enemy->getIsDie()) {
-			hero->setIsPrior(true);
+			hero->setIsPriorInjured(true);
 			hero->getFSM()->changeState(MInjured);
 			hero->getBloodScreen()->setVisible(true);
 			hero->setHealth(hero->getHealth() - 1);
+
+			auto parentGameScene = (GameScene*)hero->getParent();
+			parentGameScene->updateBloodBar(hero->getHealth(), false);
 		}
 
 	}
@@ -155,7 +158,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		BaseEnemy* sB = (BaseEnemy*)bodyB->GetUserData();
 		auto enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 
-		enemy->die();
+		enemy->setIsDie(true);
 	}
 
 	if ((bitmaskA == BITMASK_TOANCHAN1 && bitmaskB == BITMASK_SWORD) ||
@@ -176,7 +179,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		else
 			enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 
-		enemy->die();
+		enemy->setIsDie(true);
 	}
 
 	if ((bitmaskA == BITMASK_TOANCHAN2 && bitmaskB == BITMASK_SWORD) ||
@@ -197,7 +200,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		else
 			enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 
-		enemy->die();
+		enemy->setIsDie(true);
 	}
 
 	if ((bitmaskA == BITMASK_BOSS && bitmaskB == BITMASK_SWORD) ||
@@ -218,7 +221,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		else
 			enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 
-		enemy->die();
+		enemy->setIsDie(true);
 	}
 
 	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_SLASH) ||
@@ -229,10 +232,12 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		B2Skeleton* sB = (BaseHero*)bodyB->GetUserData();
 		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
 
-		hero->setIsPrior(true);
+		hero->setIsPriorInjured(true);
 		hero->getBloodScreen()->setVisible(true);
 		hero->getFSM()->changeState(MInjured);
 		hero->setHealth(hero->getHealth() - 1);
+		auto parentGameScene = (GameScene*)hero->getParent();
+		parentGameScene->updateBloodBar(hero->getHealth(), false);
 
 	}
 	if ((bitmaskA == BITMASK_SWORD && bitmaskB == BITMASK_SLASH) ||

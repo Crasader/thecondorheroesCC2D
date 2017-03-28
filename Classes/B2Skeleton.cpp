@@ -2,23 +2,37 @@
 
 
 
+B2Skeleton::B2Skeleton():SkeletonAnimation()
+{
+	body = nullptr;
+}
+
+B2Skeleton::~B2Skeleton()
+{
+}
+
 B2Skeleton::B2Skeleton(string jsonFile, string atlasFile, float scale) : SkeletonAnimation(jsonFile, atlasFile, scale)
 {
 	body = nullptr;
 }
 
-B2Skeleton::B2Skeleton(spSkeletonData * data):SkeletonAnimation(data)
+B2Skeleton::B2Skeleton(spSkeletonData * data) : SkeletonAnimation(data)
 {
+	body = nullptr;
 }
 
 B2Skeleton * B2Skeleton::create(string jsonFile, string atlasFile, float scale)
 {
 	return nullptr;
+	
 }
 
 B2Skeleton * B2Skeleton::create(spSkeletonData * data)
 {
-	return nullptr;
+	auto skeleton = new B2Skeleton(data);
+	//skeleton->initWithData(data);
+	skeleton->update(1.0f);
+	return skeleton;
 }
 
 

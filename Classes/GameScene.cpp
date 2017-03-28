@@ -1,13 +1,7 @@
 #include "GameScene.h"
 #include "SimpleAudioEngine.h"
-
-#include "json/rapidjson.h"
-#include "json/document.h"
-#include "json/writer.h"
-#include "json/stringbuffer.h"
 #include "MenuScene.h"
-
-using namespace rapidjson;
+#include "SkeletonManager.h"
 
 Hud *hud;
 
@@ -37,6 +31,7 @@ bool GameScene::init(int map, int haveboss)
 	{
 		return false;
 	}
+	this->haveboss = haveboss;
 	indexOfNextMapBoss = -1;
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -58,6 +53,12 @@ bool GameScene::init(int map, int haveboss)
 	danceWithEffect();
 
 	creatEnemyWooder();
+	// test data
+	/*auto test = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan",1.0f);
+	test->update(0.0f);
+	test->setPosition(SCREEN_SIZE / 2);
+	this->addChild(test,100);*/
+	//
 	creatEnemyToanChanStudent();
 	creatEnemyToanChanStudent2();
 	if (haveboss)
@@ -96,6 +97,7 @@ GameScene * GameScene::create(int map, int haveboss)
 
 void GameScene::createDuongQua(string path_Json, string path_Atlas, Point position)
 {
+	JSHERO->readFile(0);
 	hero = DuongQua::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 340);
 	hero->listener();
 	hero->setPosition(position);
@@ -111,41 +113,58 @@ void GameScene::createDuongQua(string path_Json, string path_Atlas, Point positi
 void GameScene::checkActiveButton()
 {
 
-	//if (hud->getBtnAttack()->getIsBlocked()) {
-	//	if (!hud->getBtnSkill_3()->getCanTouch() && !hero->getIsPriorSkill3()) { // check later
-	//		hud->getBtnAttack()->setIsBlocked(false);
-	//	}
-
-	//}
-
 	if (hud->getBtnSkill_1()->getIsBlocked()) {		// 2 and 3 active
-		if (!hud->getBtnSkill_2()->getCanTouch() && hero->getIsDoneDuration2()) {		// check later
-			hud->getBtnSkill_1()->setIsBlocked(false);
+		if (currentButton == 2) {
+			if (hero->getIsDoneDuration2()) {
+				if (!hud->getBtnSkill_1()->getNumberCoolDown()->isVisible())
+					hud->getBtnSkill_1()->getCoolDownSprite()->setVisible(false);
+				hud->getBtnSkill_1()->setIsBlocked(false);
+			}
+
 		}
-		else if (!hud->getBtnSkill_3()->getCanTouch() && hero->getIsDoneDuration3()) {
-			hud->getBtnSkill_1()->setIsBlocked(false);
+		else if (currentButton == 3) {
+			if (hero->getIsDoneDuration3()) {
+				if (!hud->getBtnSkill_1()->getNumberCoolDown()->isVisible())
+					hud->getBtnSkill_1()->getCoolDownSprite()->setVisible(false);
+				hud->getBtnSkill_1()->setIsBlocked(false);
+			}
 		}
 
 	}
 
 	if (hud->getBtnSkill_2()->getIsBlocked()) {		// 1 and 3 active
-		if (!hud->getBtnSkill_1()->getCanTouch() && hero->getIsDoneDuration1()) {
-			//log("Done duration 1");
-			hud->getBtnSkill_2()->setIsBlocked(false);
+		if (currentButton == 1) {
+			if (hero->getIsDoneDuration1()) {
+				if (!hud->getBtnSkill_2()->getNumberCoolDown()->isVisible())
+					hud->getBtnSkill_2()->getCoolDownSprite()->setVisible(false);
+				hud->getBtnSkill_2()->setIsBlocked(false);
+			}
 		}
-		else if (!hud->getBtnSkill_3()->getCanTouch() && hero->getIsDoneDuration3()) {
-			hud->getBtnSkill_2()->setIsBlocked(false);
+		else if (currentButton == 3) {
+			if (hero->getIsDoneDuration3()) {
+				if (!hud->getBtnSkill_2()->getNumberCoolDown()->isVisible())
+					hud->getBtnSkill_2()->getCoolDownSprite()->setVisible(false);
+				hud->getBtnSkill_2()->setIsBlocked(false);
+			}
 		}
 
 	}
 
 	if (hud->getBtnSkill_3()->getIsBlocked()) {		// 2 and 1 active
-		if (!hud->getBtnSkill_2()->getCanTouch() && hero->getIsDoneDuration2()) {		// check later
-			hud->getBtnSkill_3()->setIsBlocked(false);
+		if (currentButton == 2) {
+			if (hero->getIsDoneDuration2()) {
+				if (!hud->getBtnSkill_3()->getNumberCoolDown()->isVisible())
+					hud->getBtnSkill_3()->getCoolDownSprite()->setVisible(false);
+				hud->getBtnSkill_3()->setIsBlocked(false);
+			}
+
 		}
-		else if (!hud->getBtnSkill_1()->getCanTouch() && hero->getIsDoneDuration1()) {
-			//log("Done duration 1");
-			hud->getBtnSkill_3()->setIsBlocked(false);
+		else if (currentButton == 1) {
+			if (hero->getIsDoneDuration1()) {
+				if (!hud->getBtnSkill_3()->getNumberCoolDown()->isVisible())
+					hud->getBtnSkill_3()->getCoolDownSprite()->setVisible(false);
+				hud->getBtnSkill_3()->setIsBlocked(false);
+			}
 		}
 
 	}
@@ -154,14 +173,9 @@ void GameScene::checkActiveButton()
 
 void GameScene::listener()
 {
-	if (hud->getBtnAttack()->getIsActive() && !hud->getBtnAttack()->getIsBlocked()) {
+	if (hud->getBtnAttack()->getIsActive() && !hud->getBtnAttack()->getIsBlocked() &&
+		hero->getFSM()->currentState != MDie && hero->getFSM()->currentState != MInjured) {
 
-		// you cannot attack while being dead
-		if (hero->getFSM()->currentState == MDie) {
-			//log("You cannot");
-			hud->getBtnAttack()->setIsActive(false);
-			return;
-		}
 
 		if (!hero->getIsDoneDuration1()) {
 			hero->getFSM()->changeState(MSKill1);  // move to attack
@@ -172,66 +186,63 @@ void GameScene::listener()
 			hero->changeSwordCategoryBitmask(BITMASK_SWORD);
 
 			hero->getFSM()->changeState(MAttack);
-			hero->setIsPrior(true);
+			hero->setIsPriorAttack(true);
 		}
 
 		hud->getBtnAttack()->setIsActive(false);
 	}
 
-	if (hud->getBtnSkill_1()->getIsActive() && !hud->getBtnSkill_1()->getIsBlocked()) {
-		if (hero->getFSM()->currentState == MDie) {
+	if (hud->getBtnSkill_1()->getIsActive() && !hud->getBtnSkill_1()->getIsBlocked() &&
+		hero->getFSM()->currentState != MDie && hero->getFSM()->currentState != MInjured) {
 
-			hud->getBtnSkill_1()->setIsActive(false);
-			return;
-		}
+		currentButton = 1;
 
 		hero->setIsDoneDuration1(false);
 		hero->doCounterSkill1();
 
-
 		hud->getBtnSkill_2()->setIsBlocked(true);
+		hud->getBtnSkill_2()->getCoolDownSprite()->setVisible(true);
+
+
 		hud->getBtnSkill_3()->setIsBlocked(true);
+		hud->getBtnSkill_3()->getCoolDownSprite()->setVisible(true);
+
 
 		hud->getBtnSkill_1()->setIsActive(false);
 	}
 
-	if (hud->getBtnSkill_2()->getIsActive() && !hud->getBtnSkill_2()->getIsBlocked()) {
+	if (hud->getBtnSkill_2()->getIsActive() && !hud->getBtnSkill_2()->getIsBlocked() &&
+		hero->getFSM()->currentState != MDie && hero->getFSM()->currentState != MInjured) {
 
-		if (hero->getFSM()->currentState == MDie) {
-
-			hud->getBtnSkill_2()->setIsActive(false);
-			return;
-		}
-
-		/*hero->getFSM()->changeState(MSKill2);
-		hero->setIsPriorSkill2(true);*/
+		currentButton = 2;
 
 		hero->setIsDoneDuration2(false);
 		hero->doCounterSkill2();
 
 		hud->getBtnSkill_1()->setIsBlocked(true);
+		hud->getBtnSkill_1()->getCoolDownSprite()->setVisible(true);
+
 		hud->getBtnSkill_3()->setIsBlocked(true);
+		hud->getBtnSkill_3()->getCoolDownSprite()->setVisible(true);
+
 
 		hud->getBtnSkill_2()->setIsActive(false);
 	}
 
-	if (hud->getBtnSkill_3()->getIsActive() && !hud->getBtnSkill_3()->getIsBlocked()) {
+	if (hud->getBtnSkill_3()->getIsActive() && !hud->getBtnSkill_3()->getIsBlocked() &&
+		hero->getFSM()->currentState != MDie && hero->getFSM()->currentState != MInjured) {
 
-		if (hero->getFSM()->currentState == MDie) {
-
-			hud->getBtnSkill_3()->setIsActive(false);
-			return;
-		}
-
-		/*hero->getFSM()->changeState(MSKill3);
-		hero->setIsPriorSkill3(true);*/
+		currentButton = 3;
 
 		hero->setIsDoneDuration3(false);
 		hero->doCounterSkill3();
 
 		// block
 		hud->getBtnSkill_1()->setIsBlocked(true);
+		hud->getBtnSkill_1()->getCoolDownSprite()->setVisible(true);
+
 		hud->getBtnSkill_2()->setIsBlocked(true);
+		hud->getBtnSkill_2()->getCoolDownSprite()->setVisible(true);
 
 		hud->getBtnSkill_3()->setIsActive(false);
 	}
@@ -241,6 +252,7 @@ void GameScene::listener()
 
 void GameScene::update(float dt)
 {
+	//creatEnemyWooderRT();
 	updateB2World(dt);
 	listener();
 
@@ -249,37 +261,27 @@ void GameScene::update(float dt)
 	hero->updateMe(dt);
 	updateEnemy();
 	//cleanMap();
+	updateCamera();
+	if (haveboss) {
+		if (hero->getPositionX() > tmx_map->getBoundingBox().size.width - SCREEN_SIZE.width / 4 && indexOfNextMapBoss < 0) {
+			createGroundForMapBoss();
+			indexOfNextMapBoss = 1;
+		}
 
-	if (hero->getPositionX() >= SCREEN_SIZE.width / 4) {
-		follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4);
-		//follow->setPositionY(background->getPositionY());
+		if (hero->getPositionX() > tmx_mapboss[indexOfNextMapBoss]->getPositionX() + SCREEN_SIZE.width && indexOfNextMapBoss >= 0) {
+			TMXTiledMap* tmpmap;
+			indexOfNextMapBoss == 1 ? tmpmap = tmx_mapboss[0] : tmpmap = tmx_mapboss[1];
+			tmpmap->setPositionX(tmx_mapboss[indexOfNextMapBoss]->getPositionX() + tmx_mapboss[indexOfNextMapBoss]->getBoundingBox().size.width);
+			indexOfNextMapBoss == 1 ? indexOfNextMapBoss = 0 : indexOfNextMapBoss = 1;
+		}
 	}
 
 
-	if (hero->getPositionX() > tmx_map->getBoundingBox().size.width - SCREEN_SIZE.width / 4 && indexOfNextMapBoss < 0) {
-		createGroundForMapBoss();
-		indexOfNextMapBoss = 1;
-	}
-
-	if (hero->getPositionX() > tmx_mapboss[indexOfNextMapBoss]->getPositionX() + SCREEN_SIZE.width && indexOfNextMapBoss >= 0) {
-		TMXTiledMap* tmpmap;
-		indexOfNextMapBoss == 1 ? tmpmap = tmx_mapboss[0] : tmpmap = tmx_mapboss[1];
-		tmpmap->setPositionX(tmx_mapboss[indexOfNextMapBoss]->getPositionX() + tmx_mapboss[indexOfNextMapBoss]->getBoundingBox().size.width);
-		indexOfNextMapBoss == 1 ? indexOfNextMapBoss = 0 : indexOfNextMapBoss = 1;
-	}
-
-	background->updatePosition();
-	/*if (hero->getPositionY() > SCREEN_SIZE.height / 2) {
-		background->setPositionY(hero->getPositionY());
-	}
-	else
-	{
-		background->setPositionY(SCREEN_SIZE.height/2);
-	}*/
 	if (hero->getBloodScreen()->isVisible())
 		hero->getBloodScreen()->setPositionX(follow->getPositionX());
 
 	updateCharacterPoint();
+
 }
 
 void GameScene::initB2World()
@@ -359,18 +361,18 @@ void GameScene::loadBackground(int map)
 	//tmx_map->setVisible(false);
 
 	this->addChild(tmx_map, ZORDER_BG2);
+	if (haveboss) {
+		for (int i = 0; i < 2; i++) {
+			tmx_mapboss[i] = TMXTiledMap::create("Map/map1/mapboss.tmx");
+			tmx_mapboss[i]->setAnchorPoint(Point::ZERO);
+			tmx_mapboss[i]->setScale(scaleOfMap);
+		}
 
-	for (int i = 0; i < 2; i++) {
-		tmx_mapboss[i] = TMXTiledMap::create("Map/map1/mapboss.tmx");
-		tmx_mapboss[i]->setAnchorPoint(Point::ZERO);
-		tmx_mapboss[i]->setScale(scaleOfMap);
+		tmx_mapboss[0]->setPosition(tmx_map->getPosition() + Vec2(tmx_map->getBoundingBox().size.width, 0));
+		tmx_mapboss[1]->setPosition(tmx_mapboss[0]->getPosition() + Vec2(tmx_mapboss[0]->getBoundingBox().size.width, 0));
+		this->addChild(tmx_mapboss[0], ZORDER_BG2);
+		this->addChild(tmx_mapboss[1], ZORDER_BG2);
 	}
-
-	tmx_mapboss[0]->setPosition(tmx_map->getPosition() + Vec2(tmx_map->getBoundingBox().size.width, 0));
-	tmx_mapboss[1]->setPosition(tmx_mapboss[0]->getPosition() + Vec2(tmx_mapboss[0]->getBoundingBox().size.width, 0));
-	this->addChild(tmx_mapboss[0], ZORDER_BG2);
-	this->addChild(tmx_mapboss[1], ZORDER_BG2);
-
 
 	createInfiniteNode();
 }
@@ -381,24 +383,24 @@ void GameScene::createInfiniteNode()
 
 	auto bg1_1 = Sprite::create("Map/bg1.png");
 	//auto bg1_1 = Sprite::create("bg-4.png");
-	bg1_1->setScaleX(SCREEN_SIZE.width / bg1_1->getContentSize().width);
-	bg1_1->setScaleY(SCREEN_SIZE.height / bg1_1->getContentSize().height);
+	bg1_1->setScale(SCREEN_SIZE.width / bg1_1->getContentSize().width);
+	//bg1_1->setScaleY(SCREEN_SIZE.height / bg1_1->getContentSize().height);
 	bg1_1->setAnchorPoint(Point(0, 0.5f));
 
 	auto bg1_2 = Sprite::create("Map/bg1.png");
 	//auto bg1_2 = Sprite::create("bg-4.png");
-	bg1_2->setScaleX(SCREEN_SIZE.width / bg1_2->getContentSize().width);
-	bg1_2->setScaleY(SCREEN_SIZE.height / bg1_2->getContentSize().height);
+	bg1_2->setScale(SCREEN_SIZE.width / bg1_2->getContentSize().width);
+	//bg1_2->setScaleY(SCREEN_SIZE.height / bg1_2->getContentSize().height);
 	bg1_2->setAnchorPoint(Point(0, 0.5f));
 
 	auto bg2_1 = Sprite::create("Map/bg2.png");
-	bg2_1->setScaleX(SCREEN_SIZE.width / bg2_1->getContentSize().width);
-	bg2_1->setScaleY(SCREEN_SIZE.height / bg2_1->getContentSize().height);
+	bg2_1->setScale(SCREEN_SIZE.width / bg2_1->getContentSize().width);
+	//bg2_1->setScaleY(SCREEN_SIZE.height / bg2_1->getContentSize().height);
 	bg2_1->setAnchorPoint(Point(0, 0.5f));
 
 	auto bg2_2 = Sprite::create("Map/bg2.png");
-	bg2_2->setScaleX(SCREEN_SIZE.width / bg2_2->getContentSize().width);
-	bg2_2->setScaleY(SCREEN_SIZE.height / bg2_2->getContentSize().height);
+	bg2_2->setScale(SCREEN_SIZE.width / bg2_2->getContentSize().width);
+	//bg2_2->setScaleY(SCREEN_SIZE.height / bg2_2->getContentSize().height);
 	bg2_2->setAnchorPoint(Point(0, 0.5f));
 
 	auto bg3_1 = Sprite::create("Map/bg3.png");
@@ -478,10 +480,11 @@ void GameScene::creatEnemyWooder()
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
 		auto scaleOfWooder = (SCREEN_SIZE.height / 3.5) / 490; // 490 la height cua spine
-		auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json",
-			"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
+		//auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json",
+		//	"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
+		auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan", scaleOfWooder);
 		enemy->setPosition(origin);
-		enemy->setVisible(false);
+		enemy->setVisible(true);
 		this->addChild(enemy, ZORDER_ENEMY);
 		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
 		enemy->changeBodyCategoryBits(BITMASK_WOODER);
@@ -498,8 +501,9 @@ void GameScene::creatEnemyToanChanStudent()
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
 		auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401; // 401 la height cua spine
-		auto enemy = EnemyToanChanStudent::create("Animation/Enemy_DeTuToanChan1/ToanChan1.json",
-			"Animation/Enemy_DeTuToanChan1/ToanChan1.atlas", scaleOfEnemy);
+		/*auto enemy = EnemyToanChanStudent::create("Animation/Enemy_DeTuToanChan1/ToanChan1.json",
+			"Animation/Enemy_DeTuToanChan1/ToanChan1.atlas", scaleOfEnemy);*/
+		auto enemy = EnemyToanChanStudent::create("Animation/Enemy_DeTuToanChan1/ToanChan1", scaleOfEnemy);
 		enemy->setPosition(origin);
 		enemy->setVisible(false);
 		this->addChild(enemy, ZORDER_ENEMY);
@@ -518,8 +522,9 @@ void GameScene::creatEnemyToanChanStudent2()
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
 		auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401; // 401 la height cua spine
-		auto enemy = EnemyToanChanStudent2::create("Animation/Enemy_DeTuToanChan2/ToanChan2.json",
-			"Animation/Enemy_DeTuToanChan2/ToanChan2.atlas", scaleOfEnemy);
+		/*auto enemy = EnemyToanChanStudent2::create("Animation/Enemy_DeTuToanChan2/ToanChan2.json",
+			"Animation/Enemy_DeTuToanChan2/ToanChan2.atlas", scaleOfEnemy);*/
+		auto enemy = EnemyToanChanStudent2::create("Animation/Enemy_DeTuToanChan2/ToanChan2", scaleOfEnemy);
 		enemy->setPosition(origin);
 		enemy->setVisible(false);
 		this->addChild(enemy, ZORDER_ENEMY);
@@ -559,6 +564,48 @@ void GameScene::creatBoss()
 		enemy->creatHpSprite();
 		enemy->listener();
 	}
+}
+
+void GameScene::creatEnemyWooderRT()
+{
+	auto groupGround = tmx_map->getObjectGroup("wooder");
+	if (!groupGround) return;
+	for (auto child : groupGround->getObjects()) {
+		auto mObject = child.asValueMap();
+		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+		string a = mObject["id"].asString();
+		try {
+			checkGenEnemy.at(a);
+		}
+		catch(out_of_range& e){
+			//log("Key: %s", a.c_str());
+			if (origin.x > follow->getPositionX() + SCREEN_SIZE.width) continue;
+
+			//if (origin.x < follow->getPositionX()+SCREEN_SIZE.width) {
+			auto scaleOfWooder = (SCREEN_SIZE.height / 3.5) / 490; // 490 la height cua spine
+																   //auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json",
+																   //	"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
+			auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan", scaleOfWooder);
+			enemy->setPosition(origin);
+			enemy->setVisible(true);
+			this->addChild(enemy, ZORDER_ENEMY);
+			enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
+			enemy->changeBodyCategoryBits(BITMASK_WOODER);
+			enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
+			enemy->listener();
+			checkGenEnemy.insert(std::pair<string, bool>(mObject["id"].asString(), true));
+		}
+		
+		//}
+	}
+}
+
+void GameScene::creatEnemyToanChanStudentRT()
+{
+}
+
+void GameScene::creatEnemyToanChanStudent2RT()
+{
 }
 
 void GameScene::createCoint()
@@ -903,7 +950,7 @@ void GameScene::initUnderGroundPhysic(b2World * world, Point pos, Size size)
 	fixtureDef.shape = &shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_UNDER_GROUND;
-	fixtureDef.filter.maskBits = BITMASK_SWORD;
+	fixtureDef.filter.maskBits = BITMASK_SWORD | BITMASK_UNDER_GROUND;
 
 	bodyDef.type = b2_staticBody;
 
@@ -915,26 +962,26 @@ void GameScene::initUnderGroundPhysic(b2World * world, Point pos, Size size)
 
 
 
-void GameScene::readWriteJson()
-{
-	/**
-	* test json
-	*/
-
-	Document heroJsonFile;
-	string herobuffer = FileUtils::getInstance()->getStringFromFile("Hero.json");
-	heroJsonFile.Parse(herobuffer.c_str());
-	assert(heroJsonFile.IsObject());
-	heroJsonFile["hero"][0]["level"].SetInt(2);
-	//log("doi tuong thu nhat:%d", heroJsonFile["hero"][0]["level"].GetInt());
-
-	StringBuffer buffer;
-	Writer<StringBuffer> writer(buffer);
-	heroJsonFile.Accept(writer);
-	const char* output = buffer.GetString();
-
-	FileUtils::getInstance()->writeStringToFile(output, "Hero.json");
-}
+//void GameScene::readWriteJson()
+//{
+//	/**
+//	* test json
+//	*/
+//
+//	Document heroJsonFile;
+//	string herobuffer = FileUtils::getInstance()->getStringFromFile("Hero.json");
+//	heroJsonFile.Parse(herobuffer.c_str());
+//	assert(heroJsonFile.IsObject());
+//	heroJsonFile["hero"][0]["level"].SetInt(2);
+//	//log("doi tuong thu nhat:%d", heroJsonFile["hero"][0]["level"].GetInt());
+//
+//	StringBuffer buffer;
+//	Writer<StringBuffer> writer(buffer);
+//	heroJsonFile.Accept(writer);
+//	const char* output = buffer.GetString();
+//
+//	FileUtils::getInstance()->writeStringToFile(output, "Hero.json");
+//}
 
 bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 {
@@ -944,7 +991,7 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 
 		// cannot jump while attacking or being injured
 		if (hero->getFSM()->currentState == MAttack || hero->getFSM()->currentState == MInjured ||
-			hero->getFSM()->currentState == MDie)
+			hero->getFSM()->currentState == MDie || hero->getFSM()->currentState == MSKill1)
 
 			return false;
 
@@ -1015,18 +1062,11 @@ void GameScene::updateEnemy()
 			}
 			else if (tmp->getB2Body() != nullptr) {
 				if (tmp->getIsDie()) {
-					tmp->getB2Body()->SetType(b2_dynamicBody);
-
-					world->DestroyBody(tmp->getB2Body());
-					tmp->setB2Body(nullptr);
-					//tmp->removeFromParentAndCleanup(true);
-					//}
+					tmp->die();
 				}
 				else {
 					if (tmp->getPositionX() < follow->getPositionX() - SCREEN_SIZE.width) {
 						tmp->setIsDie(true);
-						/*world->DestroyBody(tmp->getB2Body());
-						tmp->removeFromParentAndCleanup(true);*/
 
 					}
 
@@ -1045,6 +1085,39 @@ void GameScene::updateEnemy()
 void GameScene::updateBoss()
 {
 
+}
+
+void GameScene::updateBloodBar(int numberOfHealth, bool isVisible)
+{
+	if (numberOfHealth >= 0) {
+		auto blood = (Sprite*)hud->getListBlood()->getObjectAtIndex(numberOfHealth);
+		blood->setVisible(isVisible);
+	}
+}
+
+void GameScene::updateCamera()
+{
+	background->updatePosition();
+	if (hero->getPositionY() > SCREEN_SIZE.height * 5 / 6) {
+		background->setPositionY(hero->getPositionY() - SCREEN_SIZE.height * 2 / 6);
+	}
+	else
+	{
+		background->setPositionY(SCREEN_SIZE.height / 2);
+	}
+
+
+	if (hero->getPositionX() >= SCREEN_SIZE.width / 4) {
+		if (!haveboss) {
+			if (hero->getPositionX() < tmx_map->getBoundingBox().size.width - SCREEN_SIZE.width / 1.8f)
+				follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4);
+
+		}
+		else {
+			follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4);
+		}
+		follow->setPositionY(background->getPositionY());
+	}
 }
 
 //void GameScene::cleanMap()

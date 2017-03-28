@@ -16,9 +16,7 @@ public:
 	EnemyToanChanStudent(spSkeletonData*data);
 	EnemyToanChanStudent(string jsonFile, string atlasFile, float scale);
 	static EnemyToanChanStudent* create(string jsonFile, string atlasFile, float scale);
-
-
-	static EnemyToanChanStudent* create(spSkeletonData*data);
+	static EnemyToanChanStudent* create(string filename, float scale);
 
 	void run();
 	virtual void attack();

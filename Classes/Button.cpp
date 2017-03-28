@@ -19,7 +19,9 @@ Button * Button::create(string file_name_main, string file_name_CoolDown, Point 
 	mNode->effectCoolDown->setPosition(mNode->getBoundingBox().size.width / 2, mNode->getBoundingBox().size.height / 2);
 	mNode->addChild(mNode->effectCoolDown);*/
 
-	mNode->number = Label::createWithTTF("0", "fonts/BAUHS93.TTF", 200);
+
+	mNode->number = Label::createWithTTF("0", "fonts/Marker Felt.ttf", 200);
+	mNode->number->getFontAtlas()->setAliasTexParameters();
 	mNode->number->setPosition(pos);
 	mNode->number->setVisible(false);
 
@@ -69,7 +71,8 @@ void Button::checkInterval(float dt)
 	this->unschedule(schedule_selector(Button::checkInterval));
 	canTouch = true;
 	isActive = false;
-	coolDown->setVisible(false);
+	if(!isBlocked)
+		coolDown->setVisible(false);
 }
 
 void Button::runTimer()

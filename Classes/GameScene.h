@@ -9,8 +9,10 @@
 #include "EnemyWooder.h"
 #include "EnemyToanChanStudent.h"
 #include "EnemyToanChanStudent2.h"
-#include "boss1\EnemyBoss1.h"
+#include "boss1/EnemyBoss1.h"
 #include "EffectManager.h"
+#include "JSonHeroManager.h"
+//#include "SkeletonManager.h"
 #include "Coin.h"
 #include "CollisionListener.h"
 #include "InfiniteParallaxNode.h"
@@ -29,13 +31,15 @@ public:
 	static GameScene* create(int map, int haveboss );
 
 private:
-
 	// props
+	std::map <std::string, bool> checkGenEnemy;
+	int haveboss;
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
 	float scaleOfMap;
 	TMXTiledMap* tmx_map;
 	TMXTiledMap *tmx_mapboss[2];
 	int indexOfNextMapBoss;// chi so cua map boss cuoi, khoi dau la -1, khi danh boss chuyen 1 va 0(0101010101)
+	int currentButton = 0;
 
 	b2World *world;
 	GLESDebugDraw *debugDraw;
@@ -82,6 +86,9 @@ private:
 	void creatEnemyToanChanStudent2();
 	void creatBoss();
 
+	void creatEnemyWooderRT();
+	void creatEnemyToanChanStudentRT();
+	void creatEnemyToanChanStudent2RT();
 
 	void createCoint();
 	void createCointBag();
@@ -106,9 +113,6 @@ private:
 	float previousPercentPosition = 0.0f;
 	void updateCharacterPoint();
 
-	// read file Json
-	void readWriteJson();
-
 	// touch listener
 	bool onTouchBegan(Touch *touch, Event *unused_event);
 	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
@@ -121,6 +125,8 @@ public:
 	void update(float dt);
 	void updateEnemy();
 	void updateBoss();
+	void updateBloodBar(int numberOfHealth, bool isVisible);
+	void updateCamera();
 	//void cleanMap();
 
 	// cache function

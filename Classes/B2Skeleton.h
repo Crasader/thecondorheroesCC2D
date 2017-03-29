@@ -14,7 +14,8 @@ class B2Skeleton : public SkeletonAnimation
 
 public:
 	//static Map<std::string, SkeletonRenderer *> skeleRendererCache;
-
+	B2Skeleton();
+	~B2Skeleton();
 	B2Skeleton(string jsonFile, string atlasFile, float scale);
 	B2Skeleton(spSkeletonData *data);
 	static B2Skeleton* create(string jsonFile, string atlasFile, float scale);

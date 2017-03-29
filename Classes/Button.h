@@ -30,4 +30,4 @@ protected:
 	void addEvents();
 };
 
-#endif // __BUTTON_LEFT_H__
+#endif // __BUTTON_H__

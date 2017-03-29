@@ -116,7 +116,6 @@ void BaseHero::updateMe(float dt)
 	if (getB2Body() != nullptr) {
 
 		currentRunDis = this->getPositionX() / (SCREEN_SIZE.width / 23);
-		log("cur: %f", currentRunDis);
 
 		this->setPositionX(this->getB2Body()->GetPosition().x * PTM_RATIO);
 		this->setPositionY(this->getB2Body()->GetPosition().y * PTM_RATIO - trueRadiusOfHero);

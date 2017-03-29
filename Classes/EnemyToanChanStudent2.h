@@ -16,8 +16,11 @@ public:
 	CC_SYNTHESIZE(float, scaleEnemy, ScaleEnemy);
 	CC_SYNTHESIZE(Slash*, slash, Slash);
 	CC_SYNTHESIZE(int, controlAttack, ControlAttack);
+
 	EnemyToanChanStudent2(string jsonFile, string atlasFile, float scale);
+	EnemyToanChanStudent2(spSkeletonData *data);
 	static EnemyToanChanStudent2* create(string jsonFile, string atlasFile, float scale);
+	static EnemyToanChanStudent2* create(string filename,float scale);
 
 	void attack();
 	void die();

@@ -1,16 +1,26 @@
 #include "EnemyWooder.h"
 
-EnemyWooder::EnemyWooder(spSkeletonData * data) :BaseEnemy(data)
+EnemyWooder::EnemyWooder() :BaseEnemy()
+{
+	
+}
+
+EnemyWooder::~EnemyWooder()
 {
 }
 
-EnemyWooder::EnemyWooder(string jsonFile, string atlasFile, float scale):BaseEnemy(jsonFile, atlasFile,scale)
+EnemyWooder::EnemyWooder(spSkeletonData * data) :BaseEnemy(data)
+{
+	//BaseEnemy:BaseEnemy(data);
+}
+
+EnemyWooder::EnemyWooder(string jsonFile, string atlasFile, float scale) : BaseEnemy(jsonFile, atlasFile, scale)
 {
 }
 
 EnemyWooder * EnemyWooder::create(string jsonFile, string atlasFile, float scale)
 {
-	EnemyWooder *enemy = new EnemyWooder(jsonFile, atlasFile,scale);
+	EnemyWooder *enemy = new EnemyWooder(jsonFile, atlasFile, scale);
 	enemy->update(0.0f);
 	enemy->setTag(TAG_ENEMY_WOODER);
 	enemy->setScaleX(1);
@@ -19,14 +29,23 @@ EnemyWooder * EnemyWooder::create(string jsonFile, string atlasFile, float scale
 
 }
 
-EnemyWooder * EnemyWooder::create(spSkeletonData * data)
+EnemyWooder * EnemyWooder::create(string filename, float scale)
 {
-	EnemyWooder *enemy = new EnemyWooder(data);
+	if (!SkeletonManager::getSkeletonData(filename)) {
+		SkeletonManager::getInstance()->cacheSkeleton(filename, scale);
+	}
+	auto data = SkeletonManager::getSkeletonData(filename);
+	auto enemy = new EnemyWooder(data);
+	//enemy->initWithData(data);
 	enemy->update(0.0f);
 	enemy->setTag(TAG_ENEMY_WOODER);
 	enemy->setScaleX(1);
+	enemy->setTimeScale(1.4f);
 	return enemy;
+
+
 }
+
 
 void EnemyWooder::run()
 {
@@ -38,19 +57,20 @@ void EnemyWooder::attack()
 
 void EnemyWooder::die()
 {
-	//auto world = this->body->GetWorld();
-	//world->DestroyBody(this->body);
+	auto world = this->body->GetWorld();
+	world->DestroyBody(this->body);
+	this->body = nullptr;
 	//body->SetType(b2_dynamicBody);
 	this->setIsDie(true);
 	this->clearTracks();
-	this->addAnimation(0,"broken",false);
+	this->setAnimation(0, "broken", false);
 	this->setToSetupPose();
 }
 
 void EnemyWooder::updateMe(float dt)
 {
 	BaseEnemy::updateMe(dt);
-	
+
 }
 
 void EnemyWooder::listener()

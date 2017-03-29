@@ -1,16 +1,16 @@
 {
-"skeleton": { "hash": "gLemtVqH6l5JODClP7tdt+BjOj4", "spine": "3.5.51", "width": 0, "height": 0, "images": "" },
+"skeleton": { "hash": "2MpturZRxiEo+xa1IGnYsnklW/s", "spine": "3.5.51", "width": 324, "height": 416, "images": "" },
 "bones": [
-	{ "name": "skill-boss" },
-	{ "name": "bone2", "parent": "skill-boss", "length": 120.01, "x": -11.25 }
+	{ "name": "root" },
+	{ "name": "bone", "parent": "root", "length": 120.01 }
 ],
 "slots": [
-	{ "name": "enemy_slash_00000", "bone": "bone2" }
+	{ "name": "enemy_slash", "bone": "bone", "attachment": "enemy_slash_00000" }
 ],
 "skins": {
 	"default": {
-		"enemy_slash_00000": {
-			"enemy_slash_00000": { "x": 126.5, "y": -1, "rotation": -90, "width": 416, "height": 324 },
+		"enemy_slash": {
+			"enemy_slash_00000": { "rotation": -90, "width": 416, "height": 324 },
 			"enemy_slash_00002": { "x": 126.5, "y": -1, "rotation": -90, "width": 416, "height": 324 },
 			"enemy_slash_00004": { "x": 126.5, "y": -1, "rotation": -90, "width": 416, "height": 324 },
 			"enemy_slash_00006": { "x": 126.5, "y": -1, "rotation": -90, "width": 416, "height": 324 },
@@ -28,7 +28,7 @@
 "animations": {
 	"skill-boss": {
 		"slots": {
-			"enemy_slash_00000": {
+			"enemy_slash": {
 				"attachment": [
 					{ "time": 0, "name": "enemy_slash_00000" },
 					{ "time": 0.0667, "name": "enemy_slash_00002" },

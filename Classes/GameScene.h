@@ -11,6 +11,7 @@
 #include "boss1/EnemyBoss1.h"
 #include "EffectManager.h"
 #include "JSonHeroManager.h"
+//#include "SkeletonManager.h"
 #include "Coin.h"
 #include "CollisionListener.h"
 #include "InfiniteParallaxNode.h"
@@ -24,12 +25,14 @@ class GameScene : public cocos2d::Layer
 {
 public:
 	
-	static cocos2d::Scene* createScene();
-	virtual bool init();
+	static cocos2d::Scene* createScene(int map, int haveboss);
+	virtual bool init(int map, int haveboss);
+	static GameScene* create(int map, int haveboss );
 
 private:
-
 	// props
+	std::map <std::string, bool> checkGenEnemy;
+	int haveboss;
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
 	float scaleOfMap;
 	TMXTiledMap* tmx_map;
@@ -77,7 +80,7 @@ private:
 	void initUnderGroundPhysic(b2World *world, Point pos, Size size);
 
 	// function for process map
-	void loadBackground();
+	void loadBackground(int map);
 	void createInfiniteNode();
 	void createGroundBody();
 	void createGroundForMapBoss();
@@ -86,6 +89,9 @@ private:
 	void creatEnemyToanChanStudent2();
 	void creatBoss();
 
+	void creatEnemyWooderRT();
+	void creatEnemyToanChanStudentRT();
+	void creatEnemyToanChanStudent2RT();
 
 	void createCoint();
 	void createCointBag();
@@ -128,6 +134,7 @@ public:
 	void updateMoney(int numberOfCoin);
 	void updateScore(int score);
 	void updateBloodBar(int numberOfHealth, bool isVisible);
+	void updateCamera();
 	//void cleanMap();
 
 	// cache function
@@ -139,7 +146,7 @@ public:
 	void shakeTheScreen();
 
     // implement the "static create()" method manually
-    CREATE_FUNC(GameScene);
+   // CREATE_FUNC(GameScene);
 };
 
 #endif // __GAME_SCENE_H__

@@ -54,7 +54,7 @@ void Button::addEvents()
 				isActive = true;
 			}
 			else {
-				log("Cool Down, B*tch");
+				//log("Cool Down, B*tch");
 			}
 		}
 

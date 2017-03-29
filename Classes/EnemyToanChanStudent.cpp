@@ -1,4 +1,5 @@
 #include "EnemyToanChanStudent.h"
+#include "SkeletonManager.h"
 
 EnemyToanChanStudent::EnemyToanChanStudent(spSkeletonData * data):BaseEnemy(data)
 {
@@ -21,15 +22,18 @@ EnemyToanChanStudent * EnemyToanChanStudent::create(string jsonFile, string atla
 }
 
 
-EnemyToanChanStudent * EnemyToanChanStudent::create(spSkeletonData * data)
+EnemyToanChanStudent * EnemyToanChanStudent::create(string filename, float scale)
 {
-	EnemyToanChanStudent *enemy = new EnemyToanChanStudent(data);
+	if (!SkeletonManager::getSkeletonData(filename)) {
+		SkeletonManager::getInstance()->cacheSkeleton(filename, scale);
+	}
+	auto data = SkeletonManager::getSkeletonData(filename);
+	auto enemy = new EnemyToanChanStudent(data);
 	enemy->update(0.0f);
 	enemy->setTag(TAG_ENEMY_TOANCHAN1);
 	enemy->setScaleX(1);
-	//enemy->setTimeScale(0.05f);
 	enemy->setAnimation(0, "idle", true);
-	//enemy->setScaleEnemy(scale);
+	//enemy->setTimeScale(1.4f);
 	return enemy;
 }
 
@@ -50,9 +54,9 @@ void EnemyToanChanStudent::attack()
 
 void EnemyToanChanStudent::die()
 {
-//	auto world = this->body->GetWorld();
-	//world->DestroyBody(this->body);
-	//body->SetType(b2_dynamicBody);
+	auto world = this->body->GetWorld();
+	world->DestroyBody(this->body);
+	this->body = nullptr;
 	this->setIsDie(true);
 	this->clearTracks();
 	this->setAnimation(0,"die",false);

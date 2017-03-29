@@ -40,27 +40,63 @@ bool MenuLayer::init()
 		skeleton->setAnimation(0,"idle",true);
 	}
 
-	auto menuplay = MenuItemImage::create("play.png", "play.png", CC_CALLBACK_1(MenuLayer::gotoPlay, this));
+	//auto menuplay = MenuItemImage::create("play.png", "play.png", CC_CALLBACK_1(MenuLayer::gotoPlay, this));
 	//createPalybutton
 	auto groupplaybutton = tmxMap->getObjectGroup("play");
 	for (auto child : groupplaybutton->getObjects()) {
 		auto mObject = child.asValueMap();
+		auto name = mObject["name"].asInt();
 		Point origin = Point(mObject["x"].asFloat() *scalex, mObject["y"].asFloat()* scaley);
-
+		auto menuplay = Sprite::create("play.png");
 		menuplay->setPosition(origin);
+		menuplay->setTag(name);
 		auto scalePlay = screenSize.width / 8 / menuplay->getContentSize().width;
 		menuplay->setScale(scalePlay);
 		menuplay->runAction(RepeatForever::create(Sequence::createWithTwoActions(ScaleTo::create(0.5f,scalePlay*1.1f), ScaleTo::create(0.5f,scalePlay))));
-		
-		auto menu = Menu::create(menuplay, nullptr);
-		menu->setPosition(Vec2::ZERO);
-		this->addChild(menu);
+		listMap.push_back(menuplay);
+		this->addChild(menuplay);
+		auto label = Label::create(StringUtils::format("%d", name),"Arial",24);
+		label->setPosition(menuplay->getContentSize() / 2);
+		menuplay->addChild(label);
 	}
 
+	auto listener = EventListenerTouchOneByOne::create();
+	listener->onTouchBegan = CC_CALLBACK_2(MenuLayer::onTouchBegan, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 	return true;
 }
 
-void MenuLayer::gotoPlay(Ref * pSender)
+bool MenuLayer::onTouchBegan(Touch * touch, Event * event)
 {
-	Director::getInstance()->replaceScene(GameScene::createScene());
+	for (auto a : listMap) {
+		if (a->getBoundingBox().containsPoint(touch->getLocation()))
+		{
+			gotoPlay(a->getTag());
+		}
+	}
+	return false;
+}
+
+void MenuLayer::gotoPlay( int map)
+{
+	int haveboss;
+	switch (map)
+	{
+	case 1: {
+		haveboss = 0;
+		break;
+	}
+	case 2: {
+		haveboss = 0;
+		break;
+	}
+	case 3: {
+		haveboss = 1;
+		break;
+	}
+	default:
+		break;
+	}
+	Director::getInstance()->replaceScene(GameScene::createScene(map, haveboss));
+	log("map%d", map);
 }

@@ -333,6 +333,8 @@ void DuongQua::run()
 		EM->getSmokeRun()->setVisible(true);
 		EM->smokeRunAni();
 	}
+
+	log("run");
 }
 
 void DuongQua::normalJump()
@@ -342,6 +344,8 @@ void DuongQua::normalJump()
 	setToSetupPose();
 
 	EM->getSmokeRun()->setVisible(false);
+
+	log("jump");
 }
 
 void DuongQua::doubleJump()
@@ -353,6 +357,8 @@ void DuongQua::doubleJump()
 	EM->getSmokeJumpX2()->setPosition(this->getPosition());
 	EM->getSmokeJumpX2()->setVisible(true);
 	EM->smokeJumpX2Ani();
+
+	log("jumpx2");
 }
 
 void DuongQua::landing()
@@ -362,6 +368,8 @@ void DuongQua::landing()
 	setToSetupPose();
 
 	EM->getSmokeRun()->setVisible(false);
+
+	log("land");
 }
 
 void DuongQua::die()
@@ -433,6 +441,8 @@ void DuongQua::injured()
 	clearTracks();
 	addAnimation(0, "injured", false);
 	setToSetupPose();
+
+	log("injured");
 }
 
 void DuongQua::die(Point posOfCammera)
@@ -442,30 +452,26 @@ void DuongQua::die(Point posOfCammera)
 
 void DuongQua::listener()
 {
-	
+
 	this->setEndListener([&](int trackIndex) {
-		if ((strcmp(getCurrent()->animation->name, "jumpx2") == 0)) {
-			getFSM()->changeState(MLand);
-		}
-
-		else if ((strcmp(getCurrent()->animation->name, "injured") == 0)) {
-
+		
+		if (strcmp(getCurrent()->animation->name, "injured") == 0) {
+			
 			this->getBloodScreen()->setVisible(false);
 
-			setIsPriorInjured(false);
 			if (getFSM()->globalState == MSKill1 || getFSM()->globalState == MAttack) {
 				getFSM()->setPreviousState(MInjured);
 				getFSM()->setGlobalState(MRun);
-			}
-
-			if (getFSM()->globalState == MDoubleJump) {
+			} 
+			
+			else if (getFSM()->globalState == MDoubleJump) {
 				getFSM()->setPreviousState(MInjured);
 				getFSM()->setGlobalState(MLand);
 			}
-
 			getFSM()->revertToGlobalState();
-
+			setIsPriorInjured(false);
 		}
+		
 
 		else if ((strcmp(getCurrent()->animation->name, "attack1") == 0) ||
 			(strcmp(getCurrent()->animation->name, "attack2") == 0) ||
@@ -479,7 +485,7 @@ void DuongQua::listener()
 				getFSM()->setGlobalState(MRun);
 			}
 
-			if (getFSM()->globalState == MDoubleJump) {
+			else if (getFSM()->globalState == MDoubleJump) {
 				getFSM()->setPreviousState(MAttack);
 				getFSM()->setGlobalState(MLand);
 			}
@@ -506,6 +512,7 @@ void DuongQua::updateMe(float dt)
 {
 	BaseHero::updateMe(dt);
 	getFSM()->Update();
+
 
 
 	auto currentVelY = getB2Body()->GetLinearVelocity().y;
@@ -561,6 +568,11 @@ void DuongQua::updateMe(float dt)
 
 	if (getFSM()->currentState == MDie) {
 		getB2Body()->SetLinearVelocity(b2Vec2(0, currentVelY));
+		return;
+	}
+
+	if (getFSM()->currentState == MLandRevive) {
+		getB2Body()->SetLinearVelocity(b2Vec2(0, 0));
 		return;
 	}
 

@@ -21,14 +21,10 @@ bool DialogGameOver::init()
 	auto win_size = Director::getInstance()->getVisibleSize();
 
 
-	background = Sprite::create("send/DialogGameOver.png");
+	background = Sprite::create("UI/DialogGameOver.png");
 	background->setScale(win_size.width / 2 / background->getContentSize().width);
 	background->setPosition(origin + win_size / 2);
 	addChild(background);
-
-
-
-
 
 	return true;
 }

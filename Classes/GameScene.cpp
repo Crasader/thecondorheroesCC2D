@@ -31,6 +31,7 @@ bool GameScene::init(int map, int haveboss)
 	{
 		return false;
 	}
+
 	this->haveboss = haveboss;
 	indexOfNextMapBoss = -1;
 	auto visibleSize = Director::getInstance()->getVisibleSize();
@@ -51,16 +52,18 @@ bool GameScene::init(int map, int haveboss)
 		Point(origin.x, visibleSize.height));
 
 	danceWithEffect();
-
-	creatEnemyWooder();
+	groupGroundWooder = tmx_map->getObjectGroup("wooder");
+	groupGroundToanchan1 = tmx_map->getObjectGroup("toanchan_student");
+	groupGroundToanchan2 = tmx_map->getObjectGroup("toanchan_student2");
+	//creatEnemyWooder();
 	// test data
 	/*auto test = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan",1.0f);
 	test->update(0.0f);
 	test->setPosition(SCREEN_SIZE / 2);
 	this->addChild(test,100);*/
 	//
-	creatEnemyToanChanStudent();
-	creatEnemyToanChanStudent2();
+	//creatEnemyToanChanStudent();
+	//creatEnemyToanChanStudent2();
 	if (haveboss)
 		creatBoss();
 	createCoint();
@@ -252,7 +255,9 @@ void GameScene::listener()
 
 void GameScene::update(float dt)
 {
-	//creatEnemyWooderRT();
+	creatEnemyWooderRT();
+	creatEnemyToanChanStudentRT();
+	creatEnemyToanChanStudent2RT();
 	updateB2World(dt);
 	listener();
 
@@ -290,7 +295,7 @@ void GameScene::initB2World()
 
 	// draw debug
 	auto debugDraw = new (std::nothrow) GLESDebugDraw(PTM_RATIO);
-	//world->SetDebugDraw(debugDraw);
+	world->SetDebugDraw(debugDraw);
 	uint32 flags = 0;
 	flags += b2Draw::e_shapeBit;
 	flags += b2Draw::e_jointBit;
@@ -358,7 +363,7 @@ void GameScene::loadBackground(int map)
 
 	tmx_map->setPosition(Point::ZERO);
 
-	//tmx_map->setVisible(false);
+	tmx_map->setVisible(false);
 
 	this->addChild(tmx_map, ZORDER_BG2);
 	if (haveboss) {
@@ -422,7 +427,7 @@ void GameScene::createInfiniteNode()
 	//background->addChild(bg3_2, 0, Vec2(1.5f, 1), Vec2(bg3_1->getBoundingBox().size.width, 0));
 	background->setPosition(Point(-SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 	background->setAnchorPoint(Point(0, 0.5f));
-	//background->setVisible(false);
+	background->setVisible(false);
 	this->addChild(background, ZORDER_BG);
 }
 
@@ -568,44 +573,118 @@ void GameScene::creatBoss()
 
 void GameScene::creatEnemyWooderRT()
 {
-	auto groupGround = tmx_map->getObjectGroup("wooder");
-	if (!groupGround) return;
-	for (auto child : groupGround->getObjects()) {
-		auto mObject = child.asValueMap();
-		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		string a = mObject["id"].asString();
-		try {
-			checkGenEnemy.at(a);
-		}
-		catch(out_of_range& e){
-			//log("Key: %s", a.c_str());
-			if (origin.x > follow->getPositionX() + SCREEN_SIZE.width) continue;
 
-			//if (origin.x < follow->getPositionX()+SCREEN_SIZE.width) {
-			auto scaleOfWooder = (SCREEN_SIZE.height / 3.5) / 490; // 490 la height cua spine
-																   //auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json",
-																   //	"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
-			auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan", scaleOfWooder);
-			enemy->setPosition(origin);
-			enemy->setVisible(true);
-			this->addChild(enemy, ZORDER_ENEMY);
-			enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
-			enemy->changeBodyCategoryBits(BITMASK_WOODER);
-			enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
-			enemy->listener();
-			checkGenEnemy.insert(std::pair<string, bool>(mObject["id"].asString(), true));
-		}
-		
+	if (!groupGroundWooder) return;
+	int ap = 0;
+	for (auto child : groupGroundWooder->getObjects()) {
+		ap++;
+		//auto mObject = child.asValueMap();
+		//mObject["x"].asFloat() *scaleOfMap;
+		//mObject["y"].asFloat()* scaleOfMap;
+		//Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+		//string a = mObject["id"].asString();
+		//try {
+		//	checkGenEnemy.at(a);
+		//}
+		//catch (out_of_range& e) {
+		//	//log("Key: %s", a.c_str());
+		//	if (origin.x < follow->getPositionX() + SCREEN_SIZE.width) {
+		//		//log("Key: %s", a.c_str());
+		//		//if (origin.x < follow->getPositionX() + SCREEN_SIZE.width) {
+		//		//	auto scaleOfWooder = (SCREEN_SIZE.height / 3.5) / 490; // 490 la height cua spine
+		//		//														   //auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json",
+		//		//														   //	"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
+		//		//	auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan", scaleOfWooder);
+		//		//	enemy->setPosition(origin);
+		//		//	enemy->setVisible(true);
+		//		//	this->addChild(enemy, ZORDER_ENEMY);
+		//		//	enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
+		//		//	enemy->changeBodyCategoryBits(BITMASK_WOODER);
+		//		//	enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
+		//		//	enemy->listener();
+		//		//	checkGenEnemy.insert(std::pair<string, bool>(a, true));
+		//		//}
+		//	}
+
 		//}
 	}
+	//log("so lan lap wooder: %d", ap);
 }
 
 void GameScene::creatEnemyToanChanStudentRT()
 {
+	if (!groupGroundToanchan1) return;
+	int ap = 0;
+	for (auto child : groupGroundToanchan1->getObjects()){
+		ap++;
+		//auto mObject = child.asValueMap();
+		//mObject["x"].asFloat() *scaleOfMap;
+		//mObject["y"].asFloat()* scaleOfMap;
+		//Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+		//string a = mObject["id"].asString();
+		//try {
+		//	checkGenEnemy.at(a);
+		//}
+		//catch (out_of_range& e) {
+		//	if (origin.x < follow->getPositionX() + SCREEN_SIZE.width) {
+		//		//auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401; // 401 la height cua spine
+		//		//													 /*auto enemy = EnemyToanChanStudent::create("Animation/Enemy_DeTuToanChan1/ToanChan1.json",
+		//		//													 "Animation/Enemy_DeTuToanChan1/ToanChan1.atlas", scaleOfEnemy);*/
+		//		//auto enemy = EnemyToanChanStudent::create("Animation/Enemy_DeTuToanChan1/ToanChan1", scaleOfEnemy);
+		//		//enemy->setPosition(origin);
+		//		//enemy->setVisible(false);
+		//		//this->addChild(enemy, ZORDER_ENEMY);
+		//		//enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 4));
+		//		//enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
+		//		//enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
+		//		////enemy->genSplash();
+		//		//enemy->listener();
+		//		//checkGenEnemy.insert(std::pair<string, bool>(a, true));
+		//	}
+		//}
+	}
+	//log("so lan lap tc1: %d", ap);
 }
 
 void GameScene::creatEnemyToanChanStudent2RT()
 {
+	//auto groupGroundToanchan2 = tmx_map->getObjectGroup("toanchan_student2"); 
+	if (!groupGroundToanchan2) return;
+	int ap = 0;
+	for (auto child : groupGroundToanchan2->getObjects()) {
+		ap++;
+		//auto mObject = child.asValueMap();
+		//mObject["x"].asFloat() *scaleOfMap;
+		//mObject["y"].asFloat()* scaleOfMap;
+		//Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+		//string a = mObject["id"].asString();
+		//try {
+		//	checkGenEnemy.at(a);
+		//}
+		//catch (out_of_range& e) {
+		//	if (origin.x < follow->getPositionX() + SCREEN_SIZE.width) {
+		//		//auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401; // 401 la height cua spine
+		//		//													 /*auto enemy = EnemyToanChanStudent2::create("Animation/Enemy_DeTuToanChan2/ToanChan2.json",
+		//		//													 "Animation/Enemy_DeTuToanChan2/ToanChan2.atlas", scaleOfEnemy);*/
+		//		//auto enemy = EnemyToanChanStudent2::create("Animation/Enemy_DeTuToanChan2/ToanChan2", scaleOfEnemy);
+		//		//enemy->setPosition(origin);
+		//		//enemy->setVisible(false);
+		//		//this->addChild(enemy, ZORDER_ENEMY);
+		//		//enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
+		//		//enemy->changeBodyCategoryBits(BITMASK_TOANCHAN2);
+		//		//enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
+		//		//enemy->genSlash();
+		//		//enemy->listener();
+		//		//auto slash = enemy->getSlash();
+		//		//slash->initCirclePhysic(world, slash->getPosition());
+		//		//slash->changeBodyCategoryBits(BITMASK_SLASH);
+		//		//slash->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
+		//		//slash->getB2Body()->GetFixtureList()->SetSensor(true);
+		//		//checkGenEnemy.insert(std::pair<string, bool>(a, true));
+		//	}
+		//}
+	}
+	//log("so lan lap tc2: %d", ap);
 }
 
 void GameScene::createCoint()

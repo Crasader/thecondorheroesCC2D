@@ -5,12 +5,12 @@
 EnemyToanChanStudent2::EnemyToanChanStudent2(string jsonFile, string atlasFile, float scale):EnemyToanChanStudent(jsonFile, atlasFile,scale)
 {
 	controlAttack = 60;
-	isDie = false;
+	//isDie = false;
 }
 
 EnemyToanChanStudent2::EnemyToanChanStudent2(spSkeletonData*data):EnemyToanChanStudent(data)
 {
-
+	controlAttack = 60;
 }
 
 

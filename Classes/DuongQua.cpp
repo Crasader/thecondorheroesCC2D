@@ -1,6 +1,7 @@
 #include "DuongQua.h"
 #include "JSonHeroManager.h"
 #include "AudioEngine.h"
+#include "GameScene.h"
 
 
 DuongQua::DuongQua(string jsonFile, string atlasFile, float scale) : BaseHero(jsonFile, atlasFile, scale)
@@ -499,7 +500,10 @@ void DuongQua::listener()
 			getFSM()->revertToGlobalState();
 			setIsPriorSkill1(false);
 		}
-
+		else if (strcmp(getCurrent()->animation->name, "die") == 0) {
+			auto gamelayer = (GameScene*)this->getParent();
+			gamelayer->dieGame();
+		}
 	});
 
 

@@ -1,4 +1,5 @@
 #include "Hud.h"
+#include "GameScene.h"
 #include "JSonHeroManager.h"
 
 list<Sprite*> g_lTemp;
@@ -36,8 +37,6 @@ void Hud::addEvents()
 	btnSkill_1->addEvents();
 	btnSkill_2->addEvents();
 	btnSkill_3->addEvents();
-
-	btnSpecial->addEvents();
 }
 
 
@@ -56,8 +55,8 @@ void Hud::addProfile()
 	bloodBoard = Sprite::create("UI/UI_info_ingame/blood_board.png");
 	bloodBoard->setAnchorPoint(Vec2::ZERO);
 	bloodBoard->setScale(SCREEN_SIZE.width / 4 / bloodBoard->getContentSize().width);
-	bloodBoard->setPosition(avatar->getPositionX() + avatar->getBoundingBox().size.width * 0.2f, 
-							avatar->getPositionY() - avatar->getBoundingBox().size.height * 0.1f);
+	bloodBoard->setPosition(avatar->getPositionX() + avatar->getBoundingBox().size.width * 0.2f,
+		avatar->getPositionY() - avatar->getBoundingBox().size.height * 0.1f);
 	addChild(bloodBoard);
 
 	// MONEY BOARD HERE
@@ -72,10 +71,11 @@ void Hud::addProfile()
 	addChild(moneyBoard);
 
 	lbMoney = Label::createWithTTF("0", "fonts/BAUHS93.TTF", 32);
+	lbMoney->setColor(Color3B(251, 140, 0));
 	lbMoney->setAnchorPoint(Vec2::ZERO);
 	lbMoney->setScale(moneyBoard->getBoundingBox().size.height * 0.8f / lbMoney->getContentSize().height);
-	lbMoney->setPosition(moneyBoard->getPositionX() + 1.4f * moneyBoard->getBoundingBox().size.width, 
-						moneyBoard->getPositionY());
+	lbMoney->setPosition(moneyBoard->getPositionX() + 1.4f * moneyBoard->getBoundingBox().size.width,
+		moneyBoard->getPositionY());
 	addChild(lbMoney);
 
 
@@ -93,8 +93,8 @@ void Hud::addProfile()
 	lbScore = Label::createWithTTF("0", "fonts/BAUHS93.TTF", 32);
 	lbScore->setAnchorPoint(Vec2::ZERO);
 	lbScore->setScale(lbMoney->getScale());
-	lbScore->setPosition(scoreBoard->getPositionX() + 1.2f * scoreBoard->getBoundingBox().size.width, 
-						scoreBoard->getPositionY());
+	lbScore->setPosition(scoreBoard->getPositionX() + 1.2f * scoreBoard->getBoundingBox().size.width,
+		scoreBoard->getPositionY());
 	addChild(lbScore);
 
 
@@ -111,8 +111,8 @@ void Hud::addProfile()
 
 	characterPoint = Sprite::create(JSHERO->getCharacterPointPath());
 	characterPoint->setScale(SCREEN_SIZE.height / 8 / characterPoint->getContentSize().width);
-	characterPoint->setPosition(distanceBar->getPositionX() - distanceBar->getBoundingBox().size.width * 0.41f, 
-								distanceBar->getPositionY());
+	characterPoint->setPosition(distanceBar->getPositionX() - distanceBar->getBoundingBox().size.width * 0.41f,
+		distanceBar->getPositionY());
 
 	addChild(characterPoint);
 
@@ -177,14 +177,26 @@ void Hud::addButton()
 	auto mObject_4 = groupBtnCalling->getObject("btn_calling");
 	Point origin_4 = Point(mObject_4["x"].asFloat() * tmxMap->getScaleX(), mObject_4["y"].asFloat()* tmxMap->getScaleY());
 
-	btnSpecial = Button::create("UI/btn_callbird.png", "UI/btn_callbird_off.png", origin_4);
-	btnSpecial->setTimeCoolDown(0);
+	btnSpecial = MenuItemImage::create("UI/btn_callbird.png", "UI/btn_callbird_off.png", CC_CALLBACK_1(Hud::doCalling, this));
+	btnSpecial->setEnabled(false);
+	btnSpecial->setPosition(origin_4);
 	btnSpecial->setScale(SCREEN_SIZE.height / 7 / btnSpecial->getContentSize().height);
-	btnSpecial->getCoolDownSprite()->setScale(btnSpecial->getScale());
-	btnSpecial->getNumberCoolDown()->setScale(btnSpecial->getBoundingBox().size.height / 2 / btnSpecial->getNumberCoolDown()->getContentSize().height);
-	addChild(btnSpecial);
-	addChild(btnSpecial->getCoolDownSprite());
-	addChild(btnSpecial->getNumberCoolDown());
+
+
+	auto groupPause = tmxMap->getObjectGroup("btn_pause");
+	auto mObject_5 = groupPause->getObject("btn_pause");
+	Point origin_5 = Point(mObject_5["x"].asFloat() * tmxMap->getScaleX(), mObject_5["y"].asFloat()* tmxMap->getScaleY());
+
+	pauseItem = MenuItemImage::create("UI/btn_pause.png", "UI/btn_pause.png", CC_CALLBACK_1(Hud::doPause, this));
+	pauseItem->setEnabled(false);
+	pauseItem->setAnchorPoint(Vec2::ZERO);
+	pauseItem->setScale(scoreBoard->getBoundingBox().size.height / pauseItem->getContentSize().height);
+	pauseItem->setPosition(origin_5.x, scoreBoard->getPositionY());
+
+
+	auto menu = Menu::create(btnSpecial, pauseItem, nullptr);
+	menu->setPosition(Vec2::ZERO);
+	addChild(menu);
 
 }
 
@@ -201,16 +213,132 @@ void Hud::createBloodBar()
 		blood->setScaleX(bloodBoard->getBoundingBox().size.width * (8.0f / 11.4f) / arraySize / blood->getContentSize().width);
 		blood->setScaleY(bloodBoard->getBoundingBox().size.height * 0.33f / blood->getContentSize().height);
 		blood->setPosition(Point(i * blood->getBoundingBox().size.width + bloodBoard->getBoundingBox().size.width / 11 + bloodBoard->getPositionX(),
-								bloodBoard->getPositionY() + bloodBoard->getBoundingBox().size.height * 0.295f));
+			bloodBoard->getPositionY() + bloodBoard->getBoundingBox().size.height * 0.295f));
 		addChild(blood, 1);
 		listBlood->addObject(blood);
 	}
 }
 
-void Hud::removeSpecial() {
-	removeChild(btnSpecial->getNumberCoolDown(), true);
-	removeChild(btnSpecial->getCoolDownSprite(), true);
-	removeChild(btnSpecial, true);
+void Hud::doCalling(Ref * pSender)
+{
+	log("do calling");
+	btnSpecial->setVisible(false);
+	btnSpecial->setEnabled(false);
+	hideButton();
+
+	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
+	gameLayer->callingBird();
+}
+
+void Hud::doPause(Ref* pSender)
+{
+	log("do pause");
+	if (btnSpecial->isVisible()) {
+		btnSpecial->setEnabled(false);
+	}
+
+	pauseIfVisible();
+
+	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
+	gameLayer->pauseGame();
+}
+
+void Hud::hideButton()
+{
+	btnAttack->pauseListener();
+	btnSkill_1->pauseListener();
+	btnSkill_2->pauseListener();
+	btnSkill_3->pauseListener();
+
+	// if not pause, in case: calling the bird
+
+	btnAttack->setVisible(false);
+	btnAttack->getCoolDownSprite()->setVisible(false);
+
+
+	btnSkill_1->setVisible(false);
+	btnSkill_1->getNumberCoolDown()->setVisible(false);
+	btnSkill_1->getCoolDownSprite()->setVisible(false);
+
+
+	btnSkill_2->setVisible(false);
+	btnSkill_2->getNumberCoolDown()->setVisible(false);
+	btnSkill_2->getCoolDownSprite()->setVisible(false);
+
+
+	btnSkill_3->setVisible(false);
+	btnSkill_3->getNumberCoolDown()->setVisible(false);
+	btnSkill_3->getCoolDownSprite()->setVisible(false);
+
+}
+
+void Hud::showButton()
+{
+	addEvents();
+	btnAttack->setVisible(true);
+	if (!btnAttack->getCanTouch()) {
+		btnAttack->getCoolDownSprite()->setVisible(true);
+	}
+
+	btnSkill_1->setVisible(true);
+	if (!btnSkill_1->getCanTouch()) {
+		btnSkill_1->getNumberCoolDown()->setVisible(true);
+		btnSkill_1->getCoolDownSprite()->setVisible(true);
+	}
+
+	btnSkill_2->setVisible(true);
+	if (!btnSkill_2->getCanTouch()) {
+		btnSkill_2->getNumberCoolDown()->setVisible(true);
+		btnSkill_2->getCoolDownSprite()->setVisible(true);
+	}
+
+	btnSkill_3->setVisible(true);
+	if (!btnSkill_3->getCanTouch()) {
+		btnSkill_3->getNumberCoolDown()->setVisible(true);
+		btnSkill_3->getCoolDownSprite()->setVisible(true);
+	}
+}
+
+void Hud::pauseIfVisible()
+{
+	if (btnSkill_1->isVisible()) {
+
+		btnAttack->pauseListener();
+		btnSkill_1->pauseListener();
+		btnSkill_2->pauseListener();
+		btnSkill_3->pauseListener();
+
+		if (!btnSkill_1->getCanTouch()) {
+			btnSkill_1->pause();
+		}
+
+		if (!btnSkill_2->getCanTouch()) {
+			btnSkill_2->pause();
+		}
+
+		if (!btnSkill_3->getCanTouch()) {
+			btnSkill_3->pause();
+		}
+	}
+}
+
+void Hud::resumeIfVisible()
+{
+	if (btnSkill_1->isVisible()) {
+		addEvents();
+
+		if (!btnSkill_1->getCanTouch()) {
+			btnSkill_1->resume();
+		}
+
+		if (!btnSkill_2->getCanTouch()) {
+			btnSkill_2->resume();
+		}
+
+		if (!btnSkill_3->getCanTouch()) {
+			btnSkill_3->resume();
+		}
+	}
 }
 
 void Hud::hintSpecial(Vec2 p_ptCenterScreen) {

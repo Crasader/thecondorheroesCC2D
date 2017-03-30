@@ -14,13 +14,20 @@ public:
 
 	void addEvents();
 
-	void removeSpecial();
+	void hideButton();
+	void showButton();
+
+	void pauseIfVisible();
+	void resumeIfVisible();
+
 	void hintSpecial(Vec2 p_ptCenterScreen);
 	void cooldownSpecial();
 	bool specialCooldown();
 
 
 protected:
+
+	CC_SYNTHESIZE(MenuItemImage*, pauseItem, PauseItem);
 	CC_SYNTHESIZE(Sprite*, avatar, AvatarSprite);
 
 	CC_SYNTHESIZE(Sprite*, bloodBoard, BloodBoard);
@@ -41,7 +48,7 @@ protected:
 	CC_SYNTHESIZE(Button*, btnSkill_2, BtnSkill_2);
 	CC_SYNTHESIZE(Button*, btnSkill_3, BtnSkill_3);
 
-	CC_SYNTHESIZE(Button*, btnSpecial, BtnSpecial);
+	CC_SYNTHESIZE(MenuItemImage*, btnSpecial, BtnSpecial);
 	CC_SYNTHESIZE(bool, btnSpecialHintDone, BtnSpecialHintDone);
 
 private:
@@ -49,6 +56,9 @@ private:
 	void addProfile();
 	void addButton();
 	void createBloodBar();
+
+	void doCalling(Ref* pSender);
+	void doPause(Ref* pSender);
 };
 
 #endif // __HUD_H__

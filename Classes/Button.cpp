@@ -35,7 +35,7 @@ Button * Button::create(string file_name_main, string file_name_CoolDown, Point 
 // add listener to sprite
 void Button::addEvents()
 {
-	auto listener = cocos2d::EventListenerTouchOneByOne::create();
+	listener = cocos2d::EventListenerTouchOneByOne::create();
 	listener->setSwallowTouches(true);								// preventing other listener from using it
 
 	listener->onTouchBegan = [&](Touch *mTouch, Event *mEvent)
@@ -62,6 +62,11 @@ void Button::addEvents()
 	};
 
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+}
+
+void Button::pauseListener()
+{
+	Director::getInstance()->getEventDispatcher()->removeEventListener(listener);
 }
 
 void Button::checkInterval(float dt)

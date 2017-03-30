@@ -233,12 +233,6 @@ void Hud::doCalling(Ref * pSender)
 void Hud::doPause(Ref* pSender)
 {
 	log("do pause");
-	if (btnSpecial->isVisible()) {
-		btnSpecial->setEnabled(false);
-	}
-
-	pauseIfVisible();
-
 	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
 	gameLayer->pauseGame();
 }

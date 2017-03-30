@@ -33,11 +33,16 @@ public:
 private:
 	// props
 	std::map <std::string, bool> checkGenEnemy;
+	int map;
 	int haveboss;
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
 	float scaleOfMap;
 	TMXTiledMap* tmx_map;
 	TMXTiledMap *tmx_mapboss[2];
+	TMXObjectGroup* groupGroundWooder;
+	TMXObjectGroup* groupGroundToanchan1;
+	TMXObjectGroup* groupGroundToanchan2;
+
 	int indexOfNextMapBoss;// chi so cua map boss cuoi, khoi dau la -1, khi danh boss chuyen 1 va 0(0101010101)
 	int currentButton = 0;
 
@@ -56,6 +61,7 @@ private:
 	BaseHero *hero;
 	ChimDieu* _aEagle;
 	InfiniteParallaxNode *background;
+	InfiniteParallaxNode *background2;
 
 	// skeleton cache
 	spSkeletonData *sr_toanchan1;
@@ -97,9 +103,9 @@ private:
 	void creatEnemyToanChanStudent2();
 	void creatBoss();
 
-	void creatEnemyWooderRT();
+	/*void creatEnemyWooderRT();
 	void creatEnemyToanChanStudentRT();
-	void creatEnemyToanChanStudent2RT();
+	void creatEnemyToanChanStudent2RT();*/
 
 	void createCoint();
 	void createCointBag();
@@ -156,7 +162,11 @@ public:
 	void callingBird();
 
 	void pauseGame();
+	void dieGame();
+	void nextGame();
+	void winGame();
 	void resumeGame();
+	void restartGame();
 
     // implement the "static create()" method manually
    // CREATE_FUNC(GameScene);

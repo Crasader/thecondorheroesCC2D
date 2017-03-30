@@ -2,6 +2,7 @@
 #include "JSonHeroManager.h"
 #include "GameScene.h"
 #include "AudioEngine.h"
+#include "GameScene.h"
 
 
 DuongQua::DuongQua(string jsonFile, string atlasFile, float scale) : BaseHero(jsonFile, atlasFile, scale)
@@ -44,7 +45,6 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 	duongQua->setIsPriorSkill1(false);
 	duongQua->setIsPriorSkill2(false);
 	duongQua->setIsPriorSkill3(false);
-	duongQua->setIsPriorRevive(false);
 
 	duongQua->setIsDoneDuration1(true);
 	duongQua->setIsDoneDuration2(true);
@@ -343,7 +343,7 @@ void DuongQua::run()
 		EM->smokeRunAni();
 	}
 
-	//log("run");
+	log("run");
 }
 
 void DuongQua::normalJump()
@@ -354,7 +354,7 @@ void DuongQua::normalJump()
 
 	EM->getSmokeRun()->setVisible(false);
 
-	//log("jump");
+	log("jump");
 }
 
 void DuongQua::doubleJump()
@@ -367,7 +367,7 @@ void DuongQua::doubleJump()
 	EM->getSmokeJumpX2()->setVisible(true);
 	EM->smokeJumpX2Ani();
 
-	//log("jumpx2");
+	log("jumpx2");
 }
 
 void DuongQua::landing()
@@ -378,7 +378,7 @@ void DuongQua::landing()
 
 	EM->getSmokeRun()->setVisible(false);
 
-	//log("land");
+	log("land");
 }
 
 void DuongQua::die()
@@ -389,6 +389,8 @@ void DuongQua::die()
 	getB2Body()->SetLinearDamping(10);
 
 	EM->getSmokeRun()->setVisible(false);
+
+	log("die");
 }
 
 void DuongQua::attackNormal()
@@ -405,7 +407,7 @@ void DuongQua::attackNormal()
 		addAnimation(0, "attack2", false);
 	}
 
-
+	log("Atttack");
 	setToSetupPose();
 
 	EM->getSlashBreak()->setVisible(false);
@@ -451,7 +453,8 @@ void DuongQua::injured()
 	addAnimation(0, "injured", false);
 	setToSetupPose();
 
-	//log("injured");
+	log("injured");
+
 }
 
 void DuongQua::revive()
@@ -464,6 +467,8 @@ void DuongQua::revive()
 	EM->getReviveMe()->setPosition(this->getPositionX() + getTrueRadiusOfHero() / 2, this->getPositionY());
 	EM->getReviveMe()->setVisible(true);
 	EM->reviveAni();
+
+	log("revive");
 }
 
 void DuongQua::die(Point posOfCammera)
@@ -480,15 +485,20 @@ void DuongQua::listener()
 
 			this->getBloodScreen()->setVisible(false);
 
-			if (getFSM()->globalState == MSKill1 || getFSM()->globalState == MAttack) {
+			if (getFSM()->globalState == MSKill1 || getFSM()->globalState) {
 				getFSM()->setPreviousState(MInjured);
 				getFSM()->setGlobalState(MRun);
 			}
 
-			else if (getFSM()->globalState == MDoubleJump) {
+			else if (getFSM()->globalState == MDoubleJump || getFSM()->globalState == MRevive) {
 				getFSM()->setPreviousState(MInjured);
 				getFSM()->setGlobalState(MLand);
 			}
+
+			else if (getFSM()->globalState == MDie) {
+				return;
+			}
+
 			getFSM()->revertToGlobalState();
 			setIsPriorInjured(false);
 		}
@@ -498,7 +508,6 @@ void DuongQua::listener()
 			getFSM()->changeState(MLand);
 			auto gameLayer = (GameScene*) this->getParent();
 			initCirclePhysic(gameLayer->world, this->getPosition());
-			setIsPriorRevive(false);
 		}
 
 
@@ -514,9 +523,13 @@ void DuongQua::listener()
 				getFSM()->setGlobalState(MRun);
 			}
 
-			else if (getFSM()->globalState == MDoubleJump) {
+			else if (getFSM()->globalState == MDoubleJump || getFSM()->globalState == MRevive) {
 				getFSM()->setPreviousState(MAttack);
 				getFSM()->setGlobalState(MLand);
+			}
+
+			else if (getFSM()->globalState == MDie) {
+				return;
 			}
 
 			getFSM()->revertToGlobalState();
@@ -529,6 +542,10 @@ void DuongQua::listener()
 			setIsPriorSkill1(false);
 		}
 
+		else if (strcmp(getCurrent()->animation->name, "die") == 0) {
+			auto gamelayer = (GameScene*)this->getParent();
+			gamelayer->dieGame();
+		}
 	});
 
 
@@ -540,6 +557,8 @@ void DuongQua::listener()
 void DuongQua::updateMe(float dt)
 {
 	BaseHero::updateMe(dt);
+
+	getFSM()->Update();
 
 	if (!listKiemPhap.empty()) {
 		if (numberOfDeadSword > 4 && numberOfDeadSword == listKiemPhap.size()) {

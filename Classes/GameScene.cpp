@@ -43,6 +43,7 @@ bool GameScene::init(int map, int haveboss)
 	}
 	indexOfNextMapBoss = -1;
 	this->haveboss = haveboss;
+	this->map = map;
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -68,7 +69,9 @@ bool GameScene::init(int map, int haveboss)
 
 
 	danceWithEffect();
-
+	groupGroundWooder = tmx_map->getObjectGroup("wooder");
+	groupGroundToanchan1 = tmx_map->getObjectGroup("toanchan_student");
+	groupGroundToanchan2 = tmx_map->getObjectGroup("toanchan_student2");
 	creatEnemyWooder();
 	// test data
 	/*auto test = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan",1.0f);
@@ -272,6 +275,7 @@ void GameScene::listener()
 
 		hud->getBtnSkill_3()->setIsActive(false);
 	}
+
 }
 
 void GameScene::heroGetOffEagle() {
@@ -287,7 +291,9 @@ void GameScene::heroGetOffEagle() {
 
 void GameScene::update(float dt)
 {
-	//creatEnemyWooderRT();
+	/*creatEnemyWooderRT();
+	creatEnemyToanChanStudentRT();
+	creatEnemyToanChanStudent2RT();*/
 	updateB2World(dt);
 	listener();
 
@@ -312,7 +318,7 @@ void GameScene::update(float dt)
 	updateCamera();
 
 	// fall down some hold
-	/*if (hero->getPositionY() < 0) {
+	if (hero->getPositionY() < 0) {
 		hero->getFSM()->changeState(MLandRevive);
 		hero->getB2Body()->SetGravityScale(0);
 		hero->setOnGround(false);
@@ -331,7 +337,7 @@ void GameScene::update(float dt)
 			}
 			g_fTimeCounter = 0.0f;
 		}
-	}*/
+	}
 
 	//if (hero->getPositionX() >= SCREEN_SIZE.width / 4) {
 	//	if (_aEagle->getIsUp() && this->getPositionZ() < 100.0f) {
@@ -382,7 +388,7 @@ void GameScene::initB2World()
 
 	// draw debug
 	auto debugDraw = new (std::nothrow) GLESDebugDraw(PTM_RATIO);
-	world->SetDebugDraw(debugDraw);
+	//world->SetDebugDraw(debugDraw);
 	uint32 flags = 0;
 	flags += b2Draw::e_shapeBit;
 	flags += b2Draw::e_jointBit;
@@ -450,7 +456,7 @@ void GameScene::loadBackground(int map)
 
 	tmx_map->setPosition(Point::ZERO);
 
-	tmx_map->setVisible(false);
+	//tmx_map->setVisible(false);
 
 	this->addChild(tmx_map, ZORDER_BG2);
 	if (haveboss) {
@@ -475,25 +481,31 @@ void GameScene::createInfiniteNode()
 
 	auto bg1_1 = Sprite::create("Map/bg1.png");
 	//auto bg1_1 = Sprite::create("bg-4.png");
-	bg1_1->setScale(SCREEN_SIZE.width / (bg1_1->getContentSize().width / 2));
+	bg1_1->setScale(SCREEN_SIZE.width / (bg1_1->getContentSize().width));
 	//bg1_1->setScaleY(SCREEN_SIZE.height / bg1_1->getContentSize().height);
 	bg1_1->setAnchorPoint(Point(0, 0.5f));
 
 	auto bg1_2 = Sprite::create("Map/bg1.png");
 	//auto bg1_2 = Sprite::create("bg-4.png");
-	bg1_2->setScale(SCREEN_SIZE.width / (bg1_2->getContentSize().width / 2));
+	bg1_2->setScale(SCREEN_SIZE.width / (bg1_2->getContentSize().width));
 	//bg1_2->setScaleY(SCREEN_SIZE.height / bg1_2->getContentSize().height);
 	bg1_2->setAnchorPoint(Point(0, 0.5f));
 
+	
+
 	auto bg2_1 = Sprite::create("Map/bg2.png");
-	bg2_1->setScale(SCREEN_SIZE.width / (bg2_1->getContentSize().width / 2));
+	bg2_1->setScale(SCREEN_SIZE.width / (bg2_1->getContentSize().width));
 	//bg2_1->setScaleY(SCREEN_SIZE.height / bg2_1->getContentSize().height);
 	bg2_1->setAnchorPoint(Point(0, 0.5f));
 
 	auto bg2_2 = Sprite::create("Map/bg2.png");
-	bg2_2->setScale(SCREEN_SIZE.width / (bg2_2->getContentSize().width / 2));
+
+	bg2_2->setScale(SCREEN_SIZE.width / (bg2_2->getContentSize().width));
+	//bg2_2->setScale(SCREEN_SIZE.width / (bg2_2->getContentSize().width / 2));
+
 	//bg2_2->setScaleY(SCREEN_SIZE.height / bg2_2->getContentSize().height);
 	bg2_2->setAnchorPoint(Point(0, 0.5f));
+
 
 	/*auto bg3_1 = Sprite::create("Map/bg3.png");
 	bg3_1->setScaleX(SCREEN_SIZE.width / bg3_1->getContentSize().width);
@@ -508,14 +520,36 @@ void GameScene::createInfiniteNode()
 
 	background->addChild(bg1_1, 0, Vec2(0.5f, 1), Vec2(0, 0));
 	background->addChild(bg1_2, 0, Vec2(0.5f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
+	
 	background->addChild(bg2_1, 0, Vec2(0.7f, 1), Vec2(0, 0));
 	background->addChild(bg2_2, 0, Vec2(0.7f, 1), Vec2(bg2_1->getBoundingBox().size.width, 0));
+	//background->addChild(bg2_3, 0, Vec2(0.7f, 1), Vec2(bg2_1->getBoundingBox().size.width*2, 0));
 	//background->addChild(bg3_1, 0, Vec2(1.5f, 1), Vec2(0, 0));
 	//background->addChild(bg3_2, 0, Vec2(1.5f, 1), Vec2(bg3_1->getBoundingBox().size.width, 0));
 	background->setPosition(Point(-SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 	background->setAnchorPoint(Point(0, 0.5f));
-	background->setVisible(false);
+	//background->setVisible(false);
 	this->addChild(background, ZORDER_BG);
+
+	background2 = InfiniteParallaxNode::create();
+
+	auto bg3_1 = Sprite::create("Map/bg3.png");
+	bg3_1->setScaleX(SCREEN_SIZE.width / (bg3_1->getContentSize().width));
+	bg3_1->setScaleY(bg3_1->getScaleX()*0.7f);
+	//bg2_1->setScaleY(SCREEN_SIZE.height / bg2_1->getContentSize().height);
+	bg3_1->setAnchorPoint(Point(0, 0));
+
+	auto bg3_2 = Sprite::create("Map/bg3.png");
+	bg3_2->setScale(SCREEN_SIZE.width / (bg3_1->getContentSize().width));
+	bg3_2->setScaleY(bg3_2->getScaleX()*0.7f);
+	//bg2_1->setScaleY(SCREEN_SIZE.height / bg2_1->getContentSize().height);
+	bg3_2->setAnchorPoint(Point(0, 0));
+
+	background2->addChild(bg3_1, 0, Vec2(0.8f, 1), Vec2(0, 0));
+	background2->addChild(bg3_2, 0, Vec2(0.8f, 1), Vec2(bg3_1->getBoundingBox().size.width, 0));
+	background2->setPosition(Point(0,0));
+	background2->setAnchorPoint(Point(0, 0.0f));
+	this->addChild(background2, ZORDER_BG);
 }
 
 void GameScene::createGroundBody()
@@ -658,47 +692,121 @@ void GameScene::creatBoss()
 	}
 }
 
-void GameScene::creatEnemyWooderRT()
-{
-	auto groupGround = tmx_map->getObjectGroup("wooder");
-	if (!groupGround) return;
-	for (auto child : groupGround->getObjects()) {
-		auto mObject = child.asValueMap();
-		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		string a = mObject["id"].asString();
-		try {
-			checkGenEnemy.at(a);
-		}
-		catch (out_of_range& e) {
-			//log("Key: %s", a.c_str());
-			if (origin.x > follow->getPositionX() + SCREEN_SIZE.width) continue;
-
-			//if (origin.x < follow->getPositionX()+SCREEN_SIZE.width) {
-			auto scaleOfWooder = (SCREEN_SIZE.height / 3.5) / 490; // 490 la height cua spine
-																   //auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json",
-																   //	"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
-			auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan", scaleOfWooder);
-			enemy->setPosition(origin);
-			enemy->setVisible(true);
-			this->addChild(enemy, ZORDER_ENEMY);
-			enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
-			enemy->changeBodyCategoryBits(BITMASK_WOODER);
-			enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
-			enemy->listener();
-			checkGenEnemy.insert(std::pair<string, bool>(mObject["id"].asString(), true));
-		}
-
-		//}
-	}
-}
-
-void GameScene::creatEnemyToanChanStudentRT()
-{
-}
-
-void GameScene::creatEnemyToanChanStudent2RT()
-{
-}
+//void GameScene::creatEnemyWooderRT()
+//{
+//
+//	if (!groupGroundWooder) return;
+//	int ap = 0;
+//	for (auto child : groupGroundWooder->getObjects()) {
+//		ap++;
+//		//auto mObject = child.asValueMap();
+//		//mObject["x"].asFloat() *scaleOfMap;
+//		//mObject["y"].asFloat()* scaleOfMap;
+//		//Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+//		//string a = mObject["id"].asString();
+//		//try {
+//		//	checkGenEnemy.at(a);
+//		//}
+//		//catch (out_of_range& e) {
+//		//	//log("Key: %s", a.c_str());
+//		//	if (origin.x < follow->getPositionX() + SCREEN_SIZE.width) {
+//		//		//log("Key: %s", a.c_str());
+//		//		//if (origin.x < follow->getPositionX() + SCREEN_SIZE.width) {
+//		//		//	auto scaleOfWooder = (SCREEN_SIZE.height / 3.5) / 490; // 490 la height cua spine
+//		//		//														   //auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json",
+//		//		//														   //	"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
+//		//		//	auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan", scaleOfWooder);
+//		//		//	enemy->setPosition(origin);
+//		//		//	enemy->setVisible(true);
+//		//		//	this->addChild(enemy, ZORDER_ENEMY);
+//		//		//	enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
+//		//		//	enemy->changeBodyCategoryBits(BITMASK_WOODER);
+//		//		//	enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
+//		//		//	enemy->listener();
+//		//		//	checkGenEnemy.insert(std::pair<string, bool>(a, true));
+//		//		//}
+//		//	}
+//
+//		//}
+//	}
+//	//log("so lan lap wooder: %d", ap);
+//}
+//
+//void GameScene::creatEnemyToanChanStudentRT()
+//{
+//	if (!groupGroundToanchan1) return;
+//	int ap = 0;
+//	for (auto child : groupGroundToanchan1->getObjects()){
+//		ap++;
+//		//auto mObject = child.asValueMap();
+//		//mObject["x"].asFloat() *scaleOfMap;
+//		//mObject["y"].asFloat()* scaleOfMap;
+//		//Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+//		//string a = mObject["id"].asString();
+//		//try {
+//		//	checkGenEnemy.at(a);
+//		//}
+//		//catch (out_of_range& e) {
+//		//	if (origin.x < follow->getPositionX() + SCREEN_SIZE.width) {
+//		//		//auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401; // 401 la height cua spine
+//		//		//													 /*auto enemy = EnemyToanChanStudent::create("Animation/Enemy_DeTuToanChan1/ToanChan1.json",
+//		//		//													 "Animation/Enemy_DeTuToanChan1/ToanChan1.atlas", scaleOfEnemy);*/
+//		//		//auto enemy = EnemyToanChanStudent::create("Animation/Enemy_DeTuToanChan1/ToanChan1", scaleOfEnemy);
+//		//		//enemy->setPosition(origin);
+//		//		//enemy->setVisible(false);
+//		//		//this->addChild(enemy, ZORDER_ENEMY);
+//		//		//enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 4));
+//		//		//enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
+//		//		//enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
+//		//		////enemy->genSplash();
+//		//		//enemy->listener();
+//		//		//checkGenEnemy.insert(std::pair<string, bool>(a, true));
+//		//	}
+//		//}
+//	}
+//	//log("so lan lap tc1: %d", ap);
+//}
+//
+//void GameScene::creatEnemyToanChanStudent2RT()
+//{
+//	//auto groupGroundToanchan2 = tmx_map->getObjectGroup("toanchan_student2"); 
+//	if (!groupGroundToanchan2) return;
+//	int ap = 0;
+//	for (auto child : groupGroundToanchan2->getObjects()) {
+//		ap++;
+//		//auto mObject = child.asValueMap();
+//		//mObject["x"].asFloat() *scaleOfMap;
+//		//mObject["y"].asFloat()* scaleOfMap;
+//		//Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+//		//string a = mObject["id"].asString();
+//		//try {
+//		//	checkGenEnemy.at(a);
+//		//}
+//		//catch (out_of_range& e) {
+//		//	if (origin.x < follow->getPositionX() + SCREEN_SIZE.width) {
+//		//		//auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401; // 401 la height cua spine
+//		//		//													 /*auto enemy = EnemyToanChanStudent2::create("Animation/Enemy_DeTuToanChan2/ToanChan2.json",
+//		//		//													 "Animation/Enemy_DeTuToanChan2/ToanChan2.atlas", scaleOfEnemy);*/
+//		//		//auto enemy = EnemyToanChanStudent2::create("Animation/Enemy_DeTuToanChan2/ToanChan2", scaleOfEnemy);
+//		//		//enemy->setPosition(origin);
+//		//		//enemy->setVisible(false);
+//		//		//this->addChild(enemy, ZORDER_ENEMY);
+//		//		//enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
+//		//		//enemy->changeBodyCategoryBits(BITMASK_TOANCHAN2);
+//		//		//enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
+//		//		//enemy->genSlash();
+//		//		//enemy->listener();
+//		//		//auto slash = enemy->getSlash();
+//		//		//slash->initCirclePhysic(world, slash->getPosition());
+//		//		//slash->changeBodyCategoryBits(BITMASK_SLASH);
+//		//		//slash->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
+//		//		//slash->getB2Body()->GetFixtureList()->SetSensor(true);
+//		//		//checkGenEnemy.insert(std::pair<string, bool>(a, true));
+//		//	}
+//		//}
+//	}
+//	//log("so lan lap tc2: %d", ap);
+//}
 
 void GameScene::createCoint()
 {
@@ -1190,14 +1298,16 @@ void GameScene::updateBloodBar(int numberOfHealth, bool isVisible)
 
 void GameScene::updateCamera()
 {
-	background->updatePosition();
-	if (_aEagle->getIsUp() && this->getPositionZ() < 100.0f) {
-		this->setPositionZ(this->getPositionZ() + 5.0f);
+	
+	if (_aEagle->getIsUp() && _aEagle->getPositionZ() < 100.0f) {
+		_aEagle->setPositionZ(_aEagle->getPositionZ() + 5.0f);
 		_aEagle->setSequenceCloud(_aEagle->getSequenceCloud() - 0.04f);
+		//background->setPositionZ(background->getPositionZ() + 5);
 	}
-	if (_aEagle->getIsDown() && this->getPositionZ() > 0.0f) {
-		this->setPositionZ(this->getPositionZ() - 5.0f);
+	if (_aEagle->getIsDown() && _aEagle->getPositionZ() > 0.0f) {
+		_aEagle->setPositionZ(_aEagle->getPositionZ() - 5.0f);
 		_aEagle->setSequenceCloud(_aEagle->getSequenceCloud() + 0.04f);
+		//background->setPositionZ(background->getPositionZ() - 5);
 	}
 	if (!_aEagle->getIsUp()) {
 		if (hero->getPositionY() > SCREEN_SIZE.height * 3 / 4) {
@@ -1211,9 +1321,11 @@ void GameScene::updateCamera()
 
 		if (hero->getPositionX() >= SCREEN_SIZE.width / 4) {
 			if (!haveboss) {
-				if (hero->getPositionX() < tmx_map->getBoundingBox().size.width - SCREEN_SIZE.width / 1.8f)
+				if (hero->getPositionX() < tmx_map->getBoundingBox().size.width - SCREEN_SIZE.width)
 					follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4);
-
+				if (hero->getPositionX() > follow->getPositionX() + SCREEN_SIZE.width / 4) {
+					this->winGame();
+				}
 			}
 			else {
 				follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4);
@@ -1234,8 +1346,12 @@ void GameScene::updateCamera()
 		if (hero->getPositionX() >= SCREEN_SIZE.width / 4) {
 			// ngungcamemra
 			if (!haveboss) {
-				if (hero->getPositionX() < tmx_map->getBoundingBox().size.width - SCREEN_SIZE.width / 1.8f)
+				if (hero->getPositionX() < (tmx_map->getBoundingBox().size.width - SCREEN_SIZE.width))
 					follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4);
+	
+				if (hero->getPositionX() > follow->getPositionX()+SCREEN_SIZE.width/4) {
+					this->winGame();
+				}
 
 			}
 			else {
@@ -1244,6 +1360,8 @@ void GameScene::updateCamera()
 			follow->setPositionY(background->getPositionY());
 		}
 	}
+	background->updatePosition();
+	background2->updatePosition();
 }
 
 //void GameScene::cleanMap()
@@ -1288,15 +1406,25 @@ void GameScene::shakeTheScreen()
 
 void GameScene::reviveHero()
 {
-	hud->refreshControl();
-	auto reviveUp = MoveBy::create(1.5f, Vec2(0, hero->getTrueRadiusOfHero() * 2));
+	resumeGame();
+
+	hero->setIsPriorInjured(false);
+	hero->getBloodScreen()->setVisible(false);
+	hero->setHealth(JSHERO->getBaseHP());
+	for (int i = 0; i < hero->getHealth(); i++) {
+		auto health = (Sprite*) hud->getListBlood()->getObjectAtIndex(i);
+		health->setVisible(true);
+	}
+
+	//hud->refreshControl();
+
+	auto reviveUp = MoveBy::create(1.5f, Vec2(0, hero->getTrueRadiusOfHero() * 2.7f));
 	world->DestroyBody(hero->getB2Body());
 	hero->setB2Body(nullptr);
 	world->DestroyBody(hero->getSwordBody());
 	hero->setSwordBody(nullptr);
 	hero->runAction(reviveUp);
 	hero->getFSM()->changeState(MRevive);
-	hero->setIsPriorRevive(true);
 }
 
 void GameScene::callingBird()
@@ -1325,10 +1453,62 @@ void GameScene::pauseGame()
 		EM->getSmokeRun()->pause();
 	}
 
+	if (hud->getBtnSpecial()->isVisible()) {
+		hud->getBtnSpecial()->setEnabled(false);
+	}
+
+	hud->pauseIfVisible();
+
+	hero->pause();
+	dialogPause = DialogPauseGame::create(-1);
+	this->getParent()->addChild(dialogPause);
+
+	hud->getPauseItem()->setEnabled(false);
+
+	this->pause();
+}
+
+void GameScene::dieGame()
+{
+	if (hud->getBtnSpecial()->isVisible()) {
+		hud->getBtnSpecial()->setEnabled(false);
+	}
+
+	hud->pauseIfVisible();
+
+	if (EM->getSmokeRun()->isVisible()) {
+		EM->getSmokeRun()->pause();
+	}
+
+	hero->pause();
+	dialogPause = DialogPauseGame::create(0);
+	this->getParent()->addChild(dialogPause);
+
+	hud->getPauseItem()->setEnabled(false);
+
+	this->pause();
+}
+
+void GameScene::nextGame()
+{
+	Director::getInstance()->replaceScene(GameScene::createScene(map+1, haveboss));
+}
+
+void GameScene::winGame()
+{
+	if (hud->getBtnSpecial()->isVisible()) {
+		hud->getBtnSpecial()->setEnabled(false);
+	}
+
+	hud->pauseIfVisible();
+	if (EM->getSmokeRun()->isVisible()) {
+		EM->getSmokeRun()->pause();
+	}
+
 	hero->pause();
 
 
-	dialogPause = DialogPauseGame::create();
+	dialogPause = DialogPauseGame::create(1);
 	this->getParent()->addChild(dialogPause);
 
 	hud->getPauseItem()->setEnabled(false);
@@ -1354,4 +1534,9 @@ void GameScene::resumeGame()
 	
 
 	this->resume();
+}
+
+void GameScene::restartGame()
+{
+	Director::getInstance()->replaceScene(GameScene::createScene(map, haveboss));
 }

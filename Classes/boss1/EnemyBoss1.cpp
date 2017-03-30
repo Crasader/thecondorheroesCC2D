@@ -168,6 +168,9 @@ void EnemyBoss1::updateMe(Point posHero)
 		b2Vec2(realMoveVelocity.x / PTM_RATIO, realMoveVelocity.y / PTM_RATIO));
 	//////////////
 	control++;
+	if (control == maxControl) {
+		control = 1;
+	}
 	
 	
 

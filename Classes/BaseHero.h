@@ -40,7 +40,6 @@ protected:
 	CC_SYNTHESIZE(bool, isPriorSkill1, IsPriorSkill1);
 	CC_SYNTHESIZE(bool, isPriorSkill2, IsPriorSkill2);
 	CC_SYNTHESIZE(bool, isPriorSkill3, IsPriorSkill3);
-	CC_SYNTHESIZE(bool, isPriorRevive, IsPriorRevive);
 
 	CC_SYNTHESIZE(float, durationSkill1, DurationSkill1);
 	CC_SYNTHESIZE(float, durationSkill2, DurationSkill2);

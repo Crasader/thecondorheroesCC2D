@@ -86,12 +86,14 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		enemy->attack();
 		if (!enemy->getIsDie()) {
-			if (!hero->getIsPriorInjured() && hero->getFSM()->previousState != MInjured) {
+			if (!hero->getIsPriorInjured() 
+				&& hero->getFSM()->previousState != MInjured
+				&& hero->getFSM()->previousState != MDie) {
 				hero->setIsPriorInjured(true);
 				hero->getFSM()->changeState(MInjured);
 				hero->getBloodScreen()->setVisible(true);
 				hero->setHealth(hero->getHealth() - 1);
-				log("----");
+				//log("----");
 				auto parentGameScene = (GameScene*)hero->getParent();
 				parentGameScene->updateBloodBar(hero->getHealth(), false);
 			}
@@ -249,7 +251,9 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		B2Skeleton* sA = (BaseHero*)bodyA->GetUserData();
 		B2Skeleton* sB = (BaseHero*)bodyB->GetUserData();
 		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
-		if (!hero->getIsPriorInjured() && hero->getFSM()->previousState != MInjured) {
+		if (!hero->getIsPriorInjured() 
+			&& hero->getFSM()->previousState != MInjured
+			&& hero->getFSM()->previousState != MDie) {
 			hero->setIsPriorInjured(true);
 			hero->getFSM()->changeState(MInjured);
 			hero->getBloodScreen()->setVisible(true);

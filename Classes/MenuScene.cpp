@@ -98,5 +98,5 @@ void MenuLayer::gotoPlay( int map)
 		break;
 	}
 	Director::getInstance()->replaceScene(GameScene::createScene(map, haveboss));
-	log("map%d", map);
+	//log("map%d", map);
 }

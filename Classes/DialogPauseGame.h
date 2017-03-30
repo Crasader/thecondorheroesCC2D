@@ -11,19 +11,18 @@ using namespace std;
 class DialogPauseGame : public Layer
 {
 public:
-	virtual bool init();
-	static DialogPauseGame* create();
-	
-private:
-	Sprite* background;
-
-protected:
-	CC_SYNTHESIZE(MenuItemImage*, backBtn, BackBtn);
-	CC_SYNTHESIZE(MenuItemImage*, exitBtn, ExitBtn);
+	virtual bool init(int type);
+	static DialogPauseGame* create(int type); // -1 is pause, 0 is die, 1 is win
 
 private:
+	void initForPause();
+	void initForDie();
+	void initForWin();
+
 	void backToPlay(Ref* pSender);
 	void exitToStage(Ref* pSender);
+	void replay(Ref* pSender);
+	void nextState(Ref* pSender);
 
 };
 

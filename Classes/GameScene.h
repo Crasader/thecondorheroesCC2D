@@ -41,11 +41,13 @@ private:
 	int indexOfNextMapBoss;// chi so cua map boss cuoi, khoi dau la -1, khi danh boss chuyen 1 va 0(0101010101)
 	int currentButton = 0;
 
+public:
 	b2World *world;
 	GLESDebugDraw *debugDraw;
 	Mat4 _modelViewMV;
 	CustomCommand _customCommand;
 
+private:
 	Follow *camera;
 	Node* follow;
 	CCRect left_corner;
@@ -150,6 +152,7 @@ public:
 
 	// shaking
 	void shakeTheScreen();
+	void reviveHero();
 	void callingBird();
 
 	void pauseGame();

@@ -1,5 +1,6 @@
 #include "DuongQua.h"
 #include "JSonHeroManager.h"
+#include "GameScene.h"
 #include "AudioEngine.h"
 
 
@@ -31,6 +32,7 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 	duongQua->setDurationSkill3(JSHERO->getDurationSkill3());
 
 	duongQua->facingRight = true;
+	duongQua->setBoxHeight(duongQua->getBoundingBox().size.height / 6.7f);
 	duongQua->numberOfJump = 2;
 	duongQua->coinExplored = 0;
 	duongQua->score = 0;
@@ -42,6 +44,7 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 	duongQua->setIsPriorSkill1(false);
 	duongQua->setIsPriorSkill2(false);
 	duongQua->setIsPriorSkill3(false);
+	duongQua->setIsPriorRevive(false);
 
 	duongQua->setIsDoneDuration1(true);
 	duongQua->setIsDoneDuration2(true);
@@ -57,10 +60,10 @@ void DuongQua::createToanChanKiemPhap(Point posSword)
 {
 	auto tckp = ToanChanKiemPhap::create("Animation/DuongQua/skill1.png");
 	tckp->setScale(this->getTrueRadiusOfHero() * 3 / tckp->getContentSize().width);
-	auto world = this->getB2Body()->GetWorld();
+	auto gameLayer = (GameScene*) this->getParent();
 
 	tckp->setPosition(posSword.x + this->getTrueRadiusOfHero() / 2, posSword.y);
-	tckp->initCirclePhysic(world, tckp->getPosition());
+	tckp->initCirclePhysic(gameLayer->world, tckp->getPosition());
 	tckp->changeBodyCategoryBits(BITMASK_SWORD);
 	tckp->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS);
 
@@ -84,7 +87,9 @@ void DuongQua::slashToanChanKiemPhap()
 			for (auto tckp : listToanChanKiemPhap) {
 				if (!tckp->getB2Body()) continue;
 				if (tckp->getPositionX() - (this->getPositionX() + SCREEN_SIZE.width * 0.255f) > SCREEN_SIZE.width / 2) {
-					this->getB2Body()->GetWorld()->DestroyBody(tckp->getB2Body());
+					auto gameLayer = (GameScene*) this->getParent();
+
+					gameLayer->world->DestroyBody(tckp->getB2Body());
 					tckp->setB2Body(nullptr);
 
 					tckp->removeFromParentAndCleanup(true);
@@ -115,10 +120,10 @@ void DuongQua::createKiemPhap(float posX)
 {
 	auto kp = KiemPhap::create("Animation/DuongQua/Sword.png");
 	kp->setScale(this->getTrueRadiusOfHero() * 1.5f / kp->getContentSize().width);
-	auto world = this->getB2Body()->GetWorld();
+	auto gameLayer = (GameScene*) this->getParent();
 
 	kp->setPosition(posX, SCREEN_SIZE.height + kp->getBoundingBox().size.height);
-	kp->initBoxPhysic(world, kp->getPosition());
+	kp->initBoxPhysic(gameLayer->world, kp->getPosition());
 
 	this->getParent()->addChild(kp, ZORDER_ENEMY);
 	this->getParent()->addChild(kp->getEffectLand(), ZORDER_ENEMY);
@@ -184,10 +189,10 @@ void DuongQua::createTieuHonChuong(Point posHand, int Zoder)
 {
 	auto thc = TieuHonChuong::create("Animation/DuongQua/tieuhonchuong.png");
 	thc->setScale(this->getTrueRadiusOfHero() * 1.5f / thc->getContentSize().width);
-	auto world = this->getB2Body()->GetWorld();
+	auto gameLayer = (GameScene*) this->getParent();
 
 	thc->setPosition(posHand.x + this->getTrueRadiusOfHero() / 2, posHand.y);
-	thc->initCirclePhysic(world, thc->getPosition());
+	thc->initCirclePhysic(gameLayer->world, thc->getPosition());
 	thc->changeBodyCategoryBits(BITMASK_SWORD);
 	thc->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS);
 
@@ -274,11 +279,12 @@ void DuongQua::runSlashLand()
 void DuongQua::initCirclePhysic(b2World * world, Point pos)
 {
 	b2CircleShape circle_shape;
-	circle_shape.m_radius = this->getBoundingBox().size.height / 6.7f / PTM_RATIO;
+	circle_shape.m_radius = getBoxHeight() / PTM_RATIO;
 
 	// True radius of hero is here
 	setTrueRadiusOfHero(circle_shape.m_radius * PTM_RATIO);
 	//
+	log("%f - %f", getTrueRadiusOfHero(), this->getBoundingBox().size.height);
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 0.0f;
@@ -303,7 +309,10 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 
 	// connect sword with body
 	initSwordPhysic(world, Point(pos.x + trueRadiusOfHero * 2.2f, pos.y), trueRadiusOfHero);
+}
 
+void DuongQua::addStuff()
+{
 	// spirit hole
 	createSpiritHole();
 
@@ -334,7 +343,7 @@ void DuongQua::run()
 		EM->smokeRunAni();
 	}
 
-	log("run");
+	//log("run");
 }
 
 void DuongQua::normalJump()
@@ -345,7 +354,7 @@ void DuongQua::normalJump()
 
 	EM->getSmokeRun()->setVisible(false);
 
-	log("jump");
+	//log("jump");
 }
 
 void DuongQua::doubleJump()
@@ -358,7 +367,7 @@ void DuongQua::doubleJump()
 	EM->getSmokeJumpX2()->setVisible(true);
 	EM->smokeJumpX2Ani();
 
-	log("jumpx2");
+	//log("jumpx2");
 }
 
 void DuongQua::landing()
@@ -369,7 +378,7 @@ void DuongQua::landing()
 
 	EM->getSmokeRun()->setVisible(false);
 
-	log("land");
+	//log("land");
 }
 
 void DuongQua::die()
@@ -442,7 +451,19 @@ void DuongQua::injured()
 	addAnimation(0, "injured", false);
 	setToSetupPose();
 
-	log("injured");
+	//log("injured");
+}
+
+void DuongQua::revive()
+{
+	clearTracks();
+	addAnimation(0, "revive", false);
+	setToSetupPose();
+
+	EM->getSmokeRun()->setVisible(false);
+	EM->getReviveMe()->setPosition(this->getPositionX() + getTrueRadiusOfHero() / 2, this->getPositionY());
+	EM->getReviveMe()->setVisible(true);
+	EM->reviveAni();
 }
 
 void DuongQua::die(Point posOfCammera)
@@ -454,16 +475,16 @@ void DuongQua::listener()
 {
 
 	this->setEndListener([&](int trackIndex) {
-		
+
 		if (strcmp(getCurrent()->animation->name, "injured") == 0) {
-			
+
 			this->getBloodScreen()->setVisible(false);
 
 			if (getFSM()->globalState == MSKill1 || getFSM()->globalState == MAttack) {
 				getFSM()->setPreviousState(MInjured);
 				getFSM()->setGlobalState(MRun);
-			} 
-			
+			}
+
 			else if (getFSM()->globalState == MDoubleJump) {
 				getFSM()->setPreviousState(MInjured);
 				getFSM()->setGlobalState(MLand);
@@ -471,7 +492,15 @@ void DuongQua::listener()
 			getFSM()->revertToGlobalState();
 			setIsPriorInjured(false);
 		}
-		
+
+		else if (strcmp(getCurrent()->animation->name, "revive") == 0) {
+			EM->getReviveMe()->setVisible(false);
+			getFSM()->changeState(MLand);
+			auto gameLayer = (GameScene*) this->getParent();
+			initCirclePhysic(gameLayer->world, this->getPosition());
+			setIsPriorRevive(false);
+		}
+
 
 		else if ((strcmp(getCurrent()->animation->name, "attack1") == 0) ||
 			(strcmp(getCurrent()->animation->name, "attack2") == 0) ||
@@ -511,11 +540,6 @@ void DuongQua::listener()
 void DuongQua::updateMe(float dt)
 {
 	BaseHero::updateMe(dt);
-	getFSM()->Update();
-
-
-
-	auto currentVelY = getB2Body()->GetLinearVelocity().y;
 
 	if (!listKiemPhap.empty()) {
 		if (numberOfDeadSword > 4 && numberOfDeadSword == listKiemPhap.size()) {
@@ -528,8 +552,9 @@ void DuongQua::updateMe(float dt)
 			if (this->getPositionX() - kp->getPositionX() > SCREEN_SIZE.width * 0.25f ||
 				kp->getPositionY() + kp->getBoundingBox().size.height / 2 < 0) {
 
+				auto gameLayer = (GameScene*) this->getParent();
 
-				this->getB2Body()->GetWorld()->DestroyBody(kp->getB2Body());
+				gameLayer->world->DestroyBody(kp->getB2Body());
 				kp->setB2Body(nullptr);
 
 				kp->removeFromParentAndCleanup(true);
@@ -555,7 +580,9 @@ void DuongQua::updateMe(float dt)
 			if (!thc->getB2Body()) continue;
 			if (thc->getIsCollide() ||
 				thc->getPositionX() - (this->getPositionX() + SCREEN_SIZE.width * 0.25f) > SCREEN_SIZE.width / 2) {
-				this->getB2Body()->GetWorld()->DestroyBody(thc->getB2Body());
+				auto gameLayer = (GameScene*) this->getParent();
+
+				gameLayer->world->DestroyBody(thc->getB2Body());
 				thc->setB2Body(nullptr);
 
 				thc->removeFromParentAndCleanup(true);
@@ -565,6 +592,17 @@ void DuongQua::updateMe(float dt)
 				thc->updateMe(dt);
 		}
 	}
+
+	if (EM->getSmokeRun()->isVisible())
+		EM->getSmokeRun()->setPosition(this->getPosition());
+
+	//if (EM->getReviveMe()->isVisible())
+	//	EM->getReviveMe()->setPosition(this->getPosition());
+
+	if (getB2Body() == nullptr)
+		return;
+
+	auto currentVelY = getB2Body()->GetLinearVelocity().y;
 
 	if (getFSM()->currentState == MDie) {
 		getB2Body()->SetLinearVelocity(b2Vec2(0, currentVelY));
@@ -581,9 +619,6 @@ void DuongQua::updateMe(float dt)
 			SCREEN_SIZE.height / PTM_RATIO), getB2Body()->GetAngle());
 		return;
 	}
-
-	if (EM->getSmokeRun()->isVisible())
-		EM->getSmokeRun()->setPosition(this->getPosition());
 
 	getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
 

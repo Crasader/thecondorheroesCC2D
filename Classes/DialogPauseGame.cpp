@@ -70,6 +70,9 @@ void DialogPauseGame::backToPlay(Ref * pSender)
 
 void DialogPauseGame::exitToStage(Ref * pSender)
 {
-	Director::getInstance()->replaceScene(MenuLayer::createScene());
+	log("revive");
+	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
+	gameLayer->resumeGame();
+	gameLayer->reviveHero();
 }
 

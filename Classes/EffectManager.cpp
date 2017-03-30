@@ -13,6 +13,7 @@ EffectManager::~EffectManager()
 	smokeJumpX2 = nullptr;
 	smokeLanding = nullptr;
 	smokeRun = nullptr;
+	reviveMe = nullptr;
 }
 
 EffectManager * EffectManager::getInstance()
@@ -28,11 +29,13 @@ void EffectManager::createWithFile(float scale)
 	smokeJumpX2 = new SkeletonAnimation("Effect/smoke-jumpx2.json", "Effect/smoke-jumpx2.atlas", scale / 2);
 	smokeLanding = new SkeletonAnimation("Effect/smoke-landing.json", "Effect/smoke-landing.atlas", scale / 2);
 	smokeRun = new SkeletonAnimation("Effect/smoke-run.json", "Effect/smoke-run.atlas", scale);
+	reviveMe = new SkeletonAnimation("Effect/revive.json", "Effect/revive.atlas", scale / 2);
 
 	slashBreak->setVisible(false);		slashBreak->update(0.0f);
 	smokeJumpX2->setVisible(false);		smokeJumpX2->update(0.0f);
 	smokeLanding->setVisible(false);	smokeLanding->update(0.0f);
 	smokeRun->setVisible(false);		smokeRun->update(0.0f);
+	reviveMe->setVisible(false);		reviveMe->update(0.0f);
 }
 
 void EffectManager::slashBreakAni()
@@ -61,5 +64,12 @@ void EffectManager::smokeRunAni()
 	smokeRun->clearTracks();
 	smokeRun->addAnimation(0, "smoke-run", true);
 	smokeRun->setToSetupPose();
+}
+
+void EffectManager::reviveAni()
+{
+	reviveMe->clearTracks();
+	reviveMe->addAnimation(0, "revive", false);
+	reviveMe->setToSetupPose();
 }
 

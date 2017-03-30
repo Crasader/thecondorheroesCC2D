@@ -51,6 +51,10 @@ void BaseHero::changeSwordCategoryBitmask(uint16 bit)
 	fixture->SetFilterData(filter);
 }
 
+void BaseHero::addStuff()
+{
+}
+
 
 
 
@@ -103,6 +107,10 @@ void BaseHero::injured()
 {
 }
 
+void BaseHero::revive()
+{
+}
+
 void BaseHero::die(Point posOfCammera)
 {
 }
@@ -113,6 +121,7 @@ void BaseHero::listener()
 
 void BaseHero::updateMe(float dt)
 {
+	getFSM()->Update();
 	if (getB2Body() != nullptr) {
 
 		currentRunDis = this->getPositionX() / (SCREEN_SIZE.width / 23);

@@ -20,6 +20,7 @@ protected:
 	CC_SYNTHESIZE(SkeletonAnimation *, smokeJumpX2, SmokeJumpX2);
 	CC_SYNTHESIZE(SkeletonAnimation *, smokeLanding, SmokeLanding);
 	CC_SYNTHESIZE(SkeletonAnimation *, smokeRun, SmokeRun);
+	CC_SYNTHESIZE(SkeletonAnimation *, reviveMe, ReviveMe);
 
 private:
 	static EffectManager *effectManager;
@@ -34,6 +35,7 @@ public:
 	void smokeJumpX2Ani();
 	void smokeLandingAni();
 	void smokeRunAni();
+	void reviveAni();
 };
 
 #define EM EffectManager::getInstance()

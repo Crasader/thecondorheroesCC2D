@@ -1,12 +1,12 @@
-#include "Button.h"
+#include "MyButton.h"
 
-Button::Button() {
+MyButton::MyButton() {
 
 }
 
-Button * Button::create(string file_name_main, string file_name_CoolDown, Point pos)
+MyButton * MyButton::create(string file_name_main, string file_name_CoolDown, Point pos)
 {
-	Button *mNode = new Button();
+	MyButton *mNode = new MyButton();
 	mNode->initWithFile(file_name_main);
 	mNode->coolDown = Sprite::create(file_name_CoolDown);
 
@@ -33,7 +33,7 @@ Button * Button::create(string file_name_main, string file_name_CoolDown, Point 
 
 
 // add listener to sprite
-void Button::addEvents()
+void MyButton::addEvents()
 {
 	listener = cocos2d::EventListenerTouchOneByOne::create();
 	listener->setSwallowTouches(true);								// preventing other listener from using it
@@ -49,7 +49,7 @@ void Button::addEvents()
 			if (canTouch) {
 				runTimer();
 				coolDown->setVisible(true);
-				this->schedule(schedule_selector(Button::checkInterval), timeCoolDown, 1, 0);
+				this->schedule(schedule_selector(MyButton::checkInterval), timeCoolDown, 1, 0);
 				canTouch = false;
 				isActive = true;
 			}
@@ -64,21 +64,30 @@ void Button::addEvents()
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 }
 
-void Button::pauseListener()
+void MyButton::pauseListener()
 {
 	Director::getInstance()->getEventDispatcher()->removeEventListener(listener);
 }
 
-void Button::checkInterval(float dt)
+void MyButton::refresh()
 {
-	this->unschedule(schedule_selector(Button::checkInterval));
+	canTouch = true;
+	isActive = false;
+	coolDown->setVisible(false);
+	number->setVisible(false);
+	this->unscheduleAllCallbacks();
+}
+
+void MyButton::checkInterval(float dt)
+{
+	this->unschedule(schedule_selector(MyButton::checkInterval));
 	canTouch = true;
 	isActive = false;
 	if(!isBlocked)
 		coolDown->setVisible(false);
 }
 
-void Button::runTimer()
+void MyButton::runTimer()
 {
 	if (timeCoolDown < 1)
 		return;

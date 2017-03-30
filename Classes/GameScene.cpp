@@ -112,6 +112,7 @@ void GameScene::createDuongQua(string path_Json, string path_Atlas, Point positi
 	addChild(hero, ZORDER_HERO);
 
 	hero->initCirclePhysic(world, hero->getPosition());
+	hero->addStuff();
 
 	hero->getBloodScreen()->setPosition(follow->getPosition());
 	addChild(hero->getBloodScreen(), ZORDER_SMT);
@@ -196,9 +197,11 @@ void GameScene::checkActiveButton()
 
 void GameScene::listener()
 {
+	if (hero->getB2Body() == nullptr)
+		return;
+
 	if (hud->getBtnAttack()->getIsActive() && !hud->getBtnAttack()->getIsBlocked() &&
 		hero->getFSM()->currentState != MDie && hero->getFSM()->currentState != MInjured) {
-
 
 		if (!hero->getIsDoneDuration1()) {
 			hero->getFSM()->changeState(MSKill1);  // move to attack
@@ -379,7 +382,7 @@ void GameScene::initB2World()
 
 	// draw debug
 	auto debugDraw = new (std::nothrow) GLESDebugDraw(PTM_RATIO);
-	//world->SetDebugDraw(debugDraw);
+	world->SetDebugDraw(debugDraw);
 	uint32 flags = 0;
 	flags += b2Draw::e_shapeBit;
 	flags += b2Draw::e_jointBit;
@@ -447,7 +450,7 @@ void GameScene::loadBackground(int map)
 
 	tmx_map->setPosition(Point::ZERO);
 
-	//tmx_map->setVisible(false);
+	tmx_map->setVisible(false);
 
 	this->addChild(tmx_map, ZORDER_BG2);
 	if (haveboss) {
@@ -511,7 +514,7 @@ void GameScene::createInfiniteNode()
 	//background->addChild(bg3_2, 0, Vec2(1.5f, 1), Vec2(bg3_1->getBoundingBox().size.width, 0));
 	background->setPosition(Point(-SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 	background->setAnchorPoint(Point(0, 0.5f));
-	//background->setVisible(false);
+	background->setVisible(false);
 	this->addChild(background, ZORDER_BG);
 }
 
@@ -972,6 +975,7 @@ void GameScene::danceWithEffect()
 	addChild(EM->getSmokeJumpX2(), 4);
 	addChild(EM->getSmokeLanding(), 4);
 	addChild(EM->getSmokeRun(), 4);
+	addChild(EM->getReviveMe(), 4);
 }
 
 void GameScene::danceWithCamera()
@@ -1014,7 +1018,7 @@ void GameScene::initGroundPhysic(b2World * world, Point pos, Size size)
 	fixtureDef.shape = &shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_FLOOR;
-	fixtureDef.filter.maskBits = BITMASK_HERO;
+	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR;
 
 	bodyDef.type = b2_staticBody;
 
@@ -1078,7 +1082,7 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 
 		// cannot jump while attacking or being injured
 		if (hero->getFSM()->currentState == MAttack || hero->getFSM()->currentState == MInjured ||
-			hero->getFSM()->currentState == MDie || hero->getFSM()->currentState == MSKill1)
+			hero->getFSM()->currentState == MDie || hero->getFSM()->currentState == MRevive)
 
 			return false;
 
@@ -1280,6 +1284,19 @@ void GameScene::shakeTheScreen()
 {
 	auto shake = MoveBy::create(0.01f, Vec2(0, -0.005f * SCREEN_SIZE.height));
 	this->runAction(Sequence::create(shake, shake->reverse(), shake, shake->reverse(), nullptr));
+}
+
+void GameScene::reviveHero()
+{
+	hud->refreshControl();
+	auto reviveUp = MoveBy::create(1.5f, Vec2(0, hero->getTrueRadiusOfHero() * 2));
+	world->DestroyBody(hero->getB2Body());
+	hero->setB2Body(nullptr);
+	world->DestroyBody(hero->getSwordBody());
+	hero->setSwordBody(nullptr);
+	hero->runAction(reviveUp);
+	hero->getFSM()->changeState(MRevive);
+	hero->setIsPriorRevive(true);
 }
 
 void GameScene::callingBird()

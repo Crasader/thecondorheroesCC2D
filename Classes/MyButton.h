@@ -7,11 +7,11 @@
 USING_NS_CC;
 using namespace std;
 
-class Button : public Sprite
+class MyButton : public Sprite
 {
 public:
-	Button();
-	static Button* create(string file_name_main, string file_name_CoolDown, Point pos);
+	MyButton();
+	static MyButton* create(string file_name_main, string file_name_CoolDown, Point pos);
 
 private:
 	EventListenerTouchOneByOne* listener;
@@ -30,6 +30,7 @@ protected:
 
 	void addEvents();
 	void pauseListener();
+	void refresh();
 };
 
 #endif // __BUTTON_H__

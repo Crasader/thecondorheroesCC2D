@@ -10,6 +10,7 @@ LandingRevive* LandingRevive::m_landRevive;
 Jumping* Jumping::m_jump;
 DoubleJumping* DoubleJumping::m_doubleJump;
 AttackNormal* AttackNormal::m_attack;
+Revive* Revive::m_revive;
 Injuring* Injuring::m_injured;
 Dead* Dead::m_dead;
 Skill1* Skill1::m_skill1;
@@ -178,6 +179,31 @@ AttackNormal * AttackNormal::getInstance()
 	if (m_attack == nullptr)
 		m_attack = new AttackNormal();
 	return m_attack;
+}
+
+
+/**
+*
+*/
+Revive::Revive()
+{
+}
+
+Revive::~Revive()
+{
+}
+
+void Revive::execute(BaseHero * hero)
+{
+	hero->revive();
+}
+
+
+Revive * Revive::getInstance()
+{
+	if (m_revive == nullptr)
+		m_revive = new Revive();
+	return m_revive;
 }
 
 

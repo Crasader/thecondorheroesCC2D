@@ -18,6 +18,7 @@ protected:
 	StateMachine* stateMachine;
 
 	CC_SYNTHESIZE(b2Body*, swordBody, SwordBody);
+	CC_SYNTHESIZE(float, boxHeight, BoxHeight);
 	CC_SYNTHESIZE(float, trueRadiusOfHero, TrueRadiusOfHero);
 
 	CC_SYNTHESIZE(bool, onGround, OnGround);
@@ -39,6 +40,7 @@ protected:
 	CC_SYNTHESIZE(bool, isPriorSkill1, IsPriorSkill1);
 	CC_SYNTHESIZE(bool, isPriorSkill2, IsPriorSkill2);
 	CC_SYNTHESIZE(bool, isPriorSkill3, IsPriorSkill3);
+	CC_SYNTHESIZE(bool, isPriorRevive, IsPriorRevive);
 
 	CC_SYNTHESIZE(float, durationSkill1, DurationSkill1);
 	CC_SYNTHESIZE(float, durationSkill2, DurationSkill2);
@@ -60,6 +62,7 @@ public:
 
 	virtual void initSwordPhysic(b2World *world, Point position, float width);
 	void changeSwordCategoryBitmask(uint16 bit);
+	virtual void addStuff();
 
 	virtual void idle();
 	virtual void run();
@@ -73,6 +76,7 @@ public:
 	virtual void attackBySkill2();
 	virtual void attackBySkill3();
 	virtual void injured();
+	virtual void revive();
 	virtual void die(Point posOfCammera);
 	virtual void listener();
 	virtual void updateMe(float dt);

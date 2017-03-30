@@ -52,6 +52,7 @@ protected:
 	//////////////////////////////////////////////////////////////////////////
 
 	void initCirclePhysic(b2World *world, Point pos);
+	void addStuff();
 
 	void idle();
 	void run();
@@ -65,6 +66,7 @@ protected:
 	void attackBySkill2();
 	void attackBySkill3();
 	void injured();
+	void revive();
 	void die(Point posOfCammera);
 	void listener();
 

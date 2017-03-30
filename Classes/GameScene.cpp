@@ -1231,7 +1231,7 @@ void GameScene::updateEnemy()
 			auto tmp = (BaseEnemy*)child.at(i);
 			if (tmp->getTag() == TAG_BOSS) {
 				if (tmp->getIsDie()) {
-
+					this->winGame();
 				}
 				else {
 					auto boss = (EnemyBoss1*)tmp;

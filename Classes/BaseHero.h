@@ -13,9 +13,9 @@ using namespace spine;
 
 class BaseHero : public B2Skeleton
 {
+
 protected:
 	StateMachine* stateMachine;
-
 
 	CC_SYNTHESIZE(b2Body*, swordBody, SwordBody);
 	CC_SYNTHESIZE(float, trueRadiusOfHero, TrueRadiusOfHero);
@@ -27,6 +27,11 @@ protected:
 	CC_SYNTHESIZE(Sprite*, bloodScreen, BloodScreen);
 	CC_SYNTHESIZE(SkeletonAnimation*, slash, Slash);
 	CC_SYNTHESIZE(SkeletonAnimation*, slashLand, SlashLand);
+
+	// stuff here
+	CC_SYNTHESIZE(int, score, Score);
+	CC_SYNTHESIZE(int, coinExplored, CoinExplored);
+
 
 	// bool to make separate animation
 	CC_SYNTHESIZE(bool, isPriorInjured, IsPriorInjured);
@@ -44,6 +49,10 @@ protected:
 	CC_SYNTHESIZE(bool, isDoneDuration2, IsDoneDuration2);
 	CC_SYNTHESIZE(bool, isDoneDuration3, IsDoneDuration3);
 
+	CC_SYNTHESIZE(bool, isDriverEagle, IsDriverEagle);
+	CC_SYNTHESIZE(float, currentRunDis, CurrentRunDis);
+	CC_SYNTHESIZE(float, preRunDis, PreRunDis);
+
 public:
 
 	BaseHero(string jsonFile, string atlasFile, float scale);
@@ -52,6 +61,7 @@ public:
 	virtual void initSwordPhysic(b2World *world, Point position, float width);
 	void changeSwordCategoryBitmask(uint16 bit);
 
+	virtual void idle();
 	virtual void run();
 	virtual void normalJump();
 	virtual void doubleJump();

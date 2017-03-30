@@ -50,4 +50,16 @@ void JSonHeroManager::readFile(int indexHero)
 	this->level = jsonDoc["hero"][indexHero]["level"].GetInt();
 }
 
+void JSonHeroManager::writerString(int index, string key, string valueString)
+{
+}
+
+void JSonHeroManager::writerFloat(int index, string key, float valueFloat)
+{
+}
+
+void JSonHeroManager::writerInteger(int index, string key, int valueInteger)
+{
+}
+
 

@@ -31,8 +31,10 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 	duongQua->setDurationSkill3(JSHERO->getDurationSkill3());
 
 	duongQua->facingRight = true;
-
 	duongQua->numberOfJump = 2;
+	duongQua->coinExplored = 0;
+	duongQua->score = 0;
+
 
 	duongQua->setOnGround(false);
 	duongQua->setIsPriorInjured(false);		// future, we need to add props into base class
@@ -81,7 +83,7 @@ void DuongQua::slashToanChanKiemPhap()
 		if (!listToanChanKiemPhap.empty()) {
 			for (auto tckp : listToanChanKiemPhap) {
 				if (!tckp->getB2Body()) continue;
-				if (tckp->getPositionX() - (this->getPositionX() + SCREEN_SIZE.width * 0.26f) > SCREEN_SIZE.width / 2) {
+				if (tckp->getPositionX() - (this->getPositionX() + SCREEN_SIZE.width * 0.255f) > SCREEN_SIZE.width / 2) {
 					this->getB2Body()->GetWorld()->DestroyBody(tckp->getB2Body());
 					tckp->setB2Body(nullptr);
 
@@ -309,6 +311,15 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 	createSlash();
 }
 
+void DuongQua::idle()
+{
+	clearTracks();
+	addAnimation(0, "idle", true);
+	setToSetupPose();
+
+	EM->getSmokeRun()->setVisible(false);
+}
+
 void DuongQua::run()
 {
 	clearTracks();
@@ -322,6 +333,8 @@ void DuongQua::run()
 		EM->getSmokeRun()->setVisible(true);
 		EM->smokeRunAni();
 	}
+
+	//log("run");
 }
 
 void DuongQua::normalJump()
@@ -331,6 +344,8 @@ void DuongQua::normalJump()
 	setToSetupPose();
 
 	EM->getSmokeRun()->setVisible(false);
+
+	//log("jump");
 }
 
 void DuongQua::doubleJump()
@@ -342,6 +357,8 @@ void DuongQua::doubleJump()
 	EM->getSmokeJumpX2()->setPosition(this->getPosition());
 	EM->getSmokeJumpX2()->setVisible(true);
 	EM->smokeJumpX2Ani();
+
+	//log("jumpx2");
 }
 
 void DuongQua::landing()
@@ -351,6 +368,8 @@ void DuongQua::landing()
 	setToSetupPose();
 
 	EM->getSmokeRun()->setVisible(false);
+
+	//log("land");
 }
 
 void DuongQua::die()
@@ -422,6 +441,8 @@ void DuongQua::injured()
 	clearTracks();
 	addAnimation(0, "injured", false);
 	setToSetupPose();
+
+	//log("injured");
 }
 
 void DuongQua::die(Point posOfCammera)
@@ -431,26 +452,26 @@ void DuongQua::die(Point posOfCammera)
 
 void DuongQua::listener()
 {
-	
+
 	this->setEndListener([&](int trackIndex) {
-		if ((strcmp(getCurrent()->animation->name, "jumpx2") == 0)) {
-			getFSM()->changeState(MLand);
-		}
-
-		else if ((strcmp(getCurrent()->animation->name, "injured") == 0)) {
-
+		
+		if (strcmp(getCurrent()->animation->name, "injured") == 0) {
+			
 			this->getBloodScreen()->setVisible(false);
 
-			setIsPriorInjured(false);
 			if (getFSM()->globalState == MSKill1 || getFSM()->globalState == MAttack) {
 				getFSM()->setPreviousState(MInjured);
 				getFSM()->setGlobalState(MRun);
+			} 
+			
+			else if (getFSM()->globalState == MDoubleJump) {
+				getFSM()->setPreviousState(MInjured);
+				getFSM()->setGlobalState(MLand);
 			}
-
 			getFSM()->revertToGlobalState();
-
-
+			setIsPriorInjured(false);
 		}
+		
 
 		else if ((strcmp(getCurrent()->animation->name, "attack1") == 0) ||
 			(strcmp(getCurrent()->animation->name, "attack2") == 0) ||
@@ -462,6 +483,11 @@ void DuongQua::listener()
 			if (getFSM()->globalState == MSKill1 || getFSM()->globalState == MInjured) {
 				getFSM()->setPreviousState(MAttack);
 				getFSM()->setGlobalState(MRun);
+			}
+
+			else if (getFSM()->globalState == MDoubleJump) {
+				getFSM()->setPreviousState(MAttack);
+				getFSM()->setGlobalState(MLand);
 			}
 
 			getFSM()->revertToGlobalState();
@@ -486,6 +512,7 @@ void DuongQua::updateMe(float dt)
 {
 	BaseHero::updateMe(dt);
 	getFSM()->Update();
+
 
 
 	auto currentVelY = getB2Body()->GetLinearVelocity().y;
@@ -541,6 +568,11 @@ void DuongQua::updateMe(float dt)
 
 	if (getFSM()->currentState == MDie) {
 		getB2Body()->SetLinearVelocity(b2Vec2(0, currentVelY));
+		return;
+	}
+
+	if (getFSM()->currentState == MLandRevive) {
+		getB2Body()->SetLinearVelocity(b2Vec2(0, 0));
 		return;
 	}
 

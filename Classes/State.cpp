@@ -6,6 +6,7 @@ State* State::m_state;
 Idling* Idling::m_idle;
 Running* Running::m_run;
 Landing* Landing::m_land;
+LandingRevive* LandingRevive::m_landRevive;
 Jumping* Jumping::m_jump;
 DoubleJumping* DoubleJumping::m_doubleJump;
 AttackNormal* AttackNormal::m_attack;
@@ -74,8 +75,7 @@ Idling::~Idling()
 // IDLE
 void Idling::execute(BaseHero * hero)
 {
-	hero->run();
-	
+	hero->idle();
 }
 
 Idling * Idling::getInstance()
@@ -129,6 +129,28 @@ Landing * Landing::getInstance()
 	if (m_land == nullptr)
 		m_land = new Landing();
 	return m_land;
+}
+
+
+// LANDING
+LandingRevive::LandingRevive()
+{
+}
+
+LandingRevive::~LandingRevive()
+{
+}
+
+void LandingRevive::execute(BaseHero * hero)
+{
+	hero->landing();
+}
+
+LandingRevive * LandingRevive::getInstance()
+{
+	if (m_landRevive == nullptr)
+		m_landRevive = new LandingRevive();
+	return m_landRevive;
 }
 
 /**

@@ -63,7 +63,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 			}
 			else {
-				
+
 				hero->setOnGround(true);
 				hero->setNumberOfJump(2);
 
@@ -75,7 +75,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 	}
 
-	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_TOANCHAN1) ||
+	else if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_TOANCHAN1) ||
 		(bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_TOANCHAN1)
 		) {
 
@@ -86,24 +86,26 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		enemy->attack();
 		if (!enemy->getIsDie()) {
-			hero->setIsPriorInjured(true);
-			hero->getFSM()->changeState(MInjured);
-			hero->getBloodScreen()->setVisible(true);
-			hero->setHealth(hero->getHealth() - 1);
-
-			auto parentGameScene = (GameScene*)hero->getParent();
-			parentGameScene->updateBloodBar(hero->getHealth(), false);
+			if (!hero->getIsPriorInjured() && hero->getFSM()->previousState != MInjured) {
+				hero->setIsPriorInjured(true);
+				hero->getFSM()->changeState(MInjured);
+				hero->getBloodScreen()->setVisible(true);
+				hero->setHealth(hero->getHealth() - 1);
+				//log("----");
+				auto parentGameScene = (GameScene*)hero->getParent();
+				parentGameScene->updateBloodBar(hero->getHealth(), false);
+			}
 		}
 
 	}
 
-	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_BOSS) ||
+	else if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_BOSS) ||
 		(bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_BOSS)
 		) {
 
 		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
 		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
-		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
+		//auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
 		auto enemy = sA->getTag() == TAG_BOSS ? (EnemyBoss1 *)sA : (EnemyBoss1 *)sB;
 
 		if (enemy->getControlState() < 0)
@@ -117,7 +119,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 	}
 
 
-	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_COIN) ||
+	else if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_COIN) ||
 		(bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_COIN)
 		) {
 
@@ -126,9 +128,12 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		auto coin = sA->getTag() == TAG_COIN ? (Coin *)sA : (Coin *)sB;
 		coin->picked();
 
+		auto parentGameScene = (GameScene*)coin->getParent();
+		parentGameScene->updateMoney(1);
+
 	}
 
-	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_COIN_BULLION) ||
+	else if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_COIN_BULLION) ||
 		(bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_COIN_BULLION)
 		) {
 
@@ -137,9 +142,12 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		auto coin = sA->getTag() == TAG_COINBULLION ? (CoinBullion *)sA : (CoinBullion *)sB;
 		coin->picked();
 
+		auto parentGameScene = (GameScene*)coin->getParent();
+		parentGameScene->updateMoney(5);
+
 	}
 
-	if ((bitmaskA == BITMASK_COIN_BAG && bitmaskB == BITMASK_SWORD) ||
+	else if ((bitmaskA == BITMASK_COIN_BAG && bitmaskB == BITMASK_SWORD) ||
 		(bitmaskB == BITMASK_COIN_BAG && bitmaskA == BITMASK_SWORD)
 		) {
 
@@ -148,9 +156,12 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		auto coin = sA ? (B2Skeleton *)sA : (B2Skeleton *)sB;
 
 		coin->die();
+
+		auto parentGameScene = (GameScene*)coin->getParent();
+		parentGameScene->updateMoney(10);
 	}
 
-	if ((bitmaskA == BITMASK_WOODER && bitmaskB == BITMASK_SWORD) ||
+	else if ((bitmaskA == BITMASK_WOODER && bitmaskB == BITMASK_SWORD) ||
 		(bitmaskB == BITMASK_WOODER && bitmaskA == BITMASK_SWORD)
 		) {
 
@@ -159,9 +170,11 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		auto enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 
 		enemy->setIsDie(true);
+		auto parentGameScene = (GameScene*)enemy->getParent();
+		parentGameScene->updateScore(5);
 	}
 
-	if ((bitmaskA == BITMASK_TOANCHAN1 && bitmaskB == BITMASK_SWORD) ||
+	else if ((bitmaskA == BITMASK_TOANCHAN1 && bitmaskB == BITMASK_SWORD) ||
 		(bitmaskB == BITMASK_TOANCHAN1 && bitmaskA == BITMASK_SWORD)
 		) {
 
@@ -173,16 +186,19 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		if (sA && sB) {	// sA and sB != nullptr
 			enemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 			auto thc = sA->getTag() == TAG_DQ_TIEU_HON_CHUONG ? (TieuHonChuong*)sA : (TieuHonChuong*)sB;
-			if(thc->getTag() == TAG_DQ_TIEU_HON_CHUONG)
+			if (thc->getTag() == TAG_DQ_TIEU_HON_CHUONG)
 				thc->setIsCollide(true);
 		}
 		else
 			enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 
+
 		enemy->setIsDie(true);
+		auto parentGameScene = (GameScene*)enemy->getParent();
+		parentGameScene->updateScore(12);
 	}
 
-	if ((bitmaskA == BITMASK_TOANCHAN2 && bitmaskB == BITMASK_SWORD) ||
+	else if ((bitmaskA == BITMASK_TOANCHAN2 && bitmaskB == BITMASK_SWORD) ||
 		(bitmaskB == BITMASK_TOANCHAN2 && bitmaskA == BITMASK_SWORD)
 		) {
 
@@ -194,16 +210,18 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		if (sA && sB) {		// sA and sB != nullptr
 			enemy = sA->getTag() == TAG_ENEMY_TOANCHAN2 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 			auto thc = sA->getTag() == TAG_DQ_TIEU_HON_CHUONG ? (TieuHonChuong*)sA : (TieuHonChuong*)sB;
-			if(thc->getTag() == TAG_DQ_TIEU_HON_CHUONG)
+			if (thc->getTag() == TAG_DQ_TIEU_HON_CHUONG)
 				thc->setIsCollide(true);
 		}
 		else
 			enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 
 		enemy->setIsDie(true);
+		auto parentGameScene = (GameScene*)enemy->getParent();
+		parentGameScene->updateScore(16);
 	}
 
-	if ((bitmaskA == BITMASK_BOSS && bitmaskB == BITMASK_SWORD) ||
+	else if ((bitmaskA == BITMASK_BOSS && bitmaskB == BITMASK_SWORD) ||
 		(bitmaskB == BITMASK_BOSS && bitmaskA == BITMASK_SWORD)
 		) {
 
@@ -221,26 +239,29 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		else
 			enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 
-		enemy->setIsDie(true);
+		enemy->die();
 	}
 
-	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_SLASH) ||
+	else if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_SLASH) ||
 		(bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_SLASH)
 		) {
 
 		B2Skeleton* sA = (BaseHero*)bodyA->GetUserData();
 		B2Skeleton* sB = (BaseHero*)bodyB->GetUserData();
 		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
+		if (!hero->getIsPriorInjured() && hero->getFSM()->previousState != MInjured) {
+			hero->setIsPriorInjured(true);
+			hero->getFSM()->changeState(MInjured);
+			hero->getBloodScreen()->setVisible(true);
+			hero->setHealth(hero->getHealth() - 1);
 
-		hero->setIsPriorInjured(true);
-		hero->getBloodScreen()->setVisible(true);
-		hero->getFSM()->changeState(MInjured);
-		hero->setHealth(hero->getHealth() - 1);
-		auto parentGameScene = (GameScene*)hero->getParent();
-		parentGameScene->updateBloodBar(hero->getHealth(), false);
+			auto parentGameScene = (GameScene*)hero->getParent();
+			parentGameScene->updateBloodBar(hero->getHealth(), false);
+		}
 
 	}
-	if ((bitmaskA == BITMASK_SWORD && bitmaskB == BITMASK_SLASH) ||
+
+	else if ((bitmaskA == BITMASK_SWORD && bitmaskB == BITMASK_SLASH) ||
 		(bitmaskB == BITMASK_SWORD && bitmaskA == BITMASK_SLASH)
 		) {
 
@@ -263,22 +284,22 @@ void CollisionListener::BeginContact(b2Contact * contact)
 	}
 
 
-	if ((bitmaskA == BITMASK_SWORD && bitmaskB == BITMASK_UNDER_GROUND) ||
+	else if ((bitmaskA == BITMASK_SWORD && bitmaskB == BITMASK_UNDER_GROUND) ||
 		(bitmaskB == BITMASK_SWORD && bitmaskA == BITMASK_UNDER_GROUND)
 		) {
 
-		KiemPhap* sA = (KiemPhap*) bodyA->GetUserData();
-		KiemPhap* sB = (KiemPhap*) bodyB->GetUserData();
+		KiemPhap* sA = (KiemPhap*)bodyA->GetUserData();
+		KiemPhap* sB = (KiemPhap*)bodyB->GetUserData();
 		auto kp = sA ? (KiemPhap *)sA : (KiemPhap *)sB;
 
-		auto parentGameScene = (GameScene*) kp->getParent();
+		auto parentGameScene = (GameScene*)kp->getParent();
 		parentGameScene->shakeTheScreen();
 
 		kp->hitGround();
 		kp->setIsCollide(true);
-		kp->setTextureRect(Rect(Vec2::ZERO, 
+		kp->setTextureRect(Rect(Vec2::ZERO,
 			Size(kp->getContentSize().width, kp->getContentSize().height * random(0.61f, 0.63f))));
-		
+
 	}
 }
 

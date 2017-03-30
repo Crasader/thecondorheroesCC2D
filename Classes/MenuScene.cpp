@@ -59,6 +59,7 @@ bool MenuLayer::init()
 		label->setPosition(menuplay->getContentSize() / 2);
 		menuplay->addChild(label);
 	}
+
 	auto listener = EventListenerTouchOneByOne::create();
 	listener->onTouchBegan = CC_CALLBACK_2(MenuLayer::onTouchBegan, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
@@ -97,5 +98,5 @@ void MenuLayer::gotoPlay( int map)
 		break;
 	}
 	Director::getInstance()->replaceScene(GameScene::createScene(map, haveboss));
-	log("map%d", map);
+	//log("map%d", map);
 }

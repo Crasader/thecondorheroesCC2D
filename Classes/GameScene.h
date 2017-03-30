@@ -2,7 +2,6 @@
 #define __GAME_SCENE_H__
 
 #include "cocos2d.h"
-#include "Hud.h"
 #include "DuongQua.h"
 #include "Global.h"
 #include "GLES-Render.h"
@@ -63,9 +62,13 @@ private:
 	spSkeletonData *sr_wooder;
 	//end skeleton cache
 
+	// listener
+	EventListenerTouchOneByOne* touch_listener;
+	EventListenerKeyboard* key_listener;
 
 	// Create Function
 	void createDuongQua(string path_Json, string path_Atlas, Point position);
+	void heroGetOffEagle();
 
 
 	// function for process box2d
@@ -90,9 +93,9 @@ private:
 	void creatEnemyToanChanStudent2();
 	void creatBoss();
 
-	void creatEnemyWooderRT();
+	/*void creatEnemyWooderRT();
 	void creatEnemyToanChanStudentRT();
-	void creatEnemyToanChanStudent2RT();
+	void creatEnemyToanChanStudent2RT();*/
 
 	void createCoint();
 	void createCointBag();
@@ -122,6 +125,8 @@ private:
 	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
 
 public:
+
+	void onBegin();
     
 	// update functions
 	void checkActiveButton();
@@ -129,6 +134,9 @@ public:
 	void update(float dt);
 	void updateEnemy();
 	void updateBoss();
+
+	void updateMoney(int numberOfCoin);
+	void updateScore(int score);
 	void updateBloodBar(int numberOfHealth, bool isVisible);
 	void updateCamera();
 	//void cleanMap();

@@ -31,7 +31,7 @@ void Boss1Idling::enter(EnemyBoss1 * boss)
 {
 	StateBoss1::enter(boss);
 	boss->setRealMoveVelocity(Vec2::ZERO);
-	log("idle");
+	//log("idle");
 }
 
 void Boss1Idling::execute(EnemyBoss1 * boss)
@@ -57,7 +57,7 @@ void Boss1Attacking1::enter(EnemyBoss1 * boss)
 	boss->setRealMoveVelocity(Vec2::ZERO);
 	srand(time(NULL));
 	boss->setControlAttack(rand() % 3 + 1);
-	log("attack1");
+	//log("attack1");
 }
 
 void Boss1Attacking1::execute(EnemyBoss1 * boss)
@@ -85,7 +85,7 @@ void Boss1Attacking2::enter(EnemyBoss1 * boss)
 {
 	StateBoss1::enter(boss);
 	boss->setRealMoveVelocity(Vec2::ZERO);
-	log("attack2");
+	//log("attack2");
 }
 
 void Boss1Attacking2::execute(EnemyBoss1 * boss)
@@ -119,12 +119,12 @@ void Boss1Stupiding::enter(EnemyBoss1 * boss)
 	StateBoss1::enter(boss);
 	boss->setRealMoveVelocity(-boss->getmoveVelocity());
 	boss->setControlState(-1);
-	log("stupiding");
+	//log("stupiding");
 }
 
 void Boss1Stupiding::execute(EnemyBoss1 * boss)
 {
-	log("stupiding ex");
+	//log("stupiding ex");
 	if (boss->getPositionY() < boss->heroLocation.y) {
 		boss->setRealMoveVelocity(Vec2(boss->getRealMoveVelocity().x, 0));
 	}
@@ -145,7 +145,7 @@ void Boss1FixingStupid::enter(EnemyBoss1 * boss)
 {
 	StateBoss1::enter(boss);
 	boss->setRealMoveVelocity(Vec2(boss->getmoveVelocity().x, boss->getmoveVelocity().y*CCRANDOM_0_1()));
-	log("fixstupid");
+	//log("fixstupid");
 }
 
 void Boss1FixingStupid::execute(EnemyBoss1 * boss)

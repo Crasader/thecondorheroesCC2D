@@ -154,6 +154,20 @@ public:
 };
 
 /**
+* Class Revive
+*/
+class Revive : public State
+{
+public:
+	Revive();
+	~Revive();
+
+	void execute(BaseHero *hero);
+	static Revive * m_revive;
+	static Revive* getInstance();
+};
+
+/**
 * Class Skill1
 */
 class Skill1 : public State
@@ -205,6 +219,7 @@ public:
 #define MLand Landing::getInstance()
 #define MLandRevive LandingRevive::getInstance()
 #define MAttack AttackNormal::getInstance()
+#define MRevive Revive::getInstance()
 #define MInjured Injuring::getInstance()
 #define MDoubleJump DoubleJumping::getInstance()
 #define MDie Dead::getInstance()

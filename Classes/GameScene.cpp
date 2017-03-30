@@ -3,12 +3,10 @@
 #include "MenuScene.h"
 #include "Hud.h"
 #include "LoadingLayer.h"
-#include "chimdieu/ChimDieu.h"
 #include "SkeletonManager.h"
 
 Hud *hud;
 LoadingLayer* loadingLayer;
-ChimDieu* _aEagle;
 
 
 Scene* GameScene::createScene(int map, int haveboss)
@@ -60,7 +58,7 @@ bool GameScene::init(int map, int haveboss)
 	createGroundBody();
 
 	createDuongQua("Animation/DuongQua/DuongQua.json", "Animation/DuongQua/DuongQua.atlas",
-		Point(origin.x, visibleSize.height));
+		Point(origin.x, visibleSize.height * 0.75f));
 
 	_aEagle = ChimDieu::create("Animation/ChimDieu/ChimDieu-DuongQua.json",
 		"Animation/ChimDieu/ChimDieu-DuongQua.atlas", SCREEN_SIZE.height / 2048);
@@ -83,7 +81,6 @@ bool GameScene::init(int map, int haveboss)
 	if (haveboss)
 		creatBoss();
 	createCoint();
-
 
 	return true;
 }
@@ -123,6 +120,8 @@ void GameScene::createDuongQua(string path_Json, string path_Atlas, Point positi
 void GameScene::onBegin()
 {
 	hud->addEvents();
+	hud->getBtnSpecial()->setEnabled(true);
+	hud->getPauseItem()->setEnabled(true);
 
 	touch_listener = EventListenerTouchOneByOne::create();
 	key_listener = EventListenerKeyboard::create();
@@ -270,43 +269,6 @@ void GameScene::listener()
 
 		hud->getBtnSkill_3()->setIsActive(false);
 	}
-
-	if (hud->getBtnSpecial()->getIsActive() && !hud->getBtnSpecial()->getIsBlocked()) {
-		if (!hero->getIsDriverEagle()) {
-			Vec2 screenSize = Director::getInstance()->getVisibleSize();
-			hero->setIsDriverEagle(true);
-			hero->setOnGround(false);
-			hero->getFSM()->changeState(MIdle);
-			hero->setVisible(false);
-			hud->setBtnSpecialHintDone(false);
-			_aEagle->setVisible(true);
-			_aEagle->getB2Body()->SetTransform(hero->getB2Body()->GetPosition(), 0.0f);
-			_aEagle->flyUp(b2Vec2(hero->getMoveVel(), 7.0f));
-
-			auto _aEagleFlyDown = Sequence::create(DelayTime::create(4.0f), CallFunc::create([&]() {
-				_aEagle->flyDown(b2Vec2(hero->getMoveVel(), -7.0f));
-			}), nullptr);
-			auto _aHeroGetOffEagle = Sequence::create(DelayTime::create(6.0f), CallFunc::create([&]() { heroGetOffEagle(); }), nullptr);
-			runAction(_aEagleFlyDown);
-			runAction(_aHeroGetOffEagle);
-		}
-
-		// block
-
-		hud->getBtnAttack()->setIsBlocked(true);
-
-		hud->getBtnSkill_1()->setIsBlocked(true);
-		hud->getBtnSkill_1()->getCoolDownSprite()->setVisible(true);
-
-		hud->getBtnSkill_2()->setIsBlocked(true);
-		hud->getBtnSkill_2()->getCoolDownSprite()->setVisible(true);
-
-		hud->getBtnSkill_3()->setIsBlocked(true);
-		hud->getBtnSkill_3()->getCoolDownSprite()->setVisible(true);
-
-		hud->getBtnSpecial()->setIsActive(false);
-		hud->removeSpecial();
-	}
 }
 
 void GameScene::heroGetOffEagle() {
@@ -317,16 +279,7 @@ void GameScene::heroGetOffEagle() {
 	hero->getFSM()->changeState(MLand);
 	_aEagle->flyAway();
 
-	hud->getBtnAttack()->setIsBlocked(false);
-
-	hud->getBtnSkill_1()->setIsBlocked(false);
-	hud->getBtnSkill_1()->getCoolDownSprite()->setVisible(false);
-
-	hud->getBtnSkill_2()->setIsBlocked(true);
-	hud->getBtnSkill_2()->getCoolDownSprite()->setVisible(false);
-
-	hud->getBtnSkill_3()->setIsBlocked(true);
-	hud->getBtnSkill_3()->getCoolDownSprite()->setVisible(false);
+	hud->showButton();
 }
 
 void GameScene::update(float dt)
@@ -535,11 +488,11 @@ void GameScene::createInfiniteNode()
 	bg2_1->setAnchorPoint(Point(0, 0.5f));
 
 	auto bg2_2 = Sprite::create("Map/bg2.png");
-	bg2_2->setScale(SCREEN_SIZE.width / (bg2_2->getContentSize().width/2));
+	bg2_2->setScale(SCREEN_SIZE.width / (bg2_2->getContentSize().width / 2));
 	//bg2_2->setScaleY(SCREEN_SIZE.height / bg2_2->getContentSize().height);
 	bg2_2->setAnchorPoint(Point(0, 0.5f));
 
-	auto bg3_1 = Sprite::create("Map/bg3.png");
+	/*auto bg3_1 = Sprite::create("Map/bg3.png");
 	bg3_1->setScaleX(SCREEN_SIZE.width / bg3_1->getContentSize().width);
 	bg3_1->setScaleY(SCREEN_SIZE.height / bg3_1->getContentSize().height);
 	bg3_1->setAnchorPoint(Point(0, 0.5f));
@@ -547,7 +500,7 @@ void GameScene::createInfiniteNode()
 	auto bg3_2 = Sprite::create("Map/bg3.png");
 	bg3_2->setScaleX(SCREEN_SIZE.width / bg3_2->getContentSize().width);
 	bg3_2->setScaleY(SCREEN_SIZE.height / bg3_2->getContentSize().height);
-	bg3_2->setAnchorPoint(Point(0, 0.5f));
+	bg3_2->setAnchorPoint(Point(0, 0.5f));*/
 
 
 	background->addChild(bg1_1, 0, Vec2(0.5f, 1), Vec2(0, 0));
@@ -1121,9 +1074,7 @@ void GameScene::initUnderGroundPhysic(b2World * world, Point pos, Size size)
 
 bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 {
-	if (left_corner.containsPoint(touch->getLocation())
-		&& !hud->getBtnSpecial()->getBoundingBox().containsPoint(touch->getLocation())
-		) {
+	if (left_corner.containsPoint(touch->getLocation())) {
 
 		// cannot jump while attacking or being injured
 		if (hero->getFSM()->currentState == MAttack || hero->getFSM()->currentState == MInjured ||
@@ -1327,7 +1278,63 @@ void GameScene::cacheSkeleton()
 
 void GameScene::shakeTheScreen()
 {
-	//log("SHAKING ME");
 	auto shake = MoveBy::create(0.01f, Vec2(0, -0.005f * SCREEN_SIZE.height));
 	this->runAction(Sequence::create(shake, shake->reverse(), shake, shake->reverse(), nullptr));
+}
+
+void GameScene::callingBird()
+{
+	hero->setIsDriverEagle(true);
+	hero->setOnGround(false);
+	hero->getFSM()->changeState(MIdle);
+	hero->setVisible(false);
+	hud->setBtnSpecialHintDone(false);
+	_aEagle->setVisible(true);
+	_aEagle->getB2Body()->SetTransform(hero->getB2Body()->GetPosition(), 0.0f);
+	_aEagle->flyUp(b2Vec2(hero->getMoveVel(), 7.0f));
+
+	auto _aEagleFlyDown = Sequence::create(DelayTime::create(4.0f), CallFunc::create([&]() {
+		_aEagle->flyDown(b2Vec2(hero->getMoveVel(), -7.0f));
+	}), nullptr);
+	auto _aHeroGetOffEagle = Sequence::create(DelayTime::create(6.0f), CallFunc::create([&]() { heroGetOffEagle(); }), nullptr);
+	runAction(_aEagleFlyDown);
+	runAction(_aHeroGetOffEagle);
+}
+
+void GameScene::pauseGame()
+{
+	// disable the menu pause item
+	if (EM->getSmokeRun()->isVisible()) {
+		EM->getSmokeRun()->pause();
+	}
+
+	hero->pause();
+
+
+	dialogPause = DialogPauseGame::create();
+	this->getParent()->addChild(dialogPause);
+
+	hud->getPauseItem()->setEnabled(false);
+
+	this->pause();
+}
+
+void GameScene::resumeGame()
+{
+	if (EM->getSmokeRun()->isVisible()) {
+		EM->getSmokeRun()->resume();
+	}
+
+	hero->resume();
+	
+	dialogPause->removeFromParentAndCleanup(true);
+	dialogPause = nullptr;
+
+	hud->resumeIfVisible();
+	hud->getPauseItem()->setEnabled(true);
+	if(hud->getBtnSpecial()->isVisible())
+		hud->getBtnSpecial()->setEnabled(true);
+	
+
+	this->resume();
 }

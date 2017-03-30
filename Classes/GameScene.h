@@ -11,12 +11,13 @@
 #include "boss1/EnemyBoss1.h"
 #include "EffectManager.h"
 #include "JSonHeroManager.h"
-//#include "SkeletonManager.h"
+#include "chimdieu/ChimDieu.h"
 #include "Coin.h"
 #include "CollisionListener.h"
 #include "InfiniteParallaxNode.h"
 #include "CoinBag.h"
 #include "CoinBullion.h"
+#include "DialogPauseGame.h"
 
 
 USING_NS_CC;
@@ -51,12 +52,17 @@ private:
 
 
 	BaseHero *hero;
+	ChimDieu* _aEagle;
 	InfiniteParallaxNode *background;
 
 	// skeleton cache
 	spSkeletonData *sr_toanchan1;
 	spSkeletonData *sr_wooder;
 	//end skeleton cache
+
+
+	// dialog here
+	DialogPauseGame* dialogPause;
 
 	// listener
 	EventListenerTouchOneByOne* touch_listener;
@@ -144,6 +150,10 @@ public:
 
 	// shaking
 	void shakeTheScreen();
+	void callingBird();
+
+	void pauseGame();
+	void resumeGame();
 
     // implement the "static create()" method manually
    // CREATE_FUNC(GameScene);

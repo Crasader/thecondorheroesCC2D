@@ -14,6 +14,7 @@ public:
 	static Button* create(string file_name_main, string file_name_CoolDown, Point pos);
 
 private:
+	EventListenerTouchOneByOne* listener;
 	int timer;
 	void checkInterval(float dt);
 	void runTimer();
@@ -28,6 +29,7 @@ protected:
 	CC_SYNTHESIZE(bool, isBlocked, IsBlocked);
 
 	void addEvents();
+	void pauseListener();
 };
 
 #endif // __BUTTON_H__

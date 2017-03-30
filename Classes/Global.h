@@ -43,6 +43,7 @@ using namespace std;
 #define TAG_COINBULLION						59
 #define TAG_COINBAG							60
 #define TAG_EAGLE							61
+#define TAG_DIALOG							62
 
 
 #define TAG_ENEMY_WOODER					101

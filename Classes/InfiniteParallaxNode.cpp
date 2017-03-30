@@ -32,7 +32,7 @@ InfiniteParallaxNode* InfiniteParallaxNode::create()
 
 void InfiniteParallaxNode::updatePosition()
 {
-	int safeOffset = -2;
+	int safeOffset = -1;
 	// Get visible size
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	// 1. For each child of an parallax node
@@ -47,7 +47,7 @@ void InfiniteParallaxNode::updatePosition()
 				auto po = (PointObject*)_parallaxArray->arr[i];
 				// If yes increase its current offset on the value of visible width
 				if (po->getChild() == node)
-					po->setOffset(po->getOffset() + Point(visibleSize.width + node->getBoundingBox().size.width, 0));
+					po->setOffset(po->getOffset() + Point(/*visibleSize.width */ node->getBoundingBox().size.width*2, 0));
 			}
 	}
 }

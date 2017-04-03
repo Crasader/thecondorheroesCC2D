@@ -54,8 +54,9 @@ private:
 public:
 	static JSonHeroManager* getInstance();
 
+	int getSelectedHero();
 	void readFile(int indexHero);
-	void writerString(int index, string key, string valueString);
+	void writerString(int index, const char* key, string valueString);
 	void writerFloat(int index, string key, float valueFloat);
 	void writerInteger(int index, string key, int valueInteger);
 

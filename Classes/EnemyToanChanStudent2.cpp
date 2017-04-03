@@ -1,5 +1,5 @@
 #include "EnemyToanChanStudent2.h"
-#include "SkeletonManager.h"
+#include "manager/SkeletonManager.h"
 
 
 EnemyToanChanStudent2::EnemyToanChanStudent2(string jsonFile, string atlasFile, float scale):EnemyToanChanStudent(jsonFile, atlasFile,scale)

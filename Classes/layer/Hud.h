@@ -1,7 +1,7 @@
 #ifndef __HUD_H__
 #define __HUD_H__
 
-#include "MyButton.h"
+#include "utils/MyButton.h"
 
 
 class Hud : public Layer
@@ -53,8 +53,11 @@ protected:
 	CC_SYNTHESIZE(MenuItemImage*, btnSpecial, BtnSpecial);
 	CC_SYNTHESIZE(bool, btnSpecialHintDone, BtnSpecialHintDone);
 
+	CC_SYNTHESIZE(Sprite*, m_pKillChain, KillChain);//DuongPM Edited for multi kills
+
 private:
 	TMXTiledMap *tmxMap;
+	list<Sprite*> g_lTemp;
 	void addProfile();
 	void addButton();
 	void createBloodBar();

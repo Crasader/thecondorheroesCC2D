@@ -1,8 +1,6 @@
-#include "Hud.h"
-#include "GameScene.h"
-#include "JSonHeroManager.h"
-
-list<Sprite*> g_lTemp;
+#include "layer/Hud.h"
+#include "layer/GameScene.h"
+#include "manager/JSonHeroManager.h"
 
 bool Hud::init()
 {

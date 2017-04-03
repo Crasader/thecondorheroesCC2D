@@ -1,5 +1,5 @@
 #include "EnemyBoss1.h"
-#include "MenuScene.h"
+#include "layer/MenuScene.h"
 
 EnemyBoss1::EnemyBoss1(string jsonFile, string atlasFile, float scale):BaseEnemy(jsonFile,atlasFile,scale)
 {
@@ -8,7 +8,7 @@ EnemyBoss1::EnemyBoss1(string jsonFile, string atlasFile, float scale):BaseEnemy
 	control = 0;
 	controlAttack = 2;
 	controlState = 0;
-	hp = 15;
+	hp = 5;
 	baseVelocity =Vec2(SCREEN_SIZE.width/2.3f, SCREEN_SIZE.height/10);
 	moveVelocity = Vec2(SCREEN_SIZE.height/2,SCREEN_SIZE.height/2);
 	realtimeVec = Vec2(SCREEN_SIZE.width / 2.3f, SCREEN_SIZE.height / 10);
@@ -69,7 +69,7 @@ void EnemyBoss1::die()
 		}
 		if (hp <= 0) {
 			spHp->setVisible(false);
-			isDie = true;
+			//isDie = true;
 		}
 		else {
 			auto scale1 = spHp->getScaleX();
@@ -200,7 +200,8 @@ void EnemyBoss1::listener()
 				this->idle();
 			}
 			else if ((strcmp(getCurrent()->animation->name, "injured-red") == 0 && loopCount == 1)) {
-				Director::getInstance()->replaceScene(MenuLayer::createScene());
+				//Director::getInstance()->replaceScene(MenuLayer::createScene());
+				setIsDie(true);
 			}
 		}
 	});

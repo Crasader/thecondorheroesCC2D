@@ -1,5 +1,5 @@
 #include "EnemyToanChanStudent.h"
-#include "SkeletonManager.h"
+#include "manager/SkeletonManager.h"
 
 EnemyToanChanStudent::EnemyToanChanStudent(spSkeletonData * data):BaseEnemy(data)
 {

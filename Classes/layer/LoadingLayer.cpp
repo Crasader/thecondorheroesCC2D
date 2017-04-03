@@ -1,5 +1,5 @@
-#include "LoadingLayer.h"
-#include "GameScene.h"
+#include "layer/LoadingLayer.h"
+#include "layer/GameScene.h"
 
 bool LoadingLayer::init()
 {

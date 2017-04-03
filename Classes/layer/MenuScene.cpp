@@ -1,5 +1,5 @@
-#include "MenuScene.h"
-#include "GameScene.h"
+#include "layer/MenuScene.h"
+#include "layer/GameScene.h"
 
 cocos2d::Scene * MenuLayer::createScene()
 {

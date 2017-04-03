@@ -1,8 +1,7 @@
 #include "DuongQua.h"
-#include "JSonHeroManager.h"
-#include "GameScene.h"
+#include "manager/JSonHeroManager.h"
+#include "layer/GameScene.h"
 #include "AudioEngine.h"
-#include "GameScene.h"
 
 
 DuongQua::DuongQua(string jsonFile, string atlasFile, float scale) : BaseHero(jsonFile, atlasFile, scale)
@@ -383,6 +382,12 @@ void DuongQua::landing()
 
 void DuongQua::die()
 {
+	--dieHard;
+	if (dieHard < 0) {
+		log("Die Hard");
+		return;
+	}
+
 	clearTracks();
 	addAnimation(0, "die", false);
 	setToSetupPose();
@@ -395,26 +400,39 @@ void DuongQua::die()
 
 void DuongQua::attackNormal()
 {
-	runSlash();
-
-	clearTracks();
-	auto r = rand() % 2;
-
-	if (r) {
-		addAnimation(0, "attack1", false);
+	if (!getIsDoneDuration1()) {
+		attackBySkill1();
+		setIsPriorSkill1(true);			// move to attack
 	}
+
 	else {
-		addAnimation(0, "attack2", false);
+		changeSwordCategoryBitmask(BITMASK_SWORD);
+
+		setIsPriorAttack(true);
+
+		runSlash();
+
+		clearTracks();
+		auto r = rand() % 2;
+
+		if (r) {
+			addAnimation(0, "attack1", false);
+		}
+		else {
+			addAnimation(0, "attack2", false);
+		}
+
+		log("atttack");
+		setToSetupPose();
+
+		EM->getSlashBreak()->setVisible(false);
 	}
-
-	log("Atttack");
-	setToSetupPose();
-
-	EM->getSlashBreak()->setVisible(false);
 }
 
 void DuongQua::attackLanding()
 {
+	changeSwordCategoryBitmask(BITMASK_SWORD);
+	setIsPriorAttack(true);
 	runSlashLand();
 
 	clearTracks();
@@ -495,10 +513,6 @@ void DuongQua::listener()
 				getFSM()->setGlobalState(MLand);
 			}
 
-			else if (getFSM()->globalState == MDie) {
-				return;
-			}
-
 			getFSM()->revertToGlobalState();
 			setIsPriorInjured(false);
 		}
@@ -528,10 +542,6 @@ void DuongQua::listener()
 				getFSM()->setGlobalState(MLand);
 			}
 
-			else if (getFSM()->globalState == MDie) {
-				return;
-			}
-
 			getFSM()->revertToGlobalState();
 
 		}
@@ -552,6 +562,11 @@ void DuongQua::listener()
 	/*this->setCompleteListener([&](int trackIndex, int loopCount) {
 
 	});*/
+}
+
+void DuongQua::doDestroyBodies(b2World* world)
+{
+	BaseHero::doDestroyBodies(world);
 }
 
 void DuongQua::updateMe(float dt)

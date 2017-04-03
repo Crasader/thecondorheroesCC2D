@@ -1,12 +1,12 @@
 ﻿#include "CollisionListener.h"
 #include "BaseHero.h"
 #include "BaseEnemy.h"
-#include "DQ_DocCoKiemPhap.h"
-#include "DQ_TieuHonChuong.h"
-#include "GameScene.h"
-#include "Coin.h"
+#include "duongqua/DQ_DocCoKiemPhap.h"
+#include "duongqua/DQ_TieuHonChuong.h"
+#include "layer/GameScene.h"
+#include "coin/Coin.h"
 #include "Slash.h"
-#include "EffectManager.h"
+#include "manager/EffectManager.h"
 #include "boss1/EnemyBoss1.h"
 
 CollisionListener::CollisionListener() {
@@ -75,7 +75,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 	}
 
-	else if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_TOANCHAN1) ||
+	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_TOANCHAN1) ||
 		(bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_TOANCHAN1)
 		) {
 
@@ -101,7 +101,30 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 	}
 
-	else if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_BOSS) ||
+	if ((bitmaskA == BITMASK_RADA_SKILL_1 && bitmaskB == BITMASK_TOANCHAN1)
+		|| (bitmaskB == BITMASK_RADA_SKILL_1 && bitmaskA == BITMASK_TOANCHAN1)
+		|| (bitmaskA == BITMASK_RADA_SKILL_1 && bitmaskB == BITMASK_TOANCHAN2)
+		|| (bitmaskB == BITMASK_RADA_SKILL_1 && bitmaskA == BITMASK_TOANCHAN2)
+		|| (bitmaskA == BITMASK_RADA_SKILL_2 && bitmaskB == BITMASK_TOANCHAN1)
+		|| (bitmaskB == BITMASK_RADA_SKILL_2 && bitmaskA == BITMASK_TOANCHAN1)
+		|| (bitmaskA == BITMASK_RADA_SKILL_2 && bitmaskB == BITMASK_TOANCHAN2)
+		|| (bitmaskB == BITMASK_RADA_SKILL_2 && bitmaskA == BITMASK_TOANCHAN2)
+		) {
+
+		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
+		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
+		auto _aEnemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 || sA->getTag() == TAG_ENEMY_TOANCHAN2 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+
+		auto parentGameScene = (GameScene*)_aEnemy->getParent();
+		if (bitmaskA == BITMASK_RADA_SKILL_1 || bitmaskB == BITMASK_RADA_SKILL_1) {
+			parentGameScene->getHero()->selectEnemyBySkill1(_aEnemy);
+		}
+		if (bitmaskA == BITMASK_RADA_SKILL_2 || bitmaskB == BITMASK_RADA_SKILL_2) {
+			parentGameScene->getHero()->selectEnemyBySkill2(_aEnemy);
+		}
+	}
+
+	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_BOSS) ||
 		(bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_BOSS)
 		) {
 
@@ -121,7 +144,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 	}
 
 
-	else if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_COIN) ||
+	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_COIN) ||
 		(bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_COIN)
 		) {
 
@@ -135,7 +158,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 	}
 
-	else if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_COIN_BULLION) ||
+	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_COIN_BULLION) ||
 		(bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_COIN_BULLION)
 		) {
 
@@ -149,7 +172,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 	}
 
-	else if ((bitmaskA == BITMASK_COIN_BAG && bitmaskB == BITMASK_SWORD) ||
+	if ((bitmaskA == BITMASK_COIN_BAG && bitmaskB == BITMASK_SWORD) ||
 		(bitmaskB == BITMASK_COIN_BAG && bitmaskA == BITMASK_SWORD)
 		) {
 
@@ -163,7 +186,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		parentGameScene->updateMoney(10);
 	}
 
-	else if ((bitmaskA == BITMASK_WOODER && bitmaskB == BITMASK_SWORD) ||
+	if ((bitmaskA == BITMASK_WOODER && bitmaskB == BITMASK_SWORD) ||
 		(bitmaskB == BITMASK_WOODER && bitmaskA == BITMASK_SWORD)
 		) {
 
@@ -176,7 +199,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		parentGameScene->updateScore(5);
 	}
 
-	else if ((bitmaskA == BITMASK_TOANCHAN1 && bitmaskB == BITMASK_SWORD) ||
+	if ((bitmaskA == BITMASK_TOANCHAN1 && bitmaskB == BITMASK_SWORD) ||
 		(bitmaskB == BITMASK_TOANCHAN1 && bitmaskA == BITMASK_SWORD)
 		) {
 
@@ -200,7 +223,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		parentGameScene->updateScore(12);
 	}
 
-	else if ((bitmaskA == BITMASK_TOANCHAN2 && bitmaskB == BITMASK_SWORD) ||
+	if ((bitmaskA == BITMASK_TOANCHAN2 && bitmaskB == BITMASK_SWORD) ||
 		(bitmaskB == BITMASK_TOANCHAN2 && bitmaskA == BITMASK_SWORD)
 		) {
 
@@ -223,7 +246,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		parentGameScene->updateScore(16);
 	}
 
-	else if ((bitmaskA == BITMASK_BOSS && bitmaskB == BITMASK_SWORD) ||
+	if ((bitmaskA == BITMASK_BOSS && bitmaskB == BITMASK_SWORD) ||
 		(bitmaskB == BITMASK_BOSS && bitmaskA == BITMASK_SWORD)
 		) {
 
@@ -244,7 +267,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		enemy->die();
 	}
 
-	else if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_SLASH) ||
+	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_SLASH) ||
 		(bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_SLASH)
 		) {
 
@@ -265,7 +288,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 	}
 
-	else if ((bitmaskA == BITMASK_SWORD && bitmaskB == BITMASK_SLASH) ||
+	if ((bitmaskA == BITMASK_SWORD && bitmaskB == BITMASK_SLASH) ||
 		(bitmaskB == BITMASK_SWORD && bitmaskA == BITMASK_SLASH)
 		) {
 
@@ -288,7 +311,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 	}
 
 
-	else if ((bitmaskA == BITMASK_SWORD && bitmaskB == BITMASK_UNDER_GROUND) ||
+	if ((bitmaskA == BITMASK_SWORD && bitmaskB == BITMASK_UNDER_GROUND) ||
 		(bitmaskB == BITMASK_SWORD && bitmaskA == BITMASK_UNDER_GROUND)
 		) {
 
@@ -304,6 +327,52 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		kp->setTextureRect(Rect(Vec2::ZERO,
 			Size(kp->getContentSize().width, kp->getContentSize().height * random(0.61f, 0.63f))));
 
+	}
+
+	if (((bitmaskA == BITMASK_SENSOR && bitmaskB == BITMASK_TOANCHAN1)
+		|| (bitmaskB == BITMASK_SENSOR && bitmaskA == BITMASK_TOANCHAN1))
+		|| ((bitmaskA == BITMASK_SENSOR && bitmaskB == BITMASK_TOANCHAN2)
+		|| (bitmaskB == BITMASK_SENSOR && bitmaskA == BITMASK_TOANCHAN2))) {
+
+		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
+		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
+
+		auto _aEnemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 || sA->getTag() == TAG_ENEMY_TOANCHAN2 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+		auto gameLayer = (GameScene*) _aEnemy->getParent();
+		gameLayer->getHero()->pushToListDestroy(_aEnemy);
+		log("Enemy");
+	}
+}
+
+void CollisionListener::EndContact(b2Contact * contact)
+{
+	b2Body *bodyA = contact->GetFixtureA()->GetBody();
+	b2Body *bodyB = contact->GetFixtureB()->GetBody();
+
+	uint16 bitmaskA = bodyA->GetFixtureList()->GetFilterData().categoryBits;
+	uint16 bitmaskB = bodyB->GetFixtureList()->GetFilterData().categoryBits;
+
+	if ((bitmaskA == BITMASK_RADA_SKILL_1 && bitmaskB == BITMASK_TOANCHAN1)
+		|| (bitmaskB == BITMASK_RADA_SKILL_1 && bitmaskA == BITMASK_TOANCHAN1)
+		|| (bitmaskA == BITMASK_RADA_SKILL_1 && bitmaskB == BITMASK_TOANCHAN2)
+		|| (bitmaskB == BITMASK_RADA_SKILL_1 && bitmaskA == BITMASK_TOANCHAN2)
+		|| (bitmaskA == BITMASK_RADA_SKILL_2 && bitmaskB == BITMASK_TOANCHAN1)
+		|| (bitmaskB == BITMASK_RADA_SKILL_2 && bitmaskA == BITMASK_TOANCHAN1)
+		|| (bitmaskA == BITMASK_RADA_SKILL_2 && bitmaskB == BITMASK_TOANCHAN2)
+		|| (bitmaskB == BITMASK_RADA_SKILL_2 && bitmaskA == BITMASK_TOANCHAN2)
+		) {
+
+		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
+		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
+		auto _aEnemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 || sA->getTag() == TAG_ENEMY_TOANCHAN2 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+
+		auto parentGameScene = (GameScene*)_aEnemy->getParent();
+		if (bitmaskA == BITMASK_RADA_SKILL_1 || bitmaskB == BITMASK_RADA_SKILL_1) {
+			parentGameScene->getHero()->deSelectEnemyBySkill1();
+		}
+		if (bitmaskA == BITMASK_RADA_SKILL_2 || bitmaskB == BITMASK_RADA_SKILL_2) {
+			parentGameScene->getHero()->deSelectEnemyBySkill2();
+		}
 	}
 }
 

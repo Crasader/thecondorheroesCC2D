@@ -11,12 +11,17 @@ JSonHeroManager::JSonHeroManager()
 JSonHeroManager::~JSonHeroManager()
 {
 }
-
+ 
 JSonHeroManager * JSonHeroManager::getInstance()
 {	
 	if (jsonHeroManager == nullptr)
 		jsonHeroManager = new JSonHeroManager();
 	return jsonHeroManager;
+}
+
+int JSonHeroManager::getSelectedHero()
+{
+	return 0;
 }
 
 void JSonHeroManager::readFile(int indexHero)
@@ -50,8 +55,10 @@ void JSonHeroManager::readFile(int indexHero)
 	this->level = jsonDoc["hero"][indexHero]["level"].GetInt();
 }
 
-void JSonHeroManager::writerString(int index, string key, string valueString)
+void JSonHeroManager::writerString(int index, const char* key, string valueString)
 {
+	rapidjson::Value v;
+	
 }
 
 void JSonHeroManager::writerFloat(int index, string key, float valueFloat)

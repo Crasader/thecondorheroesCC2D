@@ -1,10 +1,10 @@
 #ifndef __DUONG_QUA_H__
 #define __DUONG_QUA_H__
 
-#include "EffectManager.h"
-#include "DQ_TieuHonChuong.h"
-#include "DQ_ToanChanKiemPhap.h"
-#include "DQ_DocCoKiemPhap.h"
+#include "manager/EffectManager.h"
+#include "duongqua/DQ_TieuHonChuong.h"
+#include "duongqua/DQ_ToanChanKiemPhap.h"
+#include "duongqua/DQ_DocCoKiemPhap.h"
 #include "BaseHero.h"
 
 class DuongQua : public BaseHero
@@ -69,6 +69,8 @@ protected:
 	void revive();
 	void die(Point posOfCammera);
 	void listener();
+
+	void doDestroyBodies(b2World *world);
 
 	void updateMe(float dt);
 

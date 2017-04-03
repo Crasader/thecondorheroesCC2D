@@ -2,7 +2,7 @@
 #define __ENEMY_WOODER_H__
 
 #include "BaseEnemy.h"
-#include "SkeletonManager.h"
+#include "manager/SkeletonManager.h"
 
 USING_NS_CC;
 

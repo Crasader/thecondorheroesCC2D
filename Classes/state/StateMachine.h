@@ -1,7 +1,7 @@
 #ifndef __STATE_MACHINE_H__
 #define __STATE_MACHINE_H__
 
-#include "State.h"
+#include "state/State.h"
 #include "cocos2d.h"
 
 USING_NS_CC;

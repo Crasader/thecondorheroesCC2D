@@ -12,6 +12,8 @@ BaseHero::BaseHero(string jsonFile, string atlasFile, float scale) : B2Skeleton(
 	isDriverEagle = false;
 	currentRunDis = 0.0f;
 	preRunDis = 0.0f;
+
+	dieHard = 1;
 }
 
 BaseHero * BaseHero::create(string jsonFile, string atlasFile, float scale)
@@ -147,6 +149,60 @@ void BaseHero::doCounterSkill2()
 }
 
 void BaseHero::doCounterSkill3()
+{
+}
+
+void BaseHero::doDestroyBodies(b2World *world)
+{
+	world->DestroyBody(getB2Body());
+	world->DestroyBody(swordBody);
+
+	setB2Body(nullptr);
+	swordBody = nullptr;
+}
+
+void BaseHero::selectEnemyBySkill1(BaseEnemy * p_pEnemySelected)
+{
+	m_lEnemiesSelectedBySkill1.push_back(p_pEnemySelected);
+}
+
+void BaseHero::deSelectEnemyBySkill1()
+{
+	if (!m_lEnemiesSelectedBySkill1.empty()) {
+		m_lEnemiesSelectedBySkill1.pop_front();
+	}
+}
+
+void BaseHero::selectEnemyBySkill2(BaseEnemy * p_pEnemySelected)
+{
+	m_lEnemiesSelectedBySkill2.push_back(p_pEnemySelected);
+}
+
+void BaseHero::deSelectEnemyBySkill2()
+{
+	if (!m_lEnemiesSelectedBySkill2.empty()) {
+		m_lEnemiesSelectedBySkill2.pop_front();
+	}
+}
+
+void BaseHero::selectEnemyBySkill3(BaseEnemy * p_pEnemySelected)
+{
+	m_lEnemiesSelectedBySkill3.push_back(p_pEnemySelected);
+}
+
+void BaseHero::deSelectEnemyBySkill3()
+{
+	if (!m_lEnemiesSelectedBySkill3.empty()) {
+		m_lEnemiesSelectedBySkill3.pop_front();
+	}
+}
+
+void BaseHero::pushToListDestroy(BaseEnemy *p_pEnemySelected)
+{
+	m_lEnemiesToDestroy.push_back(p_pEnemySelected);
+}
+
+void BaseHero::popOutListDestroy()
 {
 }
 

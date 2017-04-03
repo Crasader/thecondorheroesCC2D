@@ -2,22 +2,24 @@
 #define __GAME_SCENE_H__
 
 #include "cocos2d.h"
-#include "DuongQua.h"
+#include "colong/CoLong.h"
+#include "duongqua/DuongQua.h"
 #include "Global.h"
-#include "GLES-Render.h"
 #include "EnemyWooder.h"
 #include "EnemyToanChanStudent.h"
 #include "EnemyToanChanStudent2.h"
 #include "boss1/EnemyBoss1.h"
-#include "EffectManager.h"
-#include "JSonHeroManager.h"
+#include "manager/EffectManager.h"
+#include "manager/JSonHeroManager.h"
 #include "chimdieu/ChimDieu.h"
-#include "Coin.h"
+#include "coin/Coin.h"
+#include "coin/CoinBag.h"
+#include "coin/CoinBullion.h"
 #include "CollisionListener.h"
-#include "InfiniteParallaxNode.h"
-#include "CoinBag.h"
-#include "CoinBullion.h"
-#include "DialogPauseGame.h"
+#include "utils/InfiniteParallaxNode.h"
+#include "utils/GLES-Render.h"
+
+#include "layer/DialogPauseGame.h"
 
 
 USING_NS_CC;
@@ -29,6 +31,8 @@ public:
 	static cocos2d::Scene* createScene(int map, int haveboss);
 	virtual bool init(int map, int haveboss);
 	static GameScene* create(int map, int haveboss );
+
+	BaseHero * getHero() { return hero; }
 
 private:
 	// props
@@ -56,10 +60,14 @@ private:
 	Follow *camera;
 	Node* follow;
 	CCRect left_corner;
+	b2Body* sensor;
 
 
 	BaseHero *hero;
 	ChimDieu* _aEagle;
+	int m_nKillsInChain = 0;
+	float m_fKillChainCounter = 3.0f;
+
 	InfiniteParallaxNode *background;
 	InfiniteParallaxNode *background2;
 
@@ -78,6 +86,7 @@ private:
 
 	// Create Function
 	void createDuongQua(string path_Json, string path_Atlas, Point position);
+	void createCoLong(string path_Json, string path_Atlas, Point position);
 	void heroGetOffEagle();
 
 
@@ -125,6 +134,9 @@ private:
 	// do do se bi roi xuong
 	// bat su kien roi xuong qua man hinh de don dep map
 	
+	void createSensorToDetectEnemy();
+	void updateSensor();
+
 	void danceWithEffect();
 	void danceWithCamera();
 	float previousPercentPosition = 0.0f;
@@ -147,6 +159,7 @@ public:
 
 	void updateMoney(int numberOfCoin);
 	void updateScore(int score);
+	void updateKillChain(int p_nCombo); //DuongPM edited for multi kills
 	void updateBloodBar(int numberOfHealth, bool isVisible);
 	void updateCamera();
 	//void cleanMap();

@@ -2,8 +2,8 @@
 #define __BASE_HERO_H__
 
 #include "B2Skeleton.h"
-#include "GB2ShapeCache-x.h"
-#include "StateMachine.h"
+#include "utils/GB2ShapeCache-x.h"
+#include "state/StateMachine.h"
 #include "BaseEnemy.h"
 
 
@@ -16,6 +16,11 @@ class BaseHero : public B2Skeleton
 
 protected:
 	StateMachine* stateMachine;
+	list<BaseEnemy *> m_lEnemiesSelectedBySkill1;		//DuongPM edited
+	list<BaseEnemy *> m_lEnemiesSelectedBySkill2;		//DuongPM edited
+	list<BaseEnemy *> m_lEnemiesSelectedBySkill3;
+
+	list<BaseEnemy *> m_lEnemiesToDestroy;				// list enemy to destroy after done skill
 
 	CC_SYNTHESIZE(b2Body*, swordBody, SwordBody);
 	CC_SYNTHESIZE(float, boxHeight, BoxHeight);
@@ -40,6 +45,7 @@ protected:
 	CC_SYNTHESIZE(bool, isPriorSkill1, IsPriorSkill1);
 	CC_SYNTHESIZE(bool, isPriorSkill2, IsPriorSkill2);
 	CC_SYNTHESIZE(bool, isPriorSkill3, IsPriorSkill3);
+	CC_SYNTHESIZE(int, dieHard, DieHard);		// accept die only one time
 
 	CC_SYNTHESIZE(float, durationSkill1, DurationSkill1);
 	CC_SYNTHESIZE(float, durationSkill2, DurationSkill2);
@@ -83,6 +89,20 @@ public:
 	virtual void doCounterSkill1();
 	virtual void doCounterSkill2();
 	virtual void doCounterSkill3();
+
+
+	virtual void doDestroyBodies(b2World* world);
+
+	// default methods
+	void selectEnemyBySkill1(BaseEnemy *p_pEnemySelected); //DuongPM edited
+	void deSelectEnemyBySkill1();							//DuongPM edited
+	void selectEnemyBySkill2(BaseEnemy *p_pEnemySelected); //DuongPM edited
+	void deSelectEnemyBySkill2();							//DuongPM edited
+	void selectEnemyBySkill3(BaseEnemy *p_pEnemySelected); //DuongPM edited
+	void deSelectEnemyBySkill3();							//DuongPM edited
+
+	void pushToListDestroy(BaseEnemy *p_pEnemySelected);
+	void popOutListDestroy();
 
 	StateMachine* getFSM();
 };

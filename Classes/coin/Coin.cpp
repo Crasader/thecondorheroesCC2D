@@ -41,10 +41,10 @@ void Coin::runAnimation()
 void Coin::picked()
 {
 	this->setVisible(false);
-	effect = SkeletonAnimation::createWithFile("Effect_getgolden.json","Effect_getgolden.atlas",SCREEN_SIZE.height/3/291);
-	effect->setAnimation(0,"Effect_coin", false);
+	effect = SkeletonAnimation::createWithFile("Effect_getgolden.json", "Effect_getgolden.atlas", SCREEN_SIZE.height / 3 / 291);
+	effect->setAnimation(0, "Effect_coin", false);
 	effect->setPosition(this->getPosition());
-	this->getParent()->addChild(effect,ZORDER_ENEMY);
+	this->getParent()->addChild(effect, ZORDER_ENEMY);
 	CallFunc *call = CallFunc::create([&]() {
 		effect->removeFromParentAndCleanup(true);
 		this->removeFromParentAndCleanup(true);
@@ -70,4 +70,13 @@ void Coin::onExit()
 	world->DestroyBody(this->getB2Body());
 	//this->removeFromParentAndCleanup(true);
 	//log("delete coin");
+}
+
+void Coin::setAngle(float radian)
+{
+
+	float vx = SCREEN_SIZE.width * 0.3f / PTM_RATIO * cosf(radian);
+	float vy = SCREEN_SIZE.width * 0.3f / PTM_RATIO * sinf(radian);
+	this->body->SetLinearVelocity(b2Vec2(vx, vy));
+
 }

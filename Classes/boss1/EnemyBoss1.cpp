@@ -8,11 +8,12 @@ EnemyBoss1::EnemyBoss1(string jsonFile, string atlasFile, float scale):BaseEnemy
 	control = 0;
 	controlAttack = 2;
 	controlState = 0;
-	hp = 5;
+	hp = 2;
 	baseVelocity =Vec2(SCREEN_SIZE.width/2.3f, SCREEN_SIZE.height/10);
 	moveVelocity = Vec2(SCREEN_SIZE.height/2,SCREEN_SIZE.height/2);
 	realtimeVec = Vec2(SCREEN_SIZE.width / 2.3f, SCREEN_SIZE.height / 10);
 	realMoveVelocity = Vec2::ZERO;
+	exxp = nullptr;
 	//lockState = false;
 }
 
@@ -23,6 +24,7 @@ EnemyBoss1 * EnemyBoss1::create(string jsonFile, string atlasFile, float scale)
 	boss->update(0.0f);
 	boss->state = new Boss1Idling();
 	boss->setTag(TAG_BOSS);
+	boss->scaleBoss = scale;
 	return boss;
 }
 
@@ -66,6 +68,7 @@ void EnemyBoss1::die()
 			this->clearTracks();
 			this->setAnimation(0, "injured-red", false);
 			this->setToSetupPose();
+			this->boomboom();
 		}
 		if (hp <= 0) {
 			spHp->setVisible(false);
@@ -153,6 +156,34 @@ void EnemyBoss1::creatHpSprite()
 	spHp->update(0.0f);
 }
 
+void EnemyBoss1::boomboom()
+{
+	exxp = SkeletonAnimation::createWithFile("Effect/exxp.json","Effect/exxp.atlas", scaleBoss);
+	//exxp = Sprite::create("Effect/exxp.png");
+	exxp->setScale(scaleBoss*5);
+	exxp->setPosition(this->getPosition());
+	exxp->setAnimation(0,"exxp",true);
+	exxp->setToSetupPose();
+	exxp->update(0.0f);
+	this->getParent()->addChild(exxp,100);
+	this->changeState(new Boss1Die());
+}
+
+void EnemyBoss1::createGold()
+{
+	auto coin = Coin::create();
+	auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
+	coin->setScale(scale);
+	coin->setPosition(this->getPosition());
+	this->getParent()->addChild(coin,ZORDER_ENEMY);
+	coin->initCirclePhysic(this->getB2Body()->GetWorld(), coin->getPosition());
+	coin->changeBodyCategoryBits(BITMASK_COIN);
+	coin->changeBodyMaskBits(BITMASK_HERO|BITMASK_FLOOR);
+	coin->getB2Body()->SetType(b2_dynamicBody);
+	coin->getB2Body()->GetFixtureList()->SetSensor(false);
+	coin->setAngle(CCRANDOM_0_1()*PI/6 +PI/2);
+}
+
 void EnemyBoss1::updateMe(Point posHero)
 {
 	this->heroLocation = posHero;
@@ -162,10 +193,17 @@ void EnemyBoss1::updateMe(Point posHero)
 		this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
 	}
 
-	state->execute(this);
+	if (exxp != nullptr) {
+		exxp->setPosition(this->getPosition());
+	}
 	
+
+	state->execute(this);
+	if(this->getPositionX()-posHero.x < SCREEN_SIZE.width/1.7f)
 	this->getB2Body()->SetLinearVelocity(b2Vec2(this->realtimeVec.x / PTM_RATIO, this->realtimeVec.y*cosf(control / 120.0f * 2 * PI) / PTM_RATIO) +
 		b2Vec2(realMoveVelocity.x / PTM_RATIO, realMoveVelocity.y / PTM_RATIO));
+	else 
+		this->getB2Body()->SetLinearVelocity(b2Vec2(0,0));
 	//////////////
 	control++;
 	if (control == maxControl) {
@@ -201,7 +239,12 @@ void EnemyBoss1::listener()
 			}
 			else if ((strcmp(getCurrent()->animation->name, "injured-red") == 0 && loopCount == 1)) {
 				//Director::getInstance()->replaceScene(MenuLayer::createScene());
-				setIsDie(true);
+				//setIsDie(true);
+				auto call = CCCallFunc::create([&]() {
+					this->setIsDie(true);
+				});
+				//this->setControlState(INT_MIN);
+				this->runAction(Sequence::createWithTwoActions(DelayTime::create(5), call));
 			}
 		}
 	});

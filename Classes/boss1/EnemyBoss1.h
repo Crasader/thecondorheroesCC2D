@@ -5,6 +5,7 @@
 #include "StateBoss1.h"
 #include "SlashBoss.h"
 #include "StateBoss1.h"
+#include "coin/Coin.h"
 
 class EnemyBoss1 : public BaseEnemy
 {
@@ -17,6 +18,8 @@ private:
 	CC_SYNTHESIZE(Vec2, realMoveVelocity, RealMoveVelocity);
 	CC_SYNTHESIZE(int, controlAttack, ControlAttack);
 	CC_SYNTHESIZE(int, controlState, ControlState);
+	CC_SYNTHESIZE(SkeletonAnimation*,exxp, Exxp);
+	//CC_SYNTHESIZE(Sprite*, exxp, Exxp);
 	const int maxControl = 960;
 	int control;
 public:
@@ -26,6 +29,7 @@ public:
 	CCArray *slashPool;
 	Sprite *spHp;
 	int indexSlash;
+	float scaleBoss;
 	EnemyBoss1(string jsonFile, string atlasFile, float scale);
 	static EnemyBoss1* create(string jsonFile, string atlasFile, float scale);
 
@@ -38,6 +42,8 @@ public:
 	void creatSlash(float angel);
 	void creatHidenSlash(float angel); // tao check chem
 	void creatHpSprite();
+	void boomboom();
+	void createGold();
 
 	void updateMe(Point posHero);
 

@@ -158,3 +158,25 @@ void Boss1FixingStupid::execute(EnemyBoss1 * boss)
 		boss->setRealMoveVelocity(Vec2(boss->getRealMoveVelocity().x, 0));
 	}
 }
+
+Boss1Die::Boss1Die()
+{
+}
+
+Boss1Die::~Boss1Die()
+{
+}
+
+void Boss1Die::enter(EnemyBoss1 * boss)
+{
+	//StateBoss1::enter(boss);
+	boss->clearTracks();
+	boss->setAnimation(0,"injured-red",false);
+}
+
+void Boss1Die::execute(EnemyBoss1 * boss)
+{
+	if (boss->control % 30 == 0) {
+		//boss->createGold();
+	}
+}

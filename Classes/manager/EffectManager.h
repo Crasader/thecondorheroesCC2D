@@ -21,6 +21,7 @@ protected:
 	CC_SYNTHESIZE(SkeletonAnimation *, smokeLanding, SmokeLanding);
 	CC_SYNTHESIZE(SkeletonAnimation *, smokeRun, SmokeRun);
 	CC_SYNTHESIZE(SkeletonAnimation *, reviveMe, ReviveMe);
+	//CC_SYNTHESIZE(SkeletonAnimation*, exxp, Exxp);
 
 private:
 	static EffectManager *effectManager;

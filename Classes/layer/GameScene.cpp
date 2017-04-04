@@ -59,11 +59,11 @@ bool GameScene::init(int map, int haveboss)
 	createGroundBody();
 	createSensorToDetectEnemy();
 
-	//createDuongQua("Animation/DuongQua/DuongQua.json", "Animation/DuongQua/DuongQua.atlas",
-		//Point(origin.x, visibleSize.height * 0.75f));
-
-	createCoLong("Animation/CoLong/CoLong.json", "Animation/CoLong/CoLong.atlas",
+	createDuongQua("Animation/DuongQua/DuongQua.json", "Animation/DuongQua/DuongQua.atlas",
 		Point(origin.x, visibleSize.height * 0.75f));
+
+	/*createCoLong("Animation/CoLong/CoLong.json", "Animation/CoLong/CoLong.atlas",
+		Point(origin.x, visibleSize.height * 0.75f));*/
 
 	_aEagle = ChimDieu::create("Animation/ChimDieu/ChimDieu-DuongQua.json",
 		"Animation/ChimDieu/ChimDieu-DuongQua.atlas", SCREEN_SIZE.height / 2048);
@@ -88,7 +88,6 @@ bool GameScene::init(int map, int haveboss)
 	if (haveboss)
 		creatBoss();
 	createCoint();
-
 	return true;
 }
 
@@ -467,7 +466,7 @@ void GameScene::loadBackground(int map)
 
 	tmx_map->setPosition(Point::ZERO);
 
-	tmx_map->setVisible(false);
+	//tmx_map->setVisible(false);
 
 	this->addChild(tmx_map, ZORDER_BG2);
 	if (haveboss) {
@@ -475,6 +474,7 @@ void GameScene::loadBackground(int map)
 			tmx_mapboss[i] = TMXTiledMap::create("Map/map1/mapboss.tmx");
 			tmx_mapboss[i]->setAnchorPoint(Point::ZERO);
 			tmx_mapboss[i]->setScale(scaleOfMap);
+			//tmx_mapboss[i]->setVisible(false);
 		}
 
 		tmx_mapboss[0]->setPosition(tmx_map->getPosition() + Vec2(tmx_map->getBoundingBox().size.width, 0));
@@ -539,7 +539,7 @@ void GameScene::createInfiniteNode()
 	//background->addChild(bg3_2, 0, Vec2(1.5f, 1), Vec2(bg3_1->getBoundingBox().size.width, 0));
 	background->setPosition(Point(-SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 	background->setAnchorPoint(Point(0, 0.5f));
-	background->setVisible(false);
+	//background->setVisible(false);
 	this->addChild(background, ZORDER_BG);
 
 	background2 = InfiniteParallaxNode::create();
@@ -690,6 +690,7 @@ void GameScene::creatBoss()
 			"Animation/Enemy_Boss1/Boss1.atlas", scaleOfEnemy);*/
 		auto enemy = EnemyBoss1::create("Animation/Enemy_Boss1/Boss1.json",
 			"Animation/Enemy_Boss1/Boss1.atlas", scaleOfEnemy);
+		//auto enemy = EnemyBoss1::create("Effect/exxp.json", "Effect/exxp.atlas", scaleOfEnemy);
 		enemy->setPosition(origin);
 		//enemy->setVisible(false);
 		this->addChild(enemy, ZORDER_ENEMY);
@@ -1135,7 +1136,7 @@ void GameScene::danceWithCamera()
 	auto origin = Director::getInstance()->getVisibleOrigin();
 	follow = Node::create();
 	follow->setPosition(origin + SCREEN_SIZE / 2);
-	addChild(follow);
+	this->addChild(follow);
 
 	camera = Follow::create(follow);
 	camera->setTarget(follow);
@@ -1170,7 +1171,7 @@ void GameScene::initGroundPhysic(b2World * world, Point pos, Size size)
 	fixtureDef.shape = &shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_FLOOR;
-	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR;
+	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR | BITMASK_COIN;
 
 	bodyDef.type = b2_staticBody;
 
@@ -1388,14 +1389,15 @@ void GameScene::updateCamera()
 		//background->setPositionZ(background->getPositionZ() - 5);
 	}
 	if (!_aEagle->getIsUp()) {
-		if (hero->getPositionY() > SCREEN_SIZE.height * 3 / 4) {
-			background->setPositionY(hero->getPositionY() - SCREEN_SIZE.height * 1 / 4);
+		if (hero->getPositionY() > SCREEN_SIZE.height * 5 / 6) {
+			background->setPositionY(hero->getPositionY() - SCREEN_SIZE.height * 2 / 6);
 		}
 		else
 		{
 			background->setPositionY(SCREEN_SIZE.height / 2);
 		}
 
+		follow->setPositionY(background->getPositionY());
 
 		if (hero->getPositionX() >= SCREEN_SIZE.width / 4) {
 			if (!haveboss) {
@@ -1408,12 +1410,12 @@ void GameScene::updateCamera()
 			else {
 				follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4);
 			}
-			follow->setPositionY(background->getPositionY());
+			
 		}
 	}
 	else {
 		if (hero->getPositionY() > SCREEN_SIZE.height * 2 / 4) {
-			background->setPositionY(hero->getPositionY() - SCREEN_SIZE.height * 0);
+			background->setPositionY(hero->getPositionY());
 		}
 		else
 		{

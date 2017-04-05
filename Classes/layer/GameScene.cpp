@@ -9,13 +9,13 @@ Hud *hud;
 LoadingLayer* loadingLayer;
 
 
-Scene* GameScene::createScene(int map, int haveboss)
+Scene* GameScene::createScene(int map, int haveboss, int charId)
 {
 	// 'scene' is an autorelease object
 	auto scene = Scene::create();
 
 	// 'layer' is an autorelease object
-	auto layer = GameScene::create(map, haveboss);
+	auto layer = GameScene::create(map, haveboss, charId);
 	layer->setName("gameLayer");
 
 
@@ -25,6 +25,7 @@ Scene* GameScene::createScene(int map, int haveboss)
 	// add layer as a child to scene
 	scene->addChild(layer);
 	scene->addChild(hud);
+	scene->addChild(layer->blur);
 	scene->addChild(loadingLayer);
 
 
@@ -33,7 +34,7 @@ Scene* GameScene::createScene(int map, int haveboss)
 }
 
 // on "init" you need to initialize your instance
-bool GameScene::init(int map, int haveboss)
+bool GameScene::init(int map, int haveboss, int charId)
 {
 	//////////////////////////////
 	// 1. super init first
@@ -57,19 +58,23 @@ bool GameScene::init(int map, int haveboss)
 	initB2World();
 	loadBackground(map);
 	createGroundBody();
-	createSensorToDetectEnemy();
+	//createSensorToDetectEnemy();
 
-	//createDuongQua("Animation/DuongQua/DuongQua.json", "Animation/DuongQua/DuongQua.atlas",
-		//Point(origin.x, visibleSize.height * 0.75f));
+	this->charId = charId;
 
-	createCoLong("Animation/CoLong/CoLong.json", "Animation/CoLong/CoLong.atlas",
-		Point(origin.x, visibleSize.height * 0.75f));
+	if (charId == 0) {
+		createDuongQua("Animation/DuongQua/DuongQua.json", "Animation/DuongQua/DuongQua.atlas",
+			Point(origin.x, visibleSize.height * 0.75f));
+	}
+	else {
+		createCoLong("Animation/CoLong/CoLong.json", "Animation/CoLong/CoLong.atlas", Point(origin.x, visibleSize.height * 0.75f));
+	}
 
-	_aEagle = ChimDieu::create("Animation/ChimDieu/ChimDieu-DuongQua.json",
-		"Animation/ChimDieu/ChimDieu-DuongQua.atlas", SCREEN_SIZE.height / 2048);
+	_aEagle = ChimDieu::create("Animation/ChimDieu/ChimDieu.json",
+		"Animation/ChimDieu/ChimDieu.atlas", SCREEN_SIZE.height / 2048);
 	_aEagle->initCirclePhysic(world, Point(hero->getB2Body()->GetPosition().x - visibleSize.width, visibleSize.height / 2));
 	this->addChild(_aEagle, ZORDER_HERO);
-	_aEagle->getB2Body()->SetGravityScale(0);
+	_aEagle->setStringHero(charId == 0 ? "DuongQua" : "CoLong");
 
 
 	danceWithEffect();
@@ -92,10 +97,10 @@ bool GameScene::init(int map, int haveboss)
 	return true;
 }
 
-GameScene * GameScene::create(int map, int haveboss)
+GameScene * GameScene::create(int map, int haveboss, int charId)
 {
 	GameScene *pRet = new(std::nothrow) GameScene();
-	if (pRet && pRet->init(map, haveboss))
+	if (pRet && pRet->init(map, haveboss, charId))
 	{
 		pRet->autorelease();
 		return pRet;
@@ -127,7 +132,7 @@ void GameScene::createDuongQua(string path_Json, string path_Atlas, Point positi
 
 void GameScene::createCoLong(string path_Json, string path_Atlas, Point position)
 {
-	JSHERO->readFile(0);
+	JSHERO->readFile(1);
 	hero = CoLong::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 340);
 	hero->listener();
 	hero->setPosition(position);
@@ -144,7 +149,7 @@ void GameScene::createCoLong(string path_Json, string path_Atlas, Point position
 void GameScene::onBegin()
 {
 	hud->addEvents();
-	hud->getBtnSpecial()->setEnabled(true);
+	hud->getBtnCalling()->setEnabled(true);
 	hud->getPauseItem()->setEnabled(true);
 
 	touch_listener = EventListenerTouchOneByOne::create();
@@ -307,12 +312,18 @@ void GameScene::update(float dt)
 	updateB2World(dt);
 	listener();
 
+	if (m_fMultiKillsCounterTime > 0.0f) {
+		m_fMultiKillsCounterTime -= dt;
+	}
+	else {
+		m_nMultiKills = 0;
+	}
+
 	checkActiveButton();
 
 	_aEagle->updateMe(dt);
 	if (hero->getIsDriverEagle()) {
 		hero->getB2Body()->SetGravityScale(0);
-		hero->getB2Body()->SetLinearVelocity(b2Vec2_zero);
 		hero->getB2Body()->SetTransform(b2Vec2(_aEagle->getB2Body()->GetPosition().x, _aEagle->getB2Body()->GetPosition().y - 100.0f / PTM_RATIO), 0.0f);
 	}
 
@@ -326,29 +337,33 @@ void GameScene::update(float dt)
 	updateEnemy();
 	//cleanMap();
 	updateCamera();
-	updateSensor();
+	//updateSensor();
 
 	// fall down some hold
-	//if (hero->getPositionY() < 0) {
-	//	hero->getFSM()->changeState(MLandRevive);
-	//	hero->getB2Body()->SetGravityScale(0);
-	//	hero->setOnGround(false);
-	//	hero->getB2Body()->SetTransform(b2Vec2(hero->getB2Body()->GetPosition().x, SCREEN_SIZE.height / 10 / PTM_RATIO), 0.0f);
-	//	hud->hintSpecial(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
-	//}
+	if (hud->getBtnCalling()->isVisible() && hero->getPositionY() + hero->getTrueRadiusOfHero() < 0) {
+		hero->getFSM()->changeState(MLandRevive);
+		hero->setOnGround(false);
+		hero->getB2Body()->SetGravityScale(0);
+		hero->getB2Body()->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
+		hero->getB2Body()->SetTransform(b2Vec2(hero->getB2Body()->GetPosition().x, hero->getB2Body()->GetPosition().y + 1), 0.0f);
+		hud->moveCallBirdToCenterScreen(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
+	}
+	else if (!hud->getBtnCalling()->isVisible() && hero->getPositionY() + hero->getTrueRadiusOfHero() * 4 < 0) {
+		overGame();
+	}
 
-	//if (hud->getBtnSpecialHintDone()) {
-	//	static float g_fTimeCounter = 0.0f;
-	//	g_fTimeCounter += dt;
-	//	if (g_fTimeCounter > 5.0f / 180) {
-	//		bool _bResult = hud->specialCooldown();
-	//		if (!_bResult) {
-	//			hud->setBtnSpecialHintDone(false);
-	//			//Director::getInstance()->replaceScene(MenuLayer::createScene());
-	//		}
-	//		g_fTimeCounter = 0.0f;
-	//	}
-	//}
+	if (hud->getBtnCallingHintDone()) {
+		static float g_fTimeCounter = 0.0f;
+		g_fTimeCounter += dt;
+		if (g_fTimeCounter > 5.0f / 180) {
+			bool _bResult = hud->callBirdCooldown();
+			if (!_bResult) {
+				hud->setBtnCallingHintDone(false);
+				overGame();
+			}
+			g_fTimeCounter = 0.0f;
+		}
+	}
 
 	//if (hero->getPositionX() >= SCREEN_SIZE.width / 4) {
 	//	if (_aEagle->getIsUp() && this->getPositionZ() < 100.0f) {
@@ -399,7 +414,7 @@ void GameScene::initB2World()
 
 	// draw debug
 	auto debugDraw = new (std::nothrow) GLESDebugDraw(PTM_RATIO);
-	world->SetDebugDraw(debugDraw);
+	//world->SetDebugDraw(debugDraw);
 	uint32 flags = 0;
 	flags += b2Draw::e_shapeBit;
 	flags += b2Draw::e_jointBit;
@@ -467,7 +482,7 @@ void GameScene::loadBackground(int map)
 
 	tmx_map->setPosition(Point::ZERO);
 
-	tmx_map->setVisible(false);
+	//tmx_map->setVisible(false);
 
 	this->addChild(tmx_map, ZORDER_BG2);
 	if (haveboss) {
@@ -539,7 +554,7 @@ void GameScene::createInfiniteNode()
 	//background->addChild(bg3_2, 0, Vec2(1.5f, 1), Vec2(bg3_1->getBoundingBox().size.width, 0));
 	background->setPosition(Point(-SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 	background->setAnchorPoint(Point(0, 0.5f));
-	background->setVisible(false);
+	//background->setVisible(false);
 	this->addChild(background, ZORDER_BG);
 
 	background2 = InfiniteParallaxNode::create();
@@ -646,7 +661,7 @@ void GameScene::creatEnemyToanChanStudent()
 		this->addChild(enemy, ZORDER_ENEMY);
 		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 4));
 		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_SENSOR | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
+		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2 | BITMASK_SENSOR);
 		//enemy->genSplash();
 		enemy->listener();
 	}
@@ -667,7 +682,7 @@ void GameScene::creatEnemyToanChanStudent2()
 		this->addChild(enemy, ZORDER_ENEMY);
 		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
 		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN2);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_SENSOR | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
+		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2 | BITMASK_SENSOR);
 		enemy->genSlash();
 		enemy->listener();
 		auto slash = enemy->getSlash();
@@ -1141,6 +1156,8 @@ void GameScene::danceWithCamera()
 	camera->setTarget(follow);
 	runAction(camera);
 
+	blur = LayerColor::create(Color4B(0, 0, 0, 170));
+	blur->setVisible(false);
 	left_corner = CCRectMake(0, 0, SCREEN_SIZE.width / 2, SCREEN_SIZE.height);
 }
 
@@ -1234,7 +1251,9 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 
 		// cannot jump while attacking or being injured
 		if (hero->getFSM()->currentState == MAttack || hero->getFSM()->currentState == MInjured ||
-			hero->getFSM()->currentState == MDie || hero->getFSM()->currentState == MRevive)
+			hero->getFSM()->currentState == MDie || hero->getFSM()->currentState == MRevive || 
+			hero->getFSM()->currentState == MLandRevive
+			)
 
 			return false;
 
@@ -1332,37 +1351,13 @@ void GameScene::updateScore(int score)
 	hud->getLbScore()->setString(StringUtils::format("%i", hero->getScore()));
 }
 
-// 
-void GameScene::updateKillChain(int p_nCombo)
-{
-	if (p_nCombo > 1) {
-		hud->getKillChain()->setVisible(true);
-		switch (p_nCombo) {
-		case 2:
-			hud->getKillChain()->setTexture(CCTextureCache::sharedTextureCache()->addImage("KillChain/2.png"));
-			break;
-		case 3:
-			hud->getKillChain()->setTexture(CCTextureCache::sharedTextureCache()->addImage("KillChain/3.png"));
-			break;
-		case 4:
-			hud->getKillChain()->setTexture(CCTextureCache::sharedTextureCache()->addImage("KillChain/4.png"));
-			break;
-		case 5:
-			hud->getKillChain()->setTexture(CCTextureCache::sharedTextureCache()->addImage("KillChain/5.png"));
-			break;
-		default:
-			hud->getKillChain()->setTexture(CCTextureCache::sharedTextureCache()->addImage("KillChain/monster.png"));
-			break;
-		}
-
-		ScaleTo* scale1 = ScaleTo::create(0.1f, 1.2f, 1.2f, 1.2f);
-		ScaleTo* scale2 = ScaleTo::create(0.1f, 1.0f, 1.0f, 1.0f);
-		ScaleTo* scale3 = ScaleTo::create(0.1f, 0.8f, 0.8f, 0.8f);
-		Sequence* scale = Sequence::create(scale1, scale2, scale3, NULL);
-		hud->getKillChain()->runAction(scale);
-
-		hero->setScore(hero->getScore() + p_nCombo * 1000);
-		hud->getLbScore()->setString(StringUtils::format("%i", hero->getScore()));
+void GameScene::updateMultiKills() {
+	m_nMultiKills += 1;
+	m_fMultiKillsCounterTime = 1.0f;
+	if (m_nMultiKills > 1) {
+		hud->updateMultiKills(m_nMultiKills);
+		// TODO : update bonus score by multi kills
+		
 	}
 }
 
@@ -1507,7 +1502,7 @@ void GameScene::callingBird()
 	hero->setOnGround(false);
 	hero->getFSM()->changeState(MIdle);
 	hero->setVisible(false);
-	hud->setBtnSpecialHintDone(false);
+	hud->setBtnCallingHintDone(false);
 	_aEagle->setVisible(true);
 	_aEagle->getB2Body()->SetTransform(hero->getB2Body()->GetPosition(), 0.0f);
 	_aEagle->flyUp(b2Vec2(hero->getMoveVel(), 7.0f));
@@ -1520,15 +1515,21 @@ void GameScene::callingBird()
 	runAction(_aHeroGetOffEagle);
 }
 
+void GameScene::blurScreen()
+{
+	blur->setVisible(true);
+}
+
 void GameScene::pauseGame()
 {
+	blurScreen();
 	// disable the menu pause item
 	if (EM->getSmokeRun()->isVisible()) {
 		EM->getSmokeRun()->pause();
 	}
 
-	if (hud->getBtnSpecial()->isVisible()) {
-		hud->getBtnSpecial()->setEnabled(false);
+	if (hud->getBtnCalling()->isVisible()) {
+		hud->getBtnCalling()->setEnabled(false);
 	}
 
 	hud->pauseIfVisible();
@@ -1544,8 +1545,9 @@ void GameScene::pauseGame()
 
 void GameScene::dieGame()
 {
-	if (hud->getBtnSpecial()->isVisible()) {
-		hud->getBtnSpecial()->setEnabled(false);
+	blurScreen();
+	if (hud->getBtnCalling()->isVisible()) {
+		hud->getBtnCalling()->setEnabled(false);
 	}
 
 	hud->pauseIfVisible();
@@ -1563,21 +1565,44 @@ void GameScene::dieGame()
 	this->pause();
 }
 
+void GameScene::overGame()
+{
+	blurScreen();
+	if (hud->getBtnCalling()->isVisible()) {
+		hud->getBtnCalling()->setEnabled(false);
+	}
+
+	hud->pauseIfVisible();
+
+	if (EM->getSmokeRun()->isVisible()) {
+		EM->getSmokeRun()->pause();
+	}
+
+	hero->pause();
+	dialogPause = DialogPauseGame::create(2);
+	this->getParent()->addChild(dialogPause);
+
+	hud->getPauseItem()->setEnabled(false);
+
+	this->pause();
+}
+
 void GameScene::nextGame()
 {
 	++map;
 	if(map < 3)
-		Director::getInstance()->replaceScene(GameScene::createScene(map, haveboss));
+		Director::getInstance()->replaceScene(GameScene::createScene(map, haveboss, charId));
 	else if (map == 3)
-		Director::getInstance()->replaceScene(GameScene::createScene(map, true));
+		Director::getInstance()->replaceScene(GameScene::createScene(map, true, charId));
 	else 
 		Director::getInstance()->replaceScene(MenuLayer::createScene());
 }
 
 void GameScene::winGame()
 {
-	if (hud->getBtnSpecial()->isVisible()) {
-		hud->getBtnSpecial()->setEnabled(false);
+	blurScreen();
+	if (hud->getBtnCalling()->isVisible()) {
+		hud->getBtnCalling()->setEnabled(false);
 	}
 
 	hud->pauseIfVisible();
@@ -1598,6 +1623,7 @@ void GameScene::winGame()
 
 void GameScene::resumeGame()
 {
+	blur->setVisible(false);
 	if (EM->getSmokeRun()->isVisible()) {
 		EM->getSmokeRun()->resume();
 	}
@@ -1609,8 +1635,8 @@ void GameScene::resumeGame()
 
 	hud->resumeIfVisible();
 	hud->getPauseItem()->setEnabled(true);
-	if(hud->getBtnSpecial()->isVisible())
-		hud->getBtnSpecial()->setEnabled(true);
+	if(hud->getBtnCalling()->isVisible())
+		hud->getBtnCalling()->setEnabled(true);
 	
 
 	this->resume();
@@ -1618,5 +1644,5 @@ void GameScene::resumeGame()
 
 void GameScene::restartGame()
 {
-	Director::getInstance()->replaceScene(GameScene::createScene(map, haveboss));
+	Director::getInstance()->replaceScene(GameScene::createScene(map, haveboss, charId));
 }

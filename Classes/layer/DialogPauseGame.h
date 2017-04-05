@@ -11,9 +11,15 @@ using namespace std;
 
 class DialogPauseGame : public Layer
 {
-public:
+private:
 	ui::LoadingBar *loading;
 	int countDown = 50;
+	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+	Label *scoreLb;
+	Label *goldLb;
+	Label *goldReviveLb;
+
+public:
 	virtual bool init(int type);
 	static DialogPauseGame* create(int type); // -1 is pause, 0 is die, 1 is win
 

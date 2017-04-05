@@ -13,6 +13,11 @@ bool DialogPauseGame::init(int type)
 	{
 		return false;
 	}
+
+	this->setPosition(0, SCREEN_SIZE.height * 1.1f);
+	auto actionMove = MoveTo::create(0.4f, Vec2::ZERO);
+	auto effect = EaseBackOut::create(actionMove);
+
 	switch (type)
 	{
 	case -1: {
@@ -36,6 +41,7 @@ bool DialogPauseGame::init(int type)
 		break;
 	}
 	
+	this->runAction(effect);
 
 	return true;
 }
@@ -59,8 +65,6 @@ DialogPauseGame* DialogPauseGame::create(int type)
 
 void DialogPauseGame::initForPause()
 {
-	auto blurLayer = LayerColor::create(Color4B(0, 0, 0, 170));
-	addChild(blurLayer);
 
 	auto origin = Director::getInstance()->getVisibleOrigin();
 	auto win_size = Director::getInstance()->getVisibleSize();
@@ -95,10 +99,6 @@ void DialogPauseGame::initForPause()
 
 void DialogPauseGame::initForDie()
 {
-	//countDown = 5;
-	auto blurLayer = LayerColor::create(Color4B(0, 0, 0, 170));
-	addChild(blurLayer);
-
 	auto origin = Director::getInstance()->getVisibleOrigin();
 	auto win_size = Director::getInstance()->getVisibleSize();
 
@@ -147,8 +147,6 @@ void DialogPauseGame::initForDie()
 
 void DialogPauseGame::initForGameover()
 {
-	auto blurLayer = LayerColor::create(Color4B(0, 0, 0, 170));
-	addChild(blurLayer);
 
 	auto origin = Director::getInstance()->getVisibleOrigin();
 	auto win_size = Director::getInstance()->getVisibleSize();
@@ -193,9 +191,6 @@ void DialogPauseGame::initForGameover()
 
 void DialogPauseGame::initForWin()
 {
-	auto blurLayer = LayerColor::create(Color4B(0, 0, 0, 170));
-	addChild(blurLayer);
-
 	auto origin = Director::getInstance()->getVisibleOrigin();
 	auto win_size = Director::getInstance()->getVisibleSize();
 

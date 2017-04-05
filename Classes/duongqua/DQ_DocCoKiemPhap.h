@@ -22,6 +22,9 @@ protected:
 	CC_SYNTHESIZE(bool, isCollide, IsCollide);
 	CC_SYNTHESIZE(Sprite*, effectLand, EffectLand);
 	CC_SYNTHESIZE(ParticleSystemQuad*, particle, Particle);
+
+private:
+	int opacity = 255;
 	
 };
 

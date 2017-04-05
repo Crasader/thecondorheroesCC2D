@@ -178,7 +178,13 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		B2Skeleton* sA = (BaseEnemy*)bodyA->GetUserData();
 		B2Skeleton* sB = (BaseEnemy*)bodyB->GetUserData();
-		auto coin = sA ? (B2Skeleton *)sA : (B2Skeleton *)sB;
+		B2Skeleton* coin;
+		if (sA && sB) {
+			coin = sA->getTag() == TAG_COINBAG ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+		}
+		else {
+			coin = sA ? (BaseEnemy*)sA : (BaseEnemy*)sB;
+		}
 
 		coin->die();
 
@@ -190,13 +196,21 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		(bitmaskB == BITMASK_WOODER && bitmaskA == BITMASK_SWORD)
 		) {
 
-		BaseEnemy* sA = (BaseEnemy*)bodyA->GetUserData();
-		BaseEnemy* sB = (BaseEnemy*)bodyB->GetUserData();
-		auto enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
-
+		B2Sprite* sA = (B2Sprite*)bodyA->GetUserData();
+		B2Sprite* sB = (B2Sprite*)bodyB->GetUserData();
+		BaseEnemy* enemy;
+		if (sA && sB) {
+			enemy = sA->getTag() == TAG_ENEMY_WOODER ? (BaseEnemy *)sA : (BaseEnemy *)sB;	
+		}
+		else {
+			enemy = sA ? (BaseEnemy*)sA : (BaseEnemy*)sB;
+		}
+		
 		enemy->setIsDie(true);
 		auto parentGameScene = (GameScene*)enemy->getParent();
 		parentGameScene->updateScore(5);
+		parentGameScene->updateMultiKills();
+		
 	}
 
 	if ((bitmaskA == BITMASK_TOANCHAN1 && bitmaskB == BITMASK_SWORD) ||
@@ -221,6 +235,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		enemy->setIsDie(true);
 		auto parentGameScene = (GameScene*)enemy->getParent();
 		parentGameScene->updateScore(12);
+		parentGameScene->updateMultiKills();
 	}
 
 	if ((bitmaskA == BITMASK_TOANCHAN2 && bitmaskB == BITMASK_SWORD) ||
@@ -244,6 +259,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		enemy->setIsDie(true);
 		auto parentGameScene = (GameScene*)enemy->getParent();
 		parentGameScene->updateScore(16);
+		parentGameScene->updateMultiKills();
 	}
 
 	if ((bitmaskA == BITMASK_BOSS && bitmaskB == BITMASK_SWORD) ||

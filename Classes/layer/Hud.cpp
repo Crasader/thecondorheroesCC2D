@@ -175,10 +175,10 @@ void Hud::addButton()
 	auto mObject_4 = groupBtnCalling->getObject("btn_calling");
 	Point origin_4 = Point(mObject_4["x"].asFloat() * tmxMap->getScaleX(), mObject_4["y"].asFloat()* tmxMap->getScaleY());
 
-	btnSpecial = MenuItemImage::create("UI/btn_callbird.png", "UI/btn_callbird_off.png", CC_CALLBACK_1(Hud::doCalling, this));
-	btnSpecial->setEnabled(false);
-	btnSpecial->setPosition(origin_4);
-	btnSpecial->setScale(SCREEN_SIZE.height / 7 / btnSpecial->getContentSize().height);
+	btnCalling = MenuItemImage::create("UI/btn_callbird.png", "UI/btn_callbird_off.png", CC_CALLBACK_1(Hud::doCalling, this));
+	btnCalling->setEnabled(false);
+	btnCalling->setPosition(origin_4);
+	btnCalling->setScale(SCREEN_SIZE.height / 7 / btnCalling->getContentSize().height);
 
 
 	auto groupPause = tmxMap->getObjectGroup("btn_pause");
@@ -192,9 +192,15 @@ void Hud::addButton()
 	pauseItem->setPosition(origin_5.x, scoreBoard->getPositionY());
 
 
-	auto menu = Menu::create(btnSpecial, pauseItem, nullptr);
+	auto menu = Menu::create(btnCalling, pauseItem, nullptr);
 	menu->setPosition(Vec2::ZERO);
 	addChild(menu);
+
+	multiKills = new SkeletonAnimation("Effect/textkill.json", "Effect/textkill.atlas", 0.8f);
+	multiKills->setPosition(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height * 0.8f));
+	multiKills->setAnimation(0, "textkill", false);
+	multiKills->setSkin("default");
+	addChild(multiKills);
 
 }
 
@@ -219,10 +225,11 @@ void Hud::createBloodBar()
 
 void Hud::doCalling(Ref * pSender)
 {
-	log("do calling");
-	btnSpecial->setVisible(false);
-	btnSpecial->setEnabled(false);
-	hideButton();
+
+	btnCalling->setVisible(false);
+	btnCalling->setEnabled(false);
+	if(btnAttack->isVisible())
+		hideButton();
 
 	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
 	gameLayer->callingBird();
@@ -267,6 +274,7 @@ void Hud::hideButton()
 void Hud::showButton()
 {
 	addEvents();
+
 	btnAttack->setVisible(true);
 	if (!btnAttack->getCanTouch()) {
 		btnAttack->getCoolDownSprite()->setVisible(true);
@@ -340,32 +348,68 @@ void Hud::refreshControl()
 	btnSkill_3->refresh();
 }
 
-void Hud::hintSpecial(Vec2 p_ptCenterScreen) {
-	MoveTo *_pStageSpecialButton = MoveTo::create(0.3f, p_ptCenterScreen);
+void Hud::moveCallBirdToCenterScreen(Vec2 p_ptCenterScreen) {
+	hideButton();
+
+	auto origin = Director::getInstance()->getVisibleOrigin();
+	MoveTo *_pStageSpecialButton = MoveTo::create(0.3f, origin + p_ptCenterScreen);
 	auto _aStageSpecialButtonCallback = CallFunc::create([&]() {
-		btnSpecialHintDone = true;
+		btnCallingHintDone = true;
 	});
-	btnSpecial->runAction(Sequence::create(_pStageSpecialButton, _aStageSpecialButtonCallback, NULL));
-	cooldownSpecial();
+
+	btnCalling->runAction(Sequence::create(_pStageSpecialButton, _aStageSpecialButtonCallback, nullptr));
+	cooldownCallBird();
 }
 
-void Hud::cooldownSpecial() {
-	float _fRadius = btnSpecial->getContentSize().width / 2;
+void Hud::cooldownCallBird() {
+	float _fRadius = btnCalling->getContentSize().width / 2;
 	for (int i = 0; i < 180; i++) {
 		auto _aCooldownStep = Sprite::create("UI/green.png");
 		_aCooldownStep->setScale(_fRadius / _aCooldownStep->getContentSize().width * 2 * 0.1f);
 		float _fAngle = i * 2 * 3.141592653589793 / 180.0;
 		_aCooldownStep->setPosition(Vec2(_fRadius * sinf(_fAngle) + _fRadius, _fRadius * cosf(_fAngle) + _fRadius) * 1.05f);
-		btnSpecial->addChild(_aCooldownStep, -1);
+		btnCalling->addChild(_aCooldownStep, -1);
 		g_lTemp.push_back(_aCooldownStep);
 	}
 }
 
-bool Hud::specialCooldown() {
+bool Hud::callBirdCooldown() {
 	if (g_lTemp.empty()) {
 		return false;
 	}
-	btnSpecial->removeChild(g_lTemp.front(), true);
+	btnCalling->removeChild(g_lTemp.front(), true);
 	g_lTemp.pop_front();
 	return true;
+}
+
+void Hud::updateMultiKills(int m_nCombo)
+{
+	switch (m_nCombo) {
+	case 2:
+		multiKills->setSkin("doublekill");
+		break;
+	case 3:
+		multiKills->setSkin("triplekill");
+		break;
+	case 4:
+		multiKills->setSkin("quadrakill");
+		break;
+	case 5:
+		multiKills->setSkin("pentakill");
+		break;
+	case 6:
+		multiKills->setSkin("ultrakill");
+		break;
+	case 7:
+		multiKills->setSkin("rampage");
+		break;
+	default:
+		multiKills->setSkin("default");
+		break;
+	}
+	if (m_nCombo > 7) {
+		multiKills->setSkin("rampage");
+	}
+	multiKills->setSlotsToSetupPose();
+	multiKills->setAnimation(0, "textkill", false);
 }

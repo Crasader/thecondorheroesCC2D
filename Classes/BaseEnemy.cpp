@@ -1,4 +1,5 @@
 #include "BaseEnemy.h"
+#include "layer/GameScene.h"
 
 BaseEnemy::BaseEnemy() :B2Skeleton()
 {

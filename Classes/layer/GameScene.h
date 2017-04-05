@@ -28,9 +28,9 @@ class GameScene : public cocos2d::Layer
 {
 public:
 	
-	static cocos2d::Scene* createScene(int map, int haveboss);
-	virtual bool init(int map, int haveboss);
-	static GameScene* create(int map, int haveboss );
+	static cocos2d::Scene* createScene(int map, int haveboss, int charId);
+	virtual bool init(int map, int haveboss, int charId);
+	static GameScene* create(int map, int haveboss, int charId);
 
 	BaseHero * getHero() { return hero; }
 
@@ -39,6 +39,7 @@ private:
 	std::map <std::string, bool> checkGenEnemy;
 	int map;
 	int haveboss;
+	int charId;//Thinhnv Edited for select character
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
 	float scaleOfMap;
 	TMXTiledMap* tmx_map;
@@ -61,12 +62,13 @@ private:
 	Node* follow;
 	CCRect left_corner;
 	b2Body* sensor;
+	LayerColor *blur;
 
 
 	BaseHero *hero;
 	ChimDieu* _aEagle;
-	int m_nKillsInChain = 0;
-	float m_fKillChainCounter = 3.0f;
+	int m_nMultiKills = 0;
+	float m_fMultiKillsCounterTime;
 
 	InfiniteParallaxNode *background;
 	InfiniteParallaxNode *background2;
@@ -159,7 +161,7 @@ public:
 
 	void updateMoney(int numberOfCoin);
 	void updateScore(int score);
-	void updateKillChain(int p_nCombo); //DuongPM edited for multi kills
+	void updateMultiKills(); //DuongPM edited for multi kills
 	void updateBloodBar(int numberOfHealth, bool isVisible);
 	void updateCamera();
 	//void cleanMap();
@@ -174,8 +176,10 @@ public:
 	void reviveHero();
 	void callingBird();
 
+	void blurScreen();
 	void pauseGame();
 	void dieGame();
+	void overGame();
 	void nextGame();
 	void winGame();
 	void resumeGame();

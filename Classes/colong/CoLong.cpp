@@ -98,6 +98,7 @@ void CoLong::createNgocNuKiemPhap(Point p_ptPoint) {
 	m_lEnemiesSelectedBySkill2.pop_front();
 
 	enemy->die();
+	parentGameScene->updateMultiKills();
 }
 
 void CoLong::doCounterSkill2() {
@@ -114,6 +115,8 @@ void CoLong::doCounterSkill2() {
 
 // SKILL 3
 void CoLong::doCounterSkill3() {
+	m_pRadaSkill3->changeBodyCategoryBits(BITMASK_SWORD);
+
 	clearTracks();
 	addAnimation(0, "skill3", true);
 	setToSetupPose();
@@ -124,6 +127,7 @@ void CoLong::doCounterSkill3() {
 		checkDurationSkill3++;
 
 		if (checkDurationSkill3 >= getDurationSkill3() * 10) {
+			m_pRadaSkill3->changeBodyCategoryBits(BITMASK_WOODER);
 			setIsDoneDuration3(true);
 			checkDurationSkill3 = 0;
 			unschedule("KeySkill3");
@@ -135,7 +139,6 @@ void CoLong::doCounterSkill3() {
 void CoLong::updateMe(float p_fDelta) {
 	BaseHero::updateMe(p_fDelta);
 	getFSM()->Update();
-
 
 	if (!m_lDocPhongCham.empty()) {
 		TieuHonChuong *_pTempDPC = m_lDocPhongCham.front();
@@ -167,22 +170,26 @@ void CoLong::updateMe(float p_fDelta) {
 	if (getB2Body() == nullptr)
 		return;
 
+	m_pRadaSkill1->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), 0.0f);
+	m_pRadaSkill2->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), 0.0f);
+	m_pRadaSkill3->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), 0.0f);
+
 	auto currentVelY = getB2Body()->GetLinearVelocity().y;
 	if (getFSM()->currentState == MDie) {
 		getB2Body()->SetLinearVelocity(b2Vec2(0, currentVelY));
 		return;
 	}
 
-	if (getFSM()->currentState == MIdle) {
+	if (getFSM()->currentState == MLandRevive) {
 		getB2Body()->SetLinearVelocity(b2Vec2(0, 0));
 		return;
 	}
 
-	if (getPositionY() + getTrueRadiusOfHero() * 2 < 0) {
+	/*if (getPositionY() + getTrueRadiusOfHero() * 2 < 0) {
 		getB2Body()->SetTransform(b2Vec2(SCREEN_SIZE.width * 0.25f / PTM_RATIO,
 			SCREEN_SIZE.height / PTM_RATIO), getB2Body()->GetAngle());
 		return;
-	}
+	}*/
 
 	static float a = 0.0f;
 	if (m_bEndSkill && a < 5.0f) {
@@ -195,15 +202,6 @@ void CoLong::updateMe(float p_fDelta) {
 		m_bEndSkill = false;
 		m_pRadaSkill1->setVisible(false);
 		a = 0.0f;
-	}
-
-	m_pRadaSkill1->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), 0.0f);
-	m_pRadaSkill2->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), 0.0f);
-	if (!getIsDoneDuration3()) {
-		m_pRadaSkill3->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), 0.0f);
-	}
-	else {
-		m_pRadaSkill3->getB2Body()->SetTransform(b2Vec2(this->getB2Body()->GetPosition().x, -this->SCREEN_SIZE.height), 0.0f);
 	}
 
 	if (!getIsDoneDuration1()) {
@@ -233,7 +231,7 @@ void CoLong::updateMe(float p_fDelta) {
 			return;
 		}
 
-		if (getOnGround()) {
+		if (getOnGround() && !getIsDriverEagle()) {
 			getFSM()->changeState(MRun);
 		}
 	}
@@ -264,8 +262,8 @@ void CoLong::createRada(b2World *p_pWorld) {
 	m_pRadaSkill3->setScale(SCREEN_SIZE.width / m_pRadaSkill3->getContentSize().width / 5.0f);
 	m_pRadaSkill3->setVisible(false);
 	m_pRadaSkill3->initCirclePhysic(p_pWorld, Vec2(this->getB2Body()->GetPosition().x, this->getB2Body()->GetPosition().y));
-	m_pRadaSkill3->changeBodyCategoryBits(BITMASK_SWORD);
-	m_pRadaSkill3->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS);
+	m_pRadaSkill3->changeBodyCategoryBits(BITMASK_WOODER);
+	m_pRadaSkill3->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG);
 
 	this->getParent()->addChild(m_pRadaSkill3, ZORDER_SMT);
 	m_pRadaSkill3->setAngel(0.0f);
@@ -335,7 +333,7 @@ void CoLong::listener() {
 			this->getBloodScreen()->setVisible(false);
 
 			setIsPriorInjured(false);
-			if (getFSM()->globalState == MSKill1 || getFSM()->globalState == MAttack) {
+			if (getFSM()->globalState == MSKill3 || getFSM()->globalState == MAttack) {
 				getFSM()->setPreviousState(MInjured);
 				getFSM()->setGlobalState(MRun);
 			}
@@ -363,7 +361,7 @@ void CoLong::listener() {
 			changeSwordCategoryBitmask(BITMASK_ENEMY);
 
 			setIsPriorAttack(false);
-			if (getFSM()->globalState == MSKill1 || getFSM()->globalState == MInjured) {
+			if (getFSM()->globalState == MSKill3 || getFSM()->globalState == MInjured) {
 				getFSM()->setPreviousState(MAttack);
 				getFSM()->setGlobalState(MRun);
 			}
@@ -375,12 +373,6 @@ void CoLong::listener() {
 
 			getFSM()->revertToGlobalState();
 
-		}
-
-		// SKILL 1
-		else if (strcmp(getCurrent()->animation->name, "attack4") == 0) {
-			getFSM()->revertToGlobalState();
-			setIsPriorSkill1(false);
 		}
 
 		else if (strcmp(getCurrent()->animation->name, "die") == 0) {

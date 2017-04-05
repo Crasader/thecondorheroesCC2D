@@ -10,6 +10,8 @@ ChimDieu::ChimDieu(string jsonFile, string atlasFile, float scale) : B2Skeleton(
 ChimDieu * ChimDieu::create(string jsonFile, string atlasFile, float scale) {
 	ChimDieu *_pEagle = new ChimDieu(jsonFile, atlasFile, scale);
 	_pEagle->setAnimation(0, "fly", true);
+	_pEagle->setSkin("Free");
+	_pEagle->setSlotsToSetupPose();
 	_pEagle->update(0.0f);
 	_pEagle->setTag(TAG_EAGLE);
 	_pEagle->isUp = false;
@@ -29,6 +31,10 @@ void ChimDieu::updateMe(float dt) {
 		this->setPositionY(body->GetPosition().y * PTM_RATIO - this->body->GetFixtureList()->GetShape()->m_radius * PTM_RATIO);
 		this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
 	}
+	else
+		return;
+
+
 	if (isCarry && isUp && body->GetPosition().y > SCREEN_SIZE.height * 1.5f / PTM_RATIO) {
 		this->getB2Body()->SetLinearVelocity(b2Vec2(this->getB2Body()->GetLinearVelocity().x, 0.0f));
 	}
@@ -89,7 +95,8 @@ void ChimDieu::initCirclePhysic(b2World * world, Point pos) {
 }
 
 void ChimDieu::flyUp(b2Vec2 p_b2v2Velocity) {
-	this->setAnimation(0, "fly", true);
+	this->setSkin(stringHero);
+	this->setSlotsToSetupPose();
 	this->getB2Body()->SetLinearVelocity(p_b2v2Velocity);
 	this->isCarry = true;
 	this->isUp = true;
@@ -103,7 +110,8 @@ void ChimDieu::flyDown(b2Vec2 p_b2v2Velocity) {
 }
 
 void ChimDieu::flyAway() {
-	this->setAnimation(0, "appear", true);
+	this->setSkin("Free");
+	this->setSlotsToSetupPose();
 	this->getB2Body()->SetLinearVelocity(b2Vec2(15.0f, 5.0f));
 	this->isCarry = false;
 	this->isUp = false;

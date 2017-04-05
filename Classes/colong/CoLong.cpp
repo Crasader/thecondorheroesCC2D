@@ -27,7 +27,6 @@ CoLong * CoLong::create(string p_sJsonFile, string p_sAtlasFile, float p_fScale)
 	_pCoLong->setDurationSkill2(JSHERO->getDurationSkill2());
 	_pCoLong->setDurationSkill3(JSHERO->getDurationSkill3());
 
-	_pCoLong->facingRight = true;
 	_pCoLong->numberOfJump = 2;
 	_pCoLong->coinExplored = 0;
 	_pCoLong->score = 0;

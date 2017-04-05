@@ -31,7 +31,6 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 	duongQua->setDurationSkill2(JSHERO->getDurationSkill2());
 	duongQua->setDurationSkill3(JSHERO->getDurationSkill3());
 
-	duongQua->facingRight = true;
 	duongQua->setBoxHeight(duongQua->getBoundingBox().size.height / 6.7f);
 	duongQua->numberOfJump = 2;
 	duongQua->coinExplored = 0;

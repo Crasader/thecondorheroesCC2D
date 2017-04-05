@@ -80,7 +80,10 @@ void ChimDieu::updateMe(float dt) {
 	}
 	else {
 		if (body->GetPosition().y > SCREEN_SIZE.height * 3.0f / PTM_RATIO) {
-			this->getB2Body()->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
+			// this->getB2Body()->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
+			this->getB2Body()->GetWorld()->DestroyBody(this->getB2Body());
+			this->setB2Body(nullptr);
+			this->removeFromParentAndCleanup(true);
 		}
 	}
 }
@@ -90,8 +93,8 @@ void ChimDieu::initCirclePhysic(b2World * world, Point pos) {
 	this->getB2Body()->SetType(b2_dynamicBody);
 	this->getB2Body()->GetFixtureList()->SetSensor(true);
 	this->getB2Body()->SetGravityScale(0);
-	this->changeBodyCategoryBits(0x2000);
-	this->changeBodyMaskBits(0x2000);
+	this->changeBodyCategoryBits(0);
+	this->changeBodyMaskBits(0);
 }
 
 void ChimDieu::flyUp(b2Vec2 p_b2v2Velocity) {

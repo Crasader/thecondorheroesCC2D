@@ -89,6 +89,8 @@ private:
 	// Create Function
 	void createDuongQua(string path_Json, string path_Atlas, Point position);
 	void createCoLong(string path_Json, string path_Atlas, Point position);
+
+	void createEagle(Point position);
 	void heroGetOffEagle();
 
 

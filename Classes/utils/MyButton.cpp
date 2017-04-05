@@ -12,7 +12,6 @@ MyButton * MyButton::create(string file_name_main, string file_name_CoolDown, Po
 
 	mNode->setPosition(pos);
 	mNode->coolDown->setPosition(pos);
-	mNode->coolDown->setVisible(false);
 
 	/*mNode->effectCoolDown = Sprite::create("UI/effect_fullskill.png");
 	mNode->effectCoolDown->setVisible(false);
@@ -48,7 +47,7 @@ void MyButton::addEvents()
 		{	
 			if (canTouch) {
 				runTimer();
-				coolDown->setVisible(true);
+				this->setVisible(false);
 				this->schedule(schedule_selector(MyButton::checkInterval), timeCoolDown, 1, 0);
 				canTouch = false;
 				isActive = true;
@@ -84,7 +83,7 @@ void MyButton::checkInterval(float dt)
 	canTouch = true;
 	isActive = false;
 	if(!isBlocked)
-		coolDown->setVisible(false);
+		this->setVisible(true);
 }
 
 void MyButton::runTimer()

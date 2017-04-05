@@ -31,6 +31,7 @@ protected:
 	CC_SYNTHESIZE(float, jump_vel, JumpVel);
 
 	CC_SYNTHESIZE(Sprite*, bloodScreen, BloodScreen);
+	//CC_SYNTHESIZE(Sprite*, blash, Blash);
 	CC_SYNTHESIZE(SkeletonAnimation*, slash, Slash);
 	CC_SYNTHESIZE(SkeletonAnimation*, slashLand, SlashLand);
 

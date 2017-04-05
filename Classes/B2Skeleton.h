@@ -36,7 +36,6 @@ protected:
 
 	CC_SYNTHESIZE(int, health, Health);
 	CC_SYNTHESIZE(float, move_vel, MoveVel);
-	CC_SYNTHESIZE(bool, facingRight, FacingRight);
 
 
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();

@@ -20,6 +20,7 @@ public:
 	void picked();
 	void listener();
 	void onExit();
+	void setAngle(float radian);
 	
 };
 

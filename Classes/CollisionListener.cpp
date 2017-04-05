@@ -345,15 +345,13 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 	}
 
-	if (((bitmaskA == BITMASK_SENSOR && bitmaskB == BITMASK_TOANCHAN1)
-		|| (bitmaskB == BITMASK_SENSOR && bitmaskA == BITMASK_TOANCHAN1))
-		|| ((bitmaskA == BITMASK_SENSOR && bitmaskB == BITMASK_TOANCHAN2)
-		|| (bitmaskB == BITMASK_SENSOR && bitmaskA == BITMASK_TOANCHAN2))) {
+	if ((bitmaskA == BITMASK_SENSOR && bitmaskB == BITMASK_TOANCHAN1)
+		|| (bitmaskB == BITMASK_SENSOR && bitmaskA == BITMASK_TOANCHAN1)) {
 
 		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
 		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
 
-		auto _aEnemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 || sA->getTag() == TAG_ENEMY_TOANCHAN2 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+		auto _aEnemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 		auto gameLayer = (GameScene*) _aEnemy->getParent();
 		gameLayer->getHero()->pushToListDestroy(_aEnemy);
 		log("Enemy");

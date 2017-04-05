@@ -61,4 +61,15 @@ public:
 };
 
 
+class Boss1Die : public StateBoss1 {
+public:
+	Boss1Die();
+	~Boss1Die();
+
+	void enter(EnemyBoss1 *boss);
+	void execute(EnemyBoss1 *boss);
+
+};
+
+
 #endif // __ENEMY_H__

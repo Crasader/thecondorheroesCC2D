@@ -135,7 +135,7 @@ void BaseHero::updateMe(float dt)
 			,getSwordBody()->GetAngle());
 	}
 
-	if (health <= 0 /* || getPositionY() + getTrueRadiusOfHero() * 2 < 0 */) {
+	if (health <= 0) {
 		getFSM()->changeState(MDie);
 	}
 }

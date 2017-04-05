@@ -17,7 +17,7 @@ public:
 	virtual void initCirclePhysic(b2World *world, Point pos);
 	void updateMe(float dt);
 	void die();
-	void setAngel(float radian);
+	void setAngle(float radian);
 };
 	
 

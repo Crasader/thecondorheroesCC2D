@@ -62,7 +62,7 @@ void CoLong::createDocPhongCham(Point p_ptStartPoint, Point p_ptEndPoint) {
 	this->getParent()->addChild(thc, ZORDER_ENEMY);
 
 	//thc->getB2Body()->SetTransform(thc->getB2Body()->GetPosition(), angle);
-	thc->setAngel(atanf((p_ptEndPoint.y - p_ptStartPoint.y) / (p_ptEndPoint.x - p_ptStartPoint.x)));
+	thc->setAngle(atanf((p_ptEndPoint.y - p_ptStartPoint.y) / (p_ptEndPoint.x - p_ptStartPoint.x)));
 	thc->getB2Body()->SetLinearVelocity(b2Vec2(thc->getB2Body()->GetLinearVelocity().x * 2.0f, thc->getB2Body()->GetLinearVelocity().y * 2.0f));
 	thc->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), atanf((p_ptEndPoint.y - p_ptStartPoint.y) / (p_ptEndPoint.x - p_ptStartPoint.x)));
 	m_lDocPhongCham.push_back(thc);
@@ -248,7 +248,7 @@ void CoLong::createRada(b2World *p_pWorld) {
 	m_pRadaSkill1->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2);
 
 	this->getParent()->addChild(m_pRadaSkill1, ZORDER_SMT);
-	m_pRadaSkill1->setAngel(0.0f);
+	m_pRadaSkill1->setAngle(0.0f);
 
 	m_pRadaSkill2 = Rada::create("Animation/CoLong/circle-blash-blue.png");
 	m_pRadaSkill2->setScale(SCREEN_SIZE.width / m_pRadaSkill2->getContentSize().width / 1.5f);
@@ -258,7 +258,7 @@ void CoLong::createRada(b2World *p_pWorld) {
 	m_pRadaSkill2->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2);
 
 	this->getParent()->addChild(m_pRadaSkill2, ZORDER_SMT);
-	m_pRadaSkill2->setAngel(0.0f);
+	m_pRadaSkill2->setAngle(0.0f);
 
 	m_pRadaSkill3 = Rada::create("Animation/CoLong/circle-blash-blue.png");
 	m_pRadaSkill3->setScale(SCREEN_SIZE.width / m_pRadaSkill3->getContentSize().width / 5.0f);
@@ -268,7 +268,7 @@ void CoLong::createRada(b2World *p_pWorld) {
 	m_pRadaSkill3->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS);
 
 	this->getParent()->addChild(m_pRadaSkill3, ZORDER_SMT);
-	m_pRadaSkill3->setAngel(0.0f);
+	m_pRadaSkill3->setAngle(0.0f);
 }
 
 // SLASH

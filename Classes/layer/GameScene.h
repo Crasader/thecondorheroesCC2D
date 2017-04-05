@@ -39,6 +39,8 @@ private:
 	std::map <std::string, bool> checkGenEnemy;
 	int map;
 	int haveboss;
+	bool isWinGame;
+
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
 	float scaleOfMap;
 	TMXTiledMap* tmx_map;

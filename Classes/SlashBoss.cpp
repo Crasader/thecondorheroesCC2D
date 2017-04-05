@@ -63,7 +63,7 @@ void SlashBoss::die()
 	this->setB2Body(nullptr);
 }
 
-void SlashBoss::setAngel(float radian)// radian
+void SlashBoss::setAngle(float radian)// radian
 {
 	if (this->getB2Body() != nullptr) {
 		float vx = SCREEN_SIZE.width  / PTM_RATIO * cosf(radian);

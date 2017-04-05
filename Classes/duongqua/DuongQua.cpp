@@ -68,7 +68,7 @@ void DuongQua::createToanChanKiemPhap(Point posSword)
 
 	this->getParent()->addChild(tckp, ZORDER_SMT);
 
-	tckp->setAngel(0);
+	tckp->setAngle(0);
 	listToanChanKiemPhap.push_back(tckp);
 }
 
@@ -198,7 +198,7 @@ void DuongQua::createTieuHonChuong(Point posHand, int Zoder)
 	this->getParent()->addChild(thc, Zoder);
 
 	//thc->getB2Body()->SetTransform(thc->getB2Body()->GetPosition(), angle);
-	thc->setAngel(0);
+	thc->setAngle(0);
 
 	listTieuHonChuong.push_back(thc);
 }

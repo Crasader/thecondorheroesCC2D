@@ -44,6 +44,7 @@ bool GameScene::init(int map, int haveboss)
 	indexOfNextMapBoss = -1;
 	this->haveboss = haveboss;
 	this->map = map;
+	this->isWinGame = false;
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -225,7 +226,7 @@ void GameScene::listener()
 	if (hud->getBtnAttack()->getIsActive() && !hud->getBtnAttack()->getIsBlocked() &&
 		hero->getFSM()->currentState != MDie && hero->getFSM()->currentState != MInjured) {
 		hero->getFSM()->changeState(MAttack);
-			
+
 
 		hud->getBtnAttack()->setIsActive(false);
 	}
@@ -474,7 +475,7 @@ void GameScene::loadBackground(int map)
 			tmx_mapboss[i] = TMXTiledMap::create("Map/map1/mapboss.tmx");
 			tmx_mapboss[i]->setAnchorPoint(Point::ZERO);
 			tmx_mapboss[i]->setScale(scaleOfMap);
-			//tmx_mapboss[i]->setVisible(false);
+			tmx_mapboss[i]->setVisible(false);
 		}
 
 		tmx_mapboss[0]->setPosition(tmx_map->getPosition() + Vec2(tmx_map->getBoundingBox().size.width, 0));
@@ -502,7 +503,7 @@ void GameScene::createInfiniteNode()
 	//bg1_2->setScaleY(SCREEN_SIZE.height / bg1_2->getContentSize().height);
 	bg1_2->setAnchorPoint(Point(0, 0.5f));
 
-	
+
 
 	auto bg2_1 = Sprite::create("Map/bg2.png");
 	bg2_1->setScale(SCREEN_SIZE.width / (bg2_1->getContentSize().width));
@@ -531,7 +532,7 @@ void GameScene::createInfiniteNode()
 
 	background->addChild(bg1_1, 0, Vec2(0.5f, 1), Vec2(0, 0));
 	background->addChild(bg1_2, 0, Vec2(0.5f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
-	
+
 	background->addChild(bg2_1, 0, Vec2(0.7f, 1), Vec2(0, 0));
 	background->addChild(bg2_2, 0, Vec2(0.7f, 1), Vec2(bg2_1->getBoundingBox().size.width, 0));
 	//background->addChild(bg2_3, 0, Vec2(0.7f, 1), Vec2(bg2_1->getBoundingBox().size.width*2, 0));
@@ -558,7 +559,7 @@ void GameScene::createInfiniteNode()
 
 	background2->addChild(bg3_1, 0, Vec2(0.8f, 1), Vec2(0, 0));
 	background2->addChild(bg3_2, 0, Vec2(0.8f, 1), Vec2(bg3_1->getBoundingBox().size.width, 0));
-	background2->setPosition(Point(0,0));
+	background2->setPosition(Point(0, 0));
 	background2->setAnchorPoint(Point(0, 0.0f));
 	this->addChild(background2, ZORDER_BG);
 }
@@ -701,6 +702,8 @@ void GameScene::creatBoss()
 		enemy->createPool();
 		enemy->creatHpSprite();
 		enemy->listener();
+
+		enemy->createCoinPool();
 	}
 }
 
@@ -1083,6 +1086,7 @@ void GameScene::createFormCoin(string objectName, string objectMap, string objec
 			coin->initCirclePhysic(world, origin + origin2);
 			coin->changeBodyCategoryBits(BITMASK_COIN);
 			coin->changeBodyMaskBits(BITMASK_HERO);
+			coin->getB2Body()->GetFixtureList()->SetSensor(true);
 			coin->runAnimation();
 		}
 	}
@@ -1107,9 +1111,9 @@ void GameScene::createSensorToDetectEnemy()
 	fixtureDef.filter.maskBits = BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2;
 
 	bodyDef.type = b2_dynamicBody;
-	
 
-	bodyDef.position.Set((follow->getPositionX() + SCREEN_SIZE.width * 0.25f) / PTM_RATIO , SCREEN_SIZE.height / 2 / PTM_RATIO);
+
+	bodyDef.position.Set((follow->getPositionX() + SCREEN_SIZE.width * 0.25f) / PTM_RATIO, SCREEN_SIZE.height / 2 / PTM_RATIO);
 
 	sensor = world->CreateBody(&bodyDef);
 	sensor->CreateFixture(&fixtureDef);
@@ -1280,7 +1284,7 @@ void GameScene::updateEnemy()
 			auto tmp = (BaseEnemy*)child.at(i);
 			if (tmp->getTag() == TAG_BOSS) {
 				if (tmp->getIsDie()) {
-					this->winGame();
+					this->isWinGame = true;
 				}
 				else {
 					auto boss = (EnemyBoss1*)tmp;
@@ -1377,7 +1381,7 @@ void GameScene::updateBloodBar(int numberOfHealth, bool isVisible)
 
 void GameScene::updateCamera()
 {
-	
+
 	if (_aEagle->getIsUp() && _aEagle->getPositionZ() < 100.0f) {
 		_aEagle->setPositionZ(_aEagle->getPositionZ() + 5.0f);
 		_aEagle->setSequenceCloud(_aEagle->getSequenceCloud() - 0.04f);
@@ -1399,7 +1403,7 @@ void GameScene::updateCamera()
 
 		follow->setPositionY(background->getPositionY());
 
-		if (hero->getPositionX() >= SCREEN_SIZE.width / 4) {
+		/*if (hero->getPositionX() >= SCREEN_SIZE.width / 4) {
 			if (!haveboss) {
 				if (hero->getPositionX() < tmx_map->getBoundingBox().size.width - SCREEN_SIZE.width)
 					follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4);
@@ -1410,8 +1414,8 @@ void GameScene::updateCamera()
 			else {
 				follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4);
 			}
-			
-		}
+
+		}*/
 	}
 	else {
 		if (hero->getPositionY() > SCREEN_SIZE.height * 2 / 4) {
@@ -1423,21 +1427,33 @@ void GameScene::updateCamera()
 		}
 
 
-		if (hero->getPositionX() >= SCREEN_SIZE.width / 4) {
-			// ngungcamemra
-			if (!haveboss) {
-				if (hero->getPositionX() < (tmx_map->getBoundingBox().size.width - SCREEN_SIZE.width))
-					follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4);
-	
-				if (hero->getPositionX() > follow->getPositionX()+SCREEN_SIZE.width/4) {
-					this->winGame();
-				}
+		//if (hero->getPositionX() >= SCREEN_SIZE.width / 4) {
+		//	// ngungcamemra
+		//	if (!haveboss) {
+		//		if (hero->getPositionX() < (tmx_map->getBoundingBox().size.width - SCREEN_SIZE.width))
+		//			follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4);
 
+		//		if (hero->getPositionX() > follow->getPositionX()+SCREEN_SIZE.width/4) {
+		//			this->winGame();
+		//		}
+
+		//	}
+		//	else {
+		//		follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4);
+		//	}
+		//	follow->setPositionY(background->getPositionY());
+		//}
+	}
+	if (hero->getPositionX() >= SCREEN_SIZE.width / 4) {
+		if (hero->getPositionX() > (tmx_map->getBoundingBox().size.width - SCREEN_SIZE.width) && !haveboss)
+			this->isWinGame = true;
+		if (!isWinGame) {
+			follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4);
+		}
+		else {
+			if (hero->getPositionX() > follow->getPositionX() + SCREEN_SIZE.width / 2) {
+				this->winGame();
 			}
-			else {
-				follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4);
-			}
-			follow->setPositionY(background->getPositionY());
 		}
 	}
 	background->updatePosition();
@@ -1492,7 +1508,7 @@ void GameScene::reviveHero()
 	hero->getBloodScreen()->setVisible(false);
 	hero->setHealth(JSHERO->getBaseHP());
 	for (int i = 0; i < hero->getHealth(); i++) {
-		auto health = (Sprite*) hud->getListBlood()->getObjectAtIndex(i);
+		auto health = (Sprite*)hud->getListBlood()->getObjectAtIndex(i);
 		health->setVisible(true);
 	}
 
@@ -1568,11 +1584,11 @@ void GameScene::dieGame()
 void GameScene::nextGame()
 {
 	++map;
-	if(map < 3)
+	if (map < 3)
 		Director::getInstance()->replaceScene(GameScene::createScene(map, haveboss));
 	else if (map == 3)
 		Director::getInstance()->replaceScene(GameScene::createScene(map, true));
-	else 
+	else
 		Director::getInstance()->replaceScene(MenuLayer::createScene());
 }
 
@@ -1605,15 +1621,15 @@ void GameScene::resumeGame()
 	}
 
 	hero->resume();
-	
+
 	dialogPause->removeFromParentAndCleanup(true);
 	dialogPause = nullptr;
 
 	hud->resumeIfVisible();
 	hud->getPauseItem()->setEnabled(true);
-	if(hud->getBtnSpecial()->isVisible())
+	if (hud->getBtnSpecial()->isVisible())
 		hud->getBtnSpecial()->setEnabled(true);
-	
+
 
 	this->resume();
 }

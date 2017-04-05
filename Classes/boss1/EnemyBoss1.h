@@ -19,6 +19,7 @@ private:
 	CC_SYNTHESIZE(int, controlAttack, ControlAttack);
 	CC_SYNTHESIZE(int, controlState, ControlState);
 	CC_SYNTHESIZE(SkeletonAnimation*,exxp, Exxp);
+	CC_SYNTHESIZE(CCArray *, coinPool, CoinPool);
 	//CC_SYNTHESIZE(Sprite*, exxp, Exxp);
 	const int maxControl = 960;
 	int control;
@@ -29,6 +30,7 @@ public:
 	CCArray *slashPool;
 	Sprite *spHp;
 	int indexSlash;
+	int indexCoin;
 	float scaleBoss;
 	EnemyBoss1(string jsonFile, string atlasFile, float scale);
 	static EnemyBoss1* create(string jsonFile, string atlasFile, float scale);
@@ -44,7 +46,7 @@ public:
 	void creatHpSprite();
 	void boomboom();
 	void createGold();
-
+	void createCoinPool();
 	void updateMe(Point posHero);
 
 	void listener();

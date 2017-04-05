@@ -1,7 +1,7 @@
 #include "EnemyBoss1.h"
 #include "layer/MenuScene.h"
 
-EnemyBoss1::EnemyBoss1(string jsonFile, string atlasFile, float scale):BaseEnemy(jsonFile,atlasFile,scale)
+EnemyBoss1::EnemyBoss1(string jsonFile, string atlasFile, float scale) :BaseEnemy(jsonFile, atlasFile, scale)
 {
 	isNodie = false;
 	isDie = false;
@@ -9,8 +9,8 @@ EnemyBoss1::EnemyBoss1(string jsonFile, string atlasFile, float scale):BaseEnemy
 	controlAttack = 2;
 	controlState = 0;
 	hp = 2;
-	baseVelocity =Vec2(SCREEN_SIZE.width/2.3f, SCREEN_SIZE.height/10);
-	moveVelocity = Vec2(SCREEN_SIZE.height/2,SCREEN_SIZE.height/2);
+	baseVelocity = Vec2(SCREEN_SIZE.width / 2.3f, SCREEN_SIZE.height / 10);
+	moveVelocity = Vec2(SCREEN_SIZE.height / 2, SCREEN_SIZE.height / 2);
 	realtimeVec = Vec2(SCREEN_SIZE.width / 2.3f, SCREEN_SIZE.height / 10);
 	realMoveVelocity = Vec2::ZERO;
 	exxp = nullptr;
@@ -20,7 +20,7 @@ EnemyBoss1::EnemyBoss1(string jsonFile, string atlasFile, float scale):BaseEnemy
 EnemyBoss1 * EnemyBoss1::create(string jsonFile, string atlasFile, float scale)
 {
 	EnemyBoss1* boss = new EnemyBoss1(jsonFile, atlasFile, scale);
-	boss->setAnimation(0,"idle",true);
+	boss->setAnimation(0, "idle", true);
 	boss->update(0.0f);
 	boss->state = new Boss1Idling();
 	boss->setTag(TAG_BOSS);
@@ -40,8 +40,8 @@ void EnemyBoss1::attack()
 {
 	this->isNodie = true;
 	this->clearTracks();
-	this->setAnimation(0,"attack",false);
-	this->creatHidenSlash((heroLocation-this->getPosition()).getAngle());
+	this->setAnimation(0, "attack", false);
+	this->creatHidenSlash((heroLocation - this->getPosition()).getAngle());
 }
 
 void EnemyBoss1::attack2()
@@ -68,7 +68,7 @@ void EnemyBoss1::die()
 			this->clearTracks();
 			this->setAnimation(0, "injured-red", false);
 			this->setToSetupPose();
-			this->boomboom();
+			this->changeState(new Boss1Die());
 		}
 		if (hp <= 0) {
 			spHp->setVisible(false);
@@ -88,8 +88,8 @@ void EnemyBoss1::createPool()
 	slashPool = CCArray::createWithCapacity(3);
 	slashPool->retain();
 	for (int i = 0; i < 3; i++) {
-		auto scale = SCREEN_SIZE.height /5 / (367/2);
-		auto slash = SlashBoss::create("Animation/Enemy_Boss1/skill-boss.json", "Animation/Enemy_Boss1/skill-boss.atlas",scale);
+		auto scale = SCREEN_SIZE.height / 5 / (367 / 2);
+		auto slash = SlashBoss::create("Animation/Enemy_Boss1/skill-boss.json", "Animation/Enemy_Boss1/skill-boss.atlas", scale);
 		slash->setVisible(false);
 		slash->setPosition(this->getPosition());
 		//slash->setScale(SCREEN_SIZE.height / 8 / slash->getContentSize().height);
@@ -115,16 +115,16 @@ void EnemyBoss1::creatSlash(float angel)
 		world->DestroyBody(slash->getB2Body());
 	}
 	auto world = this->getB2Body()->GetWorld();
-	slash->initCirclePhysic(world,this->getBoneLocation("bone65"));
+	slash->initCirclePhysic(world, this->getBoneLocation("bone65"));
 	slash->changeBodyCategoryBits(BITMASK_SLASH);
-	slash->changeBodyMaskBits(BITMASK_HERO|BITMASK_SWORD);
+	slash->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
 	//slash->setRotation(180 - 180 / 4);
-	slash->setAngel(angel);
+	slash->setAngle(angel);
 	slash->setRotation(-angel / PI * 180 + 180);
 	slash->getB2Body()->SetLinearVelocity(slash->getB2Body()->GetLinearVelocity() + this->getB2Body()->GetLinearVelocity());
 }
 
-void EnemyBoss1::creatHidenSlash(float angel)
+void EnemyBoss1::creatHidenSlash(float angle)
 {
 	auto slash = (SlashBoss*)slashPool->getObjectAtIndex(indexSlash);
 	slash->setVisible(false);
@@ -137,11 +137,11 @@ void EnemyBoss1::creatHidenSlash(float angel)
 		world->DestroyBody(slash->getB2Body());
 	}
 	auto world = this->getB2Body()->GetWorld();
-	slash->initCirclePhysic(world,this->getPosition());
+	slash->initCirclePhysic(world, this->getPosition());
 	slash->changeBodyCategoryBits(BITMASK_SLASH);
 	slash->changeBodyMaskBits(BITMASK_HERO);
 	//slash->setRotation(180 - 180 / 4);
-	slash->setAngel(angel);
+	slash->setAngle(angle);
 	//slash->getB2Body()->SetLinearVelocity(slash->getB2Body()->GetLinearVelocity() + this->getB2Body()->GetLinearVelocity());
 }
 
@@ -149,39 +149,79 @@ void EnemyBoss1::creatHpSprite()
 {
 	spHp = Sprite::create("UI/hp.png");
 	auto tmp = SCREEN_SIZE.width / 6 / spHp->getContentSize().width;
-	spHp->setScaleX(SCREEN_SIZE.width/6/spHp->getContentSize().width);
+	spHp->setScaleX(SCREEN_SIZE.width / 6 / spHp->getContentSize().width);
 	spHp->setScaleY(SCREEN_SIZE.height / 100 / spHp->getContentSize().height);
-	spHp->setPosition(0,0);
+	spHp->setPosition(0, 0);
 	this->addChild(spHp);
 	spHp->update(0.0f);
 }
 
 void EnemyBoss1::boomboom()
 {
-	exxp = SkeletonAnimation::createWithFile("Effect/exxp.json","Effect/exxp.atlas", scaleBoss);
+	exxp = SkeletonAnimation::createWithFile("Effect/exxp.json", "Effect/exxp.atlas", scaleBoss);
 	//exxp = Sprite::create("Effect/exxp.png");
-	exxp->setScale(scaleBoss*5);
+	exxp->setScale(scaleBoss * 5);
 	exxp->setPosition(this->getPosition());
-	exxp->setAnimation(0,"exxp",true);
+	exxp->setAnimation(0, "exxp", true);
 	exxp->setToSetupPose();
 	exxp->update(0.0f);
-	this->getParent()->addChild(exxp,100);
-	this->changeState(new Boss1Die());
+	this->getParent()->addChild(exxp, 100);
+	this->createGold();
+	this->setRealMoveVelocity(Vec2(0, -this->getmoveVelocity().y/3));
+	auto callBack = CCCallFunc::create([&]() {
+		createGold();
+
+		this->setRealMoveVelocity(Vec2(0, -this->getmoveVelocity().y/20));
+	});
+
+	auto callBack2 = CCCallFunc::create([&]() {
+		//createGold();
+
+		this->setRealMoveVelocity(Vec2(0, -this->getmoveVelocity().y));
+	});
+	this->runAction(Sequence::create(DelayTime::create(1), callBack, DelayTime::create(1), callBack,
+		DelayTime::create(1), callBack, DelayTime::create(1), callBack,callBack2, nullptr));
 }
 
 void EnemyBoss1::createGold()
 {
-	auto coin = Coin::create();
-	auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
-	coin->setScale(scale);
-	coin->setPosition(this->getPosition());
-	this->getParent()->addChild(coin,ZORDER_ENEMY);
-	coin->initCirclePhysic(this->getB2Body()->GetWorld(), coin->getPosition());
-	coin->changeBodyCategoryBits(BITMASK_COIN);
-	coin->changeBodyMaskBits(BITMASK_HERO|BITMASK_FLOOR);
-	coin->getB2Body()->SetType(b2_dynamicBody);
-	coin->getB2Body()->GetFixtureList()->SetSensor(false);
-	coin->setAngle(CCRANDOM_0_1()*PI/6 +PI/2);
+	int tmp = int(indexCoin + 5+ CCRANDOM_0_1() * 10);
+	for (; indexCoin < coinPool->count(); indexCoin++) {
+		auto coin = (Coin*)coinPool->getObjectAtIndex(indexCoin);
+		coin->setVisible(true);
+		coin->initCirclePhysic(this->getB2Body()->GetWorld(), this->getPosition());
+		coin->getB2Body()->GetFixtureList()->SetSensor(false);
+		coin->getB2Body()->SetType(b2_dynamicBody);
+		coin->changeBodyCategoryBits(BITMASK_COIN);
+		coin->changeBodyMaskBits(BITMASK_HERO | BITMASK_FLOOR);
+		coin->setAngle(CCRANDOM_0_1()*PI);
+		coin->getB2Body()->SetFixedRotation(true);
+		coin->runAnimation();
+		if (tmp == indexCoin) { 
+			break;
+		}
+	}
+}
+
+void EnemyBoss1::createCoinPool()
+{
+	int count = int(50 + CCRANDOM_0_1() * 50);
+	coinPool = CCArray::createWithCapacity(int(50 + CCRANDOM_0_1() * 50));
+	coinPool->retain();
+	for (int i = 0; i < count; i++) {
+		auto coin = Coin::create();
+		auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
+		coin->setScale(scale);
+		coin->setVisible(false);
+		coin->setPosition(0, 0);
+		//slash->setScale(SCREEN_SIZE.height / 8 / slash->getContentSize().height);
+		this->getParent()->addChild(coin, ZORDER_ENEMY);
+		auto tmpbody = coin->getB2Body();
+		tmpbody = nullptr;
+		coinPool->addObject(coin);
+	}
+
+	indexCoin = 0;
 }
 
 void EnemyBoss1::updateMe(Point posHero)
@@ -196,29 +236,39 @@ void EnemyBoss1::updateMe(Point posHero)
 	if (exxp != nullptr) {
 		exxp->setPosition(this->getPosition());
 	}
-	
+
 
 	state->execute(this);
-	if(this->getPositionX()-posHero.x < SCREEN_SIZE.width/1.7f)
-	this->getB2Body()->SetLinearVelocity(b2Vec2(this->realtimeVec.x / PTM_RATIO, this->realtimeVec.y*cosf(control / 120.0f * 2 * PI) / PTM_RATIO) +
-		b2Vec2(realMoveVelocity.x / PTM_RATIO, realMoveVelocity.y / PTM_RATIO));
-	else 
-		this->getB2Body()->SetLinearVelocity(b2Vec2(0,0));
+	if (this->getPositionX() - posHero.x < SCREEN_SIZE.width / 1.7f)
+		this->getB2Body()->SetLinearVelocity(b2Vec2(this->realtimeVec.x / PTM_RATIO, this->realtimeVec.y*cosf(control / 120.0f * 2 * PI) / PTM_RATIO) +
+			b2Vec2(realMoveVelocity.x / PTM_RATIO, realMoveVelocity.y / PTM_RATIO));
+	else
+		this->getB2Body()->SetLinearVelocity(b2Vec2(0, 0));
 	//////////////
 	control++;
 	if (control == maxControl) {
 		control = 1;
 	}
-	
-	
+
+
 
 	for (int i = 0; i < slashPool->count(); i++) {
 		auto slash = (SlashBoss*)slashPool->getObjectAtIndex(i);
 		slash->updateMe(0.0f);
-		if (slash->getB2Body() != nullptr && slash->getPositionX() < posHero.x ) {
+		if (slash->getB2Body() != nullptr && slash->getPositionX() < posHero.x) {
 			slash->die();
 		}
 	}
+	for (int i = 0; i < coinPool->count(); i++) {
+		auto coin = (Coin*)coinPool->getObjectAtIndex(i);
+		coin->updateMe(0.0f);
+	}
+
+	if (this->getPosition().y < -SCREEN_SIZE.height / 2) {
+		this->setIsDie(true);
+	}
+
+
 }
 
 void EnemyBoss1::listener()
@@ -240,11 +290,11 @@ void EnemyBoss1::listener()
 			else if ((strcmp(getCurrent()->animation->name, "injured-red") == 0 && loopCount == 1)) {
 				//Director::getInstance()->replaceScene(MenuLayer::createScene());
 				//setIsDie(true);
-				auto call = CCCallFunc::create([&]() {
-					this->setIsDie(true);
-				});
-				//this->setControlState(INT_MIN);
-				this->runAction(Sequence::createWithTwoActions(DelayTime::create(5), call));
+				//auto call = CCCallFunc::create([&]() {
+				//	this->setIsDie(true);
+				//});
+				////this->setControlState(INT_MIN);
+				//this->runAction(Sequence::createWithTwoActions(DelayTime::create(10), call));
 			}
 		}
 	});
@@ -252,7 +302,7 @@ void EnemyBoss1::listener()
 
 bool EnemyBoss1::checkStop()
 {
-	if (this->getPositionX() - heroLocation.x > SCREEN_SIZE.width/1.8f) {
+	if (this->getPositionX() - heroLocation.x > SCREEN_SIZE.width / 1.8f) {
 		return true;
 	}
 	return false;

@@ -2,6 +2,7 @@
 
 Coin::Coin()
 {
+	body = nullptr;
 }
 
 Coin::~Coin()
@@ -21,6 +22,7 @@ void Coin::initCirclePhysic(b2World * world, Point pos)
 	B2Sprite::initCirclePhysic(world, pos);
 	this->getB2Body()->SetType(b2_staticBody);
 	this->getB2Body()->GetFixtureList()->SetSensor(true);
+	//this->chang
 }
 
 void Coin::runAnimation()
@@ -48,6 +50,9 @@ void Coin::picked()
 	CallFunc *call = CallFunc::create([&]() {
 		effect->removeFromParentAndCleanup(true);
 		this->removeFromParentAndCleanup(true);
+		auto world = this->getB2Body()->GetWorld();
+		world->DestroyBody(this->getB2Body());
+		this->setB2Body(nullptr);
 	});
 	this->runAction(Sequence::createWithTwoActions(DelayTime::create(0.5f), call));
 	//this->listener();
@@ -66,17 +71,15 @@ void Coin::listener()
 void Coin::onExit()
 {
 	B2Sprite::onExit();
-	auto world = this->getB2Body()->GetWorld();
-	world->DestroyBody(this->getB2Body());
 	//this->removeFromParentAndCleanup(true);
 	//log("delete coin");
 }
 
 void Coin::setAngle(float radian)
 {
-
-	float vx = SCREEN_SIZE.width * 0.3f / PTM_RATIO * cosf(radian);
-	float vy = SCREEN_SIZE.width * 0.3f / PTM_RATIO * sinf(radian);
+	float vec = CCRANDOM_0_1();
+	float vx = SCREEN_SIZE.width * vec / PTM_RATIO * cosf(radian);
+	float vy = SCREEN_SIZE.width * vec / PTM_RATIO * sinf(radian);
 	this->body->SetLinearVelocity(b2Vec2(vx, vy));
 
 }

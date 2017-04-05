@@ -129,7 +129,7 @@ void Boss1Stupiding::execute(EnemyBoss1 * boss)
 		boss->setRealMoveVelocity(Vec2(boss->getRealMoveVelocity().x, 0));
 	}
 	if (boss->getPositionX() < boss->heroLocation.x+boss->getBoundingBox().size.width/3) {
-		boss->setRealMoveVelocity(Vec2(0, boss->getRealMoveVelocity().y));
+		boss->setRealMoveVelocity(Vec2(0, -boss->getmoveVelocity().y));
 	}
 }
 
@@ -172,11 +172,19 @@ void Boss1Die::enter(EnemyBoss1 * boss)
 	//StateBoss1::enter(boss);
 	boss->clearTracks();
 	boss->setAnimation(0,"injured-red",false);
+	boss->setRealMoveVelocity(Vec2(boss->getmoveVelocity().x, boss->getmoveVelocity().y));
 }
 
 void Boss1Die::execute(EnemyBoss1 * boss)
 {
-	if (boss->control % 30 == 0) {
-		//boss->createGold();
+	if (boss->checkStop()&& boss->getRealMoveVelocity().x != 0) {
+		//boss->changeState(new Boss1Idling());
+		boss->setRealMoveVelocity(Vec2(0,boss->getRealMoveVelocity().y));
+		boss->boomboom();
 	}
+
+	if (boss->getPositionY() > SCREEN_SIZE.height *2.0f / 4 && boss->getRealMoveVelocity().y > 0) {
+		boss->setRealMoveVelocity(Vec2(boss->getRealMoveVelocity().x, 0));
+	}
+	
 }

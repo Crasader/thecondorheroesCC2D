@@ -23,7 +23,7 @@ void CoinBullion::updateMe(float dt)
 void CoinBullion::picked()
 {
 	this->setVisible(false);
-	effect = SkeletonAnimation::createWithFile("Effect_getgolden.json", "Effect_getgolden.atlas", SCREEN_SIZE.height / 3 / 291);
+	effect = SkeletonAnimation::createWithFile("Effect_getgolden.json", "Effect_getgolden.atlas", SCREEN_SIZE.height / 3 / 290);
 	effect->setAnimation(0, "Effect_gold", false);
 	effect->setPosition(this->getPosition());
 	this->getParent()->addChild(effect, ZORDER_ENEMY);

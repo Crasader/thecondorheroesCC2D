@@ -151,10 +151,12 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
 		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
 		auto coin = sA->getTag() == TAG_COIN ? (Coin *)sA : (Coin *)sB;
-		coin->picked();
-
-		auto parentGameScene = (GameScene*)coin->getParent();
-		parentGameScene->updateMoney(1);
+		if (coin->getB2Body()&& coin->getParent()) {
+			coin->getB2Body()->GetFixtureList()->SetSensor(true);
+			coin->picked();
+			auto parentGameScene = (GameScene*)coin->getParent();
+			parentGameScene->updateMoney(1);
+		}
 
 	}
 

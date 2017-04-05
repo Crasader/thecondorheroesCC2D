@@ -22,7 +22,7 @@ void CoinBag::updateMe(float dt)
 void CoinBag::die()
 {
 	this->setVisible(false);
-	effect = SkeletonAnimation::createWithFile("Effect_getgolden.json", "Effect_getgolden.atlas", SCREEN_SIZE.height / 3 / 641);
+	effect = SkeletonAnimation::createWithFile("Effect_getgolden.json", "Effect_getgolden.atlas", SCREEN_SIZE.height / 4.5f / 641);
 	effect->setAnimation(0, "Effect_goldbag", false);
 	effect->setPosition(this->getPosition());
 	this->getParent()->addChild(effect, ZORDER_ENEMY);

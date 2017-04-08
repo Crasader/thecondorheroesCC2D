@@ -55,7 +55,7 @@ bool MenuLayer::init()
 		menuplay->runAction(RepeatForever::create(Sequence::createWithTwoActions(ScaleTo::create(0.5f,scalePlay*1.1f), ScaleTo::create(0.5f,scalePlay))));
 		listMap.push_back(menuplay);
 		this->addChild(menuplay);
-		auto label = Label::create(StringUtils::format("%d", name),"Arial",24);
+		auto label = Label::create(StringUtils::format("%d", name),"fonts/arial.ttf",24);
 		label->setPosition(menuplay->getContentSize() / 2);
 		menuplay->addChild(label);
 	}
@@ -67,13 +67,13 @@ bool MenuLayer::init()
 		auto name = mObject["name"].asString();
 		Point origin = Point(mObject["x"].asFloat() *scalex, mObject["y"].asFloat()* scaley);
 		if (name.compare("dq") == 0) {
-			lblDQ = Label::create("Duong Qua", "Arial", 24);
+			lblDQ = Label::create("Duong Qua", "fonts/arial.ttf", 24);
 			lblDQ->setPosition(origin);
 			lblDQ->setColor(ccc3(255, 0, 0));
 			this->addChild(lblDQ);
 		}
 		else if (name.compare("cc") == 0) {
-			lblCC = Label::create("Co Co", "Arial", 24);
+			lblCC = Label::create("Co Co", "fonts/arial.ttf", 24);
 			lblCC->setPosition(origin);
 			lblCC->setColor(ccc3(255, 255, 255));
 			this->addChild(lblCC);

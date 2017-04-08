@@ -11,6 +11,9 @@ class BaseEnemy : public B2Skeleton
 {
 public:
 	CC_SYNTHESIZE(bool, isDie, IsDie);
+	CC_SYNTHESIZE(bool, isOccur, IsOccur);
+
+
 	BaseEnemy();
 	~BaseEnemy();
 	BaseEnemy(spSkeletonData*data);

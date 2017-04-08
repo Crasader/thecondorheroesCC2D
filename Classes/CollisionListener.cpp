@@ -135,11 +135,6 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		if (enemy->getControlState() < 0)
 			enemy->changeState(new Boss1Attacking1());
-		/*if (!enemy->getIsDie()) {
-			hero->setIsPrior(true);
-			hero->getFSM()->changeState(MInjured);
-			hero->setHealth(hero->getHealth() - 1);
-		}*/
 
 	}
 
@@ -343,18 +338,6 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		kp->setTextureRect(Rect(Vec2::ZERO,
 			Size(kp->getContentSize().width, kp->getContentSize().height * random(0.61f, 0.63f))));
 
-	}
-
-	if ((bitmaskA == BITMASK_SENSOR && bitmaskB == BITMASK_TOANCHAN1)
-		|| (bitmaskB == BITMASK_SENSOR && bitmaskA == BITMASK_TOANCHAN1)) {
-
-		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
-		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
-
-		auto _aEnemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
-		auto gameLayer = (GameScene*) _aEnemy->getParent();
-		gameLayer->getHero()->pushToListDestroy(_aEnemy);
-		log("Enemy");
 	}
 }
 

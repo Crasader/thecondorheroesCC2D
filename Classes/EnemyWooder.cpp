@@ -25,6 +25,7 @@ EnemyWooder * EnemyWooder::create(string jsonFile, string atlasFile, float scale
 	enemy->setTag(TAG_ENEMY_WOODER);
 	enemy->setScaleX(1);
 	enemy->setTimeScale(1.4f);
+	enemy->health = 1;
 	return enemy;
 
 }
@@ -41,6 +42,7 @@ EnemyWooder * EnemyWooder::create(string filename, float scale)
 	enemy->setTag(TAG_ENEMY_WOODER);
 	enemy->setScaleX(1);
 	enemy->setTimeScale(1.4f);
+	enemy->health = 1;
 	return enemy;
 
 
@@ -77,8 +79,6 @@ void EnemyWooder::listener()
 {
 	this->setCompleteListener([&](int trackIndex, int loopCount) {
 		if (strcmp(getCurrent()->animation->name, "broken") == 0 && loopCount == 1) {
-			//getSplash()->setVisible(false);
-			//setIsAttacking(false);
 			this->removeFromParentAndCleanup(true);
 		}
 

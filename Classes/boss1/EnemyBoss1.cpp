@@ -8,7 +8,7 @@ EnemyBoss1::EnemyBoss1(string jsonFile, string atlasFile, float scale):BaseEnemy
 	control = 0;
 	controlAttack = 2;
 	controlState = 0;
-	hp = 2;
+	health = 5;
 	baseVelocity =Vec2(SCREEN_SIZE.width/2.3f, SCREEN_SIZE.height/10);
 	moveVelocity = Vec2(SCREEN_SIZE.height/2,SCREEN_SIZE.height/2);
 	realtimeVec = Vec2(SCREEN_SIZE.width / 2.3f, SCREEN_SIZE.height / 10);
@@ -56,8 +56,8 @@ void EnemyBoss1::attack2()
 void EnemyBoss1::die()
 {
 	if (!isDie && !isNodie) {
-		hp--;
-		if (hp > 0) {
+		health--;
+		if (health > 0) {
 			this->isNodie = true;
 			this->clearTracks();
 			this->setAnimation(0, "injured", false);
@@ -70,13 +70,13 @@ void EnemyBoss1::die()
 			this->setToSetupPose();
 			this->boomboom();
 		}
-		if (hp <= 0) {
+		if (health <= 0) {
 			spHp->setVisible(false);
 			//isDie = true;
 		}
 		else {
 			auto scale1 = spHp->getScaleX();
-			auto scale2 = ((float)this->hp / (float)(this->hp + 1))*spHp->getScaleX();
+			auto scale2 = ((float)this->health / (float)(this->health + 1))*spHp->getScaleX();
 			spHp->setScaleX(scale2);
 
 		}

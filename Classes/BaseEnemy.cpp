@@ -4,6 +4,7 @@
 BaseEnemy::BaseEnemy() :B2Skeleton()
 {
 	isDie = false;
+	isOccur = false;
 }
 
 BaseEnemy::~BaseEnemy()
@@ -13,11 +14,13 @@ BaseEnemy::~BaseEnemy()
 BaseEnemy::BaseEnemy(spSkeletonData * data):B2Skeleton(data)
 {
 	isDie = false;
+	isOccur = false;
 }
 
 BaseEnemy::BaseEnemy(string jsonFile, string atlasFile, float scale):B2Skeleton(jsonFile, atlasFile, scale)
 {
 	isDie = false;
+	isOccur = false;
 }
 
 BaseEnemy * BaseEnemy::create(string jsonFile, string atlasFile, float scale)

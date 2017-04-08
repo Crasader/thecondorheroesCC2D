@@ -39,7 +39,6 @@ protected:
 	Rada *m_pRadaSkill1;
 	Rada *m_pRadaSkill2;
 	Rada *m_pRadaSkill3;
-	bool m_bEndSkill = false;
 	void createRada(b2World *p_pWorld);
 
 	// Skill 1

@@ -49,6 +49,11 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 	duongQua->setIsDoneDuration3(true);
 
 	//
+
+	duongQua->blash = Sprite::create("Animation/DuongQua/blash.png");
+	duongQua->blash->setScale(scale / 2);
+	duongQua->blash->setVisible(false);
+
 	return duongQua;
 }
 
@@ -310,6 +315,7 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 
 void DuongQua::addStuff()
 {
+	this->getParent()->addChild(blash, ZORDER_ENEMY);
 	// spirit hole
 	createSpiritHole();
 
@@ -332,7 +338,7 @@ void DuongQua::run()
 	addAnimation(0, "run", true);
 	setToSetupPose();
 
-	if (getBloodScreen()->isVisible())
+	if (getBloodScreen()->isVisible() && health > 1)
 		getBloodScreen()->setVisible(false);
 
 	if (!EM->getSmokeRun()->isVisible()) {
@@ -340,7 +346,7 @@ void DuongQua::run()
 		EM->smokeRunAni();
 	}
 
-	log("run");
+	//log("run");
 }
 
 void DuongQua::normalJump()
@@ -351,7 +357,7 @@ void DuongQua::normalJump()
 
 	EM->getSmokeRun()->setVisible(false);
 
-	log("jump");
+	//log("jump");
 }
 
 void DuongQua::doubleJump()
@@ -364,7 +370,7 @@ void DuongQua::doubleJump()
 	EM->getSmokeJumpX2()->setVisible(true);
 	EM->smokeJumpX2Ani();
 
-	log("jumpx2");
+	//log("jumpx2");
 }
 
 void DuongQua::landing()
@@ -375,7 +381,7 @@ void DuongQua::landing()
 
 	EM->getSmokeRun()->setVisible(false);
 
-	log("land");
+	//log("land");
 }
 
 void DuongQua::die()

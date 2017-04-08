@@ -31,7 +31,6 @@ using namespace std;
 #define BITMASK_COIN_BULLION			0x1000
 #define BITMASK_RADA_SKILL_1			0x2000
 #define BITMASK_RADA_SKILL_2			0x4000
-#define BITMASK_SENSOR					0x8000
 
 // tag
 #define TAG_HERO							50

@@ -17,6 +17,7 @@ EnemyToanChanStudent * EnemyToanChanStudent::create(string jsonFile, string atla
 	enemy->setScaleX(1);
 	enemy->setAnimation(0, "idle", true);
 	//enemy->setScaleEnemy(scale);
+	enemy->health = 1;
 	return enemy;
 
 }
@@ -34,6 +35,7 @@ EnemyToanChanStudent * EnemyToanChanStudent::create(string filename, float scale
 	enemy->setScaleX(1);
 	enemy->setAnimation(0, "idle", true);
 	//enemy->setTimeScale(1.4f);
+	enemy->health = 1;
 	return enemy;
 }
 

@@ -22,6 +22,7 @@ EnemyToanChanStudent2 * EnemyToanChanStudent2::create(string jsonFile, string at
 	enemy->setScaleX(1);
 	enemy->setAnimation(0, "idle", true);
 	enemy->setScaleEnemy(scale);
+	enemy->health = 1;
 	return enemy;
 
 }
@@ -39,6 +40,7 @@ EnemyToanChanStudent2 * EnemyToanChanStudent2::create(string filename, float sca
 	enemy->setAnimation(0, "idle", true);
 	enemy->setScaleEnemy(scale);
 	//enemy->setTimeScale(1.4f);
+	enemy->health = 1;
 	return enemy;
 }
 

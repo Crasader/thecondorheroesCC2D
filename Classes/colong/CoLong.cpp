@@ -44,6 +44,10 @@ CoLong * CoLong::create(string p_sJsonFile, string p_sAtlasFile, float p_fScale)
 	_pCoLong->setIsDoneDuration2(true);
 	_pCoLong->setIsDoneDuration3(true);
 
+	_pCoLong->blash = Sprite::create("Animation/CoLong/circle-blash-blue.png");
+	_pCoLong->blash->setScale(p_fScale / 2);
+	_pCoLong->blash->setVisible(false);
+
 	return _pCoLong;
 }
 
@@ -75,7 +79,6 @@ void CoLong::doCounterSkill1() {
 			setIsDoneDuration1(true);
 			checkDurationSkill1 = 0;
 			unschedule("KeySkill1");
-			m_bEndSkill = true;
 		}
 	}, 0.1f, "KeySkill1");
 }
@@ -107,7 +110,6 @@ void CoLong::doCounterSkill2() {
 			setIsDoneDuration2(true);
 			checkDurationSkill2 = 0;
 			unschedule("KeySkill2");
-			m_bEndSkill = true;
 		}
 	}, 0.1f, "KeySkill2");
 }
@@ -130,7 +132,6 @@ void CoLong::doCounterSkill3() {
 			setIsDoneDuration3(true);
 			checkDurationSkill3 = 0;
 			unschedule("KeySkill3");
-			m_bEndSkill = true;
 		}
 	}, 0.1f, "KeySkill3");
 }
@@ -189,19 +190,6 @@ void CoLong::updateMe(float p_fDelta) {
 			SCREEN_SIZE.height / PTM_RATIO), getB2Body()->GetAngle());
 		return;
 	}*/
-
-	static float a = 0.0f;
-	if (m_bEndSkill && a < 5.0f) {
-		a += 0.1f;
-		m_pRadaSkill1->setVisible(true);
-		m_pRadaSkill1->setScale(a);
-		m_pRadaSkill1->updateMe(p_fDelta);
-	}
-	else {
-		m_bEndSkill = false;
-		m_pRadaSkill1->setVisible(false);
-		a = 0.0f;
-	}
 
 	if (!getIsDoneDuration1()) {
 		if (!this->m_lEnemiesSelectedBySkill1.empty()) {
@@ -321,6 +309,8 @@ void CoLong::initCirclePhysic(b2World * world, Point pos) {
 void CoLong::addStuff()
 {
 	// slash here
+	this->getParent()->addChild(blash, ZORDER_ENEMY);
+
 	createSlash();
 }
 
@@ -399,7 +389,7 @@ void CoLong::run() {
 	addAnimation(0, "run", true);
 	setToSetupPose();
 
-	if (getBloodScreen()->isVisible())
+	if (getBloodScreen()->isVisible() && health > 1)
 		getBloodScreen()->setVisible(false);
 
 	if (!EM->getSmokeRun()->isVisible()) {

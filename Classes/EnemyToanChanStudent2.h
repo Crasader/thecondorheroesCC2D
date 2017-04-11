@@ -26,7 +26,7 @@ public:
 	void die();
 	void genSlash();
 	void listener();
-	void updateMe(float dt);
+	void updateMe(BaseHero* hero);
 	void initCirclePhysic(b2World * world, Point pos);
 
 	//void removeFromParentAndCleanup(bool cleanup);

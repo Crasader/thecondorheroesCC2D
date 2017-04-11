@@ -20,6 +20,7 @@ public:
 	void picked();
 	void listener();
 	void onExit();
+	void updateMe(BaseHero *hero);
 	void setAngle(float radian);
 	
 };

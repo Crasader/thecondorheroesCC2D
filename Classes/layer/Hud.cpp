@@ -68,12 +68,11 @@ void Hud::addProfile()
 	moneyBoard->setPosition(pos_2X, bloodBoard->getPositionY());
 	addChild(moneyBoard);
 
-	lbMoney = Label::createWithTTF("0", "fonts/BAUHS93.TTF", 32);
-	lbMoney->setColor(Color3B(251, 140, 0));
+	lbMoney = Label::createWithBMFont("fonts/font_coin-export.fnt", "0");
 	lbMoney->setAnchorPoint(Vec2::ZERO);
-	lbMoney->setScale(moneyBoard->getBoundingBox().size.height * 0.8f / lbMoney->getContentSize().height);
-	lbMoney->setPosition(moneyBoard->getPositionX() + 1.4f * moneyBoard->getBoundingBox().size.width,
-		moneyBoard->getPositionY());
+	lbMoney->setBMFontSize(moneyBoard->getBoundingBox().size.height * 0.6f);
+	lbMoney->setPosition(moneyBoard->getPositionX() + 1.35f * moneyBoard->getBoundingBox().size.width,
+		moneyBoard->getPositionY() + moneyBoard->getBoundingBox().size.height * 0.25f);
 	addChild(lbMoney);
 
 
@@ -88,11 +87,11 @@ void Hud::addProfile()
 	scoreBoard->setPosition(pos_3X, bloodBoard->getPositionY());
 	addChild(scoreBoard);
 
-	lbScore = Label::createWithTTF("0", "fonts/BAUHS93.TTF", 32);
+	lbScore = Label::createWithBMFont("fonts/font_diamond-export.fnt", "0");
 	lbScore->setAnchorPoint(Vec2::ZERO);
-	lbScore->setScale(lbMoney->getScale());
-	lbScore->setPosition(scoreBoard->getPositionX() + 1.2f * scoreBoard->getBoundingBox().size.width,
-		scoreBoard->getPositionY());
+	lbScore->setBMFontSize(lbMoney->getBMFontSize());
+	lbScore->setPosition(scoreBoard->getPositionX() + 1.15f * scoreBoard->getBoundingBox().size.width,
+		lbMoney->getPositionY());
 	addChild(lbScore);
 
 
@@ -126,9 +125,9 @@ void Hud::addButton()
 	btnAttack->setTimeCoolDown(0.33f);
 	btnAttack->setScale(SCREEN_SIZE.height / 4.5f / btnAttack->getContentSize().height);
 	btnAttack->getCoolDownSprite()->setScale(btnAttack->getScale());
-	addChild(btnAttack);
+	
 	addChild(btnAttack->getCoolDownSprite());
-
+	addChild(btnAttack);
 
 	auto groupBtnSkill1 = tmxMap->getObjectGroup("btn_skill1");
 	auto mObject_1 = groupBtnSkill1->getObject("btn_skill1");
@@ -139,10 +138,10 @@ void Hud::addButton()
 	btnSkill_1->setScale(SCREEN_SIZE.height / 6.5f / btnSkill_1->getContentSize().height);
 	btnSkill_1->getCoolDownSprite()->setScale(btnSkill_1->getScale());
 	btnSkill_1->getNumberCoolDown()->setScale(btnSkill_1->getBoundingBox().size.height / 2 / btnSkill_1->getNumberCoolDown()->getContentSize().height);
-	addChild(btnSkill_1);
+	
 	addChild(btnSkill_1->getCoolDownSprite());
 	addChild(btnSkill_1->getNumberCoolDown());
-
+	addChild(btnSkill_1);
 
 	auto groupBtnSkill2 = tmxMap->getObjectGroup("btn_skill2");
 	auto mObject_2 = groupBtnSkill2->getObject("btn_skill2");
@@ -153,10 +152,10 @@ void Hud::addButton()
 	btnSkill_2->setScale(SCREEN_SIZE.height / 6.5f / btnSkill_2->getContentSize().height);
 	btnSkill_2->getCoolDownSprite()->setScale(btnSkill_2->getScale());
 	btnSkill_2->getNumberCoolDown()->setScale(btnSkill_2->getBoundingBox().size.height / 2 / btnSkill_2->getNumberCoolDown()->getContentSize().height);
-	addChild(btnSkill_2);
+	
 	addChild(btnSkill_2->getCoolDownSprite());
 	addChild(btnSkill_2->getNumberCoolDown());
-
+	addChild(btnSkill_2);
 
 	auto groupBtnSkill3 = tmxMap->getObjectGroup("btn_skill3");
 	auto mObject_3 = groupBtnSkill3->getObject("btn_skill3");
@@ -167,18 +166,19 @@ void Hud::addButton()
 	btnSkill_3->setScale(SCREEN_SIZE.height / 6.5f / btnSkill_3->getContentSize().height);
 	btnSkill_3->getCoolDownSprite()->setScale(btnSkill_3->getScale());
 	btnSkill_3->getNumberCoolDown()->setScale(btnSkill_3->getBoundingBox().size.height / 2 / btnSkill_3->getNumberCoolDown()->getContentSize().height);
-	addChild(btnSkill_3);
+	
 	addChild(btnSkill_3->getCoolDownSprite());
 	addChild(btnSkill_3->getNumberCoolDown());
+	addChild(btnSkill_3);
 
 	auto groupBtnCalling = tmxMap->getObjectGroup("btn_calling");
 	auto mObject_4 = groupBtnCalling->getObject("btn_calling");
 	Point origin_4 = Point(mObject_4["x"].asFloat() * tmxMap->getScaleX(), mObject_4["y"].asFloat()* tmxMap->getScaleY());
 
-	btnSpecial = MenuItemImage::create("UI/btn_callbird.png", "UI/btn_callbird_off.png", CC_CALLBACK_1(Hud::doCalling, this));
-	btnSpecial->setEnabled(false);
-	btnSpecial->setPosition(origin_4);
-	btnSpecial->setScale(SCREEN_SIZE.height / 7 / btnSpecial->getContentSize().height);
+	btnCalling = MenuItemImage::create("UI/btn_callbird.png", "UI/btn_callbird_off.png", CC_CALLBACK_1(Hud::doCalling, this));
+	btnCalling->setEnabled(false);
+	btnCalling->setPosition(origin_4);
+	btnCalling->setScale(SCREEN_SIZE.height / 7 / btnCalling->getContentSize().height);
 
 
 	auto groupPause = tmxMap->getObjectGroup("btn_pause");
@@ -192,9 +192,15 @@ void Hud::addButton()
 	pauseItem->setPosition(origin_5.x, scoreBoard->getPositionY());
 
 
-	auto menu = Menu::create(btnSpecial, pauseItem, nullptr);
+	auto menu = Menu::create(btnCalling, pauseItem, nullptr);
 	menu->setPosition(Vec2::ZERO);
 	addChild(menu);
+
+	multiKills = new SkeletonAnimation("Effect/textkill.json", "Effect/textkill.atlas", 0.8f);
+	multiKills->setPosition(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height * 0.8f));
+	multiKills->setAnimation(0, "textkill", false);
+	multiKills->setSkin("default");
+	addChild(multiKills);
 
 }
 
@@ -219,10 +225,11 @@ void Hud::createBloodBar()
 
 void Hud::doCalling(Ref * pSender)
 {
-	log("do calling");
-	btnSpecial->setVisible(false);
-	btnSpecial->setEnabled(false);
-	hideButton();
+
+	btnCalling->setVisible(false);
+	btnCalling->setEnabled(false);
+	if(btnSkill_1->getCoolDownSprite()->isVisible())
+		hideButton();
 
 	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
 	gameLayer->callingBird();
@@ -267,33 +274,38 @@ void Hud::hideButton()
 void Hud::showButton()
 {
 	addEvents();
+
 	btnAttack->setVisible(true);
+	btnAttack->getCoolDownSprite()->setVisible(true);
 	if (!btnAttack->getCanTouch()) {
-		btnAttack->getCoolDownSprite()->setVisible(true);
+		btnAttack->setVisible(false);
 	}
 
 	btnSkill_1->setVisible(true);
+	btnSkill_1->getCoolDownSprite()->setVisible(true);
 	if (!btnSkill_1->getCanTouch()) {
+		btnSkill_1->setVisible(false);
 		btnSkill_1->getNumberCoolDown()->setVisible(true);
-		btnSkill_1->getCoolDownSprite()->setVisible(true);
 	}
 
 	btnSkill_2->setVisible(true);
+	btnSkill_2->getCoolDownSprite()->setVisible(true);
 	if (!btnSkill_2->getCanTouch()) {
+		btnSkill_2->setVisible(false);
 		btnSkill_2->getNumberCoolDown()->setVisible(true);
-		btnSkill_2->getCoolDownSprite()->setVisible(true);
 	}
 
 	btnSkill_3->setVisible(true);
+	btnSkill_3->getCoolDownSprite()->setVisible(true);
 	if (!btnSkill_3->getCanTouch()) {
+		btnSkill_3->setVisible(false);
 		btnSkill_3->getNumberCoolDown()->setVisible(true);
-		btnSkill_3->getCoolDownSprite()->setVisible(true);
 	}
 }
 
 void Hud::pauseIfVisible()
 {
-	if (btnSkill_1->isVisible()) {
+	if (btnSkill_1->getCoolDownSprite()->isVisible()) {
 
 		btnAttack->pauseListener();
 		btnSkill_1->pauseListener();
@@ -316,7 +328,7 @@ void Hud::pauseIfVisible()
 
 void Hud::resumeIfVisible()
 {
-	if (btnSkill_1->isVisible()) {
+	if (btnSkill_1->getCoolDownSprite()->isVisible()) {
 		addEvents();
 
 		if (!btnSkill_1->getCanTouch()) {
@@ -340,32 +352,70 @@ void Hud::refreshControl()
 	btnSkill_3->refresh();
 }
 
-void Hud::hintSpecial(Vec2 p_ptCenterScreen) {
-	MoveTo *_pStageSpecialButton = MoveTo::create(0.3f, p_ptCenterScreen);
+void Hud::moveCallBirdToCenterScreen(Vec2 p_ptCenterScreen) {
+	hideButton();
+
+	auto origin = Director::getInstance()->getVisibleOrigin();
+	MoveTo *_pStageSpecialButton = MoveTo::create(0.3f, origin + p_ptCenterScreen);
 	auto _aStageSpecialButtonCallback = CallFunc::create([&]() {
-		btnSpecialHintDone = true;
+		btnCallingHintDone = true;
 	});
-	btnSpecial->runAction(Sequence::create(_pStageSpecialButton, _aStageSpecialButtonCallback, NULL));
-	cooldownSpecial();
+
+	btnCalling->runAction(Sequence::create(_pStageSpecialButton, _aStageSpecialButtonCallback, nullptr));
+	cooldownCallBird();
 }
 
-void Hud::cooldownSpecial() {
-	float _fRadius = btnSpecial->getContentSize().width / 2;
+void Hud::cooldownCallBird() {
+
+	float _fRadius = btnCalling->getContentSize().height / 2;
 	for (int i = 0; i < 180; i++) {
 		auto _aCooldownStep = Sprite::create("UI/green.png");
-		_aCooldownStep->setScale(_fRadius / _aCooldownStep->getContentSize().width * 2 * 0.1f);
-		float _fAngle = i * 2 * 3.141592653589793 / 180.0;
-		_aCooldownStep->setPosition(Vec2(_fRadius * sinf(_fAngle) + _fRadius, _fRadius * cosf(_fAngle) + _fRadius) * 1.05f);
-		btnSpecial->addChild(_aCooldownStep, -1);
+		_aCooldownStep->setScale(_fRadius / _aCooldownStep->getContentSize().height * 2 * 0.1f);
+		float _fAngle = i * 2 * PI / 180.0;
+		Vec2 _v2CenterButton = Vec2(btnCalling->getContentSize().height / 2, btnCalling->getContentSize().height / 2);
+		_aCooldownStep->setPosition(Vec2(_fRadius * sinf(_fAngle), _fRadius * cosf(_fAngle)) + _v2CenterButton);
+		btnCalling->addChild(_aCooldownStep, -1);
 		g_lTemp.push_back(_aCooldownStep);
 	}
 }
 
-bool Hud::specialCooldown() {
+bool Hud::callBirdCooldown() {
 	if (g_lTemp.empty()) {
 		return false;
 	}
-	btnSpecial->removeChild(g_lTemp.front(), true);
+	btnCalling->removeChild(g_lTemp.front(), true);
 	g_lTemp.pop_front();
 	return true;
+}
+
+void Hud::updateMultiKills(int m_nCombo)
+{
+	switch (m_nCombo) {
+	case 2:
+		multiKills->setSkin("doublekill");
+		break;
+	case 3:
+		multiKills->setSkin("triplekill");
+		break;
+	case 4:
+		multiKills->setSkin("quadrakill");
+		break;
+	case 5:
+		multiKills->setSkin("pentakill");
+		break;
+	case 6:
+		multiKills->setSkin("ultrakill");
+		break;
+	case 7:
+		multiKills->setSkin("rampage");
+		break;
+	default:
+		multiKills->setSkin("default");
+		break;
+	}
+	if (m_nCombo > 7) {
+		multiKills->setSkin("rampage");
+	}
+	multiKills->setSlotsToSetupPose();
+	multiKills->setAnimation(0, "textkill", false);
 }

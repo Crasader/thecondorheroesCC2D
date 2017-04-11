@@ -85,6 +85,14 @@ void EnemyToanChanStudent::initCirclePhysic(b2World * world, Point pos)
 	body->CreateFixture(&fixtureDef);
 }
 
+void EnemyToanChanStudent::updateMe(BaseHero * hero)
+{
+	BaseEnemy::updateMe(hero);
+	if (getIsDie() && this->getB2Body() != nullptr) {
+		die();
+	}
+}
+
 
 //void EnemyToanChanStudent::genSplash()
 //{

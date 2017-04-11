@@ -18,19 +18,20 @@
 #include "CollisionListener.h"
 #include "utils/InfiniteParallaxNode.h"
 #include "utils/GLES-Render.h"
-
 #include "layer/DialogPauseGame.h"
-
+#include "datastructures\MyData.h"
+#include <vector>
 
 USING_NS_CC;
+using namespace std;
 
 class GameScene : public cocos2d::Layer
 {
 public:
 	
-	static cocos2d::Scene* createScene(int map, int haveboss);
-	virtual bool init(int map, int haveboss);
-	static GameScene* create(int map, int haveboss );
+	static cocos2d::Scene* createScene(int map, int haveboss, int charId);
+	virtual bool init(int map, int haveboss, int charId);
+	static GameScene* create(int map, int haveboss, int charId);
 
 	BaseHero * getHero() { return hero; }
 
@@ -40,14 +41,16 @@ private:
 	int map;
 	int haveboss;
 	bool isWinGame;
-
+	int charId;//Thinhnv Edited for select character
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
 	float scaleOfMap;
+	vector <MyData> listPosAndTag;
+
+	Layer * preLayer;
+	Layer * posLayer;
+
 	TMXTiledMap* tmx_map;
 	TMXTiledMap *tmx_mapboss[2];
-	TMXObjectGroup* groupGroundWooder;
-	TMXObjectGroup* groupGroundToanchan1;
-	TMXObjectGroup* groupGroundToanchan2;
 
 	int indexOfNextMapBoss;// chi so cua map boss cuoi, khoi dau la -1, khi danh boss chuyen 1 va 0(0101010101)
 	int currentButton = 0;
@@ -63,12 +66,13 @@ private:
 	Node* follow;
 	CCRect left_corner;
 	b2Body* sensor;
+	LayerColor *blur;
 
 
 	BaseHero *hero;
 	ChimDieu* _aEagle;
-	int m_nKillsInChain = 0;
-	float m_fKillChainCounter = 3.0f;
+	int m_nMultiKills = 0;
+	float m_fMultiKillsCounterTime;
 
 	InfiniteParallaxNode *background;
 	InfiniteParallaxNode *background2;
@@ -89,6 +93,8 @@ private:
 	// Create Function
 	void createDuongQua(string path_Json, string path_Atlas, Point position);
 	void createCoLong(string path_Json, string path_Atlas, Point position);
+
+	void createEagle(Point position);
 	void heroGetOffEagle();
 
 
@@ -109,26 +115,14 @@ private:
 	void createInfiniteNode();
 	void createGroundBody();
 	void createGroundForMapBoss();
-	void creatEnemyWooder();
-	void creatEnemyToanChanStudent();
-	void creatEnemyToanChanStudent2();
+	void creatEnemyWooder(Layer* layer, Vec2 pos);
+	void createEnemyToanChanStudent(Layer* layer, Vec2 pos);
+	void createEnemyToanChanStudent2(Layer* layer, Vec2 pos);
 	void creatBoss();
 
-	/*void creatEnemyWooderRT();
-	void creatEnemyToanChanStudentRT();
-	void creatEnemyToanChanStudent2RT();*/
-
-	void createCoint();
-	void createCointBag();
-	void createCoinBullion();
-	/*void createTimCoin();
-	void createParapolCoin();
-	void createCircleCoin();
-	void createSquareCoin();
-	void createStraightCoin();
-	void createZigzagCoin();
-	void createZigzagCoin2();*/
-	void createFormCoin(string objectName, string objectMap, string objectInform);
+	void createCointBag(Layer *layer, Vec2 pos);
+	void createCoinBullion(Layer *layer, Vec2 pos);
+	void createFormCoin( Layer *layer,Vec2 pos, string objectMap, string objectInform);
 
 	//skeleton data
 	//spSkeletonData* createSkeletonData(string atlasFile, string jsonFile);
@@ -149,7 +143,7 @@ private:
 	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
 
 public:
-
+	bool isModeDebug;
 	void onBegin();
     
 	// update functions
@@ -161,7 +155,7 @@ public:
 
 	void updateMoney(int numberOfCoin);
 	void updateScore(int score);
-	void updateKillChain(int p_nCombo); //DuongPM edited for multi kills
+	void updateMultiKills(); //DuongPM edited for multi kills
 	void updateBloodBar(int numberOfHealth, bool isVisible);
 	void updateCamera();
 	//void cleanMap();
@@ -176,12 +170,23 @@ public:
 	void reviveHero();
 	void callingBird();
 
+	void blurScreen();
 	void pauseGame();
 	void dieGame();
+	void overGame();
 	void nextGame();
 	void winGame();
 	void resumeGame();
 	void restartGame();
+
+	// toi uu cho game
+	void loadPosAndTag();// luu tru cac vi tri sinh agent
+	void loadPosOfObjectInGroup(string nameOfGroup, float tag);// 
+	void initLayerToAddAgent();
+	void updateLayer();
+
+	void createAgentOnLayer(Layer* layer);
+	void creatAgentByMydata(Layer* layer, MyData data);
 
     // implement the "static create()" method manually
    // CREATE_FUNC(GameScene);

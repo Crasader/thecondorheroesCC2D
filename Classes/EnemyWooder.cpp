@@ -67,9 +67,12 @@ void EnemyWooder::die()
 	this->setToSetupPose();
 }
 
-void EnemyWooder::updateMe(float dt)
+void EnemyWooder::updateMe(BaseHero* hero)
 {
-	BaseEnemy::updateMe(dt);
+	BaseEnemy::updateMe(hero);
+	if (this->getIsDie()&& this->getB2Body()!= nullptr) {
+		this->die();
+	}
 
 }
 

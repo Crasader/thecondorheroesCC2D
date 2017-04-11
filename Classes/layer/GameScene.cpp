@@ -9,13 +9,14 @@ Hud *hud;
 LoadingLayer* loadingLayer;
 
 
-Scene* GameScene::createScene(int map, int haveboss)
+Scene* GameScene::createScene(int map, int haveboss, int charId)
 {
 	// 'scene' is an autorelease object
 	auto scene = Scene::create();
 
 	// 'layer' is an autorelease object
-	auto layer = GameScene::create(map, haveboss);
+	auto layer = GameScene::create(map, haveboss, charId);
+	layer->setAnchorPoint(Point(0, 0));
 	layer->setName("gameLayer");
 
 
@@ -25,6 +26,7 @@ Scene* GameScene::createScene(int map, int haveboss)
 	// add layer as a child to scene
 	scene->addChild(layer);
 	scene->addChild(hud);
+	scene->addChild(layer->blur);
 	scene->addChild(loadingLayer);
 
 
@@ -33,7 +35,7 @@ Scene* GameScene::createScene(int map, int haveboss)
 }
 
 // on "init" you need to initialize your instance
-bool GameScene::init(int map, int haveboss)
+bool GameScene::init(int map, int haveboss, int charId)
 {
 	//////////////////////////////
 	// 1. super init first
@@ -41,6 +43,8 @@ bool GameScene::init(int map, int haveboss)
 	{
 		return false;
 	}
+	isModeDebug = false;
+	//isModeDebug = true;
 	indexOfNextMapBoss = -1;
 	this->haveboss = haveboss;
 	this->map = map;
@@ -57,45 +61,33 @@ bool GameScene::init(int map, int haveboss)
 
 	initB2World();
 	loadBackground(map);
+	loadPosAndTag();
 	createGroundBody();
 	createSensorToDetectEnemy();
+	initLayerToAddAgent();
+	this->charId = charId;
 
-	createDuongQua("Animation/DuongQua/DuongQua.json", "Animation/DuongQua/DuongQua.atlas",
-		Point(origin.x, visibleSize.height * 0.75f));
+	if (charId == 0) {
+		createDuongQua("Animation/DuongQua/DuongQua.json", "Animation/DuongQua/DuongQua.atlas",
+			Point(origin.x, visibleSize.height * 0.75f));
+	}
+	else {
+		createCoLong("Animation/CoLong/CoLong.json", "Animation/CoLong/CoLong.atlas", Point(origin.x, visibleSize.height * 0.75f));
+	}
 
-	/*createCoLong("Animation/CoLong/CoLong.json", "Animation/CoLong/CoLong.atlas",
-		Point(origin.x, visibleSize.height * 0.75f));*/
-
-	_aEagle = ChimDieu::create("Animation/ChimDieu/ChimDieu-DuongQua.json",
-		"Animation/ChimDieu/ChimDieu-DuongQua.atlas", SCREEN_SIZE.height / 2048);
-	_aEagle->initCirclePhysic(world, Point(hero->getB2Body()->GetPosition().x - visibleSize.width, visibleSize.height / 2));
-	this->addChild(_aEagle, ZORDER_HERO);
-	_aEagle->getB2Body()->SetGravityScale(0);
-
+	createEagle(Point(hero->getB2Body()->GetPosition().x - visibleSize.width, visibleSize.height / 2));
 
 	danceWithEffect();
-	groupGroundWooder = tmx_map->getObjectGroup("wooder");
-	groupGroundToanchan1 = tmx_map->getObjectGroup("toanchan_student");
-	groupGroundToanchan2 = tmx_map->getObjectGroup("toanchan_student2");
-	creatEnemyWooder();
-	// test data
-	/*auto test = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan",1.0f);
-	test->update(0.0f);
-	test->setPosition(SCREEN_SIZE / 2);
-	this->addChild(test,100);*/
-	//
-	creatEnemyToanChanStudent();
-	creatEnemyToanChanStudent2();
 	if (haveboss)
 		creatBoss();
-	createCoint();
+	//createCoint();
 	return true;
 }
 
-GameScene * GameScene::create(int map, int haveboss)
+GameScene * GameScene::create(int map, int haveboss, int charId)
 {
 	GameScene *pRet = new(std::nothrow) GameScene();
-	if (pRet && pRet->init(map, haveboss))
+	if (pRet && pRet->init(map, haveboss, charId))
 	{
 		pRet->autorelease();
 		return pRet;
@@ -127,7 +119,7 @@ void GameScene::createDuongQua(string path_Json, string path_Atlas, Point positi
 
 void GameScene::createCoLong(string path_Json, string path_Atlas, Point position)
 {
-	JSHERO->readFile(0);
+	JSHERO->readFile(1);
 	hero = CoLong::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 340);
 	hero->listener();
 	hero->setPosition(position);
@@ -141,10 +133,20 @@ void GameScene::createCoLong(string path_Json, string path_Atlas, Point position
 	addChild(hero->getBloodScreen(), ZORDER_SMT);
 }
 
+
+void GameScene::createEagle(Point position)
+{
+	_aEagle = ChimDieu::create("Animation/ChimDieu/ChimDieu.json",
+		"Animation/ChimDieu/ChimDieu.atlas", SCREEN_SIZE.height / 2048);
+	_aEagle->initCirclePhysic(world, position);
+	this->addChild(_aEagle, ZORDER_HERO);
+	_aEagle->setStringHero(charId == 0 ? "DuongQua" : "CoLong");
+}
+
 void GameScene::onBegin()
 {
 	hud->addEvents();
-	hud->getBtnSpecial()->setEnabled(true);
+	hud->getBtnCalling()->setEnabled(true);
 	hud->getPauseItem()->setEnabled(true);
 
 	touch_listener = EventListenerTouchOneByOne::create();
@@ -164,7 +166,7 @@ void GameScene::checkActiveButton()
 		if (currentButton == 2) {
 			if (hero->getIsDoneDuration2()) {
 				if (!hud->getBtnSkill_1()->getNumberCoolDown()->isVisible())
-					hud->getBtnSkill_1()->getCoolDownSprite()->setVisible(false);
+					hud->getBtnSkill_1()->setVisible(true);
 				hud->getBtnSkill_1()->setIsBlocked(false);
 			}
 
@@ -172,7 +174,7 @@ void GameScene::checkActiveButton()
 		else if (currentButton == 3) {
 			if (hero->getIsDoneDuration3()) {
 				if (!hud->getBtnSkill_1()->getNumberCoolDown()->isVisible())
-					hud->getBtnSkill_1()->getCoolDownSprite()->setVisible(false);
+					hud->getBtnSkill_1()->setVisible(true);
 				hud->getBtnSkill_1()->setIsBlocked(false);
 			}
 		}
@@ -183,14 +185,14 @@ void GameScene::checkActiveButton()
 		if (currentButton == 1) {
 			if (hero->getIsDoneDuration1()) {
 				if (!hud->getBtnSkill_2()->getNumberCoolDown()->isVisible())
-					hud->getBtnSkill_2()->getCoolDownSprite()->setVisible(false);
+					hud->getBtnSkill_2()->setVisible(true);
 				hud->getBtnSkill_2()->setIsBlocked(false);
 			}
 		}
 		else if (currentButton == 3) {
 			if (hero->getIsDoneDuration3()) {
 				if (!hud->getBtnSkill_2()->getNumberCoolDown()->isVisible())
-					hud->getBtnSkill_2()->getCoolDownSprite()->setVisible(false);
+					hud->getBtnSkill_2()->setVisible(true);
 				hud->getBtnSkill_2()->setIsBlocked(false);
 			}
 		}
@@ -201,7 +203,7 @@ void GameScene::checkActiveButton()
 		if (currentButton == 2) {
 			if (hero->getIsDoneDuration2()) {
 				if (!hud->getBtnSkill_3()->getNumberCoolDown()->isVisible())
-					hud->getBtnSkill_3()->getCoolDownSprite()->setVisible(false);
+					hud->getBtnSkill_3()->setVisible(true);
 				hud->getBtnSkill_3()->setIsBlocked(false);
 			}
 
@@ -209,7 +211,7 @@ void GameScene::checkActiveButton()
 		else if (currentButton == 1) {
 			if (hero->getIsDoneDuration1()) {
 				if (!hud->getBtnSkill_3()->getNumberCoolDown()->isVisible())
-					hud->getBtnSkill_3()->getCoolDownSprite()->setVisible(false);
+					hud->getBtnSkill_3()->setVisible(true);
 				hud->getBtnSkill_3()->setIsBlocked(false);
 			}
 		}
@@ -240,11 +242,11 @@ void GameScene::listener()
 		hero->doCounterSkill1();
 
 		hud->getBtnSkill_2()->setIsBlocked(true);
-		hud->getBtnSkill_2()->getCoolDownSprite()->setVisible(true);
+		hud->getBtnSkill_2()->setVisible(false);
 
 
 		hud->getBtnSkill_3()->setIsBlocked(true);
-		hud->getBtnSkill_3()->getCoolDownSprite()->setVisible(true);
+		hud->getBtnSkill_3()->setVisible(false);
 
 
 		hud->getBtnSkill_1()->setIsActive(false);
@@ -259,10 +261,10 @@ void GameScene::listener()
 		hero->doCounterSkill2();
 
 		hud->getBtnSkill_1()->setIsBlocked(true);
-		hud->getBtnSkill_1()->getCoolDownSprite()->setVisible(true);
+		hud->getBtnSkill_1()->setVisible(false);
 
 		hud->getBtnSkill_3()->setIsBlocked(true);
-		hud->getBtnSkill_3()->getCoolDownSprite()->setVisible(true);
+		hud->getBtnSkill_3()->setVisible(false);
 
 
 		hud->getBtnSkill_2()->setIsActive(false);
@@ -278,10 +280,10 @@ void GameScene::listener()
 
 		// block
 		hud->getBtnSkill_1()->setIsBlocked(true);
-		hud->getBtnSkill_1()->getCoolDownSprite()->setVisible(true);
+		hud->getBtnSkill_1()->setVisible(false);
 
 		hud->getBtnSkill_2()->setIsBlocked(true);
-		hud->getBtnSkill_2()->getCoolDownSprite()->setVisible(true);
+		hud->getBtnSkill_2()->setVisible(false);
 
 		hud->getBtnSkill_3()->setIsActive(false);
 	}
@@ -301,18 +303,27 @@ void GameScene::heroGetOffEagle() {
 
 void GameScene::update(float dt)
 {
+	//log("thisPos : %f, %f", this->getPositionX(), this->getPositionY());
+
 	/*creatEnemyWooderRT();
 	creatEnemyToanChanStudentRT();
 	creatEnemyToanChanStudent2RT();*/
 	updateB2World(dt);
 	listener();
+	updateLayer();
+
+	if (m_fMultiKillsCounterTime > 0.0f) {
+		m_fMultiKillsCounterTime -= dt;
+	}
+	else {
+		m_nMultiKills = 0;
+	}
 
 	checkActiveButton();
 
 	_aEagle->updateMe(dt);
 	if (hero->getIsDriverEagle()) {
 		hero->getB2Body()->SetGravityScale(0);
-		hero->getB2Body()->SetLinearVelocity(b2Vec2_zero);
 		hero->getB2Body()->SetTransform(b2Vec2(_aEagle->getB2Body()->GetPosition().x, _aEagle->getB2Body()->GetPosition().y - 100.0f / PTM_RATIO), 0.0f);
 	}
 
@@ -329,26 +340,31 @@ void GameScene::update(float dt)
 	updateSensor();
 
 	// fall down some hold
-	//if (hero->getPositionY() < 0) {
-	//	hero->getFSM()->changeState(MLandRevive);
-	//	hero->getB2Body()->SetGravityScale(0);
-	//	hero->setOnGround(false);
-	//	hero->getB2Body()->SetTransform(b2Vec2(hero->getB2Body()->GetPosition().x, SCREEN_SIZE.height / 10 / PTM_RATIO), 0.0f);
-	//	hud->hintSpecial(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
-	//}
+	if (hud->getBtnCalling()->isVisible() && hero->getPositionY() + hero->getTrueRadiusOfHero() < 0) {
+		hero->getFSM()->changeState(MLandRevive);
+		hero->setOnGround(false);
+		hero->setVisible(false);
+		hero->getB2Body()->SetGravityScale(0);
+		hero->getB2Body()->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
+		hero->getB2Body()->SetTransform(b2Vec2(hero->getB2Body()->GetPosition().x, hero->getB2Body()->GetPosition().y + 1), 0.0f);
+		hud->moveCallBirdToCenterScreen(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
+	}
+	else if (!hud->getBtnCalling()->isVisible() && hero->getPositionY() + hero->getTrueRadiusOfHero() * 3 < 0) {
+		overGame();
+	}
 
-	//if (hud->getBtnSpecialHintDone()) {
-	//	static float g_fTimeCounter = 0.0f;
-	//	g_fTimeCounter += dt;
-	//	if (g_fTimeCounter > 5.0f / 180) {
-	//		bool _bResult = hud->specialCooldown();
-	//		if (!_bResult) {
-	//			hud->setBtnSpecialHintDone(false);
-	//			//Director::getInstance()->replaceScene(MenuLayer::createScene());
-	//		}
-	//		g_fTimeCounter = 0.0f;
-	//	}
-	//}
+	if (hud->getBtnCallingHintDone()) {
+		static float g_fTimeCounter = 0.0f;
+		g_fTimeCounter += dt;
+		if (g_fTimeCounter > 5.0f / 180) {
+			bool _bResult = hud->callBirdCooldown();
+			if (!_bResult) {
+				hud->setBtnCallingHintDone(false);
+				overGame();
+			}
+			g_fTimeCounter = 0.0f;
+		}
+	}
 
 	//if (hero->getPositionX() >= SCREEN_SIZE.width / 4) {
 	//	if (_aEagle->getIsUp() && this->getPositionZ() < 100.0f) {
@@ -399,7 +415,8 @@ void GameScene::initB2World()
 
 	// draw debug
 	auto debugDraw = new (std::nothrow) GLESDebugDraw(PTM_RATIO);
-	world->SetDebugDraw(debugDraw);
+	if (isModeDebug)
+		world->SetDebugDraw(debugDraw);
 	uint32 flags = 0;
 	flags += b2Draw::e_shapeBit;
 	flags += b2Draw::e_jointBit;
@@ -467,7 +484,8 @@ void GameScene::loadBackground(int map)
 
 	tmx_map->setPosition(Point::ZERO);
 
-	//tmx_map->setVisible(false);
+	if (isModeDebug)
+		tmx_map->setVisible(false);
 
 	this->addChild(tmx_map, ZORDER_BG2);
 	if (haveboss) {
@@ -475,7 +493,8 @@ void GameScene::loadBackground(int map)
 			tmx_mapboss[i] = TMXTiledMap::create("Map/map1/mapboss.tmx");
 			tmx_mapboss[i]->setAnchorPoint(Point::ZERO);
 			tmx_mapboss[i]->setScale(scaleOfMap);
-			tmx_mapboss[i]->setVisible(false);
+			if (isModeDebug)
+				tmx_mapboss[i]->setVisible(false);
 		}
 
 		tmx_mapboss[0]->setPosition(tmx_map->getPosition() + Vec2(tmx_map->getBoundingBox().size.width, 0));
@@ -540,7 +559,8 @@ void GameScene::createInfiniteNode()
 	//background->addChild(bg3_2, 0, Vec2(1.5f, 1), Vec2(bg3_1->getBoundingBox().size.width, 0));
 	background->setPosition(Point(-SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 	background->setAnchorPoint(Point(0, 0.5f));
-	//background->setVisible(false);
+	if (isModeDebug)
+		background->setVisible(false);
 	this->addChild(background, ZORDER_BG);
 
 	background2 = InfiniteParallaxNode::create();
@@ -610,73 +630,56 @@ void GameScene::createGroundForMapBoss()
 	}
 }
 
-void GameScene::creatEnemyWooder()
+void GameScene::creatEnemyWooder(Layer * layer, Vec2 pos)
 {
-	auto groupGround = tmx_map->getObjectGroup("wooder");
-	if (!groupGround) return;
-	for (auto child : groupGround->getObjects()) {
-		auto mObject = child.asValueMap();
-		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		auto scaleOfWooder = (SCREEN_SIZE.height / 3.5) / 490; // 490 la height cua spine
-		//auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json",
-		//	"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
-		auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan", scaleOfWooder);
-		enemy->setPosition(origin);
-		enemy->setVisible(true);
-		this->addChild(enemy, ZORDER_ENEMY);
-		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
-		enemy->changeBodyCategoryBits(BITMASK_WOODER);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
-		enemy->listener();
-	}
+	auto scaleOfWooder = (SCREEN_SIZE.height / 3.5) / 490; // 490 la height cua spine
+														   //auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json",
+														   //	"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
+	auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan", scaleOfWooder);
+	enemy->setPosition(pos);
+	enemy->setVisible(true);
+	layer->addChild(enemy, ZORDER_ENEMY);
+	enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
+	enemy->changeBodyCategoryBits(BITMASK_WOODER);
+	enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
+	enemy->listener();
 }
 
-void GameScene::creatEnemyToanChanStudent()
+void GameScene::createEnemyToanChanStudent(Layer * layer, Vec2 pos)
 {
-	auto groupGround = tmx_map->getObjectGroup("toanchan_student");
-	if (!groupGround) return;
-	for (auto child : groupGround->getObjects()) {
-		auto mObject = child.asValueMap();
-		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401; // 401 la height cua spine
-		/*auto enemy = EnemyToanChanStudent::create("Animation/Enemy_DeTuToanChan1/ToanChan1.json",
-			"Animation/Enemy_DeTuToanChan1/ToanChan1.atlas", scaleOfEnemy);*/
-		auto enemy = EnemyToanChanStudent::create("Animation/Enemy_DeTuToanChan1/ToanChan1", scaleOfEnemy);
-		enemy->setPosition(origin);
-		enemy->setVisible(false);
-		this->addChild(enemy, ZORDER_ENEMY);
-		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 4));
-		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_SENSOR | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
-		//enemy->genSplash();
-		enemy->listener();
-	}
+	auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401; // 401 la height cua spine
+														 /*auto enemy = EnemyToanChanStudent::create("Animation/Enemy_DeTuToanChan1/ToanChan1.json",
+														 "Animation/Enemy_DeTuToanChan1/ToanChan1.atlas", scaleOfEnemy);*/
+	auto enemy = EnemyToanChanStudent::create("Animation/Enemy_DeTuToanChan1/ToanChan1", scaleOfEnemy);
+	enemy->setPosition(pos);
+	enemy->setVisible(true);
+	layer->addChild(enemy, ZORDER_ENEMY);
+	enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 4));
+	enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
+	enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2 | BITMASK_SENSOR);
+	//enemy->genSplash();
+	enemy->listener();
 }
 
-void GameScene::creatEnemyToanChanStudent2()
+void GameScene::createEnemyToanChanStudent2(Layer * layer, Vec2 pos)
 {
-	auto groupGround = tmx_map->getObjectGroup("toanchan_student2"); if (!groupGround) return;
-	for (auto child : groupGround->getObjects()) {
-		auto mObject = child.asValueMap();
-		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401; // 401 la height cua spine
-		/*auto enemy = EnemyToanChanStudent2::create("Animation/Enemy_DeTuToanChan2/ToanChan2.json",
-			"Animation/Enemy_DeTuToanChan2/ToanChan2.atlas", scaleOfEnemy);*/
-		auto enemy = EnemyToanChanStudent2::create("Animation/Enemy_DeTuToanChan2/ToanChan2", scaleOfEnemy);
-		enemy->setPosition(origin);
-		enemy->setVisible(false);
-		this->addChild(enemy, ZORDER_ENEMY);
-		enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
-		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN2);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_SENSOR | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
-		enemy->genSlash();
-		enemy->listener();
-		auto slash = enemy->getSlash();
-		slash->initCirclePhysic(world, slash->getPosition());
-		slash->changeBodyCategoryBits(BITMASK_SLASH);
-		slash->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
-		slash->getB2Body()->GetFixtureList()->SetSensor(true);
-	}
+	auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401; // 401 la height cua spine
+														 /*auto enemy = EnemyToanChanStudent2::create("Animation/Enemy_DeTuToanChan2/ToanChan2.json",
+														 "Animation/Enemy_DeTuToanChan2/ToanChan2.atlas", scaleOfEnemy);*/
+	auto enemy = EnemyToanChanStudent2::create("Animation/Enemy_DeTuToanChan2/ToanChan2", scaleOfEnemy);
+	enemy->setPosition(pos);
+	enemy->setVisible(true);
+	layer->addChild(enemy, ZORDER_ENEMY);
+	enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
+	enemy->changeBodyCategoryBits(BITMASK_TOANCHAN2);
+	enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2 | BITMASK_SENSOR);
+	enemy->genSlash();
+	enemy->listener();
+	/*auto slash = enemy->getSlash();
+	slash->initCirclePhysic(world, slash->getPosition());
+	slash->changeBodyCategoryBits(BITMASK_SLASH);
+	slash->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
+	slash->getB2Body()->GetFixtureList()->SetSensor(true);*/
 }
 
 void GameScene::creatBoss()
@@ -707,389 +710,74 @@ void GameScene::creatBoss()
 	}
 }
 
-//void GameScene::creatEnemyWooderRT()
+//void GameScene::createCoint()
 //{
-//
-//	if (!groupGroundWooder) return;
-//	int ap = 0;
-//	for (auto child : groupGroundWooder->getObjects()) {
-//		ap++;
-//		//auto mObject = child.asValueMap();
-//		//mObject["x"].asFloat() *scaleOfMap;
-//		//mObject["y"].asFloat()* scaleOfMap;
-//		//Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-//		//string a = mObject["id"].asString();
-//		//try {
-//		//	checkGenEnemy.at(a);
-//		//}
-//		//catch (out_of_range& e) {
-//		//	//log("Key: %s", a.c_str());
-//		//	if (origin.x < follow->getPositionX() + SCREEN_SIZE.width) {
-//		//		//log("Key: %s", a.c_str());
-//		//		//if (origin.x < follow->getPositionX() + SCREEN_SIZE.width) {
-//		//		//	auto scaleOfWooder = (SCREEN_SIZE.height / 3.5) / 490; // 490 la height cua spine
-//		//		//														   //auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json",
-//		//		//														   //	"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
-//		//		//	auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan", scaleOfWooder);
-//		//		//	enemy->setPosition(origin);
-//		//		//	enemy->setVisible(true);
-//		//		//	this->addChild(enemy, ZORDER_ENEMY);
-//		//		//	enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
-//		//		//	enemy->changeBodyCategoryBits(BITMASK_WOODER);
-//		//		//	enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
-//		//		//	enemy->listener();
-//		//		//	checkGenEnemy.insert(std::pair<string, bool>(a, true));
-//		//		//}
-//		//	}
-//
-//		//}
-//	}
-//	//log("so lan lap wooder: %d", ap);
-//}
-//
-//void GameScene::creatEnemyToanChanStudentRT()
-//{
-//	if (!groupGroundToanchan1) return;
-//	int ap = 0;
-//	for (auto child : groupGroundToanchan1->getObjects()){
-//		ap++;
-//		//auto mObject = child.asValueMap();
-//		//mObject["x"].asFloat() *scaleOfMap;
-//		//mObject["y"].asFloat()* scaleOfMap;
-//		//Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-//		//string a = mObject["id"].asString();
-//		//try {
-//		//	checkGenEnemy.at(a);
-//		//}
-//		//catch (out_of_range& e) {
-//		//	if (origin.x < follow->getPositionX() + SCREEN_SIZE.width) {
-//		//		//auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401; // 401 la height cua spine
-//		//		//													 /*auto enemy = EnemyToanChanStudent::create("Animation/Enemy_DeTuToanChan1/ToanChan1.json",
-//		//		//													 "Animation/Enemy_DeTuToanChan1/ToanChan1.atlas", scaleOfEnemy);*/
-//		//		//auto enemy = EnemyToanChanStudent::create("Animation/Enemy_DeTuToanChan1/ToanChan1", scaleOfEnemy);
-//		//		//enemy->setPosition(origin);
-//		//		//enemy->setVisible(false);
-//		//		//this->addChild(enemy, ZORDER_ENEMY);
-//		//		//enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 4));
-//		//		//enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
-//		//		//enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
-//		//		////enemy->genSplash();
-//		//		//enemy->listener();
-//		//		//checkGenEnemy.insert(std::pair<string, bool>(a, true));
-//		//	}
-//		//}
-//	}
-//	//log("so lan lap tc1: %d", ap);
-//}
-//
-//void GameScene::creatEnemyToanChanStudent2RT()
-//{
-//	//auto groupGroundToanchan2 = tmx_map->getObjectGroup("toanchan_student2"); 
-//	if (!groupGroundToanchan2) return;
-//	int ap = 0;
-//	for (auto child : groupGroundToanchan2->getObjects()) {
-//		ap++;
-//		//auto mObject = child.asValueMap();
-//		//mObject["x"].asFloat() *scaleOfMap;
-//		//mObject["y"].asFloat()* scaleOfMap;
-//		//Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-//		//string a = mObject["id"].asString();
-//		//try {
-//		//	checkGenEnemy.at(a);
-//		//}
-//		//catch (out_of_range& e) {
-//		//	if (origin.x < follow->getPositionX() + SCREEN_SIZE.width) {
-//		//		//auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401; // 401 la height cua spine
-//		//		//													 /*auto enemy = EnemyToanChanStudent2::create("Animation/Enemy_DeTuToanChan2/ToanChan2.json",
-//		//		//													 "Animation/Enemy_DeTuToanChan2/ToanChan2.atlas", scaleOfEnemy);*/
-//		//		//auto enemy = EnemyToanChanStudent2::create("Animation/Enemy_DeTuToanChan2/ToanChan2", scaleOfEnemy);
-//		//		//enemy->setPosition(origin);
-//		//		//enemy->setVisible(false);
-//		//		//this->addChild(enemy, ZORDER_ENEMY);
-//		//		//enemy->initCirclePhysic(world, Point(origin.x, origin.y + enemy->getBoundingBox().size.height / 2));
-//		//		//enemy->changeBodyCategoryBits(BITMASK_TOANCHAN2);
-//		//		//enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
-//		//		//enemy->genSlash();
-//		//		//enemy->listener();
-//		//		//auto slash = enemy->getSlash();
-//		//		//slash->initCirclePhysic(world, slash->getPosition());
-//		//		//slash->changeBodyCategoryBits(BITMASK_SLASH);
-//		//		//slash->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
-//		//		//slash->getB2Body()->GetFixtureList()->SetSensor(true);
-//		//		//checkGenEnemy.insert(std::pair<string, bool>(a, true));
-//		//	}
-//		//}
-//	}
-//	//log("so lan lap tc2: %d", ap);
+//	createFormCoin("coin_tim", "Map/tim.tmx", "tim");
+//	createFormCoin("coin_straight", "Map/straight.tmx", "straight");
+//	createFormCoin("coin_parabol", "Map/parapol.tmx", "parapol");
+//	createFormCoin("coin_square", "Map/square.tmx", "square");
+//	createFormCoin("coin_zigzag", "Map/zigzag.tmx", "zigzag");
+//	createFormCoin("coin_zigzag2", "Map/zigzag2.tmx", "zigzag2");
+//	createFormCoin("coin_circle", "Map/circle.tmx", "circle");
+//	createCointBag();
+//	createCoinBullion();
 //}
 
-void GameScene::createCoint()
+void GameScene::createCointBag(Layer *layer, Vec2 pos)
 {
-	createFormCoin("coin_tim", "Map/tim.tmx", "tim");
-	createFormCoin("coin_straight", "Map/straight.tmx", "straight");
-	createFormCoin("coin_parabol", "Map/parapol.tmx", "parapol");
-	createFormCoin("coin_square", "Map/square.tmx", "square");
-	createFormCoin("coin_zigzag", "Map/zigzag.tmx", "zigzag");
-	createFormCoin("coin_zigzag2", "Map/zigzag2.tmx", "zigzag2");
-	createFormCoin("coin_circle", "Map/circle.tmx", "circle");
-	createCointBag();
-	createCoinBullion();
+
+	auto scaleOfEnemy = SCREEN_SIZE.height / 5.0f / 123; //  la height cua spine
+	auto coin = CoinBag::create("Gold_bag.json",
+		"Gold_bag.atlas", scaleOfEnemy);
+	coin->setPosition(pos);
+	//enemy->setVisible(false);
+	layer->addChild(coin, ZORDER_ENEMY);
+	coin->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY()));
+	coin->getB2Body()->SetType(b2_staticBody);
+	coin->getB2Body()->GetFixtureList()->SetSensor(true);
+	coin->changeBodyCategoryBits(BITMASK_COIN_BAG);
+	coin->changeBodyMaskBits(BITMASK_SWORD);
+	coin->update(0.0f);
+	//enemy->listener();
+
 }
 
-void GameScene::createCointBag()
+void GameScene::createCoinBullion(Layer *layer, Vec2 pos)
 {
-	auto groupGround = tmx_map->getObjectGroup("coin_bag");
-	if (!groupGround) return;
-	for (auto child : groupGround->getObjects()) {
-		auto mObject = child.asValueMap();
-		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		auto scaleOfEnemy = SCREEN_SIZE.height / 5.0f / 123; //  la height cua spine
-		auto coin = CoinBag::create("Gold_bag.json",
-			"Gold_bag.atlas", scaleOfEnemy);
-		coin->setPosition(origin);
-		//enemy->setVisible(false);
-		this->addChild(coin, ZORDER_ENEMY);
-		coin->initCirclePhysic(world, Point(origin.x, origin.y));
-		coin->getB2Body()->SetType(b2_staticBody);
-		coin->getB2Body()->GetFixtureList()->SetSensor(true);
-		coin->changeBodyCategoryBits(BITMASK_COIN_BAG);
-		coin->changeBodyMaskBits(BITMASK_SWORD);
-		coin->updateMe(0.0f);
-		//enemy->listener();
-	}
+	auto scaleOfEnemy = SCREEN_SIZE.height / 6.0f / 118; //  la height cua spine
+	auto coin = CoinBullion::create("gold.json",
+		"gold.atlas", scaleOfEnemy);
+	coin->setPosition(pos);
+	//enemy->setVisible(false);
+	layer->addChild(coin, ZORDER_ENEMY);
+	coin->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY()));
+	coin->getB2Body()->SetType(b2_staticBody);
+	coin->getB2Body()->GetFixtureList()->SetSensor(true);
+	coin->changeBodyCategoryBits(BITMASK_COIN_BULLION);
+	coin->changeBodyMaskBits(BITMASK_HERO);
+	coin->update(0.0f);
 }
 
-void GameScene::createCoinBullion()
+
+void GameScene::createFormCoin(Layer* layer, Vec2 pos, string objectMap, string objectInForm)
 {
-	auto groupGround = tmx_map->getObjectGroup("coin_bullion");
-	if (!groupGround) return;
-	for (auto child : groupGround->getObjects()) {
-		auto mObject = child.asValueMap();
-		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		auto scaleOfEnemy = SCREEN_SIZE.height / 6.0f / 118; //  la height cua spine
-		auto coin = CoinBullion::create("gold.json",
-			"gold.atlas", scaleOfEnemy);
-		coin->setPosition(origin);
-		//enemy->setVisible(false);
-		this->addChild(coin, ZORDER_ENEMY);
-		coin->initCirclePhysic(world, Point(origin.x, origin.y));
-		coin->getB2Body()->SetType(b2_staticBody);
-		coin->getB2Body()->GetFixtureList()->SetSensor(true);
-		coin->changeBodyCategoryBits(BITMASK_COIN_BULLION);
+	auto tmx = TMXTiledMap::create(objectMap);
+	auto groupCoin = tmx->getObjectGroup(objectInForm);
+	for (auto c : groupCoin->getObjects()) {
+		auto mObject2 = c.asValueMap();
+		Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
+		auto coin = Coin::create();
+		auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
+		coin->setScale(scale);
+		coin->setPosition(pos + origin2);
+		layer->addChild(coin, ZORDER_ENEMY);
+		coin->initCirclePhysic(world, Vec2(pos + origin2 + layer->getPosition()));
+		coin->changeBodyCategoryBits(BITMASK_COIN);
 		coin->changeBodyMaskBits(BITMASK_HERO);
-		coin->updateMe(0.0f);
-		//enemy->listener();
+		coin->getB2Body()->GetFixtureList()->SetSensor(true);
+		coin->runAnimation();
 	}
-}
 
-//void GameScene::createTimCoin()
-//{
-//	auto group = tmx_map->getObjectGroup("coin_tim");
-//	for (auto child : group->getObjects()) {
-//		auto mObject = child.asValueMap();
-//		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-//		auto tmx = TMXTiledMap::create("Map/tim.tmx");
-//		auto groupCoin = tmx->getObjectGroup("tim");
-//		for (auto c : groupCoin->getObjects()) {
-//			auto mObject2 = c.asValueMap();
-//			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
-//			auto coin = Coin::create();
-//			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
-//			coin->setScale(scale);
-//			coin->setPosition(origin + origin2);
-//			this->addChild(coin, ZORDER_ENEMY);
-//			coin->initCirclePhysic(world, origin + origin2);
-//			coin->changeBodyCategoryBits(BITMASK_COIN);
-//			coin->changeBodyMaskBits(BITMASK_HERO);
-//			coin->runAnimation();
-//		}
-//	}
-//}
-//
-//void GameScene::createParapolCoin()
-//{
-//	auto group = tmx_map->getObjectGroup("coin_parapol");
-//	for (auto child : group->getObjects()) {
-//		auto mObject = child.asValueMap();
-//		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-//		auto tmx = TMXTiledMap::create("Map/parapol.tmx");
-//		auto groupCoin = tmx->getObjectGroup("parapol");
-//		for (auto c : groupCoin->getObjects()) {
-//			auto mObject2 = c.asValueMap();
-//			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
-//			auto coin = Coin::create();
-//			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
-//			coin->setScale(scale);
-//			coin->setPosition(origin + origin2);
-//			this->addChild(coin, ZORDER_ENEMY);
-//			coin->initCirclePhysic(world, origin + origin2);
-//			coin->changeBodyCategoryBits(BITMASK_COIN);
-//			coin->changeBodyMaskBits(BITMASK_HERO);
-//			coin->runAnimation();
-//		}
-//	}
-//}
-//
-//void GameScene::createCircleCoin()
-//{
-//	auto group = tmx_map->getObjectGroup("coin_circle");
-//	for (auto child : group->getObjects()) {
-//		auto mObject = child.asValueMap();
-//		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-//		auto tmx = TMXTiledMap::create("Map/circle.tmx");
-//		auto groupCoin = tmx->getObjectGroup("circle");
-//		for (auto c : groupCoin->getObjects()) {
-//			auto mObject2 = c.asValueMap();
-//			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
-//			auto coin = Coin::create();
-//			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
-//			coin->setScale(scale);
-//			coin->setPosition(origin + origin2);
-//			this->addChild(coin, ZORDER_ENEMY);
-//			coin->initCirclePhysic(world, origin + origin2);
-//			coin->changeBodyCategoryBits(BITMASK_COIN);
-//			coin->changeBodyMaskBits(BITMASK_HERO);
-//			coin->runAnimation();
-//		}
-//	}
-//}
-//
-//void GameScene::createSquareCoin()
-//{
-//	auto group = tmx_map->getObjectGroup("coin_square");
-//	for (auto child : group->getObjects()) {
-//		auto mObject = child.asValueMap();
-//		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-//		auto tmx = TMXTiledMap::create("Map/square.tmx");
-//		auto groupCoin = tmx->getObjectGroup("square");
-//		for (auto c : groupCoin->getObjects()) {
-//			auto mObject2 = c.asValueMap();
-//			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
-//			auto coin = Coin::create();
-//			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
-//			coin->setScale(scale);
-//			coin->setPosition(origin + origin2);
-//			this->addChild(coin, ZORDER_ENEMY);
-//			coin->initCirclePhysic(world, origin + origin2);
-//			coin->changeBodyCategoryBits(BITMASK_COIN);
-//			coin->changeBodyMaskBits(BITMASK_HERO);
-//			coin->runAnimation();
-//		}
-//	}
-//}
-//
-//void GameScene::createStraightCoin()
-//{
-//	auto group = tmx_map->getObjectGroup("coin_straight");
-//	for (auto child : group->getObjects()) {
-//		auto mObject = child.asValueMap();
-//		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-//		auto tmx = TMXTiledMap::create("Map/straight.tmx");
-//		auto groupCoin = tmx->getObjectGroup("straight");
-//		for (auto c : groupCoin->getObjects()) {
-//			auto mObject2 = c.asValueMap();
-//			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
-//			auto coin = Coin::create();
-//			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
-//			coin->setScale(scale);
-//			coin->setPosition(origin + origin2);
-//			this->addChild(coin, ZORDER_ENEMY);
-//			coin->initCirclePhysic(world, origin + origin2);
-//			coin->changeBodyCategoryBits(BITMASK_COIN);
-//			coin->changeBodyMaskBits(BITMASK_HERO);
-//			coin->runAnimation();
-//		}
-//	}
-//}
-//
-//void GameScene::createZigzagCoin()
-//{
-//	auto group = tmx_map->getObjectGroup("coin_straight");
-//	for (auto child : group->getObjects()) {
-//		auto mObject = child.asValueMap();
-//		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-//		auto tmx = TMXTiledMap::create("Map/straight.tmx");
-//		auto groupCoin = tmx->getObjectGroup("straight");
-//		for (auto c : groupCoin->getObjects()) {
-//			auto mObject2 = c.asValueMap();
-//			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
-//			auto coin = Coin::create();
-//			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
-//			coin->setScale(scale);
-//			coin->setPosition(origin + origin2);
-//			this->addChild(coin, ZORDER_ENEMY);
-//			coin->initCirclePhysic(world, origin + origin2);
-//			coin->changeBodyCategoryBits(BITMASK_COIN);
-//			coin->changeBodyMaskBits(BITMASK_HERO);
-//			coin->runAnimation();
-//		}
-//	}
-//}
-//
-//void GameScene::createZigzagCoin2()
-//{
-//	auto group = tmx_map->getObjectGroup("coin_straight");
-//	for (auto child : group->getObjects()) {
-//		auto mObject = child.asValueMap();
-//		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-//		auto tmx = TMXTiledMap::create("Map/straight.tmx");
-//		auto groupCoin = tmx->getObjectGroup("straight");
-//		for (auto c : groupCoin->getObjects()) {
-//			auto mObject2 = c.asValueMap();
-//			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
-//			auto coin = Coin::create();
-//			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
-//			coin->setScale(scale);
-//			coin->setPosition(origin + origin2);
-//			this->addChild(coin, ZORDER_ENEMY);
-//			coin->initCirclePhysic(world, origin + origin2);
-//			coin->changeBodyCategoryBits(BITMASK_COIN);
-//			coin->changeBodyMaskBits(BITMASK_HERO);
-//			coin->runAnimation();
-//		}
-//	}
-//}
-
-//spSkeletonData * GameScene::createSkeletonData(string atlasFileName, string jsonFileName)
-//{
-//	/*std::string atlasFile = atlasFileName;
-//	std::string skeletonDataFile = jsonFileName;
-//	float timeScale = 1.0;
-//	auto _atlas = spAtlas_createFromFile(atlasFile.c_str(), 0);
-//	CCASSERT(_atlas, "Error reading atlas file.");
-//
-//	spSkeletonJson* json = spSkeletonJson_create(_atlas);
-//	json->scale = timeScale;
-//	spSkeletonData* skeletonData = spSkeletonJson_readSkeletonDataFile(json, skeletonDataFile.c_str());
-//	CCASSERT(skeletonData, json->error ? json->error : "Error reading skeleton data file.");
-//	spSkeletonJson_dispose(json);
-//	return skeletonData;*/
-//}
-
-void GameScene::createFormCoin(string objectName, string objectMap, string objectInForm)
-{
-	auto group = tmx_map->getObjectGroup(objectName);
-	if (!group) return;
-	for (auto child : group->getObjects()) {
-		auto mObject = child.asValueMap();
-		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		auto tmx = TMXTiledMap::create(objectMap);
-		auto groupCoin = tmx->getObjectGroup(objectInForm);
-		for (auto c : groupCoin->getObjects()) {
-			auto mObject2 = c.asValueMap();
-			Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
-			auto coin = Coin::create();
-			auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
-			coin->setScale(scale);
-			coin->setPosition(origin + origin2);
-			this->addChild(coin, ZORDER_ENEMY);
-			coin->initCirclePhysic(world, origin + origin2);
-			coin->changeBodyCategoryBits(BITMASK_COIN);
-			coin->changeBodyMaskBits(BITMASK_HERO);
-			coin->getB2Body()->GetFixtureList()->SetSensor(true);
-			coin->runAnimation();
-		}
-	}
 }
 
 void GameScene::createSensorToDetectEnemy()
@@ -1099,13 +787,13 @@ void GameScene::createSensorToDetectEnemy()
 	b2PolygonShape shape;
 	b2FixtureDef fixtureDef;
 
-	shape.SetAsBox(0, SCREEN_SIZE.height / 2 / PTM_RATIO);
+	shape.SetAsBox(2 / PTM_RATIO, SCREEN_SIZE.height / 2 / PTM_RATIO);
 
 	fixtureDef.density = 0.0f;
 	fixtureDef.friction = 0.0f;
 	fixtureDef.restitution = 0.0f;
 	fixtureDef.shape = &shape;
-	fixtureDef.isSensor = true;
+	//	fixtureDef.isSensor = true;
 
 	fixtureDef.filter.categoryBits = BITMASK_SENSOR;
 	fixtureDef.filter.maskBits = BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2;
@@ -1146,6 +834,8 @@ void GameScene::danceWithCamera()
 	camera->setTarget(follow);
 	runAction(camera);
 
+	blur = LayerColor::create(Color4B(0, 0, 0, 170));
+	blur->setVisible(false);
 	left_corner = CCRectMake(0, 0, SCREEN_SIZE.width / 2, SCREEN_SIZE.height);
 }
 
@@ -1239,7 +929,9 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 
 		// cannot jump while attacking or being injured
 		if (hero->getFSM()->currentState == MAttack || hero->getFSM()->currentState == MInjured ||
-			hero->getFSM()->currentState == MDie || hero->getFSM()->currentState == MRevive)
+			hero->getFSM()->currentState == MDie || hero->getFSM()->currentState == MRevive ||
+			hero->getFSM()->currentState == MLandRevive
+			)
 
 			return false;
 
@@ -1290,34 +982,54 @@ void GameScene::updateEnemy()
 					auto boss = (EnemyBoss1*)tmp;
 					if (tmp->getB2Body()->GetLinearVelocity().x != 0)
 					{
-						boss->updateMe(hero->getPosition());
+						boss->updateMe(hero);
 					}
 					else if (tmp->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width / 2) {
 						auto boss = (EnemyBoss1*)tmp;
-						boss->updateMe(hero->getPosition());
+						boss->updateMe(hero);
 					}
 				}
 			}
-			else if (tmp->getB2Body() != nullptr) {
-				if (tmp->getIsDie()) {
-					tmp->die();
-				}
-				else {
-					if (tmp->getPositionX() < follow->getPositionX() - SCREEN_SIZE.width) {
-						tmp->setIsDie(true);
-
-					}
-
-					else if (tmp->getPositionX() < follow->getPositionX() + SCREEN_SIZE.width &&
-						tmp->getPositionX() > follow->getPositionX() - SCREEN_SIZE.width / 2) {
-						tmp->setVisible(true);
-						tmp->updateMe(1.0f);
-					}
-				}
-			}
-
 		}
 	}
+	if (preLayer != nullptr) {
+		auto childLayer1 = preLayer->getChildren();
+
+		for (int i = 0; i < childLayer1.size(); i++) {
+			auto agent = childLayer1.at(i);
+			if ((agent->getPosition() + preLayer->getPosition()).x < follow->getPositionX() + SCREEN_SIZE.width*3/4
+				&& (agent->getPositionX() + preLayer->getPositionX())>follow->getPositionX() - SCREEN_SIZE.width * 3 / 4) {
+				if (agent->getTag() >= 90) {
+					auto tmp = (B2Skeleton*)(agent);
+					tmp->updateMe(hero);
+				}
+				else if (agent->getTag() >= 80 && agent->getTag() < 90) {
+					auto tmp = (B2Sprite*)(agent);
+					tmp->updateMe(hero);
+				}
+			}
+		};
+	}
+	if (posLayer != nullptr) {
+		auto childLayer2 = posLayer->getChildren();
+
+		for (int i = 0; i < childLayer2.size(); i++) {
+			auto agent = childLayer2.at(i);
+			if ((agent->getPosition() + posLayer->getPosition()).x < follow->getPositionX() + SCREEN_SIZE.width  *3/4
+				&& (agent->getPositionX() + posLayer->getPositionX())>follow->getPositionX() - SCREEN_SIZE.width * 3 / 4) {
+
+				if (agent->getTag() >= 90) {
+					auto tmp = (B2Skeleton*)(agent);
+					tmp->updateMe(hero);
+				}
+				else if (agent->getTag() >= 80 && agent->getTag() < 90) {
+					auto tmp = (B2Sprite*)(agent);
+					tmp->updateMe(hero);
+				}
+			}
+		}
+	}
+
 }
 
 void GameScene::updateBoss()
@@ -1337,37 +1049,13 @@ void GameScene::updateScore(int score)
 	hud->getLbScore()->setString(StringUtils::format("%i", hero->getScore()));
 }
 
-// 
-void GameScene::updateKillChain(int p_nCombo)
-{
-	if (p_nCombo > 1) {
-		hud->getKillChain()->setVisible(true);
-		switch (p_nCombo) {
-		case 2:
-			hud->getKillChain()->setTexture(CCTextureCache::sharedTextureCache()->addImage("KillChain/2.png"));
-			break;
-		case 3:
-			hud->getKillChain()->setTexture(CCTextureCache::sharedTextureCache()->addImage("KillChain/3.png"));
-			break;
-		case 4:
-			hud->getKillChain()->setTexture(CCTextureCache::sharedTextureCache()->addImage("KillChain/4.png"));
-			break;
-		case 5:
-			hud->getKillChain()->setTexture(CCTextureCache::sharedTextureCache()->addImage("KillChain/5.png"));
-			break;
-		default:
-			hud->getKillChain()->setTexture(CCTextureCache::sharedTextureCache()->addImage("KillChain/monster.png"));
-			break;
-		}
+void GameScene::updateMultiKills() {
+	m_nMultiKills += 1;
+	m_fMultiKillsCounterTime = 1.0f;
+	if (m_nMultiKills > 1) {
+		hud->updateMultiKills(m_nMultiKills);
+		// TODO : update bonus score by multi kills
 
-		ScaleTo* scale1 = ScaleTo::create(0.1f, 1.2f, 1.2f, 1.2f);
-		ScaleTo* scale2 = ScaleTo::create(0.1f, 1.0f, 1.0f, 1.0f);
-		ScaleTo* scale3 = ScaleTo::create(0.1f, 0.8f, 0.8f, 0.8f);
-		Sequence* scale = Sequence::create(scale1, scale2, scale3, NULL);
-		hud->getKillChain()->runAction(scale);
-
-		hero->setScore(hero->getScore() + p_nCombo * 1000);
-		hud->getLbScore()->setString(StringUtils::format("%i", hero->getScore()));
 	}
 }
 
@@ -1400,8 +1088,6 @@ void GameScene::updateCamera()
 		{
 			background->setPositionY(SCREEN_SIZE.height / 2);
 		}
-
-		follow->setPositionY(background->getPositionY());
 
 		/*if (hero->getPositionX() >= SCREEN_SIZE.width / 4) {
 			if (!haveboss) {
@@ -1458,6 +1144,7 @@ void GameScene::updateCamera()
 	}
 	background->updatePosition();
 	background2->updatePosition();
+	follow->setPositionY(background->getPositionY());
 }
 
 //void GameScene::cleanMap()
@@ -1525,7 +1212,7 @@ void GameScene::callingBird()
 	hero->setOnGround(false);
 	hero->getFSM()->changeState(MIdle);
 	hero->setVisible(false);
-	hud->setBtnSpecialHintDone(false);
+	hud->setBtnCallingHintDone(false);
 	_aEagle->setVisible(true);
 	_aEagle->getB2Body()->SetTransform(hero->getB2Body()->GetPosition(), 0.0f);
 	_aEagle->flyUp(b2Vec2(hero->getMoveVel(), 7.0f));
@@ -1538,21 +1225,27 @@ void GameScene::callingBird()
 	runAction(_aHeroGetOffEagle);
 }
 
+void GameScene::blurScreen()
+{
+	blur->setVisible(true);
+}
+
 void GameScene::pauseGame()
 {
+	blurScreen();
 	// disable the menu pause item
 	if (EM->getSmokeRun()->isVisible()) {
 		EM->getSmokeRun()->pause();
 	}
 
-	if (hud->getBtnSpecial()->isVisible()) {
-		hud->getBtnSpecial()->setEnabled(false);
+	if (hud->getBtnCalling()->isVisible()) {
+		hud->getBtnCalling()->setEnabled(false);
 	}
 
 	hud->pauseIfVisible();
 
 	hero->pause();
-	dialogPause = DialogPauseGame::create(-1);
+	dialogPause = DialogPause::create();
 	this->getParent()->addChild(dialogPause);
 
 	hud->getPauseItem()->setEnabled(false);
@@ -1562,8 +1255,9 @@ void GameScene::pauseGame()
 
 void GameScene::dieGame()
 {
-	if (hud->getBtnSpecial()->isVisible()) {
-		hud->getBtnSpecial()->setEnabled(false);
+	blurScreen();
+	if (hud->getBtnCalling()->isVisible()) {
+		hud->getBtnCalling()->setEnabled(false);
 	}
 
 	hud->pauseIfVisible();
@@ -1573,7 +1267,31 @@ void GameScene::dieGame()
 	}
 
 	hero->pause();
-	dialogPause = DialogPauseGame::create(0);
+	dialogPause = DialogRevive::create(1);
+	this->getParent()->addChild(dialogPause);
+
+	hud->getPauseItem()->setEnabled(false);
+
+	this->pause();
+}
+
+void GameScene::overGame()
+{
+	if (!blur->isVisible())
+		blurScreen();
+
+	if (hud->getBtnCalling()->isVisible()) {
+		hud->getBtnCalling()->setEnabled(false);
+	}
+
+	hud->pauseIfVisible();
+
+	if (EM->getSmokeRun()->isVisible()) {
+		EM->getSmokeRun()->pause();
+	}
+
+	hero->pause();
+	dialogPause = DialogOverGame::create(hero->getScore(), hero->getCoinExplored());
 	this->getParent()->addChild(dialogPause);
 
 	hud->getPauseItem()->setEnabled(false);
@@ -1585,17 +1303,18 @@ void GameScene::nextGame()
 {
 	++map;
 	if (map < 3)
-		Director::getInstance()->replaceScene(GameScene::createScene(map, haveboss));
+		Director::getInstance()->replaceScene(GameScene::createScene(map, haveboss, charId));
 	else if (map == 3)
-		Director::getInstance()->replaceScene(GameScene::createScene(map, true));
+		Director::getInstance()->replaceScene(GameScene::createScene(map, true, charId));
 	else
 		Director::getInstance()->replaceScene(MenuLayer::createScene());
 }
 
 void GameScene::winGame()
 {
-	if (hud->getBtnSpecial()->isVisible()) {
-		hud->getBtnSpecial()->setEnabled(false);
+	blurScreen();
+	if (hud->getBtnCalling()->isVisible()) {
+		hud->getBtnCalling()->setEnabled(false);
 	}
 
 	hud->pauseIfVisible();
@@ -1606,7 +1325,7 @@ void GameScene::winGame()
 	hero->pause();
 
 
-	dialogPause = DialogPauseGame::create(1);
+	dialogPause = DialogStageClear::create(hero->getScore(), hero->getCoinExplored());
 	this->getParent()->addChild(dialogPause);
 
 	hud->getPauseItem()->setEnabled(false);
@@ -1616,6 +1335,7 @@ void GameScene::winGame()
 
 void GameScene::resumeGame()
 {
+	blur->setVisible(false);
 	if (EM->getSmokeRun()->isVisible()) {
 		EM->getSmokeRun()->resume();
 	}
@@ -1627,14 +1347,151 @@ void GameScene::resumeGame()
 
 	hud->resumeIfVisible();
 	hud->getPauseItem()->setEnabled(true);
-	if (hud->getBtnSpecial()->isVisible())
-		hud->getBtnSpecial()->setEnabled(true);
-
+	if (hud->getBtnCalling()->isVisible())
+		hud->getBtnCalling()->setEnabled(true);
 
 	this->resume();
 }
 
 void GameScene::restartGame()
 {
-	Director::getInstance()->replaceScene(GameScene::createScene(map, haveboss));
+	Director::getInstance()->replaceScene(GameScene::createScene(map, haveboss, charId));
+}
+
+void GameScene::loadPosAndTag()
+{
+	loadPosOfObjectInGroup("wooder", TAG_ENEMY_WOODER);
+	loadPosOfObjectInGroup("toanchan_student", TAG_ENEMY_TOANCHAN1);
+	loadPosOfObjectInGroup("toanchan_student2", TAG_ENEMY_TOANCHAN2);
+	loadPosOfObjectInGroup("coin_bullion", TAG_COINBULLION);
+	loadPosOfObjectInGroup("coin_bag", TAG_COINBAG);
+	loadPosOfObjectInGroup("coin_parabol", TAG_COIN_PARABOL);
+	loadPosOfObjectInGroup("coin_straight", TAG_COIN_STRAIGHT);
+	loadPosOfObjectInGroup("coin_zigzag", TAG_COIN_ZIGZAG);
+	loadPosOfObjectInGroup("coin_zigzag2", TAG_COIN_ZIGZAG2);
+	loadPosOfObjectInGroup("coin_square", TAG_COIN_SQUARE);
+	loadPosOfObjectInGroup("coin_circle", TAG_COIN_CIRCLE);
+	loadPosOfObjectInGroup("coin_tim", TAG_COIN_TIM);
+}
+
+void GameScene::loadPosOfObjectInGroup(string nameOfGroup, float tag)
+{
+	auto groupGround = tmx_map->getObjectGroup(nameOfGroup);
+	if (!groupGround) return;
+	for (auto child : groupGround->getObjects()) {
+		auto mObject = child.asValueMap();
+		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+		MyData data(tag, origin.x, origin.y);
+		listPosAndTag.push_back(data);
+	}
+}
+
+void GameScene::initLayerToAddAgent()
+{
+	preLayer = Layer::create();
+	posLayer = Layer::create();
+	preLayer->setPosition(Vec2::ZERO);
+	preLayer->setAnchorPoint(Point(0, 0));
+	posLayer->setPosition(SCREEN_SIZE.width*1.5f, 0);
+	posLayer->setAnchorPoint(Point(0, 0));
+	this->addChild(preLayer, ZORDER_ENEMY);
+	this->addChild(posLayer, ZORDER_ENEMY);
+	createAgentOnLayer(preLayer);
+	createAgentOnLayer(posLayer);
+
+}
+
+void GameScene::updateLayer()
+{
+	if (posLayer != nullptr) {
+		if (posLayer->getPositionX() <= follow->getPositionX() - SCREEN_SIZE.width) {
+			preLayer->removeAllChildrenWithCleanup(true);
+			Layer *tmpLayer = preLayer;
+			preLayer = posLayer;
+			posLayer = tmpLayer;
+
+			posLayer->setPosition(preLayer->getPositionX() + SCREEN_SIZE.width*1.5f, 0);
+			if (posLayer->getPositionX() < tmx_map->getBoundingBox().size.width) {
+				createAgentOnLayer(posLayer);
+			}
+			else {
+				posLayer->removeFromParentAndCleanup(true);
+				posLayer = nullptr;
+			}
+		}
+	}
+}
+
+void GameScene::createAgentOnLayer(Layer * layer)
+{
+	for (auto i : listPosAndTag) {
+		//log("i.x = %f", i.x);
+		if (i.x >= layer->getPositionX() && i.x < layer->getPositionX() + SCREEN_SIZE.width*1.5f) {
+			creatAgentByMydata(layer, i);
+		}
+	}
+}
+
+void GameScene::creatAgentByMydata(Layer * layer, MyData data)
+{
+	switch (data.tag)
+	{
+	case TAG_ENEMY_WOODER: {
+		//ok
+		creatEnemyWooder(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
+		//log("wooder: %f, %f", data.x - layer->getPositionX(), data.y - layer->getPositionY());
+		break;
+
+	}
+	case TAG_ENEMY_TOANCHAN1: {
+		createEnemyToanChanStudent(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
+		break;
+	}
+	case TAG_ENEMY_TOANCHAN2: {
+		createEnemyToanChanStudent2(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
+		break;
+	}
+	case TAG_COINBAG: {
+		// ok
+		createCointBag(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
+		break;
+	}
+	case TAG_COINBULLION: {
+
+		createCoinBullion(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
+		break;
+	}
+	case TAG_COIN_PARABOL: {
+		//ok
+		createFormCoin(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()), "Map/parapol.tmx", "parapol");
+		break;
+	}
+	case TAG_COIN_STRAIGHT: {
+		createFormCoin(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()), "Map/straight.tmx", "straight");
+		break;
+	}
+	case TAG_COIN_ZIGZAG: {
+		createFormCoin(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()), "Map/zigzag.tmx", "zigzag");
+		break;
+	}
+	case TAG_COIN_ZIGZAG2: {
+		createFormCoin(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()), "Map/zigzag2.tmx", "zigzag2");
+		break;
+	}
+	case TAG_COIN_SQUARE: {
+		createFormCoin(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()), "Map/square.tmx", "square");
+		break;
+	}
+	case TAG_COIN_CIRCLE: {
+		createFormCoin(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()), "Map/circle.tmx", "circle");
+		break;
+	}
+	case TAG_COIN_TIM: {
+		createFormCoin(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()), "Map/tim.tmx", "tim");
+		break;
+	}
+
+	default:
+		break;
+	}
 }

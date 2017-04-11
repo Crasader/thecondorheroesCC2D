@@ -12,7 +12,7 @@ public:
 	CoinBag(string jsonFile, string atlasFile,float scale);
 	static CoinBag* create(string jsonFile, string atlasFile, float scale);
 	SkeletonAnimation *effect;
-	void updateMe(float dt);
+	void updateMe(BaseHero* hero);
 	void die();
 	//void listener();
 	void onExit();

@@ -10,6 +10,7 @@
 USING_NS_CC;
 
 using namespace spine;
+using namespace std;
 
 class BaseHero : public B2Skeleton
 {
@@ -31,6 +32,7 @@ protected:
 	CC_SYNTHESIZE(float, jump_vel, JumpVel);
 
 	CC_SYNTHESIZE(Sprite*, bloodScreen, BloodScreen);
+	//CC_SYNTHESIZE(Sprite*, blash, Blash);
 	CC_SYNTHESIZE(SkeletonAnimation*, slash, Slash);
 	CC_SYNTHESIZE(SkeletonAnimation*, slashLand, SlashLand);
 

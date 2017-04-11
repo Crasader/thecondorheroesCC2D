@@ -14,6 +14,7 @@ private:
 	CC_SYNTHESIZE(bool, isUp, IsUp);
 	CC_SYNTHESIZE(bool, isDown, IsDown);
 	CC_SYNTHESIZE(float, sequenceCloud, SequenceCloud);
+	CC_SYNTHESIZE(string, stringHero, StringHero);
 
 public:
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();

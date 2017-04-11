@@ -8,7 +8,7 @@
 
 using namespace std;
 using namespace spine;
-
+class BaseHero;
 class B2Skeleton : public SkeletonAnimation
 {
 
@@ -29,14 +29,14 @@ public:
 
 	// return Pos bone in parent of this skeleton
 	virtual Point getBoneLocation(string boneName);
-	virtual void updateMe(float dt);
+	virtual void updateMe(BaseHero *hero);
+	virtual void onExit();
 
 protected:
 	CC_SYNTHESIZE(b2Body*, body, B2Body);
 
 	CC_SYNTHESIZE(int, health, Health);
 	CC_SYNTHESIZE(float, move_vel, MoveVel);
-	CC_SYNTHESIZE(bool, facingRight, FacingRight);
 
 
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();

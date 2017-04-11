@@ -37,7 +37,7 @@ void DQ_DocCoKiemPhap::initBoxPhysic(b2World * world, Point pos)
 	fixtureDef.shape = &shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_SWORD;
-	fixtureDef.filter.maskBits = BITMASK_UNDER_GROUND | BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_BOSS;
+	fixtureDef.filter.maskBits = BITMASK_UNDER_GROUND | BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_BOSS | BITMASK_COIN_BAG;
 
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.userData = this;		// pass sprite to bodyDef with argument: userData
@@ -80,6 +80,16 @@ void DQ_DocCoKiemPhap::hitGround()
 
 	auto seq2 = Sequence::create(DelayTime::create(0.5f), hideParticle, nullptr);
 	particle->runAction(seq2);
+
+	this->schedule([&](float dt) {
+		
+		if (opacity <= 0) {
+			this->unschedule("key_opacity");
+		}
+		opacity -= 15;
+
+		this->setOpacity(opacity = opacity < 0 ? 0 : opacity);
+	}, 0.1f, "key_opacity");
 }
 
 
@@ -88,6 +98,7 @@ void DQ_DocCoKiemPhap::updateMe(float dt)
 	if (body != nullptr) {
 		this->setPositionX(body->GetPosition().x * PTM_RATIO);
 		this->setPositionY(body->GetPosition().y * PTM_RATIO);
+		
 
 		if(effectLand->isVisible())
 			effectLand->setPosition(this->getPositionX(), this->getPositionY() + this->getBoundingBox().size.height * 0.5f);		

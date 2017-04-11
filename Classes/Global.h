@@ -16,40 +16,53 @@ using namespace std;
 
 
 // bitmask
-#define BITMASK_HERO					0x00000001
-#define BITMASK_ENEMY					0x00000002
-#define BITMASK_FLOOR					0x00000004
-#define BITMASK_WOODER					0x00000008
-#define BITMASK_COIN					0x00000010
-#define BITMASK_TOANCHAN1				0x00000020
-#define BITMASK_TOANCHAN2				0x00000040
-#define BITMASK_SWORD					0x00000080
-#define BITMASK_SLASH					0x00000100
-#define BITMASK_BOSS					0x00000200
-#define BITMASK_UNDER_GROUND			0x00000400
-#define BITMASK_COIN_BAG				0x00000800
-#define BITMASK_COIN_BULLION			0x00001000
-#define BITMASK_RADA_SKILL_1			0x00002000
-#define BITMASK_RADA_SKILL_2			0x00004000
-#define BITMASK_SENSOR					0x00008000
+#define BITMASK_HERO					0x0001
+#define BITMASK_ENEMY					0x0002
+#define BITMASK_FLOOR					0x0004
+#define BITMASK_WOODER					0x0008
+#define BITMASK_COIN					0x0010
+#define BITMASK_TOANCHAN1				0x0020
+#define BITMASK_TOANCHAN2				0x0040
+#define BITMASK_SWORD					0x0080
+#define BITMASK_SLASH					0x0100
+#define BITMASK_BOSS					0x0200
+#define BITMASK_UNDER_GROUND			0x0400
+#define BITMASK_COIN_BAG				0x0800
+#define BITMASK_COIN_BULLION			0x1000
+#define BITMASK_RADA_SKILL_1			0x2000
+#define BITMASK_RADA_SKILL_2			0x4000
+#define BITMASK_SENSOR					0x8000
 
 // tag
 #define TAG_HERO							50
 #define TAG_FLOOR							51
-#define TAG_COIN							52
 #define TAG_SLASH							53
 #define TAG_ITEM							54
 #define TAG_DQ_TIEU_HON_CHUONG				55
 #define TAG_DQ_TOAN_CHAN_KIEM_PHAP			56
 #define TAG_DQ_DOC_CO_KIEM_PHAP				57
 #define TAG_GAME							58
-#define TAG_COINBULLION						59
-#define TAG_COINBAG							60
 #define TAG_EAGLE							61
 #define TAG_DIALOG							62
 #define TAG_CL_RADA							63
 
 
+
+// tag to save mydata
+#define TAG_COIN_PARABOL					70
+#define TAG_COIN_STRAIGHT					71
+#define TAG_COIN_ZIGZAG						72
+#define TAG_COIN_ZIGZAG2					73
+#define TAG_COIN_SQUARE						74
+#define TAG_COIN_CIRCLE						75
+#define TAG_COIN_TIM						76
+
+// tag b2Sprite
+#define TAG_COIN							80
+
+// tag b2Skeleton
+#define TAG_COINBULLION						99
+#define TAG_COINBAG							100
 #define TAG_ENEMY_WOODER					101
 #define TAG_ENEMY_TOANCHAN1					102
 #define TAG_ENEMY_TOANCHAN2					103

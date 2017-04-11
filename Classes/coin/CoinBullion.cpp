@@ -15,9 +15,9 @@ CoinBullion * CoinBullion::create(string jsonFile, string atlasFile, float scale
 	return coin;
 }
 
-void CoinBullion::updateMe(float dt)
+void CoinBullion::updateMe(BaseHero* hero)
 {
-	B2Skeleton::updateMe(dt);
+	
 }
 
 void CoinBullion::picked()
@@ -39,6 +39,4 @@ void CoinBullion::picked()
 void CoinBullion::onExit()
 {
 	B2Skeleton::onExit();
-	auto world = this->getB2Body()->GetWorld();
-	world->DestroyBody(this->getB2Body());
 }

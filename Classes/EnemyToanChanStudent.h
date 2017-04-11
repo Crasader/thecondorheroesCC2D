@@ -22,7 +22,7 @@ public:
 	virtual void attack();
 	virtual void die();
 	virtual void initCirclePhysic(b2World * world, Point pos);
-	//void updateMe(float dt);
+	void updateMe(BaseHero* hero);
 	//virtual void genSplash();
 	virtual void listener();
 };

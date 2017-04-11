@@ -2,6 +2,10 @@
 #define __HUD_H__
 
 #include "utils/MyButton.h"
+#include <spine/spine-cocos2dx.h>
+
+USING_NS_CC;
+using namespace spine;
 
 
 class Hud : public Layer
@@ -22,11 +26,11 @@ public:
 
 	void refreshControl();
 
-	void hintSpecial(Vec2 p_ptCenterScreen);
-	void cooldownSpecial();
-	bool specialCooldown();
+	void moveCallBirdToCenterScreen(Vec2 p_ptCenterScreen);
+	void cooldownCallBird();
+	bool callBirdCooldown();
 
-
+	void updateMultiKills(int m_nCombo);
 protected:
 
 	CC_SYNTHESIZE(MenuItemImage*, pauseItem, PauseItem);
@@ -50,10 +54,10 @@ protected:
 	CC_SYNTHESIZE(MyButton*, btnSkill_2, BtnSkill_2);
 	CC_SYNTHESIZE(MyButton*, btnSkill_3, BtnSkill_3);
 
-	CC_SYNTHESIZE(MenuItemImage*, btnSpecial, BtnSpecial);
-	CC_SYNTHESIZE(bool, btnSpecialHintDone, BtnSpecialHintDone);
+	CC_SYNTHESIZE(MenuItemImage*, btnCalling, BtnCalling);
+	CC_SYNTHESIZE(bool, btnCallingHintDone, BtnCallingHintDone);
 
-	CC_SYNTHESIZE(Sprite*, m_pKillChain, KillChain);//DuongPM Edited for multi kills
+	CC_SYNTHESIZE(SkeletonAnimation *, multiKills, MultiKills);	//DuongPM Edited for multi kills
 
 private:
 	TMXTiledMap *tmxMap;

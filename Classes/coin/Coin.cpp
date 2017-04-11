@@ -51,7 +51,7 @@ void Coin::picked()
 		effect->removeFromParentAndCleanup(true);
 		this->removeFromParentAndCleanup(true);
 		auto world = this->getB2Body()->GetWorld();
-		world->DestroyBody(this->getB2Body());
+		//world->DestroyBody(this->getB2Body());
 		this->setB2Body(nullptr);
 	});
 	this->runAction(Sequence::createWithTwoActions(DelayTime::create(0.5f), call));
@@ -73,6 +73,11 @@ void Coin::onExit()
 	B2Sprite::onExit();
 	//this->removeFromParentAndCleanup(true);
 	//log("delete coin");
+}
+
+void Coin::updateMe(BaseHero *hero)
+{
+	B2Sprite::updateMe(hero);
 }
 
 void Coin::setAngle(float radian)

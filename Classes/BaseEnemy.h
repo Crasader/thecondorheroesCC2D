@@ -2,12 +2,13 @@
 #define __BASE_ENEMY_H__
 
 #include "B2Skeleton.h"
+//#include "Agent.h"
 
 USING_NS_CC;
 
 using namespace spine;
 
-class BaseEnemy : public B2Skeleton
+class BaseEnemy : public B2Skeleton//, public Agent
 {
 public:
 	CC_SYNTHESIZE(bool, isDie, IsDie);
@@ -20,7 +21,7 @@ public:
 	virtual void run();
 	virtual void attack();
 	virtual void die();
-	virtual void updateMe(float dt);
+	virtual void updateMe(BaseHero* hero);
 	virtual void initCirclePhysic(b2World *world, Point pos);
 };
 

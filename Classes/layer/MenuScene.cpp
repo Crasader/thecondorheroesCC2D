@@ -17,6 +17,9 @@ cocos2d::Scene * MenuLayer::createScene()
 
 bool MenuLayer::init()
 {
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("item/coin.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Map/bg.plist");
+
 	auto screenSize = Director::getInstance()->getVisibleSize();
 
 	auto tmxMap = TMXTiledMap::create("config_menu_scene.tmx");

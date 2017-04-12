@@ -1,4 +1,5 @@
 #include "CoinBullion.h"
+#include "manager\SkeletonManager.h"
 
 
 
@@ -23,7 +24,11 @@ void CoinBullion::updateMe(BaseHero* hero)
 void CoinBullion::picked()
 {
 	this->setVisible(false);
-	effect = SkeletonAnimation::createWithFile("Effect_getgolden.json", "Effect_getgolden.atlas", SCREEN_SIZE.height / 3 / 290);
+	//effect = SkeletonAnimation::createWithFile("Effect_getgolden.json", "Effect_getgolden.atlas", SCREEN_SIZE.height / 3 / 290);
+	if (!SkeletonManager::getInstance()->getSkeletonData("Effect_getgolden")) {
+		SkeletonManager::getInstance()->cacheSkeleton("Effect_getgolden", SCREEN_SIZE.height / 3 / 291);
+	}
+	effect = SkeletonAnimation::createWithData(SkeletonManager::getInstance()->getSkeletonData("Effect_getgolden"));
 	effect->setAnimation(0, "Effect_gold", false);
 	effect->setPosition(this->getPosition());
 	this->getParent()->addChild(effect, ZORDER_ENEMY);

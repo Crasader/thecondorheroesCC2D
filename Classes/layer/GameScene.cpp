@@ -51,22 +51,16 @@ bool GameScene::init(int map, int haveboss, int charId)
 	this->isWinGame = false;
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-	cachePlist();
-	//cacheSkeleton();
-
-
-	danceWithCamera();
-
-
 	initB2World();
-	loadBackground(map);
-	loadPosAndTag();
-	createGroundBody();
-	createSensorToDetectEnemy();
-	initLayerToAddAgent();
-	this->charId = charId;
-
+	cachePlist();
+	// cache batchnode
+	//auto tmp = Sprite::createWithSpriteFrameName("coin_01.png");
+	batchNode = SpriteBatchNode::create("coin_01.png");
+	this->addChild(batchNode);
+	// tesst
+	
+	danceWithCamera();
+	//cacheSkeleton();
 	if (charId == 0) {
 		createDuongQua("Animation/DuongQua/DuongQua.json", "Animation/DuongQua/DuongQua.atlas",
 			Point(origin.x, visibleSize.height * 0.75f));
@@ -75,11 +69,24 @@ bool GameScene::init(int map, int haveboss, int charId)
 		createCoLong("Animation/CoLong/CoLong.json", "Animation/CoLong/CoLong.atlas", Point(origin.x, visibleSize.height * 0.75f));
 	}
 
-	createEagle(Point(hero->getB2Body()->GetPosition().x - visibleSize.width, visibleSize.height / 2));
+	
 
+
+	loadBackground(map);
+	loadPosAndTag();
+	createGroundBody();
+	createSensorToDetectEnemy();
+	initLayerToAddAgent();
+	this->charId = charId;
+
+	
+
+	createEagle(Point(hero->getB2Body()->GetPosition().x - visibleSize.width, visibleSize.height / 2));
+	
 	danceWithEffect();
 	if (haveboss)
 		creatBoss();
+
 	//createCoint();
 	return true;
 }
@@ -510,13 +517,13 @@ void GameScene::createInfiniteNode()
 {
 	background = InfiniteParallaxNode::create();
 
-	auto bg1_1 = Sprite::create("Map/bg1.png");
+	auto bg1_1 = Sprite::createWithSpriteFrameName("bg1.png");
 	//auto bg1_1 = Sprite::create("bg-4.png");
 	bg1_1->setScale(SCREEN_SIZE.width / (bg1_1->getContentSize().width));
 	//bg1_1->setScaleY(SCREEN_SIZE.height / bg1_1->getContentSize().height);
 	bg1_1->setAnchorPoint(Point(0, 0.5f));
 
-	auto bg1_2 = Sprite::create("Map/bg1.png");
+	auto bg1_2 = Sprite::createWithSpriteFrameName("bg1.png");
 	//auto bg1_2 = Sprite::create("bg-4.png");
 	bg1_2->setScale(SCREEN_SIZE.width / (bg1_2->getContentSize().width));
 	//bg1_2->setScaleY(SCREEN_SIZE.height / bg1_2->getContentSize().height);
@@ -524,12 +531,12 @@ void GameScene::createInfiniteNode()
 
 
 
-	auto bg2_1 = Sprite::create("Map/bg2.png");
+	auto bg2_1 = Sprite::createWithSpriteFrameName("bg2.png");
 	bg2_1->setScale(SCREEN_SIZE.width / (bg2_1->getContentSize().width));
 	//bg2_1->setScaleY(SCREEN_SIZE.height / bg2_1->getContentSize().height);
 	bg2_1->setAnchorPoint(Point(0, 0.5f));
 
-	auto bg2_2 = Sprite::create("Map/bg2.png");
+	auto bg2_2 = Sprite::createWithSpriteFrameName("bg2.png");
 
 	bg2_2->setScale(SCREEN_SIZE.width / (bg2_2->getContentSize().width));
 	//bg2_2->setScale(SCREEN_SIZE.width / (bg2_2->getContentSize().width / 2));
@@ -759,23 +766,24 @@ void GameScene::createCoinBullion(Layer *layer, Vec2 pos)
 }
 
 
-void GameScene::createFormCoin(Layer* layer, Vec2 pos, string objectMap, string objectInForm)
+void GameScene::createFormCoin(Layer* layer, Vec2 pos, string objectMap, string objectInForm, SpriteBatchNode* batchnode)
 {
 	auto tmx = TMXTiledMap::create(objectMap);
 	auto groupCoin = tmx->getObjectGroup(objectInForm);
 	for (auto c : groupCoin->getObjects()) {
 		auto mObject2 = c.asValueMap();
 		Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
-		auto coin = Coin::create();
+		auto coin = Coin::create(batchNode);
 		auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
 		coin->setScale(scale);
 		coin->setPosition(pos + origin2);
+		coin->world = world;
 		layer->addChild(coin, ZORDER_ENEMY);
-		coin->initCirclePhysic(world, Vec2(pos + origin2 + layer->getPosition()));
+		/*coin->initCirclePhysic(world, Vec2(pos + origin2 + layer->getPosition()));
 		coin->changeBodyCategoryBits(BITMASK_COIN);
 		coin->changeBodyMaskBits(BITMASK_HERO);
-		coin->getB2Body()->GetFixtureList()->SetSensor(true);
-		coin->runAnimation();
+		coin->getB2Body()->GetFixtureList()->SetSensor(true);*/
+		//coin->runAnimation();
 	}
 
 }
@@ -1164,7 +1172,8 @@ void GameScene::updateCamera()
 
 void GameScene::cachePlist()
 {
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("item/coin.plist");
+	/*SpriteFrameCache::getInstance()->addSpriteFramesWithFile("item/coin.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Map/bg.plist");*/
 }
 
 void GameScene::cacheSkeleton()
@@ -1412,7 +1421,10 @@ void GameScene::updateLayer()
 
 			posLayer->setPosition(preLayer->getPositionX() + SCREEN_SIZE.width*1.5f, 0);
 			if (posLayer->getPositionX() < tmx_map->getBoundingBox().size.width) {
-				createAgentOnLayer(posLayer);
+				auto call = CCCallFunc::create([&]() {
+					createAgentOnLayer(posLayer);
+				});
+				this->runAction(call);
 			}
 			else {
 				posLayer->removeFromParentAndCleanup(true);
@@ -1463,31 +1475,31 @@ void GameScene::creatAgentByMydata(Layer * layer, MyData data)
 	}
 	case TAG_COIN_PARABOL: {
 		//ok
-		createFormCoin(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()), "Map/parapol.tmx", "parapol");
+		createFormCoin(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()), "Map/parapol.tmx", "parapol", batchNode);
 		break;
 	}
 	case TAG_COIN_STRAIGHT: {
-		createFormCoin(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()), "Map/straight.tmx", "straight");
+		createFormCoin(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()), "Map/straight.tmx", "straight", batchNode);
 		break;
 	}
 	case TAG_COIN_ZIGZAG: {
-		createFormCoin(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()), "Map/zigzag.tmx", "zigzag");
+		createFormCoin(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()), "Map/zigzag.tmx", "zigzag", batchNode);
 		break;
 	}
 	case TAG_COIN_ZIGZAG2: {
-		createFormCoin(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()), "Map/zigzag2.tmx", "zigzag2");
+		createFormCoin(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()), "Map/zigzag2.tmx", "zigzag2", batchNode);
 		break;
 	}
 	case TAG_COIN_SQUARE: {
-		createFormCoin(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()), "Map/square.tmx", "square");
+		createFormCoin(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()), "Map/square.tmx", "square", batchNode);
 		break;
 	}
 	case TAG_COIN_CIRCLE: {
-		createFormCoin(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()), "Map/circle.tmx", "circle");
+		createFormCoin(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()), "Map/circle.tmx", "circle", batchNode);
 		break;
 	}
 	case TAG_COIN_TIM: {
-		createFormCoin(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()), "Map/tim.tmx", "tim");
+		createFormCoin(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()), "Map/tim.tmx", "tim", batchNode);
 		break;
 	}
 

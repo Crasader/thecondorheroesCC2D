@@ -1,5 +1,6 @@
 
 #include "CoinBag.h"
+#include "manager\SkeletonManager.h"
 
 CoinBag::CoinBag(string jsonFile, string atlasFile, float scale) :B2Skeleton( jsonFile,  atlasFile,  scale)
 {
@@ -22,7 +23,11 @@ void CoinBag::updateMe(BaseHero* hero)
 void CoinBag::die()
 {
 	this->setVisible(false);
-	effect = SkeletonAnimation::createWithFile("Effect_getgolden.json", "Effect_getgolden.atlas", SCREEN_SIZE.height / 4.5f / 641);
+	//effect = SkeletonAnimation::createWithFile("Effect_getgolden.json", "Effect_getgolden.atlas", SCREEN_SIZE.height / 4.5f / 641);
+	if (!SkeletonManager::getInstance()->getSkeletonData("Effect_getgolden")) {
+		SkeletonManager::getInstance()->cacheSkeleton("Effect_getgolden", SCREEN_SIZE.height / 3 / 291);
+	}
+	effect = SkeletonAnimation::createWithData(SkeletonManager::getInstance()->getSkeletonData("Effect_getgolden"));
 	effect->setAnimation(0, "Effect_goldbag", false);
 	effect->setPosition(this->getPosition());
 	this->getParent()->addChild(effect, ZORDER_ENEMY);

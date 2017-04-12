@@ -67,6 +67,7 @@ private:
 	CCRect left_corner;
 	b2Body* sensor;
 	LayerColor *blur;
+	SpriteBatchNode* batchNode;
 
 
 	BaseHero *hero;
@@ -122,7 +123,7 @@ private:
 
 	void createCointBag(Layer *layer, Vec2 pos);
 	void createCoinBullion(Layer *layer, Vec2 pos);
-	void createFormCoin( Layer *layer,Vec2 pos, string objectMap, string objectInform);
+	void createFormCoin( Layer *layer,Vec2 pos, string objectMap, string objectInform, SpriteBatchNode* batchnode);
 
 	//skeleton data
 	//spSkeletonData* createSkeletonData(string atlasFile, string jsonFile);

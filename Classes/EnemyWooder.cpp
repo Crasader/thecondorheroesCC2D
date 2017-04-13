@@ -1,6 +1,6 @@
 #include "EnemyWooder.h"
 
-EnemyWooder::EnemyWooder() :BaseEnemy()
+EnemyWooder::EnemyWooder() : BaseEnemy()
 {
 	
 }
@@ -9,7 +9,7 @@ EnemyWooder::~EnemyWooder()
 {
 }
 
-EnemyWooder::EnemyWooder(spSkeletonData * data) :BaseEnemy(data)
+EnemyWooder::EnemyWooder(spSkeletonData * data) : BaseEnemy(data)
 {
 	//BaseEnemy:BaseEnemy(data);
 }
@@ -26,6 +26,7 @@ EnemyWooder * EnemyWooder::create(string jsonFile, string atlasFile, float scale
 	enemy->setScaleX(1);
 	enemy->setTimeScale(1.4f);
 	enemy->health = 1;
+	enemy->exp = 5;
 	return enemy;
 
 }
@@ -59,6 +60,9 @@ void EnemyWooder::attack()
 
 void EnemyWooder::die()
 {
+
+	BaseEnemy::die();
+
 	auto world = this->body->GetWorld();
 	world->DestroyBody(this->body);
 	this->body = nullptr;

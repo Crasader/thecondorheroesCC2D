@@ -50,7 +50,7 @@ void B2Sprite::initCirclePhysic(b2World * world, Point pos)
 	shape.m_radius = size.width / 2 / PTM_RATIO;
 	fixtureDef.density = 1.0f;
 	fixtureDef.friction = 1.0f;
-	fixtureDef.restitution = 0.0f;
+	fixtureDef.restitution = 0.5f;
 	fixtureDef.shape = &shape;
 
 	bodyDef.type = b2_dynamicBody;
@@ -91,7 +91,7 @@ void B2Sprite::changeBodyMaskBits(uint16 mask)
 	fixture->SetFilterData(filter);
 }
 
-void B2Sprite::setAngel(float radian)
+void B2Sprite::setAngle(float radian)
 {
 	float vx = SCREEN_SIZE.width * 1.3f / PTM_RATIO * cosf(radian);
 	float vy = SCREEN_SIZE.width * 1.3f / PTM_RATIO * sinf(radian);

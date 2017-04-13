@@ -18,6 +18,7 @@ EnemyToanChanStudent * EnemyToanChanStudent::create(string jsonFile, string atla
 	enemy->setAnimation(0, "idle", true);
 	//enemy->setScaleEnemy(scale);
 	enemy->health = 1;
+	enemy->exp = 12;
 	return enemy;
 
 }
@@ -56,6 +57,8 @@ void EnemyToanChanStudent::attack()
 
 void EnemyToanChanStudent::die()
 {
+	BaseEnemy::die();
+
 	auto world = this->body->GetWorld();
 	world->DestroyBody(this->body);
 	this->body = nullptr;

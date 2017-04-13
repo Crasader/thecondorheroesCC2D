@@ -33,13 +33,20 @@ public:
 	static GameScene* create(int map, int haveboss, int charId);
 
 	BaseHero * getHero() { return hero; }
+	void setLastScore(int lastScore) { m_lastScore = lastScore; }
 
 private:
 	// props
 	std::map <std::string, bool> checkGenEnemy;
 	int map;
 	int haveboss;
+
 	int charId;//Thinhnv Edited for select character
+	int numberRevive = 0;
+
+	bool isWinGame;
+
+
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
 	float scaleOfMap;
 	TMXTiledMap* tmx_map;
@@ -68,6 +75,8 @@ private:
 
 	BaseHero *hero;
 	ChimDieu* _aEagle;
+
+	int m_lastScore = 0;
 	int m_nMultiKills = 0;
 	float m_fMultiKillsCounterTime;
 
@@ -162,8 +171,6 @@ public:
 	void updateEnemy();
 	void updateBoss();
 
-	void updateMoney(int numberOfCoin);
-	void updateScore(int score);
 	void updateHUD(float dt);
 	void updateMultiKills(); //DuongPM edited for multi kills
 	void updateBloodBar(int numberOfHealth, bool isVisible);

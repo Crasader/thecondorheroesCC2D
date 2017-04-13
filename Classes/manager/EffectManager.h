@@ -41,4 +41,4 @@ public:
 
 #define EM EffectManager::getInstance()
 
-#endif // __AUDIO_MANAGER_H__
+#endif // __EFFECT_MANAGER_H__

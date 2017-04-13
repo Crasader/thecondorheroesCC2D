@@ -12,7 +12,9 @@ class BaseEnemy : public B2Skeleton
 public:
 	CC_SYNTHESIZE(bool, isDie, IsDie);
 	CC_SYNTHESIZE(bool, isOccur, IsOccur);
+	CC_SYNTHESIZE(bool, isEndOfScreen, IsEndOfScreen);
 
+	CC_SYNTHESIZE(int, exp, Exp);
 
 	BaseEnemy();
 	~BaseEnemy();

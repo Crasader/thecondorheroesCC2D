@@ -29,10 +29,12 @@ void JSonHeroManager::readFile(int indexHero)
 	this->stt = jsonDoc["hero"][indexHero]["stt"].GetInt();
 	this->key = jsonDoc["hero"][indexHero]["key"].GetString();
 	this->name = jsonDoc["hero"][indexHero]["name"].GetString();
+	this->infor = jsonDoc["hero"][indexHero]["inforHero"].GetString();
 	
 	this->avatarPath = jsonDoc["hero"][indexHero]["avatarPath"].GetString();
 	this->characterPointPath = jsonDoc["hero"][indexHero]["characterPointPath"].GetString();
-	
+	this->avatarLoadingPath = jsonDoc["hero"][indexHero]["avatarLoadingPath"].GetString();
+
 	this->isLocked = jsonDoc["hero"][indexHero]["isLocked"].GetBool();
 	
 	this->coolDownSkill1 = jsonDoc["hero"][indexHero]["coolDownSkill1"].GetDouble();
@@ -53,20 +55,16 @@ void JSonHeroManager::readFile(int indexHero)
 
 	this->baseHP = jsonDoc["hero"][indexHero]["baseHP"].GetInt();
 	this->level = jsonDoc["hero"][indexHero]["level"].GetInt();
+	this->maxLevel = jsonDoc["hero"][indexHero]["maxLevel"].GetInt();
+
+	this->percentBonusCoin = jsonDoc["hero"][indexHero]["percentBonusScore"].GetInt();
+	this->percentBonusScore = jsonDoc["hero"][indexHero]["percentBonusCoin"].GetInt();
 }
 
-void JSonHeroManager::writerString(int index, const char* key, string valueString)
+int JSonHeroManager::getMaxScoreLevelX(int level)
 {
-	rapidjson::Value v;
-	
-}
-
-void JSonHeroManager::writerFloat(int index, string key, float valueFloat)
-{
-}
-
-void JSonHeroManager::writerInteger(int index, string key, int valueInteger)
-{
+	assert(level > 0 && level < 20);
+	return jsonDoc["maxScoreLevel"][0][("maxScoreLevel_" + StringUtils::format("%i", level)).c_str()].GetInt();
 }
 
 

@@ -91,6 +91,7 @@ public:
 
 
 	virtual void doDestroyBodies(b2World* world);
+	virtual void updateAttackBossAsTarget(BaseEnemy *p_pBoss);
 
 	// default methods
 	void selectEnemyBySkill1(BaseEnemy *p_pEnemySelected); //DuongPM edited

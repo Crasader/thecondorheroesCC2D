@@ -5,6 +5,7 @@ BaseEnemy::BaseEnemy() :B2Skeleton()
 {
 	isDie = false;
 	isOccur = false;
+	isEndOfScreen = false;
 }
 
 BaseEnemy::~BaseEnemy()
@@ -15,12 +16,14 @@ BaseEnemy::BaseEnemy(spSkeletonData * data):B2Skeleton(data)
 {
 	isDie = false;
 	isOccur = false;
+	isEndOfScreen = false;
 }
 
 BaseEnemy::BaseEnemy(string jsonFile, string atlasFile, float scale):B2Skeleton(jsonFile, atlasFile, scale)
 {
 	isDie = false;
 	isOccur = false;
+	isEndOfScreen = false;
 }
 
 BaseEnemy * BaseEnemy::create(string jsonFile, string atlasFile, float scale)
@@ -46,6 +49,10 @@ void BaseEnemy::attack()
 
 void BaseEnemy::die()
 {
+	if (!isEndOfScreen) {
+		auto gameLayer = (GameScene*) this->getParent();
+		gameLayer->updateMultiKills();
+	}
 }
 
 void BaseEnemy::updateMe(float dt)

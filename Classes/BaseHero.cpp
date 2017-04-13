@@ -169,6 +169,10 @@ void BaseHero::doDestroyBodies(b2World *world)
 	swordBody = nullptr;
 }
 
+void BaseHero::updateAttackBossAsTarget(BaseEnemy * p_pBoss)
+{
+}
+
 void BaseHero::selectEnemyBySkill1(BaseEnemy * p_pEnemySelected)
 {
 	m_lEnemiesSelectedBySkill1.push_back(p_pEnemySelected);
@@ -208,7 +212,10 @@ void BaseHero::deSelectEnemyBySkill3()
 void BaseHero::killThemAll(list<BaseEnemy*> listToKill)
 {
 	blash->setVisible(true);
-	auto scale = ScaleBy::create(0.5f, 100);
+	//auto originScale = blash->getScale();
+	auto scaleFactor = Director::getInstance()->getContentScaleFactor();
+	auto scale = ScaleBy::create(0.7f, 100 * scaleFactor);
+	
 	auto hide = CallFunc::create([&]() {
 		blash->setVisible(false);
 	});
@@ -222,6 +229,7 @@ void BaseHero::killThemAll(list<BaseEnemy*> listToKill)
 	auto boss = (BaseEnemy*) this->getParent()->getChildByTag(TAG_BOSS);
 	if (boss != nullptr && boss->getPositionX() < this->getPositionX() + SCREEN_SIZE.width * 0.75f) {
 		boss->die();
+		log("%i", boss->getHealth());
 	}
 }
 
@@ -230,4 +238,3 @@ StateMachine * BaseHero::getFSM()
 {
 	return stateMachine;
 }
-

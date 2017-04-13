@@ -33,6 +33,7 @@ public:
 	void doDestroyBodies(b2World *world);
 
 	void updateMe(float p_fDelta);
+	void updateAttackBossAsTarget(BaseEnemy *p_pBoss);
 
 
 protected:

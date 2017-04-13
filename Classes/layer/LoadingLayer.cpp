@@ -10,9 +10,6 @@ bool LoadingLayer::init()
 		return false;
 	}
 
-	auto origin = Director::getInstance()->getVisibleOrigin();
-	auto winSize = Director::getInstance()->getVisibleSize();
-
 	addStuff();
 
 	return true;
@@ -22,24 +19,26 @@ bool LoadingLayer::init()
 void LoadingLayer::addStuff()
 {
 
+	auto origin = Director::getInstance()->getVisibleOrigin();
+
 	leftDoor = Sprite::create("UI/Loading/door.png");
 	leftDoor->setScaleX(SCREEN_SIZE.width / 2 / leftDoor->getContentSize().width);
 	leftDoor->setScaleY(SCREEN_SIZE.height / leftDoor->getContentSize().height);
-	leftDoor->setPosition(SCREEN_SIZE.width * 0.25f, SCREEN_SIZE.height / 2);
+	leftDoor->setPosition(origin.x + SCREEN_SIZE.width * 0.25f, origin.y + SCREEN_SIZE.height / 2);
 	addChild(leftDoor);
 
 	rightDoor = Sprite::create("UI/Loading/door.png");
 	rightDoor->setFlippedX(true);
 	rightDoor->setScaleX(SCREEN_SIZE.width / 2 / rightDoor->getContentSize().width);
 	rightDoor->setScaleY(SCREEN_SIZE.height / rightDoor->getContentSize().height);
-	rightDoor->setPosition(SCREEN_SIZE.width * 0.75f, SCREEN_SIZE.height / 2);
+	rightDoor->setPosition(origin.x + SCREEN_SIZE.width * 0.75f, origin.y + SCREEN_SIZE.height / 2);
 	addChild(rightDoor);
 
 
 	boardTime = Sprite::create("UI/Loading/board_time.png");
 	boardTime->setAnchorPoint(Vec2::ZERO);
 	boardTime->setScale(SCREEN_SIZE.width * 0.55f / boardTime->getContentSize().width);
-	boardTime->setPosition(SCREEN_SIZE.width * 0.04f, SCREEN_SIZE.height * 0.14f);
+	boardTime->setPosition(origin.x + SCREEN_SIZE.width * 0.04f, origin.y + SCREEN_SIZE.height * 0.14f);
 	addChild(boardTime);
 
 
@@ -53,12 +52,11 @@ void LoadingLayer::addStuff()
 	addChild(loading);
 
 
-	avatarHero = Sprite::create("UI/Loading/DQ.png");
+	avatarHero = Sprite::create(JSHERO->getAvatarLoadingPath());
 	avatarHero->setAnchorPoint(Vec2(1, 0));
-	avatarHero->setScale(SCREEN_SIZE.width * 0.4f / avatarHero->getContentSize().width);
-	avatarHero->setPosition(SCREEN_SIZE.width, 0);
+	avatarHero->setPosition(rightDoor->getContentSize().width, 0);
 
-	addChild(avatarHero);
+	rightDoor->addChild(avatarHero);
 
 	lbGuide = Label::create("Guide here", "fonts/Marker Felt.ttf", 32);
 	lbGuide->setAnchorPoint(Vec2::ZERO);
@@ -80,14 +78,13 @@ void LoadingLayer::doLoading()
 		if (percent > 100.0f) {
 			boardTime->setVisible(false);
 			loading->setVisible(false);
-			avatarHero->setVisible(false);
 			lbGuide->setVisible(false);
 
 			doOpen();
 			unschedule("Key_loading");
 		}
 
-	}, 0.03f, "Key_loading");
+	}, 0.025f, "Key_loading");
 }
 
 void LoadingLayer::doOpen()

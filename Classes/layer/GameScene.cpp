@@ -21,6 +21,7 @@ Scene* GameScene::createScene(int map, int haveboss, int charId)
 	layer->setName("gameLayer");
 
 	hud = Hud::create();
+	hud->setPosition(Director::getInstance()->getVisibleOrigin());
 
 	// add layer as a child to scene
 	scene->addChild(layer);

@@ -207,9 +207,9 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		}
 		
 		auto parentGameScene = (GameScene*)enemy->getParent();
-		parentGameScene->setLastScore(5);
+		parentGameScene->setLastScore(enemy->getExp());
 		auto hero = parentGameScene->getHero();
-		hero->setScore(hero->getScore() + 5);
+		hero->setScore(hero->getScore() + enemy->getExp());
 		enemy->setIsDie(true);
 	}
 
@@ -234,9 +234,9 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		
 		auto parentGameScene = (GameScene*)enemy->getParent();
-		parentGameScene->setLastScore(12);
+		parentGameScene->setLastScore(enemy->getExp());
 		auto hero = parentGameScene->getHero();
-		hero->setScore(hero->getScore() + 12);
+		hero->setScore(hero->getScore() + enemy->getExp());
 		enemy->setIsDie(true);
 	}
 
@@ -260,9 +260,9 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		
 		auto parentGameScene = (GameScene*)enemy->getParent();
-		parentGameScene->setLastScore(15);
+		parentGameScene->setLastScore(enemy->getExp());
 		auto hero = parentGameScene->getHero();
-		hero->setScore(hero->getScore() + 15);
+		hero->setScore(hero->getScore() + enemy->getExp());
 		enemy->setIsDie(true);
 	}
 

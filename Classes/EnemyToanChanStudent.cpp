@@ -37,6 +37,7 @@ EnemyToanChanStudent * EnemyToanChanStudent::create(string filename, float scale
 	enemy->setAnimation(0, "idle", true);
 	//enemy->setTimeScale(1.4f);
 	enemy->health = 1;
+	enemy->exp = 12;
 	return enemy;
 }
 

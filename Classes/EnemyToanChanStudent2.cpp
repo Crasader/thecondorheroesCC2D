@@ -42,6 +42,7 @@ EnemyToanChanStudent2 * EnemyToanChanStudent2::create(string filename, float sca
 	enemy->setScaleEnemy(scale);
 	//enemy->setTimeScale(1.4f);
 	enemy->health = 1;
+	enemy->exp = 15;
 	return enemy;
 }
 

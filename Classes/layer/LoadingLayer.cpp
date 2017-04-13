@@ -42,6 +42,10 @@ void LoadingLayer::addStuff()
 	addChild(boardTime);
 
 
+	lbLoading = Sprite::create("UI/Loading/text_loading.png");
+	lbLoading->setAnchorPoint(Vec2::ZERO);
+	lbLoading->setPosition(leftDoor->getContentSize().width * 0.1f, leftDoor->getContentSize().height * 0.25f);
+	leftDoor->addChild(lbLoading);
 
 	loading = LoadingBar::create("UI/Loading/time.png");
 	loading->setAnchorPoint(Vec2::ZERO);

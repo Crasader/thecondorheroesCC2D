@@ -5,6 +5,7 @@
 #include "ui/CocosGUI.h"
 #include <spine/spine-cocos2dx.h>
 #include <vector>
+#include <time.h>
 
 USING_NS_CC;
 using namespace spine;
@@ -15,16 +16,20 @@ class MenuLayer : public Layer {
 public:
 	static Scene * createScene();
 	virtual bool init();
+	void update(float p_fDelta);
 	CREATE_FUNC(MenuLayer);
 private:
 	const Size m_szVisibleSize = Director::getInstance()->getVisibleSize();
 	float m_fButtonStartPosition;
-	bool m_bIsHeroLayout = false; //
-	int m_nGold = 0; //
+	bool m_bIsHeroLayout = false;
 
 	//
 	int m_nIndexHeroSelected = 0;
 	int m_nIndexHeroPicked = 0;
+	int m_arNumberItem[5];
+	int m_nLifeNumber;
+	int m_nTimeAnchor = 1491987700;
+	Label *m_pTimeCounter;
 
 	// layers
 	Layer *m_pGameBackground;
@@ -45,11 +50,7 @@ private:
 	MenuItemSprite *m_pHeroButton5;
 
 	// preview
-	SkeletonAnimation *m_pPreviewHero0;
-	SkeletonAnimation *m_pPreviewHero1;
-	SkeletonAnimation *m_pPreviewHero2;
-	SkeletonAnimation *m_pPreviewHero3;
-	SkeletonAnimation *m_pPreviewHero4;
+	SkeletonAnimation *m_arPreviewHero[];
 
 	void initInputData();
 	void initBackgroundLayer();
@@ -65,8 +66,10 @@ private:
 
 	void backFunction();
 
+	// handle button
 	void buttonBackHanle();
 	void buttonStartHandle();
+	void buttonAddLifeHandle();
 	void buttonHeroesHandle();
 
 	// hero menu

@@ -44,6 +44,7 @@ EnemyWooder * EnemyWooder::create(string filename, float scale)
 	enemy->setScaleX(1);
 	enemy->setTimeScale(1.4f);
 	enemy->health = 1;
+	enemy->exp = 5;
 	return enemy;
 
 

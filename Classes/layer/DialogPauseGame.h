@@ -4,9 +4,11 @@
 #include "cocos2d.h"
 #include <string>
 #include "ui/CocosGUI.h"
+#include <spine/spine-cocos2dx.h>
 
 USING_NS_CC;
 using namespace std;
+using namespace spine;
 
 
 class DialogPauseGame : public Layer
@@ -23,7 +25,8 @@ public:
 
 	void resumeGame(Ref* pSender);
 	void backHome(Ref* pSender);
-	void replayGame(Ref* pSender);
+	void overGame();
+	void replayGame(Ref* pSender, int goldRevive, bool isWatchVideo);
 	void nextState(Ref* pSender);
 	void restartGame(Ref* pSender);
 	void upgrade(Ref* pSender);
@@ -43,18 +46,18 @@ public:
 
 class DialogRevive : public DialogPauseGame
 {
-protected:
+private:
 	ui::LoadingBar *loading;
 	int countDown = 50;
 
 	Label *goldReviveLb;
-	CC_SYNTHESIZE(int, gold, GoldToShow);
-	CC_SYNTHESIZE(int, numberOfRevive, NumberOfRevive);
 
 public:
 	bool init(int numberOfRevive);
 	static DialogRevive* create(int numberOfRevive);
 
+private:
+	int calGoldRevive(int number);
 };
 
 class DialogStageClear : public DialogPauseGame
@@ -62,25 +65,22 @@ class DialogStageClear : public DialogPauseGame
 protected:
 	Label *scoreLb;
 	Label *goldLb;
-
-	CC_SYNTHESIZE(int, score, ScoreToShow);
-	CC_SYNTHESIZE(int, gold, GoldToShow);
+	Label *bonusScoreLb;
+	Label *bonusGoldLb;
 
 public:
 	bool init(int score, int gold);
-	static DialogStageClear* create(int score, int gold); // -1 is pause, 0 is die, 1 is win
+	static DialogStageClear* create(int score, int gold);
+	void effect();
 };
 
 class DialogOverGame : public DialogStageClear
 {
 
-	CC_SYNTHESIZE(int, score, ScoreToShow);
-	CC_SYNTHESIZE(int, gold, GoldToShow);
-
 public:
 	bool init(int score, int gold);
 	static DialogOverGame* create(int score, int gold);
-
+	void effect();
 };
 
 

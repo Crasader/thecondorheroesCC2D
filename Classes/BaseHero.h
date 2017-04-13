@@ -21,8 +21,6 @@ protected:
 	list<BaseEnemy *> m_lEnemiesSelectedBySkill2;		//DuongPM edited
 	list<BaseEnemy *> m_lEnemiesSelectedBySkill3;
 
-	list<BaseEnemy *> m_lEnemiesToDestroy;				// list enemy to destroy after done skill
-
 	CC_SYNTHESIZE(b2Body*, swordBody, SwordBody);
 	CC_SYNTHESIZE(float, boxHeight, BoxHeight);
 	CC_SYNTHESIZE(float, trueRadiusOfHero, TrueRadiusOfHero);
@@ -32,7 +30,7 @@ protected:
 	CC_SYNTHESIZE(float, jump_vel, JumpVel);
 
 	CC_SYNTHESIZE(Sprite*, bloodScreen, BloodScreen);
-	//CC_SYNTHESIZE(Sprite*, blash, Blash);
+	CC_SYNTHESIZE(Sprite*, blash, Blash);
 	CC_SYNTHESIZE(SkeletonAnimation*, slash, Slash);
 	CC_SYNTHESIZE(SkeletonAnimation*, slashLand, SlashLand);
 
@@ -94,6 +92,7 @@ public:
 
 
 	virtual void doDestroyBodies(b2World* world);
+	virtual void updateAttackBossAsTarget(BaseEnemy *p_pBoss);
 
 	// default methods
 	void selectEnemyBySkill1(BaseEnemy *p_pEnemySelected); //DuongPM edited
@@ -103,8 +102,7 @@ public:
 	void selectEnemyBySkill3(BaseEnemy *p_pEnemySelected); //DuongPM edited
 	void deSelectEnemyBySkill3();							//DuongPM edited
 
-	void pushToListDestroy(BaseEnemy *p_pEnemySelected);
-	void popOutListDestroy();
+	void killThemAll(list<BaseEnemy*> listToKill);
 
 	StateMachine* getFSM();
 };

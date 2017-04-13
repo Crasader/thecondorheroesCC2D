@@ -93,22 +93,6 @@ public:
 	static Landing* getInstance();
 };
 
-/**
-* Class Landing Revive
-*/
-class LandingRevive : public State
-{
-public:
-	LandingRevive();
-	~LandingRevive();
-
-	void execute(BaseHero *hero);
-
-	static LandingRevive* m_landRevive;
-
-	static LandingRevive* getInstance();
-};
-
 
 /**
 * Class Injured                                                                     
@@ -217,7 +201,6 @@ public:
 #define MRun Running::getInstance()
 #define MJump Jumping::getInstance()
 #define MLand Landing::getInstance()
-#define MLandRevive LandingRevive::getInstance()
 #define MAttack AttackNormal::getInstance()
 #define MRevive Revive::getInstance()
 #define MInjured Injuring::getInstance()

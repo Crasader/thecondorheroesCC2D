@@ -31,7 +31,6 @@ using namespace std;
 #define BITMASK_COIN_BULLION			0x1000
 #define BITMASK_RADA_SKILL_1			0x2000
 #define BITMASK_RADA_SKILL_2			0x4000
-#define BITMASK_SENSOR					0x8000
 
 // tag
 #define TAG_HERO							50
@@ -84,11 +83,54 @@ using namespace std;
 #define MAX_BOMB_HERO_POOL					7
 #define MAX_BULLET_SOLDIER_ENEMY_POOL		3
 
-#define MAX_BULLET_AUTOGUN_POOL				2
-#define MAX_BULLET_FORT_MINI_POOL			3
-#define MAX_BULLET_FORT_POOL				6
-#define MAX_BULLET_TANK_POOL				3
-#define MAX_BULLET_HELICOPTER_POOL			2
+// Ref
+#define KEY_SELECTED_HERO					"SelectedHero"		// integer
+
+#define KEY_LIFE							"MyLife"
+#define KEY_GOLD							"MyGold"
+#define KEY_DIAMOND							"MyDiamond"
+
+
+#define KEY_LOCKED_HERO_X					"LockedHero_"
+
+// LEVEL CURRENTLY
+#define KEY_LEVEL_HERO_X					"LevelHero_"		// integer (1->15)
+
+#define KEY_HEALTH_HERO_X					"HealthHero_"		// baseHP
+
+// BONUS
+#define KEY_BONUS_SCORE_HERO_X				"BonusScoreHero_"
+#define KEY_BONUS_GOLD_HERO_X				"BonusGoldHero_"
+
+
+// SCORE CURRENTLY // ONCE LV UPGRADE, CALCULATE SCORE FOR CURRENT LEVEL (EX: Level 2, score 2500 -> Level 3, score 500)
+#define KEY_SCORE_X							"ScoreHero_"		// follow level
+
+
+// Define duration and cooldown time (if not define, get data from json)
+#define KEY_DURATION_SKILL_1_HERO_X						"DurationSkill1_Hero_"
+#define KEY_COOLDOWN_SKILL_1_HERO_X						"CoolDownSkill1_Hero_"
+
+#define KEY_DURATION_SKILL_2_HERO_X						"DurationSkill2_Hero_"
+#define KEY_COOLDOWN_SKILL_2_HERO_X						"CoolDownSkill2_Hero_"
+
+#define KEY_DURATION_SKILL_3_HERO_X						"DurationSkill3_Hero_"
+#define KEY_COOLDOWN_SKILL_3_HERO_X						"CoolDownSkill3_Hero_"
+
+// from level skill we can calculate duration and cooldown
+#define KEY_LEVEL_SKILL_1_HERO_X						"LevelSkill1_Hero_"
+#define KEY_LEVEL_SKILL_2_HERO_X						"LevelSkill2_Hero_"
+#define KEY_LEVEL_SKILL_3_HERO_X						"LevelSkill3_Hero_"
+
+
+// ITEM HERE
+#define NUMBER_OF_ITEM_HEALTH							"NumberOfItemHealth"
+#define NUMBER_OF_ITEM_BIRD								"NumberOfItemBird"
+#define NUMBER_OF_ITEM_MAGNET							"NumberOfItemMagnet"
+#define NUMBER_OF_ITEM_DOUBLE_COIN						"NumberOfItemDoubleCoin"
+#define NUMBER_OF_ITEM_COOL_DOWN						"NumberOfItemCoolDown"
+
+
 
 #define	SOUND_BACKGROUND					"sound/theme_music.mp3"
 #define SOUND_BULLET_NORMAL					"sound/normal bullet.mp3"

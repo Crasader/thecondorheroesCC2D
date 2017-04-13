@@ -34,14 +34,20 @@ public:
 	static GameScene* create(int map, int haveboss, int charId);
 
 	BaseHero * getHero() { return hero; }
+	void setLastScore(int lastScore) { m_lastScore = lastScore; }
 
 private:
 	// props
 	std::map <std::string, bool> checkGenEnemy;
 	int map;
 	int haveboss;
-	bool isWinGame;
+
+
 	int charId;//Thinhnv Edited for select character
+	int numberRevive = 0;
+
+	bool isWinGame;
+
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
 	float scaleOfMap;
 	vector <MyData> listPosAndTag;
@@ -65,15 +71,21 @@ private:
 	Follow *camera;
 	Node* follow;
 	CCRect left_corner;
-	b2Body* sensor;
 	LayerColor *blur;
 	SpriteBatchNode* batchNode;
+
+	list<BaseEnemy*> listEnemyOccurInScreen;
 
 
 	BaseHero *hero;
 	ChimDieu* _aEagle;
+
+	int m_lastScore = 0;
 	int m_nMultiKills = 0;
 	float m_fMultiKillsCounterTime;
+
+	int previousGold = 0;
+	int previousScore = 0;
 
 	InfiniteParallaxNode *background;
 	InfiniteParallaxNode *background2;
@@ -130,9 +142,6 @@ private:
 	// sau va cham body cua cac quai khong con static nua
 	// do do se bi roi xuong
 	// bat su kien roi xuong qua man hinh de don dep map
-	
-	void createSensorToDetectEnemy();
-	void updateSensor();
 
 	void danceWithEffect();
 	void danceWithCamera();
@@ -154,8 +163,7 @@ public:
 	void updateEnemy();
 	void updateBoss();
 
-	void updateMoney(int numberOfCoin);
-	void updateScore(int score);
+	void updateHUD(float dt);
 	void updateMultiKills(); //DuongPM edited for multi kills
 	void updateBloodBar(int numberOfHealth, bool isVisible);
 	void updateCamera();

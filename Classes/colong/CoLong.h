@@ -33,13 +33,13 @@ public:
 	void doDestroyBodies(b2World *world);
 
 	void updateMe(float p_fDelta);
+	void updateAttackBossAsTarget(BaseEnemy *p_pBoss);
 
 
 protected:
 	Rada *m_pRadaSkill1;
 	Rada *m_pRadaSkill2;
 	Rada *m_pRadaSkill3;
-	bool m_bEndSkill = false;
 	void createRada(b2World *p_pWorld);
 
 	// Skill 1

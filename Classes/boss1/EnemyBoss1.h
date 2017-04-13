@@ -11,7 +11,6 @@ class EnemyBoss1 : public BaseEnemy
 {
 private:
 	CC_SYNTHESIZE(bool, isNodie, IsNodie);
-	CC_SYNTHESIZE(int, hp, HP);
 	CC_SYNTHESIZE_READONLY(Vec2, baseVelocity, BaseVelocity);
 	CC_SYNTHESIZE_READONLY(Vec2, moveVelocity, moveVelocity);
 	CC_SYNTHESIZE(Vec2, realtimeVec, RealtimeVec);

@@ -135,11 +135,6 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		if (enemy->getControlState() < 0)
 			enemy->changeState(new Boss1Attacking1());
-		/*if (!enemy->getIsDie()) {
-			hero->setIsPrior(true);
-			hero->getFSM()->changeState(MInjured);
-			hero->setHealth(hero->getHealth() - 1);
-		}*/
 
 	}
 
@@ -151,11 +146,11 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
 		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
 		auto coin = sA->getTag() == TAG_COIN ? (Coin *)sA : (Coin *)sB;
+		auto hero = sA->getTag() == TAG_COIN ? (BaseHero *)sB : (BaseHero *)sA;
 		if (coin->getB2Body()&& coin->getParent()) {
 			coin->getB2Body()->GetFixtureList()->SetSensor(true);
 			coin->picked();
-			auto parentGameScene = (GameScene*)coin->getParent()->getParent();
-			//parentGameScene->updateMoney(1);
+			hero->setCoinExplored(hero->getCoinExplored() + 1);
 		}
 
 	}
@@ -167,31 +162,30 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
 		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
 		auto coin = sA->getTag() == TAG_COINBULLION ? (CoinBullion *)sA : (CoinBullion *)sB;
+		auto hero = sA->getTag() == TAG_COINBULLION ? (BaseHero *)sB : (BaseHero *)sA;
 		coin->picked();
-
-		auto parentGameScene = (GameScene*)coin->getParent()->getParent();
-		parentGameScene->updateMoney(5);
-
+		hero->setCoinExplored(hero->getCoinExplored() + 5);
 	}
 
 	if ((bitmaskA == BITMASK_COIN_BAG && bitmaskB == BITMASK_SWORD) ||
 		(bitmaskB == BITMASK_COIN_BAG && bitmaskA == BITMASK_SWORD)
 		) {
 
-		B2Skeleton* sA = (BaseEnemy*)bodyA->GetUserData();
-		B2Skeleton* sB = (BaseEnemy*)bodyB->GetUserData();
-		B2Skeleton* coin;
+		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
+		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
+		CoinBag* coin;
 		if (sA && sB) {
-			coin = sA->getTag() == TAG_COINBAG ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+			coin = sA->getTag() == TAG_COINBAG ? (CoinBag *)sA : (CoinBag *)sB;
 		}
 		else {
-			coin = sA ? (BaseEnemy*)sA : (BaseEnemy*)sB;
+			coin = sA ? (CoinBag*)sA : (CoinBag*)sB;
 		}
 
 		coin->die();
 
 		auto parentGameScene = (GameScene*)coin->getParent()->getParent();
-		parentGameScene->updateMoney(10);
+		auto hero = parentGameScene->getHero();
+		hero->setCoinExplored(hero->getCoinExplored() + 10);
 	}
 
 	if ((bitmaskA == BITMASK_WOODER && bitmaskB == BITMASK_SWORD) ||
@@ -200,19 +194,19 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		B2Sprite* sA = (B2Sprite*)bodyA->GetUserData();
 		B2Sprite* sB = (B2Sprite*)bodyB->GetUserData();
-		BaseEnemy* enemy;
+		EnemyWooder* enemy;
 		if (sA && sB) {
-			enemy = sA->getTag() == TAG_ENEMY_WOODER ? (BaseEnemy *)sA : (BaseEnemy *)sB;	
+			enemy = sA->getTag() == TAG_ENEMY_WOODER ? (EnemyWooder *)sA : (EnemyWooder *)sB;
 		}
 		else {
-			enemy = sA ? (BaseEnemy*)sA : (BaseEnemy*)sB;
+			enemy = sA ? (EnemyWooder*)sA : (EnemyWooder*)sB;
 		}
 		
-		enemy->setIsDie(true);
 		auto parentGameScene = (GameScene*)enemy->getParent()->getParent();
-		parentGameScene->updateScore(5);
-		parentGameScene->updateMultiKills();
-		
+		parentGameScene->setLastScore(5);
+		auto hero = parentGameScene->getHero();
+		hero->setScore(hero->getScore() + 5);
+		enemy->setIsDie(true);
 	}
 
 	if ((bitmaskA == BITMASK_TOANCHAN1 && bitmaskB == BITMASK_SWORD) ||
@@ -222,22 +216,26 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		BaseEnemy* sA = (BaseEnemy*)bodyA->GetUserData();
 		BaseEnemy* sB = (BaseEnemy*)bodyB->GetUserData();
 
-		BaseEnemy *enemy;
+		EnemyToanChanStudent *enemy;
 
 		if (sA && sB) {	// sA and sB != nullptr
-			enemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+			enemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 ? (EnemyToanChanStudent *)sA : (EnemyToanChanStudent *)sB;
 			auto thc = sA->getTag() == TAG_DQ_TIEU_HON_CHUONG ? (TieuHonChuong*)sA : (TieuHonChuong*)sB;
 			if (thc->getTag() == TAG_DQ_TIEU_HON_CHUONG)
 				thc->setIsCollide(true);
 		}
 		else
-			enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+			enemy = sA ? (EnemyToanChanStudent *)sA : (EnemyToanChanStudent *)sB;
 
 
-		enemy->setIsDie(true);
+
+		
 		auto parentGameScene = (GameScene*)enemy->getParent()->getParent();
-		parentGameScene->updateScore(12);
-		parentGameScene->updateMultiKills();
+		parentGameScene->setLastScore(12);
+		auto hero = parentGameScene->getHero();
+		hero->setScore(hero->getScore() + 12);
+		enemy->setIsDie(true);
+
 	}
 
 	if ((bitmaskA == BITMASK_TOANCHAN2 && bitmaskB == BITMASK_SWORD) ||
@@ -247,21 +245,24 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		BaseEnemy* sA = (BaseEnemy*)bodyA->GetUserData();
 		BaseEnemy* sB = (BaseEnemy*)bodyB->GetUserData();
 
-		BaseEnemy *enemy;
+		EnemyToanChanStudent2 *enemy;
 
 		if (sA && sB) {		// sA and sB != nullptr
-			enemy = sA->getTag() == TAG_ENEMY_TOANCHAN2 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+			enemy = sA->getTag() == TAG_ENEMY_TOANCHAN2 ? (EnemyToanChanStudent2 *)sA : (EnemyToanChanStudent2 *)sB;
 			auto thc = sA->getTag() == TAG_DQ_TIEU_HON_CHUONG ? (TieuHonChuong*)sA : (TieuHonChuong*)sB;
 			if (thc->getTag() == TAG_DQ_TIEU_HON_CHUONG)
 				thc->setIsCollide(true);
 		}
 		else
-			enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+			enemy = sA ? (EnemyToanChanStudent2 *)sA : (EnemyToanChanStudent2 *)sB;
 
-		enemy->setIsDie(true);
+
+		
 		auto parentGameScene = (GameScene*)enemy->getParent()->getParent();
-		parentGameScene->updateScore(16);
-		parentGameScene->updateMultiKills();
+		parentGameScene->setLastScore(15);
+		auto hero = parentGameScene->getHero();
+		hero->setScore(hero->getScore() + 15);
+		enemy->setIsDie(true);
 	}
 
 	if ((bitmaskA == BITMASK_BOSS && bitmaskB == BITMASK_SWORD) ||
@@ -345,18 +346,6 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		kp->setTextureRect(Rect(Vec2::ZERO,
 			Size(kp->getContentSize().width, kp->getContentSize().height * random(0.61f, 0.63f))));
 
-	}
-
-	if ((bitmaskA == BITMASK_SENSOR && bitmaskB == BITMASK_TOANCHAN1)
-		|| (bitmaskB == BITMASK_SENSOR && bitmaskA == BITMASK_TOANCHAN1)) {
-
-		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
-		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
-
-		auto _aEnemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
-		auto gameLayer = (GameScene*) _aEnemy->getParent();
-		gameLayer->getHero()->pushToListDestroy(_aEnemy);
-		log("Enemy");
 	}
 }
 

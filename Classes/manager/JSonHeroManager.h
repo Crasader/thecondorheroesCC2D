@@ -23,8 +23,10 @@ protected:
 	CC_SYNTHESIZE_READONLY(int, stt, STT);
 	CC_SYNTHESIZE_READONLY(string, key, Key);
 	CC_SYNTHESIZE_READONLY(string, name, Name);
+	CC_SYNTHESIZE_READONLY(string, infor, Infor);
 	CC_SYNTHESIZE_READONLY(string, avatarPath, avatarPath);
 	CC_SYNTHESIZE_READONLY(string, characterPointPath, CharacterPointPath);
+	CC_SYNTHESIZE_READONLY(string, avatarLoadingPath, AvatarLoadingPath);
 	CC_SYNTHESIZE_READONLY(bool, isLocked, IsLocked);
 	
 	CC_SYNTHESIZE_READONLY(float, coolDownSkill1, CoolDownSkill1);
@@ -44,7 +46,9 @@ protected:
 
 	CC_SYNTHESIZE_READONLY(int, baseHP, BaseHP);
 	CC_SYNTHESIZE_READONLY(int, level, Level);
-	
+	CC_SYNTHESIZE_READONLY(int, maxLevel, MaxLevel);
+	CC_SYNTHESIZE_READONLY(int, percentBonusScore, BonusScore);
+	CC_SYNTHESIZE_READONLY(int, percentBonusCoin, BonusCoin);
 
 
 private:
@@ -56,10 +60,7 @@ public:
 
 	int getSelectedHero();
 	void readFile(int indexHero);
-	void writerString(int index, const char* key, string valueString);
-	void writerFloat(int index, string key, float valueFloat);
-	void writerInteger(int index, string key, int valueInteger);
-
+	int getMaxScoreLevelX(int level);
 
 	
 };

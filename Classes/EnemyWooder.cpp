@@ -1,6 +1,6 @@
 #include "EnemyWooder.h"
 
-EnemyWooder::EnemyWooder() :BaseEnemy()
+EnemyWooder::EnemyWooder() : BaseEnemy()
 {
 	
 }
@@ -9,7 +9,7 @@ EnemyWooder::~EnemyWooder()
 {
 }
 
-EnemyWooder::EnemyWooder(spSkeletonData * data) :BaseEnemy(data)
+EnemyWooder::EnemyWooder(spSkeletonData * data) : BaseEnemy(data)
 {
 	//BaseEnemy:BaseEnemy(data);
 }
@@ -25,6 +25,8 @@ EnemyWooder * EnemyWooder::create(string jsonFile, string atlasFile, float scale
 	enemy->setTag(TAG_ENEMY_WOODER);
 	enemy->setScaleX(1);
 	enemy->setTimeScale(1.4f);
+	enemy->health = 1;
+	enemy->exp = 5;
 	return enemy;
 
 }
@@ -41,6 +43,7 @@ EnemyWooder * EnemyWooder::create(string filename, float scale)
 	enemy->setTag(TAG_ENEMY_WOODER);
 	enemy->setScaleX(1);
 	enemy->setTimeScale(1.4f);
+	enemy->health = 1;
 	return enemy;
 
 
@@ -57,6 +60,9 @@ void EnemyWooder::attack()
 
 void EnemyWooder::die()
 {
+
+	BaseEnemy::die();
+
 	auto world = this->body->GetWorld();
 	world->DestroyBody(this->body);
 	this->body = nullptr;
@@ -80,8 +86,6 @@ void EnemyWooder::listener()
 {
 	this->setCompleteListener([&](int trackIndex, int loopCount) {
 		if (strcmp(getCurrent()->animation->name, "broken") == 0 && loopCount == 1) {
-			//getSplash()->setVisible(false);
-			//setIsAttacking(false);
 			this->removeFromParentAndCleanup(true);
 		}
 

@@ -1,5 +1,5 @@
 #include "CoLong.h"
-#include "manager/JSonHeroManager.h"
+#include "manager/RefManager.h"
 #include "AudioEngine.h"
 
 CoLong::CoLong(string p_sJsonFile, string p_sAtlasFile, float p_fScale) : BaseHero(p_sJsonFile, p_sAtlasFile, p_fScale) {
@@ -20,12 +20,12 @@ CoLong * CoLong::create(string p_sJsonFile, string p_sAtlasFile, float p_fScale)
 	_pCoLong->setMoveVel(_pCoLong->SCREEN_SIZE.width / PTM_RATIO / 2.3f);
 	_pCoLong->setJumpVel(_pCoLong->SCREEN_SIZE.height * 1.4f / PTM_RATIO);
 
-	_pCoLong->health = JSHERO->getBaseHP();
+	_pCoLong->health = REF->getCurrentHealth();
 
 	// set Duration here
-	_pCoLong->setDurationSkill1(JSHERO->getDurationSkill1());
-	_pCoLong->setDurationSkill2(JSHERO->getDurationSkill2());
-	_pCoLong->setDurationSkill3(JSHERO->getDurationSkill3());
+	_pCoLong->setDurationSkill1(REF->getDurationSkill_1());
+	_pCoLong->setDurationSkill2(REF->getDurationSkill_2());
+	_pCoLong->setDurationSkill3(REF->getDurationSkill_3());
 
 	_pCoLong->numberOfJump = 2;
 	_pCoLong->coinExplored = 0;
@@ -43,6 +43,10 @@ CoLong * CoLong::create(string p_sJsonFile, string p_sAtlasFile, float p_fScale)
 	_pCoLong->setIsDoneDuration1(true);
 	_pCoLong->setIsDoneDuration2(true);
 	_pCoLong->setIsDoneDuration3(true);
+
+	_pCoLong->blash = Sprite::create("Animation/CoLong/blash.png");
+	_pCoLong->blash->setScale(p_fScale / 2);
+	_pCoLong->blash->setVisible(false);
 
 	return _pCoLong;
 }
@@ -65,7 +69,9 @@ void CoLong::createDocPhongCham(Point p_ptStartPoint, Point p_ptEndPoint) {
 	thc->getB2Body()->SetLinearVelocity(b2Vec2(thc->getB2Body()->GetLinearVelocity().x * 2.0f, thc->getB2Body()->GetLinearVelocity().y * 2.0f));
 	thc->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), atanf((p_ptEndPoint.y - p_ptStartPoint.y) / (p_ptEndPoint.x - p_ptStartPoint.x)));
 	m_lDocPhongCham.push_back(thc);
-	m_lEnemiesSelectedBySkill1.pop_front();
+	if (!m_lEnemiesSelectedBySkill1.empty()) {
+		m_lEnemiesSelectedBySkill1.pop_front();
+	}
 }
 
 void CoLong::doCounterSkill1() {
@@ -75,7 +81,6 @@ void CoLong::doCounterSkill1() {
 			setIsDoneDuration1(true);
 			checkDurationSkill1 = 0;
 			unschedule("KeySkill1");
-			m_bEndSkill = true;
 		}
 	}, 0.1f, "KeySkill1");
 }
@@ -85,19 +90,24 @@ void CoLong::doCounterSkill1() {
 void CoLong::createNgocNuKiemPhap(Point p_ptPoint) {
 	auto scale = this->getTrueRadiusOfHero() * 1.4f / 250;
 	SkeletonAnimation * clone = new SkeletonAnimation("Animation/CoLong/skill2.json", "Animation/CoLong/skill2.atlas", scale);
-	clone->setPosition(Point(p_ptPoint.x - m_lEnemiesSelectedBySkill2.front()->getContentSize().width * m_lEnemiesSelectedBySkill2.front()->getScaleX(),
-		p_ptPoint.y));
-
-	this->getParent()->addChild(clone, ZORDER_SMT);
-	clone->addAnimation(0, "skill2", false);
-	auto enemy = m_lEnemiesSelectedBySkill2.front();
-
 	auto parentGameScene = (GameScene*)this->getParent();
-	parentGameScene->updateScore(15);
-	m_lEnemiesSelectedBySkill2.pop_front();
 
-	enemy->die();
-	parentGameScene->updateMultiKills();
+	if (!m_lEnemiesSelectedBySkill2.empty()) {
+		clone->setPosition(Point(p_ptPoint.x - m_lEnemiesSelectedBySkill2.front()->getContentSize().width * m_lEnemiesSelectedBySkill2.front()->getScaleX(),
+			p_ptPoint.y));
+		auto enemy = m_lEnemiesSelectedBySkill2.front();
+		m_lEnemiesSelectedBySkill2.pop_front();
+		enemy->die();
+
+		auto hero = parentGameScene->getHero();
+		hero->setScore(hero->getScore() + 15);
+	}
+	else {
+		clone->setPosition(p_ptPoint);
+	}
+
+	parentGameScene->addChild(clone, ZORDER_SMT);
+	clone->addAnimation(0, "skill2", false);
 }
 
 void CoLong::doCounterSkill2() {
@@ -107,7 +117,6 @@ void CoLong::doCounterSkill2() {
 			setIsDoneDuration2(true);
 			checkDurationSkill2 = 0;
 			unschedule("KeySkill2");
-			m_bEndSkill = true;
 		}
 	}, 0.1f, "KeySkill2");
 }
@@ -130,7 +139,6 @@ void CoLong::doCounterSkill3() {
 			setIsDoneDuration3(true);
 			checkDurationSkill3 = 0;
 			unschedule("KeySkill3");
-			m_bEndSkill = true;
 		}
 	}, 0.1f, "KeySkill3");
 }
@@ -179,8 +187,7 @@ void CoLong::updateMe(float p_fDelta) {
 		return;
 	}
 
-	if (getFSM()->currentState == MLandRevive) {
-		getB2Body()->SetLinearVelocity(b2Vec2(0, 0));
+	if (this->getPositionY() < 0) {
 		return;
 	}
 
@@ -190,18 +197,6 @@ void CoLong::updateMe(float p_fDelta) {
 		return;
 	}*/
 
-	static float a = 0.0f;
-	if (m_bEndSkill && a < 5.0f) {
-		a += 0.1f;
-		m_pRadaSkill1->setVisible(true);
-		m_pRadaSkill1->setScale(a);
-		m_pRadaSkill1->updateMe(this);
-	}
-	else {
-		m_bEndSkill = false;
-		m_pRadaSkill1->setVisible(false);
-		a = 0.0f;
-	}
 
 	if (!getIsDoneDuration1()) {
 		if (!this->m_lEnemiesSelectedBySkill1.empty()) {
@@ -236,8 +231,36 @@ void CoLong::updateMe(float p_fDelta) {
 	}
 }
 
+void CoLong::updateAttackBossAsTarget(BaseEnemy *p_pBoss) {
+	if (getB2Body() == nullptr) {
+		return;
+	}
+	if (!getIsDoneDuration1()) {
+		static float b = 1.0f;
+		if (b < 1.0f) {
+			b += 1.0f / 60.0f;
+		}
+		else {
+			createDocPhongCham(this->getPosition(), p_pBoss->getPosition());
+			b = 0.0f;
+		}
+	}
+
+	if (!getIsDoneDuration2()) {
+		static float c = 1.0f;
+		if (c < 1.0f) {
+			c += 1.0f / 60.0f;
+		}
+		else {
+			createNgocNuKiemPhap(p_pBoss->getPosition());
+			p_pBoss->die();
+			c = 0.0f;
+		}
+	}
+}
+
 void CoLong::createRada(b2World *p_pWorld) {
-	m_pRadaSkill1 = Rada::create("Animation/CoLong/circle-blash-blue.png");
+	m_pRadaSkill1 = Rada::create("Animation/CoLong/blash.png");
 	m_pRadaSkill1->setScale(SCREEN_SIZE.width / m_pRadaSkill1->getContentSize().width / 1.0f);
 	m_pRadaSkill1->setVisible(false);
 	m_pRadaSkill1->initCirclePhysic(p_pWorld, Vec2(this->getB2Body()->GetPosition().x, this->getB2Body()->GetPosition().y));
@@ -247,7 +270,7 @@ void CoLong::createRada(b2World *p_pWorld) {
 	this->getParent()->addChild(m_pRadaSkill1, ZORDER_SMT);
 	m_pRadaSkill1->setAngle(0.0f);
 
-	m_pRadaSkill2 = Rada::create("Animation/CoLong/circle-blash-blue.png");
+	m_pRadaSkill2 = Rada::create("Animation/CoLong/blash.png");
 	m_pRadaSkill2->setScale(SCREEN_SIZE.width / m_pRadaSkill2->getContentSize().width / 1.5f);
 	m_pRadaSkill2->setVisible(false);
 	m_pRadaSkill2->initCirclePhysic(p_pWorld, Vec2(this->getB2Body()->GetPosition().x, this->getB2Body()->GetPosition().y));
@@ -257,7 +280,7 @@ void CoLong::createRada(b2World *p_pWorld) {
 	this->getParent()->addChild(m_pRadaSkill2, ZORDER_SMT);
 	m_pRadaSkill2->setAngle(0.0f);
 
-	m_pRadaSkill3 = Rada::create("Animation/CoLong/circle-blash-blue.png");
+	m_pRadaSkill3 = Rada::create("Animation/CoLong/blash.png");
 	m_pRadaSkill3->setScale(SCREEN_SIZE.width / m_pRadaSkill3->getContentSize().width / 5.0f);
 	m_pRadaSkill3->setVisible(false);
 	m_pRadaSkill3->initCirclePhysic(p_pWorld, Vec2(this->getB2Body()->GetPosition().x, this->getB2Body()->GetPosition().y));
@@ -321,6 +344,8 @@ void CoLong::initCirclePhysic(b2World * world, Point pos) {
 void CoLong::addStuff()
 {
 	// slash here
+	this->getParent()->addChild(blash, ZORDER_ENEMY);
+
 	createSlash();
 }
 
@@ -399,7 +424,7 @@ void CoLong::run() {
 	addAnimation(0, "run", true);
 	setToSetupPose();
 
-	if (getBloodScreen()->isVisible())
+	if (getBloodScreen()->isVisible() && health > 1)
 		getBloodScreen()->setVisible(false);
 
 	if (!EM->getSmokeRun()->isVisible()) {

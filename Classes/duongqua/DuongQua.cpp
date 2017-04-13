@@ -1,5 +1,5 @@
 #include "DuongQua.h"
-#include "manager/JSonHeroManager.h"
+#include "manager/RefManager.h"
 #include "layer/GameScene.h"
 #include "AudioEngine.h"
 
@@ -24,12 +24,12 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 	duongQua->setMoveVel(duongQua->SCREEN_SIZE.width / PTM_RATIO / 2.3f);
 	duongQua->setJumpVel(duongQua->SCREEN_SIZE.height * 1.4f / PTM_RATIO);
 
-	duongQua->health = JSHERO->getBaseHP();
+	duongQua->health = REF->getCurrentHealth();
 
 	// set Duration here
-	duongQua->setDurationSkill1(JSHERO->getDurationSkill1());
-	duongQua->setDurationSkill2(JSHERO->getDurationSkill2());
-	duongQua->setDurationSkill3(JSHERO->getDurationSkill3());
+	duongQua->setDurationSkill1(REF->getDurationSkill_1());
+	duongQua->setDurationSkill2(REF->getDurationSkill_2());
+	duongQua->setDurationSkill3(REF->getDurationSkill_3());
 
 	duongQua->setBoxHeight(duongQua->getBoundingBox().size.height / 6.7f);
 	duongQua->numberOfJump = 2;
@@ -49,6 +49,11 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 	duongQua->setIsDoneDuration3(true);
 
 	//
+
+	duongQua->blash = Sprite::create("Animation/DuongQua/blash.png");
+	duongQua->blash->setScale(scale / 2);
+	duongQua->blash->setVisible(false);
+
 	return duongQua;
 }
 
@@ -310,6 +315,7 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 
 void DuongQua::addStuff()
 {
+	this->getParent()->addChild(blash, ZORDER_ENEMY);
 	// spirit hole
 	createSpiritHole();
 
@@ -332,7 +338,7 @@ void DuongQua::run()
 	addAnimation(0, "run", true);
 	setToSetupPose();
 
-	if (getBloodScreen()->isVisible())
+	if (getBloodScreen()->isVisible() && health > 1)
 		getBloodScreen()->setVisible(false);
 
 	if (!EM->getSmokeRun()->isVisible()) {
@@ -442,6 +448,7 @@ void DuongQua::attackLanding()
 		addAnimation(0, "attack3", false);
 		setToSetupPose();
 
+		log("atttack");
 		EM->getSlashBreak()->setVisible(false);
 	}
 }
@@ -647,8 +654,7 @@ void DuongQua::updateMe(float dt)
 		return;
 	}
 
-	if (getFSM()->currentState == MLandRevive) {
-		getB2Body()->SetLinearVelocity(b2Vec2(0, 0));
+	if (this->getPositionY() < 0) {
 		return;
 	}
 

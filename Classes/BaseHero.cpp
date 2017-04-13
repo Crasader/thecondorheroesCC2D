@@ -6,7 +6,7 @@
 BaseHero::BaseHero(string jsonFile, string atlasFile, float scale) : B2Skeleton(jsonFile, atlasFile, scale)
 {
 	bloodScreen = Sprite::create("red-screen.png");
-	bloodScreen->setScaleX(SCREEN_SIZE.width / bloodScreen->getContentSize().width);
+	bloodScreen->setScaleX(SCREEN_SIZE.width * 1.1f / bloodScreen->getContentSize().width);
 	bloodScreen->setScaleY(SCREEN_SIZE.height / bloodScreen->getContentSize().height);
 	bloodScreen->setVisible(false);
 	isDriverEagle = false;
@@ -135,6 +135,14 @@ void BaseHero::updateMe(float dt)
 			,getSwordBody()->GetAngle());
 	}
 
+	if (blash->isVisible()) {
+		blash->setPosition(this->getPosition());
+	}
+
+	if (health <= 1 && !bloodScreen->isVisible()) {
+		bloodScreen->setVisible(true);
+	}
+
 	if (health <= 0) {
 		getFSM()->changeState(MDie);
 	}
@@ -159,6 +167,10 @@ void BaseHero::doDestroyBodies(b2World *world)
 
 	setB2Body(nullptr);
 	swordBody = nullptr;
+}
+
+void BaseHero::updateAttackBossAsTarget(BaseEnemy * p_pBoss)
+{
 }
 
 void BaseHero::selectEnemyBySkill1(BaseEnemy * p_pEnemySelected)
@@ -197,13 +209,28 @@ void BaseHero::deSelectEnemyBySkill3()
 	}
 }
 
-void BaseHero::pushToListDestroy(BaseEnemy *p_pEnemySelected)
+void BaseHero::killThemAll(list<BaseEnemy*> listToKill)
 {
-	m_lEnemiesToDestroy.push_back(p_pEnemySelected);
-}
+	blash->setVisible(true);
+	//auto originScale = blash->getScale();
+	auto scaleFactor = Director::getInstance()->getContentScaleFactor();
+	auto scale = ScaleBy::create(0.7f, 100 * scaleFactor);
+	
+	auto hide = CallFunc::create([&]() {
+		blash->setVisible(false);
+	});
 
-void BaseHero::popOutListDestroy()
-{
+	blash->runAction(Sequence::create(scale, hide, scale->reverse(), nullptr));
+
+	for (auto enemy : listToKill) {
+		enemy->setIsDie(true);
+	}
+
+	auto boss = (BaseEnemy*) this->getParent()->getChildByTag(TAG_BOSS);
+	if (boss != nullptr && boss->getPositionX() < this->getPositionX() + SCREEN_SIZE.width * 0.75f) {
+		boss->die();
+		log("%i", boss->getHealth());
+	}
 }
 
 
@@ -211,4 +238,3 @@ StateMachine * BaseHero::getFSM()
 {
 	return stateMachine;
 }
-

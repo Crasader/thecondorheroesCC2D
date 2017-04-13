@@ -15,13 +15,13 @@ Scene* GameScene::createScene(int map, int haveboss, int charId)
 	auto scene = Scene::create();
 
 	// 'layer' is an autorelease object
+
+	loadingLayer = LoadingLayer::create();
 	auto layer = GameScene::create(map, haveboss, charId);
 	layer->setAnchorPoint(Point(0, 0));
 	layer->setName("gameLayer");
 
-
 	hud = Hud::create();
-	loadingLayer = LoadingLayer::create();
 
 	// add layer as a child to scene
 	scene->addChild(layer);
@@ -75,7 +75,6 @@ bool GameScene::init(int map, int haveboss, int charId)
 	loadBackground(map);
 	loadPosAndTag();
 	createGroundBody();
-	createSensorToDetectEnemy();
 	initLayerToAddAgent();
 	this->charId = charId;
 
@@ -110,7 +109,6 @@ GameScene * GameScene::create(int map, int haveboss, int charId)
 
 void GameScene::createDuongQua(string path_Json, string path_Atlas, Point position)
 {
-	JSHERO->readFile(0);
 	hero = DuongQua::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 340);
 	hero->listener();
 	hero->setPosition(position);
@@ -126,7 +124,6 @@ void GameScene::createDuongQua(string path_Json, string path_Atlas, Point positi
 
 void GameScene::createCoLong(string path_Json, string path_Atlas, Point position)
 {
-	JSHERO->readFile(1);
 	hero = CoLong::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 340);
 	hero->listener();
 	hero->setPosition(position);
@@ -168,10 +165,11 @@ void GameScene::onBegin()
 
 void GameScene::checkActiveButton()
 {
-
+	if (hero->getIsDriverEagle() || hero->getPositionY() < 0) return;
 	if (hud->getBtnSkill_1()->getIsBlocked()) {		// 2 and 3 active
 		if (currentButton == 2) {
 			if (hero->getIsDoneDuration2()) {
+				hero->killThemAll(listEnemyOccurInScreen);
 				if (!hud->getBtnSkill_1()->getNumberCoolDown()->isVisible())
 					hud->getBtnSkill_1()->setVisible(true);
 				hud->getBtnSkill_1()->setIsBlocked(false);
@@ -198,6 +196,7 @@ void GameScene::checkActiveButton()
 		}
 		else if (currentButton == 3) {
 			if (hero->getIsDoneDuration3()) {
+				hero->killThemAll(listEnemyOccurInScreen);
 				if (!hud->getBtnSkill_2()->getNumberCoolDown()->isVisible())
 					hud->getBtnSkill_2()->setVisible(true);
 				hud->getBtnSkill_2()->setIsBlocked(false);
@@ -217,6 +216,7 @@ void GameScene::checkActiveButton()
 		}
 		else if (currentButton == 1) {
 			if (hero->getIsDoneDuration1()) {
+				hero->killThemAll(listEnemyOccurInScreen);
 				if (!hud->getBtnSkill_3()->getNumberCoolDown()->isVisible())
 					hud->getBtnSkill_3()->setVisible(true);
 				hud->getBtnSkill_3()->setIsBlocked(false);
@@ -234,6 +234,7 @@ void GameScene::listener()
 
 	if (hud->getBtnAttack()->getIsActive() && !hud->getBtnAttack()->getIsBlocked() &&
 		hero->getFSM()->currentState != MDie && hero->getFSM()->currentState != MInjured) {
+		
 		hero->getFSM()->changeState(MAttack);
 
 
@@ -298,14 +299,14 @@ void GameScene::listener()
 }
 
 void GameScene::heroGetOffEagle() {
+	hud->showButton();
+	hero->changeBodyCategoryBits(BITMASK_HERO);
 	hero->setIsDriverEagle(false);
 	hero->getB2Body()->SetTransform(b2Vec2(_aEagle->getB2Body()->GetPosition().x, _aEagle->getB2Body()->GetPosition().y - 100.0f / PTM_RATIO), 0.0f);
 	hero->setVisible(true);
 	hero->getB2Body()->SetGravityScale(1);
 	hero->getFSM()->changeState(MLand);
 	_aEagle->flyAway();
-
-	hud->showButton();
 }
 
 void GameScene::update(float dt)
@@ -330,33 +331,38 @@ void GameScene::update(float dt)
 
 	_aEagle->updateMe(dt);
 	if (hero->getIsDriverEagle()) {
-		hero->getB2Body()->SetGravityScale(0);
-		hero->getB2Body()->SetTransform(b2Vec2(_aEagle->getB2Body()->GetPosition().x, _aEagle->getB2Body()->GetPosition().y - 100.0f / PTM_RATIO), 0.0f);
+		if (hero->getHealth() <= 0) {	// die
+			hero->getB2Body()->SetGravityScale(1);
+			hero->getB2Body()->SetLinearVelocity(b2Vec2(0, -hero->getJumpVel()));
+			hero->setVisible(true);
+			_aEagle->stopAllActions();
+			_aEagle->flyAway();
+		}
+		else {
+			hero->getB2Body()->SetTransform(b2Vec2(_aEagle->getB2Body()->GetPosition().x, 
+				_aEagle->getB2Body()->GetPosition().y - 100.0f / PTM_RATIO), 0.0f);
+		}
 	}
 
 	hero->updateMe(dt);
 
-	if (hero->getCurrentRunDis() - hero->getPreRunDis() > 10.0f) {
-		updateScore(15);
-		hero->setPreRunDis(hero->getCurrentRunDis());
-	}
-
 	updateEnemy();
 	//cleanMap();
 	updateCamera();
-	updateSensor();
 
 	// fall down some hold
-	if (hud->getBtnCalling()->isVisible() && hero->getPositionY() + hero->getTrueRadiusOfHero() < 0) {
-		hero->getFSM()->changeState(MLandRevive);
+	if (hud->getBtnCalling()->isVisible() && 
+		hero->getPositionY() + hero->getTrueRadiusOfHero() < 0 && hud->getBtnSkill_1()->getCoolDownSprite()->isVisible()) {
+		hud->hideButton();
+		hud->moveCallBirdToCenterScreen(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 		hero->setOnGround(false);
 		hero->setVisible(false);
 		hero->getB2Body()->SetGravityScale(0);
 		hero->getB2Body()->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
-		hero->getB2Body()->SetTransform(b2Vec2(hero->getB2Body()->GetPosition().x, hero->getB2Body()->GetPosition().y + 1), 0.0f);
-		hud->moveCallBirdToCenterScreen(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
+		
 	}
-	else if (!hud->getBtnCalling()->isVisible() && hero->getPositionY() + hero->getTrueRadiusOfHero() * 3 < 0) {
+	else if (!hud->getBtnCalling()->isVisible() && 
+		hero->getPositionY() + hero->getTrueRadiusOfHero() * 3 < 0 && hud->getBtnSkill_1()->getCoolDownSprite()->isVisible()) {
 		overGame();
 	}
 
@@ -373,26 +379,6 @@ void GameScene::update(float dt)
 		}
 	}
 
-	//if (hero->getPositionX() >= SCREEN_SIZE.width / 4) {
-	//	if (_aEagle->getIsUp() && this->getPositionZ() < 100.0f) {
-	//		this->setPositionZ(this->getPositionZ() + 5.0f);
-	//		_aEagle->setSequenceCloud(_aEagle->getSequenceCloud() - 0.04f);
-	//	}
-	//	if (_aEagle->getIsDown() && this->getPositionZ() > 0.0f) {
-	//		this->setPositionZ(this->getPositionZ() - 5.0f);
-	//		_aEagle->setSequenceCloud(_aEagle->getSequenceCloud() + 0.04f);
-	//	}
-	//	/*if (hero->getIsDriverEagle()) {
-	//	follow->setPositionX(_aEagle->getPositionX() + SCREEN_SIZE.width / 10);
-	//	follow->setPositionY(_aEagle->getPositionY() + SCREEN_SIZE.height / 10);
-	//	}
-	//	else {
-	//	follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 3);
-	//	follow->setPositionY(hero->getPositionY() + SCREEN_SIZE.height / 4);
-	//	}*/
-	//	follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4 - SCREEN_SIZE.width * 3 / 20 * this->getPositionZ() / 100.0f);
-	//	follow->setPositionY(hero->getPositionY() + SCREEN_SIZE.height / 4 - SCREEN_SIZE.height * 3 / 20 * this->getPositionZ() / 100.0f);
-	//}
 
 	if (haveboss) {
 		if (hero->getPositionX() > tmx_map->getBoundingBox().size.width - SCREEN_SIZE.width / 2 && indexOfNextMapBoss < 0) {
@@ -410,9 +396,9 @@ void GameScene::update(float dt)
 
 
 	if (hero->getBloodScreen()->isVisible())
-		hero->getBloodScreen()->setPositionX(follow->getPositionX());
+		hero->getBloodScreen()->setPosition(follow->getPosition());
 
-	updateCharacterPoint();
+	updateHUD(dt);
 
 }
 
@@ -663,7 +649,7 @@ void GameScene::createEnemyToanChanStudent(Layer * layer, Vec2 pos)
 	layer->addChild(enemy, ZORDER_ENEMY);
 	enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 4));
 	enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
-	enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2 | BITMASK_SENSOR);
+	enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2 );
 	//enemy->genSplash();
 	enemy->listener();
 }
@@ -679,7 +665,7 @@ void GameScene::createEnemyToanChanStudent2(Layer * layer, Vec2 pos)
 	layer->addChild(enemy, ZORDER_ENEMY);
 	enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
 	enemy->changeBodyCategoryBits(BITMASK_TOANCHAN2);
-	enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2 | BITMASK_SENSOR);
+	enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
 	enemy->genSlash();
 	enemy->listener();
 	/*auto slash = enemy->getSlash();
@@ -786,39 +772,6 @@ void GameScene::createFormCoin(Layer* layer, Vec2 pos, string objectMap, string 
 		//coin->runAnimation();
 	}
 
-}
-
-void GameScene::createSensorToDetectEnemy()
-{
-	b2Body * body;
-	b2BodyDef bodyDef;
-	b2PolygonShape shape;
-	b2FixtureDef fixtureDef;
-
-	shape.SetAsBox(2 / PTM_RATIO, SCREEN_SIZE.height / 2 / PTM_RATIO);
-
-	fixtureDef.density = 0.0f;
-	fixtureDef.friction = 0.0f;
-	fixtureDef.restitution = 0.0f;
-	fixtureDef.shape = &shape;
-	//	fixtureDef.isSensor = true;
-
-	fixtureDef.filter.categoryBits = BITMASK_SENSOR;
-	fixtureDef.filter.maskBits = BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2;
-
-	bodyDef.type = b2_dynamicBody;
-
-
-	bodyDef.position.Set((follow->getPositionX() + SCREEN_SIZE.width * 0.25f) / PTM_RATIO, SCREEN_SIZE.height / 2 / PTM_RATIO);
-
-	sensor = world->CreateBody(&bodyDef);
-	sensor->CreateFixture(&fixtureDef);
-	sensor->SetGravityScale(0);
-}
-
-void GameScene::updateSensor()
-{
-	sensor->SetTransform(b2Vec2((follow->getPositionX() + SCREEN_SIZE.width * 0.25f) / PTM_RATIO, sensor->GetPosition().y), sensor->GetAngle());
 }
 
 void GameScene::danceWithEffect()
@@ -937,8 +890,8 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 
 		// cannot jump while attacking or being injured
 		if (hero->getFSM()->currentState == MAttack || hero->getFSM()->currentState == MInjured ||
-			hero->getFSM()->currentState == MDie || hero->getFSM()->currentState == MRevive ||
-			hero->getFSM()->currentState == MLandRevive
+			hero->getFSM()->currentState == MDie || hero->getFSM()->currentState == MRevive || 
+			hero->getPositionY() + hero->getTrueRadiusOfHero() < 0
 			)
 
 			return false;
@@ -972,7 +925,7 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 {
 	if (keyCode == EventKeyboard::KeyCode::KEY_BACK) {
-		Director::getInstance()->replaceScene(MenuLayer::createScene());
+		pauseGame();
 	}
 }
 
@@ -992,9 +945,13 @@ void GameScene::updateEnemy()
 					{
 						boss->updateMe(hero);
 					}
-					else if (tmp->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width / 2) {
-						auto boss = (EnemyBoss1*)tmp;
+
+					else if (tmp->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width * 0.75f) {
 						boss->updateMe(hero);
+
+					}
+					if (tmp->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width) {
+						hero->updateAttackBossAsTarget(boss);
 					}
 				}
 			}
@@ -1045,16 +1002,22 @@ void GameScene::updateBoss()
 
 }
 
-void GameScene::updateMoney(int numberOfCoin)
+void GameScene::updateHUD(float dt)
 {
-	hero->setCoinExplored(hero->getCoinExplored() + numberOfCoin);
-	hud->getLbMoney()->setString(StringUtils::format("%i", hero->getCoinExplored()));
-}
+	if (hero->getCurrentRunDis() - hero->getPreRunDis() > 10.0f) {
+		hero->setScore(hero->getScore() + 15);
+		hero->setPreRunDis(hero->getCurrentRunDis());
+	}
 
-void GameScene::updateScore(int score)
-{
-	hero->setScore(hero->getScore() + score);
-	hud->getLbScore()->setString(StringUtils::format("%i", hero->getScore()));
+	if (previousGold != hero->getCoinExplored()) {
+		hud->getLbMoney()->setString(StringUtils::format("%i", ++previousGold));
+	}
+
+	if (previousScore != hero->getScore()) {
+		hud->getLbScore()->setString(StringUtils::format("%i", ++previousScore));
+	}
+
+	updateCharacterPoint();
 }
 
 void GameScene::updateMultiKills() {
@@ -1062,8 +1025,8 @@ void GameScene::updateMultiKills() {
 	m_fMultiKillsCounterTime = 1.0f;
 	if (m_nMultiKills > 1) {
 		hud->updateMultiKills(m_nMultiKills);
-		// TODO : update bonus score by multi kills
-
+		if (m_nMultiKills >= 5) m_nMultiKills = 5;
+		hero->setScore(hero->getScore() + (m_nMultiKills - 1) * m_lastScore);
 	}
 }
 
@@ -1112,7 +1075,7 @@ void GameScene::updateCamera()
 		}*/
 	}
 	else {
-		if (hero->getPositionY() > SCREEN_SIZE.height * 2 / 4) {
+		if (hero->getPositionY() > SCREEN_SIZE.height * 0.5f) {
 			background->setPositionY(hero->getPositionY());
 		}
 		else
@@ -1210,13 +1173,19 @@ void GameScene::reviveHero()
 
 	hero->doDestroyBodies(world);
 
+	auto killAll = CallFunc::create([&]() {
+		hero->killThemAll(listEnemyOccurInScreen);
+	});
+
 	auto reviveUp = MoveBy::create(1.5f, Vec2(0, hero->getTrueRadiusOfHero() * 2.7f));
-	hero->runAction(reviveUp);
+	hero->runAction(Sequence::create(reviveUp, killAll, nullptr));
 	hero->getFSM()->changeState(MRevive);
 }
 
 void GameScene::callingBird()
 {
+	hero->changeBodyCategoryBits(BITMASK_WOODER);
+	hero->getB2Body()->SetGravityScale(0);
 	hero->setIsDriverEagle(true);
 	hero->setOnGround(false);
 	hero->getFSM()->changeState(MIdle);
@@ -1230,8 +1199,8 @@ void GameScene::callingBird()
 		_aEagle->flyDown(b2Vec2(hero->getMoveVel(), -7.0f));
 	}), nullptr);
 	auto _aHeroGetOffEagle = Sequence::create(DelayTime::create(6.0f), CallFunc::create([&]() { heroGetOffEagle(); }), nullptr);
-	runAction(_aEagleFlyDown);
-	runAction(_aHeroGetOffEagle);
+	_aEagle->runAction(_aEagleFlyDown);
+	_aEagle->runAction(_aHeroGetOffEagle);
 }
 
 void GameScene::blurScreen()
@@ -1254,6 +1223,9 @@ void GameScene::pauseGame()
 	hud->pauseIfVisible();
 
 	hero->pause();
+	if (hero->getIsDriverEagle())
+		_aEagle->pause();
+
 	dialogPause = DialogPause::create();
 	this->getParent()->addChild(dialogPause);
 
@@ -1276,7 +1248,10 @@ void GameScene::dieGame()
 	}
 
 	hero->pause();
-	dialogPause = DialogRevive::create(1);
+	if (hero->getIsDriverEagle())
+		_aEagle->pause();
+
+	dialogPause = DialogRevive::create(++numberRevive);
 	this->getParent()->addChild(dialogPause);
 
 	hud->getPauseItem()->setEnabled(false);
@@ -1300,6 +1275,9 @@ void GameScene::overGame()
 	}
 
 	hero->pause();
+	if (hero->getIsDriverEagle())
+		_aEagle->pause();
+
 	dialogPause = DialogOverGame::create(hero->getScore(), hero->getCoinExplored());
 	this->getParent()->addChild(dialogPause);
 
@@ -1311,11 +1289,12 @@ void GameScene::overGame()
 void GameScene::nextGame()
 {
 	++map;
-	if (map < 3)
+
+	if(map < 3)
 		Director::getInstance()->replaceScene(GameScene::createScene(map, haveboss, charId));
 	else if (map == 3)
 		Director::getInstance()->replaceScene(GameScene::createScene(map, true, charId));
-	else
+	else 
 		Director::getInstance()->replaceScene(MenuLayer::createScene());
 }
 
@@ -1332,7 +1311,8 @@ void GameScene::winGame()
 	}
 
 	hero->pause();
-
+	if (hero->getIsDriverEagle())
+		_aEagle->pause();
 
 	dialogPause = DialogStageClear::create(hero->getScore(), hero->getCoinExplored());
 	this->getParent()->addChild(dialogPause);
@@ -1350,14 +1330,17 @@ void GameScene::resumeGame()
 	}
 
 	hero->resume();
+	if (hero->getIsDriverEagle())
+		_aEagle->resume();
 
 	dialogPause->removeFromParentAndCleanup(true);
 	dialogPause = nullptr;
 
 	hud->resumeIfVisible();
 	hud->getPauseItem()->setEnabled(true);
-	if (hud->getBtnCalling()->isVisible())
+	if(hud->getBtnCalling()->isVisible())
 		hud->getBtnCalling()->setEnabled(true);
+	
 
 	this->resume();
 }

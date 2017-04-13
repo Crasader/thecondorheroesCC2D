@@ -604,7 +604,7 @@ void GameScene::createGroundBody()
 	}
 
 	auto groupUnderGround = tmx_map->getObjectGroup("under_ground");
-	if (!groupGround) return;
+	if (!groupUnderGround) return;
 	for (auto child : groupUnderGround->getObjects()) {
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);

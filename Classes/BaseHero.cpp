@@ -14,6 +14,7 @@ BaseHero::BaseHero(string jsonFile, string atlasFile, float scale) : B2Skeleton(
 	preRunDis = 0.0f;
 
 	dieHard = 1;
+	createMapItem();
 }
 
 BaseHero * BaseHero::create(string jsonFile, string atlasFile, float scale)
@@ -36,7 +37,7 @@ void BaseHero::initSwordPhysic(b2World *world, Point position, float width)
 	fixtureDef.shape = &shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_WOODER;
-	fixtureDef.filter.maskBits = BITMASK_WOODER | BITMASK_TOANCHAN1 |BITMASK_TOANCHAN2 |BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BAG;
+	fixtureDef.filter.maskBits = BITMASK_WOODER | BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BAG;
 
 	bodyDef.position.Set(position.x / PTM_RATIO, position.y / PTM_RATIO);
 	bodyDef.type = b2_dynamicBody;
@@ -132,7 +133,7 @@ void BaseHero::updateMe(float dt)
 
 
 		getSwordBody()->SetTransform(b2Vec2(getB2Body()->GetPosition().x + getTrueRadiusOfHero() * 2.2f / PTM_RATIO, getB2Body()->GetPosition().y)
-			,getSwordBody()->GetAngle());
+			, getSwordBody()->GetAngle());
 	}
 
 	if (blash->isVisible()) {
@@ -146,6 +147,7 @@ void BaseHero::updateMe(float dt)
 	if (health <= 0) {
 		getFSM()->changeState(MDie);
 	}
+	updateMapItem();
 }
 
 void BaseHero::doCounterSkill1()
@@ -215,7 +217,7 @@ void BaseHero::killThemAll(list<BaseEnemy*> listToKill)
 	//auto originScale = blash->getScale();
 	auto scaleFactor = Director::getInstance()->getContentScaleFactor();
 	auto scale = ScaleBy::create(0.7f, 100 * scaleFactor);
-	
+
 	auto hide = CallFunc::create([&]() {
 		blash->setVisible(false);
 	});
@@ -231,6 +233,33 @@ void BaseHero::killThemAll(list<BaseEnemy*> listToKill)
 		boss->die();
 		log("%i", boss->getHealth());
 	}
+}
+
+void BaseHero::createMapItem()
+{
+	checkItem[KEY_ITEM_MAGNET]= 1000;
+	checkItem[KEY_ITEM_DOUPLE_COIN]= 0;
+}
+
+void BaseHero::updateMapItem()
+{
+	for (int i = KEY_ITEM_MAGNET; i < KEY_ITEM_DOUPLE_COIN; i++) {
+		int value = checkItem[i];
+		if (value > 0) {
+			value--;
+			checkItem[i]= value;
+		};
+	}
+}
+
+int BaseHero::getItemValue(int keyItem)
+{
+	return checkItem[keyItem];
+}
+
+void BaseHero::setItemValue(int keyItem, int value)
+{
+	checkItem[keyItem]= value;
 }
 
 

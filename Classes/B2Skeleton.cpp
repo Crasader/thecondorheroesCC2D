@@ -2,7 +2,7 @@
 
 
 
-B2Skeleton::B2Skeleton():SkeletonAnimation()
+B2Skeleton::B2Skeleton() :SkeletonAnimation()
 {
 	body = nullptr;
 }
@@ -24,7 +24,7 @@ B2Skeleton::B2Skeleton(spSkeletonData * data) : SkeletonAnimation(data)
 B2Skeleton * B2Skeleton::create(string jsonFile, string atlasFile, float scale)
 {
 	return nullptr;
-	
+
 }
 
 B2Skeleton * B2Skeleton::create(spSkeletonData * data)
@@ -138,6 +138,16 @@ void B2Skeleton::updateMe(BaseHero * hero)
 	}
 }
 
+void B2Skeleton::onExit()
+{
+	SkeletonAnimation::onExit();
+	if (body != nullptr) {
+		auto world = body->GetWorld();
+		world->DestroyBody(body);
+		body = nullptr;
+	}
+}
+
 
 //void B2Skeleton::updateMe(BaseHero* hero)
 //{
@@ -147,12 +157,12 @@ void B2Skeleton::updateMe(BaseHero * hero)
 //	}
 //}
 
-void B2Skeleton::onExit()
-{
-	SkeletonAnimation::onExit();
-	if (body != nullptr) {
-		auto world = body->GetWorld();
-		world->DestroyBody(body);
-	}
-}
+//void B2Skeleton::onExit()
+//{
+//	SkeletonAnimation::onExit();
+//	if (body != nullptr) {
+//		auto world = body->GetWorld();
+//		world->DestroyBody(body);
+//	}
+//}
 

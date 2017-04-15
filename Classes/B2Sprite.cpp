@@ -127,6 +127,7 @@ void B2Sprite::onExit()
 	if (body != nullptr) {
 		auto world = body->GetWorld();
 		world->DestroyBody(body);
+		body = nullptr;
 	}
 }
 

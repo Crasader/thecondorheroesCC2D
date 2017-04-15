@@ -2,6 +2,10 @@
 #include "CoinBag.h"
 #include "manager\SkeletonManager.h"
 
+CoinBag::CoinBag(spSkeletonData * data):B2Skeleton(data)
+{
+}
+
 CoinBag::CoinBag(string jsonFile, string atlasFile, float scale) :B2Skeleton( jsonFile,  atlasFile,  scale)
 {
 }
@@ -15,9 +19,23 @@ CoinBag * CoinBag::create(string jsonFile, string atlasFile, float scale)
 	return coin;
 }
 
+CoinBag * CoinBag::create(string filename, float scale)
+{
+	if (!SkeletonManager::getSkeletonData(filename)) {
+		SkeletonManager::getInstance()->cacheSkeleton(filename, scale);
+	}
+	auto data = SkeletonManager::getSkeletonData(filename);
+	auto bag = new CoinBag(data);
+	//enemy->initWithData(data);
+	bag->update(0.0f);
+	bag->setTag(TAG_COINBAG);
+	bag->setAnimation(0, "Gold_bag", true);
+	return bag;
+}
+
 void CoinBag::updateMe(BaseHero* hero)
 {
-	
+	B2Skeleton::updateMe(hero);
 }
 
 void CoinBag::die()

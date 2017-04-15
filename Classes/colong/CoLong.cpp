@@ -205,7 +205,8 @@ void CoLong::updateMe(float p_fDelta) {
 	}
 	if (!getIsDoneDuration2()) {
 		if (!this->m_lEnemiesSelectedBySkill2.empty()) {
-			createNgocNuKiemPhap(m_lEnemiesSelectedBySkill2.front()->getPosition());
+			createNgocNuKiemPhap(m_lEnemiesSelectedBySkill2.front()->getPosition()+ m_lEnemiesSelectedBySkill2.front()->getParent()->getPosition());
+			//createNgocNuKiemPhap(m_lEnemiesSelectedBySkill2.front()->getB2Body()->);
 		}
 	}
 

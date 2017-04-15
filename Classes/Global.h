@@ -58,6 +58,7 @@ using namespace std;
 
 // tag b2Sprite
 #define TAG_COIN							80
+#define TAG_MAGNET							81
 
 // tag b2Skeleton
 #define TAG_COINBULLION						99
@@ -67,7 +68,8 @@ using namespace std;
 #define TAG_ENEMY_TOANCHAN2					103
 #define TAG_BOSS							104
 
-
+#define KEY_ITEM_MAGNET						0
+#define KEY_ITEM_DOUPLE_COIN				1
 
 // z-order
 #define ZORDER_BG							0

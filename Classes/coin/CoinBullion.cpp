@@ -3,6 +3,10 @@
 
 
 
+CoinBullion::CoinBullion(spSkeletonData * data) :B2Skeleton(data)
+{
+}
+
 CoinBullion::CoinBullion(string jsonFile, string atlasFile, float scale) :B2Skeleton(jsonFile, atlasFile, scale)
 {
 }
@@ -16,9 +20,24 @@ CoinBullion * CoinBullion::create(string jsonFile, string atlasFile, float scale
 	return coin;
 }
 
+CoinBullion * CoinBullion::create(string filename, float scale)
+{
+
+	if (!SkeletonManager::getSkeletonData(filename)) {
+		SkeletonManager::getInstance()->cacheSkeleton(filename, scale);
+	}
+	auto data = SkeletonManager::getSkeletonData(filename);
+	auto bag = new CoinBullion(data);
+	//enemy->initWithData(data);
+	bag->update(0.0f);
+	bag->setTag(TAG_COINBAG);
+	bag->setAnimation(0, "Gold", true);
+	return bag;
+}
+
 void CoinBullion::updateMe(BaseHero* hero)
 {
-	
+	B2Skeleton::updateMe(hero);
 }
 
 void CoinBullion::picked()

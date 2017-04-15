@@ -21,6 +21,7 @@
 #include "layer/DialogPauseGame.h"
 #include "datastructures\MyData.h"
 #include <vector>
+#include "datastructures\MyPool.h"
 
 USING_NS_CC;
 using namespace std;
@@ -38,7 +39,8 @@ public:
 
 private:
 	// props
-	std::map <std::string, bool> checkGenEnemy;
+	//std::map <std::string, bool> checkGenEnemy;
+
 	int map;
 	int haveboss;
 
@@ -60,7 +62,10 @@ private:
 
 	int indexOfNextMapBoss;// chi so cua map boss cuoi, khoi dau la -1, khi danh boss chuyen 1 va 0(0101010101)
 	int currentButton = 0;
-
+	MyPool *coinPool;
+	MyPool *wooderPool;
+	//MyPool *wooderPool;
+	
 public:
 	b2World *world;
 	GLESDebugDraw *debugDraw;
@@ -196,6 +201,10 @@ public:
 
 	void createAgentOnLayer(Layer* layer);
 	void creatAgentByMydata(Layer* layer, MyData data);
+
+	// quan ly item
+	//void createMapItem();// tao du lieu cho map item.
+	//void updateMapItem();
 
     // implement the "static create()" method manually
    // CREATE_FUNC(GameScene);

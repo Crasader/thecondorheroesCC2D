@@ -10,6 +10,7 @@
 USING_NS_CC;
 
 using namespace spine;
+using namespace std;
 
 class BaseHero : public B2Skeleton
 {

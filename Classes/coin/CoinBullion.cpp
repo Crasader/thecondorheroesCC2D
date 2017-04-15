@@ -1,4 +1,5 @@
 #include "CoinBullion.h"
+#include "manager\SkeletonManager.h"
 
 
 
@@ -15,15 +16,19 @@ CoinBullion * CoinBullion::create(string jsonFile, string atlasFile, float scale
 	return coin;
 }
 
-void CoinBullion::updateMe(float dt)
+void CoinBullion::updateMe(BaseHero* hero)
 {
-	B2Skeleton::updateMe(dt);
+	
 }
 
 void CoinBullion::picked()
 {
 	this->setVisible(false);
-	effect = SkeletonAnimation::createWithFile("Effect_getgolden.json", "Effect_getgolden.atlas", SCREEN_SIZE.height / 3 / 290);
+	//effect = SkeletonAnimation::createWithFile("Effect_getgolden.json", "Effect_getgolden.atlas", SCREEN_SIZE.height / 3 / 290);
+	if (!SkeletonManager::getInstance()->getSkeletonData("Effect_getgolden")) {
+		SkeletonManager::getInstance()->cacheSkeleton("Effect_getgolden", SCREEN_SIZE.height / 3 / 291);
+	}
+	effect = SkeletonAnimation::createWithData(SkeletonManager::getInstance()->getSkeletonData("Effect_getgolden"));
 	effect->setAnimation(0, "Effect_gold", false);
 	effect->setPosition(this->getPosition());
 	this->getParent()->addChild(effect, ZORDER_ENEMY);
@@ -39,6 +44,4 @@ void CoinBullion::picked()
 void CoinBullion::onExit()
 {
 	B2Skeleton::onExit();
-	auto world = this->getB2Body()->GetWorld();
-	world->DestroyBody(this->getB2Body());
 }

@@ -115,7 +115,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
 		auto _aEnemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 || sA->getTag() == TAG_ENEMY_TOANCHAN2 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 
-		auto parentGameScene = (GameScene*)_aEnemy->getParent();
+		auto parentGameScene = (GameScene*)_aEnemy->getParent()->getParent();
 		if (bitmaskA == BITMASK_RADA_SKILL_1 || bitmaskB == BITMASK_RADA_SKILL_1) {
 			parentGameScene->getHero()->selectEnemyBySkill1(_aEnemy);
 		}
@@ -146,11 +146,10 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
 		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
 		auto coin = sA->getTag() == TAG_COIN ? (Coin *)sA : (Coin *)sB;
+		auto hero = sA->getTag() == TAG_COIN ? (BaseHero *)sB : (BaseHero *)sA;
 		if (coin->getB2Body()&& coin->getParent()) {
 			coin->getB2Body()->GetFixtureList()->SetSensor(true);
 			coin->picked();
-			auto parentGameScene = (GameScene*)coin->getParent();
-			auto hero = parentGameScene->getHero();
 			hero->setCoinExplored(hero->getCoinExplored() + 1);
 		}
 
@@ -163,12 +162,9 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
 		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
 		auto coin = sA->getTag() == TAG_COINBULLION ? (CoinBullion *)sA : (CoinBullion *)sB;
+		auto hero = sA->getTag() == TAG_COINBULLION ? (BaseHero *)sB : (BaseHero *)sA;
 		coin->picked();
-
-		auto parentGameScene = (GameScene*)coin->getParent();
-		auto hero = parentGameScene->getHero();
 		hero->setCoinExplored(hero->getCoinExplored() + 5);
-
 	}
 
 	if ((bitmaskA == BITMASK_COIN_BAG && bitmaskB == BITMASK_SWORD) ||
@@ -187,7 +183,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		coin->die();
 
-		auto parentGameScene = (GameScene*)coin->getParent();
+		auto parentGameScene = (GameScene*)coin->getParent()->getParent();
 		auto hero = parentGameScene->getHero();
 		hero->setCoinExplored(hero->getCoinExplored() + 10);
 	}
@@ -206,8 +202,9 @@ void CollisionListener::BeginContact(b2Contact * contact)
 			enemy = sA ? (EnemyWooder*)sA : (EnemyWooder*)sB;
 		}
 		
-		auto parentGameScene = (GameScene*)enemy->getParent();
+		auto parentGameScene = (GameScene*)enemy->getParent()->getParent();
 		parentGameScene->setLastScore(enemy->getExp());
+
 		auto hero = parentGameScene->getHero();
 		hero->setScore(hero->getScore() + enemy->getExp());
 		enemy->setIsDie(true);
@@ -231,13 +228,13 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		else
 			enemy = sA ? (EnemyToanChanStudent *)sA : (EnemyToanChanStudent *)sB;
 
-
-		
-		auto parentGameScene = (GameScene*)enemy->getParent();
+		auto parentGameScene = (GameScene*)enemy->getParent()->getParent();
 		parentGameScene->setLastScore(enemy->getExp());
+
 		auto hero = parentGameScene->getHero();
 		hero->setScore(hero->getScore() + enemy->getExp());
 		enemy->setIsDie(true);
+
 	}
 
 	if ((bitmaskA == BITMASK_TOANCHAN2 && bitmaskB == BITMASK_SWORD) ||
@@ -258,8 +255,8 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		else
 			enemy = sA ? (EnemyToanChanStudent2 *)sA : (EnemyToanChanStudent2 *)sB;
 
-		
-		auto parentGameScene = (GameScene*)enemy->getParent();
+
+		auto parentGameScene = (GameScene*)enemy->getParent()->getParent();
 		parentGameScene->setLastScore(enemy->getExp());
 		auto hero = parentGameScene->getHero();
 		hero->setScore(hero->getScore() + enemy->getExp());
@@ -324,7 +321,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		slash->setIsDie(true);
 
-		EM->getSlashBreak()->setPosition(slash->getPosition());
+		EM->getSlashBreak()->setPosition(slash->getPosition()+slash->getParent()->getPosition());
 		EM->getSlashBreak()->setVisible(true);
 		EM->slashBreakAni();
 
@@ -372,7 +369,7 @@ void CollisionListener::EndContact(b2Contact * contact)
 		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
 		auto _aEnemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 || sA->getTag() == TAG_ENEMY_TOANCHAN2 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 
-		auto parentGameScene = (GameScene*)_aEnemy->getParent();
+		auto parentGameScene = (GameScene*)_aEnemy->getParent()->getParent();
 		if (bitmaskA == BITMASK_RADA_SKILL_1 || bitmaskB == BITMASK_RADA_SKILL_1) {
 			parentGameScene->getHero()->deSelectEnemyBySkill1();
 		}

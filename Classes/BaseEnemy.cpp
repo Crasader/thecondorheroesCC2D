@@ -50,17 +50,22 @@ void BaseEnemy::attack()
 void BaseEnemy::die()
 {
 	if (!isEndOfScreen) {
-		auto gameLayer = (GameScene*) this->getParent();
+		auto gameLayer = (GameScene*) this->getParent()->getParent();
 		gameLayer->updateMultiKills();
 	}
 }
 
-void BaseEnemy::updateMe(float dt)
+void BaseEnemy::updateMe(BaseHero* hero)
 {
-	if (body != nullptr && body->GetType() == b2_staticBody) {
-		this->setPositionX(body->GetPosition().x * PTM_RATIO);
-		this->setPositionY(body->GetPosition().y * PTM_RATIO - this->body->GetFixtureList()->GetShape()->m_radius*PTM_RATIO);
+	if (body != nullptr /*&& body->GetType() == b2_staticBody*/) {
+		this->setPositionX(body->GetPosition().x * PTM_RATIO- this->getParent()->getPositionX());
+		this->setPositionY(body->GetPosition().y * PTM_RATIO - this->body->GetFixtureList()->GetShape()->m_radius*PTM_RATIO
+		-this->getParent()->getPositionY());
 		this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
+
+		if (!isOccur) {
+
+		}
 	}
 }
 

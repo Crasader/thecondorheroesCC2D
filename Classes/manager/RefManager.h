@@ -1,4 +1,3 @@
-#pragma once
 #ifndef __REF_MANAGER_H__
 #define __REF_MANAGER_H__
 
@@ -6,6 +5,7 @@
 #include <string>
 
 USING_NS_CC;
+
 
 class RefManager
 {
@@ -18,6 +18,8 @@ protected:
 	CC_SYNTHESIZE_READONLY(int, selectedHero, SelectedHero);
 	CC_SYNTHESIZE_READONLY(bool, isLockedHero, IsLockedHero);	// to try or smt
 
+	CC_SYNTHESIZE_READONLY(int, currentStageUnlocked, CurrentStageUnlocked);
+	CC_SYNTHESIZE_READONLY(int, currentMapUnLocked, CurrentMapUnLocked);
 	CC_SYNTHESIZE_READONLY(int, currentLevel, CurrentLevel);
 	CC_SYNTHESIZE_READONLY(int, currentScore, CurrentScore);
 
@@ -62,6 +64,9 @@ public:
 	void pointToCurrentHero(int index);		// set props to get
 	void unLockHero(int index);
 	void increaseLevel();
+
+	void increaseStateUnlocked();
+	void setMapUnlocked(int index);
 	
 	// baseHP
 	void setUpHealth(int health);
@@ -106,5 +111,54 @@ public:
 };
 
 #define REF RefManager::getInstance()
+// Ref
+#define KEY_SELECTED_HERO					"SelectedHero"		// integer
+
+#define KEY_CUR_STAGE_UNLOCKED				"CurrentStageUnlocked"
+#define KEY_CUR_MAP_UNLOCKED				"CurrentMapUnlocked"
+
+#define KEY_LIFE							"MyLife"
+#define KEY_GOLD							"MyGold"
+#define KEY_DIAMOND							"MyDiamond"
+
+
+#define KEY_LOCKED_HERO_X					"LockedHero_"
+
+// LEVEL CURRENTLY
+#define KEY_LEVEL_HERO_X					"LevelHero_"		// integer (1->15)
+
+#define KEY_HEALTH_HERO_X					"HealthHero_"		// baseHP
+
+// BONUS
+#define KEY_BONUS_SCORE_HERO_X				"BonusScoreHero_"
+#define KEY_BONUS_GOLD_HERO_X				"BonusGoldHero_"
+
+
+// SCORE CURRENTLY // ONCE LV UPGRADE, CALCULATE SCORE FOR CURRENT LEVEL (EX: Level 2, score 2500 -> Level 3, score 500)
+#define KEY_SCORE_X							"ScoreHero_"		// follow level
+
+
+// Define duration and cooldown time (if not define, get data from json)
+#define KEY_DURATION_SKILL_1_HERO_X						"DurationSkill1_Hero_"
+#define KEY_COOLDOWN_SKILL_1_HERO_X						"CoolDownSkill1_Hero_"
+
+#define KEY_DURATION_SKILL_2_HERO_X						"DurationSkill2_Hero_"
+#define KEY_COOLDOWN_SKILL_2_HERO_X						"CoolDownSkill2_Hero_"
+
+#define KEY_DURATION_SKILL_3_HERO_X						"DurationSkill3_Hero_"
+#define KEY_COOLDOWN_SKILL_3_HERO_X						"CoolDownSkill3_Hero_"
+
+// from level skill we can calculate duration and cooldown
+#define KEY_LEVEL_SKILL_1_HERO_X						"LevelSkill1_Hero_"
+#define KEY_LEVEL_SKILL_2_HERO_X						"LevelSkill2_Hero_"
+#define KEY_LEVEL_SKILL_3_HERO_X						"LevelSkill3_Hero_"
+
+
+// ITEM HERE
+#define NUMBER_OF_ITEM_HEALTH							"NumberOfItemHealth"
+#define NUMBER_OF_ITEM_BIRD								"NumberOfItemBird"
+#define NUMBER_OF_ITEM_MAGNET							"NumberOfItemMagnet"
+#define NUMBER_OF_ITEM_DOUBLE_COIN						"NumberOfItemDoubleCoin"
+#define NUMBER_OF_ITEM_COOL_DOWN						"NumberOfItemCoolDown"
 
 #endif // __REF_MANAGER_H__

@@ -28,6 +28,7 @@ protected:
 	list<KiemPhap*> listKiemPhap;
 	int checkDurationSkill2;
 	int numberOfDeadSword;
+	int indexKiem = 0;
 	void createKiemPhap(float posX);
 	void landKiemPhap();
 	void doCounterSkill2();

@@ -20,7 +20,7 @@ public:
 	void run();
 	void attack();
 	void die();
-	void updateMe(float dt);
+	void updateMe(BaseHero* hero);
 	void listener();
 
 };

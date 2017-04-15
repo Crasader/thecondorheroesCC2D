@@ -27,9 +27,13 @@ private:
 	int m_nIndexHeroSelected = 0;
 	int m_nIndexHeroPicked = 0;
 	int m_arNumberItem[5];
-	int m_nLifeNumber;
+	int m_nLifeNumber = 3;
 	int m_nTimeAnchor = 1491987700;
 	Label *m_pTimeCounter;
+
+	//
+	int m_nGold;
+	int m_nDiamond;
 
 	// layers
 	Layer *m_pGameBackground;
@@ -37,7 +41,7 @@ private:
 	Layer *m_pGameControl;
 	Layer *m_pTopMainMenu;
 	Layer *m_pBottomMainMenu;
-	Layer *m_pUpgrateBoard;
+	Layer *m_pUpgradeBoard;
 	Layer *m_pItemBoard;
 	Layer *m_pHeroInfoBoard;
 	Layer *m_pBottomHeroMenu;
@@ -50,7 +54,16 @@ private:
 	MenuItemSprite *m_pHeroButton5;
 
 	// preview
-	SkeletonAnimation *m_arPreviewHero[];
+	SkeletonAnimation *m_arPreviewHero[5];
+
+	// item number label
+	Label *ar_pLabelNumberItem[5];
+	// score bar
+	Sprite *m_pLevelPoint;
+	Label *m_pHealthPointLabel;
+	Label *m_pBonusScoreLabel;
+	Label *m_pBonusGoldLabel;
+
 
 	void initInputData();
 	void initBackgroundLayer();
@@ -60,7 +73,7 @@ private:
 	void initTopMainMenu();
 	void initBottomMainMenu();
 	void initItemBoard();
-	void initUpgrateBoard();
+	void initUpgradeBoard();
 	void initHeroInfoBoard();
 	void initBottomHeroMenu();
 
@@ -70,7 +83,14 @@ private:
 	void buttonBackHanle();
 	void buttonStartHandle();
 	void buttonAddLifeHandle();
+	void buttonAddGoldHandle();
+	void buttonAddDiamondHandle();
 	void buttonHeroesHandle();
+
+	// upgrade skill handle
+	void upgradeSkill1();
+	void upgradeSkill2();
+	void upgradeSkill3();
 
 	// hero menu
 	void pickHeroFirst();
@@ -81,6 +101,13 @@ private:
 	void tryButtonHandle();
 	void unlockButtonHandle();
 	void selectButtonHandle();
+
+	// buy items
+	void buyItem1();
+	void buyItem2();
+	void buyItem3();
+	void buyItem4();
+	void buyItem5();
 
 	//
 	void showMainMenu();

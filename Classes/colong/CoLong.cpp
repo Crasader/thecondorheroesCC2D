@@ -123,18 +123,22 @@ void CoLong::doCounterSkill2() {
 
 // SKILL 3
 void CoLong::doCounterSkill3() {
+	changeBodyMaskBits(BITMASK_FLOOR | BITMASK_COIN | BITMASK_COIN_BULLION);
+	
 	m_pRadaSkill3->changeBodyCategoryBits(BITMASK_SWORD);
+	
+	EM->getSmokeRun()->setVisible(false);
 
+	log("3");
 	clearTracks();
 	addAnimation(0, "skill3", true);
 	setToSetupPose();
-
-	EM->getSmokeRun()->setVisible(false);
 
 	this->schedule([&](float dt) {
 		checkDurationSkill3++;
 
 		if (checkDurationSkill3 >= getDurationSkill3() * 10) {
+			changeBodyMaskBits(BITMASK_FLOOR | BITMASK_COIN | BITMASK_SLASH | BITMASK_BOSS | BITMASK_TOANCHAN1 | BITMASK_COIN_BULLION);
 			m_pRadaSkill3->changeBodyCategoryBits(BITMASK_WOODER);
 			setIsDoneDuration3(true);
 			checkDurationSkill3 = 0;
@@ -157,7 +161,7 @@ void CoLong::updateMe(float p_fDelta) {
 			_pTempDPC->removeFromParentAndCleanup(true);
 		}
 		else {
-			_pTempDPC->updateMe(p_fDelta);
+			_pTempDPC->updateMe(this);
 			m_lDocPhongCham.push_back(_pTempDPC);
 		}
 		m_lDocPhongCham.pop_front();
@@ -187,6 +191,14 @@ void CoLong::updateMe(float p_fDelta) {
 		return;
 	}
 
+	if (getSlash()->isVisible())
+		getSlash()->setPosition(this->getPositionX() + this->getTrueRadiusOfHero(),
+			this->getPositionY() + this->getTrueRadiusOfHero() * 0.7f);
+
+	if (getSlashLand()->isVisible())
+		getSlashLand()->setPosition(this->getPositionX() + this->getTrueRadiusOfHero() * 0.3f,
+			this->getPositionY() + this->getTrueRadiusOfHero() * 0.7f);
+
 	if (this->getPositionY() < 0) {
 		return;
 	}
@@ -196,6 +208,7 @@ void CoLong::updateMe(float p_fDelta) {
 			SCREEN_SIZE.height / PTM_RATIO), getB2Body()->GetAngle());
 		return;
 	}*/
+
 
 	if (!getIsDoneDuration1()) {
 		if (!this->m_lEnemiesSelectedBySkill1.empty()) {
@@ -209,14 +222,6 @@ void CoLong::updateMe(float p_fDelta) {
 	}
 
 	getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
-
-	if (getSlash()->isVisible())
-		getSlash()->setPosition(this->getPositionX() + this->getTrueRadiusOfHero(),
-			this->getPositionY() + this->getTrueRadiusOfHero() * 0.7f);
-
-	if (getSlashLand()->isVisible())
-		getSlashLand()->setPosition(this->getPositionX() + this->getTrueRadiusOfHero() * 0.3f,
-			this->getPositionY() + this->getTrueRadiusOfHero() * 0.7f);
 
 	if (!getIsPriorAttack() && !getIsPriorInjured() && getIsDoneDuration3()) {
 		if (getB2Body()->GetLinearVelocity().y < 0) {
@@ -320,7 +325,7 @@ void CoLong::initCirclePhysic(b2World * world, Point pos) {
 	fixtureDef.shape = &circle_shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_HERO;
-	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR | BITMASK_WOODER | BITMASK_COIN |
+	fixtureDef.filter.maskBits = BITMASK_FLOOR | BITMASK_COIN |
 		BITMASK_TOANCHAN1 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION;
 
 
@@ -349,6 +354,7 @@ void CoLong::addStuff()
 }
 
 void CoLong::listener() {
+	
 	this->setEndListener([&](int trackIndex) {
 
 		if ((strcmp(getCurrent()->animation->name, "injured") == 0)) {
@@ -356,7 +362,8 @@ void CoLong::listener() {
 			this->getBloodScreen()->setVisible(false);
 
 			setIsPriorInjured(false);
-			if (getFSM()->globalState == MSKill3 || getFSM()->globalState == MAttack) {
+
+			if (getFSM()->globalState == MAttack) {
 				getFSM()->setPreviousState(MInjured);
 				getFSM()->setGlobalState(MRun);
 			}
@@ -366,7 +373,8 @@ void CoLong::listener() {
 				getFSM()->setGlobalState(MLand);
 			}
 
-			getFSM()->revertToGlobalState();
+			if(getIsDoneDuration3())
+				getFSM()->revertToGlobalState();
 
 		}
 
@@ -384,7 +392,7 @@ void CoLong::listener() {
 			changeSwordCategoryBitmask(BITMASK_ENEMY);
 
 			setIsPriorAttack(false);
-			if (getFSM()->globalState == MSKill3 || getFSM()->globalState == MInjured) {
+			if (getFSM()->globalState == MInjured) {
 				getFSM()->setPreviousState(MAttack);
 				getFSM()->setGlobalState(MRun);
 			}
@@ -419,17 +427,24 @@ void CoLong::doDestroyBodies(b2World *world)
 }
 
 void CoLong::run() {
-	clearTracks();
-	addAnimation(0, "run", true);
-	setToSetupPose();
+	log("run");
+	if (!getIsDoneDuration3()) {
 
-	if (getBloodScreen()->isVisible() && health > 1)
-		getBloodScreen()->setVisible(false);
-
-	if (!EM->getSmokeRun()->isVisible()) {
-		EM->getSmokeRun()->setVisible(true);
-		EM->smokeRunAni();
 	}
+	else {
+		clearTracks();
+		addAnimation(0, "run", true);
+		setToSetupPose();
+
+		if (getBloodScreen()->isVisible() && health > 1)
+			getBloodScreen()->setVisible(false);
+
+		if (!EM->getSmokeRun()->isVisible()) {
+			EM->getSmokeRun()->setVisible(true);
+			EM->smokeRunAni();
+		}
+	}
+	
 }
 
 void CoLong::runSlash() {
@@ -555,9 +570,15 @@ void CoLong::attackLanding() {
 }
 
 void CoLong::injured() {
-	clearTracks();
-	addAnimation(0, "injured", false);
-	setToSetupPose();
+	if (!getIsDoneDuration3()) {		// is in Skill 3
+
+	}
+	else {
+		clearTracks();
+		addAnimation(0, "injured", false);
+		setToSetupPose();
+		log("Injured");
+	}
 }
 
 void CoLong::revive()

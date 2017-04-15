@@ -6,9 +6,12 @@ RefManager* RefManager::refManager;
 
 RefManager::RefManager()
 {
-	ref = UserDefault::sharedUserDefault();
+	ref = UserDefault::getInstance()->sharedUserDefault();
 
 	selectedHero = ref->getIntegerForKey(KEY_SELECTED_HERO, 0);
+
+	currentStageUnlocked = ref->getIntegerForKey(KEY_CUR_STAGE_UNLOCKED, 2);
+	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 1);
 
 	numberOfLife = ref->getIntegerForKey(KEY_LIFE, 3);
 	goldExplored = ref->getIntegerForKey(KEY_GOLD, 0);
@@ -20,7 +23,9 @@ RefManager::RefManager()
 	numberItemDoubleGold = ref->getIntegerForKey(NUMBER_OF_ITEM_DOUBLE_COIN, 0);
 	numberItemCoolDown = ref->getIntegerForKey(NUMBER_OF_ITEM_COOL_DOWN, 0);
 
+	// need to fix
 	unLockHero(0);
+	unLockHero(1);
 	pointToCurrentHero(selectedHero);
 }
 
@@ -79,6 +84,19 @@ void RefManager::unLockHero(int index)
 void RefManager::increaseLevel()
 {
 	ref->setIntegerForKey((KEY_LEVEL_HERO_X + StringUtils::format("%i", selectedHero)).c_str(), ++currentLevel);
+	ref->flush();
+}
+
+void RefManager::increaseStateUnlocked()
+{
+	ref->setIntegerForKey(KEY_CUR_STAGE_UNLOCKED, ++this->currentStageUnlocked);
+	ref->flush();
+}
+
+void RefManager::setMapUnlocked(int index)
+{
+	this->currentMapUnLocked = index;
+	ref->setIntegerForKey(KEY_CUR_MAP_UNLOCKED, this->currentMapUnLocked);
 	ref->flush();
 }
 

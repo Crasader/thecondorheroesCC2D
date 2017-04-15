@@ -37,16 +37,19 @@ void JSonHeroManager::readFile(int indexHero)
 
 	this->isLocked = jsonDoc["hero"][indexHero]["isLocked"].GetBool();
 	
+	this->skill_1Name = jsonDoc["hero"][indexHero]["skill1Name"].GetString();
 	this->coolDownSkill1 = jsonDoc["hero"][indexHero]["coolDownSkill1"].GetDouble();
 	this->durationSkill1 = jsonDoc["hero"][indexHero]["durationSkill1"].GetDouble();
 	this->pathMainImageSkill1 = jsonDoc["hero"][indexHero]["pathMainImageSkill1"].GetString();
 	this->pathSubImageSkill1 = jsonDoc["hero"][indexHero]["pathSubImageSkill1"].GetString();
 
+	this->skill_2Name = jsonDoc["hero"][indexHero]["skill2Name"].GetString();
 	this->coolDownSkill2 = jsonDoc["hero"][indexHero]["coolDownSkill2"].GetDouble();
 	this->durationSkill2 = jsonDoc["hero"][indexHero]["durationSkill2"].GetDouble();
 	this->pathMainImageSkill2 = jsonDoc["hero"][indexHero]["pathMainImageSkill2"].GetString();
 	this->pathSubImageSkill2 = jsonDoc["hero"][indexHero]["pathSubImageSkill2"].GetString();
 
+	this->skill_3Name = jsonDoc["hero"][indexHero]["skill3Name"].GetString();
 	this->coolDownSkill3 = jsonDoc["hero"][indexHero]["coolDownSkill3"].GetDouble();
 	this->durationSkill3 = jsonDoc["hero"][indexHero]["durationSkill3"].GetDouble();
 	this->pathMainImageSkill3 = jsonDoc["hero"][indexHero]["pathMainImageSkill3"].GetString();
@@ -59,6 +62,9 @@ void JSonHeroManager::readFile(int indexHero)
 
 	this->percentBonusCoin = jsonDoc["hero"][indexHero]["percentBonusScore"].GetInt();
 	this->percentBonusScore = jsonDoc["hero"][indexHero]["percentBonusCoin"].GetInt();
+
+	this->goldPrice = jsonDoc["hero"][indexHero]["goldPrice"].GetInt();
+	this->diamondPrice = jsonDoc["hero"][indexHero]["diamondPrice"].GetInt();
 }
 
 int JSonHeroManager::getMaxScoreLevelX(int level)

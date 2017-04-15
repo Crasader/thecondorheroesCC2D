@@ -1,5 +1,6 @@
 #include "EnemyBoss1.h"
 #include "layer/MenuScene.h"
+#include "BaseHero.h"
 
 EnemyBoss1::EnemyBoss1(string jsonFile, string atlasFile, float scale) :BaseEnemy(jsonFile, atlasFile, scale)
 {
@@ -227,9 +228,12 @@ void EnemyBoss1::createCoinPool()
 	indexCoin = 0;
 }
 
-void EnemyBoss1::updateMe(Point posHero)
+void EnemyBoss1::updateMe(BaseHero* hero)
 {
-	this->heroLocation = posHero;
+	this->heroLocation = hero->getPosition();
+	//log("ParentBoss: %f, %f, %s", this->getParent()->getPositionX(), this->getParent()->getPositionY(), this->getParent()->getName().c_str());
+	//log();
+	auto posHero = hero->getPosition();
 	if (body != nullptr) {
 		this->setPositionX(body->GetPosition().x * PTM_RATIO);
 		this->setPositionY(body->GetPosition().y * PTM_RATIO - this->body->GetFixtureList()->GetShape()->m_radius*PTM_RATIO);
@@ -264,7 +268,7 @@ void EnemyBoss1::updateMe(Point posHero)
 	}
 	for (int i = 0; i < coinPool->count(); i++) {
 		auto coin = (Coin*)coinPool->getObjectAtIndex(i);
-		coin->updateMe(0.0f);
+		coin->updateMe(hero);
 	}
 
 	if (this->getPosition().y < -SCREEN_SIZE.height / 2) {

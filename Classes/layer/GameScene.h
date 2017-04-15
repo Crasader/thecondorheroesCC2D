@@ -1,16 +1,13 @@
 #ifndef __GAME_SCENE_H__
 #define __GAME_SCENE_H__
 
-#include "cocos2d.h"
+#include "Global.h"
 #include "colong/CoLong.h"
 #include "duongqua/DuongQua.h"
-#include "Global.h"
 #include "EnemyWooder.h"
 #include "EnemyToanChanStudent.h"
 #include "EnemyToanChanStudent2.h"
 #include "boss1/EnemyBoss1.h"
-#include "manager/EffectManager.h"
-#include "manager/JSonHeroManager.h"
 #include "chimdieu/ChimDieu.h"
 #include "coin/Coin.h"
 #include "coin/CoinBag.h"
@@ -18,19 +15,16 @@
 #include "CollisionListener.h"
 #include "utils/InfiniteParallaxNode.h"
 #include "utils/GLES-Render.h"
-
 #include "layer/DialogPauseGame.h"
-
-
-USING_NS_CC;
+#include "datastructures/MyData.h"
 
 class GameScene : public cocos2d::Layer
 {
 public:
 	
-	static cocos2d::Scene* createScene(int map, int haveboss, int charId);
-	virtual bool init(int map, int haveboss, int charId);
-	static GameScene* create(int map, int haveboss, int charId);
+	static Scene* createScene(int stage, int map, int haveboss, int charId);
+	virtual bool init(int stage, int map, int haveboss, int charId);
+	static GameScene* create(int stage, int map, int haveboss, int charId);
 
 	BaseHero * getHero() { return hero; }
 	void setLastScore(int lastScore) { m_lastScore = lastScore; }
@@ -38,22 +32,25 @@ public:
 private:
 	// props
 	std::map <std::string, bool> checkGenEnemy;
+	int stage;
 	int map;
 	int haveboss;
+
 
 	int charId;//Thinhnv Edited for select character
 	int numberRevive = 0;
 
 	bool isWinGame;
 
-
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
 	float scaleOfMap;
+	vector <MyData> listPosAndTag;
+
+	Layer * preLayer;
+	Layer * posLayer;
+
 	TMXTiledMap* tmx_map;
 	TMXTiledMap *tmx_mapboss[2];
-	TMXObjectGroup* groupGroundWooder;
-	TMXObjectGroup* groupGroundToanchan1;
-	TMXObjectGroup* groupGroundToanchan2;
 
 	int indexOfNextMapBoss;// chi so cua map boss cuoi, khoi dau la -1, khi danh boss chuyen 1 va 0(0101010101)
 	int currentButton = 0;
@@ -69,6 +66,7 @@ private:
 	Node* follow;
 	CCRect left_corner;
 	LayerColor *blur;
+	SpriteBatchNode* batchNode;
 
 	list<BaseEnemy*> listEnemyOccurInScreen;
 
@@ -120,30 +118,18 @@ private:
 	void initUnderGroundPhysic(b2World *world, Point pos, Size size);
 
 	// function for process map
-	void loadBackground(int map);
+	void loadBackground();
 	void createInfiniteNode();
 	void createGroundBody();
 	void createGroundForMapBoss();
-	void creatEnemyWooder();
-	void creatEnemyToanChanStudent();
-	void creatEnemyToanChanStudent2();
+	void creatEnemyWooder(Layer* layer, Vec2 pos);
+	void createEnemyToanChanStudent(Layer* layer, Vec2 pos);
+	void createEnemyToanChanStudent2(Layer* layer, Vec2 pos);
 	void creatBoss();
 
-	/*void creatEnemyWooderRT();
-	void creatEnemyToanChanStudentRT();
-	void creatEnemyToanChanStudent2RT();*/
-
-	void createCoint();
-	void createCointBag();
-	void createCoinBullion();
-	/*void createTimCoin();
-	void createParapolCoin();
-	void createCircleCoin();
-	void createSquareCoin();
-	void createStraightCoin();
-	void createZigzagCoin();
-	void createZigzagCoin2();*/
-	void createFormCoin(string objectName, string objectMap, string objectInform);
+	void createCointBag(Layer *layer, Vec2 pos);
+	void createCoinBullion(Layer *layer, Vec2 pos);
+	void createFormCoin( Layer *layer,Vec2 pos, string objectMap, string objectInform, SpriteBatchNode* batchnode);
 
 	//skeleton data
 	//spSkeletonData* createSkeletonData(string atlasFile, string jsonFile);
@@ -161,7 +147,7 @@ private:
 	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
 
 public:
-
+	bool isModeDebug;
 	void onBegin();
     
 	// update functions
@@ -195,6 +181,15 @@ public:
 	void winGame();
 	void resumeGame();
 	void restartGame();
+
+	// toi uu cho game
+	void loadPosAndTag();// luu tru cac vi tri sinh agent
+	void loadPosOfObjectInGroup(string nameOfGroup, float tag);// 
+	void initLayerToAddAgent();
+	void updateLayer();
+
+	void createAgentOnLayer(Layer* layer);
+	void creatAgentByMydata(Layer* layer, MyData data);
 
     // implement the "static create()" method manually
    // CREATE_FUNC(GameScene);

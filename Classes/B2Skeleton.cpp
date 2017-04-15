@@ -128,11 +128,31 @@ Point B2Skeleton::getBoneLocation(string boneName)
 	return pos;
 }
 
-void B2Skeleton::updateMe(float dt)
+void B2Skeleton::updateMe(BaseHero * hero)
 {
+	if (body != nullptr /*&& body->GetType() == b2_staticBody*/) {
+		this->setPositionX(body->GetPosition().x * PTM_RATIO - this->getParent()->getPositionX());
+		this->setPositionY(body->GetPosition().y * PTM_RATIO - this->body->GetFixtureList()->GetShape()->m_radius*PTM_RATIO
+			- this->getParent()->getPositionY());
+		this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
+	}
+}
+
+
+//void B2Skeleton::updateMe(BaseHero* hero)
+//{
+//	if (body != nullptr) {
+//		this->setPositionX(this->getB2Body()->GetPosition().x * PTM_RATIO);
+//		this->setPositionY(this->getB2Body()->GetPosition().y * PTM_RATIO - this->getBoundingBox().size.height / 2);
+//	}
+//}
+
+void B2Skeleton::onExit()
+{
+	SkeletonAnimation::onExit();
 	if (body != nullptr) {
-		this->setPositionX(this->getB2Body()->GetPosition().x * PTM_RATIO);
-		this->setPositionY(this->getB2Body()->GetPosition().y * PTM_RATIO - this->getBoundingBox().size.height/2);
+		auto world = body->GetWorld();
+		world->DestroyBody(body);
 	}
 }
 

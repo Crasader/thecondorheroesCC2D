@@ -46,7 +46,7 @@ public:
 	void boomboom();
 	void createGold();
 	void createCoinPool();
-	void updateMe(Point posHero);
+	void updateMe(BaseHero* hero);
 
 	void listener();
 	bool checkStop();

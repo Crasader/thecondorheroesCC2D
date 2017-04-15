@@ -1,5 +1,6 @@
 #include "layer/LoadingLayer.h"
 #include "layer/GameScene.h"
+#include "manager/RefManager.h"
 
 bool LoadingLayer::init()
 {
@@ -10,6 +11,7 @@ bool LoadingLayer::init()
 		return false;
 	}
 
+	
 	addStuff();
 
 	return true;

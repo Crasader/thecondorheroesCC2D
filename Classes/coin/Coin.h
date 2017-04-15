@@ -13,13 +13,16 @@ public:
 	~Coin();
 	Animate *animate;
 	SkeletonAnimation *effect;
+	b2World* world;
 
 	static Coin* create();
+	static Coin* create(SpriteBatchNode * batchNode);
 	virtual void initCirclePhysic(b2World *world, Point pos);
 	void runAnimation();
 	void picked();
 	void listener();
 	void onExit();
+	void updateMe(BaseHero *hero);
 	void setAngle(float radian);
 	
 };

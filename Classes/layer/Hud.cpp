@@ -367,6 +367,7 @@ void Hud::moveCallBirdToCenterScreen(Vec2 p_ptCenterScreen) {
 	MoveTo *_pStageSpecialButton = MoveTo::create(0.3f, origin + p_ptCenterScreen);
 	auto _aStageSpecialButtonCallback = CallFunc::create([&]() {
 		btnCallingHintDone = true;
+		btnCalling->runAction(ScaleBy::create(0.3f, 2.0f));
 	});
 
 	btnCalling->runAction(Sequence::create(_pStageSpecialButton, _aStageSpecialButtonCallback, nullptr));

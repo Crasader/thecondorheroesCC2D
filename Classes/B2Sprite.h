@@ -5,11 +5,12 @@
 #include "spine/spine-cocos2dx.h"
 #include <string>
 #include "utils/GB2ShapeCache-x.h"
+//#include "Agent.h"
 
 using namespace spine;
 using namespace std;
-
-class B2Sprite : public Sprite
+class BaseHero;
+class B2Sprite : public Sprite//, public Agent
 {
 protected:
 	CC_SYNTHESIZE(b2Body*, body, B2Body);
@@ -42,7 +43,9 @@ public:
 	virtual void changeBodyCategoryBits(uint16 mask);
 	virtual void changeBodyMaskBits(uint16 mask);
 	virtual void setAngle(float radian);
-	virtual void updateMe(float dt);
+	//virtual void updateMe(float dt);
+	virtual void updateMe(BaseHero* hero);
+	virtual void onExit();
 
 };
 

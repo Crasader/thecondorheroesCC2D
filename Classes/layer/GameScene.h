@@ -22,6 +22,7 @@
 #include "datastructures\MyData.h"
 #include <vector>
 #include "datastructures\MyPool.h"
+#include "layer\MyLayer.h"
 
 USING_NS_CC;
 using namespace std;
@@ -54,16 +55,16 @@ private:
 	float scaleOfMap;
 	vector <MyData> listPosAndTag;
 
-	Layer * preLayer;
-	Layer * posLayer;
+	MyLayer * preLayer;
+	MyLayer * posLayer;
 
 	TMXTiledMap* tmx_map;
 	TMXTiledMap *tmx_mapboss[2];
 
 	int indexOfNextMapBoss;// chi so cua map boss cuoi, khoi dau la -1, khi danh boss chuyen 1 va 0(0101010101)
 	int currentButton = 0;
-	MyPool *coinPool;
-	MyPool *wooderPool;
+	//MyPool *coinPool;
+	//MyPool *wooderPool;
 	//MyPool *wooderPool;
 	
 public:
@@ -133,15 +134,15 @@ private:
 	void createInfiniteNode();
 	void createGroundBody();
 	void createGroundForMapBoss();
-	void creatEnemyWooder(Layer* layer, Vec2 pos);
-	void createEnemyToanChanStudent(Layer* layer, Vec2 pos);
-	void createEnemyToanChanStudent2(Layer* layer, Vec2 pos);
+	void creatEnemyWooder(MyLayer* layer, Vec2 pos);
+	void createEnemyToanChanStudent(MyLayer* layer, Vec2 pos);
+	void createEnemyToanChanStudent2(MyLayer* layer, Vec2 pos);
 	void creatBoss();
 
 	void createCointBag(Layer *layer, Vec2 pos);
 	void createCoinBullion(Layer *layer, Vec2 pos);
-	void createFormCoin( Layer *layer,Vec2 pos, string objectMap, string objectInform, SpriteBatchNode* batchnode);
-
+	//void createFormCoin( MyLayer *layer,Vec2 pos, string objectMap, string objectInform, SpriteBatchNode* batchnode);
+	void createFormCoin(string objectName,string objectMap,string objectInform);
 	//skeleton data
 	//spSkeletonData* createSkeletonData(string atlasFile, string jsonFile);
 	// sau va cham body cua cac quai khong con static nua
@@ -199,9 +200,9 @@ public:
 	void initLayerToAddAgent();
 	void updateLayer();
 
-	void createAgentOnLayer(Layer* layer);
-	void creatAgentByMydata(Layer* layer, MyData data);
-
+	void createAgentOnLayer(MyLayer* layer);
+	void creatAgentByMydata(MyLayer* layer, MyData data);
+	void createCoin();
 	// quan ly item
 	//void createMapItem();// tao du lieu cho map item.
 	//void updateMapItem();

@@ -53,8 +53,11 @@ void Coin::runAnimation()
 
 		Animation* animation = Animation::createWithSpriteFrames(aniframes, 0.08f);
 		animate = Animate::create(animation);
+		this->runAction(RepeatForever::create(animate));
 	}
-	this->runAction(RepeatForever::create(animate));
+	else {
+		this->resumeSchedulerAndActions();
+	}
 }
 
 void Coin::picked()
@@ -96,49 +99,49 @@ void Coin::updateMe(BaseHero *hero)
 	if (world) {
 		if (!body) {
 			//this->runAnimation();
-			this->initCirclePhysic(world, Vec2(this->getPosition() + this->getParent()->getPosition()));
+			/*this->initCirclePhysic(world, Vec2(this->getPosition() + this->getParent()->getPosition()));
 			this->changeBodyCategoryBits(BITMASK_COIN);
 			this->changeBodyMaskBits(BITMASK_HERO);
-			this->getB2Body()->GetFixtureList()->SetSensor(true);
+			this->getB2Body()->GetFixtureList()->SetSensor(true);*/
 		}
 	}
 	 //update hero->getItemValue(KEY_ITEM_MAGNET)
-	if (this->getB2Body()->GetType() == b2_dynamicBody) {
-		Vec2 coinToHero;
-		if (this->getParent()) {
-			// vang cua boss
-			if (!strcmp(this->getParent()->getName().c_str(), "gameLayer")) {
-				//if (hero->getItemValue(KEY_ITEM_MAGNET) > 0 && this->getB2Body()->GetType() == b2_staticBody) {
-					 coinToHero =  Vec2(hero->getB2Body()->GetPosition().x*PTM_RATIO, hero->getB2Body()->GetPosition().y*PTM_RATIO) -this->getPosition();
-				//}
-				
-			}
-			//vang tren map
-			else {
-				//hero->getItemValue(KEY_ITEM_MAGNET);
-				
-				//Vec2 vec = SCREEN_SIZE / 2;
-				 coinToHero = Vec2(hero->getB2Body()->GetPosition().x*PTM_RATIO, hero->getB2Body()->GetPosition().y*PTM_RATIO) - (this->getPosition()+ this->getParent()->getPosition()) ;
-				/*this->body->SetLinearVelocity(b2Vec2(coinToHero.x, coinToHero.y));
-				this->body->SetLinearVelocity();*/
-			}
-			coinToHero = coinToHero*(SCREEN_SIZE.width  / coinToHero.length());
-			if (coinToHero.x < 0) {
-				this->getB2Body()->SetType(b2_dynamicBody);
-				this->getB2Body()->SetLinearVelocity(b2Vec2(coinToHero.x / PTM_RATIO - hero->getB2Body()->GetLinearVelocity().x, coinToHero.y / PTM_RATIO));
-			}
-			else if (coinToHero.x >= 0) {
-				this->getB2Body()->SetType(b2_dynamicBody);
-				this->getB2Body()->SetLinearVelocity(b2Vec2(coinToHero.x / PTM_RATIO + hero->getB2Body()->GetLinearVelocity().x, coinToHero.y / PTM_RATIO));
+	//if (this->getB2Body()->GetType() == b2_dynamicBody) {
+	//	Vec2 coinToHero;
+	//	if (this->getParent()) {
+	//		// vang cua boss
+	//		if (!strcmp(this->getParent()->getName().c_str(), "gameLayer")) {
+	//			//if (hero->getItemValue(KEY_ITEM_MAGNET) > 0 && this->getB2Body()->GetType() == b2_staticBody) {
+	//				 coinToHero =  Vec2(hero->getB2Body()->GetPosition().x*PTM_RATIO, hero->getB2Body()->GetPosition().y*PTM_RATIO) -this->getPosition();
+	//			//}
+	//			
+	//		}
+	//		//vang tren map
+	//		else {
+	//			//hero->getItemValue(KEY_ITEM_MAGNET);
+	//			
+	//			//Vec2 vec = SCREEN_SIZE / 2;
+	//			 coinToHero = Vec2(hero->getB2Body()->GetPosition().x*PTM_RATIO, hero->getB2Body()->GetPosition().y*PTM_RATIO) - (this->getPosition()+ this->getParent()->getPosition()) ;
+	//			/*this->body->SetLinearVelocity(b2Vec2(coinToHero.x, coinToHero.y));
+	//			this->body->SetLinearVelocity();*/
+	//		}
+	//		coinToHero = coinToHero*(SCREEN_SIZE.width  / coinToHero.length());
+	//		if (coinToHero.x < 0) {
+	//			this->getB2Body()->SetType(b2_dynamicBody);
+	//			this->getB2Body()->SetLinearVelocity(b2Vec2(coinToHero.x / PTM_RATIO - hero->getB2Body()->GetLinearVelocity().x, coinToHero.y / PTM_RATIO));
+	//		}
+	//		else if (coinToHero.x >= 0) {
+	//			this->getB2Body()->SetType(b2_dynamicBody);
+	//			this->getB2Body()->SetLinearVelocity(b2Vec2(coinToHero.x / PTM_RATIO + hero->getB2Body()->GetLinearVelocity().x, coinToHero.y / PTM_RATIO));
 
-			}
-		}
-	}
-	else {
-		if (hero->getItemValue(KEY_ITEM_MAGNET)>30&&this->getB2Body()->GetType() == b2_staticBody) {
-			this->getB2Body()->SetType(b2_dynamicBody);
-		}
-	}
+	//		}
+	//	}
+	//}
+	//else {
+	//	if (hero->getItemValue(KEY_ITEM_MAGNET)>30&&this->getB2Body()->GetType() == b2_staticBody) {
+	//		this->getB2Body()->SetType(b2_dynamicBody);
+	//	}
+	//}
 
 }
 

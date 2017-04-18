@@ -23,6 +23,7 @@ Scene* GameScene::createScene(int stage, int map, int haveboss, int charId)
 	loadingLayer = LoadingLayer::create();
 	auto layer = GameScene::create(stage, map, haveboss, charId);
 	layer->setAnchorPoint(Point(0, 0));
+	//layer->coinPool = new MyPool(100, TAG_COIN);
 	layer->setName("gameLayer");
 
 	hud = Hud::create();
@@ -48,8 +49,9 @@ bool GameScene::init(int stage, int map, int haveboss, int charId)
 	{
 		return false;
 	}
-	isModeDebug = false;
-	//isModeDebug = true;
+	this->coinPool = MyPool::create(150, TAG_COIN);
+	this->wooderPool = MyPool::create(20, TAG_ENEMY_WOODER);
+	isModeDebug = true;
 	indexOfNextMapBoss = -1;
 	this->stage = stage;
 	this->haveboss = haveboss;
@@ -64,7 +66,7 @@ bool GameScene::init(int stage, int map, int haveboss, int charId)
 	batchNode = SpriteBatchNode::create("coin_01.png");
 	this->addChild(batchNode);
 	// tesst
-	
+
 	danceWithCamera();
 	//cacheSkeleton();
 	if (charId == 0) {
@@ -72,23 +74,26 @@ bool GameScene::init(int stage, int map, int haveboss, int charId)
 			Point(origin.x, visibleSize.height * 0.75f));
 	}
 	else {
-		createCoLong("Animation/CoLong/CoLong.json", "Animation/CoLong/CoLong.atlas", 
+		createCoLong("Animation/CoLong/CoLong.json", "Animation/CoLong/CoLong.atlas",
 			Point(origin.x, visibleSize.height * 0.75f));
 	}
 
+
 	loadBackground();
+
 	loadPosAndTag();
 	createGroundBody();
 	initLayerToAddAgent();
 	this->charId = charId;
 
-	
+
 
 	createEagle(Point(hero->getB2Body()->GetPosition().x - visibleSize.width, visibleSize.height / 2));
-	
+
 	danceWithEffect();
 	if (haveboss)
 		creatBoss();
+
 
 	//createCoint();
 	return true;
@@ -121,6 +126,7 @@ void GameScene::createDuongQua(string path_Json, string path_Atlas, Point positi
 
 	hero->initCirclePhysic(world, hero->getPosition());
 	hero->addStuff();
+	hero->createPool();
 
 	hero->getBloodScreen()->setPosition(follow->getPosition());
 	addChild(hero->getBloodScreen(), ZORDER_SMT);
@@ -136,6 +142,7 @@ void GameScene::createCoLong(string path_Json, string path_Atlas, Point position
 
 	hero->initCirclePhysic(world, hero->getPosition());
 	hero->addStuff();
+	hero->createPool();
 
 	hero->getBloodScreen()->setPosition(follow->getPosition());
 	addChild(hero->getBloodScreen(), ZORDER_SMT);
@@ -154,7 +161,15 @@ void GameScene::createEagle(Point position)
 void GameScene::onBegin()
 {
 	hud->addEvents();
-	hud->getBtnCalling()->setEnabled(true);
+	if(hud->getBtnCalling() != nullptr)
+		hud->getBtnCalling()->setEnabled(true);
+
+	if (hud->getBtnMagnet() != nullptr)
+		hud->getBtnMagnet()->setEnabled(true);
+
+	if (hud->getBtnDoubleGold() != nullptr)
+		hud->getBtnDoubleGold()->setEnabled(true);
+
 	hud->getPauseItem()->setEnabled(true);
 
 	touch_listener = EventListenerTouchOneByOne::create();
@@ -169,7 +184,7 @@ void GameScene::onBegin()
 
 void GameScene::checkActiveButton()
 {
-	if (hero->getIsDriverEagle() || 
+	if (hero->getIsDriverEagle() ||
 		hero->getPositionY() + hero->getTrueRadiusOfHero() * 2 < 0) return;
 	if (hud->getBtnSkill_1()->getIsBlocked()) {		// 2 and 3 active
 		if (currentButton == 2) {
@@ -239,7 +254,7 @@ void GameScene::listener()
 
 	if (hud->getBtnAttack()->getIsActive() && !hud->getBtnAttack()->getIsBlocked() &&
 		hero->getFSM()->currentState != MDie && hero->getFSM()->currentState != MInjured) {
-		
+
 		hero->getFSM()->changeState(MAttack);
 
 
@@ -344,7 +359,7 @@ void GameScene::update(float dt)
 			_aEagle->flyAway();
 		}
 		else {
-			hero->getB2Body()->SetTransform(b2Vec2(_aEagle->getB2Body()->GetPosition().x, 
+			hero->getB2Body()->SetTransform(b2Vec2(_aEagle->getB2Body()->GetPosition().x,
 				_aEagle->getB2Body()->GetPosition().y - 100.0f / PTM_RATIO), 0.0f);
 		}
 	}
@@ -634,13 +649,15 @@ void GameScene::creatEnemyWooder(Layer * layer, Vec2 pos)
 	auto scaleOfWooder = (SCREEN_SIZE.height / 3.5) / 490; // 490 la height cua spine
 														   //auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json",
 														   //	"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
-	auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan", scaleOfWooder);
+	auto enemy = (EnemyWooder*)wooderPool->getObject();
+	//log("index wooder: %d", wooderPool->indexOfPool);
 	enemy->setPosition(pos);
 	enemy->setVisible(true);
 	layer->addChild(enemy, ZORDER_ENEMY);
-	enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
+	enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2.5f));
 	enemy->changeBodyCategoryBits(BITMASK_WOODER);
 	enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
+
 	enemy->listener();
 }
 
@@ -655,7 +672,7 @@ void GameScene::createEnemyToanChanStudent(Layer * layer, Vec2 pos)
 	layer->addChild(enemy, ZORDER_ENEMY);
 	enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 4));
 	enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
-	enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2 );
+	enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
 	//enemy->genSplash();
 	enemy->listener();
 }
@@ -726,8 +743,7 @@ void GameScene::createCointBag(Layer *layer, Vec2 pos)
 {
 
 	auto scaleOfEnemy = SCREEN_SIZE.height / 5.0f / 123; //  la height cua spine
-	auto coin = CoinBag::create("Gold_bag.json",
-		"Gold_bag.atlas", scaleOfEnemy);
+	auto coin = CoinBag::create("Gold_bag", scaleOfEnemy);
 	coin->setPosition(pos);
 	//enemy->setVisible(false);
 	layer->addChild(coin, ZORDER_ENEMY);
@@ -744,8 +760,7 @@ void GameScene::createCointBag(Layer *layer, Vec2 pos)
 void GameScene::createCoinBullion(Layer *layer, Vec2 pos)
 {
 	auto scaleOfEnemy = SCREEN_SIZE.height / 6.0f / 118; //  la height cua spine
-	auto coin = CoinBullion::create("gold.json",
-		"gold.atlas", scaleOfEnemy);
+	auto coin = CoinBullion::create("gold", scaleOfEnemy);
 	coin->setPosition(pos);
 	//enemy->setVisible(false);
 	layer->addChild(coin, ZORDER_ENEMY);
@@ -765,10 +780,19 @@ void GameScene::createFormCoin(Layer* layer, Vec2 pos, string objectMap, string 
 	for (auto c : groupCoin->getObjects()) {
 		auto mObject2 = c.asValueMap();
 		Point origin2 = Point(mObject2["x"].asFloat() *scaleOfMap, mObject2["y"].asFloat()* scaleOfMap);
-		auto coin = Coin::create(batchNode);
+		auto coin = (Coin*)coinPool->getObject();
+		if (coin->getParent()) {
+			coin->removeFromParentAndCleanup(false);
+		}
+		/*if (coin->getB2Body()) {
+			world->DestroyBody(coin->getB2Body());
+			coin->setB2Body(nullptr);
+		}*/
+		coin->setVisible(true);
 		auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
 		coin->setScale(scale);
 		coin->setPosition(pos + origin2);
+		coin->runAnimation();
 		coin->world = world;
 		layer->addChild(coin, ZORDER_ENEMY);
 		/*coin->initCirclePhysic(world, Vec2(pos + origin2 + layer->getPosition()));
@@ -896,7 +920,7 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 
 		// cannot jump while attacking or being injured
 		if (hero->getFSM()->currentState == MAttack || hero->getFSM()->currentState == MInjured ||
-			hero->getFSM()->currentState == MDie || hero->getFSM()->currentState == MRevive || 
+			hero->getFSM()->currentState == MDie || hero->getFSM()->currentState == MRevive ||
 			hero->getPositionY() + hero->getTrueRadiusOfHero() < 0
 			)
 
@@ -968,26 +992,54 @@ void GameScene::updateEnemy()
 
 		for (int i = 0; i < childLayer1.size(); i++) {
 			auto agent = childLayer1.at(i);
-			if ((agent->getPosition() + preLayer->getPosition()).x < follow->getPositionX() + SCREEN_SIZE.width*3/4
-				&& (agent->getPositionX() + preLayer->getPositionX())>follow->getPositionX() - SCREEN_SIZE.width * 3 / 4) {
-				if (agent->getTag() >= 90) {
+
+			if (agent->getTag() >= 90) {
+				if ((agent->getPosition() + preLayer->getPosition()).x < follow->getPositionX() + SCREEN_SIZE.width * 1 / 2
+					&& (agent->getPositionX() + preLayer->getPositionX())>follow->getPositionX() - SCREEN_SIZE.width * 1 / 2) {
 					auto tmp = (B2Skeleton*)(agent);
 					tmp->updateMe(hero);
 				}
-				else if (agent->getTag() >= 80 && agent->getTag() < 90) {
+			}
+			else if (agent->getTag() >= 80 && agent->getTag() < 90) {
+				if ((agent->getPosition() + preLayer->getPosition()).x < follow->getPositionX() + SCREEN_SIZE.width * 1 / 2.5f
+					&& (agent->getPositionX() + preLayer->getPositionX())>follow->getPositionX() - SCREEN_SIZE.width * 1 / 2.5f) {
 					auto tmp = (B2Sprite*)(agent);
 					tmp->updateMe(hero);
 				}
 			}
-		};
+			if (childLayer1.at(i)->getTag() > 100) {
+				auto tmp = (BaseEnemy*)childLayer1.at(i);
+				if (tmp->getB2Body() != nullptr) {
+					if (tmp->getIsDie()) {
+						if (tmp->getIsOccur()) {
+							listEnemyOccurInScreen.remove(tmp);
+						}
+					}
+					else {
+						if (tmp->getPositionX() + preLayer->getPosition().x < follow->getPositionX() - SCREEN_SIZE.width * 0.7f) {
+							listEnemyOccurInScreen.remove(tmp);
+						}
+
+						else if (tmp->getPositionX() + preLayer->getPosition().x < follow->getPositionX() + SCREEN_SIZE.width &&
+							tmp->getPositionX() + preLayer->getPosition().x > follow->getPositionX() - SCREEN_SIZE.width / 2) {
+							if (!tmp->getIsOccur() &&
+								(tmp->getPositionX() + preLayer->getPosition().x < follow->getPositionX() + SCREEN_SIZE.width * 0.52f &&
+									tmp->getPositionX() + preLayer->getPosition().x > follow->getPositionX() - SCREEN_SIZE.width / 2)) {
+								listEnemyOccurInScreen.push_back(tmp);
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	if (posLayer != nullptr) {
 		auto childLayer2 = posLayer->getChildren();
 
 		for (int i = 0; i < childLayer2.size(); i++) {
 			auto agent = childLayer2.at(i);
-			if ((agent->getPosition() + posLayer->getPosition()).x < follow->getPositionX() + SCREEN_SIZE.width  *3/4
-				&& (agent->getPositionX() + posLayer->getPositionX())>follow->getPositionX() - SCREEN_SIZE.width * 3 / 4) {
+			if ((agent->getPosition() + posLayer->getPosition()).x < follow->getPositionX() + SCREEN_SIZE.width * 1 / 2
+				&& (agent->getPositionX() + posLayer->getPositionX())>follow->getPositionX() - SCREEN_SIZE.width * 1 / 2) {
 
 				if (agent->getTag() >= 90) {
 					auto tmp = (B2Skeleton*)(agent);
@@ -996,6 +1048,30 @@ void GameScene::updateEnemy()
 				else if (agent->getTag() >= 80 && agent->getTag() < 90) {
 					auto tmp = (B2Sprite*)(agent);
 					tmp->updateMe(hero);
+				}
+				if (childLayer2.at(i)->getTag() > 100) {
+					auto tmp = (BaseEnemy*)childLayer2.at(i);
+					if (tmp->getB2Body() != nullptr) {
+						if (tmp->getIsDie()) {
+							if (tmp->getIsOccur()) {
+								listEnemyOccurInScreen.remove(tmp);
+							}
+						}
+						else {
+							if (tmp->getPositionX() + posLayer->getPosition().x < follow->getPositionX() - SCREEN_SIZE.width * 0.7f) {
+								listEnemyOccurInScreen.remove(tmp);
+							}
+
+							else if (tmp->getPositionX() + posLayer->getPosition().x < follow->getPositionX() + SCREEN_SIZE.width &&
+								tmp->getPositionX() + posLayer->getPosition().x > follow->getPositionX() - SCREEN_SIZE.width / 2) {
+								if (!tmp->getIsOccur() &&
+									(tmp->getPositionX() + posLayer->getPosition().x < follow->getPositionX() + SCREEN_SIZE.width * 0.52f &&
+										tmp->getPositionX() + posLayer->getPosition().x > follow->getPositionX() - SCREEN_SIZE.width / 2)) {
+									listEnemyOccurInScreen.push_back(tmp);
+								}
+							}
+						}
+					}
 				}
 			}
 		}
@@ -1015,11 +1091,11 @@ void GameScene::updateHUD(float dt)
 		hero->setPreRunDis(hero->getCurrentRunDis());
 	}
 
-	if (previousGold != hero->getCoinExplored()) {
+	if (previousGold < hero->getCoinExplored()) {
 		hud->getLbMoney()->setString(StringUtils::format("%i", ++previousGold));
 	}
 
-	if (previousScore != hero->getScore()) {
+	if (previousScore < hero->getScore()) {
 		hud->getLbScore()->setString(StringUtils::format("%i", ++previousScore));
 	}
 
@@ -1222,7 +1298,7 @@ void GameScene::pauseGame()
 		EM->getSmokeRun()->pause();
 	}
 
-	if (hud->getBtnCalling()->isVisible()) {
+	if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
 		hud->getBtnCalling()->setEnabled(false);
 	}
 
@@ -1243,7 +1319,7 @@ void GameScene::pauseGame()
 void GameScene::dieGame()
 {
 	blurScreen();
-	if (hud->getBtnCalling()->isVisible()) {
+	if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
 		hud->getBtnCalling()->setEnabled(false);
 	}
 
@@ -1270,7 +1346,7 @@ void GameScene::overGame()
 	if (!blur->isVisible())
 		blurScreen();
 
-	if (hud->getBtnCalling()->isVisible()) {
+	if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
 		hud->getBtnCalling()->setEnabled(false);
 	}
 
@@ -1301,7 +1377,7 @@ void GameScene::nextGame()
 void GameScene::winGame()
 {
 	blurScreen();
-	if (hud->getBtnCalling()->isVisible()) {
+	if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
 		hud->getBtnCalling()->setEnabled(false);
 	}
 
@@ -1338,9 +1414,9 @@ void GameScene::resumeGame()
 
 	hud->resumeIfVisible();
 	hud->getPauseItem()->setEnabled(true);
-	if(hud->getBtnCalling()->isVisible())
+	if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible())
 		hud->getBtnCalling()->setEnabled(true);
-	
+
 
 	this->resume();
 }
@@ -1397,7 +1473,7 @@ void GameScene::updateLayer()
 {
 	if (posLayer != nullptr) {
 		if (posLayer->getPositionX() <= follow->getPositionX() - SCREEN_SIZE.width) {
-			preLayer->removeAllChildrenWithCleanup(true);
+			preLayer->removeAllChildrenWithCleanup(false);
 			Layer *tmpLayer = preLayer;
 			preLayer = posLayer;
 			posLayer = tmpLayer;
@@ -1434,7 +1510,7 @@ void GameScene::creatAgentByMydata(Layer * layer, MyData data)
 	case TAG_ENEMY_WOODER: {
 		//ok
 		creatEnemyWooder(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
-		//log("wooder: %f, %f", data.x - layer->getPositionX(), data.y - layer->getPositionY());
+		//log("wooder: %f, %f", layer->getPositionX(), layer->getPositionY());
 		break;
 
 	}
@@ -1490,3 +1566,20 @@ void GameScene::creatAgentByMydata(Layer * layer, MyData data)
 		break;
 	}
 }
+
+//void GameScene::createMapItem()
+//{
+//	hero->checkItem.insert(KEY_ITEM_MAGNET,100);
+//	hero->checkItem.insert(KEY_ITEM_DOUPLE_COIN, 0);
+//}
+//
+//void GameScene::updateMapItem()
+//{
+//	for (int i = KEY_ITEM_MAGNET; i < KEY_ITEM_DOUPLE_COIN; i++) {
+//		int value = hero->checkItem.at(i);
+//		if (value > 0) {
+//			value--;
+//			hero->checkItem.insert(i, value);
+//		};
+//	}
+//}

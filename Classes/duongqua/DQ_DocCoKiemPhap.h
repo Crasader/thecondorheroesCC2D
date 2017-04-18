@@ -11,12 +11,12 @@ public:
 	DQ_DocCoKiemPhap();
 	~DQ_DocCoKiemPhap();
 
-	static DQ_DocCoKiemPhap* create(string file);
+	static DQ_DocCoKiemPhap* create();
 	virtual void initBoxPhysic(b2World *world, Point pos);
 
 	void landingEffect();
 	void hitGround();
-	void updateMe(float dt);
+	void updateMe();
 
 protected:
 	CC_SYNTHESIZE(bool, isCollide, IsCollide);

@@ -61,8 +61,8 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 // SKILL 1
 void DuongQua::createToanChanKiemPhap(Point posSword)
 {
-	auto tckp = ToanChanKiemPhap::create("Animation/DuongQua/skill1.png");
-	tckp->setScale(this->getTrueRadiusOfHero() * 3 / tckp->getContentSize().width);
+	auto tckp = (ToanChanKiemPhap*)poolSkill1->getObjectAtIndex(indexSkill1++);
+	tckp->setVisible(true);
 	auto gameLayer = (GameScene*) this->getParent();
 
 	tckp->setPosition(posSword.x + this->getTrueRadiusOfHero() / 2, posSword.y);
@@ -70,10 +70,14 @@ void DuongQua::createToanChanKiemPhap(Point posSword)
 	tckp->changeBodyCategoryBits(BITMASK_SWORD);
 	tckp->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG);
 
-	this->getParent()->addChild(tckp, ZORDER_SMT);
-
-	tckp->setAngle(0);
+	if (!tckp->getIsAdded()) {
+		this->getParent()->addChild(tckp, ZORDER_SMT);
+		tckp->setIsAdded(true);
+	}
+	
 	listToanChanKiemPhap.push_back(tckp);
+
+	if (indexSkill1 == 4) indexSkill1 = 0;
 }
 
 void DuongQua::slashToanChanKiemPhap()
@@ -95,10 +99,10 @@ void DuongQua::slashToanChanKiemPhap()
 					gameLayer->world->DestroyBody(tckp->getB2Body());
 					tckp->setB2Body(nullptr);
 
-					tckp->removeFromParentAndCleanup(true);
+					tckp->setVisible(false);
 				}
 				else
-					tckp->updateMe(this);
+					tckp->updateMe();
 			}
 		}
 
@@ -121,15 +125,15 @@ void DuongQua::doCounterSkill1()
 // SKILL 2
 void DuongQua::createKiemPhap(float posX)
 {
-	auto kp = KiemPhap::create("Animation/DuongQua/Sword.png");
+	auto kp = KiemPhap::create();
 	kp->setScale(this->getTrueRadiusOfHero() * 1.75f / kp->getContentSize().width);
 	auto gameLayer = (GameScene*) this->getParent();
 
 	kp->setPosition(posX, SCREEN_SIZE.height + kp->getBoundingBox().size.height);
 	kp->initBoxPhysic(gameLayer->world, kp->getPosition());
 
-	this->getParent()->addChild(kp, ZORDER_ENEMY);
-	this->getParent()->addChild(kp->getEffectLand(), ZORDER_ENEMY);
+	gameLayer->addChild(kp, ZORDER_ENEMY);
+	
 
 	kp->landingEffect();
 
@@ -200,8 +204,9 @@ Point DuongQua::getLocalSpiritBonePos(string boneName)
 
 void DuongQua::createTieuHonChuong(Point posHand, int Zoder)
 {
-	auto thc = TieuHonChuong::create("Animation/DuongQua/tieuhonchuong.png");
-	thc->setScale(this->getTrueRadiusOfHero() * 1.5f / thc->getContentSize().width);
+	auto thc = (TieuHonChuong*)poolSkill3->getObjectAtIndex(indexSkill3++);
+	thc->setVisible(true);
+	thc->setIsCollide(false);
 	auto gameLayer = (GameScene*) this->getParent();
 
 	thc->setPosition(posHand.x + this->getTrueRadiusOfHero() / 2, posHand.y);
@@ -209,12 +214,13 @@ void DuongQua::createTieuHonChuong(Point posHand, int Zoder)
 	thc->changeBodyCategoryBits(BITMASK_SWORD);
 	thc->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG);
 
-	this->getParent()->addChild(thc, Zoder);
-
-	//thc->getB2Body()->SetTransform(thc->getB2Body()->GetPosition(), angle);
-	thc->setAngle(0);
+	if (!thc->getIsAdded()) {
+		this->getParent()->addChild(thc, Zoder);
+		thc->setIsAdded(true);
+	}
 
 	listTieuHonChuong.push_back(thc);
+	if (indexSkill3 == 10) indexSkill3 = 0;
 }
 
 void DuongQua::shootTieuHonChuong()
@@ -330,6 +336,27 @@ void DuongQua::addStuff()
 
 	// slash here
 	createSlash();
+}
+
+void DuongQua::createPool()
+{
+	poolSkill1 = CCArray::createWithCapacity(4);
+	poolSkill1->retain();
+
+	for (int i = 0; i < 4; ++i) {
+		auto tckp = ToanChanKiemPhap::create();
+		tckp->setScale(this->getTrueRadiusOfHero() * 3 / tckp->getContentSize().width);
+		poolSkill1->addObject(tckp);
+	}
+
+	poolSkill3 = CCArray::createWithCapacity(10);
+	poolSkill3->retain();
+
+	for (int i = 0; i < 10; ++i) {
+		auto thc = TieuHonChuong::create("tieuhonchuong.png");
+		thc->setScale(this->getTrueRadiusOfHero() * 1.5f / thc->getContentSize().width);
+		poolSkill3->addObject(thc);
+	}
 }
 
 void DuongQua::idle()
@@ -610,13 +637,11 @@ void DuongQua::updateMe(float dt)
 
 				gameLayer->world->DestroyBody(kp->getB2Body());
 				kp->setB2Body(nullptr);
-
 				kp->removeFromParentAndCleanup(true);
-				kp->getEffectLand()->removeFromParentAndCleanup(true);
 				numberOfDeadSword++;
 			}
 			else
-				kp->updateMe(dt);
+				kp->updateMe();
 
 			if (kp->getIsCollide()) {
 				kp->changeBodyCategoryBits(BITMASK_UNDER_GROUND);
@@ -639,11 +664,11 @@ void DuongQua::updateMe(float dt)
 				gameLayer->world->DestroyBody(thc->getB2Body());
 				thc->setB2Body(nullptr);
 
-				thc->removeFromParentAndCleanup(true);
+				thc->setVisible(false);
 				numberOfDeadTHC++;
 			}
 			else
-				thc->updateMe(this);
+				thc->updateMe();
 		}
 	}
 

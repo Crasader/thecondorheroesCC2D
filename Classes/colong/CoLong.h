@@ -16,6 +16,7 @@ public:
 
 	void initCirclePhysic(b2World *world, Point pos);
 	void addStuff();
+	void createPool();
 
 	void idle();
 	void run();
@@ -43,6 +44,8 @@ protected:
 	void createRada(b2World *p_pWorld);
 
 	// Skill 1
+	CCArray *poolSkill1;
+	int indexSkill1 = 0;
 	list<TieuHonChuong *> m_lDocPhongCham;
 	int checkDurationSkill1;
 	void createDocPhongCham(Point p_ptStartPoint, Point p_ptEndPoint);

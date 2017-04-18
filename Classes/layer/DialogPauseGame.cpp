@@ -327,6 +327,15 @@ bool DialogStageClear::init(int score, int gold)
 	REF->setUpGoldExplored(gold + bonusGold);
 	REF->setUpScore(score + bonusScore);
 
+	int currentScore = REF->getCurrentScore();
+	int currentLevel = REF->getCurrentLevel();
+
+	if (currentScore >= JSHERO->getMaxScoreLevelX(currentLevel)) {
+
+		REF->setCurrentScoreAfterIncrease(currentScore - JSHERO->getMaxScoreLevelX(currentLevel));
+		REF->increaseLevel();
+	}
+
 	effect();
 
 	return true;
@@ -475,6 +484,15 @@ bool DialogOverGame::init(int score, int gold)
 
 	REF->setUpGoldExplored(gold + bonusGold);
 	REF->setUpScore(score + bonusScore);
+
+	int currentScore = REF->getCurrentScore();
+	int currentLevel = REF->getCurrentLevel();
+
+	if (currentScore >= JSHERO->getMaxScoreLevelX(currentLevel)) {
+
+		REF->setCurrentScoreAfterIncrease(currentScore - JSHERO->getMaxScoreLevelX(currentLevel));
+		REF->increaseLevel();
+	}
 
 	effect();
 

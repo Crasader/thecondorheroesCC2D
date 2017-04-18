@@ -15,6 +15,7 @@ public:
 
 private:
 	void gotoPlay(int stage, int map, int haveBoss, int charId);
+	void goBack();
 	void doNothing();
 	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
 };

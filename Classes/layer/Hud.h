@@ -55,6 +55,9 @@ protected:
 	CC_SYNTHESIZE(MyButton*, btnSkill_3, BtnSkill_3);
 
 	CC_SYNTHESIZE(MenuItemImage*, btnCalling, BtnCalling);
+	CC_SYNTHESIZE(MenuItemImage*, btnMagnet, BtnMagnet);
+	CC_SYNTHESIZE(MenuItemImage*, btnDouleGold, BtnDoubleGold);
+
 	CC_SYNTHESIZE(bool, btnCallingHintDone, BtnCallingHintDone);
 
 	CC_SYNTHESIZE(SkeletonAnimation *, multiKills, MultiKills);	//DuongPM Edited for multi kills
@@ -62,12 +65,19 @@ protected:
 private:
 	TMXTiledMap *tmxMap;
 	list<Sprite*> g_lTemp;
+	Menu* menu;
 	void addProfile();
 	void addButton();
 	void createBloodBar();
 
+	void doSuctionCoin(Ref *pSender);
+	void doDoublingCoin(Ref *pSender);
 	void doCalling(Ref* pSender);
 	void doPause(Ref* pSender);
+
+	void showSpecialButton();
+	void createButtonX(int index, Point position);
+	vector<int> getListIndexOfTypeItemBuy();
 };
 
 #endif // __HUD_H__

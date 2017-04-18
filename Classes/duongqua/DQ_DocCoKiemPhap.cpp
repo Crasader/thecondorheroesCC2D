@@ -2,20 +2,22 @@
 
 DQ_DocCoKiemPhap::DQ_DocCoKiemPhap()
 {
+	isCollide = false;
 }
 
 DQ_DocCoKiemPhap::~DQ_DocCoKiemPhap()
 {
 }
 
-DQ_DocCoKiemPhap * DQ_DocCoKiemPhap::create(string file)
+DQ_DocCoKiemPhap * DQ_DocCoKiemPhap::create()
 {
 	DQ_DocCoKiemPhap* kp = new DQ_DocCoKiemPhap();
-	kp->initWithFile(file);
+	kp->initWithFile("Animation/DuongQua/Sword.png");
 	kp->setTag(TAG_DQ_DOC_CO_KIEM_PHAP);
-	kp->isCollide = false;
 
-	kp->effectLand = Sprite::create("Animation/DuongQua/star2.png");
+	kp->effectLand = Sprite::createWithSpriteFrameName("star2.png");
+	kp->effectLand->setPosition(kp->getContentSize().width * 0.5f, kp->getContentSize().height * 0.6f);
+	kp->addChild(kp->effectLand);
 	return kp;
 }
 
@@ -58,8 +60,7 @@ void DQ_DocCoKiemPhap::landingEffect()
 		effectLand->setVisible(false);
 	});
 
-	effectLand->setScale(this->getScale() * 0.5f);
-	auto action = ScaleBy::create(0.3f, 3);
+	auto action = ScaleBy::create(0.3f, 2);
 
 	auto seq = Sequence::create(action, hideFX, nullptr);
 	effectLand->runAction(seq);
@@ -82,7 +83,7 @@ void DQ_DocCoKiemPhap::hitGround()
 	particle->runAction(seq2);
 
 	this->schedule([&](float dt) {
-		
+
 		if (opacity <= 0) {
 			this->unschedule("key_opacity");
 		}
@@ -93,15 +94,11 @@ void DQ_DocCoKiemPhap::hitGround()
 }
 
 
-void DQ_DocCoKiemPhap::updateMe(float dt)
+void DQ_DocCoKiemPhap::updateMe()
 {
 	if (body != nullptr) {
 		this->setPositionX(body->GetPosition().x * PTM_RATIO);
-		this->setPositionY(body->GetPosition().y * PTM_RATIO);
-		
-
-		if(effectLand->isVisible())
-			effectLand->setPosition(this->getPositionX(), this->getPositionY() + this->getBoundingBox().size.height * 0.5f);		
+		this->setPositionY(body->GetPosition().y * PTM_RATIO);	
 	}
 }
 

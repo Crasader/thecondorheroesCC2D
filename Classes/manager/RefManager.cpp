@@ -11,7 +11,7 @@ RefManager::RefManager()
 	selectedHero = ref->getIntegerForKey(KEY_SELECTED_HERO, 0);
 
 	currentStageUnlocked = ref->getIntegerForKey(KEY_CUR_STAGE_UNLOCKED, 2);
-	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 1);
+	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 2);
 
 	numberOfLife = ref->getIntegerForKey(KEY_LIFE, 3);
 	goldExplored = ref->getIntegerForKey(KEY_GOLD, 0);
@@ -118,6 +118,7 @@ void RefManager::setDownHealth(int health)
 
 void RefManager::setCurrentScoreAfterIncrease(int score)
 {
+	this->currentScore = score;
 	ref->setIntegerForKey((KEY_SCORE_X + StringUtils::format("%i", selectedHero)).c_str(), score);
 	ref->flush();
 }

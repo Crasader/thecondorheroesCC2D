@@ -11,13 +11,15 @@ public:
 	DQ_TieuHonChuong();
 	~DQ_TieuHonChuong();
 
-	static DQ_TieuHonChuong* create(string file);
+	static DQ_TieuHonChuong* create(string frameName);
 	virtual void initCirclePhysic(b2World *world, Point pos);
 	
+	void updateMe();
 
 protected:
 	CC_SYNTHESIZE(bool, isCollide, IsCollide);
-	
+	CC_SYNTHESIZE(bool, isAdded, IsAdded);
+	CC_SYNTHESIZE(b2Vec2, vel, Vel);
 };
 
 #define TieuHonChuong DQ_TieuHonChuong

@@ -61,6 +61,7 @@ protected:
 	CC_SYNTHESIZE(float, preRunDis, PreRunDis);
 
 public:
+	int checkItem[5];// key and state power, state 0 power off. key define in global
 
 	BaseHero(string jsonFile, string atlasFile, float scale);
 	static BaseHero* create(string jsonFile, string atlasFile, float scale);
@@ -68,6 +69,7 @@ public:
 	virtual void initSwordPhysic(b2World *world, Point position, float width);
 	void changeSwordCategoryBitmask(uint16 bit);
 	virtual void addStuff();
+	virtual void createPool();
 
 	virtual void idle();
 	virtual void run();
@@ -103,6 +105,12 @@ public:
 	void deSelectEnemyBySkill3();							//DuongPM edited
 
 	void killThemAll(list<BaseEnemy*> listToKill);
+
+	
+	void createMapItem();
+	void updateMapItem();
+	int getItemValue(int keyItem);
+	void setItemValue(int keyItem, int value);
 
 	StateMachine* getFSM();
 };

@@ -53,25 +53,32 @@ CoLong * CoLong::create(string p_sJsonFile, string p_sAtlasFile, float p_fScale)
 
 // SKILL 1
 void CoLong::createDocPhongCham(Point p_ptStartPoint, Point p_ptEndPoint) {
-	auto thc = TieuHonChuong::create("Animation/CoLong/skill1.png");
-	thc->setScale(this->getTrueRadiusOfHero() * 1.5f / thc->getContentSize().width);
-	auto world = this->getB2Body()->GetWorld();
+	auto cham = (TieuHonChuong*) poolSkill1->getObjectAtIndex(indexSkill1++);
+	cham->setVisible(true);
+	cham->setIsCollide(false);
+	float angle = atanf((p_ptEndPoint.y - p_ptStartPoint.y) / (p_ptEndPoint.x - p_ptStartPoint.x));
+	cham->setVel(b2Vec2(SCREEN_SIZE.width * 1.3f / PTM_RATIO * cosf(angle) * 2, 
+		SCREEN_SIZE.width * 1.3f / PTM_RATIO * sinf(angle) * 2));
 
-	thc->setPosition(p_ptStartPoint);
-	thc->initCirclePhysic(world, thc->getPosition());
-	thc->changeBodyCategoryBits(BITMASK_SWORD);
-	thc->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS);
+	auto gameLayer = (GameScene*) this->getParent();
 
-	this->getParent()->addChild(thc, ZORDER_ENEMY);
+	cham->setPosition(p_ptStartPoint);
+	cham->initCirclePhysic(gameLayer->world, cham->getPosition());
+	cham->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), angle);
+	cham->changeBodyCategoryBits(BITMASK_SWORD);
+	cham->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS);
 
-	//thc->getB2Body()->SetTransform(thc->getB2Body()->GetPosition(), angle);
-	thc->setAngle(atanf((p_ptEndPoint.y - p_ptStartPoint.y) / (p_ptEndPoint.x - p_ptStartPoint.x)));
-	thc->getB2Body()->SetLinearVelocity(b2Vec2(thc->getB2Body()->GetLinearVelocity().x * 2.0f, thc->getB2Body()->GetLinearVelocity().y * 2.0f));
-	thc->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), atanf((p_ptEndPoint.y - p_ptStartPoint.y) / (p_ptEndPoint.x - p_ptStartPoint.x)));
-	m_lDocPhongCham.push_back(thc);
+	if (!cham->getIsAdded()) {
+		this->getParent()->addChild(cham, ZORDER_ENEMY);
+		cham->setIsAdded(true);
+	}
+	
+	m_lDocPhongCham.push_back(cham);
 	if (!m_lEnemiesSelectedBySkill1.empty()) {
 		m_lEnemiesSelectedBySkill1.pop_front();
 	}
+
+	if (indexSkill1 == 5) indexSkill1 = 0;
 }
 
 void CoLong::doCounterSkill1() {
@@ -129,7 +136,7 @@ void CoLong::doCounterSkill3() {
 	
 	EM->getSmokeRun()->setVisible(false);
 
-	log("3");
+	//log("3");
 	clearTracks();
 	addAnimation(0, "skill3", true);
 	setToSetupPose();
@@ -158,10 +165,10 @@ void CoLong::updateMe(float p_fDelta) {
 
 			gameLayer->world->DestroyBody(_pTempDPC->getB2Body());
 			_pTempDPC->setB2Body(nullptr);
-			_pTempDPC->removeFromParentAndCleanup(true);
+			_pTempDPC->setVisible(false);
 		}
 		else {
-			_pTempDPC->updateMe(this);
+			_pTempDPC->updateMe();
 			m_lDocPhongCham.push_back(_pTempDPC);
 		}
 		m_lDocPhongCham.pop_front();
@@ -212,12 +219,14 @@ void CoLong::updateMe(float p_fDelta) {
 
 	if (!getIsDoneDuration1()) {
 		if (!this->m_lEnemiesSelectedBySkill1.empty()) {
-			createDocPhongCham(this->getPosition(), m_lEnemiesSelectedBySkill1.front()->getPosition());
+			auto enemy = m_lEnemiesSelectedBySkill1.front();
+			createDocPhongCham(this->getPosition(), enemy->getPosition() + enemy->getParent()->getPosition());
 		}
 	}
 	if (!getIsDoneDuration2()) {
 		if (!this->m_lEnemiesSelectedBySkill2.empty()) {
-			createNgocNuKiemPhap(m_lEnemiesSelectedBySkill2.front()->getPosition());
+			auto enemy = m_lEnemiesSelectedBySkill2.front();
+			createNgocNuKiemPhap(enemy->getPosition() + enemy->getParent()->getPosition());
 		}
 	}
 
@@ -271,9 +280,6 @@ void CoLong::createRada(b2World *p_pWorld) {
 	m_pRadaSkill1->changeBodyCategoryBits(BITMASK_RADA_SKILL_1);
 	m_pRadaSkill1->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2);
 
-	this->getParent()->addChild(m_pRadaSkill1, ZORDER_SMT);
-	m_pRadaSkill1->setAngle(0.0f);
-
 	m_pRadaSkill2 = Rada::create("Animation/CoLong/blash.png");
 	m_pRadaSkill2->setScale(SCREEN_SIZE.width / m_pRadaSkill2->getContentSize().width / 1.5f);
 	m_pRadaSkill2->setVisible(false);
@@ -281,8 +287,6 @@ void CoLong::createRada(b2World *p_pWorld) {
 	m_pRadaSkill2->changeBodyCategoryBits(BITMASK_RADA_SKILL_2);
 	m_pRadaSkill2->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2);
 
-	this->getParent()->addChild(m_pRadaSkill2, ZORDER_SMT);
-	m_pRadaSkill2->setAngle(0.0f);
 
 	m_pRadaSkill3 = Rada::create("Animation/CoLong/blash.png");
 	m_pRadaSkill3->setScale(SCREEN_SIZE.width / m_pRadaSkill3->getContentSize().width / 5.0f);
@@ -290,9 +294,6 @@ void CoLong::createRada(b2World *p_pWorld) {
 	m_pRadaSkill3->initCirclePhysic(p_pWorld, Vec2(this->getB2Body()->GetPosition().x, this->getB2Body()->GetPosition().y));
 	m_pRadaSkill3->changeBodyCategoryBits(BITMASK_WOODER);
 	m_pRadaSkill3->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG);
-
-	this->getParent()->addChild(m_pRadaSkill3, ZORDER_SMT);
-	m_pRadaSkill3->setAngle(0.0f);
 }
 
 // SLASH
@@ -351,6 +352,18 @@ void CoLong::addStuff()
 	this->getParent()->addChild(blash, ZORDER_ENEMY);
 
 	createSlash();
+}
+
+void CoLong::createPool()
+{
+	poolSkill1 = CCArray::createWithCapacity(5);
+	poolSkill1->retain();
+
+	for (int i = 0; i < 5; ++i) {
+		auto cham = TieuHonChuong::create("cham.png");
+		cham->setScale(this->getTrueRadiusOfHero() * 1.5f / cham->getContentSize().width);
+		poolSkill1->addObject(cham);
+	}
 }
 
 void CoLong::listener() {
@@ -427,7 +440,7 @@ void CoLong::doDestroyBodies(b2World *world)
 }
 
 void CoLong::run() {
-	log("run");
+	//log("run");
 	if (!getIsDoneDuration3()) {
 
 	}

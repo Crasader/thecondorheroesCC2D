@@ -1,10 +1,9 @@
 #ifndef __DQ_TOAN_CHAN_KIEM_PHAP_H__
 #define __DQ_TOAN_CHAN_KIEM_PHAP_H__
 
-#include "B2Sprite.h"
+#include "DQ_TieuHonChuong.h"
 
-
-class DQ_ToanChanKiemPhap : public B2Sprite
+class DQ_ToanChanKiemPhap : public DQ_TieuHonChuong
 {
 
 public:
@@ -12,9 +11,8 @@ public:
 	~DQ_ToanChanKiemPhap();
 
 
-	static DQ_ToanChanKiemPhap* create(string file);
+	static DQ_ToanChanKiemPhap* create();
 	virtual void initCirclePhysic(b2World *world, Point pos);
-	
 };
 
 #define ToanChanKiemPhap DQ_ToanChanKiemPhap

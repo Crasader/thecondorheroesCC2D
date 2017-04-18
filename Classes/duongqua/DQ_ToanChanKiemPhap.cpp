@@ -2,16 +2,17 @@
 
 DQ_ToanChanKiemPhap::DQ_ToanChanKiemPhap()
 {
+	isAdded = false;
 }
 
 DQ_ToanChanKiemPhap::~DQ_ToanChanKiemPhap()
 {
 }
 
-DQ_ToanChanKiemPhap * DQ_ToanChanKiemPhap::create(string file)
+DQ_ToanChanKiemPhap * DQ_ToanChanKiemPhap::create()
 {
 	DQ_ToanChanKiemPhap* tckp = new DQ_ToanChanKiemPhap();
-	tckp->initWithFile(file);
+	tckp->initWithSpriteFrameName("skill1.png");
 	tckp->setTag(TAG_DQ_TOAN_CHAN_KIEM_PHAP);
 	return tckp;
 }

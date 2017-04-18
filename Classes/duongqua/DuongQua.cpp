@@ -675,8 +675,6 @@ void DuongQua::updateMe(float dt)
 	if (EM->getSmokeRun()->isVisible())
 		EM->getSmokeRun()->setPosition(this->getPosition());
 
-	//if (EM->getReviveMe()->isVisible())
-	//	EM->getReviveMe()->setPosition(this->getPosition());
 
 	if (getB2Body() == nullptr)
 		return;
@@ -711,7 +709,8 @@ void DuongQua::updateMe(float dt)
 		return;
 	}*/
 
-	getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
+	if(!isDriverEagle)
+		getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
 
 	if (!getIsPriorAttack() && !getIsPriorInjured() && !getIsPriorSkill1()) {
 

@@ -230,7 +230,8 @@ void CoLong::updateMe(float p_fDelta) {
 		}
 	}
 
-	getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
+	if(!isDriverEagle)
+		getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
 
 	if (!getIsPriorAttack() && !getIsPriorInjured() && getIsDoneDuration3()) {
 		if (getB2Body()->GetLinearVelocity().y < 0) {

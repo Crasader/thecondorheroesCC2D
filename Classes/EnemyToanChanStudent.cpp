@@ -63,7 +63,7 @@ void EnemyToanChanStudent::die()
 	auto world = this->body->GetWorld();
 	world->DestroyBody(this->body);
 	this->body = nullptr;
-	this->setIsDie(true);
+	this->setIsDie(false);
 	this->clearTracks();
 	this->setAnimation(0,"die",false);
 	this->setToSetupPose();
@@ -122,7 +122,10 @@ void EnemyToanChanStudent::listener()
 			this->setToSetupPose();
 		}
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
-			this->removeFromParentAndCleanup(true);
+			this->setVisible(false);
+			this->clearTracks();
+			this->setAnimation(0, "idle", true);
+			this->setToSetupPose();
 		}
 
 	});

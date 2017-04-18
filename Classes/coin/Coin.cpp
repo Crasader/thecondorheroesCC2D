@@ -53,8 +53,11 @@ void Coin::runAnimation()
 
 		Animation* animation = Animation::createWithSpriteFrames(aniframes, 0.08f);
 		animate = Animate::create(animation);
+		this->runAction(RepeatForever::create(animate));
 	}
-	this->runAction(RepeatForever::create(animate));
+	else {
+		this->resumeSchedulerAndActions();
+	}
 }
 
 void Coin::picked()
@@ -75,6 +78,7 @@ void Coin::picked()
 		}
 	});
 	this->runAction(Sequence::createWithTwoActions(DelayTime::create(0.5f), call));
+	this->setTag(0);
 	//this->listener();
 }
 
@@ -82,8 +86,8 @@ void Coin::listener()
 {
 	effect->setCompleteListener([&](int trackIndex, int loopCount) {
 		if ((strcmp(effect->getCurrent()->animation->name, "Effect_coin") == 0) && loopCount == 1) {
-			//effect->removeFromParentAndCleanup(true);
-			//this->removeFromParentAndCleanup(true);
+			/*effect->removeFromParentAndCleanup(true);
+			this->removeFromParentAndCleanup(true);*/
 		}
 	});
 }
@@ -92,54 +96,39 @@ void Coin::listener()
 
 void Coin::updateMe(BaseHero *hero)
 {
-	B2Sprite::updateMe(hero);
-	if (world) {
-		if (!body) {
-			//this->runAnimation();
-			this->initCirclePhysic(world, Vec2(this->getPosition() + this->getParent()->getPosition()));
-			this->changeBodyCategoryBits(BITMASK_COIN);
-			this->changeBodyMaskBits(BITMASK_HERO);
-			this->getB2Body()->GetFixtureList()->SetSensor(true);
-		}
+	if (!this->isVisible()) {
+		this->resumeSchedulerAndActions();
+		this->setVisible(true);
 	}
-	 //update hero->getItemValue(KEY_ITEM_MAGNET)
-	if (this->getB2Body()->GetType() == b2_dynamicBody) {
-		Vec2 coinToHero;
-		if (this->getParent()) {
-			// vang cua boss
-			if (!strcmp(this->getParent()->getName().c_str(), "gameLayer")) {
-				//if (hero->getItemValue(KEY_ITEM_MAGNET) > 0 && this->getB2Body()->GetType() == b2_staticBody) {
-					 coinToHero =  Vec2(hero->getB2Body()->GetPosition().x*PTM_RATIO, hero->getB2Body()->GetPosition().y*PTM_RATIO) -this->getPosition();
-				//}
-				
+	if (this->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width / 2){
+		if (hero->getItemValue(KEY_ITEM_MAGNET) > 0) {
+			// neu hero co magnet
+			B2Sprite::updateMe(hero);
+			if (this->getB2Body()->GetType() == b2_dynamicBody) {
+				Vec2 coinToHero;
+
+				coinToHero = Vec2(hero->getB2Body()->GetPosition().x*PTM_RATIO, hero->getB2Body()->GetPosition().y*PTM_RATIO) - this->getPosition();
+
+				coinToHero = coinToHero*(SCREEN_SIZE.width / coinToHero.length());
+				if (coinToHero.x < 0) {
+					this->getB2Body()->SetType(b2_dynamicBody);
+					this->getB2Body()->SetLinearVelocity(b2Vec2(coinToHero.x / PTM_RATIO - hero->getB2Body()->GetLinearVelocity().x, coinToHero.y / PTM_RATIO));
+				}
+				else if (coinToHero.x >= 0) {
+					this->getB2Body()->SetType(b2_dynamicBody);
+					this->getB2Body()->SetLinearVelocity(b2Vec2(coinToHero.x / PTM_RATIO + hero->getB2Body()->GetLinearVelocity().x, coinToHero.y / PTM_RATIO));
+
+				}
 			}
-			//vang tren map
+
 			else {
-				//hero->getItemValue(KEY_ITEM_MAGNET);
-				
-				//Vec2 vec = SCREEN_SIZE / 2;
-				 coinToHero = Vec2(hero->getB2Body()->GetPosition().x*PTM_RATIO, hero->getB2Body()->GetPosition().y*PTM_RATIO) - (this->getPosition()+ this->getParent()->getPosition()) ;
-				/*this->body->SetLinearVelocity(b2Vec2(coinToHero.x, coinToHero.y));
-				this->body->SetLinearVelocity();*/
-			}
-			coinToHero = coinToHero*(SCREEN_SIZE.width  / coinToHero.length());
-			if (coinToHero.x < 0) {
-				this->getB2Body()->SetType(b2_dynamicBody);
-				this->getB2Body()->SetLinearVelocity(b2Vec2(coinToHero.x / PTM_RATIO - hero->getB2Body()->GetLinearVelocity().x, coinToHero.y / PTM_RATIO));
-			}
-			else if (coinToHero.x >= 0) {
-				this->getB2Body()->SetType(b2_dynamicBody);
-				this->getB2Body()->SetLinearVelocity(b2Vec2(coinToHero.x / PTM_RATIO + hero->getB2Body()->GetLinearVelocity().x, coinToHero.y / PTM_RATIO));
-
+				if (hero->getItemValue(KEY_ITEM_MAGNET) > 30 && this->getB2Body()->GetType() == b2_staticBody) {
+					this->getB2Body()->SetType(b2_dynamicBody);
+				}
 			}
 		}
-	}
-	else {
-		if (hero->getItemValue(KEY_ITEM_MAGNET)>30&&this->getB2Body()->GetType() == b2_staticBody) {
-			this->getB2Body()->SetType(b2_dynamicBody);
-		}
-	}
 
+	}
 }
 
 void Coin::setAngle(float radian)
@@ -148,5 +137,4 @@ void Coin::setAngle(float radian)
 	float vx = SCREEN_SIZE.width * vec / PTM_RATIO * cosf(radian);
 	float vy = SCREEN_SIZE.width * vec / PTM_RATIO * sinf(radian);
 	this->body->SetLinearVelocity(b2Vec2(vx, vy));
-
 }

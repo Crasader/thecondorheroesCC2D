@@ -349,9 +349,8 @@ void GameScene::update(float dt)
 	hero->updateMe(dt);
 
 	updateEnemy();
-	//cleanMap();
 	updateCamera();
-
+	updateCoin();
 	// fall down some hold
 	if (hud->getBtnCalling()->isVisible() &&
 		hero->getPositionY() + hero->getTrueRadiusOfHero() < 0 && hud->getBtnSkill_1()->getCoolDownSprite()->isVisible()) {
@@ -401,6 +400,7 @@ void GameScene::update(float dt)
 		hero->getBloodScreen()->setPosition(follow->getPosition());
 
 	updateHUD(dt);
+	updateCoin();
 
 }
 
@@ -667,7 +667,7 @@ void GameScene::createEnemyToanChanStudent(MyLayer * layer, Vec2 pos)
 	if (enemy->getB2Body()) {
 		world->DestroyBody(enemy->getB2Body());
 	}
-	enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2.5f));
+	enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 4));
 	enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
 	enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
 
@@ -703,7 +703,7 @@ void GameScene::createEnemyToanChanStudent2(MyLayer * layer, Vec2 pos)
 	if (enemy->getB2Body()) {
 		world->DestroyBody(enemy->getB2Body());
 	}
-	enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2.5f));
+	enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
 	enemy->changeBodyCategoryBits(BITMASK_TOANCHAN2);
 	enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
 
@@ -802,7 +802,9 @@ void GameScene::createFormCoin(string objectName,string objectMap, string object
 			coin->initCirclePhysic(world, origin + origin2);
 			coin->changeBodyCategoryBits(BITMASK_COIN);
 			coin->changeBodyMaskBits(BITMASK_HERO);
+			coin->setVisible(false);
 			coin->runAnimation();
+			coin->pauseSchedulerAndActions();
 		}
 	}
 
@@ -1031,13 +1033,13 @@ void GameScene::updateEnemy()
 					tmp->updateMe(hero);
 				}
 			}
-			else if (agent->getTag() >= 80 && agent->getTag() < 90) {
+			/*else if (agent->getTag() >= 80 && agent->getTag() < 90) {
 				if ((agent->getPosition() + preLayer->getPosition()).x < follow->getPositionX() + SCREEN_SIZE.width * 1 / 2.5f
 					&& (agent->getPositionX() + preLayer->getPositionX())>follow->getPositionX() - SCREEN_SIZE.width * 1 / 2.5f) {
 					auto tmp = (B2Sprite*)(agent);
 					tmp->updateMe(hero);
 				}
-			}
+			}*/
 
 		}
 	}
@@ -1053,10 +1055,10 @@ void GameScene::updateEnemy()
 					auto tmp = (B2Skeleton*)(agent);
 					tmp->updateMe(hero);
 				}
-				else if (agent->getTag() >= 80 && agent->getTag() < 90) {
+				/*else if (agent->getTag() >= 80 && agent->getTag() < 90) {
 					auto tmp = (B2Sprite*)(agent);
 					tmp->updateMe(hero);
-				}
+				}*/
 			}
 		}
 	}
@@ -1182,6 +1184,21 @@ void GameScene::updateCamera()
 	background->updatePosition();
 	background2->updatePosition();
 	follow->setPositionY(background->getPositionY());
+}
+
+void GameScene::updateCoin()
+{
+	auto children = this->getChildren();
+	for (auto child : children) {
+		if (child->getTag() == TAG_COIN) {
+			if (child->getPositionX() < follow->getPositionX()+SCREEN_SIZE.width/2 && child->getPositionX() > follow->getPositionX() - SCREEN_SIZE.width / 2) {
+				((Coin*)child)->updateMe(hero);
+			}
+			else if (child->getPositionX() < follow->getPositionX() - SCREEN_SIZE.width / 2) {
+				child->removeFromParentAndCleanup(true);
+			}
+		}
+	}
 }
 
 //void GameScene::cleanMap()
@@ -1506,11 +1523,11 @@ void GameScene::creatAgentByMydata(MyLayer * layer, MyData data)
 
 	}
 	case TAG_ENEMY_TOANCHAN1: {
-		//createEnemyToanChanStudent(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
+		createEnemyToanChanStudent(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
 		break;
 	}
 	case TAG_ENEMY_TOANCHAN2: {
-		//createEnemyToanChanStudent2(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
+		createEnemyToanChanStudent2(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
 		break;
 	}
 	case TAG_COINBAG: {

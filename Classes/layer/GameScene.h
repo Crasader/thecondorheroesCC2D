@@ -139,6 +139,7 @@ private:
 	void createEnemyToanChanStudent2(MyLayer* layer, Vec2 pos);
 	void creatBoss();
 
+	void createCoin();
 	void createCointBag(Layer *layer, Vec2 pos);
 	void createCoinBullion(Layer *layer, Vec2 pos);
 	//void createFormCoin( MyLayer *layer,Vec2 pos, string objectMap, string objectInform, SpriteBatchNode* batchnode);
@@ -173,6 +174,7 @@ public:
 	void updateMultiKills(); //DuongPM edited for multi kills
 	void updateBloodBar(int numberOfHealth, bool isVisible);
 	void updateCamera();
+	void updateCoin();
 	//void cleanMap();
 
 	// cache function
@@ -202,7 +204,7 @@ public:
 
 	void createAgentOnLayer(MyLayer* layer);
 	void creatAgentByMydata(MyLayer* layer, MyData data);
-	void createCoin();
+	
 	// quan ly item
 	//void createMapItem();// tao du lieu cho map item.
 	//void updateMapItem();

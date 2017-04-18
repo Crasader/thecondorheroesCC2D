@@ -55,6 +55,7 @@ MyPool::MyPool(int maxPool, int tag): MyPool()
 			enemy->setTag(tag);
 			pool[i] = enemy;
 		}
+		break;
 	}
 	case TAG_ENEMY_TOANCHAN1: {
 		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
@@ -65,7 +66,7 @@ MyPool::MyPool(int maxPool, int tag): MyPool()
 																 /*auto enemy = EnemyToanChanStudent::create("Animation/Enemy_DeTuToanChan1/ToanChan1.json",
 																 "Animation/Enemy_DeTuToanChan1/ToanChan1.atlas", scaleOfEnemy);*/
 			auto enemy = EnemyToanChanStudent::create("Animation/Enemy_DeTuToanChan1/ToanChan1", scaleOfEnemy);
-			auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan", scaleOfEnemy);
+			//auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan", scaleOfEnemy);
 			//coin->runAnimation();
 
 			enemy->setTag(tag);

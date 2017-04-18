@@ -1,47 +1,40 @@
 
 Effect_getgolden.png
-size: 512,256
+size: 256,128
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 Golden/coin_01
-  rotate: false
-  xy: 88, 3
-  size: 60, 60
+  rotate: true
+  xy: 99, 2
+  size: 52, 56
   orig: 60, 60
-  offset: 0, 0
+  offset: 4, 2
   index: -1
 Golden/coin_06
-  rotate: false
-  xy: 291, 194
-  size: 60, 60
+  rotate: true
+  xy: 157, 15
+  size: 38, 56
   orig: 60, 60
-  offset: 0, 0
+  offset: 11, 2
   index: -1
 Golden/effect_getcoin
   rotate: false
-  xy: 194, 97
+  xy: 185, 55
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
 Golden/effect_getgold
   rotate: false
-  xy: 194, 161
+  xy: 2, 24
   size: 95, 93
   orig: 95, 93
   offset: 0, 0
   index: -1
-Golden/effect_getgoldbag
-  rotate: false
-  xy: 2, 65
-  size: 190, 189
-  orig: 190, 189
-  offset: 0, 0
-  index: -1
 Golden/effect_gold
   rotate: false
-  xy: 2, 2
+  xy: 99, 56
   size: 84, 61
   orig: 84, 61
   offset: 0, 0

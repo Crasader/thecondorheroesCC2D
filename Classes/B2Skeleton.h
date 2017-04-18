@@ -8,13 +8,14 @@
 
 using namespace std;
 using namespace spine;
-
+class BaseHero;
 class B2Skeleton : public SkeletonAnimation
 {
 
 public:
 	//static Map<std::string, SkeletonRenderer *> skeleRendererCache;
-
+	B2Skeleton();
+	~B2Skeleton();
 	B2Skeleton(string jsonFile, string atlasFile, float scale);
 	B2Skeleton(spSkeletonData *data);
 	static B2Skeleton* create(string jsonFile, string atlasFile, float scale);
@@ -28,14 +29,14 @@ public:
 
 	// return Pos bone in parent of this skeleton
 	virtual Point getBoneLocation(string boneName);
-	virtual void updateMe(float dt);
+	virtual void updateMe(BaseHero *hero);
+	virtual void onExit();
 
 protected:
 	CC_SYNTHESIZE(b2Body*, body, B2Body);
 
 	CC_SYNTHESIZE(int, health, Health);
 	CC_SYNTHESIZE(float, move_vel, MoveVel);
-	CC_SYNTHESIZE(bool, facingRight, FacingRight);
 
 
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();

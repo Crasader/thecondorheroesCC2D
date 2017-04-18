@@ -1,32 +1,55 @@
 #include "EnemyWooder.h"
 
-EnemyWooder::EnemyWooder(spSkeletonData * data) :BaseEnemy(data)
+EnemyWooder::EnemyWooder() : BaseEnemy()
+{
+	
+}
+
+EnemyWooder::~EnemyWooder()
 {
 }
 
-EnemyWooder::EnemyWooder(string jsonFile, string atlasFile, float scale):BaseEnemy(jsonFile, atlasFile,scale)
+EnemyWooder::EnemyWooder(spSkeletonData * data) : BaseEnemy(data)
+{
+	//BaseEnemy:BaseEnemy(data);
+}
+
+EnemyWooder::EnemyWooder(string jsonFile, string atlasFile, float scale) : BaseEnemy(jsonFile, atlasFile, scale)
 {
 }
 
 EnemyWooder * EnemyWooder::create(string jsonFile, string atlasFile, float scale)
 {
-	EnemyWooder *enemy = new EnemyWooder(jsonFile, atlasFile,scale);
+	EnemyWooder *enemy = new EnemyWooder(jsonFile, atlasFile, scale);
 	enemy->update(0.0f);
 	enemy->setTag(TAG_ENEMY_WOODER);
 	enemy->setScaleX(1);
 	enemy->setTimeScale(1.4f);
+	enemy->health = 1;
+	enemy->exp = 5;
 	return enemy;
 
 }
 
-EnemyWooder * EnemyWooder::create(spSkeletonData * data)
+EnemyWooder * EnemyWooder::create(string filename, float scale)
 {
-	EnemyWooder *enemy = new EnemyWooder(data);
+	if (!SkeletonManager::getSkeletonData(filename)) {
+		SkeletonManager::getInstance()->cacheSkeleton(filename, scale);
+	}
+	auto data = SkeletonManager::getSkeletonData(filename);
+	auto enemy = new EnemyWooder(data);
+	//enemy->initWithData(data);
 	enemy->update(0.0f);
 	enemy->setTag(TAG_ENEMY_WOODER);
 	enemy->setScaleX(1);
+	enemy->setTimeScale(1.4f);
+	enemy->health = 1;
+	enemy->exp = 5;
 	return enemy;
+
+
 }
+
 
 void EnemyWooder::run()
 {
@@ -38,28 +61,37 @@ void EnemyWooder::attack()
 
 void EnemyWooder::die()
 {
-	//auto world = this->body->GetWorld();
-	//world->DestroyBody(this->body);
+
+	BaseEnemy::die();
+
+	auto world = this->body->GetWorld();
+	world->DestroyBody(this->body);
+	this->body = nullptr;
 	//body->SetType(b2_dynamicBody);
 	this->setIsDie(true);
 	this->clearTracks();
-	this->addAnimation(0,"broken",false);
+	this->setAnimation(0, "broken", false);
 	this->setToSetupPose();
 }
 
-void EnemyWooder::updateMe(float dt)
+void EnemyWooder::updateMe(BaseHero* hero)
 {
-	BaseEnemy::updateMe(dt);
-	
+	BaseEnemy::updateMe(hero);
+	if (this->getIsDie()&& this->getB2Body()!= nullptr) {
+		this->die();
+	}
+
 }
 
 void EnemyWooder::listener()
 {
 	this->setCompleteListener([&](int trackIndex, int loopCount) {
 		if (strcmp(getCurrent()->animation->name, "broken") == 0 && loopCount == 1) {
-			//getSplash()->setVisible(false);
-			//setIsAttacking(false);
-			this->removeFromParentAndCleanup(true);
+//			this->removeFromParentAndCleanup(false);
+            this->setVisible(false);
+            this->setIsDie(false);
+            this->clearTracks();
+            this->setToSetupPose();
 		}
 
 	});

@@ -6,7 +6,7 @@ filter: Linear,Linear
 repeat: none
 effect_gold
   rotate: false
-  xy: 111, 11
+  xy: 107, 8
   size: 84, 61
   orig: 84, 61
   offset: 0, 0
@@ -14,7 +14,7 @@ effect_gold
 gold
   rotate: false
   xy: 2, 2
-  size: 107, 70
+  size: 103, 67
   orig: 107, 70
-  offset: 0, 0
+  offset: 2, 2
   index: -1

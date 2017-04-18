@@ -2,23 +2,37 @@
 
 
 
+B2Skeleton::B2Skeleton() :SkeletonAnimation()
+{
+	body = nullptr;
+}
+
+B2Skeleton::~B2Skeleton()
+{
+}
+
 B2Skeleton::B2Skeleton(string jsonFile, string atlasFile, float scale) : SkeletonAnimation(jsonFile, atlasFile, scale)
 {
 	body = nullptr;
 }
 
-B2Skeleton::B2Skeleton(spSkeletonData * data):SkeletonAnimation(data)
+B2Skeleton::B2Skeleton(spSkeletonData * data) : SkeletonAnimation(data)
 {
+	body = nullptr;
 }
 
 B2Skeleton * B2Skeleton::create(string jsonFile, string atlasFile, float scale)
 {
 	return nullptr;
+
 }
 
 B2Skeleton * B2Skeleton::create(spSkeletonData * data)
 {
-	return nullptr;
+	auto skeleton = new B2Skeleton(data);
+	//skeleton->initWithData(data);
+	skeleton->update(1.0f);
+	return skeleton;
 }
 
 
@@ -58,8 +72,9 @@ void B2Skeleton::initBoxPhysic(b2World *world, Point pos)
 void B2Skeleton::initCirclePhysic(b2World * world, Point pos)
 {
 	b2CircleShape circle_shape;
-	circle_shape.m_radius = this->getBoundingBox().size.height / 2 / PTM_RATIO;
-
+	//circle_shape.m_radius = this->getBoundingBox().size.height / 2 / PTM_RATIO;
+	this->getBoundingBox().size.height > this->getBoundingBox().size.width ? circle_shape.m_radius = this->getBoundingBox().size.width / 2 / PTM_RATIO :
+		circle_shape.m_radius = this->getBoundingBox().size.height / 2 / PTM_RATIO;
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 0.0f;
 	fixtureDef.friction = 0.5f;
@@ -113,11 +128,41 @@ Point B2Skeleton::getBoneLocation(string boneName)
 	return pos;
 }
 
-void B2Skeleton::updateMe(float dt)
+void B2Skeleton::updateMe(BaseHero * hero)
 {
-	if (body != nullptr) {
-		this->setPositionX(this->getB2Body()->GetPosition().x * PTM_RATIO);
-		this->setPositionY(this->getB2Body()->GetPosition().y * PTM_RATIO - this->getBoundingBox().size.height/2);
+	if (body != nullptr /*&& body->GetType() == b2_staticBody*/) {
+		this->setPositionX(body->GetPosition().x * PTM_RATIO - this->getParent()->getPositionX());
+		this->setPositionY(body->GetPosition().y * PTM_RATIO - this->body->GetFixtureList()->GetShape()->m_radius*PTM_RATIO
+			- this->getParent()->getPositionY());
+		this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
 	}
 }
+
+void B2Skeleton::onExit()
+{
+	SkeletonAnimation::onExit();
+	if (body != nullptr) {
+		auto world = body->GetWorld();
+		world->DestroyBody(body);
+		body = nullptr;
+	}
+}
+
+
+//void B2Skeleton::updateMe(BaseHero* hero)
+//{
+//	if (body != nullptr) {
+//		this->setPositionX(this->getB2Body()->GetPosition().x * PTM_RATIO);
+//		this->setPositionY(this->getB2Body()->GetPosition().y * PTM_RATIO - this->getBoundingBox().size.height / 2);
+//	}
+//}
+
+//void B2Skeleton::onExit()
+//{
+//	SkeletonAnimation::onExit();
+//	if (body != nullptr) {
+//		auto world = body->GetWorld();
+//		world->DestroyBody(body);
+//	}
+//}
 

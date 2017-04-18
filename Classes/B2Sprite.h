@@ -2,14 +2,15 @@
 #define __B2_SPRITE_H__
 
 #include "Global.h"
-#include "spine/spine-cocos2dx.h"
+#include <spine/spine-cocos2dx.h>
 #include <string>
 #include "GB2ShapeCache-x.h"
+//#include "Agent.h"
 
 using namespace spine;
 using namespace std;
-
-class B2Sprite : public Sprite
+class BaseHero;
+class B2Sprite : public Sprite//, public Agent
 {
 protected:
 	CC_SYNTHESIZE(b2Body*, body, B2Body);
@@ -41,8 +42,10 @@ public:
 	virtual void initPhysicWithShapeCache(b2World *world, Point pos, string key);
 	virtual void changeBodyCategoryBits(uint16 mask);
 	virtual void changeBodyMaskBits(uint16 mask);
-	virtual void setAngel(float radian);
-	virtual void updateMe(float dt);
+	virtual void setAngle(float radian);
+	//virtual void updateMe(float dt);
+	virtual void updateMe(BaseHero* hero);
+	virtual void onExit();
 
 };
 

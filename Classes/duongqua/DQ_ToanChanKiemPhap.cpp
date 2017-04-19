@@ -20,7 +20,6 @@ DQ_ToanChanKiemPhap * DQ_ToanChanKiemPhap::create()
 void DQ_ToanChanKiemPhap::initCirclePhysic(b2World * world, Point pos)
 {
 	B2Sprite::initCirclePhysic(world, pos);
-	this->getB2Body()->SetType(b2_dynamicBody);
 	this->getB2Body()->GetFixtureList()->SetSensor(true);
 	this->getB2Body()->SetGravityScale(0);
 	this->getB2Body()->SetUserData(this);

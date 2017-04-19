@@ -3,10 +3,8 @@
 
 #include "Global.h"
 #include <spine/spine-cocos2dx.h>
-#include <string>
 #include "utils/GB2ShapeCache-x.h"
 
-using namespace std;
 using namespace spine;
 class BaseHero;
 class B2Skeleton : public SkeletonAnimation

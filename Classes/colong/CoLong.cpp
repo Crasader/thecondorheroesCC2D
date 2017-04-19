@@ -136,7 +136,6 @@ void CoLong::doCounterSkill3() {
 	
 	EM->getSmokeRun()->setVisible(false);
 
-	//log("3");
 	clearTracks();
 	addAnimation(0, "skill3", true);
 	setToSetupPose();
@@ -233,6 +232,7 @@ void CoLong::updateMe(float p_fDelta) {
 	if(!isDriverEagle)
 		getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
 
+
 	if (!getIsPriorAttack() && !getIsPriorInjured() && getIsDoneDuration3()) {
 		if (getB2Body()->GetLinearVelocity().y < 0) {
 			getFSM()->changeState(MLand);
@@ -281,6 +281,7 @@ void CoLong::createRada(b2World *p_pWorld) {
 	m_pRadaSkill1->changeBodyCategoryBits(BITMASK_RADA_SKILL_1);
 	m_pRadaSkill1->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2);
 
+
 	m_pRadaSkill2 = Rada::create("Animation/CoLong/blash.png");
 	m_pRadaSkill2->setScale(SCREEN_SIZE.width / m_pRadaSkill2->getContentSize().width / 1.5f);
 	m_pRadaSkill2->setVisible(false);
@@ -295,6 +296,7 @@ void CoLong::createRada(b2World *p_pWorld) {
 	m_pRadaSkill3->initCirclePhysic(p_pWorld, Vec2(this->getB2Body()->GetPosition().x, this->getB2Body()->GetPosition().y));
 	m_pRadaSkill3->changeBodyCategoryBits(BITMASK_WOODER);
 	m_pRadaSkill3->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG);
+
 }
 
 // SLASH
@@ -441,7 +443,7 @@ void CoLong::doDestroyBodies(b2World *world)
 }
 
 void CoLong::run() {
-	//log("run");
+
 	if (!getIsDoneDuration3()) {
 
 	}
@@ -609,5 +611,7 @@ void CoLong::revive()
 	//log("revive");
 }
 
-void CoLong::die(Point p_ptPositionOfCammera) {
+void CoLong::die(Point p_ptPositionOfCammera)
+{
+
 }

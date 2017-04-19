@@ -71,6 +71,7 @@ public:
 	virtual void addStuff();
 	virtual void createPool();
 
+
 	virtual void idle();
 	virtual void run();
 	virtual void normalJump();

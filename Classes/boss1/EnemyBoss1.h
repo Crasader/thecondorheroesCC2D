@@ -7,6 +7,7 @@
 #include "StateBoss1.h"
 #include "coin/Coin.h"
 
+
 class EnemyBoss1 : public BaseEnemy
 {
 private:

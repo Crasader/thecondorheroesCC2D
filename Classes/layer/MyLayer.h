@@ -5,6 +5,7 @@
 #include <string.h>
 #include "datastructures\MyPool.h"
 
+
 USING_NS_CC;
 using namespace std;
 
@@ -25,4 +26,5 @@ public:
 
 };
 
-#endif // __LOADING_LAYER_H__
+#endif // __MY_LAYER_H__
+

@@ -1,6 +1,7 @@
 #include "EnemyToanChanStudent.h"
 #include "manager/SkeletonManager.h"
 
+
 EnemyToanChanStudent::EnemyToanChanStudent(spSkeletonData * data):BaseEnemy(data)
 {
 }
@@ -122,10 +123,12 @@ void EnemyToanChanStudent::listener()
 			this->setToSetupPose();
 		}
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
+
 			this->setVisible(false);
 			this->clearTracks();
 			this->setAnimation(0, "idle", true);
 			this->setToSetupPose();
+
 		}
 
 	});

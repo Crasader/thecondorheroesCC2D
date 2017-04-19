@@ -1,6 +1,6 @@
 #include "BaseHero.h"
 #include "AudioEngine.h"
-#include "Global.h"
+
 
 
 BaseHero::BaseHero(string jsonFile, string atlasFile, float scale) : B2Skeleton(jsonFile, atlasFile, scale)
@@ -61,9 +61,6 @@ void BaseHero::addStuff()
 void BaseHero::createPool()
 {
 }
-
-
-
 
 void BaseHero::idle()
 {
@@ -170,7 +167,6 @@ void BaseHero::doDestroyBodies(b2World *world)
 {
 	world->DestroyBody(getB2Body());
 	world->DestroyBody(swordBody);
-
 	setB2Body(nullptr);
 	swordBody = nullptr;
 }
@@ -241,8 +237,8 @@ void BaseHero::killThemAll(list<BaseEnemy*> listToKill)
 
 void BaseHero::createMapItem()
 {
-	checkItem[KEY_ITEM_MAGNET]= 1000;
-	checkItem[KEY_ITEM_DOUPLE_COIN]= 0;
+	checkItem[KEY_ITEM_MAGNET] = 1000;
+	checkItem[KEY_ITEM_DOUPLE_COIN] = 0;
 }
 
 void BaseHero::updateMapItem()
@@ -255,6 +251,7 @@ void BaseHero::updateMapItem()
 		};
 	}
 }
+
 
 int BaseHero::getItemValue(int keyItem)
 {

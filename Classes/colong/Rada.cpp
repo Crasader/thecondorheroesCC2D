@@ -16,5 +16,6 @@ Rada * Rada::create(string p_sFileName) {
 void Rada::initCirclePhysic(b2World * world, Point pos) {
 	B2Sprite::initCirclePhysic(world, pos);
 	this->getB2Body()->GetFixtureList()->SetSensor(true);
+
 }
 

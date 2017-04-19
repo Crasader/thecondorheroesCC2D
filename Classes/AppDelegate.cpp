@@ -1,6 +1,7 @@
 #include "AppDelegate.h"
 #include "layer/IntroScene.h"
 
+
 USING_NS_CC;
 
 static cocos2d::Size designResolutionSize = cocos2d::Size(711, 400);

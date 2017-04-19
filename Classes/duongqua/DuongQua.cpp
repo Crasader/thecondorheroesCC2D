@@ -98,7 +98,6 @@ void DuongQua::slashToanChanKiemPhap()
 
 					gameLayer->world->DestroyBody(tckp->getB2Body());
 					tckp->setB2Body(nullptr);
-
 					tckp->setVisible(false);
 				}
 				else
@@ -126,6 +125,7 @@ void DuongQua::doCounterSkill1()
 void DuongQua::createKiemPhap(float posX)
 {
 	auto kp = KiemPhap::create();
+
 	kp->setScale(this->getTrueRadiusOfHero() * 1.75f / kp->getContentSize().width);
 	auto gameLayer = (GameScene*) this->getParent();
 
@@ -133,7 +133,6 @@ void DuongQua::createKiemPhap(float posX)
 	kp->initBoxPhysic(gameLayer->world, kp->getPosition());
 
 	gameLayer->addChild(kp, ZORDER_ENEMY);
-	
 
 	kp->landingEffect();
 
@@ -204,6 +203,7 @@ Point DuongQua::getLocalSpiritBonePos(string boneName)
 
 void DuongQua::createTieuHonChuong(Point posHand, int Zoder)
 {
+
 	auto thc = (TieuHonChuong*)poolSkill3->getObjectAtIndex(indexSkill3++);
 	thc->setVisible(true);
 	thc->setIsCollide(false);
@@ -213,6 +213,7 @@ void DuongQua::createTieuHonChuong(Point posHand, int Zoder)
 	thc->initCirclePhysic(gameLayer->world, thc->getPosition());
 	thc->changeBodyCategoryBits(BITMASK_SWORD);
 	thc->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG);
+
 
 	if (!thc->getIsAdded()) {
 		this->getParent()->addChild(thc, Zoder);
@@ -669,6 +670,7 @@ void DuongQua::updateMe(float dt)
 			}
 			else
 				thc->updateMe();
+
 		}
 	}
 
@@ -703,14 +705,10 @@ void DuongQua::updateMe(float dt)
 		return;
 	}
 
-	/*if (getPositionY() + getTrueRadiusOfHero() * 2 < 0) {
-		getB2Body()->SetTransform(b2Vec2(SCREEN_SIZE.width * 0.25f / PTM_RATIO,
-			SCREEN_SIZE.height / PTM_RATIO), getB2Body()->GetAngle());
-		return;
-	}*/
 
 	if(!isDriverEagle)
 		getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
+
 
 	if (!getIsPriorAttack() && !getIsPriorInjured() && !getIsPriorSkill1()) {
 

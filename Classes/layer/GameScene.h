@@ -7,6 +7,12 @@
 #include "EnemyWooder.h"
 #include "EnemyToanChanStudent.h"
 #include "EnemyToanChanStudent2.h"
+
+#include "EnemyTNB.h"
+#include "EnemyToOng.h"
+#include "EnemyHongLangBa.h"
+#include "EnemyHongLangBa2.h"
+
 #include "boss1/EnemyBoss1.h"
 #include "chimdieu/ChimDieu.h"
 #include "coin/Coin.h"
@@ -19,6 +25,8 @@
 #include "datastructures/MyData.h"
 #include "datastructures/MyPool.h"
 #include "layer/MyLayer.h"
+
+
 
 
 class GameScene : public cocos2d::Layer
@@ -56,9 +64,7 @@ private:
 
 	int indexOfNextMapBoss;// chi so cua map boss cuoi, khoi dau la -1, khi danh boss chuyen 1 va 0(0101010101)
 	int currentButton = 0;
-	//MyPool *coinPool;
-	//MyPool *wooderPool;
-	//MyPool *wooderPool;
+
 	
 public:
 	b2World *world;
@@ -82,6 +88,7 @@ private:
 	int m_lastScore = 0;
 	int m_nMultiKills = 0;
 	float m_fMultiKillsCounterTime;
+
 
 	int previousGold = 0;
 	int previousScore = 0;
@@ -130,6 +137,10 @@ private:
 	void creatEnemyWooder(MyLayer* layer, Vec2 pos);
 	void createEnemyToanChanStudent(MyLayer* layer, Vec2 pos);
 	void createEnemyToanChanStudent2(MyLayer* layer, Vec2 pos);
+	//void createEnemyTNB(Layer* layer, Vec2 pos);
+	void createEnemyHongLangBa(Layer* layer, Vec2 pos);
+	void createEnemyHongLangBa2(Layer* layer, Vec2 pos);
+	void createEnemyToOng(Layer* layer, Vec2 pos);
 	void creatBoss();
 
 	void createCoin();
@@ -137,6 +148,7 @@ private:
 	void createCoinBullion(Layer *layer, Vec2 pos);
 	//void createFormCoin( MyLayer *layer,Vec2 pos, string objectMap, string objectInform, SpriteBatchNode* batchnode);
 	void createFormCoin(string objectName,string objectMap,string objectInform);
+
 	//skeleton data
 	//spSkeletonData* createSkeletonData(string atlasFile, string jsonFile);
 	// sau va cham body cua cac quai khong con static nua
@@ -167,7 +179,9 @@ public:
 	void updateMultiKills(); //DuongPM edited for multi kills
 	void updateBloodBar(int numberOfHealth, bool isVisible);
 	void updateCamera();
+
 	void updateCoin();
+
 	//void cleanMap();
 
 	// cache function
@@ -197,13 +211,9 @@ public:
 
 	void createAgentOnLayer(MyLayer* layer);
 	void creatAgentByMydata(MyLayer* layer, MyData data);
-	
+
 	// quan ly item
 	//void createMapItem();// tao du lieu cho map item.
-	//void updateMapItem();
-
-    // implement the "static create()" method manually
-   // CREATE_FUNC(GameScene);
 };
 
 #endif // __GAME_SCENE_H__

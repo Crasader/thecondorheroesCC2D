@@ -2,6 +2,7 @@
 #include "layer/GameScene.h"
 #include "manager/RefManager.h"
 
+
 bool LoadingLayer::init()
 {
 	//////////////////////////////
@@ -60,9 +61,10 @@ void LoadingLayer::addStuff()
 
 	avatarHero = Sprite::create(JSHERO->getAvatarLoadingPath());
 	avatarHero->setAnchorPoint(Vec2(1, 0));
-	avatarHero->setPosition(rightDoor->getContentSize().width, 0);
+	avatarHero->setScale(SCREEN_SIZE.width * 0.4f / avatarHero->getContentSize().width);
+	avatarHero->setPosition(origin.x + SCREEN_SIZE.width, 0);
 
-	rightDoor->addChild(avatarHero);
+	addChild(avatarHero);
 
 	lbGuide = Label::create("Guide here", "fonts/Marker Felt.ttf", 32);
 	lbGuide->setAnchorPoint(Vec2::ZERO);
@@ -85,7 +87,7 @@ void LoadingLayer::doLoading()
 			boardTime->setVisible(false);
 			loading->setVisible(false);
 			lbGuide->setVisible(false);
-
+			avatarHero->setVisible(false);
 			doOpen();
 			unschedule("Key_loading");
 		}

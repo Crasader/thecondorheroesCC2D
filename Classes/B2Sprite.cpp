@@ -121,6 +121,8 @@ void B2Sprite::updateMe(BaseHero*hero)
 	}
 }
 
+
+
 void B2Sprite::onExit()
 {
 	Sprite::onExit();
@@ -130,55 +132,6 @@ void B2Sprite::onExit()
 		body = nullptr;
 	}
 }
-
-//void B2Sprite::explosion()
-//{
-//	// phai kiem tra boom = null moi tao vu no 
-//	//vi co the dan va cham cung luc voi hai body 
-//	//va tao hai vu no nhung chi giai phong duoc 1
-//
-//	if (!boom) {
-//		if (this->getParent() != nullptr) {
-//			/*auto ref = UserDefault::getInstance()->sharedUserDefault();
-//			bool checkSound = ref->getBoolForKey(KEYSOUND);
-//			if (checkSound) {
-//				experimental::AudioEngine::play2d(SOUND_ENEMY_BOMB_EXPLOSION);
-//			}*/
-//			boom = Sprite::createWithSpriteFrameName("explosion-1.png");
-//			boom->setScale(SCREEN_SIZE.height / 6.0f / boom->getContentSize().height);
-//			//boom->setPosition(0, this->getBoundingBox().size.height / 2);
-//			//log("Boom-----------------------");
-//			boom->setPosition(this->getPosition());
-//			this->getParent()->addChild(boom, 100);
-//			Vector<SpriteFrame*> animFrames;
-//			animFrames.reserve(7);
-//
-//			for (int i = 2; i < 8; i++)
-//			{
-//				auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(StringUtils::format("explosion-%d.png", i));
-//				animFrames.pushBack(frame);
-//			}
-//
-//			auto animation = Animation::createWithSpriteFrames(animFrames, 0.075f);
-//			auto animate = Animate::create(animation);
-//			animate->retain();
-//			boom->runAction(animate);
-//
-//			auto callFunc2 = CallFunc::create([&]() {
-//				if (boom != nullptr) {
-//					boom->removeFromParentAndCleanup(true);
-//					//boom->release();
-//					boom = nullptr;
-//					//log("destroy Boom-----------------------");
-//				}
-//			});
-//			//this->runAction(Sequence::create(DelayTime::create(0.5f), callFunc2, nullptr));
-//			boom->runAction(Sequence::create(animate, callFunc2, nullptr));
-//		}
-//	}
-
-
-//}
 
 
 

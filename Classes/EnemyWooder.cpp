@@ -88,7 +88,6 @@ void EnemyWooder::listener()
 	this->setCompleteListener([&](int trackIndex, int loopCount) {
 		if (strcmp(getCurrent()->animation->name, "broken") == 0 && loopCount == 1) {
 			this->setVisible(false);
-			this->setIsDie(false);
 			this->clearTracks();
 			this->setToSetupPose();
 		}

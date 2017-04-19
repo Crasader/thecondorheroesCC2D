@@ -1,8 +1,10 @@
+
 #include "layer/DialogPauseGame.h"
 #include "layer/GameScene.h"
 #include "layer/MenuScene.h"
 #include "SimpleAudioEngine.h"
 #include "manager/RefManager.h"
+
 
 
 
@@ -327,6 +329,7 @@ bool DialogStageClear::init(int score, int gold)
 	REF->setUpGoldExplored(gold + bonusGold);
 	REF->setUpScore(score + bonusScore);
 
+
 	int currentScore = REF->getCurrentScore();
 	int currentLevel = REF->getCurrentLevel();
 
@@ -493,7 +496,6 @@ bool DialogOverGame::init(int score, int gold)
 		REF->setCurrentScoreAfterIncrease(currentScore - JSHERO->getMaxScoreLevelX(currentLevel));
 		REF->increaseLevel();
 	}
-
 	effect();
 
 	return true;

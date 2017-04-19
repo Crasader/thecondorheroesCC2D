@@ -1,5 +1,4 @@
 #include "EnemyBoss1.h"
-#include "layer/MenuScene.h"
 #include "BaseHero.h"
 
 EnemyBoss1::EnemyBoss1(string jsonFile, string atlasFile, float scale) :BaseEnemy(jsonFile, atlasFile, scale)

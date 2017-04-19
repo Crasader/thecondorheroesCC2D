@@ -2,13 +2,10 @@
 #define __B2_SPRITE_H__
 
 #include "Global.h"
-#include "spine/spine-cocos2dx.h"
-#include <string>
+#include <spine/spine-cocos2dx.h>
 #include "utils/GB2ShapeCache-x.h"
-//#include "Agent.h"
 
 using namespace spine;
-using namespace std;
 class BaseHero;
 class B2Sprite : public Sprite//, public Agent
 {

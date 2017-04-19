@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="530" height="10" tilewidth="80" tileheight="80" nextobjectid="214">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="530" height="10" tilewidth="80" tileheight="80" nextobjectid="215">
  <tileset firstgid="1" name="street2" tilewidth="80" tileheight="80" tilecount="30" columns="6">
-  <image source="street2.png" width="480" height="400"/>
+  <image source="street1_2.png" width="480" height="400"/>
  </tileset>
  <tileset firstgid="31" name="stone1" tilewidth="80" tileheight="80" tilecount="1" columns="1">
   <image source="stone1.png" width="80" height="80"/>
@@ -9,7 +9,7 @@
  <tileset firstgid="32" name="stone2" tilewidth="80" tileheight="80" tilecount="2" columns="1">
   <image source="stone2.png" width="80" height="160"/>
  </tileset>
- <tileset firstgid="34" name="street" tilewidth="80" tileheight="80" tilecount="18" columns="6">
+ <tileset firstgid="34" name="street1_1" tilewidth="80" tileheight="80" tilecount="18" columns="6">
   <image source="street.png" width="480" height="240"/>
  </tileset>
  <layer name="st2" width="530" height="10">
@@ -108,13 +108,13 @@
  <objectgroup name="coin_straight">
   <object id="62" x="1368" y="412" width="308" height="16"/>
   <object id="63" x="3448" y="336" width="316" height="12"/>
-  <object id="64" x="4488" y="544" width="156" height="16"/>
+  <object id="64" x="4160" y="562" width="156" height="16"/>
   <object id="65" x="6652" y="164" width="304" height="16"/>
-  <object id="66" x="18008" y="456" width="244" height="16"/>
+  <object id="66" x="18804" y="244" width="244" height="16"/>
   <object id="67" x="19680" y="244" width="280" height="24"/>
-  <object id="68" x="27296" y="404" width="276" height="20"/>
-  <object id="69" x="34584" y="524" width="356" height="16"/>
-  <object id="140" x="30156" y="429.333" width="188" height="28"/>
+  <object id="68" x="27284" y="480" width="276" height="20"/>
+  <object id="69" x="36884" y="562" width="356" height="16"/>
+  <object id="140" x="28956" y="481.333" width="188" height="28"/>
  </objectgroup>
  <objectgroup name="coin_small_zigzag">
   <object id="168" x="23083" y="280" width="376" height="48"/>
@@ -122,9 +122,9 @@
   <object id="179" x="39464" y="300" width="352" height="36"/>
  </objectgroup>
  <objectgroup name="coin_zigzag">
-  <object id="71" x="35572" y="400" width="776" height="32"/>
-  <object id="72" x="36672" y="164" width="780" height="28"/>
-  <object id="73" x="9020" y="312" width="832" height="32"/>
+  <object id="71" name="coin_zigzag" x="35572" y="400" width="776" height="32"/>
+  <object id="72" name="coin_zigzag" x="36492" y="237" width="780" height="28"/>
+  <object id="73" name="coin_zigzag" x="9060" y="360" width="832" height="32"/>
  </objectgroup>
  <objectgroup name="coin_parabol">
   <object id="75" x="10780" y="452" width="260" height="28"/>
@@ -136,50 +136,51 @@
   <object id="137" x="23912" y="286.667" width="204" height="53.3333"/>
  </objectgroup>
  <objectgroup name="bee">
-  <object id="86" x="24844" y="364" width="68" height="136"/>
-  <object id="87" x="28048" y="476" width="60" height="112"/>
-  <object id="126" x="3306.67" y="489.333" width="68" height="102.667"/>
-  <object id="127" x="6562.67" y="476" width="65.3333" height="113.333"/>
-  <object id="128" x="6290.67" y="328" width="68" height="109.333"/>
-  <object id="129" x="9008" y="413.333" width="74.6667" height="98.6667"/>
-  <object id="131" x="14080" y="478.667" width="70.6667" height="113.333"/>
-  <object id="132" x="19552" y="257.333" width="69.3333" height="93.3333"/>
-  <object id="133" x="22198.7" y="494.667" width="45.3333" height="102.667"/>
-  <object id="135" x="21054.7" y="592" width="52" height="82.6667"/>
-  <object id="136" x="23741.3" y="154.667" width="58.6667" height="114.667"/>
-  <object id="138" x="30878.7" y="264" width="58.6667" height="82.6667"/>
-  <object id="139" x="30401.3" y="405.333" width="64" height="108"/>
-  <object id="143" x="32712" y="505.333" width="52" height="85.3333"/>
-  <object id="145" x="34801.3" y="490.667" width="54.6667" height="96"/>
-  <object id="146" x="35768" y="584" width="44" height="92"/>
-  <object id="149" x="36905.3" y="349.333" width="48" height="97.3333"/>
-  <object id="150" x="37452" y="236" width="65.3333" height="112"/>
-  <object id="152" x="38389.3" y="569.333" width="78.6667" height="112"/>
-  <object id="158" x="40898.7" y="348" width="54.6667" height="84"/>
-  <object id="170" x="1187.88" y="578.788" width="81.8182" height="93.9394"/>
-  <object id="185" x="12881.8" y="581.818" width="78.7879" height="90.9091"/>
+  <object id="86" name="bee" x="24844" y="388" width="68" height="136"/>
+  <object id="87" name="bee" x="28048" y="500" width="60" height="112"/>
+  <object id="126" name="bee" x="3306.67" y="505.333" width="68" height="102.667"/>
+  <object id="127" name="bee" x="6547.67" y="486" width="65.3333" height="113.333"/>
+  <object id="128" name="bee" x="6290.67" y="332" width="68" height="109.333"/>
+  <object id="129" name="bee" x="9008" y="416.333" width="74.6667" height="98.6667"/>
+  <object id="131" name="bee" x="14080" y="498.667" width="70.6667" height="113.333"/>
+  <object id="132" name="bee" x="19552" y="257.333" width="69.3333" height="93.3333"/>
+  <object id="133" name="bee" x="22198.7" y="506.667" width="45.3333" height="102.667"/>
+  <object id="135" name="bee" x="21054.7" y="608" width="52" height="82.6667"/>
+  <object id="136" name="bee" x="23741.3" y="166.667" width="58.6667" height="114.667"/>
+  <object id="138" name="bee" x="30866.7" y="276" width="58.6667" height="82.6667"/>
+  <object id="139" name="bee" x="30401.3" y="405.333" width="64" height="108"/>
+  <object id="143" name="bee" x="32712" y="517.333" width="52" height="85.3333"/>
+  <object id="145" name="bee" x="34801.3" y="510.667" width="54.6667" height="96"/>
+  <object id="146" name="bee" x="35768" y="584" width="44" height="92"/>
+  <object id="149" name="bee" x="36869.3" y="357.333" width="48" height="97.3333"/>
+  <object id="150" name="bee" x="37368" y="236" width="65.3333" height="112"/>
+  <object id="152" name="bee" x="38233.3" y="569.333" width="78.6667" height="112"/>
+  <object id="158" name="bee" x="40898.7" y="368" width="54.6667" height="84"/>
+  <object id="170" name="bee" x="1187.88" y="590.788" width="81.8182" height="93.9394"/>
+  <object id="185" name="bee" x="12881.8" y="584.818" width="78.7879" height="90.9091"/>
  </objectgroup>
  <objectgroup name="lms_student lv1">
-  <object id="90" x="4816" y="544" width="72" height="112"/>
-  <object id="91" x="7992" y="528" width="76" height="132"/>
-  <object id="92" x="10016" y="356" width="72" height="136"/>
-  <object id="95" x="15688" y="556" width="68" height="108"/>
-  <object id="97" x="16552" y="560" width="68" height="100"/>
-  <object id="98" x="18548" y="396" width="64" height="104"/>
-  <object id="99" x="20432" y="368" width="76" height="136"/>
-  <object id="102" x="23788" y="464" width="64" height="132"/>
-  <object id="104" x="25400" y="316" width="68" height="124"/>
-  <object id="105" x="26528" y="464" width="48" height="120"/>
-  <object id="106" x="27364" y="148" width="60" height="120"/>
-  <object id="119" x="39252" y="464" width="48" height="120"/>
-  <object id="125" x="33256" y="512" width="64" height="76"/>
-  <object id="157" x="40093.3" y="153.333" width="62.6667" height="121.333"/>
-  <object id="160" x="11580" y="517.333" width="50.6667" height="73.3333"/>
-  <object id="161" x="10666.7" y="564" width="57.3333" height="116"/>
-  <object id="162" x="14772" y="489.333" width="66.6667" height="104"/>
-  <object id="164" x="22877.3" y="349.333" width="50.6667" height="86.6667"/>
-  <object id="165" x="28712" y="325.333" width="49.3333" height="105.333"/>
-  <object id="166" x="35201.3" y="153.333" width="60" height="112"/>
+  <object id="90" name="lm_student lv1" x="4816" y="566" width="72" height="112"/>
+  <object id="91" name="lm_student lv1" x="7996" y="556" width="76" height="132"/>
+  <object id="92" name="lm_student lv1" x="9966" y="380" width="72" height="136"/>
+  <object id="95" name="lm_student lv1" x="15684" y="576" width="68" height="108"/>
+  <object id="97" name="lm_student lv1" x="16552" y="584" width="68" height="100"/>
+  <object id="98" name="lm_student lv1" x="18348" y="422" width="64" height="104"/>
+  <object id="99" name="lm_student lv1" x="20428" y="396" width="76" height="136"/>
+  <object id="102" name="lm_student lv1" x="23784" y="488" width="64" height="132"/>
+  <object id="104" name="lm_student lv1" x="25400" y="316" width="68" height="124"/>
+  <object id="105" name="lm_student lv1" x="26524" y="484" width="48" height="120"/>
+  <object id="106" name="lm_student lv1" x="27368" y="172" width="60" height="120"/>
+  <object id="119" name="lm_student lv1" x="39244" y="496" width="48" height="120"/>
+  <object id="125" name="lm_student lv1" x="33252" y="528" width="64" height="76"/>
+  <object id="157" name="lm_student lv1" x="40029.3" y="169.333" width="62.6667" height="121.333"/>
+  <object id="160" name="lm_student lv1" x="11580" y="517.333" width="50.6667" height="73.3333"/>
+  <object id="161" name="lm_student lv1" x="10642.7" y="575" width="57.3333" height="116"/>
+  <object id="162" name="lm_student lv1" x="14772" y="505.333" width="66.6667" height="104"/>
+  <object id="164" name="lm_student lv1" x="22877.3" y="361.333" width="50.6667" height="86.6667"/>
+  <object id="165" name="lm_student lv1" x="28700" y="337.333" width="49.3333" height="105.333"/>
+  <object id="166" name="lm_student lv1" x="35193.3" y="177.333" width="60" height="112"/>
+  <object id="214" name="lm_student lv1" x="29674" y="500" width="60" height="112"/>
  </objectgroup>
  <layer name="test" width="530" height="10" visible="0">
   <data encoding="csv">

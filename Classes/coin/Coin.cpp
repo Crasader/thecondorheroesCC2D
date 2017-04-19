@@ -96,7 +96,7 @@ void Coin::listener()
 
 void Coin::updateMe(BaseHero *hero)
 {
-	if (!this->isVisible()) {
+	if (!this->isVisible() && this->getB2Body()->GetType() == b2_staticBody) {
 		this->resumeSchedulerAndActions();
 		this->setVisible(true);
 	}

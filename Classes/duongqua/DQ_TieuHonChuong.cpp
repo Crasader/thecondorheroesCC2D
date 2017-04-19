@@ -14,6 +14,7 @@ DQ_TieuHonChuong::~DQ_TieuHonChuong()
 DQ_TieuHonChuong * DQ_TieuHonChuong::create(string frameName)
 {
 	DQ_TieuHonChuong* thc = new DQ_TieuHonChuong();
+	thc->setAnchorPoint(Vec2(1.0f, 0.5f));
 	thc->initWithSpriteFrameName(frameName);
 	thc->setTag(TAG_DQ_TIEU_HON_CHUONG);
 	return thc;
@@ -38,5 +39,4 @@ void DQ_TieuHonChuong::updateMe()
 		this->body->SetLinearVelocity(vel);
 	}
 }
-
 

@@ -6,6 +6,8 @@
 #include "EnemyToanChanStudent.h"
 #include "EnemyToanChanStudent2.h"
 #include "EnemyWooder.h"
+#include "EnemyTNB.h"
+
 
 MyPool::MyPool()
 {
@@ -21,7 +23,7 @@ MyPool::~MyPool()
 
 }
 
-MyPool::MyPool(int maxPool, int tag): MyPool()
+MyPool::MyPool(int maxPool, int tag) : MyPool()
 {
 	this->maxPool = maxPool;
 	this->tag = tag;
@@ -41,7 +43,9 @@ MyPool::MyPool(int maxPool, int tag): MyPool()
 		//log("%d", pool->count());
 		break;
 	}
+
 	case TAG_ENEMY_WOODER: {
+
 		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
 		pool = new Ref*[maxPool];
 
@@ -74,7 +78,7 @@ MyPool::MyPool(int maxPool, int tag): MyPool()
 		}
 		break;
 	}
-	case	TAG_ENEMY_TOANCHAN2: {
+	case TAG_ENEMY_TOANCHAN2: {
 		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
 		pool = new Ref*[maxPool];
 
@@ -83,7 +87,23 @@ MyPool::MyPool(int maxPool, int tag): MyPool()
 																 /*auto enemy = EnemyToanChanStudent2::create("Animation/Enemy_DeTuToanChan2/ToanChan2.json",
 																 "Animation/Enemy_DeTuToanChan2/ToanChan2.atlas", scaleOfEnemy);*/
 			auto enemy = EnemyToanChanStudent2::create("Animation/Enemy_DeTuToanChan2/ToanChan2", scaleOfEnemy);
-																 //coin->runAnimation();
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
+
+	case TAG_ENEMY_TNB:
+	{
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfTNB = (SCREEN_SIZE.height / 3.5) / 300;
+			auto enemy = EnemyTNB::create("Animation/Enemy_TNB/TNB", scaleOfTNB);
+			//coin->runAnimation();
 
 			enemy->setTag(tag);
 			pool[i] = enemy;
@@ -103,9 +123,9 @@ MyPool * MyPool::create(int maxPool, int tag)
 
 Ref * MyPool::getObject()
 {
-	 auto object = pool[indexOfPool];
+	auto object = pool[indexOfPool];
 	// log("getObject: %d", indexOfPool);
-	 indexOfPool++;
-	 indexOfPool=  indexOfPool%maxPool;
-	 return object;
+	indexOfPool++;
+	indexOfPool = indexOfPool%maxPool;
+	return object;
 }

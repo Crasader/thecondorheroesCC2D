@@ -28,7 +28,7 @@ ChimDieu * ChimDieu::create(spSkeletonData * data) {
 void ChimDieu::updateMe(float dt) {
 	if (body != nullptr) {
 		this->setPositionX(body->GetPosition().x * PTM_RATIO);
-		this->setPositionY(body->GetPosition().y * PTM_RATIO - this->body->GetFixtureList()->GetShape()->m_radius * PTM_RATIO);
+		this->setPositionY(body->GetPosition().y * PTM_RATIO);
 		this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
 	}
 	else

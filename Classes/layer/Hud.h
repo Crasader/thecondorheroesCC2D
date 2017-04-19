@@ -1,6 +1,7 @@
 #ifndef __HUD_H__
 #define __HUD_H__
 
+
 #include "utils/MyButton.h"
 #include <spine/spine-cocos2dx.h>
 
@@ -58,6 +59,7 @@ protected:
 	CC_SYNTHESIZE(MenuItemImage*, btnMagnet, BtnMagnet);
 	CC_SYNTHESIZE(MenuItemImage*, btnDouleGold, BtnDoubleGold);
 
+
 	CC_SYNTHESIZE(bool, btnCallingHintDone, BtnCallingHintDone);
 
 	CC_SYNTHESIZE(SkeletonAnimation *, multiKills, MultiKills);	//DuongPM Edited for multi kills
@@ -65,10 +67,13 @@ protected:
 private:
 	TMXTiledMap *tmxMap;
 	list<Sprite*> g_lTemp;
+
 	Menu* menu;
+
 	void addProfile();
 	void addButton();
 	void createBloodBar();
+
 
 	void doSuctionCoin(Ref *pSender);
 	void doDoublingCoin(Ref *pSender);

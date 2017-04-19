@@ -2,12 +2,14 @@
 #ifndef __CO_LONG_H__
 #define __CO_LONG_H__
 
+
 #include "manager/EffectManager.h"
 #include "manager/JSonHeroManager.h"
 #include "BaseHero.h"
 #include "Rada.h"
 #include "duongqua/DQ_TieuHonChuong.h"
 #include "layer/GameScene.h"
+
 
 class CoLong : public BaseHero {
 public:
@@ -17,6 +19,7 @@ public:
 	void initCirclePhysic(b2World *world, Point pos);
 	void addStuff();
 	void createPool();
+
 
 	void idle();
 	void run();
@@ -67,3 +70,4 @@ protected:
 	//////////////////////////////////////////////////////////////////////////
 };
 #endif // __CO_LONG_H__
+

@@ -13,9 +13,11 @@ bool MyLayer::init()
 	{
 		return false;
 	}
+
 	wooderPool = MyPool::create(5, TAG_ENEMY_WOODER);
 	toanchan1Pool = MyPool::create(5, TAG_ENEMY_TOANCHAN1);
 	toanchan2Pool = MyPool::create(5, TAG_ENEMY_TOANCHAN2);
+
 
 	for (int i = 0; i < wooderPool->maxPool; i++) {
 		auto tmp = (EnemyWooder*)wooderPool->getObject();

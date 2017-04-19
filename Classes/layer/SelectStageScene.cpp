@@ -3,6 +3,7 @@
 #include "MenuScene.h"
 #include "manager/RefManager.h"
 
+
 Scene * SelectStageLayer::createScene(int charId)
 {
 	auto scene = Scene::create();
@@ -19,6 +20,7 @@ bool SelectStageLayer::init(int charId)
 
 	auto tmxMap = TMXTiledMap::create("config_map.tmx");
 	tmxMap->setPosition(Vec2::ZERO);
+
 	auto scaleY = screenSize.height / tmxMap->getContentSize().height;
 	tmxMap->setScale(scaleY);
 
@@ -78,6 +80,7 @@ bool SelectStageLayer::init(int charId)
 		menu->addChild(mapBtn);
 	}
 
+
 	auto layer = Layer::create();
 	layer->setContentSize(Size(screenSize.width * 0.1f, screenSize.height * 0.1f));
 	layer->setPosition(originXY);
@@ -128,6 +131,7 @@ void SelectStageLayer::gotoPlay(int stage, int map, int haveBoss, int charId)
 	auto _aScene = GameScene::createScene(stage, map, haveBoss, charId);
 	Director::getInstance()->replaceScene(TransitionFade::create(0.3f, _aScene));
 }
+
 
 void SelectStageLayer::goBack() 
 {

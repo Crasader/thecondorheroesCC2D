@@ -1,18 +1,15 @@
 #include "EnemyToanChanStudent2.h"
 #include "manager/SkeletonManager.h"
 
-
 EnemyToanChanStudent2::EnemyToanChanStudent2(string jsonFile, string atlasFile, float scale):EnemyToanChanStudent(jsonFile, atlasFile,scale)
 {
 	controlAttack = 100;
-	//isDie = false;
 }
 
 EnemyToanChanStudent2::EnemyToanChanStudent2(spSkeletonData*data):EnemyToanChanStudent(data)
 {
 	controlAttack = 100;
 }
-
 
 EnemyToanChanStudent2 * EnemyToanChanStudent2::create(string jsonFile, string atlasFile, float scale)
 {
@@ -68,6 +65,7 @@ void EnemyToanChanStudent2::die()
 		slash->setB2Body(nullptr);
 		slash->setIsDie(false);
 		//slash->removeFromParentAndCleanup(true);
+
 	}
 
 }
@@ -95,11 +93,12 @@ void EnemyToanChanStudent2::listener()
 		}
 
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
-			//slash->removeFromParentAndCleanup(true);
+
 			this->setVisible(false);
 			this->clearTracks();
 			this->setAnimation(0, "idle", true);
 			this->setToSetupPose();
+
 		}
 
 	});

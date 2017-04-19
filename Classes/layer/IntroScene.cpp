@@ -23,6 +23,7 @@ bool SceneIntro::init() {
 	_aIntroBackground->setScaleX(m_szVisibleSize.width / _aIntroBackground->getContentSize().width); // full screen size width
 	_aIntroBackground->setScaleY(m_szVisibleSize.height / _aIntroBackground->getContentSize().height); // full screen size height
 	_aIntroBackground->setPosition(origin + Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 2)); // center screen
+
 	this->addChild(_aIntroBackground, 0);
 
 	auto _aCharacter = Sprite::create("UI/UI_intro/character_startmenu.png");
@@ -40,9 +41,11 @@ bool SceneIntro::init() {
 	_pStartSelected->setColor(Color3B(128, 128, 128));
 	auto _aStartButton = MenuItemSprite::create(_pStartNormal, _pStartSelected, CC_CALLBACK_1(SceneIntro::goToMainMenuScene, this));
 	_aStartButton->setScale(m_szVisibleSize.width / _aStartButton->getContentSize().width * 0.3f);
+
 	_aStartButton->setPosition(origin.x + m_szVisibleSize.width * 3 / 4, origin.y + m_szVisibleSize.height / 4);
 	ScaleBy *_pZoomOut = ScaleBy::create(1.5f, 1.1f);
 	Sequence *_pZoomSequence = Sequence::create(_pZoomOut, _pZoomOut->reverse(), NULL);
+
 	RepeatForever* _pZoomRepeat = RepeatForever::create(_pZoomSequence);
 	_aStartButton->runAction(_pZoomRepeat);
 
@@ -54,6 +57,7 @@ bool SceneIntro::init() {
 	_aParticleFeather1->setDuration(-1);
 	_aParticleFeather1->setScale(0.5f);
 	_aParticleFeather1->setPosition(origin + Vec2(m_szVisibleSize.width * 0.5f, m_szVisibleSize.height));
+
 	this->addChild(_aParticleFeather1, 2);
 
 	auto _aParticleFeather2 = ParticleSystemQuad::create("UI/UI_intro/feather2.plist");
@@ -64,7 +68,6 @@ bool SceneIntro::init() {
 	
 	return true;
 }
-
 
 void SceneIntro::goToMainMenuScene(Ref* p_pSender) {
 	auto _aMainMenuScene = MenuLayer::createScene(); // create main menu scene

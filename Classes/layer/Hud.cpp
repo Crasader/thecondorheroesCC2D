@@ -3,6 +3,7 @@
 #include "manager/JSonHeroManager.h"
 #include "manager/RefManager.h"
 
+
 bool Hud::init()
 {
 	//////////////////////////////
@@ -29,6 +30,7 @@ bool Hud::init()
 	createBloodBar();
 	btnCallingHintDone = false;
 
+
 	return true;
 }
 
@@ -49,10 +51,12 @@ void Hud::addProfile()
 	Point origin_1 = Point(mObject_1["x"].asFloat() * tmxMap->getScaleX(), 
 							mObject_1["y"].asFloat()* tmxMap->getScaleY());
 
+
 	avatar = Sprite::create(JSHERO->getavatarPath());
 	avatar->setScale(SCREEN_SIZE.height / 4.7f / avatar->getContentSize().height);
 	avatar->setPosition(origin_1);
 	addChild(avatar, 2);
+
 
 	// BLOOD BAR
 	bloodBoard = Sprite::create("UI/UI_info_ingame/blood_board.png");
@@ -71,6 +75,7 @@ void Hud::addProfile()
 	moneyBoard->setAnchorPoint(Vec2::ZERO);
 	moneyBoard->setScale(SCREEN_SIZE.height / 10 / moneyBoard->getContentSize().height);
 	moneyBoard->setPosition(pos_2X, bloodBoard->getPositionY());
+
 	addChild(moneyBoard);
 
 	lbMoney = Label::createWithBMFont("fonts/font_coin-export.fnt", "0");
@@ -90,6 +95,7 @@ void Hud::addProfile()
 	scoreBoard->setAnchorPoint(Vec2::ZERO);
 	scoreBoard->setScale(SCREEN_SIZE.height / 9 / scoreBoard->getContentSize().height);
 	scoreBoard->setPosition(pos_3X, bloodBoard->getPositionY());
+
 	addChild(scoreBoard);
 
 	lbScore = Label::createWithBMFont("fonts/font_diamond-export.fnt", "0");
@@ -109,6 +115,7 @@ void Hud::addProfile()
 	distanceBar->setScale(SCREEN_SIZE.width * 0.5f / distanceBar->getContentSize().width);
 	distanceBar->setPosition(origin_4);
 
+
 	addChild(distanceBar);
 
 	characterPoint = Sprite::create(JSHERO->getCharacterPointPath());
@@ -127,6 +134,7 @@ void Hud::addButton()
 	Point origin = Point(mObject["x"].asFloat() * tmxMap->getScaleX(), mObject["y"].asFloat()* tmxMap->getScaleY());
 
 	btnAttack = MyButton::create("UI/btn_attack.png", "UI/btn_attack.png", origin);
+
 	btnAttack->setTimeCoolDown(0.33f);
 	btnAttack->setScale(SCREEN_SIZE.height / 4.5f / btnAttack->getContentSize().height);
 	btnAttack->getCoolDownSprite()->setScale(btnAttack->getScale());
@@ -139,6 +147,7 @@ void Hud::addButton()
 	Point origin_1 = Point(mObject_1["x"].asFloat() * tmxMap->getScaleX(), mObject_1["y"].asFloat()* tmxMap->getScaleY());
 
 	btnSkill_1 = MyButton::create(JSHERO->getPathMainImageSkill1(), JSHERO->getPathSubImageSkill1(), origin_1);
+
 	btnSkill_1->setTimeCoolDown(REF->getCoolDownSkill_1());
 	btnSkill_1->setScale(SCREEN_SIZE.height / 6.5f / btnSkill_1->getContentSize().height);
 	btnSkill_1->getCoolDownSprite()->setScale(btnSkill_1->getScale());
@@ -153,6 +162,7 @@ void Hud::addButton()
 	Point origin_2 = Point(mObject_2["x"].asFloat() * tmxMap->getScaleX(), mObject_2["y"].asFloat()* tmxMap->getScaleY());
 
 	btnSkill_2 = MyButton::create(JSHERO->getPathMainImageSkill2(), JSHERO->getPathSubImageSkill2(), origin_2);
+
 	btnSkill_2->setTimeCoolDown(REF->getCoolDownSkill_2());
 	btnSkill_2->setScale(SCREEN_SIZE.height / 6.5f / btnSkill_2->getContentSize().height);
 	btnSkill_2->getCoolDownSprite()->setScale(btnSkill_2->getScale());
@@ -167,6 +177,7 @@ void Hud::addButton()
 	Point origin_3 = Point(mObject_3["x"].asFloat() * tmxMap->getScaleX(), mObject_3["y"].asFloat()* tmxMap->getScaleY());
 
 	btnSkill_3 = MyButton::create(JSHERO->getPathMainImageSkill3(), JSHERO->getPathSubImageSkill3(), origin_3);
+
 	btnSkill_3->setTimeCoolDown(REF->getCoolDownSkill_3());
 	btnSkill_3->setScale(SCREEN_SIZE.height / 6.5f / btnSkill_3->getContentSize().height);
 	btnSkill_3->getCoolDownSprite()->setScale(btnSkill_3->getScale());
@@ -175,6 +186,7 @@ void Hud::addButton()
 	addChild(btnSkill_3->getCoolDownSprite());
 	addChild(btnSkill_3->getNumberCoolDown());
 	addChild(btnSkill_3);
+
 
 	auto groupPause = tmxMap->getObjectGroup("btn_pause");
 	auto mObject_5 = groupPause->getObject("btn_pause");
@@ -231,6 +243,7 @@ void Hud::createBloodBar()
 		listBlood->addObject(blood);
 	}
 }
+
 
 void Hud::doSuctionCoin(Ref * pSender)
 {

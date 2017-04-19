@@ -6,6 +6,7 @@
 #include "manager/JSonMenuManager.h"
 #include "manager/RefManager.h"
 
+
 Scene * MenuLayer::createScene() {
 	auto scene = Scene::create();
 	auto layer = MenuLayer::create();
@@ -18,7 +19,6 @@ bool MenuLayer::init() {
 	if (!Layer::init()) {
 		return false;
 	}
-	
 	
 	initInputData();
 	Vec2 _v2Origin = Director::getInstance()->getVisibleOrigin();
@@ -44,11 +44,13 @@ bool MenuLayer::init() {
 		"UI/UI_main_menu/PreviewDuongQua/s_DuongQua.atlas", m_pGameScene->getContentSize().height / 650);
 	m_arPreviewHero[4] = new SkeletonAnimation("UI/UI_main_menu/PreviewDuongQua/s_DuongQua.json",
 		"UI/UI_main_menu/PreviewDuongQua/s_DuongQua.atlas", m_pGameScene->getContentSize().height / 650);
+
 	m_arPreviewHero[0]->setPosition(_v2Origin + Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
 	m_arPreviewHero[1]->setPosition(_v2Origin + Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
 	m_arPreviewHero[2]->setPosition(_v2Origin + Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
 	m_arPreviewHero[3]->setPosition(_v2Origin + Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
 	m_arPreviewHero[4]->setPosition(_v2Origin + Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
+
 
 	initSceneLayer();
 
@@ -408,7 +410,9 @@ void MenuLayer::initItemBoard() {
 	_pItemScrollView->setContentSize(Size(_pItemBoard->getContentSize().width * _pItemBoard->getScaleX() * 0.8f,
 		_pItemBoard->getContentSize().height * _pItemBoard->getScaleY() * 0.7f));
 	_pItemScrollView->setAnchorPoint(Vec2(0.0f, 0.0f));
-	_pItemScrollView->setPosition(Vec2(m_pItemBoard->getContentSize().width * 0.1f, m_pItemBoard->getContentSize().height * 0.1f));
+
+	_pItemScrollView->setPosition(Vec2(_pItemBoard->getContentSize().width * 0.1f, _pItemBoard->getContentSize().height * 0.08f));
+
 	_pItemScrollView->setDirection(ScrollView::Direction::VERTICAL);
 	_pItemScrollView->setBounceEnabled(true);
 	_pItemScrollView->setTouchEnabled(true);
@@ -971,6 +975,7 @@ void MenuLayer::buttonHeroesHandle() {
 
 		runAction(Sequence::create(DelayTime::create(0.3f), CallFunc::create([&]() {
 			m_pGameScene->runAction(MoveTo::create(0.3f, origin + Vec2(m_szVisibleSize.width / 5, m_szVisibleSize.height * 0.2f)));
+
 		}), nullptr));
 
 		runAction(Sequence::create(DelayTime::create(0.6f), CallFunc::create([&]() {
@@ -1176,4 +1181,3 @@ void MenuLayer::moveLayerViaDirection(Layer *p_pLayer, int p_nDirection) {
 		break;
 	}
 }
-

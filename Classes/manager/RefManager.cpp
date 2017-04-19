@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "manager/JSonHeroManager.h"
 
+
 RefManager* RefManager::refManager;
 
 RefManager::RefManager()
@@ -11,7 +12,7 @@ RefManager::RefManager()
 	selectedHero = ref->getIntegerForKey(KEY_SELECTED_HERO, 0);
 
 	currentStageUnlocked = ref->getIntegerForKey(KEY_CUR_STAGE_UNLOCKED, 2);
-	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 2);
+	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 3);
 
 	numberOfLife = ref->getIntegerForKey(KEY_LIFE, 3);
 	goldExplored = ref->getIntegerForKey(KEY_GOLD, 0);

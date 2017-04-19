@@ -24,14 +24,10 @@ Slash * Slash::create(string jsonFile, string atlasFile, float scale)
 void Slash::initCirclePhysic(b2World * world, Point pos)
 {
 	B2Skeleton::initCirclePhysic(world, pos);
-	auto a = this->getBoundingBox().size.height;
-	this->getB2Body()->SetType(b2_dynamicBody);
 	this->getB2Body()->GetFixtureList()->SetSensor(true);
 	this->getB2Body()->SetGravityScale(0);
-	this->getB2Body()->SetUserData(this);
 	this->changeBodyCategoryBits(BITMASK_SLASH);
 	this->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
-	this->getB2Body()->GetFixtureList()->SetSensor(true);
 }
 
 void Slash::updateMe(BaseHero * hero)

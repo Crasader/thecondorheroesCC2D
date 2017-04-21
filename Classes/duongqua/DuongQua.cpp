@@ -429,7 +429,7 @@ void DuongQua::attackNormal()
 		//log("atttack");
 		setToSetupPose();
 
-		EM->getSlashBreak()->setVisible(false);
+		//EM->getSlashBreak()->setVisible(false);
 	}
 }
 

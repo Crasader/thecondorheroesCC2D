@@ -183,7 +183,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		coin->die();
 
-		auto parentGameScene = (GameScene*)coin->getParent()->getParent();
+		auto parentGameScene = (GameScene*)coin->getParent();
 		auto hero = parentGameScene->getHero();
 		hero->setCoinExplored(hero->getCoinExplored() + 10);
 	}

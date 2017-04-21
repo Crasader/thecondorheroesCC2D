@@ -111,7 +111,7 @@ void B2Sprite::updateMe(BaseHero*hero)
 				this->setPositionX(body->GetPosition().x * PTM_RATIO);
 				this->setPositionY(body->GetPosition().y * PTM_RATIO);
 				this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));	// rotate
-			//}
+		//	}
 			//else {
 			//	this->setPositionX(body->GetPosition().x * PTM_RATIO - this->getParent()->getPositionX());
 			//	this->setPositionY(body->GetPosition().y * PTM_RATIO - this->getParent()->getPositionY());

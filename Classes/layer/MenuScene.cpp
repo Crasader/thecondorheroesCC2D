@@ -719,7 +719,7 @@ void MenuLayer::showMainMenu() {
 }
 
 void MenuLayer::buttonStartHandle() {
-	auto _aScene = GameScene::createScene(1, 0, m_nIndexHeroSelected);
+	auto _aScene = GameScene::createScene(3, 1, m_nIndexHeroSelected);
 	REF->pointToCurrentHero(m_nIndexHeroSelected);
 //    auto _aScene = SelectStageScene::createScene();
     Director::getInstance()->replaceScene(_aScene);

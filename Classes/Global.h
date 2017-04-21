@@ -74,9 +74,11 @@ using namespace std;
 // z-order
 #define ZORDER_BG							0
 #define ZORDER_BG2							1
-#define ZORDER_ENEMY						2
-#define ZORDER_HERO							3
-#define ZORDER_SMT							4
+#define ZORDER_MOON							2
+#define ZORDER_TILE							3
+#define ZORDER_ENEMY						4
+#define ZORDER_HERO							5
+#define ZORDER_SMT							6
 
 
 #define PTM_RATIO							32

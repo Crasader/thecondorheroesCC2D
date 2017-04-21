@@ -114,7 +114,7 @@ void EnemyToanChanStudent2::updateMe(BaseHero* hero)
 		slash->setVisible(false);
 		slash->setIsDie(false);
 	}
-	if (slash->getPositionX() < this->getPositionX() - SCREEN_SIZE.width*3/4 && slash->isVisible()) {
+	if (slash->getPositionX() < this->getPositionX() - SCREEN_SIZE.width*3/4 && slash->isVisible() && slash->getB2Body()) {
 		//slash->getB2Body()->SetTransform(b2Vec2(this->getBoneLocation("bone32").x / PTM_RATIO, this->getBoneLocation("bone32").y / PTM_RATIO), 0);
 		slash->getB2Body()->GetWorld()->DestroyBody(slash->getB2Body());
 		slash->setB2Body(nullptr);

@@ -192,6 +192,7 @@ void EnemyBoss1::createGold()
 	int tmp = int(indexCoin + 5 + CCRANDOM_0_1() * 10);
 	for (; indexCoin < coinPool->count(); indexCoin++) {
 		auto coin = (Coin*)coinPool->getObjectAtIndex(indexCoin);
+		coin->setPosition(this->getPosition());
 		coin->setVisible(true);
 		coin->initCirclePhysic(this->getB2Body()->GetWorld(), this->getPosition());
 		coin->getB2Body()->GetFixtureList()->SetSensor(false);
@@ -266,10 +267,10 @@ void EnemyBoss1::updateMe(BaseHero* hero)
 			slash->die();
 		}
 	}
-	for (int i = 0; i < coinPool->count(); i++) {
+	/*for (int i = 0; i < coinPool->count(); i++) {
 		auto coin = (Coin*)coinPool->getObjectAtIndex(i);
 		coin->updateMe(hero);
-	}
+	}*/
 
 	if (this->getPosition().y < -SCREEN_SIZE.height / 2) {
 		this->setIsDie(true);

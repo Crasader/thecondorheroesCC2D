@@ -147,7 +147,7 @@ void BaseHero::updateMe(float dt)
 	if (health <= 0) {
 		getFSM()->changeState(MDie);
 	}
-	updateMapItem();
+	//updateMapItem();
 }
 
 void BaseHero::doCounterSkill1()

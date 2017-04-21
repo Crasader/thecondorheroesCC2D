@@ -44,8 +44,8 @@ bool GameScene::init(int map, int haveboss, int charId)
 	{
 		return false;
 	}
-	isModeDebug = false;
-	//isModeDebug = true;
+	//isModeDebug = false;
+	isModeDebug = true;
 	indexOfNextMapBoss = -1;
 	this->haveboss = haveboss;
 	this->map = map;
@@ -497,6 +497,15 @@ void GameScene::loadBackground(int map)
 		this->addChild(tmx_mapboss[0], ZORDER_BG2);
 		this->addChild(tmx_mapboss[1], ZORDER_BG2);
 	}
+	auto moonGr = tmx_map->getObjectGroup("moon");
+	if (moonGr) {
+		auto object = moonGr->getObject("moon");
+		auto pos = Point(object["x"].asFloat()*tmx_map->getScale(), object["y"].asFloat()*tmx_map->getScale());
+		auto moon = Sprite::create("moon.png");
+		moon->setScale(SCREEN_SIZE.height / 4 / moon->getContentSize().height);
+		moon->setPosition(pos - SCREEN_SIZE / 2);
+		follow->addChild(moon);
+	}
 
 	createInfiniteNode();
 }
@@ -638,9 +647,10 @@ void GameScene::creatEnemyWooder(MyLayer * layer, Vec2 pos)
 	}
 	enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2.5f));
 	enemy->changeBodyCategoryBits(BITMASK_WOODER);
-	enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD);
+	enemy->changeBodyMaskBits(BITMASK_SWORD);
 
 	enemy->listener();
+	log("wooder is die: %i", enemy->getIsDie());
 }
 
 void GameScene::createEnemyToanChanStudent(MyLayer * layer, Vec2 pos)
@@ -747,39 +757,56 @@ void GameScene::createCoin()
 	createFormCoin("coin_zigzag", "Map/zigzag.tmx", "zigzag");
 	createFormCoin("coin_zigzag2", "Map/zigzag2.tmx", "zigzag2");
 	createFormCoin("coin_circle", "Map/circle.tmx", "circle");
+	createCoinBullion();
+	createCointBag();
 }
 
-void GameScene::createCointBag(Layer *layer, Vec2 pos)
+void GameScene::createCointBag()
 {
 
-	auto scaleOfEnemy = SCREEN_SIZE.height / 5.0f / 123; //  la height cua spine
-	auto coin = CoinBag::create("Gold_bag", scaleOfEnemy);
-	coin->setPosition(pos);
-	//enemy->setVisible(false);
-	layer->addChild(coin, ZORDER_ENEMY);
-	/*coin->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY()));
-	coin->getB2Body()->SetType(b2_staticBody);
-	coin->getB2Body()->GetFixtureList()->SetSensor(true);
-	coin->changeBodyCategoryBits(BITMASK_COIN_BAG);
-	coin->changeBodyMaskBits(BITMASK_SWORD);
-	coin->update(0.0f);*/
-	//enemy->listener();
+	auto group = tmx_map->getObjectGroup("coin_bag");
+	if (!group) return;
+	for (auto child : group->getObjects()) {
+		auto mObject = child.asValueMap();
+		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+		auto scaleOfEnemy = SCREEN_SIZE.height / 5.0f / 123; //  la height cua spine
+		auto coin = CoinBag::create("Gold_bag", scaleOfEnemy);
+		coin->setPosition(origin);
+		coin->setVisible(false);
+		//coin->pause();
+		this->addChild(coin, ZORDER_ENEMY);
+		coin->initCirclePhysic(world, origin);
+		coin->getB2Body()->SetType(b2_staticBody);
+		coin->getB2Body()->GetFixtureList()->SetSensor(true);
+		coin->changeBodyCategoryBits(BITMASK_COIN_BAG);
+		coin->changeBodyMaskBits(BITMASK_SWORD);
+		//coin->update(0);
+	}
+
 
 }
 
-void GameScene::createCoinBullion(Layer *layer, Vec2 pos)
+void GameScene::createCoinBullion()
 {
-	auto scaleOfEnemy = SCREEN_SIZE.height / 6.0f / 118; //  la height cua spine
-	auto coin = CoinBullion::create("gold", scaleOfEnemy);
-	coin->setPosition(pos);
-	//enemy->setVisible(false);
-	layer->addChild(coin, ZORDER_ENEMY);
-	/*coin->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY()));
-	coin->getB2Body()->SetType(b2_staticBody);
-	coin->getB2Body()->GetFixtureList()->SetSensor(true);
-	coin->changeBodyCategoryBits(BITMASK_COIN_BULLION);
-	coin->changeBodyMaskBits(BITMASK_HERO);
-	coin->update(0.0f);*/
+	auto group = tmx_map->getObjectGroup("coin_bullion");
+	if (!group) return;
+	for (auto child : group->getObjects()) {
+		auto mObject = child.asValueMap();
+		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+		auto scaleOfEnemy = SCREEN_SIZE.height / 6.0f / 118; //  la height cua spine
+		auto coin = CoinBullion::create("gold", scaleOfEnemy);
+		coin->setPosition(origin);
+		coin->setVisible(false);
+		//coin->setAni
+		coin->pause();
+		this->addChild(coin, ZORDER_ENEMY);
+		coin->initCirclePhysic(world, origin);
+		coin->getB2Body()->SetType(b2_staticBody);
+		coin->getB2Body()->GetFixtureList()->SetSensor(true);
+		coin->changeBodyCategoryBits(BITMASK_COIN_BULLION);
+		coin->changeBodyMaskBits(BITMASK_HERO);
+		//coin->update(0);
+	}
 }
 
 void GameScene::createFormCoin(string objectName,string objectMap, string objectInForm)
@@ -852,7 +879,7 @@ void GameScene::danceWithCamera()
 	auto origin = Director::getInstance()->getVisibleOrigin();
 	follow = Node::create();
 	follow->setPosition(origin + SCREEN_SIZE / 2);
-	this->addChild(follow);
+	this->addChild(follow,ZORDER_MOON);
 
 	camera = Follow::create(follow);
 	camera->setTarget(follow);
@@ -1190,7 +1217,7 @@ void GameScene::updateCoin()
 {
 	auto children = this->getChildren();
 	for (auto child : children) {
-		if (child->getTag() == TAG_COIN) {
+		if (child->getTag() == TAG_COIN  ) {
 			if (child->getPositionX() < follow->getPositionX()+SCREEN_SIZE.width/2 && child->getPositionX() > follow->getPositionX() - SCREEN_SIZE.width / 2) {
 				((Coin*)child)->updateMe(hero);
 			}
@@ -1198,6 +1225,15 @@ void GameScene::updateCoin()
 				child->removeFromParentAndCleanup(true);
 			}
 		}
+		else if (child->getTag() == TAG_COINBAG || child->getTag() == TAG_COINBULLION) {
+			if (child->getPositionX() < follow->getPositionX() + SCREEN_SIZE.width / 2 && child->getPositionX() > follow->getPositionX() - SCREEN_SIZE.width / 2) {
+				((B2Skeleton*)child)->updateMe(hero);
+			}
+			else if (child->getPositionX() < follow->getPositionX() - SCREEN_SIZE.width / 2) {
+				child->removeFromParentAndCleanup(true);
+			}
+		}
+	
 	}
 }
 
@@ -1486,7 +1522,7 @@ void GameScene::updateLayer()
 			preLayer = posLayer;
 			posLayer = tmpLayer;
 
-			posLayer->setPosition(preLayer->getPositionX() + SCREEN_SIZE.width*1.5f, 0);
+			posLayer->setPosition(preLayer->getPositionX() + SCREEN_SIZE.width, 0);
 			if (posLayer->getPositionX() < tmx_map->getBoundingBox().size.width) {
 				auto call = CCCallFunc::create([&]() {
 					createAgentOnLayer(posLayer);

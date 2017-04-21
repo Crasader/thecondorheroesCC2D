@@ -140,8 +140,10 @@ private:
 	void creatBoss();
 
 	void createCoin();
-	void createCointBag(Layer *layer, Vec2 pos);
-	void createCoinBullion(Layer *layer, Vec2 pos);
+	//void createCointBag(Layer *layer, Vec2 pos);
+	//void createCoinBullion(Layer *layer, Vec2 pos);
+	void createCointBag();
+	void createCoinBullion();
 	//void createFormCoin( MyLayer *layer,Vec2 pos, string objectMap, string objectInform, SpriteBatchNode* batchnode);
 	void createFormCoin(string objectName,string objectMap,string objectInform);
 	//skeleton data

@@ -7,7 +7,9 @@
 #include "coin/Coin.h"
 #include "Slash.h"
 #include "manager/EffectManager.h"
+#include "manager/RefManager.h"
 #include "boss1/EnemyBoss1.h"
+#include "item/Item.h"
 
 
 CollisionListener::CollisionListener() {
@@ -150,13 +152,33 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
 		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
 		auto coin = sA->getTag() == TAG_COIN ? (Coin *)sA : (Coin *)sB;
-		auto hero = sA->getTag() == TAG_COIN ? (BaseHero *)sB : (BaseHero *)sA;
-		if (coin->getB2Body()&& coin->getParent()) {
+		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
+		if (coin->getB2Body() && coin->getParent()) {
 			coin->getB2Body()->GetFixtureList()->SetSensor(true);
 			coin->picked();
 			hero->setCoinExplored(hero->getCoinExplored() + 1);
 		}
 
+	}
+
+	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_ITEM) ||
+		(bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_ITEM)
+		) {
+
+		auto sA = (B2Skeleton*) bodyA->GetUserData();
+		auto sB = (B2Skeleton*) bodyB->GetUserData();
+		auto item = sA->getTag() == TAG_ITEM ? (Item *)sA : (Item *)sB;
+		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
+		if (item->getTypeItem() == Item_type::HEALTH && hero->getHealth() < REF->getCurrentHealth()) {
+			hero->setHealth(hero->getHealth() + 1);
+
+			auto parentGameScene = (GameScene*)hero->getParent();
+			parentGameScene->updateBloodBar(hero->getHealth() - 1, true);
+		}
+
+		item->setTaken(true);
+		item->picked();
+		
 	}
 
 	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_COIN_BULLION) ||
@@ -166,7 +188,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
 		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
 		auto coin = sA->getTag() == TAG_COINBULLION ? (CoinBullion *)sA : (CoinBullion *)sB;
-		auto hero = sA->getTag() == TAG_COINBULLION ? (BaseHero *)sB : (BaseHero *)sA;
+		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
 		coin->picked();
 		hero->setCoinExplored(hero->getCoinExplored() + 5);
 	}
@@ -384,12 +406,12 @@ void CollisionListener::BeginContact(b2Contact * contact)
         
         B2Sprite* sA = (B2Sprite*)bodyA->GetUserData();
         B2Sprite* sB = (B2Sprite*)bodyB->GetUserData();
-        EnemyWooder* enemy;
+        EnemyTNB* enemy;
         if (sA && sB) {
-            enemy = sA->getTag() == TAG_ENEMY_TNB ? (EnemyWooder *)sA : (EnemyWooder *)sB;
+            enemy = sA->getTag() == TAG_ENEMY_TNB ? (EnemyTNB *)sA : (EnemyTNB *)sB;
         }
         else {
-            enemy = sA ? (EnemyWooder*)sA : (EnemyWooder*)sB;
+            enemy = sA ? (EnemyTNB*)sA : (EnemyTNB *)sB;
         }
         
         auto parentGameScene = (GameScene*)enemy->getParent()->getParent();

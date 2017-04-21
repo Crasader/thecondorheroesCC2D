@@ -93,7 +93,6 @@ public:
 	virtual void doCounterSkill2();
 	virtual void doCounterSkill3();
 
-
 	virtual void doDestroyBodies(b2World* world);
 	virtual void updateAttackBossAsTarget(BaseEnemy *p_pBoss);
 

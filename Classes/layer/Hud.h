@@ -32,6 +32,9 @@ public:
 	bool callBirdCooldown();
 
 	void updateMultiKills(int m_nCombo);
+	void runnerSkillDuration(int skillWhat, float duration);
+	void runnerItem();
+
 protected:
 
 	CC_SYNTHESIZE(MenuItemImage*, pauseItem, PauseItem);
@@ -59,6 +62,8 @@ protected:
 	CC_SYNTHESIZE(MenuItemImage*, btnMagnet, BtnMagnet);
 	CC_SYNTHESIZE(MenuItemImage*, btnDouleGold, BtnDoubleGold);
 
+	CC_SYNTHESIZE(ProgressTimer*, icon_Skill, Icon_Skill);
+	CC_SYNTHESIZE(ProgressTimer*, icon_Item, Icon_Item);
 
 	CC_SYNTHESIZE(bool, btnCallingHintDone, BtnCallingHintDone);
 
@@ -67,6 +72,9 @@ protected:
 private:
 	TMXTiledMap *tmxMap;
 	list<Sprite*> g_lTemp;
+	float timerSkill;
+	float durationSkill;
+	float timerItem;
 
 	Menu* menu;
 

@@ -103,7 +103,7 @@ void B2Sprite::setAngle(float radian)
 //}
 
 
-void B2Sprite::updateMe(BaseHero*hero)
+void B2Sprite::updateMe(BaseHero *hero)
 {
 	if (body != nullptr) {
 		if (this->getParent()) {

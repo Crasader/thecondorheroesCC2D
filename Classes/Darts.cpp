@@ -24,7 +24,6 @@ void Darts::initCirclePhysic(b2World * world, Point pos) {
 }
 
 void Darts::updateMe(BaseHero * hero) {
-	//B2Skeleton::updateMe(hero);
 	if (body != nullptr) {
 		this->setPositionX(body->GetPosition().x * PTM_RATIO - this->getParent()->getPositionX());
 		this->setPositionY(body->GetPosition().y * PTM_RATIO - this->body->GetFixtureList()->GetShape()->m_radius*PTM_RATIO

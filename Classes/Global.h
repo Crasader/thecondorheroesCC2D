@@ -29,6 +29,7 @@ using namespace std;
 #define BITMASK_SLASH					0x0100
 #define BITMASK_BOSS					0x0200
 #define BITMASK_UNDER_GROUND			0x0400
+#define BITMASK_ITEM					0x0600
 #define BITMASK_COIN_BAG				0x0800
 #define BITMASK_COIN_BULLION			0x1000
 #define BITMASK_RADA_SKILL_1			0x2000
@@ -60,7 +61,6 @@ using namespace std;
 
 // tag b2Sprite
 #define TAG_COIN							80
-#define TAG_MAGNET							81
 
 // tag b2Skeleton
 #define TAG_COINBULLION						99

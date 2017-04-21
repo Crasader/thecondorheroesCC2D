@@ -143,15 +143,7 @@ void DuongQua::landKiemPhap()
 {
 	this->schedule([&](float dt) {
 		if (checkDurationSkill2 % 8 == 0) {		// every 0.25 second
-			float width;
-			if (getB2Body()->GetLinearVelocity().x <= 0) {
-				width = this->getPositionX() + SCREEN_SIZE.width * 0.5f + (indexKiem++) * SCREEN_SIZE.width * 0.15f;
-			}
-			else if(this->getIsDriverEagle()) {
-				width = this->getPositionX() + SCREEN_SIZE.width * 0.5f + (indexKiem++) * SCREEN_SIZE.width * 0.05f;
-			}
-			else
-				width = this->getPositionX() + SCREEN_SIZE.width * 0.5f;
+			float width = this->getPositionX() + SCREEN_SIZE.width * 0.5f;
 
 			createKiemPhap(width);
 		}
@@ -311,7 +303,7 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 	fixtureDef.shape = &circle_shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_HERO;
-	fixtureDef.filter.maskBits = BITMASK_FLOOR | BITMASK_COIN |
+	fixtureDef.filter.maskBits = BITMASK_FLOOR | BITMASK_COIN | BITMASK_ITEM |
 		BITMASK_TOANCHAN1 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION;
 
 
@@ -380,7 +372,6 @@ void DuongQua::run()
 
 	if (!EM->getSmokeRun()->isVisible()) {
 		EM->getSmokeRun()->setVisible(true);
-		EM->smokeRunAni();
 	}
 
 	//log("run");
@@ -435,8 +426,6 @@ void DuongQua::die()
 	getB2Body()->SetLinearDamping(10);
 
 	EM->getSmokeRun()->setVisible(false);
-
-	//log("die");
 }
 
 void DuongQua::attackNormal()
@@ -601,6 +590,7 @@ void DuongQua::listener()
 		}
 
 		else if (strcmp(getCurrent()->animation->name, "die") == 0) {
+			this->pause();
 			auto gamelayer = (GameScene*)this->getParent();
 			gamelayer->dieGame();
 		}

@@ -209,13 +209,6 @@ void CoLong::updateMe(float p_fDelta) {
 		return;
 	}
 
-	/*if (getPositionY() + getTrueRadiusOfHero() * 2 < 0) {
-		getB2Body()->SetTransform(b2Vec2(SCREEN_SIZE.width * 0.25f / PTM_RATIO,
-			SCREEN_SIZE.height / PTM_RATIO), getB2Body()->GetAngle());
-		return;
-	}*/
-
-
 	if (!getIsDoneDuration1()) {
 		if (!this->m_lEnemiesSelectedBySkill1.empty()) {
 			auto enemy = m_lEnemiesSelectedBySkill1.front();
@@ -329,7 +322,7 @@ void CoLong::initCirclePhysic(b2World * world, Point pos) {
 	fixtureDef.shape = &circle_shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_HERO;
-	fixtureDef.filter.maskBits = BITMASK_FLOOR | BITMASK_COIN |
+	fixtureDef.filter.maskBits = BITMASK_FLOOR | BITMASK_COIN | BITMASK_ITEM |
 		BITMASK_TOANCHAN1 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION;
 
 
@@ -423,6 +416,7 @@ void CoLong::listener() {
 		}
 
 		else if (strcmp(getCurrent()->animation->name, "die") == 0) {
+			this->pause();
 			auto gamelayer = (GameScene*)this->getParent();
 			gamelayer->dieGame();
 		}
@@ -457,7 +451,6 @@ void CoLong::run() {
 
 		if (!EM->getSmokeRun()->isVisible()) {
 			EM->getSmokeRun()->setVisible(true);
-			EM->smokeRunAni();
 		}
 	}
 	

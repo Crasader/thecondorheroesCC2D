@@ -9,6 +9,7 @@ EffectManager::EffectManager()
 
 EffectManager::~EffectManager()
 {
+	activeSkill = nullptr;
 	slashBreak = nullptr;
 	smokeJumpX2 = nullptr;
 	smokeLanding = nullptr;
@@ -25,17 +26,26 @@ EffectManager * EffectManager::getInstance()
 
 void EffectManager::createWithFile(float scale)
 {
+	activeSkill = new SkeletonAnimation("Effect/active_skill_eff.json", "Effect/active_skill_eff.atlas", scale);
 	slashBreak = new SkeletonAnimation("Effect/slash-break.json", "Effect/slash-break.atlas", scale / 2);
 	smokeJumpX2 = new SkeletonAnimation("Effect/smoke-jumpx2.json", "Effect/smoke-jumpx2.atlas", scale / 2);
 	smokeLanding = new SkeletonAnimation("Effect/smoke-landing.json", "Effect/smoke-landing.atlas", scale / 2);
 	smokeRun = new SkeletonAnimation("Effect/smoke-run.json", "Effect/smoke-run.atlas", scale);
 	reviveMe = new SkeletonAnimation("Effect/revive.json", "Effect/revive.atlas", scale / 2);
 
+	activeSkill->setVisible(false);		activeSkill->update(0.0f);
 	slashBreak->setVisible(false);		slashBreak->update(0.0f);
 	smokeJumpX2->setVisible(false);		smokeJumpX2->update(0.0f);
 	smokeLanding->setVisible(false);	smokeLanding->update(0.0f);
 	smokeRun->setVisible(false);		smokeRun->update(0.0f);
 	reviveMe->setVisible(false);		reviveMe->update(0.0f);
+}
+
+void EffectManager::activeSkillAni()
+{
+	activeSkill->clearTracks();
+	activeSkill->addAnimation(0, "active", true);
+	activeSkill->setToSetupPose();
 }
 
 void EffectManager::slashBreakAni()

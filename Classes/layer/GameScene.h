@@ -25,6 +25,7 @@
 #include "datastructures/MyData.h"
 #include "datastructures/MyPool.h"
 #include "layer/MyLayer.h"
+#include "item/Item.h"
 
 
 
@@ -54,7 +55,10 @@ private:
 
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
 	float scaleOfMap;
-	vector <MyData> listPosAndTag;
+	vector<MyData> listPosAndTag;
+
+	int numberDeadItem = 0;
+	list<Item*> listItem;
 
 	MyLayer * preLayer;
 	MyLayer * posLayer;
@@ -147,7 +151,10 @@ private:
 	void createCoinBag(Layer *layer, Vec2 pos);
 	void createCoinBullion(Layer *layer, Vec2 pos);
 	//void createFormCoin( MyLayer *layer,Vec2 pos, string objectMap, string objectInform, SpriteBatchNode* batchnode);
-	void createFormCoin(string objectName,string objectMap,string objectInform);
+	void createFormCoin(string objectName, string objectMap, string objectInform);
+
+
+	void createItem();
 
 	//skeleton data
 	//spSkeletonData* createSkeletonData(string atlasFile, string jsonFile);

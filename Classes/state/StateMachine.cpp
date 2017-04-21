@@ -1,5 +1,4 @@
 #include "state/StateMachine.h"
-#include "BaseHero.h"
 
 
 

@@ -16,6 +16,7 @@ public:
 	~EffectManager();
 
 protected:
+	CC_SYNTHESIZE(SkeletonAnimation *, activeSkill, ActiveSkill);
 	CC_SYNTHESIZE(SkeletonAnimation *, slashBreak, SlashBreak);
 	CC_SYNTHESIZE(SkeletonAnimation *, smokeJumpX2, SmokeJumpX2);
 	CC_SYNTHESIZE(SkeletonAnimation *, smokeLanding, SmokeLanding);
@@ -32,6 +33,7 @@ public:
 
 	void createWithFile(float scale);
 
+	void activeSkillAni();
 	void slashBreakAni();
 	void smokeJumpX2Ani();
 	void smokeLandingAni();

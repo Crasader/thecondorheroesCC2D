@@ -30,7 +30,7 @@ CoinBullion * CoinBullion::create(string filename, float scale)
 	auto bag = new CoinBullion(data);
 	//enemy->initWithData(data);
 	bag->update(0.0f);
-	bag->setTag(TAG_COINBAG);
+	bag->setTag(TAG_COINBULLION);
 	bag->setAnimation(0, "Gold", true);
 	return bag;
 }

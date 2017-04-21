@@ -17,7 +17,7 @@ bool Hud::init()
 	auto winSize = Director::getInstance()->getVisibleSize();
 
 	tmxMap = TMXTiledMap::create("UI/UI_config.tmx");
-	tmxMap->setPosition(origin);
+	tmxMap->setPosition(Vec2::ZERO);
 	tmxMap->setScaleX(winSize.width / tmxMap->getContentSize().width);
 	tmxMap->setScaleY(winSize.height / tmxMap->getContentSize().height);
 	tmxMap->setVisible(false);
@@ -129,6 +129,7 @@ void Hud::addProfile()
 
 void Hud::addButton()
 {
+
 	auto groupAttack = tmxMap->getObjectGroup("btn_attack");
 	auto mObject = groupAttack->getObject("btn_attack");
 	Point origin = Point(mObject["x"].asFloat() * tmxMap->getScaleX(), mObject["y"].asFloat()* tmxMap->getScaleY());
@@ -137,9 +138,6 @@ void Hud::addButton()
 
 	btnAttack->setTimeCoolDown(0.33f);
 	btnAttack->setScale(SCREEN_SIZE.height / 4.5f / btnAttack->getContentSize().height);
-	btnAttack->getCoolDownSprite()->setScale(btnAttack->getScale());
-	
-	addChild(btnAttack->getCoolDownSprite());
 	addChild(btnAttack);
 
 	auto groupBtnSkill1 = tmxMap->getObjectGroup("btn_skill1");
@@ -149,13 +147,11 @@ void Hud::addButton()
 	btnSkill_1 = MyButton::create(JSHERO->getPathMainImageSkill1(), JSHERO->getPathSubImageSkill1(), origin_1);
 
 	btnSkill_1->setTimeCoolDown(REF->getCoolDownSkill_1());
+	btnSkill_1->addNumberOfUse(JSHERO->getNumberOfUseSkill1());
 	btnSkill_1->setScale(SCREEN_SIZE.height / 6.5f / btnSkill_1->getContentSize().height);
-	btnSkill_1->getCoolDownSprite()->setScale(btnSkill_1->getScale());
-	btnSkill_1->getNumberCoolDown()->setScale(btnSkill_1->getBoundingBox().size.height / 2 / btnSkill_1->getNumberCoolDown()->getContentSize().height);
-	
-	addChild(btnSkill_1->getCoolDownSprite());
-	addChild(btnSkill_1->getNumberCoolDown());
 	addChild(btnSkill_1);
+
+	//////////////////////////////////////////////////////////////////////////
 
 	auto groupBtnSkill2 = tmxMap->getObjectGroup("btn_skill2");
 	auto mObject_2 = groupBtnSkill2->getObject("btn_skill2");
@@ -164,13 +160,11 @@ void Hud::addButton()
 	btnSkill_2 = MyButton::create(JSHERO->getPathMainImageSkill2(), JSHERO->getPathSubImageSkill2(), origin_2);
 
 	btnSkill_2->setTimeCoolDown(REF->getCoolDownSkill_2());
+	btnSkill_2->addNumberOfUse(JSHERO->getNumberOfUseSkill2());
 	btnSkill_2->setScale(SCREEN_SIZE.height / 6.5f / btnSkill_2->getContentSize().height);
-	btnSkill_2->getCoolDownSprite()->setScale(btnSkill_2->getScale());
-	btnSkill_2->getNumberCoolDown()->setScale(btnSkill_2->getBoundingBox().size.height / 2 / btnSkill_2->getNumberCoolDown()->getContentSize().height);
-	
-	addChild(btnSkill_2->getCoolDownSprite());
-	addChild(btnSkill_2->getNumberCoolDown());
 	addChild(btnSkill_2);
+
+	//////////////////////////////////////////////////////////////////////////
 
 	auto groupBtnSkill3 = tmxMap->getObjectGroup("btn_skill3");
 	auto mObject_3 = groupBtnSkill3->getObject("btn_skill3");
@@ -179,13 +173,10 @@ void Hud::addButton()
 	btnSkill_3 = MyButton::create(JSHERO->getPathMainImageSkill3(), JSHERO->getPathSubImageSkill3(), origin_3);
 
 	btnSkill_3->setTimeCoolDown(REF->getCoolDownSkill_3());
+	btnSkill_3->addNumberOfUse(JSHERO->getNumberOfUseSkill3());
 	btnSkill_3->setScale(SCREEN_SIZE.height / 6.5f / btnSkill_3->getContentSize().height);
-	btnSkill_3->getCoolDownSprite()->setScale(btnSkill_3->getScale());
-	btnSkill_3->getNumberCoolDown()->setScale(btnSkill_3->getBoundingBox().size.height / 2 / btnSkill_3->getNumberCoolDown()->getContentSize().height);
-	
-	addChild(btnSkill_3->getCoolDownSprite());
-	addChild(btnSkill_3->getNumberCoolDown());
 	addChild(btnSkill_3);
+
 
 
 	auto groupPause = tmxMap->getObjectGroup("btn_pause");
@@ -209,6 +200,7 @@ void Hud::addButton()
 
 	btnCalling = MenuItemImage::create("UI/btn_callbird.png", "UI/btn_callbird_off.png", CC_CALLBACK_1(Hud::doCalling, this));
 	btnCalling->setEnabled(false);
+	btnCalling->setDisabledImage(Sprite::create("UI/btn_callbird_off.png"));
 	btnCalling->setPosition(origin_4);
 	btnCalling->setScale(SCREEN_SIZE.height / 7 / btnCalling->getContentSize().height);
 
@@ -221,7 +213,38 @@ void Hud::addButton()
 	multiKills->setPosition(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height * 0.8f));
 	multiKills->setAnimation(0, "textkill", false);
 	multiKills->setSkin("default");
-	addChild(multiKills);
+	addChild(multiKills, 1);
+
+
+	auto groupIcon = tmxMap->getObjectGroup("icon");
+	for (auto child : groupIcon->getObjects()) {
+		auto mObjectX = child.asValueMap();
+
+		Point origin_X = Point(mObjectX["x"].asFloat() * tmxMap->getScaleX(), mObjectX["y"].asFloat()* tmxMap->getScaleY());
+
+		switch (mObjectX["order"].asInt())
+		{
+		case 1:
+			icon_Skill = ProgressTimer::create(Sprite::create(JSHERO->getPathMainImageSkill1()));
+			icon_Skill->setPosition(origin_X);
+			icon_Skill->setPercentage(100.0f);
+			icon_Skill->setVisible(false);
+			icon_Skill->setScale(SCREEN_SIZE.height / 12.0f / icon_Skill->getContentSize().height);
+			icon_Skill->setType(ProgressTimer::Type::RADIAL);
+			addChild(icon_Skill);
+			break;
+
+		case 2:
+			icon_Item = ProgressTimer::create(Sprite::create("UI/UI_main_menu/item3_magnet.png"));
+			icon_Item->setPosition(origin_X);
+			icon_Item->setPercentage(100.0f);
+			icon_Item->setVisible(false);
+			icon_Item->setScale(SCREEN_SIZE.height / 12.0f / icon_Item->getContentSize().height);
+			icon_Item->setType(ProgressTimer::Type::RADIAL);
+			addChild(icon_Item);
+			break;
+		}
+	}
 
 }
 
@@ -261,7 +284,7 @@ void Hud::doCalling(Ref * pSender)
 
 	btnCalling->setVisible(false);
 	btnCalling->setEnabled(false);
-	if(btnSkill_1->getCoolDownSprite()->isVisible())
+	if(btnSkill_1->isVisible())
 		hideButton();
 
 	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
@@ -348,23 +371,15 @@ void Hud::hideButton()
 
 	btnAttack->setVisible(false);
 	btnAttack->setIsBlocked(true);
-	btnAttack->getCoolDownSprite()->setVisible(false);
 
 
 	btnSkill_1->setVisible(false);
-	btnSkill_1->getNumberCoolDown()->setVisible(false);
-	btnSkill_1->getCoolDownSprite()->setVisible(false);
 
 
 	btnSkill_2->setVisible(false);
-	btnSkill_2->getNumberCoolDown()->setVisible(false);
-	btnSkill_2->getCoolDownSprite()->setVisible(false);
 
 
 	btnSkill_3->setVisible(false);
-	btnSkill_3->getNumberCoolDown()->setVisible(false);
-	btnSkill_3->getCoolDownSprite()->setVisible(false);
-
 }
 
 void Hud::showButton()
@@ -373,36 +388,30 @@ void Hud::showButton()
 
 	btnAttack->setVisible(true);
 	btnAttack->setIsBlocked(false);
-	btnAttack->getCoolDownSprite()->setVisible(true);
-	if (!btnAttack->getCanTouch()) {
-		btnAttack->setVisible(false);
-	}
 
 	btnSkill_1->setVisible(true);
-	btnSkill_1->getCoolDownSprite()->setVisible(true);
 	if (!btnSkill_1->getCanTouch()) {
-		btnSkill_1->setVisible(false);
 		btnSkill_1->getNumberCoolDown()->setVisible(true);
 	}
 
 	btnSkill_2->setVisible(true);
-	btnSkill_2->getCoolDownSprite()->setVisible(true);
 	if (!btnSkill_2->getCanTouch()) {
-		btnSkill_2->setVisible(false);
 		btnSkill_2->getNumberCoolDown()->setVisible(true);
 	}
 
 	btnSkill_3->setVisible(true);
-	btnSkill_3->getCoolDownSprite()->setVisible(true);
 	if (!btnSkill_3->getCanTouch()) {
-		btnSkill_3->setVisible(false);
 		btnSkill_3->getNumberCoolDown()->setVisible(true);
 	}
 }
 
 void Hud::pauseIfVisible()
 {
-	if (btnSkill_1->getCoolDownSprite()->isVisible()) {
+	if (icon_Skill->isVisible()) {
+		icon_Skill->pause();
+	}
+
+	if (btnSkill_1->isVisible()) {
 
 		btnAttack->pauseListener();
 		btnSkill_1->pauseListener();
@@ -425,7 +434,11 @@ void Hud::pauseIfVisible()
 
 void Hud::resumeIfVisible()
 {
-	if (btnSkill_1->getCoolDownSprite()->isVisible()) {
+	if (icon_Skill->isVisible()) {
+		icon_Skill->resume();
+	}
+
+	if (btnSkill_1->isVisible()) {
 		addEvents();
 
 		if (!btnSkill_1->getCanTouch()) {
@@ -515,4 +528,39 @@ void Hud::updateMultiKills(int m_nCombo)
 	}
 	multiKills->setSlotsToSetupPose();
 	multiKills->setAnimation(0, "textkill", false);
+}
+
+void Hud::runnerSkillDuration(int skillWhat, float duration)
+{
+	durationSkill = duration;
+	switch (skillWhat)
+	{
+	case 1:
+		icon_Skill->setSprite(Sprite::create(JSHERO->getPathMainImageSkill1()));
+		break;
+	case 2:
+		icon_Skill->setSprite(Sprite::create(JSHERO->getPathMainImageSkill2()));
+		break;
+	case 3:
+		icon_Skill->setSprite(Sprite::create(JSHERO->getPathMainImageSkill3()));
+		break;
+	}
+
+	timerSkill = durationSkill;
+
+	icon_Skill->setVisible(true);
+
+	icon_Skill->schedule([&](float dt) {
+		timerSkill -= 0.1f;
+		icon_Skill->setPercentage(timerSkill / durationSkill * 100.0f);
+		if (timerSkill <= 0.0f) {
+			icon_Skill->setVisible(false);
+			icon_Skill->unschedule("durationKey");
+		}
+	}, 0.1f, "durationKey");
+	
+}
+
+void Hud::runnerItem()
+{
 }

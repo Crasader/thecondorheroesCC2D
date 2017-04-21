@@ -1,0 +1,38 @@
+{
+"skeleton": { "hash": "W8CeAgN5zsliHJja/ODBrXkvihw", "spine": "3.5.51", "width": 0, "height": 0, "images": "" },
+"bones": [
+	{ "name": "root" },
+	{ "name": "bone23", "parent": "root", "length": 175.9, "x": 375.5, "y": 119.6 }
+],
+"slots": [
+	{ "name": "Untitled-1_0005_coco5", "bone": "bone23" }
+],
+"skins": {
+	"default": {
+		"Untitled-1_0005_coco5": {
+			"Untitled-1_0005_coco5": { "x": -250.8, "y": 5.8, "width": 1134, "height": 312 },
+			"Untitled-1_0006_coco4": { "x": -250.8, "y": 5.8, "width": 1134, "height": 312 },
+			"Untitled-1_0007_coco3": { "x": -250.8, "y": 5.8, "width": 1134, "height": 312 },
+			"Untitled-1_0008_coco2": { "x": -250.8, "y": 5.8, "width": 1134, "height": 312 },
+			"Untitled-1_0009_coco1": { "x": -250.8, "y": 5.8, "width": 1134, "height": 312 }
+		}
+	}
+},
+"animations": {
+	"slash4": {
+		"slots": {
+			"Untitled-1_0005_coco5": {
+				"attachment": [
+					{ "time": 0, "name": "Untitled-1_0009_coco1" },
+					{ "time": 0.0333, "name": "Untitled-1_0008_coco2" },
+					{ "time": 0.0667, "name": "Untitled-1_0007_coco3" },
+					{ "time": 0.1, "name": "Untitled-1_0006_coco4" },
+					{ "time": 0.1333, "name": "Untitled-1_0005_coco5" },
+					{ "time": 0.1667, "name": "Untitled-1_0005_coco5" },
+					{ "time": 0.2, "name": null }
+				]
+			}
+		}
+	}
+}
+}

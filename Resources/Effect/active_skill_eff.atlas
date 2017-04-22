@@ -1,0 +1,20 @@
+
+active_skill_eff.png
+size: 512,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+active_skill_circle
+  rotate: false
+  xy: 2, 45
+  size: 270, 269
+  orig: 270, 269
+  offset: 0, 0
+  index: -1
+active_skill_triangle
+  rotate: false
+  xy: 2, 2
+  size: 46, 41
+  orig: 46, 41
+  offset: 0, 0
+  index: -1

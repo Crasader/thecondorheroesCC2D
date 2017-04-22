@@ -46,9 +46,9 @@
 </data>
  </layer>
  <objectgroup name="ground">
-  <object id="1" x="0" y="625" width="3200" height="14"/>
+  <object id="1" x="-124" y="625" width="3407.88" height="14"/>
  </objectgroup>
  <objectgroup name="under_ground">
-  <object id="2" x="0" y="681" width="3200" height="10"/>
+  <object id="2" x="-114" y="681" width="3385.82" height="10"/>
  </objectgroup>
 </map>

@@ -1,0 +1,34 @@
+{
+  "items": [
+    {
+	  "iconFilePath": "UI/UI_main_menu/item1_health.png",
+	  "priceItem": 500,
+	  "nameItem": "Health",
+	  "description": "+1 maximum health"
+    },
+    {
+	  "iconFilePath": "UI/UI_main_menu/item2_bird.png",
+	  "priceItem": 700,
+	  "nameItem": "Condor",
+	  "description": "Fly when dangerous"
+    },
+    {
+	  "iconFilePath": "UI/UI_main_menu/item3_magnet.png",
+	  "priceItem": 300,
+	  "nameItem": "Magnet",
+	  "description": "Collect nearby golds"
+    },
+    {
+	  "iconFilePath": "UI/UI_main_menu/item4_doublecoin.png",
+	  "priceItem": 400,
+	  "nameItem": "x2 Coin",
+	  "description": "x2 collected gold"
+    },
+    {
+	  "iconFilePath": "UI/UI_main_menu/item5_cooldown.png",
+	  "priceItem": 750,
+	  "nameItem": "Cooldown",
+	  "description": "Skill colldown -15%"
+    }
+  ]
+}

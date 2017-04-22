@@ -1,0 +1,153 @@
+
+toong.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+blink
+  rotate: false
+  xy: 488, 164
+  size: 94, 93
+  orig: 94, 93
+  offset: 0, 0
+  index: -1
+body
+  rotate: true
+  xy: 457, 130
+  size: 34, 19
+  orig: 34, 19
+  offset: 0, 0
+  index: -1
+hive
+  rotate: false
+  xy: 2, 235
+  size: 263, 274
+  orig: 263, 274
+  offset: 0, 0
+  index: -1
+hive_piece_1
+  rotate: false
+  xy: 2, 91
+  size: 263, 142
+  orig: 263, 142
+  offset: 0, 0
+  index: -1
+hive_piece_2
+  rotate: false
+  xy: 588, 403
+  size: 238, 106
+  orig: 238, 106
+  offset: 0, 0
+  index: -1
+hive_piece_3
+  rotate: false
+  xy: 828, 417
+  size: 177, 92
+  orig: 177, 92
+  offset: 0, 0
+  index: -1
+honey_1
+  rotate: false
+  xy: 2, 2
+  size: 124, 87
+  orig: 124, 87
+  offset: 0, 0
+  index: -1
+honey_2
+  rotate: false
+  xy: 714, 310
+  size: 99, 91
+  orig: 99, 91
+  offset: 0, 0
+  index: -1
+honey_3
+  rotate: false
+  xy: 293, 41
+  size: 61, 43
+  orig: 61, 43
+  offset: 0, 0
+  index: -1
+honey_4
+  rotate: false
+  xy: 714, 284
+  size: 16, 24
+  orig: 16, 24
+  offset: 0, 0
+  index: -1
+honey_fly_1
+  rotate: true
+  xy: 588, 284
+  size: 117, 124
+  orig: 117, 124
+  offset: 0, 0
+  index: -1
+honey_fly_2
+  rotate: false
+  xy: 267, 86
+  size: 96, 78
+  orig: 96, 78
+  offset: 0, 0
+  index: -1
+honey_fly_3
+  rotate: false
+  xy: 243, 24
+  size: 48, 60
+  orig: 48, 60
+  offset: 0, 0
+  index: -1
+shadow
+  rotate: false
+  xy: 587, 264
+  size: 126, 18
+  orig: 126, 18
+  offset: 0, 0
+  index: -1
+slash_eff_1
+  rotate: false
+  xy: 267, 259
+  size: 318, 65
+  orig: 318, 65
+  offset: 0, 0
+  index: -1
+slash_eff_2
+  rotate: false
+  xy: 267, 166
+  size: 219, 91
+  orig: 219, 91
+  offset: 0, 0
+  index: -1
+stone
+  rotate: false
+  xy: 267, 326
+  size: 319, 183
+  orig: 319, 183
+  offset: 0, 0
+  index: -1
+stone_piece_1
+  rotate: true
+  xy: 128, 11
+  size: 78, 113
+  orig: 78, 113
+  offset: 0, 0
+  index: -1
+stone_piece_2
+  rotate: true
+  xy: 365, 77
+  size: 87, 90
+  orig: 87, 90
+  offset: 0, 0
+  index: -1
+wing_1
+  rotate: false
+  xy: 457, 109
+  size: 16, 19
+  orig: 16, 19
+  offset: 0, 0
+  index: -1
+wing_2
+  rotate: false
+  xy: 1007, 492
+  size: 15, 17
+  orig: 15, 17
+  offset: 0, 0
+  index: -1

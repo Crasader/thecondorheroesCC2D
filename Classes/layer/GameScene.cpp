@@ -638,7 +638,7 @@ void GameScene::loadBackground()
 	if (isModeDebug)
 		tmx_map->setVisible(false);
 
-	this->addChild(tmx_map, ZORDER_BG2);
+	this->addChild(tmx_map, ZORDER_TMX);
 	if (haveboss) {
 		for (int i = 0; i < 2; i++) {
 			tmx_mapboss[i] = TMXTiledMap::create(StringUtils::format("Map/map%d/mapboss.tmx", stage));

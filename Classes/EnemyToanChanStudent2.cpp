@@ -66,6 +66,7 @@ void EnemyToanChanStudent2::die()
 		auto world = slash->getB2Body()->GetWorld();
 		world->DestroyBody(slash->getB2Body());
 		slash->setB2Body(nullptr);
+		slash->setVisible(false);
 		slash->setIsDie(false);
 		//slash->removeFromParentAndCleanup(true);
 

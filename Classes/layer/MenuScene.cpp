@@ -5,6 +5,8 @@
 #include "manager/JSonHeroManager.h"
 #include "manager/JSonMenuManager.h"
 #include "manager/RefManager.h"
+#include "manager/AudioManager.h"
+#include "Global.h"
 
 
 Scene * MenuLayer::createScene() {
@@ -19,7 +21,7 @@ bool MenuLayer::init() {
 	if (!Layer::init()) {
 		return false;
 	}
-	
+	//AudioManager::stopSoundForever();
 	initInputData();
 	Vec2 _v2Origin = Director::getInstance()->getVisibleOrigin();
 
@@ -60,7 +62,7 @@ bool MenuLayer::init() {
 	initControlLayer();
 
 	this->scheduleUpdate();
-
+	AudioManager::playSoundForever(MUSIC_MENU);
 	return true;
 }
 

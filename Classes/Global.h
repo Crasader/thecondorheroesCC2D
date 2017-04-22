@@ -96,10 +96,10 @@ using namespace std;
 
 
 #define	MUSIC_MENU							"sound/music/menu.mp3"
-#define MUSIC_STAGE1						"sound/music/stage1.MP3"
-#define MUSIC_STAGE2						"sound/music/stage2.MP3"
-#define MUSIC_STAGE3						"sound/music/stage3.MP3"
-#define MUSIC_STAGE4						"sound/music/stage4.MP3"
+#define MUSIC_STAGE1						"sound/music/stage1.mp3"
+#define MUSIC_STAGE2						"sound/music/stage2.mp3"
+#define MUSIC_STAGE3						"sound/music/stage3.mp3"
+#define MUSIC_STAGE4						"sound/music/stage4.mp3"
 #define SOUND_DQDIE							"sound/sound/dqdie.mp3"
 #define SOUND_DQDIE							"sound/sound/dqdie.mp3"
 #define SOUND_DQHIT							"sound/sound/dqhit.mp3"
@@ -113,15 +113,16 @@ using namespace std;
 #define SOUND_CLSKILL2							"sound/sound/clskill2.mp3"
 #define SOUND_CLSKILL3							"sound/sound/clskill3.mp3"
 
-#define SOUND_TC1AT							"sound/sound/clskill1.mp3"
-#define SOUND_TC1DIE							"sound/sound/clskill2.mp3"
-#define SOUND_TC2AT							"sound/sound/clskill3.mp3"
-#define SOUND_TC2DIE							"sound/sound/clskill3.mp3"
+#define SOUND_TC1AT							"sound/tc1at.mp3"
+#define SOUND_TC1DIE							"sound/tc1die.mp3"
+#define SOUND_TC2AT							"sound/tc2at.mp3"
+#define SOUND_TC2DIE							"sound/tc2die.mp3"
 //#define SOUND_DQSKILL2							"sound/sound/dqskill2.mp3"
 
 
 #define KEY_IS_MUSIC						"isMusic"
 #define KEY_IS_SOUND						"isSound"
+#define KEY_VALUE_MUSIC						"valuemusic"
 
 
 

@@ -20,13 +20,14 @@ void AudioManager::playSound(string keysound)
 
 int AudioManager::playSoundForever(string keysound)
 {
+	AudioManager::stopSoundForever();
 	auto ref = UserDefault::getInstance()->sharedUserDefault();
-	int checkSound = ref->getIntegerForKey(KEY_IS_MUSIC, -1);
+	bool checkSound = ref->getBoolForKey(KEY_IS_MUSIC, true);
 	log("check sound: %d: ", checkSound);
-	if (checkSound <= 0) {
+	if (checkSound) {
 		
 		int a = experimental::AudioEngine::play2d(keysound,true);
-		ref->setIntegerForKey(KEY_IS_MUSIC, a);
+		ref->setIntegerForKey(KEY_VALUE_MUSIC, a);
 		return a;
 	}
 	return 0;
@@ -35,8 +36,8 @@ int AudioManager::playSoundForever(string keysound)
 void AudioManager::stopSoundForever()
 {
 	auto ref = UserDefault::getInstance()->sharedUserDefault();
-	int checkSound = ref->getIntegerForKey(KEY_IS_MUSIC);
+	int checkSound = ref->getIntegerForKey(KEY_VALUE_MUSIC);
 	//if (checkSound <0 0) {
-		experimental::AudioEngine::stop(checkSound);
+	experimental::AudioEngine::stop(checkSound);
 	//}
 }

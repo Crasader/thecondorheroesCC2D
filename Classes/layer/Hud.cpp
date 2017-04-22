@@ -215,6 +215,8 @@ void Hud::addButton()
 	multiKills->setSkin("default");
 	addChild(multiKills, 1);
 
+	coverSkill = Sprite::create(JSHERO->getPathMainImageSkill1());
+	coverItemMagnet = Sprite::create("UI/UI_main_menu/item3_magnet.png");
 
 	auto groupIcon = tmxMap->getObjectGroup("icon");
 	for (auto child : groupIcon->getObjects()) {
@@ -225,23 +227,39 @@ void Hud::addButton()
 		switch (mObjectX["order"].asInt())
 		{
 		case 1:
-			icon_Skill = ProgressTimer::create(Sprite::create(JSHERO->getPathMainImageSkill1()));
-			icon_Skill->setPosition(origin_X);
+			icon_Skill = ProgressTimer::create(coverSkill);
+			icon_Skill->setPosition(coverSkill->getContentSize() / 2);
 			icon_Skill->setPercentage(100.0f);
-			icon_Skill->setVisible(false);
-			icon_Skill->setScale(SCREEN_SIZE.height / 12.0f / icon_Skill->getContentSize().height);
+			icon_Skill->setReverseDirection(true);
 			icon_Skill->setType(ProgressTimer::Type::RADIAL);
-			addChild(icon_Skill);
+
+			coverSkill->addChild(icon_Skill);
+
+			coverSkill->setOpacity(50);
+			coverSkill->setPosition(origin_X);
+			coverSkill->setVisible(false);
+			coverSkill->setScale(SCREEN_SIZE.height / 12.0f / coverSkill->getContentSize().height);
+
+			addChild(coverSkill);
+
 			break;
 
 		case 2:
 			icon_Item = ProgressTimer::create(Sprite::create("UI/UI_main_menu/item3_magnet.png"));
-			icon_Item->setPosition(origin_X);
+			icon_Item->setPosition(coverItemMagnet->getContentSize() / 2);
 			icon_Item->setPercentage(100.0f);
-			icon_Item->setVisible(false);
-			icon_Item->setScale(SCREEN_SIZE.height / 12.0f / icon_Item->getContentSize().height);
+			icon_Item->setReverseDirection(true);
 			icon_Item->setType(ProgressTimer::Type::RADIAL);
-			addChild(icon_Item);
+
+			coverItemMagnet->addChild(icon_Item);
+
+			coverItemMagnet->setOpacity(50);
+			coverItemMagnet->setPosition(origin_X);
+			coverItemMagnet->setVisible(false);
+			coverItemMagnet->setScale(SCREEN_SIZE.height / 11 / coverItemMagnet->getContentSize().height);
+
+			addChild(coverItemMagnet);
+
 			break;
 		}
 	}
@@ -407,8 +425,12 @@ void Hud::showButton()
 
 void Hud::pauseIfVisible()
 {
-	if (icon_Skill->isVisible()) {
-		icon_Skill->pause();
+	if (coverSkill->isVisible()) {
+		coverSkill->pause();
+	}
+
+	if (coverItemMagnet->isVisible()) {
+		coverItemMagnet->pause();
 	}
 
 	if (btnSkill_1->isVisible()) {
@@ -434,8 +456,12 @@ void Hud::pauseIfVisible()
 
 void Hud::resumeIfVisible()
 {
-	if (icon_Skill->isVisible()) {
-		icon_Skill->resume();
+	if (coverSkill->isVisible()) {
+		coverSkill->resume();
+	}
+
+	if (coverItemMagnet->isVisible()) {
+		coverItemMagnet->resume();
 	}
 
 	if (btnSkill_1->isVisible()) {
@@ -536,31 +562,55 @@ void Hud::runnerSkillDuration(int skillWhat, float duration)
 	switch (skillWhat)
 	{
 	case 1:
+		coverSkill->setTexture(JSHERO->getPathMainImageSkill1());
 		icon_Skill->setSprite(Sprite::create(JSHERO->getPathMainImageSkill1()));
 		break;
 	case 2:
+		coverSkill->setTexture(JSHERO->getPathMainImageSkill2());
 		icon_Skill->setSprite(Sprite::create(JSHERO->getPathMainImageSkill2()));
 		break;
 	case 3:
+		coverSkill->setTexture(JSHERO->getPathMainImageSkill3());
 		icon_Skill->setSprite(Sprite::create(JSHERO->getPathMainImageSkill3()));
 		break;
 	}
 
 	timerSkill = durationSkill;
 
-	icon_Skill->setVisible(true);
+	coverSkill->setVisible(true);
 
-	icon_Skill->schedule([&](float dt) {
+	coverSkill->schedule([&](float dt) {
 		timerSkill -= 0.1f;
 		icon_Skill->setPercentage(timerSkill / durationSkill * 100.0f);
 		if (timerSkill <= 0.0f) {
-			icon_Skill->setVisible(false);
-			icon_Skill->unschedule("durationKey");
+			coverSkill->setVisible(false);
+			coverSkill->unschedule("durationKey");
 		}
 	}, 0.1f, "durationKey");
 	
 }
 
-void Hud::runnerItem()
+void Hud::runnerItem(int counter)
 {
+	durationItem = counter / 60.0f;
+	if (isItemActive) {
+		coverItemMagnet->unschedule("itemRunner");
+	}
+	else {
+		coverItemMagnet->setVisible(true);
+	}
+
+	isItemActive = true;
+
+	timerItem = durationItem;
+
+	coverItemMagnet->schedule([&](float dt) {
+		timerItem -= 0.1f;
+		icon_Item->setPercentage(timerItem / durationItem * 100.0f);
+		if (timerItem <= 0.0f) {
+			isItemActive = false;
+			coverItemMagnet->setVisible(false);
+			coverItemMagnet->unschedule("itemRunner");
+		}
+	}, 0.1f, "itemRunner");
 }

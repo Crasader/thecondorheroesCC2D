@@ -68,16 +68,18 @@ void MenuLayer::update(float p_fDelta) {
 	time_t _nCurrentTime = time(0);
 	if (m_nLifeNumber < 5) {
 		int _nDeltaTime = _nCurrentTime - m_nTimeAnchor;
-		if (_nDeltaTime >= 90) {
-			m_nTimeAnchor += 90;
+		if (_nDeltaTime >= 300) {
+			m_nTimeAnchor += 300;
 			m_nLifeNumber += 1;
 			initTopMainMenu();
+			REF->setUpLife(1);
+			REF->resetAnchorTime();
 			return;
 		}
 		else {
 			m_pTimeCounter->setVisible(true);
-			int _nMinute = (90 - _nDeltaTime) / 60;
-			int _nSecond = (90 - _nDeltaTime) % 60;
+			int _nMinute = (300 - _nDeltaTime) / 60;
+			int _nSecond = (300 - _nDeltaTime) % 60;
 			m_pTimeCounter->setString(StringUtils::format(_nSecond < 10 ? "%i:0%i" : "%i:%i", _nMinute, _nSecond));
 		}
 	}
@@ -93,6 +95,7 @@ void MenuLayer::initInputData() {
 	m_arNumberItem[2] = REF->getNumberItemMagnet();
 	m_arNumberItem[3] = REF->getNumberItemDoubleGold();
 	m_arNumberItem[4] = REF->getNumberItemCoolDown();
+	m_nTimeAnchor = REF->getAnchorTime();
 }
 
 void MenuLayer::initBackgroundLayer() {
@@ -910,6 +913,9 @@ void MenuLayer::showMainMenu() {
 }
 
 void MenuLayer::buttonStartHandle() {
+	m_nLifeNumber--;
+	REF->setDownLife(1);
+	REF->resetAnchorTime();
 	auto _scene = SelectStageLayer::createScene(m_nIndexHeroSelected);
 	Director::getInstance()->replaceScene(TransitionFade::create(0.3f, _scene));
 }
@@ -942,8 +948,8 @@ void MenuLayer::buttonBackHanle() {
 }
 
 void MenuLayer::buttonAddLifeHandle() {
-	m_nLifeNumber = 3;
-	m_nTimeAnchor = time(0) - 30;
+	m_nLifeNumber += 1;
+	REF->setUpLife(1);
 	initTopMainMenu();
 }
 

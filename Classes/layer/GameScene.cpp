@@ -5,7 +5,6 @@
 #include "layer/Hud.h"
 #include "layer/LoadingLayer.h"
 
-#include "manager/EffectManager.h"
 #include "manager/RefManager.h"
 #include "manager/SkeletonManager.h"
 
@@ -93,7 +92,6 @@ bool GameScene::init(int stage, int map, int haveboss, int charId)
 
 	createEagle(Point(hero->getB2Body()->GetPosition().x - visibleSize.width, visibleSize.height / 2));
 
-	danceWithEffect();
 	if (haveboss)
 		creatBoss();
 
@@ -203,7 +201,7 @@ void GameScene::checkActiveButton()
 			if (hero->getIsDoneDuration2()) {
 
 				hero->killThemAll(listEnemyOccurInScreen);
-				EM->getActiveSkill()->setVisible(false);
+				hero->getActiveSkill()->setVisible(false);
 
 				if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
 					if(!hud->getBtnCalling()->isEnabled())
@@ -256,7 +254,7 @@ void GameScene::checkActiveButton()
 			if (hero->getIsDoneDuration3()) {
 
 				hero->killThemAll(listEnemyOccurInScreen);
-				EM->getActiveSkill()->setVisible(false);
+				hero->getActiveSkill()->setVisible(false);
 
 				if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
 					if (!hud->getBtnCalling()->isEnabled())
@@ -294,7 +292,7 @@ void GameScene::checkActiveButton()
 			if (hero->getIsDoneDuration1()) {
 
 				hero->killThemAll(listEnemyOccurInScreen);
-				EM->getActiveSkill()->setVisible(false);
+				hero->getActiveSkill()->setVisible(false);
 
 				if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
 					if (!hud->getBtnCalling()->isEnabled())
@@ -348,7 +346,7 @@ void GameScene::listener()
 
 
 		hud->getBtnSkill_1()->setIsActive(false);
-		EM->getActiveSkill()->setVisible(true);
+		hero->getActiveSkill()->setVisible(true);
 
 		if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
 			hud->getBtnCalling()->setEnabled(false);
@@ -375,7 +373,7 @@ void GameScene::listener()
 
 
 		hud->getBtnSkill_2()->setIsActive(false);
-		EM->getActiveSkill()->setVisible(true);
+		hero->getActiveSkill()->setVisible(true);
 
 		if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
 			hud->getBtnCalling()->setEnabled(false);
@@ -402,7 +400,7 @@ void GameScene::listener()
 			hud->getBtnSkill_2()->getMain()->setVisible(false);
 
 		hud->getBtnSkill_3()->setIsActive(false);
-		EM->getActiveSkill()->setVisible(true);
+		hero->getActiveSkill()->setVisible(true);
 
 		if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
 			hud->getBtnCalling()->setEnabled(false);
@@ -414,8 +412,9 @@ void GameScene::listener()
 void GameScene::heroGetOffEagle() {
 	hud->showButton();
 	hero->changeBodyCategoryBits(BITMASK_HERO);
+	_aEagle->changeBodyCategoryBits(0);
+	_aEagle->changeBodyMaskBits(0);
 	hero->setIsDriverEagle(false);
-	hero->getB2Body()->SetTransform(_aEagle->getB2Body()->GetPosition(), 0.0f);
 	hero->setVisible(true);
 	hero->getB2Body()->SetGravityScale(1);
 	hero->getFSM()->changeState(MLand);
@@ -439,6 +438,11 @@ void GameScene::update(float dt)
 	checkActiveButton();
 
 	_aEagle->updateMe(dt);
+	/*if (_aEagle->getIsAbleToDropHero() == true) {
+		heroGetOffEagle();
+		_aEagle->setIsAbleToDropHero(false);
+	}*/
+
 	if (hero->getIsDriverEagle()) {
 		if (hero->getHealth() <= 0) {	// die
 			hero->getB2Body()->SetGravityScale(1);
@@ -465,7 +469,7 @@ void GameScene::update(float dt)
 
 		for (auto item : listItem) {
 			if(item->getB2Body() == nullptr) continue;
-			if (item->getTaken() || follow->getPositionX() - item->getPositionX() + item->getBoundingBox().size.width 
+			if (item->getTaken() || follow->getPositionX() - item->getPositionX() - item->getBoundingBox().size.width 
 									> SCREEN_SIZE.width / 2) {
 				world->DestroyBody(item->getB2Body());
 				item->setB2Body(nullptr);
@@ -527,10 +531,6 @@ void GameScene::update(float dt)
 
 	if (hero->getBloodScreen()->isVisible())
 		hero->getBloodScreen()->setPosition(follow->getPosition());
-
-	if (EM->getActiveSkill()->isVisible()) {
-		EM->getActiveSkill()->setPosition(hero->getPosition());
-	}
 
 	updateHUD(dt);
 }
@@ -962,8 +962,8 @@ void GameScene::createItem()
 			item = Item::create("UI/UI_main_menu/item1_health.png", Item_type::HEALTH, origin);
 			break;
 			
-		case 1:
-
+		case 2:
+			item = Item::create("UI/UI_main_menu/item3_magnet.png", Item_type::MAGNET, origin);
 			break;
 		}
 
@@ -972,26 +972,6 @@ void GameScene::createItem()
 		addChild(item, ZORDER_SMT);
 		listItem.push_back(item);
 	}
-
-	log("size: %i", listItem.size());
-}
-
-
-void GameScene::danceWithEffect()
-{
-	EM->createWithFile(hero->getScale() / 3);
-	addChild(EM->getActiveSkill(), 4);
-	
-	EM->activeSkillAni();
-
-	addChild(EM->getSlashBreak(), 4);
-	addChild(EM->getSmokeJumpX2(), 4);
-	addChild(EM->getSmokeLanding(), 4);
-	addChild(EM->getSmokeRun(), 4);
-
-	EM->smokeRunAni();
-
-	addChild(EM->getReviveMe(), 4);
 }
 
 void GameScene::danceWithCamera()
@@ -1036,7 +1016,7 @@ void GameScene::initGroundPhysic(b2World * world, Point pos, Size size)
 	fixtureDef.shape = &shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_FLOOR;
-	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR | BITMASK_COIN;
+	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR | BITMASK_COIN | BITMASK_BIRD;
 
 	bodyDef.type = b2_staticBody;
 
@@ -1090,9 +1070,9 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 			hero->getB2Body()->SetLinearVelocity(b2Vec2(currentVelX, hero->getJumpVel()));
 
 			if (hero->getFSM()->currentState == MLand && hero->getNumberOfJump() > 0) {
-				EM->getSmokeJumpX2()->setPosition(hero->getPosition());
-				EM->getSmokeJumpX2()->setVisible(true);
-				EM->smokeJumpX2Ani();
+				hero->getSmokeJumpX2()->setPosition(hero->getPosition());
+				hero->getSmokeJumpX2()->setVisible(true);
+				hero->smokeJumpX2Ani();
 			}
 
 
@@ -1270,6 +1250,13 @@ void GameScene::updateMultiKills() {
 	}
 }
 
+void GameScene::runnerItem(int counter)
+{
+	hud->runnerItem(counter);
+	hero->setItemValue(KEY_ITEM_MAGNET, counter);
+	hero->getSuctionCoinAni()->setVisible(true);
+}
+
 void GameScene::updateBloodBar(int numberOfHealth, bool isVisible)
 {
 	if (numberOfHealth >= 0) {
@@ -1440,8 +1427,8 @@ void GameScene::reviveHero()
 
 void GameScene::callingBird()
 {
-	if (EM->getActiveSkill()->isVisible())
-		EM->getActiveSkill()->setVisible(false);
+	if (hero->getActiveSkill()->isVisible())
+		hero->getActiveSkill()->setVisible(false);
 
 	hero->changeBodyCategoryBits(BITMASK_WOODER);
 	hero->getB2Body()->SetGravityScale(0);
@@ -1457,9 +1444,11 @@ void GameScene::callingBird()
 	auto _aEagleFlyDown = Sequence::create(DelayTime::create(4.0f), CallFunc::create([&]() {
 		_aEagle->flyDown(b2Vec2(hero->getMoveVel(), -7.0f));
 	}), nullptr);
-	auto _aHeroGetOffEagle = Sequence::create(DelayTime::create(6.0f), CallFunc::create([&]() { heroGetOffEagle(); }), nullptr);
+	auto _aFinishFly = Sequence::create(DelayTime::create(6.0f), CallFunc::create([&]() {
+		heroGetOffEagle();
+	}), nullptr);
 	_aEagle->runAction(_aEagleFlyDown);
-	_aEagle->runAction(_aHeroGetOffEagle);
+	_aEagle->runAction(_aFinishFly);
 }
 
 void GameScene::blurScreen()
@@ -1470,10 +1459,9 @@ void GameScene::blurScreen()
 void GameScene::pauseGame()
 {
 	blurScreen();
-	// disable the menu pause item
-	if (EM->getSmokeRun()->isVisible()) {
-		EM->getSmokeRun()->pause();
-	}
+
+	if (hero->getSmokeRun()->isVisible())
+		hero->getSmokeRun()->pause();
 
 	if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
 		hud->getBtnCalling()->setEnabled(false);
@@ -1500,11 +1488,10 @@ void GameScene::dieGame()
 		hud->getBtnCalling()->setEnabled(false);
 	}
 
-	hud->pauseIfVisible();
+	if (hero->getSmokeRun()->isVisible())
+		hero->getSmokeRun()->pause();
 
-	if (EM->getSmokeRun()->isVisible()) {
-		EM->getSmokeRun()->pause();
-	}
+	hud->pauseIfVisible();
 
 	hero->pause();
 	if (hero->getIsDriverEagle())
@@ -1523,18 +1510,17 @@ void GameScene::overGame()
 	if (!blur->isVisible())
 		blurScreen();
 
-	hud->getLbScore()->setString(StringUtils::format("%i", hero->getScore()));
-	hud->getLbMoney()->setString(StringUtils::format("%i", hero->getCoinExplored()));
+	//hud->getLbScore()->setString(StringUtils::format("%i", hero->getScore()));
+	//hud->getLbMoney()->setString(StringUtils::format("%i", hero->getCoinExplored()));
 
 	if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
 		hud->getBtnCalling()->setEnabled(false);
 	}
 
-	hud->pauseIfVisible();
+	if (hero->getSmokeRun()->isVisible())
+		hero->getSmokeRun()->pause();
 
-	if (EM->getSmokeRun()->isVisible()) {
-		EM->getSmokeRun()->pause();
-	}
+	hud->pauseIfVisible();
 
 	hero->pause();
 	if (hero->getIsDriverEagle())
@@ -1561,13 +1547,13 @@ void GameScene::winGame()
 		hud->getBtnCalling()->setEnabled(false);
 	}
 
-	hud->getLbScore()->setString(StringUtils::format("%i", hero->getScore()));
-	hud->getLbMoney()->setString(StringUtils::format("%i", hero->getCoinExplored()));
+	if (hero->getSmokeRun()->isVisible())
+		hero->getSmokeRun()->pause();
+
+	//hud->getLbScore()->setString(StringUtils::format("%i", hero->getScore()));
+	//hud->getLbMoney()->setString(StringUtils::format("%i", hero->getCoinExplored()));
 
 	hud->pauseIfVisible();
-	if (EM->getSmokeRun()->isVisible()) {
-		EM->getSmokeRun()->pause();
-	}
 
 	hero->pause();
 	if (hero->getIsDriverEagle())
@@ -1584,9 +1570,9 @@ void GameScene::winGame()
 void GameScene::resumeGame()
 {
 	blur->setVisible(false);
-	if (EM->getSmokeRun()->isVisible()) {
-		EM->getSmokeRun()->resume();
-	}
+
+	if (hero->getSmokeRun()->isVisible())
+		hero->getSmokeRun()->resume();
 
 	hero->resume();
 	if (hero->getIsDriverEagle())

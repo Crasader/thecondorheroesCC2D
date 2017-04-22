@@ -33,7 +33,7 @@ public:
 
 	void updateMultiKills(int m_nCombo);
 	void runnerSkillDuration(int skillWhat, float duration);
-	void runnerItem();
+	void runnerItem(int counter);
 
 protected:
 
@@ -72,9 +72,15 @@ protected:
 private:
 	TMXTiledMap *tmxMap;
 	list<Sprite*> g_lTemp;
+
+	Sprite *coverSkill;
+	Sprite *coverItemMagnet;
 	float timerSkill;
 	float durationSkill;
+
 	float timerItem;
+	float durationItem;
+	bool isItemActive = false;
 
 	Menu* menu;
 

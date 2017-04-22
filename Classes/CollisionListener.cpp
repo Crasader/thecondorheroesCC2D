@@ -6,7 +6,6 @@
 #include "layer/GameScene.h"
 #include "coin/Coin.h"
 #include "Slash.h"
-#include "manager/EffectManager.h"
 #include "manager/RefManager.h"
 #include "boss1/EnemyBoss1.h"
 #include "item/Item.h"
@@ -35,6 +34,17 @@ void CollisionListener::BeginContact(b2Contact * contact)
 	auto collidePoint = worldManifold.points[0];
 	//worldManifold.
 
+	if ((bitmaskA == BITMASK_BIRD && bitmaskB == BITMASK_FLOOR) ||
+		(bitmaskB == BITMASK_BIRD && bitmaskA == BITMASK_FLOOR)
+		) {
+		B2Skeleton* sA = (BaseHero*)bodyA->GetUserData();
+		B2Skeleton* sB = (BaseHero*)bodyB->GetUserData();
+		ChimDieu *bird;
+		
+		bird = sA ? (ChimDieu*)sA : (ChimDieu*)sB;
+		bird->setIsAbleToDropHero(true);
+	}
+
 	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_FLOOR) ||
 		(bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_FLOOR)
 		) {
@@ -54,9 +64,8 @@ void CollisionListener::BeginContact(b2Contact * contact)
 				hero->setOnGround(true);
 				hero->setNumberOfJump(2);
 
-				EM->getSmokeLanding()->setPosition(hero->getPosition());
-				EM->getSmokeLanding()->setVisible(true);
-				EM->smokeLandingAni();
+				hero->getSmokeLand()->setVisible(true);
+				hero->smokeLandingAni();
 			}
 		}
 		else {
@@ -70,9 +79,8 @@ void CollisionListener::BeginContact(b2Contact * contact)
 				hero->setOnGround(true);
 				hero->setNumberOfJump(2);
 
-				EM->getSmokeLanding()->setPosition(hero->getPosition());
-				EM->getSmokeLanding()->setVisible(true);
-				EM->smokeLandingAni();
+				hero->getSmokeLand()->setVisible(true);
+				hero->smokeLandingAni();
 			}
 		}
 
@@ -169,11 +177,17 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		auto sB = (B2Skeleton*) bodyB->GetUserData();
 		auto item = sA->getTag() == TAG_ITEM ? (Item *)sA : (Item *)sB;
 		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
+
+		auto parentGameScene = (GameScene*)hero->getParent();
+		if(hero->getHealth() <= 0) return;		// you cannot eat item while dying
+
 		if (item->getTypeItem() == Item_type::HEALTH && hero->getHealth() < REF->getCurrentHealth()) {
 			hero->setHealth(hero->getHealth() + 1);
+			parentGameScene->updateBloodBar(hero->getHealth() - 1, true);		
+		}
 
-			auto parentGameScene = (GameScene*)hero->getParent();
-			parentGameScene->updateBloodBar(hero->getHealth() - 1, true);
+		if (item->getTypeItem() == Item_type::MAGNET) {
+			parentGameScene->runnerItem(DURATION_MAGNET);
 		}
 
 		item->setTaken(true);
@@ -346,13 +360,12 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		else
 			slash = sA ? (Slash *)sA : (Slash *)sB;
 
-
+		auto parentGameLayer = (GameScene*) slash->getParent()->getParent();
+		auto hero = parentGameLayer->getHero();
 		slash->setIsDie(true);
-
-		EM->getSlashBreak()->setPosition(slash->getPosition()+slash->getParent()->getPosition());
-		EM->getSlashBreak()->setVisible(true);
-		EM->slashBreakAni();
-
+		hero->getSlashBreak()->setPosition(slash->getPosition() + slash->getParent()->getPosition());
+		hero->getSlashBreak()->setVisible(true);
+		hero->slashBreakAni();
 	}
 
 

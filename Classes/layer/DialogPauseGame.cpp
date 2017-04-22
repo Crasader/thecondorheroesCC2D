@@ -60,7 +60,7 @@ void DialogPauseGame::overGame()
 
 void DialogPauseGame::replayGame(Ref * pSender, int goldRevive, bool isWatchVideo)
 {
-	log("%i", goldRevive);
+	//log("%i", goldRevive);
 	if (!isWatchVideo) {
 		if (REF->setDownGold(goldRevive)) {
 			auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");

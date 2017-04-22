@@ -2,8 +2,6 @@
 #ifndef __CO_LONG_H__
 #define __CO_LONG_H__
 
-
-#include "manager/EffectManager.h"
 #include "manager/JSonHeroManager.h"
 #include "BaseHero.h"
 #include "Rada.h"

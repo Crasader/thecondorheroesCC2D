@@ -46,7 +46,9 @@ CoLong * CoLong::create(string p_sJsonFile, string p_sAtlasFile, float p_fScale)
 
 	_pCoLong->blash = Sprite::create("Animation/CoLong/blash.png");
 	_pCoLong->blash->setScale(p_fScale / 2);
+	_pCoLong->blash->setPosition(_pCoLong->getContentSize() / 2);
 	_pCoLong->blash->setVisible(false);
+	_pCoLong->addChild(_pCoLong->blash);
 
 	return _pCoLong;
 }
@@ -130,11 +132,11 @@ void CoLong::doCounterSkill2() {
 
 // SKILL 3
 void CoLong::doCounterSkill3() {
-	changeBodyMaskBits(BITMASK_FLOOR | BITMASK_COIN | BITMASK_COIN_BULLION);
+	changeBodyMaskBits(BITMASK_FLOOR | BITMASK_COIN | BITMASK_COIN_BULLION | BITMASK_ITEM);
 	
 	m_pRadaSkill3->changeBodyCategoryBits(BITMASK_SWORD);
 	
-	EM->getSmokeRun()->setVisible(false);
+	getSmokeRun()->setVisible(false);
 
 	clearTracks();
 	addAnimation(0, "skill3", true);
@@ -144,7 +146,7 @@ void CoLong::doCounterSkill3() {
 		checkDurationSkill3++;
 
 		if (checkDurationSkill3 >= getDurationSkill3() * 10) {
-			changeBodyMaskBits(BITMASK_FLOOR | BITMASK_COIN | BITMASK_SLASH | BITMASK_BOSS | BITMASK_TOANCHAN1 | BITMASK_COIN_BULLION);
+			changeBodyMaskBits(BITMASK_FLOOR | BITMASK_COIN | BITMASK_SLASH | BITMASK_BOSS | BITMASK_TOANCHAN1 | BITMASK_COIN_BULLION | BITMASK_ITEM);
 			m_pRadaSkill3->changeBodyCategoryBits(BITMASK_WOODER);
 			setIsDoneDuration3(true);
 			checkDurationSkill3 = 0;
@@ -174,8 +176,6 @@ void CoLong::updateMe(float p_fDelta) {
 	}
 
 
-	if (EM->getSmokeRun()->isVisible())
-		EM->getSmokeRun()->setPosition(this->getPosition());
 
 	/*if (m_bIsActiveSkill3) {
 		getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel() * 1.5f, currentVelY));
@@ -196,14 +196,6 @@ void CoLong::updateMe(float p_fDelta) {
 		getB2Body()->SetLinearVelocity(b2Vec2(0, currentVelY));
 		return;
 	}
-
-	if (getSlash()->isVisible())
-		getSlash()->setPosition(this->getPositionX() + this->getTrueRadiusOfHero(),
-			this->getPositionY() + this->getTrueRadiusOfHero() * 0.7f);
-
-	if (getSlashLand()->isVisible())
-		getSlashLand()->setPosition(this->getPositionX() + this->getTrueRadiusOfHero() * 0.3f,
-			this->getPositionY() + this->getTrueRadiusOfHero() * 0.7f);
 
 	if (this->getPositionY() < 0) {
 		return;
@@ -298,13 +290,13 @@ void CoLong::createSlash() {
 	slash = SkeletonAnimation::createWithFile("Animation/CoLong/slash4.json", "Animation/CoLong/slash4.atlas", scale);
 	slash->update(0.0f);
 	slash->setVisible(false);
-	this->getParent()->addChild(slash, ZORDER_SMT);
+	this->addChild(slash);
 
 	auto scaleLand = this->getTrueRadiusOfHero() * 1.8f / 400;  // 400: hieght of spine
 	slashLand = SkeletonAnimation::createWithFile("Animation/CoLong/slash3.json", "Animation/CoLong/slash3.atlas", scaleLand);
 	slashLand->update(0.0f);
 	slashLand->setVisible(false);
-	this->getParent()->addChild(slashLand, ZORDER_SMT);
+	this->addChild(slashLand);
 }
 
 void CoLong::initCirclePhysic(b2World * world, Point pos) {
@@ -344,10 +336,9 @@ void CoLong::initCirclePhysic(b2World * world, Point pos) {
 
 void CoLong::addStuff()
 {
-	// slash here
-	this->getParent()->addChild(blash, ZORDER_ENEMY);
-
 	createSlash();
+
+	BaseHero::addStuff();
 }
 
 void CoLong::createPool()
@@ -388,7 +379,7 @@ void CoLong::listener() {
 		}
 
 		else if (strcmp(getCurrent()->animation->name, "revive") == 0) {
-			EM->getReviveMe()->setVisible(false);
+			getReviveMe()->setVisible(false);
 			getFSM()->changeState(MLand);
 			auto gameLayer = (GameScene*) this->getParent();
 			initCirclePhysic(gameLayer->world, this->getPosition());
@@ -449,8 +440,8 @@ void CoLong::run() {
 		if (getBloodScreen()->isVisible() && health > 1)
 			getBloodScreen()->setVisible(false);
 
-		if (!EM->getSmokeRun()->isVisible()) {
-			EM->getSmokeRun()->setVisible(true);
+		if (!getSmokeRun()->isVisible()) {
+			getSmokeRun()->setVisible(true);
 		}
 	}
 	
@@ -477,7 +468,7 @@ void CoLong::normalJump() {
 		clearTracks();
 		addAnimation(0, "jump", false);
 		setToSetupPose();
-		EM->getSmokeRun()->setVisible(false);
+		getSmokeRun()->setVisible(false);
 	}
 }
 
@@ -489,9 +480,9 @@ void CoLong::doubleJump() {
 		addAnimation(0, "jumpx2", false);
 		setToSetupPose();
 
-		EM->getSmokeJumpX2()->setPosition(this->getPosition());
-		EM->getSmokeJumpX2()->setVisible(true);
-		EM->smokeJumpX2Ani();
+		getSmokeJumpX2()->setPosition(this->getPosition());
+		getSmokeJumpX2()->setVisible(true);
+		smokeJumpX2Ani();
 	}
 }
 
@@ -503,7 +494,7 @@ void CoLong::landing() {
 		addAnimation(0, "landing", true);
 		setToSetupPose();
 
-		EM->getSmokeRun()->setVisible(false);
+		getSmokeRun()->setVisible(false);
 	}
 }
 
@@ -512,7 +503,7 @@ void CoLong::idle() {
 	addAnimation(0, "idle", false);
 	setToSetupPose();
 	getB2Body()->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
-	EM->getSmokeRun()->setVisible(false);
+	getSmokeRun()->setVisible(false);
 }
 
 void CoLong::die() {
@@ -527,7 +518,7 @@ void CoLong::die() {
 	setToSetupPose();
 	getB2Body()->SetLinearDamping(10);
 
-	EM->getSmokeRun()->setVisible(false);
+	getSmokeRun()->setVisible(false);
 
 	//log("die");
 }
@@ -556,7 +547,7 @@ void CoLong::attackNormal() {
 		//log("atttack");
 		setToSetupPose();
 
-		EM->getSlashBreak()->setVisible(false);
+		getSlashBreak()->setVisible(false);
 	}
 
 }
@@ -574,7 +565,7 @@ void CoLong::attackLanding() {
 		addAnimation(0, "attack3", false);
 		setToSetupPose();
 
-		EM->getSlashBreak()->setVisible(false);
+		getSlashBreak()->setVisible(false);
 	}
 }
 
@@ -596,10 +587,10 @@ void CoLong::revive()
 	addAnimation(0, "revive", false);
 	setToSetupPose();
 
-	EM->getSmokeRun()->setVisible(false);
-	EM->getReviveMe()->setPosition(this->getPositionX() + getTrueRadiusOfHero() / 2, this->getPositionY());
-	EM->getReviveMe()->setVisible(true);
-	EM->reviveAni();
+	getSmokeRun()->setVisible(false);
+	getReviveMe()->setPosition(this->getPositionX() + getTrueRadiusOfHero() / 2, this->getPositionY());
+	getReviveMe()->setVisible(true);
+	reviveAni();
 
 	//log("revive");
 }

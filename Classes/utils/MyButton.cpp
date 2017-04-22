@@ -73,7 +73,7 @@ void MyButton::addEvents()
 					this->schedule(schedule_selector(MyButton::checkInterval), timeCoolDown, 1, 0);
 				}
 
-				if(numberOfUse > 1)
+				if(numberOfUseHasNotUsedYet > 1)
 					numberUseLb->setString(StringUtils::format("%i", numberOfUseHasNotUsedYet));
 							
 				canTouch = false;

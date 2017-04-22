@@ -49,32 +49,39 @@ bool SelectStageLayer::init(int charId)
 
 		// get mapId on tmx map
 
-		MenuItemImage* mapBtn;
+		MenuItemSprite* mapBtn;
 		int stage = mObject["stage"].asInt();
 		int mapId = mObject["mapId"].asInt();
 		int haveBoss = mObject["haveBoss"].asInt();
 
+
+		Sprite* un_locked = Sprite::create("un_locked.png");
+		Sprite* un_locked_press = Sprite::create("un_locked.png");
+		un_locked_press->setColor(Color3B(128, 128, 128));
+
+		Sprite* locked = Sprite::create("locked.png");
+
 		if (stage < currentStageUnlocked) {
-			mapBtn = MenuItemImage::create("un_locked.png", "un_locked.png",
+			mapBtn = MenuItemSprite::create(un_locked, un_locked_press,
 					CC_CALLBACK_0(SelectStageLayer::gotoPlay, this, stage, mapId, haveBoss, charId));
 		}
 		else if (stage == currentStageUnlocked) {
 			if (mapId <= currentMapUnlocked) {
-				mapBtn = MenuItemImage::create("un_locked.png", "un_locked.png",
+				mapBtn = MenuItemSprite::create(un_locked, un_locked_press,
 					CC_CALLBACK_0(SelectStageLayer::gotoPlay, this, stage, mapId, haveBoss, charId));
 			}
 			else {
-				mapBtn = MenuItemImage::create("locked.png", "locked.png",
+				mapBtn = MenuItemSprite::create(locked, locked,
 					CC_CALLBACK_0(SelectStageLayer::doNothing, this));
 			}
 
 		}
 		else {
-			mapBtn = MenuItemImage::create("locked.png", "locked.png",
+			mapBtn = MenuItemSprite::create(locked, locked,
 				CC_CALLBACK_0(SelectStageLayer::doNothing, this));
 		}
 
-		mapBtn->setPosition(originXY + origin);
+		mapBtn->setPosition(origin);
 		mapBtn->setScale(screenSize.height / 9 / mapBtn->getContentSize().width);
 
 		menu->addChild(mapBtn);
@@ -83,7 +90,7 @@ bool SelectStageLayer::init(int charId)
 
 	auto layer = Layer::create();
 	layer->setContentSize(Size(screenSize.width * 0.1f, screenSize.height * 0.1f));
-	layer->setPosition(originXY);
+	layer->setPosition(Vec2::ZERO);
 	addChild(layer);
 
 	auto backNormal = Sprite::create("UI/UI_main_menu/btn_back.png");

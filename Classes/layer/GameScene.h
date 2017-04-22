@@ -162,7 +162,7 @@ private:
 	// do do se bi roi xuong
 	// bat su kien roi xuong qua man hinh de don dep map
 
-	void danceWithEffect();
+
 	void danceWithCamera();
 	float previousPercentPosition = 0.0f;
 	void updateCharacterPoint();
@@ -184,6 +184,7 @@ public:
 
 	void updateHUD(float dt);
 	void updateMultiKills(); //DuongPM edited for multi kills
+	void runnerItem(int counter);
 	void updateBloodBar(int numberOfHealth, bool isVisible);
 	void updateCamera();
 

@@ -11,8 +11,10 @@ RefManager::RefManager()
 
 	selectedHero = ref->getIntegerForKey(KEY_SELECTED_HERO, 0);
 
-	currentStageUnlocked = ref->getIntegerForKey(KEY_CUR_STAGE_UNLOCKED, 2);
-	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 3);
+	currentStageUnlocked = ref->getIntegerForKey(KEY_CUR_STAGE_UNLOCKED, 3);
+	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 1);
+
+	anchorTime = ref->getIntegerForKey(KEY_ANCHORTIME, time(0));
 
 	numberOfLife = ref->getIntegerForKey(KEY_LIFE, 3);
 	goldExplored = ref->getIntegerForKey(KEY_GOLD, 0);
@@ -200,6 +202,13 @@ void RefManager::increaseBonusGold(int value)
 {
 	this->bonusGold += value;
 	ref->setIntegerForKey((KEY_BONUS_GOLD_HERO_X + StringUtils::format("%i", selectedHero)).c_str(), this->bonusGold);
+	ref->flush();
+}
+
+void RefManager::resetAnchorTime()
+{
+	anchorTime = time(0);
+	ref->setIntegerForKey(KEY_ANCHORTIME, anchorTime);
 	ref->flush();
 }
 

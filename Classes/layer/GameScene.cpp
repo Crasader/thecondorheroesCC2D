@@ -669,23 +669,33 @@ void GameScene::createInfiniteNode()
 	bg1_2->setScale(SCREEN_SIZE.width / (bg1_2->getContentSize().width));
 	bg1_2->setAnchorPoint(Point(0, 0.5f));
 
-
+	auto moonGr = tmx_map->getObjectGroup("moon");
+	if (moonGr) {
+		auto object = moonGr->getObject("moon");
+		auto pos = Point(object["x"].asFloat()*tmx_map->getScale(), object["y"].asFloat()*tmx_map->getScale());
+		auto moon = Sprite::create("moon.png");
+		moon->setScale(SCREEN_SIZE.height / 4 / moon->getContentSize().height);
+		background->addChild(moon, 2, Vec2(0, 1),Vec2(pos.x,pos.y-SCREEN_SIZE.height/2));
+	}
 
 	auto bg2_1 = Sprite::create(StringUtils::format("Map/map%d/bg%d_2.png", stage, map));
+	//auto bg2_1 = Sprite::create("moon.png");
 	bg2_1->setScale(SCREEN_SIZE.width / (bg2_1->getContentSize().width));
 	bg2_1->setAnchorPoint(Point(0, 0.5f));
 
 	auto bg2_2 = Sprite::create(StringUtils::format("Map/map%d/bg%d_2.png", stage, map));
+	//auto bg2_2 = Sprite::create("moon.png");
 	bg2_2->setScale(SCREEN_SIZE.width / (bg2_2->getContentSize().width));
 	bg2_2->setAnchorPoint(Point(0, 0.5f));
 
-	background->addChild(bg1_1, 0, Vec2(0.5f, 1), Vec2(0, 0));
-	background->addChild(bg1_2, 0, Vec2(0.5f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
+	background->addChild(bg1_1, 1, Vec2(0.5f, 1), Vec2(0, 0));
+	background->addChild(bg1_2, 1, Vec2(0.5f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
 
-	background->addChild(bg2_1, 0, Vec2(0.7f, 1), Vec2(0, 0));
-	background->addChild(bg2_2, 0, Vec2(0.7f, 1), Vec2(bg2_1->getBoundingBox().size.width, 0));
+	background->addChild(bg2_1, 3, Vec2(0.7f, 1), Vec2(0, 0));
+	background->addChild(bg2_2, 3, Vec2(0.7f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
 
-	background->setPosition(Point(-SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
+	//background->setPosition(Point(-SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
+	background->setPosition(Point(0, SCREEN_SIZE.height / 2));
 	background->setAnchorPoint(Point(0, 0.5f));
 	if (isModeDebug)
 		background->setVisible(false);
@@ -1056,16 +1066,6 @@ void GameScene::danceWithCamera()
 	blur = LayerColor::create(Color4B(0, 0, 0, 170));
 	blur->setVisible(false);
 	left_corner = CCRectMake(0, 0, SCREEN_SIZE.width / 2, SCREEN_SIZE.height);
-
-	auto moonGr = tmx_map->getObjectGroup("moon");
-	if (moonGr) {
-		auto object = moonGr->getObject("moon");
-		auto pos = Point(object["x"].asFloat()*tmx_map->getScale(), object["y"].asFloat()*tmx_map->getScale());
-		auto moon = Sprite::create("moon.png");
-		moon->setScale(SCREEN_SIZE.height / 4 / moon->getContentSize().height);
-		moon->setPosition(pos - SCREEN_SIZE / 2);
-		follow->addChild(moon);
-	}
 }
 
 void GameScene::updateCharacterPoint()

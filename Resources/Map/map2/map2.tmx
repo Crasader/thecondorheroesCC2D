@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="500" height="15" tilewidth="80" tileheight="80" nextobjectid="175">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="500" height="15" tilewidth="80" tileheight="80" nextobjectid="178">
  <tileset firstgid="1" name="street_2" tilewidth="80" tileheight="80" tilecount="20" columns="5">
   <image source="street2_2.png" width="400" height="320"/>
  </tileset>
@@ -256,5 +256,8 @@
     <property name="type" type="int" value="0"/>
    </properties>
   </object>
+ </objectgroup>
+ <objectgroup name="moon">
+  <object id="177" name="moon" x="975.758" y="560.606"/>
  </objectgroup>
 </map>

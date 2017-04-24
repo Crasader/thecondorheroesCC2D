@@ -94,13 +94,22 @@ void MyButton::addEvents()
 void MyButton::pauseListener()
 {
 	Director::getInstance()->getEventDispatcher()->removeEventListener(listener);
+	listener = nullptr;
 }
 
 void MyButton::refresh()
 {
 	canTouch = true;
 	isActive = false;
+	isBlocked = false;
 	number->setVisible(false);
+	main->setVisible(true);
+	main->setPercentage(100.0f);
+	numberOfUseHasNotUsedYet = numberOfUse;
+	if (numberOfUse > 1) {
+		numberUseLb->setVisible(true);
+		numberUseLb->setString(StringUtils::format("%i", numberOfUseHasNotUsedYet));
+	}
 	this->unscheduleAllCallbacks();
 }
 

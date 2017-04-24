@@ -288,12 +288,13 @@ void CoLong::createRada(b2World *p_pWorld) {
 void CoLong::createSlash() {
 	auto scale = this->getTrueRadiusOfHero() * 1.8f / 400;  // 400: hieght of spine
 	slash = SkeletonAnimation::createWithFile("Animation/CoLong/slash4.json", "Animation/CoLong/slash4.atlas", scale);
+	slash->setPosition(this->getContentSize().width / 2 + this->getTrueRadiusOfHero(), this->getTrueRadiusOfHero() * 0.7f);
 	slash->update(0.0f);
 	slash->setVisible(false);
 	this->addChild(slash);
 
-	auto scaleLand = this->getTrueRadiusOfHero() * 1.8f / 400;  // 400: hieght of spine
-	slashLand = SkeletonAnimation::createWithFile("Animation/CoLong/slash3.json", "Animation/CoLong/slash3.atlas", scaleLand);
+	slashLand = SkeletonAnimation::createWithFile("Animation/CoLong/slash3.json", "Animation/CoLong/slash3.atlas", scale);
+	slashLand->setPosition(this->getContentSize().width / 2 + this->getTrueRadiusOfHero() * 0.3f, this->getTrueRadiusOfHero() * 0.7f);
 	slashLand->update(0.0f);
 	slashLand->setVisible(false);
 	this->addChild(slashLand);
@@ -511,6 +512,24 @@ void CoLong::die() {
 	if (dieHard < 0) {
 		//log("Die Hard");
 		return;
+	}
+
+	if (!getIsDoneDuration1()) {
+		setIsDoneDuration1(true);
+		checkDurationSkill1 = 0;
+		unschedule("KeySkill1");
+	}
+
+	if (!getIsDoneDuration2()) {
+		setIsDoneDuration2(true);
+		unschedule("KeySkill2");
+		checkDurationSkill2 = 0;
+	}
+
+	if (!getIsDoneDuration3()) {
+		setIsDoneDuration3(true);
+		unschedule("KeySkill3");
+		checkDurationSkill3 = 0;
 	}
 
 	clearTracks();

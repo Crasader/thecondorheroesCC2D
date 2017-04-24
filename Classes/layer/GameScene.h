@@ -222,6 +222,20 @@ public:
 
 	// quan ly item
 	//void createMapItem();// tao du lieu cho map item.
+
+	// tutorial
+	bool isFirstPlay;
+	bool isDoneAttackTut = false;
+	bool isDoneSkillTut = false;
+
+	// handle tuts
+	void jump();
+	
+	void introAttack();
+	void introSkills();
+	void introBird();
+
+	void tutorial();
 };
 
 #endif // __GAME_SCENE_H__

@@ -36,6 +36,7 @@ protected:
 	void addEvents();
 	void pauseListener();
 	void refresh();
+	EventListenerTouchOneByOne* getListener() { return listener; }
 };
 
 #endif // __BUTTON_H__

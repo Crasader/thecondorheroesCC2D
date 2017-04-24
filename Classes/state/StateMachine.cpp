@@ -28,6 +28,8 @@ void StateMachine::setPreviousState(State * m_previous)
 
 void StateMachine::Update()
 {
+	if (currentState == NULL) 
+		return;
 	if (currentState != previousState) {
 		currentState->execute(owner);
 		globalState = previousState;

@@ -6,7 +6,7 @@
 
 
 
-class CoinBullion : public B2Skeleton{
+class CoinBullion : public B2Skeleton {
 
 public:
 	CoinBullion(spSkeletonData *data);

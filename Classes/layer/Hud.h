@@ -88,6 +88,9 @@ private:
 	void addButton();
 	void createBloodBar();
 
+	void addAttack();
+	void addSkills();
+	void addBird();
 
 	void doSuctionCoin(Ref *pSender);
 	void doDoublingCoin(Ref *pSender);
@@ -97,6 +100,11 @@ private:
 	void showSpecialButton();
 	void createButtonX(int index, Point position);
 	vector<int> getListIndexOfTypeItemBuy();
+
+	// tuts
+	void introAttack();
+	void introSkills();
+	void introBird();
 };
 
 #endif // __HUD_H__

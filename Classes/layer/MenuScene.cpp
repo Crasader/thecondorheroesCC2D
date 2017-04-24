@@ -416,7 +416,7 @@ void MenuLayer::initItemBoard() {
 		_pItemBoard->getContentSize().height * _pItemBoard->getScaleY() * 0.7f));
 	_pItemScrollView->setAnchorPoint(Vec2(0.0f, 0.0f));
 
-	_pItemScrollView->setPosition(Vec2(_pItemBoard->getContentSize().width * 0.1f, _pItemBoard->getContentSize().height * 0.08f));
+	_pItemScrollView->setPosition(Vec2(m_pItemBoard->getContentSize().width * 0.1f, m_pItemBoard->getContentSize().height * 0.08f));
 
 	_pItemScrollView->setDirection(ScrollView::Direction::VERTICAL);
 	_pItemScrollView->setBounceEnabled(true);

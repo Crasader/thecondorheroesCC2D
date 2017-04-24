@@ -15,6 +15,8 @@ public:
 	~RefManager();
 
 protected:
+	CC_SYNTHESIZE_READONLY(bool, isFirstPlay, IsFirstPlay);
+
 	CC_SYNTHESIZE_READONLY(int, selectedHero, SelectedHero);
 	CC_SYNTHESIZE_READONLY(bool, isLockedHero, IsLockedHero);	// to try or smt
 
@@ -57,13 +59,15 @@ protected:
 
 private:
 	UserDefault* ref;
-	bool isFirstTime = true;
 	static RefManager *refManager;
 
 public:
 	static RefManager* getInstance();
 
 	void pointToCurrentHero(int index);		// set props to get
+	
+	void setDoneFirstPlay();
+
 	void unLockHero(int index);
 	void increaseLevel();
 
@@ -116,6 +120,7 @@ public:
 
 #define REF RefManager::getInstance()
 // Ref
+#define KEY_FIRST							"FirstPlay"
 #define KEY_SELECTED_HERO					"SelectedHero"		// integer
 
 #define KEY_CUR_STAGE_UNLOCKED				"CurrentStageUnlocked"

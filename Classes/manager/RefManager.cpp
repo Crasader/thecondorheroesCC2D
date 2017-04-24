@@ -9,6 +9,7 @@ RefManager::RefManager()
 {
 	ref = UserDefault::getInstance()->sharedUserDefault();
 
+	isFirstPlay = ref->getBoolForKey(KEY_FIRST, true);
 	selectedHero = ref->getIntegerForKey(KEY_SELECTED_HERO, 0);
 
 	currentStageUnlocked = ref->getIntegerForKey(KEY_CUR_STAGE_UNLOCKED, 3);
@@ -76,6 +77,13 @@ void RefManager::pointToCurrentHero(int index)
 	levelSkill_2 = ref->getIntegerForKey((KEY_LEVEL_SKILL_2_HERO_X + m_index).c_str(), 1);
 	levelSkill_3 = ref->getIntegerForKey((KEY_LEVEL_SKILL_3_HERO_X + m_index).c_str(), 1);
 
+}
+
+void RefManager::setDoneFirstPlay()
+{
+	isFirstPlay = false;
+	ref->setBoolForKey(KEY_FIRST, isFirstPlay);
+	ref->flush();
 }
 
 void RefManager::unLockHero(int index)

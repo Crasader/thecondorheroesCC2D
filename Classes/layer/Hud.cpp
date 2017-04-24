@@ -129,55 +129,13 @@ void Hud::addProfile()
 
 void Hud::addButton()
 {
+	menu = Menu::create();
 
-	auto groupAttack = tmxMap->getObjectGroup("btn_attack");
-	auto mObject = groupAttack->getObject("btn_attack");
-	Point origin = Point(mObject["x"].asFloat() * tmxMap->getScaleX(), mObject["y"].asFloat()* tmxMap->getScaleY());
+	addAttack();
 
-	btnAttack = MyButton::create("UI/btn_attack.png", "UI/btn_attack.png", origin);
+	addSkills();
 
-	btnAttack->setTimeCoolDown(0.33f);
-	btnAttack->setScale(SCREEN_SIZE.height / 4.5f / btnAttack->getContentSize().height);
-	addChild(btnAttack);
-
-	auto groupBtnSkill1 = tmxMap->getObjectGroup("btn_skill1");
-	auto mObject_1 = groupBtnSkill1->getObject("btn_skill1");
-	Point origin_1 = Point(mObject_1["x"].asFloat() * tmxMap->getScaleX(), mObject_1["y"].asFloat()* tmxMap->getScaleY());
-
-	btnSkill_1 = MyButton::create(JSHERO->getPathMainImageSkill1(), JSHERO->getPathSubImageSkill1(), origin_1);
-
-	btnSkill_1->setTimeCoolDown(REF->getCoolDownSkill_1());
-	btnSkill_1->addNumberOfUse(JSHERO->getNumberOfUseSkill1());
-	btnSkill_1->setScale(SCREEN_SIZE.height / 6.5f / btnSkill_1->getContentSize().height);
-	addChild(btnSkill_1);
-
-	//////////////////////////////////////////////////////////////////////////
-
-	auto groupBtnSkill2 = tmxMap->getObjectGroup("btn_skill2");
-	auto mObject_2 = groupBtnSkill2->getObject("btn_skill2");
-	Point origin_2 = Point(mObject_2["x"].asFloat() * tmxMap->getScaleX(), mObject_2["y"].asFloat()* tmxMap->getScaleY());
-
-	btnSkill_2 = MyButton::create(JSHERO->getPathMainImageSkill2(), JSHERO->getPathSubImageSkill2(), origin_2);
-
-	btnSkill_2->setTimeCoolDown(REF->getCoolDownSkill_2());
-	btnSkill_2->addNumberOfUse(JSHERO->getNumberOfUseSkill2());
-	btnSkill_2->setScale(SCREEN_SIZE.height / 6.5f / btnSkill_2->getContentSize().height);
-	addChild(btnSkill_2);
-
-	//////////////////////////////////////////////////////////////////////////
-
-	auto groupBtnSkill3 = tmxMap->getObjectGroup("btn_skill3");
-	auto mObject_3 = groupBtnSkill3->getObject("btn_skill3");
-	Point origin_3 = Point(mObject_3["x"].asFloat() * tmxMap->getScaleX(), mObject_3["y"].asFloat()* tmxMap->getScaleY());
-
-	btnSkill_3 = MyButton::create(JSHERO->getPathMainImageSkill3(), JSHERO->getPathSubImageSkill3(), origin_3);
-
-	btnSkill_3->setTimeCoolDown(REF->getCoolDownSkill_3());
-	btnSkill_3->addNumberOfUse(JSHERO->getNumberOfUseSkill3());
-	btnSkill_3->setScale(SCREEN_SIZE.height / 6.5f / btnSkill_3->getContentSize().height);
-	addChild(btnSkill_3);
-
-
+	addBird();
 
 	auto groupPause = tmxMap->getObjectGroup("btn_pause");
 	auto mObject_5 = groupPause->getObject("btn_pause");
@@ -189,20 +147,7 @@ void Hud::addButton()
 	pauseItem->setScale(scoreBoard->getBoundingBox().size.height / pauseItem->getContentSize().height);
 	pauseItem->setPosition(origin_5.x, scoreBoard->getPositionY());
 
-
-	menu = Menu::create();
-
 	//showSpecialButton();
-
-	auto groupBtnCalling = tmxMap->getObjectGroup("btn_special");
-	auto mObject_4 = groupBtnCalling->getObject("btn_special");
-	Point origin_4 = Point(mObject_4["x"].asFloat() * tmxMap->getScaleX(), mObject_4["y"].asFloat()* tmxMap->getScaleY());
-
-	btnCalling = MenuItemImage::create("UI/btn_callbird.png", "UI/btn_callbird_off.png", CC_CALLBACK_1(Hud::doCalling, this));
-	btnCalling->setEnabled(false);
-	btnCalling->setDisabledImage(Sprite::create("UI/btn_callbird_off.png"));
-	btnCalling->setPosition(origin_4);
-	btnCalling->setScale(SCREEN_SIZE.height / 7 / btnCalling->getContentSize().height);
 
 	menu->addChild(btnCalling);
 	menu->addChild(pauseItem);
@@ -283,6 +228,72 @@ void Hud::createBloodBar()
 		addChild(blood, 1);
 		listBlood->addObject(blood);
 	}
+}
+
+void Hud::addAttack()
+{
+	auto groupAttack = tmxMap->getObjectGroup("btn_attack");
+	auto mObject = groupAttack->getObject("btn_attack");
+	Point origin = Point(mObject["x"].asFloat() * tmxMap->getScaleX(), mObject["y"].asFloat()* tmxMap->getScaleY());
+
+	btnAttack = MyButton::create("UI/btn_attack.png", "UI/btn_attack.png", origin);
+
+	btnAttack->setTimeCoolDown(0.33f);
+	btnAttack->setScale(SCREEN_SIZE.height / 4.5f / btnAttack->getContentSize().height);
+	addChild(btnAttack);
+}
+
+void Hud::addSkills()
+{
+	auto groupBtnSkill1 = tmxMap->getObjectGroup("btn_skill1");
+	auto mObject_1 = groupBtnSkill1->getObject("btn_skill1");
+	Point origin_1 = Point(mObject_1["x"].asFloat() * tmxMap->getScaleX(), mObject_1["y"].asFloat()* tmxMap->getScaleY());
+
+	btnSkill_1 = MyButton::create(JSHERO->getPathMainImageSkill1(), JSHERO->getPathSubImageSkill1(), origin_1);
+
+	btnSkill_1->setTimeCoolDown(REF->getCoolDownSkill_1());
+	btnSkill_1->addNumberOfUse(JSHERO->getNumberOfUseSkill1());
+	btnSkill_1->setScale(SCREEN_SIZE.height / 6.5f / btnSkill_1->getContentSize().height);
+	addChild(btnSkill_1);
+
+	//////////////////////////////////////////////////////////////////////////
+
+	auto groupBtnSkill2 = tmxMap->getObjectGroup("btn_skill2");
+	auto mObject_2 = groupBtnSkill2->getObject("btn_skill2");
+	Point origin_2 = Point(mObject_2["x"].asFloat() * tmxMap->getScaleX(), mObject_2["y"].asFloat()* tmxMap->getScaleY());
+
+	btnSkill_2 = MyButton::create(JSHERO->getPathMainImageSkill2(), JSHERO->getPathSubImageSkill2(), origin_2);
+
+	btnSkill_2->setTimeCoolDown(REF->getCoolDownSkill_2());
+	btnSkill_2->addNumberOfUse(JSHERO->getNumberOfUseSkill2());
+	btnSkill_2->setScale(SCREEN_SIZE.height / 6.5f / btnSkill_2->getContentSize().height);
+	addChild(btnSkill_2);
+
+	//////////////////////////////////////////////////////////////////////////
+
+	auto groupBtnSkill3 = tmxMap->getObjectGroup("btn_skill3");
+	auto mObject_3 = groupBtnSkill3->getObject("btn_skill3");
+	Point origin_3 = Point(mObject_3["x"].asFloat() * tmxMap->getScaleX(), mObject_3["y"].asFloat()* tmxMap->getScaleY());
+
+	btnSkill_3 = MyButton::create(JSHERO->getPathMainImageSkill3(), JSHERO->getPathSubImageSkill3(), origin_3);
+
+	btnSkill_3->setTimeCoolDown(REF->getCoolDownSkill_3());
+	btnSkill_3->addNumberOfUse(JSHERO->getNumberOfUseSkill3());
+	btnSkill_3->setScale(SCREEN_SIZE.height / 6.5f / btnSkill_3->getContentSize().height);
+	addChild(btnSkill_3); 
+}
+
+void Hud::addBird()
+{
+	auto groupBtnCalling = tmxMap->getObjectGroup("btn_special");
+	auto mObject_4 = groupBtnCalling->getObject("btn_special");
+	Point origin_4 = Point(mObject_4["x"].asFloat() * tmxMap->getScaleX(), mObject_4["y"].asFloat()* tmxMap->getScaleY());
+
+	btnCalling = MenuItemImage::create("UI/btn_callbird.png", "UI/btn_callbird_off.png", CC_CALLBACK_1(Hud::doCalling, this));
+	btnCalling->setEnabled(false);
+	btnCalling->setDisabledImage(Sprite::create("UI/btn_callbird_off.png"));
+	btnCalling->setPosition(origin_4);
+	btnCalling->setScale(SCREEN_SIZE.height / 7 / btnCalling->getContentSize().height);
 }
 
 
@@ -376,6 +387,22 @@ vector<int> Hud::getListIndexOfTypeItemBuy()
 	}
 
 	return list;
+}
+
+void Hud::introAttack()
+{
+	addAttack();
+}
+
+void Hud::introSkills()
+{
+	// block attack
+	addSkills();
+}
+
+void Hud::introBird()
+{
+	// block skills + attack
 }
 
 void Hud::hideButton()
@@ -486,12 +513,23 @@ void Hud::refreshControl()
 	btnSkill_1->refresh();
 	btnSkill_2->refresh();
 	btnSkill_3->refresh();
+
+	// item
+	if (coverSkill->isVisible()) {
+		coverSkill->setVisible(false);
+		coverSkill->unscheduleAllCallbacks();
+	}
+
+	if (coverItemMagnet->isVisible()) {
+		coverItemMagnet->setVisible(false);
+		coverItemMagnet->unscheduleAllCallbacks();
+	}
 }
 
-void Hud::moveCallBirdToCenterScreen(Vec2 p_ptCenterScreen) {
+void Hud::moveCallBirdToCenterScreen(Vec2 p_ptCenterScreen) 
+{
 
-	auto origin = Director::getInstance()->getVisibleOrigin();
-	MoveTo *_pStageSpecialButton = MoveTo::create(0.3f, origin + p_ptCenterScreen);
+	MoveTo *_pStageSpecialButton = MoveTo::create(0.3f, p_ptCenterScreen);
 	auto _aStageSpecialButtonCallback = CallFunc::create([&]() {
 		btnCallingHintDone = true;
 		btnCalling->runAction(ScaleBy::create(0.3f, 2.0f));

@@ -76,7 +76,7 @@ void DuongQua::createToanChanKiemPhap(Point posSword)
 		this->getParent()->addChild(tckp, ZORDER_SMT);
 		tckp->setIsAdded(true);
 	}
-	
+
 	listToanChanKiemPhap.push_back(tckp);
 
 	if (indexSkill1 == 4) indexSkill1 = 0;
@@ -131,7 +131,7 @@ void DuongQua::createKiemPhap(float posX)
 	kp->setScale(this->getTrueRadiusOfHero() * 1.75f / kp->getContentSize().width);
 	auto gameLayer = (GameScene*) this->getParent();
 
-	kp->setPosition(posX, SCREEN_SIZE.height + kp->getBoundingBox().size.height);
+	kp->setPosition(posX, this->getPositionY() + SCREEN_SIZE.height);
 	kp->initBoxPhysic(gameLayer->world, kp->getPosition());
 
 	gameLayer->addChild(kp, ZORDER_ENEMY);
@@ -153,7 +153,6 @@ void DuongQua::landKiemPhap()
 		checkDurationSkill2++;
 
 		if ((checkDurationSkill2 >= getDurationSkill2() * 20)) {
-			numberOfDeadSword = 0;
 			setIsDoneDuration2(true);
 			checkDurationSkill2 = 0;
 			unschedule("KeySkill2");
@@ -246,7 +245,6 @@ void DuongQua::shootTieuHonChuong()
 			auto scale = ScaleBy::create(0.75f, 0.5f);
 			spiritHole->runAction(Sequence::create(scale, hide, nullptr));
 			setIsDoneDuration3(true);
-			numberOfDeadTHC = 0;
 			checkDurationSkill3 = 0;
 			unschedule("KeySkill3");
 		}
@@ -265,7 +263,6 @@ void DuongQua::createSlash()
 {
 	auto scale = this->getTrueRadiusOfHero() * 1.8f / 400;
 	slash = SkeletonAnimation::createWithFile("Animation/DuongQua/slash2.json", "Animation/DuongQua/slash2.atlas", scale);
-
 	slash->setPosition(this->getContentSize().width / 2 + this->getTrueRadiusOfHero(), this->getTrueRadiusOfHero() * 0.7f);
 	slash->update(0.0f);
 	slash->setVisible(false);
@@ -310,7 +307,7 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 	fixtureDef.shape = &circle_shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_HERO;
-	fixtureDef.filter.maskBits = BITMASK_FLOOR  | BITMASK_ITEM |
+	fixtureDef.filter.maskBits = BITMASK_FLOOR | BITMASK_ITEM |
 		BITMASK_TOANCHAN1 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION;
 
 
@@ -329,7 +326,7 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 }
 
 void DuongQua::addStuff()
-{	
+{
 	// spirit hole
 	createSpiritHole();
 
@@ -421,12 +418,45 @@ void DuongQua::landing()
 
 void DuongQua::die()
 {
-	AudioManager::playSound(SOUND_DQDIE);
+
 	--dieHard;
 	if (dieHard < 0) {
-		//log("Die Hard");
-		//AudioManager::playSound(SOUND_DQHIT);
 		return;
+	}
+
+	AudioManager::playSound(SOUND_DQDIE);
+
+	if (spiritHole->isVisible())
+		spiritHole->setVisible(false);
+
+	if (!getIsDoneDuration1()) {
+		setIsDoneDuration1(true);
+		if (!listToanChanKiemPhap.empty()) {
+			for (auto tckp : listToanChanKiemPhap) {
+				if (!tckp->getB2Body()) continue;
+
+				auto gameLayer = (GameScene*) this->getParent();
+
+				gameLayer->world->DestroyBody(tckp->getB2Body());
+				tckp->setB2Body(nullptr);
+				tckp->setVisible(false);
+			}
+		}
+		listToanChanKiemPhap.clear();
+		checkDurationSkill1 = 0;
+		unschedule("KeySkill1");
+	}
+
+	if (!getIsDoneDuration2()) {
+		setIsDoneDuration2(true);
+		unschedule("KeySkill2");
+		checkDurationSkill2 = 0;
+	}
+
+	if (!getIsDoneDuration3()) {
+		setIsDoneDuration3(true);
+		unschedule("KeySkill3");
+		checkDurationSkill3 = 0;
 	}
 
 	clearTracks();
@@ -626,7 +656,8 @@ void DuongQua::updateMe(float dt)
 	getFSM()->Update();
 
 	if (!listKiemPhap.empty()) {
-		if (numberOfDeadSword > 4 && numberOfDeadSword == listKiemPhap.size()) {
+		if (numberOfDeadSword == listKiemPhap.size()) {
+			numberOfDeadSword = 0;
 			listKiemPhap.clear();
 		}
 
@@ -654,7 +685,8 @@ void DuongQua::updateMe(float dt)
 	}
 
 	if (!listTieuHonChuong.empty()) {
-		if (numberOfDeadTHC > 4 && numberOfDeadTHC == listTieuHonChuong.size()) {
+		if (numberOfDeadTHC == listTieuHonChuong.size()) {
+			numberOfDeadTHC = 0;
 			listTieuHonChuong.clear();
 		}
 
@@ -692,7 +724,7 @@ void DuongQua::updateMe(float dt)
 	}
 
 
-	if(!isDriverEagle)
+	if (!isDriverEagle)
 		getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
 
 

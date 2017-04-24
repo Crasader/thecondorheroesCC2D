@@ -219,11 +219,14 @@ void GameScene::checkActiveButton()
 		return;
 	}
 
+	if (hero->getFSM()->currentState == MDie) return;
+
 	if (hud->getBtnSkill_1()->getIsBlocked()) {		// 2 and 3 active
 		if (currentButton == 2) {
 			if (hero->getIsDoneDuration2()) {
 
-				hero->killThemAll(listEnemyOccurInScreen);
+				if(hero->getFSM()->currentState != MRevive)
+					hero->killThemAll(listEnemyOccurInScreen);
 				hero->getActiveSkill()->setVisible(false);
 
 				if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
@@ -275,8 +278,8 @@ void GameScene::checkActiveButton()
 		}
 		else if (currentButton == 3) {
 			if (hero->getIsDoneDuration3()) {
-
-				hero->killThemAll(listEnemyOccurInScreen);
+				if (hero->getFSM()->currentState != MRevive)
+					hero->killThemAll(listEnemyOccurInScreen);
 				hero->getActiveSkill()->setVisible(false);
 
 				if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
@@ -313,8 +316,8 @@ void GameScene::checkActiveButton()
 		}
 		else if (currentButton == 1) {
 			if (hero->getIsDoneDuration1()) {
-
-				hero->killThemAll(listEnemyOccurInScreen);
+				if (hero->getFSM()->currentState != MRevive)
+					hero->killThemAll(listEnemyOccurInScreen);
 				hero->getActiveSkill()->setVisible(false);
 
 				if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
@@ -339,17 +342,31 @@ void GameScene::listener()
 	if (hero->getB2Body() == nullptr)
 		return;
 
-	if (hud->getBtnAttack()->getIsActive() && !hud->getBtnAttack()->getIsBlocked() &&
-		hero->getFSM()->currentState != MDie && hero->getFSM()->currentState != MInjured) {
+	if (hero->getFSM()->currentState == MDie) {
+		if (hud->getBtnSkill_1()->getListener() != nullptr) {
+			hud->pauseIfVisible();
+			if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
+				hud->getBtnCalling()->setEnabled(false);
+			}
 
+			if (hero->getActiveSkill()->isVisible())
+				hero->getActiveSkill()->setVisible(false);
+
+			if (hero->getSuctionCoinAni()->isVisible())
+				hero->getSuctionCoinAni()->setVisible(false);
+		}
+	}
+
+	if (hud->getBtnAttack()->getIsActive() && !hud->getBtnAttack()->getIsBlocked() 
+		&& hero->getFSM()->currentState != MInjured) {
+		
 		hero->getFSM()->changeState(MAttack);
-
 
 		hud->getBtnAttack()->setIsActive(false);
 	}
 
-	if (hud->getBtnSkill_1()->getIsActive() && !hud->getBtnSkill_1()->getIsBlocked() &&
-		hero->getFSM()->currentState != MDie && hero->getFSM()->currentState != MInjured) {
+	if (hud->getBtnSkill_1()->getIsActive() && !hud->getBtnSkill_1()->getIsBlocked()
+		&& hero->getFSM()->currentState != MInjured) {			
 
 		currentButton = 1;
 
@@ -376,8 +393,8 @@ void GameScene::listener()
 		}
 	}
 
-	if (hud->getBtnSkill_2()->getIsActive() && !hud->getBtnSkill_2()->getIsBlocked() &&
-		hero->getFSM()->currentState != MDie && hero->getFSM()->currentState != MInjured) {
+	if (hud->getBtnSkill_2()->getIsActive() && !hud->getBtnSkill_2()->getIsBlocked()
+		&& hero->getFSM()->currentState != MInjured) {
 
 		currentButton = 2;
 
@@ -403,8 +420,8 @@ void GameScene::listener()
 		}
 	}
 
-	if (hud->getBtnSkill_3()->getIsActive() && !hud->getBtnSkill_3()->getIsBlocked() &&
-		hero->getFSM()->currentState != MDie && hero->getFSM()->currentState != MInjured) {
+	if (hud->getBtnSkill_3()->getIsActive() && !hud->getBtnSkill_3()->getIsBlocked()
+		&& hero->getFSM()->currentState != MInjured){
 
 		currentButton = 3;
 
@@ -1123,25 +1140,7 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 
 			return false;
 
-		if (hero->getNumberOfJump() > 0) {
-			hero->setNumberOfJump(hero->getNumberOfJump() - 1);
-			auto currentVelX = hero->getB2Body()->GetLinearVelocity().x;
-			hero->getB2Body()->SetLinearVelocity(b2Vec2(currentVelX, hero->getJumpVel()));
-
-			if (hero->getFSM()->currentState == MLand && hero->getNumberOfJump() > 0) {
-				hero->getSmokeJumpX2()->setPosition(hero->getPosition());
-				hero->getSmokeJumpX2()->setVisible(true);
-				hero->smokeJumpX2Ani();
-			}
-
-
-			if (hero->getNumberOfJump() == 1) {
-				hero->getFSM()->changeState(MJump);
-				hero->setOnGround(false);
-			}
-			if (hero->getNumberOfJump() == 0)
-				hero->getFSM()->changeState(MDoubleJump);
-		}
+		jump();
 
 	}
 
@@ -1474,6 +1473,7 @@ void GameScene::shakeTheScreen()
 
 void GameScene::reviveHero()
 {
+	hud->refreshControl();
 	resumeGame();
 	hero->resume();
 	hero->setDieHard(1);
@@ -1491,7 +1491,7 @@ void GameScene::reviveHero()
 		hero->killThemAll(listEnemyOccurInScreen);
 	});
 
-	auto reviveUp = MoveBy::create(1.5f, Vec2(0, hero->getTrueRadiusOfHero() * 2.7f));
+	auto reviveUp = MoveBy::create(1.43f, Vec2(0, hero->getTrueRadiusOfHero() * 2.7f));
 	hero->runAction(Sequence::create(reviveUp, killAll, nullptr));
 	hero->getFSM()->changeState(MRevive);
 }
@@ -1555,14 +1555,14 @@ void GameScene::pauseGame()
 void GameScene::dieGame()
 {
 	blurScreen();
-	if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
+	/*if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
 		hud->getBtnCalling()->setEnabled(false);
-	}
+	}*/
 
 	if (hero->getSmokeRun()->isVisible())
 		hero->getSmokeRun()->pause();
 
-	hud->pauseIfVisible();
+	//hud->pauseIfVisible();
 
 	hero->pause();
 	if (hero->getIsDriverEagle())
@@ -1584,14 +1584,14 @@ void GameScene::overGame()
 	//hud->getLbScore()->setString(StringUtils::format("%i", hero->getScore()));
 	//hud->getLbMoney()->setString(StringUtils::format("%i", hero->getCoinExplored()));
 
-	if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
+	/*if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
 		hud->getBtnCalling()->setEnabled(false);
-	}
+	}*/
 
 	if (hero->getSmokeRun()->isVisible())
 		hero->getSmokeRun()->pause();
 
-	hud->pauseIfVisible();
+	//hud->pauseIfVisible();
 
 	hero->pause();
 	if (hero->getIsDriverEagle())
@@ -1607,6 +1607,7 @@ void GameScene::overGame()
 
 void GameScene::nextGame()
 {
+	this->removeAllChildrenWithCleanup(true);
 	auto _scene = SelectStageLayer::createScene(charId);
 	Director::getInstance()->replaceScene(TransitionFade::create(0.3f, _scene));
 }
@@ -1829,6 +1830,45 @@ void GameScene::creatAgentByMydata(MyLayer * layer, MyData data)
 	default:
 		break;
 	}
+}
+
+void GameScene::jump()
+{
+	if (hero->getNumberOfJump() > 0) {
+		hero->setNumberOfJump(hero->getNumberOfJump() - 1);
+		auto currentVelX = hero->getB2Body()->GetLinearVelocity().x;
+		hero->getB2Body()->SetLinearVelocity(b2Vec2(currentVelX, hero->getJumpVel()));
+
+		if (hero->getFSM()->currentState == MLand && hero->getNumberOfJump() > 0) {
+			hero->getSmokeJumpX2()->setPosition(hero->getPosition());
+			hero->getSmokeJumpX2()->setVisible(true);
+			hero->smokeJumpX2Ani();
+		}
+
+
+		if (hero->getNumberOfJump() == 1) {
+			hero->getFSM()->changeState(MJump);
+			hero->setOnGround(false);
+		}
+		if (hero->getNumberOfJump() == 0)
+			hero->getFSM()->changeState(MDoubleJump);
+	}
+}
+
+void GameScene::introAttack()
+{
+}
+
+void GameScene::introSkills()
+{
+}
+
+void GameScene::introBird()
+{
+}
+
+void GameScene::tutorial()
+{
 }
 
 //void GameScene::createMapItem()

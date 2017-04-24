@@ -2,6 +2,7 @@
 #include "CoinBag.h"
 #include "manager\SkeletonManager.h"
 #include "BaseHero.h"
+#include "manager\AudioManager.h"
 
 CoinBag::CoinBag(spSkeletonData * data):B2Skeleton(data)
 {
@@ -77,6 +78,7 @@ void CoinBag::updateMe(BaseHero* hero)
 
 void CoinBag::die()
 {
+	AudioManager::playSound(SOUND_COINBAG);
 	this->setVisible(false);
 
 	//effect = SkeletonAnimation::createWithFile("Effect_getgolden.json", "Effect_getgolden.atlas", SCREEN_SIZE.height / 4.5f / 641);

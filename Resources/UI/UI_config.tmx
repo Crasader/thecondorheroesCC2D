@@ -51,12 +51,12 @@
   <object id="15" name="btn_pause" x="1186" y="50" width="28" height="22"/>
  </objectgroup>
  <objectgroup name="icon">
-  <object id="18" name="icon_Skill" x="235" y="115" width="12" height="12">
+  <object id="18" name="icon_Skill" x="235" y="123" width="12" height="12">
    <properties>
     <property name="order" type="int" value="1"/>
    </properties>
   </object>
-  <object id="19" name="icon_Item" x="320" y="115" width="12" height="12">
+  <object id="19" name="icon_Item" x="315" y="123" width="12" height="12">
    <properties>
     <property name="order" type="int" value="2"/>
    </properties>

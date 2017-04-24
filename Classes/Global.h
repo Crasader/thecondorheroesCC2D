@@ -29,11 +29,13 @@ using namespace std;
 #define BITMASK_SLASH					0x0100
 #define BITMASK_BOSS					0x0200
 #define BITMASK_UNDER_GROUND			0x0400
+#define BITMASK_BIRD					0x0500
 #define BITMASK_ITEM					0x0600
 #define BITMASK_COIN_BAG				0x0800
 #define BITMASK_COIN_BULLION			0x1000
 #define BITMASK_RADA_SKILL_1			0x2000
 #define BITMASK_RADA_SKILL_2			0x4000
+
 
 // tag
 #define TAG_HERO							50
@@ -95,34 +97,52 @@ using namespace std;
 
 
 
+
 #define	MUSIC_MENU							"sound/music/menu.mp3"
 #define MUSIC_STAGE1						"sound/music/stage1.mp3"
 #define MUSIC_STAGE2						"sound/music/stage2.mp3"
 #define MUSIC_STAGE3						"sound/music/stage3.mp3"
 #define MUSIC_STAGE4						"sound/music/stage4.mp3"
-#define SOUND_DQDIE							"sound/dqdie.mp3"
+
+#define SOUND_MCAT							"sound/mcattack.mp3"
+#define SOUND_MCJUMP						"sound/mcjump.mp3"
+
 #define SOUND_DQDIE							"sound/dqdie.mp3"
 #define SOUND_DQHIT							"sound/dqhit.mp3"
 #define SOUND_DQSKILL1							"sound/dqskill1.mp3"
 #define SOUND_DQSKILL2							"sound/dqskill2.mp3"
 #define SOUND_DQSKILL3							"sound/dqskill3.mp3"
 #define SOUND_CLDIE								"sound/cldie.mp3"
-#define SOUND_CLDIE								"sound/cldie.mp3"
 #define SOUND_CLHIT								"sound/clhit.mp3"
 #define SOUND_CLSKILL1							"sound/clskill1.mp3"
 #define SOUND_CLSKILL2							"sound/clskill2.mp3"
 #define SOUND_CLSKILL3							"sound/clskill3.mp3"
 
-#define SOUND_TC1AT							"sound/tc1at.mp3"
+#define SOUND_TC1AT								"sound/tc1at.mp3"
 #define SOUND_TC1DIE							"sound/tc1die.mp3"
-#define SOUND_TC2AT							"sound/tc2at.mp3"
+#define SOUND_TC2AT								"sound/tc2at.mp3"
 #define SOUND_TC2DIE							"sound/tc2die.mp3"
-//#define SOUND_DQSKILL2							"sound/sound/dqskill2.mp3"
+#define SOUND_HLB1AT								"sound/hlb1at.mp3"
+#define SOUND_HLB1DIE							"sound/hlb1die.mp3"
+#define SOUND_HLB2AT								"sound/hlb2at.mp3"
+#define SOUND_HLB2DIE							"sound/hlb2die.mp3"
+#define SOUND_TOONGDIE							"sound/toongdie.mp3"
 
+#define SOUND_BOSS1CHEM							"sound/boss1chem.mp3"
+#define SOUND_BOSS1SKILL						"sound/boss1skill.mp3"
+#define SOUND_BOSS1DIE							"sound/boss1die.mp3"
 
-#define KEY_IS_MUSIC						"isMusic"
-#define KEY_IS_SOUND						"isSound"
-#define KEY_VALUE_MUSIC						"valuemusic"
+#define SOUND_COIN								"sound/getcoin.mp3"
+#define SOUND_COINBULLION								"sound/getcoinbullion.mp3"
+#define SOUND_COINBAG								"sound/getcoinbag.mp3"
+#define SOUND_ITEM								"sound/getitem.mp3"
+
+#define SOUND_FAIL						"sound/stagefail.mp3"
+#define SOUND_WIN						"sound/statewin.mp3"
+
+#define KEY_IS_MUSIC							"isMusic"
+#define KEY_IS_SOUND							"isSound"
+#define KEY_VALUE_MUSIC							"valuemusic"
 
 
 

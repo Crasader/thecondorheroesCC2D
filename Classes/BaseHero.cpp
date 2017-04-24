@@ -1,5 +1,5 @@
 #include "BaseHero.h"
-#include "AudioEngine.h"
+#include "manager\AudioManager.h"
 
 
 
@@ -56,7 +56,97 @@ void BaseHero::changeSwordCategoryBitmask(uint16 bit)
 
 void BaseHero::addStuff()
 {
+	auto scale = this->getScale() / 3;
+	activeSkill = new SkeletonAnimation("Effect/active_skill_eff.json", "Effect/active_skill_eff.atlas", scale * 0.75f);
+	slashBreak = new SkeletonAnimation("Effect/slash-break.json", "Effect/slash-break.atlas", scale / 2);
+	smokeJumpX2 = new SkeletonAnimation("Effect/smoke-jumpx2.json", "Effect/smoke-jumpx2.atlas", scale / 2);
+	smokeLand = new SkeletonAnimation("Effect/smoke-landing.json", "Effect/smoke-landing.atlas", scale / 2);
+	smokeRun = new SkeletonAnimation("Effect/smoke-run.json", "Effect/smoke-run.atlas", scale);
+	reviveMe = new SkeletonAnimation("Effect/revive.json", "Effect/revive.atlas", scale / 2);
+
+	activeSkill->setVisible(false);		activeSkill->update(0.0f);
+	slashBreak->setVisible(false);		slashBreak->update(0.0f);
+	smokeJumpX2->setVisible(false);		smokeJumpX2->update(0.0f);
+	smokeLand->setVisible(false);		smokeLand->update(0.0f);
+	smokeRun->setVisible(false);		smokeRun->update(0.0f);
+	reviveMe->setVisible(false);		reviveMe->update(0.0f);
+
+
+	activeSkill->setPosition(this->getContentSize().width / 2, 0);
+	smokeLand->setPosition(this->getContentSize().width / 2, 0);
+	smokeRun->setPosition(this->getContentSize().width / 2, 0);
+
+	activeSkillAni();
+	smokeRunAni();
+
+	addChild(activeSkill);
+	addChild(smokeLand);
+	addChild(smokeRun);
+
+	this->getParent()->addChild(slashBreak, ZORDER_SMT);
+	this->getParent()->addChild(smokeJumpX2, ZORDER_SMT);
+	this->getParent()->addChild(reviveMe, ZORDER_SMT);
+
+	// magnet effect
+	suctionCoinAni = Sprite::createWithSpriteFrameName("effect_namcham_00.png");
+	suctionCoinAni->setPosition(this->getContentSize().width / 2  + this->getTrueRadiusOfHero() / 2, this->getTrueRadiusOfHero());
+	suctionCoinAni->setVisible(false);
+	Vector <SpriteFrame*> aniframes;
+	for (int i = 0; i < 4; ++i) {
+		string frameName = StringUtils::format("effect_namcham_0%d.png", i);
+		aniframes.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName));
+	}
+
+	auto animation = Animation::createWithSpriteFrames(aniframes, 0.08f);
+	auto animate = Animate::create(animation);
+	suctionCoinAni->runAction(RepeatForever::create(animate));
+
+	addChild(suctionCoinAni);
 }
+
+void BaseHero::activeSkillAni()
+{
+	activeSkill->clearTracks();
+	activeSkill->addAnimation(0, "active", true);
+	activeSkill->setToSetupPose();
+}
+
+void BaseHero::slashBreakAni()
+{
+	slashBreak->clearTracks();
+	slashBreak->addAnimation(0, "slash-break", false);
+	slashBreak->setToSetupPose();
+}
+
+void BaseHero::smokeJumpX2Ani()
+{
+	smokeJumpX2->clearTracks();
+	smokeJumpX2->addAnimation(0, "smoke-jumpx2", false);
+	smokeJumpX2->setToSetupPose();
+}
+
+void BaseHero::smokeLandingAni()
+{
+	smokeLand->clearTracks();
+	smokeLand->addAnimation(0, "smoke-landing", false);
+	smokeLand->setToSetupPose();
+}
+
+void BaseHero::smokeRunAni()
+{
+	smokeRun->clearTracks();
+	smokeRun->addAnimation(0, "smoke-run", true);
+	smokeRun->setToSetupPose();
+}
+
+void BaseHero::reviveAni()
+{
+	reviveMe->clearTracks();
+	reviveMe->addAnimation(0, "revive", false);
+	reviveMe->setToSetupPose();
+}
+
+
 
 void BaseHero::createPool()
 {
@@ -73,10 +163,12 @@ void BaseHero::run()
 
 void BaseHero::normalJump()
 {
+	AudioManager::playSound(SOUND_MCJUMP);
 }
 
 void BaseHero::doubleJump()
 {
+	AudioManager::playSound(SOUND_MCJUMP);
 }
 
 void BaseHero::landing()
@@ -89,10 +181,12 @@ void BaseHero::die()
 
 void BaseHero::attackNormal()
 {
+	AudioManager::playSound(SOUND_MCAT);
 }
 
 void BaseHero::attackLanding()
 {
+	AudioManager::playSound(SOUND_MCAT);
 }
 
 void BaseHero::attackBySkill1()
@@ -135,10 +229,6 @@ void BaseHero::updateMe(float dt)
 
 		getSwordBody()->SetTransform(b2Vec2(getB2Body()->GetPosition().x + getTrueRadiusOfHero() * 2.2f / PTM_RATIO, getB2Body()->GetPosition().y)
 			, getSwordBody()->GetAngle());
-	}
-
-	if (blash->isVisible()) {
-		blash->setPosition(this->getPosition());
 	}
 
 	if (health <= 1 && !bloodScreen->isVisible()) {
@@ -216,7 +306,7 @@ void BaseHero::killThemAll(list<BaseEnemy*> listToKill)
 	blash->setVisible(true);
 	//auto originScale = blash->getScale();
 	auto scaleFactor = Director::getInstance()->getContentScaleFactor();
-	auto scale = ScaleBy::create(0.7f, 100 * scaleFactor);
+	auto scale = ScaleBy::create(0.7f, 150 * scaleFactor);
 
 	auto hide = CallFunc::create([&]() {
 		blash->setVisible(false);
@@ -231,13 +321,13 @@ void BaseHero::killThemAll(list<BaseEnemy*> listToKill)
 	auto boss = (BaseEnemy*) this->getParent()->getChildByTag(TAG_BOSS);
 	if (boss != nullptr && boss->getPositionX() < this->getPositionX() + SCREEN_SIZE.width * 0.75f) {
 		boss->die();
-		log("%i", boss->getHealth());
+		//log("%i", boss->getHealth());
 	}
 }
 
 void BaseHero::createMapItem()
 {
-	checkItem[KEY_ITEM_MAGNET] = 1000;
+	checkItem[KEY_ITEM_MAGNET] = 0;
 	checkItem[KEY_ITEM_DOUPLE_COIN] = 0;
 }
 
@@ -247,8 +337,11 @@ void BaseHero::updateMapItem()
 		int value = checkItem[i];
 		if (value > 0) {
 			value--;
-			checkItem[i]= value;
-		};
+			checkItem[i] = value;
+		}
+		else if (suctionCoinAni->isVisible()) {
+			suctionCoinAni->setVisible(false);
+		}
 	}
 }
 

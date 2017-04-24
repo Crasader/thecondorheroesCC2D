@@ -31,8 +31,19 @@ protected:
 
 	CC_SYNTHESIZE(Sprite*, bloodScreen, BloodScreen);
 	CC_SYNTHESIZE(Sprite*, blash, Blash);
-	CC_SYNTHESIZE(SkeletonAnimation*, slash, Slash);
+	CC_SYNTHESIZE(SkeletonAnimation*, slash, SlashAni);
 	CC_SYNTHESIZE(SkeletonAnimation*, slashLand, SlashLand);
+
+	CC_SYNTHESIZE(SkeletonAnimation*, activeSkill, ActiveSkill);
+	CC_SYNTHESIZE(SkeletonAnimation*, slashBreak, SlashBreak);
+
+	CC_SYNTHESIZE(SkeletonAnimation*, smokeJumpX2, SmokeJumpX2);
+	CC_SYNTHESIZE(SkeletonAnimation*, smokeLand, SmokeLand);
+
+	CC_SYNTHESIZE(SkeletonAnimation*, smokeRun, SmokeRun);
+	CC_SYNTHESIZE(SkeletonAnimation*, reviveMe, ReviveMe);
+
+	CC_SYNTHESIZE(Sprite*, suctionCoinAni, SuctionCoinAni);
 
 	// stuff here
 	CC_SYNTHESIZE(int, score, Score);
@@ -59,6 +70,7 @@ protected:
 	CC_SYNTHESIZE(bool, isDriverEagle, IsDriverEagle);
 	CC_SYNTHESIZE(float, currentRunDis, CurrentRunDis);
 	CC_SYNTHESIZE(float, preRunDis, PreRunDis);
+
 
 public:
 	int checkItem[5];// key and state power, state 0 power off. key define in global
@@ -111,6 +123,15 @@ public:
 	void updateMapItem();
 	int getItemValue(int keyItem);
 	void setItemValue(int keyItem, int value);
+	
+
+	// animation
+	void activeSkillAni();
+	void slashBreakAni();
+	void smokeJumpX2Ani();
+	void smokeLandingAni();
+	void smokeRunAni();
+	void reviveAni();
 
 	StateMachine* getFSM();
 };

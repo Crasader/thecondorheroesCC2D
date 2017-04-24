@@ -1,5 +1,6 @@
 #include "Item.h"
 #include "BaseHero.h"
+#include "manager\AudioManager.h"
 
 Item::Item()
 {
@@ -38,7 +39,7 @@ void Item::initCirclePhysic(b2World * world, Point pos)
 
 void Item::picked()
 {
-
+	AudioManager::playSound(SOUND_ITEM);
 }
 
 

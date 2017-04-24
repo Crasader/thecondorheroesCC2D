@@ -1,5 +1,6 @@
 #include "EnemyBoss1.h"
 #include "BaseHero.h"
+#include "manager\AudioManager.h"
 
 EnemyBoss1::EnemyBoss1(string jsonFile, string atlasFile, float scale) :BaseEnemy(jsonFile, atlasFile, scale)
 {
@@ -41,6 +42,7 @@ void EnemyBoss1::idle()
 
 void EnemyBoss1::attack()
 {
+	AudioManager::playSound(SOUND_BOSS1CHEM);
 	this->isNodie = true;
 	this->clearTracks();
 	this->setAnimation(0, "attack", false);
@@ -49,6 +51,7 @@ void EnemyBoss1::attack()
 
 void EnemyBoss1::attack2()
 {
+	AudioManager::playSound(SOUND_BOSS1SKILL);
 	this->isNodie = true;
 	this->clearTracks();
 	this->setAnimation(0, "attack2", false);
@@ -67,6 +70,7 @@ void EnemyBoss1::die()
 			this->setToSetupPose();
 		}
 		else {
+			AudioManager::playSound(SOUND_BOSS1DIE);
 			this->isNodie = true;
 			this->clearTracks();
 			this->setAnimation(0, "injured-red", false);

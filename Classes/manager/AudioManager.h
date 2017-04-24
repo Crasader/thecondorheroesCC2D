@@ -18,6 +18,9 @@ public:
 	static void cacheAudio();
 	static void playSound(string keysound);
 	static int playSoundForever(string keysound);
-	static void stopSoundForever();
+	static void stopSoundForever(int keysound);
+	// for music
+	static int playMusic(string keysound);
+	static void stopMusic();
 };
 #endif // __TANK_SOLDIER_H__

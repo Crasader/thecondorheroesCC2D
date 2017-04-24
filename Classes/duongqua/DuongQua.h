@@ -1,7 +1,6 @@
 #ifndef __DUONG_QUA_H__
 #define __DUONG_QUA_H__
 
-#include "manager/EffectManager.h"
 #include "duongqua/DQ_TieuHonChuong.h"
 #include "duongqua/DQ_ToanChanKiemPhap.h"
 #include "duongqua/DQ_DocCoKiemPhap.h"

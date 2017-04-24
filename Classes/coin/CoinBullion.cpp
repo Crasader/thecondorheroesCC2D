@@ -1,6 +1,7 @@
 #include "CoinBullion.h"
 #include "manager\SkeletonManager.h"
 #include "BaseHero.h"
+#include "manager\AudioManager.h"
 
 
 
@@ -78,6 +79,7 @@ void CoinBullion::updateMe(BaseHero* hero)
 
 void CoinBullion::picked()
 {
+	AudioManager::playSound(SOUND_COINBULLION);
 	this->setVisible(false);
 	//effect = SkeletonAnimation::createWithFile("Effect_getgolden.json", "Effect_getgolden.atlas", SCREEN_SIZE.height / 3 / 290);
 	if (!SkeletonManager::getInstance()->getSkeletonData("Effect_getgolden")) {

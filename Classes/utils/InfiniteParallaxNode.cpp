@@ -55,3 +55,27 @@ void InfiniteParallaxNode::updatePosition()
 			}
 	}
 }
+
+void InfiniteParallaxNode::up()
+{
+	auto SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+	this->state = UP;
+	auto call = CallFunc::create([&]() {
+		this->free();
+	});
+	auto target = Vec2(this->getPositionX(), this->getPositionY() + SCREEN_SIZE.height / 4);
+	//this->runAction();
+}
+
+void InfiniteParallaxNode::down()
+{
+	this->state =DOWN;
+	auto call = CallFunc::create([&]() {
+		this->free();
+	});
+}
+
+void InfiniteParallaxNode::free()
+{
+	this->state = FREE;
+}

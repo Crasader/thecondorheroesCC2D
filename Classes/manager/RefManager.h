@@ -25,6 +25,8 @@ protected:
 
 	CC_SYNTHESIZE_READONLY(int, currentHealth, CurrentHealth);
 
+	CC_SYNTHESIZE_READONLY(int, anchorTime, AnchorTime);   //
+
 	// life of game
 	CC_SYNTHESIZE_READONLY(int, numberOfLife, NumberOfLife);   //
 	CC_SYNTHESIZE_READONLY(int, goldExplored, GoldExplored);
@@ -85,6 +87,8 @@ public:
 	void increaseBonusScore(int value);
 	void increaseBonusGold(int value);
 
+	void resetAnchorTime();
+
 	// up and down
 
 	// eat to play
@@ -116,6 +120,8 @@ public:
 
 #define KEY_CUR_STAGE_UNLOCKED				"CurrentStageUnlocked"
 #define KEY_CUR_MAP_UNLOCKED				"CurrentMapUnlocked"
+
+#define KEY_ANCHORTIME						"AnchorTime"
 
 #define KEY_LIFE							"MyLife"
 #define KEY_GOLD							"MyGold"

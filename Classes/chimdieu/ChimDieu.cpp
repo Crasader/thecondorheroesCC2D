@@ -28,7 +28,7 @@ ChimDieu * ChimDieu::create(spSkeletonData * data) {
 void ChimDieu::updateMe(float dt) {
 	if (body != nullptr) {
 		this->setPositionX(body->GetPosition().x * PTM_RATIO);
-		this->setPositionY(body->GetPosition().y * PTM_RATIO);
+		this->setPositionY(body->GetPosition().y * PTM_RATIO - 100.0f / PTM_RATIO);
 		this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
 	}
 	else
@@ -38,7 +38,7 @@ void ChimDieu::updateMe(float dt) {
 	if (isCarry && isUp && body->GetPosition().y > SCREEN_SIZE.height * 1.5f / PTM_RATIO) {
 		this->getB2Body()->SetLinearVelocity(b2Vec2(this->getB2Body()->GetLinearVelocity().x, 0.0f));
 	}
-	if (isCarry && isDown && body->GetPosition().y < SCREEN_SIZE.height * 0.8f / PTM_RATIO) {
+	if (isCarry && isDown && body->GetPosition().y < SCREEN_SIZE.height * 0.6f / PTM_RATIO) {
 		this->getB2Body()->SetLinearVelocity(b2Vec2(this->getB2Body()->GetLinearVelocity().x, 0.0f));
 	}
 	if (isCarry) {
@@ -93,7 +93,7 @@ void ChimDieu::initCirclePhysic(b2World * world, Point pos) {
 	this->getB2Body()->SetType(b2_dynamicBody);
 	this->getB2Body()->GetFixtureList()->SetSensor(true);
 	this->getB2Body()->SetGravityScale(0);
-	this->changeBodyCategoryBits(0);
+	this->changeBodyCategoryBits(BITMASK_BIRD);
 	this->changeBodyMaskBits(0);
 }
 
@@ -110,6 +110,7 @@ void ChimDieu::flyDown(b2Vec2 p_b2v2Velocity) {
 	this->getB2Body()->SetLinearVelocity(p_b2v2Velocity);
 	this->isUp = false;
 	this->isDown = true;
+	this->isAbleToDropHero = false;
 }
 
 void ChimDieu::flyAway() {

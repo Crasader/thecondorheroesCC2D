@@ -29,4 +29,7 @@ protected:
 	
 };
 
+
+#define DURATION_MAGNET 1000
+
 #endif // __B2_SPRITE_H__

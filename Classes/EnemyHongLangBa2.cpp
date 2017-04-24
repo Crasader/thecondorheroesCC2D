@@ -1,5 +1,6 @@
 #include "EnemyHongLangBa2.h"
 #include "manager/SkeletonManager.h"
+#include "manager\AudioManager.h"
 
 
 EnemyHongLangBa2::EnemyHongLangBa2(string jsonFile, string atlasFile, float scale):EnemyHongLangBa(jsonFile, atlasFile,scale)
@@ -49,6 +50,7 @@ EnemyHongLangBa2 * EnemyHongLangBa2::create(string filename, float scale)
 void EnemyHongLangBa2::attack()
 {
 	EnemyHongLangBa::attack();
+	AudioManager::playSound(SOUND_HLB2AT);
 	/*slash->getB2Body()->SetTransform(b2Vec2((this->getBoneLocation("bone32").x+this->getParent()->getPosition().x)/PTM_RATIO,
 		(this->getBoneLocation("bone32").y+this->getParent()->getPosition().y)/PTM_RATIO),0);*/
 	enemyDarts->setVisible(true);
@@ -62,6 +64,7 @@ void EnemyHongLangBa2::attack()
 void EnemyHongLangBa2::die()
 {
 	EnemyHongLangBa::die();
+	AudioManager::playSound(SOUND_HLB2DIE);
 	if (enemyDarts->getB2Body()!=nullptr) {
 		auto world = enemyDarts->getB2Body()->GetWorld();
 		world->DestroyBody(enemyDarts->getB2Body());

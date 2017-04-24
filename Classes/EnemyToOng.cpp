@@ -1,5 +1,6 @@
 #include "EnemyToOng.h"
 #include "manager/SkeletonManager.h"
+#include "manager\AudioManager.h"
 
 EnemyToOng::EnemyToOng(spSkeletonData * data):BaseEnemy(data)
 {
@@ -59,7 +60,7 @@ void EnemyToOng::attack()
 void EnemyToOng::die()
 {
 	BaseEnemy::die();
-
+	AudioManager::playSound(SOUND_TOONGDIE);
 	auto world = this->body->GetWorld();
 	world->DestroyBody(this->body);
 	this->body = nullptr;

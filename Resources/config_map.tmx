@@ -63,21 +63,21 @@
   <object id="7" name="7" x="1269.7" y="672.727" width="15" height="15">
    <properties>
     <property name="haveBoss" type="int" value="0"/>
-    <property name="mapId" type="int" value="0"/>
+    <property name="mapId" type="int" value="1"/>
     <property name="stage" type="int" value="3"/>
    </properties>
   </object>
   <object id="8" name="8" x="1451.52" y="515.152" width="15" height="15">
    <properties>
     <property name="haveBoss" type="int" value="0"/>
-    <property name="mapId" type="int" value="0"/>
+    <property name="mapId" type="int" value="2"/>
     <property name="stage" type="int" value="3"/>
    </properties>
   </object>
   <object id="9" name="9" x="1454.55" y="227.273" width="15" height="15">
    <properties>
     <property name="haveBoss" type="int" value="0"/>
-    <property name="mapId" type="int" value="0"/>
+    <property name="mapId" type="int" value="3"/>
     <property name="stage" type="int" value="3"/>
    </properties>
   </object>

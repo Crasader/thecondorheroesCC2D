@@ -14,12 +14,13 @@ bool SceneIntro::init() {
     if ( !Layer::init() ) {
         return false;
 	}
-	AudioManager::playSoundForever(MUSIC_MENU);
+	AudioManager::playMusic(MUSIC_MENU);
 	auto origin = Director::getInstance()->getVisibleOrigin();
 
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("item/coin.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Map/bg.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/skill.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Effect/magnet_eff.plist");
 
 	auto _aIntroBackground = Sprite::create("UI/UI_intro/background.jpg");
 	_aIntroBackground->setScaleX(m_szVisibleSize.width / _aIntroBackground->getContentSize().width); // full screen size width

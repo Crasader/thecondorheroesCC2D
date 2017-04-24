@@ -21,7 +21,7 @@ bool MenuLayer::init() {
 	if (!Layer::init()) {
 		return false;
 	}
-	//AudioManager::stopSoundForever();
+	//AudioManager::stopMusic();
 	initInputData();
 	Vec2 _v2Origin = Director::getInstance()->getVisibleOrigin();
 
@@ -47,11 +47,11 @@ bool MenuLayer::init() {
 	m_arPreviewHero[4] = new SkeletonAnimation("UI/UI_main_menu/PreviewDuongQua/s_DuongQua.json",
 		"UI/UI_main_menu/PreviewDuongQua/s_DuongQua.atlas", m_pGameScene->getContentSize().height / 650);
 
-	m_arPreviewHero[0]->setPosition(_v2Origin + Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
-	m_arPreviewHero[1]->setPosition(_v2Origin + Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
-	m_arPreviewHero[2]->setPosition(_v2Origin + Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
-	m_arPreviewHero[3]->setPosition(_v2Origin + Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
-	m_arPreviewHero[4]->setPosition(_v2Origin + Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
+	m_arPreviewHero[0]->setPosition(Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
+	m_arPreviewHero[1]->setPosition(Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
+	m_arPreviewHero[2]->setPosition(Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
+	m_arPreviewHero[3]->setPosition(Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
+	m_arPreviewHero[4]->setPosition(Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
 
 
 	initSceneLayer();
@@ -62,7 +62,7 @@ bool MenuLayer::init() {
 	initControlLayer();
 
 	this->scheduleUpdate();
-	AudioManager::playSoundForever(MUSIC_MENU);
+	AudioManager::playMusic(MUSIC_MENU);
 	return true;
 }
 
@@ -70,16 +70,18 @@ void MenuLayer::update(float p_fDelta) {
 	time_t _nCurrentTime = time(0);
 	if (m_nLifeNumber < 5) {
 		int _nDeltaTime = _nCurrentTime - m_nTimeAnchor;
-		if (_nDeltaTime >= 90) {
-			m_nTimeAnchor += 90;
+		if (_nDeltaTime >= 300) {
+			m_nTimeAnchor += 300;
 			m_nLifeNumber += 1;
 			initTopMainMenu();
+			REF->setUpLife(1);
+			REF->resetAnchorTime();
 			return;
 		}
 		else {
 			m_pTimeCounter->setVisible(true);
-			int _nMinute = (90 - _nDeltaTime) / 60;
-			int _nSecond = (90 - _nDeltaTime) % 60;
+			int _nMinute = (300 - _nDeltaTime) / 60;
+			int _nSecond = (300 - _nDeltaTime) % 60;
 			m_pTimeCounter->setString(StringUtils::format(_nSecond < 10 ? "%i:0%i" : "%i:%i", _nMinute, _nSecond));
 		}
 	}
@@ -95,6 +97,7 @@ void MenuLayer::initInputData() {
 	m_arNumberItem[2] = REF->getNumberItemMagnet();
 	m_arNumberItem[3] = REF->getNumberItemDoubleGold();
 	m_arNumberItem[4] = REF->getNumberItemCoolDown();
+	m_nTimeAnchor = REF->getAnchorTime();
 }
 
 void MenuLayer::initBackgroundLayer() {
@@ -912,6 +915,9 @@ void MenuLayer::showMainMenu() {
 }
 
 void MenuLayer::buttonStartHandle() {
+	m_nLifeNumber--;
+	REF->setDownLife(1);
+	REF->resetAnchorTime();
 	auto _scene = SelectStageLayer::createScene(m_nIndexHeroSelected);
 	Director::getInstance()->replaceScene(TransitionFade::create(0.3f, _scene));
 }
@@ -944,8 +950,8 @@ void MenuLayer::buttonBackHanle() {
 }
 
 void MenuLayer::buttonAddLifeHandle() {
-	m_nLifeNumber = 3;
-	m_nTimeAnchor = time(0) - 30;
+	m_nLifeNumber += 1;
+	REF->setUpLife(1);
 	initTopMainMenu();
 }
 
@@ -964,7 +970,6 @@ void MenuLayer::backFunction() {
 }
 
 void MenuLayer::buttonHeroesHandle() {
-	auto origin = Director::getInstance()->getVisibleOrigin();
 
 	if (m_nIndexHeroSelected != m_nIndexHeroPicked) {
 		m_nIndexHeroSelected = m_nIndexHeroPicked;
@@ -976,7 +981,7 @@ void MenuLayer::buttonHeroesHandle() {
 		moveLayerViaDirection(m_pItemBoard, 6);
 
 		runAction(Sequence::create(DelayTime::create(0.3f), CallFunc::create([&]() {
-			m_pGameScene->runAction(MoveTo::create(0.3f, origin + Vec2(m_szVisibleSize.width / 5, m_szVisibleSize.height * 0.2f)));
+			m_pGameScene->runAction(MoveTo::create(0.3f, Vec2(m_szVisibleSize.width / 5, m_szVisibleSize.height * 0.2f)));
 
 		}), nullptr));
 

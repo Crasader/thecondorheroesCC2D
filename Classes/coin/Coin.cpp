@@ -1,6 +1,7 @@
 #include "Coin.h"
 #include "manager\SkeletonManager.h"
 #include "BaseHero.h"
+#include "manager\AudioManager.h"
 
 Coin::Coin()
 {
@@ -62,6 +63,7 @@ void Coin::runAnimation()
 
 void Coin::picked()
 {
+	AudioManager::playSound(SOUND_COIN);
 	this->setVisible(false);
 	if (!SkeletonManager::getInstance()->getSkeletonData("Effect_getgolden")) {
 		SkeletonManager::getInstance()->cacheSkeleton("Effect_getgolden", SCREEN_SIZE.height / 3 / 291);

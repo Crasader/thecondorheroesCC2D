@@ -5,6 +5,8 @@
 #include "manager/JSonHeroManager.h"
 #include "manager/JSonMenuManager.h"
 #include "manager/RefManager.h"
+#include "manager/AudioManager.h"
+#include "Global.h"
 
 
 Scene * MenuLayer::createScene() {
@@ -19,7 +21,7 @@ bool MenuLayer::init() {
 	if (!Layer::init()) {
 		return false;
 	}
-	
+	//AudioManager::stopSoundForever();
 	initInputData();
 	Vec2 _v2Origin = Director::getInstance()->getVisibleOrigin();
 
@@ -45,11 +47,11 @@ bool MenuLayer::init() {
 	m_arPreviewHero[4] = new SkeletonAnimation("UI/UI_main_menu/PreviewDuongQua/s_DuongQua.json",
 		"UI/UI_main_menu/PreviewDuongQua/s_DuongQua.atlas", m_pGameScene->getContentSize().height / 650);
 
-	m_arPreviewHero[0]->setPosition(_v2Origin + Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
-	m_arPreviewHero[1]->setPosition(_v2Origin + Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
-	m_arPreviewHero[2]->setPosition(_v2Origin + Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
-	m_arPreviewHero[3]->setPosition(_v2Origin + Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
-	m_arPreviewHero[4]->setPosition(_v2Origin + Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
+	m_arPreviewHero[0]->setPosition(Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
+	m_arPreviewHero[1]->setPosition(Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
+	m_arPreviewHero[2]->setPosition(Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
+	m_arPreviewHero[3]->setPosition(Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
+	m_arPreviewHero[4]->setPosition(Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
 
 
 	initSceneLayer();
@@ -60,7 +62,7 @@ bool MenuLayer::init() {
 	initControlLayer();
 
 	this->scheduleUpdate();
-
+	AudioManager::playSoundForever(MUSIC_MENU);
 	return true;
 }
 
@@ -968,7 +970,6 @@ void MenuLayer::backFunction() {
 }
 
 void MenuLayer::buttonHeroesHandle() {
-	auto origin = Director::getInstance()->getVisibleOrigin();
 
 	if (m_nIndexHeroSelected != m_nIndexHeroPicked) {
 		m_nIndexHeroSelected = m_nIndexHeroPicked;
@@ -980,7 +981,7 @@ void MenuLayer::buttonHeroesHandle() {
 		moveLayerViaDirection(m_pItemBoard, 6);
 
 		runAction(Sequence::create(DelayTime::create(0.3f), CallFunc::create([&]() {
-			m_pGameScene->runAction(MoveTo::create(0.3f, origin + Vec2(m_szVisibleSize.width / 5, m_szVisibleSize.height * 0.2f)));
+			m_pGameScene->runAction(MoveTo::create(0.3f, Vec2(m_szVisibleSize.width / 5, m_szVisibleSize.height * 0.2f)));
 
 		}), nullptr));
 

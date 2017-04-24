@@ -1,5 +1,6 @@
 #include "EnemyToanChanStudent.h"
 #include "manager/SkeletonManager.h"
+#include "manager/AudioManager.h"
 
 
 EnemyToanChanStudent::EnemyToanChanStudent(spSkeletonData * data):BaseEnemy(data)
@@ -49,6 +50,7 @@ void EnemyToanChanStudent::run()
 
 void EnemyToanChanStudent::attack()
 {
+	AudioManager::playSound(SOUND_TC1AT);
 	if (!this->getIsDie()) {
 		this->clearTracks();
 		this->addAnimation(0, "attack", false);
@@ -59,6 +61,7 @@ void EnemyToanChanStudent::attack()
 
 void EnemyToanChanStudent::die()
 {
+	AudioManager::playSound(SOUND_TC1DIE);
 	BaseEnemy::die();
 
 	auto world = this->body->GetWorld();

@@ -153,7 +153,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 	}
 
 
-	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_COIN) ||
+	/*if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_COIN) ||
 		(bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_COIN)
 		) {
 
@@ -168,7 +168,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		}
 
 	}
-
+*/
 	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_ITEM) ||
 		(bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_ITEM)
 		) {
@@ -223,7 +223,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		coin->die();
 
-		auto parentGameScene = (GameScene*)coin->getParent()->getParent();
+		auto parentGameScene = (GameScene*)coin->getParent();
 		auto hero = parentGameScene->getHero();
 		hero->setCoinExplored(hero->getCoinExplored() + 10);
 	}
@@ -360,10 +360,20 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		else
 			slash = sA ? (Slash *)sA : (Slash *)sB;
 
-		auto parentGameLayer = (GameScene*) slash->getParent()->getParent();
-		auto hero = parentGameLayer->getHero();
+		GameScene * layer;
+		Vec2 posLayer = Vec2::ZERO;
+		auto parentGameLayer = slash->getParent();
+		if (parentGameLayer->getName() == "gameLayer") {
+			layer = (GameScene *) parentGameLayer;
+		}
+		else {
+			layer = (GameScene *) parentGameLayer->getParent();
+			posLayer = parentGameLayer->getPosition();
+		}
+
 		slash->setIsDie(true);
-		hero->getSlashBreak()->setPosition(slash->getPosition() + slash->getParent()->getPosition());
+		auto hero = layer->getHero();
+		hero->getSlashBreak()->setPosition(slash->getPosition() + posLayer);
 		hero->getSlashBreak()->setVisible(true);
 		hero->slashBreakAni();
 	}

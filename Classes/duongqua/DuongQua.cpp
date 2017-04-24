@@ -310,7 +310,7 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 	fixtureDef.shape = &circle_shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_HERO;
-	fixtureDef.filter.maskBits = BITMASK_FLOOR | BITMASK_COIN | BITMASK_ITEM |
+	fixtureDef.filter.maskBits = BITMASK_FLOOR  | BITMASK_ITEM |
 		BITMASK_TOANCHAN1 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION;
 
 
@@ -421,9 +421,11 @@ void DuongQua::landing()
 
 void DuongQua::die()
 {
+	AudioManager::playSound(SOUND_DQDIE);
 	--dieHard;
 	if (dieHard < 0) {
 		//log("Die Hard");
+		//AudioManager::playSound(SOUND_DQHIT);
 		return;
 	}
 
@@ -488,6 +490,7 @@ void DuongQua::attackLanding()
 
 void DuongQua::attackBySkill1()
 {
+	AudioManager::playSound(SOUND_DQSKILL1);
 	clearTracks();
 	addAnimation(0, "attack4", false);
 	setToSetupPose();
@@ -497,6 +500,7 @@ void DuongQua::attackBySkill1()
 
 void DuongQua::attackBySkill2()
 {
+	AudioManager::playSound(SOUND_DQSKILL2);
 	/*clearTracks();
 	addAnimation(0, "skill2", false);
 	setToSetupPose();*/
@@ -504,6 +508,7 @@ void DuongQua::attackBySkill2()
 
 void DuongQua::attackBySkill3()
 {
+	AudioManager::playSound(SOUND_DQSKILL3);
 	/*clearTracks();
 	addAnimation(0, "skill3", false);
 	setToSetupPose();*/
@@ -511,6 +516,7 @@ void DuongQua::attackBySkill3()
 
 void DuongQua::injured()
 {
+	AudioManager::playSound(SOUND_DQHIT);
 	clearTracks();
 	addAnimation(0, "injured", false);
 	setToSetupPose();

@@ -185,24 +185,24 @@ void EnemyBoss1::boomboom()
 	this->runAction(Sequence::create(DelayTime::create(1), callBack, DelayTime::create(1), callBack,
 		DelayTime::create(1), callBack, DelayTime::create(1), callBack,callBack2, nullptr));
 }
-
+//22/4 thuandv edited
 void EnemyBoss1::createGold()
 {
 	int tmp = int(indexCoin + 5 + CCRANDOM_0_1() * 10);
-	for (; indexCoin < coinPool->count(); indexCoin++) {
+	if (tmp > coinPool->count()) tmp = coinPool->count();
+	for (; indexCoin < tmp; indexCoin++) {
 		auto coin = (Coin*)coinPool->getObjectAtIndex(indexCoin);
 		coin->setVisible(true);
+		coin->setPosition(this->getPosition());
+		this->getParent()->addChild(coin, ZORDER_ENEMY);
 		coin->initCirclePhysic(this->getB2Body()->GetWorld(), this->getPosition());
 		coin->getB2Body()->GetFixtureList()->SetSensor(false);
 		coin->getB2Body()->SetType(b2_dynamicBody);
 		coin->changeBodyCategoryBits(BITMASK_COIN);
-		coin->changeBodyMaskBits(BITMASK_HERO | BITMASK_FLOOR);
+		coin->changeBodyMaskBits(BITMASK_FLOOR);
 		coin->setAngle(CCRANDOM_0_1()*PI);
 		coin->getB2Body()->SetFixedRotation(true);
 		coin->runAnimation();
-		if (tmp == indexCoin) { 
-			break;
-		}
 	}
 }
 
@@ -216,11 +216,11 @@ void EnemyBoss1::createCoinPool()
 		auto scale = SCREEN_SIZE.height * 0.075 / coin->getContentSize().height;
 		coin->setScale(scale);
 		coin->setVisible(false);
-		coin->setPosition(0, 0);
+		//coin->setPosition(0, 0);
 		//slash->setScale(SCREEN_SIZE.height / 8 / slash->getContentSize().height);
-		this->getParent()->addChild(coin, ZORDER_ENEMY);
+		/*this->getParent()->addChild(coin, ZORDER_ENEMY);
 		auto tmpbody = coin->getB2Body();
-		tmpbody = nullptr;
+		tmpbody = nullptr;*/
 		coinPool->addObject(coin);
 	}
 

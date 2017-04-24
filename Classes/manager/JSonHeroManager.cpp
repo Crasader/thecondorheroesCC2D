@@ -11,9 +11,9 @@ JSonHeroManager::JSonHeroManager()
 JSonHeroManager::~JSonHeroManager()
 {
 }
- 
+
 JSonHeroManager * JSonHeroManager::getInstance()
-{	
+{
 	if (jsonHeroManager == nullptr)
 		jsonHeroManager = new JSonHeroManager();
 	return jsonHeroManager;
@@ -29,13 +29,13 @@ void JSonHeroManager::readFile(int indexHero)
 	this->key = jsonDoc["hero"][indexHero]["key"].GetString();
 	this->name = jsonDoc["hero"][indexHero]["name"].GetString();
 	this->infor = jsonDoc["hero"][indexHero]["inforHero"].GetString();
-	
+
 	this->avatarPath = jsonDoc["hero"][indexHero]["avatarPath"].GetString();
 	this->characterPointPath = jsonDoc["hero"][indexHero]["characterPointPath"].GetString();
 	this->avatarLoadingPath = jsonDoc["hero"][indexHero]["avatarLoadingPath"].GetString();
 
 	this->isLocked = jsonDoc["hero"][indexHero]["isLocked"].GetBool();
-	
+
 	this->skill_1Name = jsonDoc["hero"][indexHero]["skill1Name"].GetString();
 	this->coolDownSkill1 = jsonDoc["hero"][indexHero]["coolDownSkill1"].GetDouble();
 	this->durationSkill1 = jsonDoc["hero"][indexHero]["durationSkill1"].GetDouble();
@@ -56,7 +56,7 @@ void JSonHeroManager::readFile(int indexHero)
 	this->numberOfUseSkill3 = jsonDoc["hero"][indexHero]["numberOfUseSkill3"].GetInt();
 	this->pathMainImageSkill3 = jsonDoc["hero"][indexHero]["pathMainImageSkill3"].GetString();
 	this->pathSubImageSkill3 = jsonDoc["hero"][indexHero]["pathSubImageSkill3"].GetString();
-	
+
 
 	this->baseHP = jsonDoc["hero"][indexHero]["baseHP"].GetInt();
 	this->level = jsonDoc["hero"][indexHero]["level"].GetInt();
@@ -74,5 +74,3 @@ int JSonHeroManager::getMaxScoreLevelX(int level)
 	assert(level > 0 && level < 20);
 	return jsonDoc["maxScoreLevel"][0][("maxScoreLevel_" + StringUtils::format("%i", level)).c_str()].GetInt();
 }
-
-

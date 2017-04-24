@@ -82,9 +82,11 @@ using namespace std;
 // z-order
 #define ZORDER_BG							0
 #define ZORDER_BG2							1
-#define ZORDER_ENEMY						2
-#define ZORDER_HERO							3
-#define ZORDER_SMT							4
+#define ZORDER_MOON							2
+#define ZORDER_TMX							3
+#define ZORDER_ENEMY						4
+#define ZORDER_HERO							5
+#define ZORDER_SMT							6
 
 
 #define PTM_RATIO							32
@@ -95,32 +97,33 @@ using namespace std;
 
 
 
-#define	SOUND_BACKGROUND					"sound/theme_music.mp3"
-#define SOUND_BULLET_NORMAL					"sound/normal bullet.mp3"
-#define SOUND_BULLET_CIRCLE					"sound/F bullet.mp3"
-#define SOUND_BULLET_SUPER					"sound/S Bullet.mp3"
-#define SOUND_TANK_SHOOT					"sound/tank shoot .mp3"
-#define SOUND_TANK_EXPLOSION				"sound/tank_explosion.mp3"
-#define SOUND_PLANE_BOMB					"sound/plane_bomb.mp3"
-#define SOUND_PLANE_DROP					"sound/plane_drop.mp3"
+#define	MUSIC_MENU								"sound/music/menu.mp3"
+#define MUSIC_STAGE1							"sound/music/stage1.mp3"
+#define MUSIC_STAGE2							"sound/music/stage2.mp3"
+#define MUSIC_STAGE3							"sound/music/stage3.mp3"
+#define MUSIC_STAGE4							"sound/music/stage4.mp3"
+#define SOUND_DQDIE								"sound/sound/dqdie.mp3"
+#define SOUND_DQHIT								"sound/sound/dqhit.mp3"
+#define SOUND_DQSKILL1							"sound/sound/dqskill1.mp3"
+#define SOUND_DQSKILL2							"sound/sound/dqskill2.mp3"
+#define SOUND_DQSKILL3							"sound/sound/dqskill3.mp3"
+#define SOUND_CLDIE								"sound/sound/cldie.mp3"
+#define SOUND_CLHIT								"sound/sound/clhit.mp3"
+#define SOUND_CLSKILL1							"sound/sound/clskill1.mp3"
+#define SOUND_CLSKILL2							"sound/sound/clskill2.mp3"
+#define SOUND_CLSKILL3							"sound/sound/clskill3.mp3"
 
-#define SOUND_TANK_MOVE						"sound/tank move.mp3"
-#define SOUND_HELICOPTER					"sound/helicopter.mp3"
-#define SOUND_MACHINE_GUN					"sound/machine gun.mp3"
-#define SOUND_ENEMY_BULLET					"sound/enemy bullet.mp3"
-#define SOUND_ENEMY_BOMB					"sound/enemy_bomb.mp3"
+#define SOUND_TC1AT								"sound/tc1at.mp3"
+#define SOUND_TC1DIE							"sound/tc1die.mp3"
+#define SOUND_TC2AT								"sound/tc2at.mp3"
+#define SOUND_TC2DIE							"sound/tc2die.mp3"
+//#define SOUND_DQSKILL2							"sound/sound/dqskill2.mp3"
 
-#define SOUND_CANON_SHOOT					"sound/cannon shoot.mp3"
-#define SOUND_ENEMY_BOMB_EXPLOSION			"sound/enemy_bomb_explosion.mp3"
-#define SOUND_BIG_FORT_SHOOT				"sound/boss_explosion.mp3"
-#define SOUND_GET_ITEM						"sound/get item.mp3"
-#define SOUND_MISSLE						"sound/missle.mp3"
 
-#define SOUND_LOSE							"sound/sound_lose.mp3"
-#define SOUND_WIN							"sound/Win.mp3"
+#define KEY_IS_MUSIC							"isMusic"
+#define KEY_IS_SOUND							"isSound"
+#define KEY_VALUE_MUSIC							"valuemusic"
 
-#define SOUND_TRANSFORM						"sound/transform.mp3"
-#define SOUND_TRANSFORM2					"sound/transform_2.mp3"
 
 
 #endif // __GLOBAL_H__

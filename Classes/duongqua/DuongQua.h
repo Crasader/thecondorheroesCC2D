@@ -5,6 +5,7 @@
 #include "duongqua/DQ_ToanChanKiemPhap.h"
 #include "duongqua/DQ_DocCoKiemPhap.h"
 #include "BaseHero.h"
+#include "manager/AudioManager.h"
 
 class DuongQua : public BaseHero
 {

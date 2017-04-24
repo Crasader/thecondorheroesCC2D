@@ -9,57 +9,66 @@ public:
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
 	StateBoss1();
 	~StateBoss1();
-	virtual void idle(EnemyBoss1 *boss);
-	virtual void attack1(EnemyBoss1 *boss);
-	virtual void attack2(EnemyBoss1 *boss);
-	virtual void stupid(EnemyBoss1 *boss);
-	virtual void fixStupid(EnemyBoss1 *boss);
-	virtual void updateVec(EnemyBoss1 *boss);
+	virtual void enter(EnemyBoss1 *boss);
+	virtual void execute(EnemyBoss1 *boss) = 0;
+	
 };
 
 class Boss1Idling : public StateBoss1 {
 public:
 	Boss1Idling();
 	~Boss1Idling();
-	//void attack1(EnemyBoss1 *boss);
-	void attack2(EnemyBoss1 *boss);
-	void stupid(EnemyBoss1 *boss);
-	void fixStupid(EnemyBoss1 *boss);
-	void updateVec(EnemyBoss1 *boss);
+	
+	void enter(EnemyBoss1 *boss);
+	void execute(EnemyBoss1 *boss);
 };
 
 class Boss1Attacking1 : public StateBoss1 {
 public:
 	Boss1Attacking1();
 	~Boss1Attacking1();
-	void attack1(EnemyBoss1 * boss);
-	void idle(EnemyBoss1 *boss);
-	void fixStupid(EnemyBoss1 *boss);
-	void updateVec(EnemyBoss1 *boss);
+	
+	void enter(EnemyBoss1 *boss);
+	void execute(EnemyBoss1 *boss) ;
 };
 
 class Boss1Attacking2 : public StateBoss1 {
 public:
 	Boss1Attacking2();
 	~Boss1Attacking2();
-	void idle(EnemyBoss1 *boss);
-	void updateVec(EnemyBoss1 *boss);
+	
+	void enter(EnemyBoss1 *boss);
+	void execute(EnemyBoss1 *boss);
 };
 
 class Boss1Stupiding : public StateBoss1 {
 public:
 	Boss1Stupiding();
 	~Boss1Stupiding();
-	void attack1(EnemyBoss1 *boss);
-	void updateVec(EnemyBoss1 *boss);
+
+	void enter(EnemyBoss1 *boss);
+	void execute(EnemyBoss1 *boss);
 };
 
 class Boss1FixingStupid : public StateBoss1 {
 public:
 	Boss1FixingStupid();
 	~Boss1FixingStupid();
-	void idle(EnemyBoss1 *boss);
-	void updateVec(EnemyBoss1 *boss);
+
+	void enter(EnemyBoss1 *boss);
+	void execute(EnemyBoss1 *boss);
+	
+};
+
+
+class Boss1Die : public StateBoss1 {
+public:
+	Boss1Die();
+	~Boss1Die();
+
+	void enter(EnemyBoss1 *boss);
+	void execute(EnemyBoss1 *boss);
+
 };
 
 

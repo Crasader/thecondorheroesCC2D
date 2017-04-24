@@ -1,4 +1,6 @@
 #include "EnemyToanChanStudent.h"
+#include "manager/SkeletonManager.h"
+
 
 EnemyToanChanStudent::EnemyToanChanStudent(spSkeletonData * data):BaseEnemy(data)
 {
@@ -16,20 +18,27 @@ EnemyToanChanStudent * EnemyToanChanStudent::create(string jsonFile, string atla
 	enemy->setScaleX(1);
 	enemy->setAnimation(0, "idle", true);
 	//enemy->setScaleEnemy(scale);
+	enemy->health = 1;
+	enemy->exp = 12;
 	return enemy;
 
 }
 
 
-EnemyToanChanStudent * EnemyToanChanStudent::create(spSkeletonData * data)
+EnemyToanChanStudent * EnemyToanChanStudent::create(string filename, float scale)
 {
-	EnemyToanChanStudent *enemy = new EnemyToanChanStudent(data);
+	if (!SkeletonManager::getSkeletonData(filename)) {
+		SkeletonManager::getInstance()->cacheSkeleton(filename, scale);
+	}
+	auto data = SkeletonManager::getSkeletonData(filename);
+	auto enemy = new EnemyToanChanStudent(data);
 	enemy->update(0.0f);
 	enemy->setTag(TAG_ENEMY_TOANCHAN1);
 	enemy->setScaleX(1);
-	//enemy->setTimeScale(0.05f);
 	enemy->setAnimation(0, "idle", true);
-	//enemy->setScaleEnemy(scale);
+	//enemy->setTimeScale(1.4f);
+	enemy->health = 1;
+	enemy->exp = 12;
 	return enemy;
 }
 
@@ -50,10 +59,12 @@ void EnemyToanChanStudent::attack()
 
 void EnemyToanChanStudent::die()
 {
-//	auto world = this->body->GetWorld();
-	//world->DestroyBody(this->body);
-	//body->SetType(b2_dynamicBody);
-	this->setIsDie(true);
+	BaseEnemy::die();
+
+	auto world = this->body->GetWorld();
+	world->DestroyBody(this->body);
+	this->body = nullptr;
+	this->setIsDie(false);
 	this->clearTracks();
 	this->setAnimation(0,"die",false);
 	this->setToSetupPose();
@@ -81,6 +92,14 @@ void EnemyToanChanStudent::initCirclePhysic(b2World * world, Point pos)
 	body->CreateFixture(&fixtureDef);
 }
 
+void EnemyToanChanStudent::updateMe(BaseHero * hero)
+{
+	BaseEnemy::updateMe(hero);
+	if (getIsDie() && this->getB2Body() != nullptr) {
+		die();
+	}
+}
+
 
 //void EnemyToanChanStudent::genSplash()
 //{
@@ -104,7 +123,12 @@ void EnemyToanChanStudent::listener()
 			this->setToSetupPose();
 		}
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
-			this->removeFromParentAndCleanup(true);
+
+			this->setVisible(false);
+			this->clearTracks();
+			this->setAnimation(0, "idle", true);
+			this->setToSetupPose();
+
 		}
 
 	});

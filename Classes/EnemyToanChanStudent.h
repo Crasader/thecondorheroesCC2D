@@ -16,15 +16,13 @@ public:
 	EnemyToanChanStudent(spSkeletonData*data);
 	EnemyToanChanStudent(string jsonFile, string atlasFile, float scale);
 	static EnemyToanChanStudent* create(string jsonFile, string atlasFile, float scale);
-
-
-	static EnemyToanChanStudent* create(spSkeletonData*data);
+	static EnemyToanChanStudent* create(string filename, float scale);
 
 	void run();
 	virtual void attack();
 	virtual void die();
 	virtual void initCirclePhysic(b2World * world, Point pos);
-	//void updateMe(float dt);
+	void updateMe(BaseHero* hero);
 	//virtual void genSplash();
 	virtual void listener();
 };

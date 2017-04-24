@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
-#include "MenuScene.h"
+#include "layer/IntroScene.h"
+
 
 USING_NS_CC;
 
@@ -75,7 +76,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // create a scene. it's an autorelease object
     //auto scene = GameScene::createScene();
-	auto scene = MenuLayer::createScene();
+	auto scene = SceneIntro::createScene();
 
     // run
     director->runWithScene(scene);

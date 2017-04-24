@@ -1,9 +1,14 @@
 #include "EnemyToanChanStudent2.h"
+#include "manager/SkeletonManager.h"
 
 EnemyToanChanStudent2::EnemyToanChanStudent2(string jsonFile, string atlasFile, float scale):EnemyToanChanStudent(jsonFile, atlasFile,scale)
 {
-	controlAttack = 60;
-	isDie = false;
+	controlAttack = 100;
+}
+
+EnemyToanChanStudent2::EnemyToanChanStudent2(spSkeletonData*data):EnemyToanChanStudent(data)
+{
+	controlAttack = 100;
 }
 
 EnemyToanChanStudent2 * EnemyToanChanStudent2::create(string jsonFile, string atlasFile, float scale)
@@ -14,21 +19,54 @@ EnemyToanChanStudent2 * EnemyToanChanStudent2::create(string jsonFile, string at
 	enemy->setScaleX(1);
 	enemy->setAnimation(0, "idle", true);
 	enemy->setScaleEnemy(scale);
+	enemy->health = 1;
+	enemy->exp = 15;
 	return enemy;
 
+}
+
+EnemyToanChanStudent2 * EnemyToanChanStudent2::create(string filename, float scale)
+{
+	if (!SkeletonManager::getSkeletonData(filename)) {
+		SkeletonManager::getInstance()->cacheSkeleton(filename, scale);
+	}
+	auto data = SkeletonManager::getSkeletonData(filename);
+	auto enemy = new EnemyToanChanStudent2(data);
+	enemy->update(0.0f);
+	enemy->setTag(TAG_ENEMY_TOANCHAN2);
+	enemy->setScaleX(1);
+	enemy->setAnimation(0, "idle", true);
+	enemy->setScaleEnemy(scale);
+	//enemy->setTimeScale(1.4f);
+	enemy->health = 1;
+	enemy->exp = 15;
+	return enemy;
 }
 
 void EnemyToanChanStudent2::attack()
 {
 	EnemyToanChanStudent::attack();
-	slash->getB2Body()->SetTransform(b2Vec2(this->getBoneLocation("bone32").x/PTM_RATIO, this->getBoneLocation("bone32").y/PTM_RATIO),0);
+	/*slash->getB2Body()->SetTransform(b2Vec2((this->getBoneLocation("bone32").x+this->getParent()->getPosition().x)/PTM_RATIO,
+		(this->getBoneLocation("bone32").y+this->getParent()->getPosition().y)/PTM_RATIO),0);*/
 	slash->setVisible(true);
+	if (slash->getB2Body() != nullptr) {
+		slash->getB2Body()->GetWorld()->DestroyBody(slash->getB2Body());
+	}
+	slash->initCirclePhysic(this->getB2Body()->GetWorld(), this->getBoneLocation("bone32") + this->getParent()->getPosition());
 	slash->getB2Body()->SetLinearVelocity(b2Vec2(-SCREEN_SIZE.width/3/PTM_RATIO,0));
 }
 
 void EnemyToanChanStudent2::die()
 {
 	EnemyToanChanStudent::die();
+	if (slash->getB2Body()!=nullptr) {
+		auto world = slash->getB2Body()->GetWorld();
+		world->DestroyBody(slash->getB2Body());
+		slash->setB2Body(nullptr);
+		slash->setIsDie(false);
+		//slash->removeFromParentAndCleanup(true);
+
+	}
 
 }
 
@@ -55,33 +93,46 @@ void EnemyToanChanStudent2::listener()
 		}
 
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
-			slash->removeFromParentAndCleanup(true);
-			this->removeFromParentAndCleanup(true);
+
+			this->setVisible(false);
+			this->clearTracks();
+			this->setAnimation(0, "idle", true);
+			this->setToSetupPose();
+
 		}
 
 	});
 }
 
-void EnemyToanChanStudent2::updateMe(float dt)
+void EnemyToanChanStudent2::updateMe(BaseHero* hero)
 {
-	BaseEnemy::updateMe(dt);
-	slash->updateMe(dt);
+	BaseEnemy::updateMe(hero);
+	slash->updateMe(hero);
 	if (slash->getIsDie()) {
-		slash->getB2Body()->SetTransform(b2Vec2(-10, -10), 0);
-		slash->getB2Body()->SetLinearVelocity(b2Vec2(0, 0));
+		slash->getB2Body()->GetWorld()->DestroyBody(slash->getB2Body());
+		slash->setB2Body(nullptr);
 		slash->setVisible(false);
 		slash->setIsDie(false);
 	}
-	if (slash->getPositionX() < this->getPositionX() - SCREEN_SIZE.width) {
+	if (slash->getPositionX() < this->getPositionX() - SCREEN_SIZE.width*3/4 && slash->isVisible()) {
 		//slash->getB2Body()->SetTransform(b2Vec2(this->getBoneLocation("bone32").x / PTM_RATIO, this->getBoneLocation("bone32").y / PTM_RATIO), 0);
-		slash->getB2Body()->SetTransform(b2Vec2(-10,-10), 0);
-		slash->getB2Body()->SetLinearVelocity(b2Vec2(0,0));
+		slash->getB2Body()->GetWorld()->DestroyBody(slash->getB2Body());
+		slash->setB2Body(nullptr);
+		//slash->getB2Body()->SetLinearVelocity(b2Vec2(0,0));
 		slash->setVisible(false);
 	}
 	controlAttack++;
 	if (controlAttack > 120) {
-		controlAttack = 0;	// 2 giay 1 nhat
-		this->attack();
+		if (this->body != nullptr) {
+			if (!this->body->GetWorld()->IsLocked()) {
+				controlAttack = 0;	// 2 giay 1 nhat
+				this->attack();
+			}
+		}
+	}
+
+	if (getIsDie() && this->getB2Body() != nullptr) {
+		die();
 	}
 }
 

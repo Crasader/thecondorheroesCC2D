@@ -15,6 +15,7 @@ public:
 	AudioManager();
 	~AudioManager();
 
+	static void cacheAudio();
 	static void playSound(string keysound);
 	static int playSoundForever(string keysound);
 	static void stopSoundForever();

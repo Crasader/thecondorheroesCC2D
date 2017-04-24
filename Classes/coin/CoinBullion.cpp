@@ -42,6 +42,7 @@ void CoinBullion::updateMe(BaseHero* hero)
 	if (!this->isVisible() && this->getB2Body()->GetType() == b2_staticBody) {
 		this->resume();
 		this->setVisible(true);
+		return;
 		//this->update(0);
 	}
 	if (this->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width / 2) {

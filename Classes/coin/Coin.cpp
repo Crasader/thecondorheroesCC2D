@@ -135,7 +135,7 @@ void Coin::updateMe(BaseHero *hero)
 			this->setVisible(true);
 			return;
 		}
-		if (this->isVisible()) {
+		if (this->isVisible() && hero->getB2Body()) {
 			if (((this->getPosition() -
 				(hero->getPosition() + Vec2(0, hero->getB2Body()->GetFixtureList()->GetShape()->m_radius*PTM_RATIO))).length()
 				< SCREEN_SIZE.height / 12)) {

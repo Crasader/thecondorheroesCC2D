@@ -688,6 +688,7 @@ void GameScene::createInfiniteNode()
 	bg2_2->setScale(SCREEN_SIZE.width / (bg2_2->getContentSize().width));
 	bg2_2->setAnchorPoint(Point(0, 0.5f));
 
+	
 	background->addChild(bg1_1, 1, Vec2(0.5f, 1), Vec2(0, 0));
 	background->addChild(bg1_2, 1, Vec2(0.5f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
 
@@ -912,13 +913,13 @@ void GameScene::creatBoss()
 
 void GameScene::createCoin()
 {
-	/*createFormCoin("coin_tim", "Map/tim.tmx", "tim");
+	createFormCoin("coin_tim", "Map/tim.tmx", "tim");
 	createFormCoin("coin_straight", "Map/straight.tmx", "straight");
 	createFormCoin("coin_parabol", "Map/parapol.tmx", "parapol");
 	createFormCoin("coin_square", "Map/square.tmx", "square");
 	createFormCoin("coin_zigzag", "Map/zigzag.tmx", "zigzag");
 	createFormCoin("coin_zigzag2", "Map/zigzag2.tmx", "zigzag2");
-	createFormCoin("coin_circle", "Map/circle.tmx", "circle");*/
+	createFormCoin("coin_circle", "Map/circle.tmx", "circle");
 	createCointBag();
 	createCoinBullion();
 }

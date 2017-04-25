@@ -21,7 +21,7 @@ bool MenuLayer::init() {
 	if (!Layer::init()) {
 		return false;
 	}
-	//AudioManager::stopSoundForever();
+	//AudioManager::stopMusic();
 	initInputData();
 	Vec2 _v2Origin = Director::getInstance()->getVisibleOrigin();
 
@@ -62,7 +62,7 @@ bool MenuLayer::init() {
 	initControlLayer();
 
 	this->scheduleUpdate();
-	AudioManager::playSoundForever(MUSIC_MENU);
+	AudioManager::playMusic(MUSIC_MENU);
 	return true;
 }
 
@@ -98,6 +98,7 @@ void MenuLayer::initInputData() {
 	m_arNumberItem[3] = REF->getNumberItemDoubleGold();
 	m_arNumberItem[4] = REF->getNumberItemCoolDown();
 	m_nTimeAnchor = REF->getAnchorTime();
+	m_nLifeNumber = REF->getNumberOfLife();
 }
 
 void MenuLayer::initBackgroundLayer() {
@@ -915,9 +916,6 @@ void MenuLayer::showMainMenu() {
 }
 
 void MenuLayer::buttonStartHandle() {
-	m_nLifeNumber--;
-	REF->setDownLife(1);
-	REF->resetAnchorTime();
 	auto _scene = SelectStageLayer::createScene(m_nIndexHeroSelected);
 	Director::getInstance()->replaceScene(TransitionFade::create(0.3f, _scene));
 }

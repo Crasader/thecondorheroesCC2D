@@ -28,7 +28,7 @@
       "characterPointPath": "UI/UI_info_ingame/character_point.png",
       "avatarLoadingPath": "UI/Loading/DQ.png",
       "isLocked": false,
-      "coolDownSkill1": 10,
+      "coolDownSkill1": 36,
       "durationSkill1": 7,
       "numberOfUseSkill1": 1,
       "skill1Name": "Toan Chan Kiem Phap",

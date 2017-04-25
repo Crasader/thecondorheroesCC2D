@@ -49,24 +49,24 @@ bool GameScene::init(int stage, int map, int haveboss, int charId)
 	{
 		return false;
 	}
-	AudioManager::stopSoundForever();
+	AudioManager::stopMusic();
 	switch (stage)
 	{
 	case 1: {
 		
-		AudioManager::playSoundForever(MUSIC_STAGE1);
+		AudioManager::playMusic(MUSIC_STAGE1);
 		break;
 	}
 	case 2: {
-		AudioManager::playSoundForever(MUSIC_STAGE2);
+		AudioManager::playMusic(MUSIC_STAGE2);
 		break;
 	}
 	case 3: {
-		AudioManager::playSoundForever(MUSIC_STAGE3);
+		AudioManager::playMusic(MUSIC_STAGE3);
 		break;
 	}
 	case 4:{
-		AudioManager::playSoundForever(MUSIC_STAGE4);
+		AudioManager::playMusic(MUSIC_STAGE4);
 		break;
 	}
 	
@@ -224,7 +224,6 @@ void GameScene::checkActiveButton()
 	if (hud->getBtnSkill_1()->getIsBlocked()) {		// 2 and 3 active
 		if (currentButton == 2) {
 			if (hero->getIsDoneDuration2()) {
-
 				if(hero->getFSM()->currentState != MRevive)
 					hero->killThemAll(listEnemyOccurInScreen);
 				hero->getActiveSkill()->setVisible(false);
@@ -348,6 +347,10 @@ void GameScene::listener()
 			if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
 				hud->getBtnCalling()->setEnabled(false);
 			}
+
+			hud->getPauseItem()->setEnabled(false);
+
+			hero->setItemValue(KEY_ITEM_MAGNET, 0);
 
 			if (hero->getActiveSkill()->isVisible())
 				hero->getActiveSkill()->setVisible(false);
@@ -686,23 +689,34 @@ void GameScene::createInfiniteNode()
 	bg1_2->setScale(SCREEN_SIZE.width / (bg1_2->getContentSize().width));
 	bg1_2->setAnchorPoint(Point(0, 0.5f));
 
-
+	auto moonGr = tmx_map->getObjectGroup("moon");
+	if (moonGr) {
+		auto object = moonGr->getObject("moon");
+		auto pos = Point(object["x"].asFloat()*tmx_map->getScale(), object["y"].asFloat()*tmx_map->getScale());
+		auto moon = Sprite::create("moon.png");
+		moon->setScale(SCREEN_SIZE.height / 4 / moon->getContentSize().height);
+		background->addChild(moon, 2, Vec2(0, 1),Vec2(pos.x,pos.y-SCREEN_SIZE.height/2));
+	}
 
 	auto bg2_1 = Sprite::create(StringUtils::format("Map/map%d/bg%d_2.png", stage, map));
+	//auto bg2_1 = Sprite::create("moon.png");
 	bg2_1->setScale(SCREEN_SIZE.width / (bg2_1->getContentSize().width));
 	bg2_1->setAnchorPoint(Point(0, 0.5f));
 
 	auto bg2_2 = Sprite::create(StringUtils::format("Map/map%d/bg%d_2.png", stage, map));
+	//auto bg2_2 = Sprite::create("moon.png");
 	bg2_2->setScale(SCREEN_SIZE.width / (bg2_2->getContentSize().width));
 	bg2_2->setAnchorPoint(Point(0, 0.5f));
 
-	background->addChild(bg1_1, 0, Vec2(0.5f, 1), Vec2(0, 0));
-	background->addChild(bg1_2, 0, Vec2(0.5f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
+	
+	background->addChild(bg1_1, 1, Vec2(0.5f, 1), Vec2(0, 0));
+	background->addChild(bg1_2, 1, Vec2(0.5f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
 
-	background->addChild(bg2_1, 0, Vec2(0.7f, 1), Vec2(0, 0));
-	background->addChild(bg2_2, 0, Vec2(0.7f, 1), Vec2(bg2_1->getBoundingBox().size.width, 0));
+	background->addChild(bg2_1, 3, Vec2(0.7f, 1), Vec2(0, 0));
+	background->addChild(bg2_2, 3, Vec2(0.7f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
 
-	background->setPosition(Point(-SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
+	//background->setPosition(Point(-SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
+	background->setPosition(Point(0, SCREEN_SIZE.height / 2));
 	background->setAnchorPoint(Point(0, 0.5f));
 	if (isModeDebug)
 		background->setVisible(false);
@@ -785,7 +799,7 @@ void GameScene::creatEnemyWooder(MyLayer * layer, Vec2 pos)
 	enemy->setIsDie(false);
 	enemy->setPosition(pos);
 	enemy->setVisible(true);
-	enemy->resumeSchedulerAndActions();
+	enemy->resume();
 	//layer->addChild(enemy, ZORDER_ENEMY);
 	if (enemy->getB2Body()) {
 		world->DestroyBody(enemy->getB2Body());
@@ -919,13 +933,13 @@ void GameScene::creatBoss()
 
 void GameScene::createCoin()
 {
-	/*createFormCoin("coin_tim", "Map/tim.tmx", "tim");
+	createFormCoin("coin_tim", "Map/tim.tmx", "tim");
 	createFormCoin("coin_straight", "Map/straight.tmx", "straight");
 	createFormCoin("coin_parabol", "Map/parapol.tmx", "parapol");
 	createFormCoin("coin_square", "Map/square.tmx", "square");
 	createFormCoin("coin_zigzag", "Map/zigzag.tmx", "zigzag");
 	createFormCoin("coin_zigzag2", "Map/zigzag2.tmx", "zigzag2");
-	createFormCoin("coin_circle", "Map/circle.tmx", "circle");*/
+	createFormCoin("coin_circle", "Map/circle.tmx", "circle");
 	createCointBag();
 	createCoinBullion();
 }
@@ -1005,7 +1019,7 @@ void GameScene::createFormCoin(string objectName, string objectMap, string objec
 			coin->changeBodyMaskBits(0);//22/4 thuandv edited
 			coin->setVisible(false);
 			coin->runAnimation();
-			coin->pauseSchedulerAndActions();
+			coin->pause();
 		}
 	}
 
@@ -1026,7 +1040,9 @@ void GameScene::createItem()
 		case 0:				// health
 			item = Item::create("UI/UI_main_menu/item1_health.png", Item_type::HEALTH, origin);
 			break;
-			
+		case 1:
+			item = Item::create("UI/UI_main_menu/item4_doublecoin.png", Item_type::DOUBLE_COIN, origin);
+			break;
 		case 2:
 			item = Item::create("UI/UI_main_menu/item3_magnet.png", Item_type::MAGNET, origin);
 			break;
@@ -1054,16 +1070,6 @@ void GameScene::danceWithCamera()
 	blur = LayerColor::create(Color4B(0, 0, 0, 170));
 	blur->setVisible(false);
 	left_corner = CCRectMake(0, 0, SCREEN_SIZE.width / 2, SCREEN_SIZE.height);
-
-	auto moonGr = tmx_map->getObjectGroup("moon");
-	if (moonGr) {
-		auto object = moonGr->getObject("moon");
-		auto pos = Point(object["x"].asFloat()*tmx_map->getScale(), object["y"].asFloat()*tmx_map->getScale());
-		auto moon = Sprite::create("moon.png");
-		moon->setScale(SCREEN_SIZE.height / 4 / moon->getContentSize().height);
-		moon->setPosition(pos - SCREEN_SIZE / 2);
-		follow->addChild(moon);
-	}
 }
 
 void GameScene::updateCharacterPoint()
@@ -1282,6 +1288,7 @@ void GameScene::updateBoss()
 
 void GameScene::updateHUD(float dt)
 {
+
 	if (hero->getCurrentRunDis() - hero->getPreRunDis() > 10.0f) {
 		hero->setScore(hero->getScore() + 15);
 		hero->setPreRunDis(hero->getCurrentRunDis());
@@ -1308,11 +1315,21 @@ void GameScene::updateMultiKills() {
 	}
 }
 
-void GameScene::runnerItem(int counter)
+void GameScene::runnerItem(Item_type type, int counter)
 {
-	hud->runnerItem(counter);
-	hero->setItemValue(KEY_ITEM_MAGNET, counter);
-	hero->getSuctionCoinAni()->setVisible(true);
+	switch (type)
+	{
+	case MAGNET:
+		hud->runnerItemMagnet(counter);
+		hero->setItemValue(KEY_ITEM_MAGNET, counter);
+		hero->getSuctionCoinAni()->setVisible(true);
+		break;
+	case DOUBLE_COIN:
+		hud->runnerItemDC(counter);
+		hero->setItemValue(KEY_ITEM_DOUPLE_COIN, counter);
+		break;
+	}
+	
 }
 
 void GameScene::updateBloodBar(int numberOfHealth, bool isVisible)
@@ -1474,6 +1491,7 @@ void GameScene::shakeTheScreen()
 void GameScene::reviveHero()
 {
 	hud->refreshControl();
+	hud->getPauseItem()->setEnabled(true);
 	resumeGame();
 	hero->resume();
 	hero->setDieHard(1);
@@ -1578,6 +1596,7 @@ void GameScene::dieGame()
 
 void GameScene::overGame()
 {
+	AudioManager::playSound(SOUND_FAIL);
 	if (!blur->isVisible())
 		blurScreen();
 
@@ -1614,6 +1633,7 @@ void GameScene::nextGame()
 
 void GameScene::winGame()
 {
+	AudioManager::playSound(SOUND_WIN);
 	blurScreen();
 	if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
 		hud->getBtnCalling()->setEnabled(false);
@@ -1664,6 +1684,7 @@ void GameScene::resumeGame()
 
 void GameScene::restartGame()
 {
+	this->removeAllChildrenWithCleanup(true);
 	Director::getInstance()->replaceScene(GameScene::createScene(stage, map, haveboss, charId));
 }
 

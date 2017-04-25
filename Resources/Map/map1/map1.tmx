@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="465" height="10" tilewidth="80" tileheight="80" nextobjectid="251">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="465" height="10" tilewidth="80" tileheight="80" nextobjectid="252">
  <tileset firstgid="1" name="street" tilewidth="80" tileheight="80" tilecount="18" columns="6">
   <image source="street.png" trans="ff00ff" width="480" height="240"/>
  </tileset>
@@ -253,9 +253,9 @@
     <property name="type" type="int" value="2"/>
    </properties>
   </object>
-  <object id="250" name="item_magnet" x="3119" y="280" width="19" height="15">
+  <object id="250" name="item_dc" x="2318" y="202" width="44" height="36">
    <properties>
-    <property name="type" type="int" value="2"/>
+    <property name="type" type="int" value="1"/>
    </properties>
   </object>
  </objectgroup>

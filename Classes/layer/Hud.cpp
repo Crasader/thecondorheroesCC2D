@@ -162,6 +162,7 @@ void Hud::addButton()
 
 	coverSkill = Sprite::create(JSHERO->getPathMainImageSkill1());
 	coverItemMagnet = Sprite::create("UI/UI_main_menu/item3_magnet.png");
+	coverItemDC = Sprite::create("UI/UI_main_menu/item4_doublecoin.png");
 
 	auto groupIcon = tmxMap->getObjectGroup("icon");
 	for (auto child : groupIcon->getObjects()) {
@@ -190,13 +191,13 @@ void Hud::addButton()
 			break;
 
 		case 2:
-			icon_Item = ProgressTimer::create(Sprite::create("UI/UI_main_menu/item3_magnet.png"));
-			icon_Item->setPosition(coverItemMagnet->getContentSize() / 2);
-			icon_Item->setPercentage(100.0f);
-			icon_Item->setReverseDirection(true);
-			icon_Item->setType(ProgressTimer::Type::RADIAL);
+			icon_Item_Magnet = ProgressTimer::create(Sprite::create("UI/UI_main_menu/item3_magnet.png"));
+			icon_Item_Magnet->setPosition(coverItemMagnet->getContentSize() / 2);
+			icon_Item_Magnet->setPercentage(100.0f);
+			icon_Item_Magnet->setReverseDirection(true);
+			icon_Item_Magnet->setType(ProgressTimer::Type::RADIAL);
 
-			coverItemMagnet->addChild(icon_Item);
+			coverItemMagnet->addChild(icon_Item_Magnet);
 
 			coverItemMagnet->setOpacity(50);
 			coverItemMagnet->setPosition(origin_X);
@@ -206,7 +207,26 @@ void Hud::addButton()
 			addChild(coverItemMagnet);
 
 			break;
+
+		case 3:
+			icon_Item_DC = ProgressTimer::create(Sprite::create("UI/UI_main_menu/item4_doublecoin.png"));
+			icon_Item_DC->setPosition(coverItemMagnet->getContentSize() / 2);
+			icon_Item_DC->setPercentage(100.0f);
+			icon_Item_DC->setReverseDirection(true);
+			icon_Item_DC->setType(ProgressTimer::Type::RADIAL);
+
+			coverItemDC->addChild(icon_Item_DC);
+
+			coverItemDC->setOpacity(50);
+			coverItemDC->setPosition(origin_X);
+			coverItemDC->setVisible(false);
+			coverItemDC->setScale(SCREEN_SIZE.height / 11 / coverItemDC->getContentSize().height);
+
+			addChild(coverItemDC);
+			break;
 		}
+
+		
 	}
 
 }
@@ -521,8 +541,15 @@ void Hud::refreshControl()
 	}
 
 	if (coverItemMagnet->isVisible()) {
+		isItemMagnetActive = false;
 		coverItemMagnet->setVisible(false);
 		coverItemMagnet->unscheduleAllCallbacks();
+	}
+
+	if (coverItemDC->isVisible()) {
+		isItemDCActive = false;
+		coverItemDC->setVisible(false);
+		coverItemDC->unscheduleAllCallbacks();
 	}
 }
 
@@ -628,27 +655,52 @@ void Hud::runnerSkillDuration(int skillWhat, float duration)
 	
 }
 
-void Hud::runnerItem(int counter)
+void Hud::runnerItemMagnet(int counter)
 {
-	durationItem = counter / 60.0f;
-	if (isItemActive) {
+	durationItemMagnet = counter / 60.0f;
+	if (isItemMagnetActive) {
 		coverItemMagnet->unschedule("itemRunner");
 	}
 	else {
 		coverItemMagnet->setVisible(true);
 	}
 
-	isItemActive = true;
+	isItemMagnetActive = true;
 
-	timerItem = durationItem;
+	timerItemMagnet = durationItemMagnet;
 
 	coverItemMagnet->schedule([&](float dt) {
-		timerItem -= 0.1f;
-		icon_Item->setPercentage(timerItem / durationItem * 100.0f);
-		if (timerItem <= 0.0f) {
-			isItemActive = false;
+		timerItemMagnet -= 0.1f;
+		icon_Item_Magnet->setPercentage(timerItemMagnet / durationItemMagnet * 100.0f);
+		if (timerItemMagnet <= 0.0f) {
+			isItemMagnetActive = false;
 			coverItemMagnet->setVisible(false);
 			coverItemMagnet->unschedule("itemRunner");
 		}
 	}, 0.1f, "itemRunner");
+}
+
+void Hud::runnerItemDC(int counter)
+{
+	durationItemDC = counter / 60.0f;
+	if (isItemDCActive) {
+		coverItemDC->unschedule("itemRunnerDC");
+	}
+	else {
+		coverItemDC->setVisible(true);
+	}
+
+	isItemDCActive = true;
+
+	timerItemDC = durationItemDC;
+
+	coverItemDC->schedule([&](float dt) {
+		timerItemDC -= 0.1f;
+		icon_Item_DC->setPercentage(timerItemDC / durationItemDC * 100.0f);
+		if (timerItemDC <= 0.0f) {
+			isItemDCActive = false;
+			coverItemDC->setVisible(false);
+			coverItemDC->unschedule("itemRunnerDC");
+		}
+	}, 0.1f, "itemRunnerDC");
 }

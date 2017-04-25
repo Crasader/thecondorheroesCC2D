@@ -1,6 +1,7 @@
 #include "Coin.h"
 #include "manager\SkeletonManager.h"
 #include "BaseHero.h"
+#include "manager\AudioManager.h"
 
 Coin::Coin()
 {
@@ -62,6 +63,7 @@ void Coin::runAnimation()
 
 void Coin::picked()
 {
+	AudioManager::playSound(SOUND_COIN);
 	this->setVisible(false);
 	if (!SkeletonManager::getInstance()->getSkeletonData("Effect_getgolden")) {
 		SkeletonManager::getInstance()->cacheSkeleton("Effect_getgolden", SCREEN_SIZE.height / 3 / 291);
@@ -135,12 +137,12 @@ void Coin::updateMe(BaseHero *hero)
 			this->setVisible(true);
 			return;
 		}
-		if (this->isVisible()) {
+		if (this->isVisible() && hero->getB2Body()) {
 			if (((this->getPosition() -
 				(hero->getPosition() + Vec2(0, hero->getB2Body()->GetFixtureList()->GetShape()->m_radius*PTM_RATIO))).length()
 				< SCREEN_SIZE.height / 12)) {
 				this->picked();
-				hero->setCoinExplored(hero->getCoinExplored() + 1);
+				hero->setCoinExplored(hero->getCoinExplored() + hero->getCoinRatio());
 			}
 		}
 		if (this->getB2Body()->GetType() == b2_dynamicBody) {

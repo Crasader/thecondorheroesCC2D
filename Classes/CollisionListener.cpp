@@ -187,7 +187,12 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		}
 
 		if (item->getTypeItem() == Item_type::MAGNET) {
-			parentGameScene->runnerItem(DURATION_MAGNET);
+			parentGameScene->runnerItem(Item_type::MAGNET, DURATION_MAGNET);
+		}
+
+		if (item->getTypeItem() == Item_type::DOUBLE_COIN) {
+			hero->setCoinRatio(2);
+			parentGameScene->runnerItem(Item_type::DOUBLE_COIN, DURATION_DOUBLE_COIN);
 		}
 
 		item->setTaken(true);
@@ -204,7 +209,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
 		auto coin = sA->getTag() == TAG_HERO ? (CoinBullion *)sB : (CoinBullion *)sA;
 		coin->picked();
-		hero->setCoinExplored(hero->getCoinExplored() + 5);
+		hero->setCoinExplored(hero->getCoinExplored() + 5 * hero->getCoinRatio());
 	}
 
 	if ((bitmaskA == BITMASK_COIN_BAG && bitmaskB == BITMASK_SWORD) ||
@@ -225,7 +230,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		auto parentGameScene = (GameScene*)coin->getParent();
 		auto hero = parentGameScene->getHero();
-		hero->setCoinExplored(hero->getCoinExplored() + 10);
+		hero->setCoinExplored(hero->getCoinExplored() + 10 * hero->getCoinRatio());
 	}
 
 	if ((bitmaskA == BITMASK_WOODER && bitmaskB == BITMASK_SWORD) ||

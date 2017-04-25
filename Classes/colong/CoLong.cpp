@@ -1,6 +1,6 @@
 #include "CoLong.h"
 #include "manager/RefManager.h"
-#include "AudioEngine.h"
+#include "manager\AudioManager.h"
 
 CoLong::CoLong(string p_sJsonFile, string p_sAtlasFile, float p_fScale) : BaseHero(p_sJsonFile, p_sAtlasFile, p_fScale) {
 	checkDurationSkill1 = 0;
@@ -55,6 +55,7 @@ CoLong * CoLong::create(string p_sJsonFile, string p_sAtlasFile, float p_fScale)
 
 // SKILL 1
 void CoLong::createDocPhongCham(Point p_ptStartPoint, Point p_ptEndPoint) {
+	AudioManager::playSound(SOUND_CLSKILL1);
 	auto cham = (TieuHonChuong*) poolSkill1->getObjectAtIndex(indexSkill1++);
 	cham->setVisible(true);
 	cham->setIsCollide(false);
@@ -97,6 +98,7 @@ void CoLong::doCounterSkill1() {
 
 // SKILL 2
 void CoLong::createNgocNuKiemPhap(Point p_ptPoint) {
+	AudioManager::playSound(SOUND_CLSKILL2);
 	auto scale = this->getTrueRadiusOfHero() * 1.4f / 250;
 	SkeletonAnimation * clone = new SkeletonAnimation("Animation/CoLong/skill2.json", "Animation/CoLong/skill2.atlas", scale);
 	auto parentGameScene = (GameScene*)this->getParent();
@@ -132,6 +134,7 @@ void CoLong::doCounterSkill2() {
 
 // SKILL 3
 void CoLong::doCounterSkill3() {
+	keysoundSKill3 = AudioManager::playSoundForever(SOUND_CLSKILL3);
 	changeBodyMaskBits(BITMASK_FLOOR | BITMASK_COIN | BITMASK_COIN_BULLION | BITMASK_ITEM);
 	
 	m_pRadaSkill3->changeBodyCategoryBits(BITMASK_SWORD);
@@ -150,6 +153,7 @@ void CoLong::doCounterSkill3() {
 			m_pRadaSkill3->changeBodyCategoryBits(BITMASK_WOODER);
 			setIsDoneDuration3(true);
 			checkDurationSkill3 = 0;
+			AudioManager::stopSoundForever(keysoundSKill3);
 			unschedule("KeySkill3");
 		}
 	}, 0.1f, "KeySkill3");
@@ -413,6 +417,7 @@ void CoLong::listener() {
 			gamelayer->dieGame();
 		}
 
+
 	});
 }
 
@@ -466,6 +471,7 @@ void CoLong::normalJump() {
 	if (!getIsDoneDuration3()) {
 	}
 	else {
+		BaseHero::normalJump();
 		clearTracks();
 		addAnimation(0, "jump", false);
 		setToSetupPose();
@@ -477,6 +483,7 @@ void CoLong::doubleJump() {
 	if (!getIsDoneDuration3()) {
 	}
 	else {
+		BaseHero::doubleJump();
 		clearTracks();
 		addAnimation(0, "jumpx2", false);
 		setToSetupPose();
@@ -532,6 +539,8 @@ void CoLong::die() {
 		checkDurationSkill3 = 0;
 	}
 
+
+	AudioManager::playSound(SOUND_CLDIE);
 	clearTracks();
 	addAnimation(0, "die", false);
 	setToSetupPose();
@@ -547,6 +556,7 @@ void CoLong::attackNormal() {
 
 	}
 	else {
+		BaseHero::attackNormal();
 		changeSwordCategoryBitmask(BITMASK_SWORD);
 
 		setIsPriorAttack(true);
@@ -576,6 +586,7 @@ void CoLong::attackLanding() {
 
 	}
 	else {
+		BaseHero::attackLanding();
 		changeSwordCategoryBitmask(BITMASK_SWORD);
 		setIsPriorAttack(true);
 		runSlashLand();
@@ -593,6 +604,7 @@ void CoLong::injured() {
 
 	}
 	else {
+		AudioManager::playSound(SOUND_CLHIT);
 		clearTracks();
 		addAnimation(0, "injured", false);
 		setToSetupPose();

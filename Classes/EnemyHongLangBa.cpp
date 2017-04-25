@@ -1,5 +1,6 @@
 #include "EnemyHongLangBa.h"
 #include "manager/SkeletonManager.h"
+#include "manager/AudioManager.h"
 
 EnemyHongLangBa::EnemyHongLangBa(spSkeletonData * data):BaseEnemy(data)
 {
@@ -49,6 +50,7 @@ void EnemyHongLangBa::run()
 void EnemyHongLangBa::attack()
 {
 	if (!this->getIsDie()) {
+		AudioManager::playSound(SOUND_HLB1AT);
 		this->clearTracks();
 		this->addAnimation(0, "attack", false);
 		//this->splash->setVisible(true);
@@ -59,7 +61,7 @@ void EnemyHongLangBa::attack()
 void EnemyHongLangBa::die()
 {
 	BaseEnemy::die();
-
+	AudioManager::playSound(SOUND_HLB1DIE);
 	auto world = this->body->GetWorld();
 	world->DestroyBody(this->body);
 	this->body = nullptr;

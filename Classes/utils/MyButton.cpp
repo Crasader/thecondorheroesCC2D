@@ -58,7 +58,7 @@ void MyButton::addEvents()
 	listener->onTouchBegan = [&](Touch *mTouch, Event *mEvent)
 	{
 		auto p = mTouch->getLocation();
-		convertToNodeSpace(p);
+		//convertToNodeSpace(p);
 		Rect rect = this->getBoundingBox();
 		
 		if (rect.containsPoint(p) && !isBlocked)	// if this button is blocked (smt while another button is active), cannot active
@@ -132,7 +132,7 @@ void MyButton::runTimer()
 	if (timeCoolDown < 1)
 		return;
 	timer = timeCoolDown;
-	number->setString(StringUtils::format("%i", timer));
+	number->setString(StringUtils::format("%i",(int) timer));
 	number->setVisible(true);
 	this->schedule([&](float dt) {
 		timer -= 0.01f;

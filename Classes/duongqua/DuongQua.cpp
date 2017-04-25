@@ -126,6 +126,7 @@ void DuongQua::doCounterSkill1()
 // SKILL 2
 void DuongQua::createKiemPhap(float posX)
 {
+	AudioManager::playSound(SOUND_DQSKILL2);
 	auto kp = KiemPhap::create();
 
 	kp->setScale(this->getTrueRadiusOfHero() * 1.75f / kp->getContentSize().width);
@@ -197,7 +198,7 @@ Point DuongQua::getLocalSpiritBonePos(string boneName)
 
 void DuongQua::createTieuHonChuong(Point posHand, int Zoder)
 {
-
+	AudioManager::playSound(SOUND_DQSKILL3);
 	auto thc = (TieuHonChuong*)poolSkill3->getObjectAtIndex(indexSkill3++);
 	thc->setVisible(true);
 	thc->setIsCollide(false);
@@ -384,6 +385,7 @@ void DuongQua::run()
 
 void DuongQua::normalJump()
 {
+	BaseHero::normalJump();
 	clearTracks();
 	addAnimation(0, "jump", false);
 	setToSetupPose();
@@ -395,6 +397,7 @@ void DuongQua::normalJump()
 
 void DuongQua::doubleJump()
 {
+	BaseHero::doubleJump();
 	clearTracks();
 	addAnimation(0, "jumpx2", false);
 	setToSetupPose();
@@ -450,7 +453,7 @@ void DuongQua::die()
 	if (!getIsDoneDuration2()) {
 		setIsDoneDuration2(true);
 		unschedule("KeySkill2");
-		checkDurationSkill2 = 0;
+		checkDurationSkill2 = -1;
 	}
 
 	if (!getIsDoneDuration3()) {
@@ -475,6 +478,7 @@ void DuongQua::attackNormal()
 	}
 
 	else {
+		BaseHero::attackNormal();
 		changeSwordCategoryBitmask(BITMASK_SWORD);
 
 		setIsPriorAttack(true);
@@ -505,6 +509,7 @@ void DuongQua::attackLanding()
 		setIsPriorSkill1(true);			// move to attack
 	}
 	else {
+		BaseHero::attackLanding();
 		changeSwordCategoryBitmask(BITMASK_SWORD);
 		setIsPriorAttack(true);
 		runSlashLand();

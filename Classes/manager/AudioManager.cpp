@@ -9,6 +9,29 @@ AudioManager::~AudioManager()
 {
 }
 
+void AudioManager::cacheAudio()
+{
+	experimental::AudioEngine::preload(MUSIC_MENU);
+	experimental::AudioEngine::preload(MUSIC_STAGE1);
+	experimental::AudioEngine::preload(MUSIC_STAGE2);
+	experimental::AudioEngine::preload(MUSIC_STAGE3);
+	experimental::AudioEngine::preload(MUSIC_STAGE4);
+	experimental::AudioEngine::preload(SOUND_DQDIE);
+	experimental::AudioEngine::preload(SOUND_DQHIT);
+	experimental::AudioEngine::preload(SOUND_DQSKILL1);
+	experimental::AudioEngine::preload(SOUND_DQSKILL2);
+	experimental::AudioEngine::preload(SOUND_DQSKILL3);
+	experimental::AudioEngine::preload(SOUND_CLDIE);
+	experimental::AudioEngine::preload(SOUND_CLHIT);
+	experimental::AudioEngine::preload(SOUND_CLSKILL1);
+	experimental::AudioEngine::preload(SOUND_CLSKILL2);
+	experimental::AudioEngine::preload(SOUND_CLSKILL3);
+	experimental::AudioEngine::preload(SOUND_TC1AT);
+	experimental::AudioEngine::preload(SOUND_TC1DIE);
+	experimental::AudioEngine::preload(SOUND_TC2AT);
+	experimental::AudioEngine::preload(SOUND_TC2DIE);
+}
+
 void AudioManager::playSound(string keysound)
 {
 	auto ref = UserDefault::getInstance()->sharedUserDefault();
@@ -20,10 +43,25 @@ void AudioManager::playSound(string keysound)
 
 int AudioManager::playSoundForever(string keysound)
 {
-	AudioManager::stopSoundForever();
+	auto ref = UserDefault::getInstance()->sharedUserDefault();
+	bool checkSound = ref->getBoolForKey(KEY_IS_SOUND, true);
+	if (checkSound) {
+		return experimental::AudioEngine::play2d(keysound, true);
+	}
+	return NULL;
+}
+
+void AudioManager::stopSoundForever(int keysound)
+{
+	experimental::AudioEngine::stop(keysound);
+}
+
+int AudioManager::playMusic(string keysound)
+{
+	AudioManager::stopMusic();
 	auto ref = UserDefault::getInstance()->sharedUserDefault();
 	bool checkSound = ref->getBoolForKey(KEY_IS_MUSIC, true);
-	log("check sound: %d: ", checkSound);
+	//log("check sound: %d: ", checkSound);
 	if (checkSound) {
 		
 		int a = experimental::AudioEngine::play2d(keysound,true);
@@ -33,7 +71,7 @@ int AudioManager::playSoundForever(string keysound)
 	return 0;
 }
 
-void AudioManager::stopSoundForever()
+void AudioManager::stopMusic()
 {
 	auto ref = UserDefault::getInstance()->sharedUserDefault();
 	int checkSound = ref->getIntegerForKey(KEY_VALUE_MUSIC);

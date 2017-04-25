@@ -184,7 +184,7 @@ public:
 
 	void updateHUD(float dt);
 	void updateMultiKills(); //DuongPM edited for multi kills
-	void runnerItem(int counter);
+	void runnerItem(Item_type type, int counter);
 	void updateBloodBar(int numberOfHealth, bool isVisible);
 	void updateCamera();
 

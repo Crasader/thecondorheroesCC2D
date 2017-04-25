@@ -7,7 +7,7 @@ RefManager* RefManager::refManager;
 
 RefManager::RefManager()
 {
-	ref = UserDefault::getInstance()->sharedUserDefault();
+	ref = UserDefault::sharedUserDefault();
 
 	isFirstPlay = ref->getBoolForKey(KEY_FIRST, true);
 	selectedHero = ref->getIntegerForKey(KEY_SELECTED_HERO, 0);

@@ -5,7 +5,8 @@
 
 enum Item_type {
 	HEALTH,
-	MAGNET
+	MAGNET,
+	DOUBLE_COIN
 };
 
 class Item : public B2Sprite
@@ -30,6 +31,7 @@ protected:
 };
 
 
-#define DURATION_MAGNET 1000
+#define DURATION_MAGNET				300		// 5s
+#define DURATION_DOUBLE_COIN		300
 
 #endif // __B2_SPRITE_H__

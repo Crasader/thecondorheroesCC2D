@@ -11,7 +11,7 @@ using namespace spine;
 class EnemyHongLangBa2 : public EnemyHongLangBa
 {
 private:
-	
+	float angle;
 public:
 	CC_SYNTHESIZE(float, scaleEnemy, ScaleEnemy);
 	CC_SYNTHESIZE(Darts*, enemyDarts, EnemyDarts);

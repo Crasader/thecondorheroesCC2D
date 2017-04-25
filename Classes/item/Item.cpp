@@ -1,5 +1,6 @@
 #include "Item.h"
 #include "BaseHero.h"
+#include "manager\AudioManager.h"
 
 Item::Item()
 {
@@ -38,7 +39,7 @@ void Item::initCirclePhysic(b2World * world, Point pos)
 
 void Item::picked()
 {
-
+	AudioManager::playSound(SOUND_ITEM);
 }
 
 
@@ -59,7 +60,7 @@ void Item::updateMe(BaseHero *hero)
 			alpha += tmp;
 			auto vx = vLenght * cos(alpha) / PTM_RATIO;
 			auto vy = vLenght * sin(alpha) / PTM_RATIO;
-			this->body->SetLinearVelocity(b2Vec2(vx, vy) + b2Vec2(SCREEN_SIZE.width / 12.0f / PTM_RATIO, 0));
+			this->body->SetLinearVelocity(b2Vec2(vx, vy) + b2Vec2(SCREEN_SIZE.width / 10.0f / PTM_RATIO, 0));
 
 			if (alpha > 2 * PI) alpha = 0;
 		}

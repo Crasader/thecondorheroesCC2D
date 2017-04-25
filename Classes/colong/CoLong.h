@@ -65,6 +65,8 @@ protected:
 	void createSlash();
 	void runSlash();
 	void runSlashLand();
+
+	int keysoundSKill3;
 	//////////////////////////////////////////////////////////////////////////
 };
 #endif // __CO_LONG_H__

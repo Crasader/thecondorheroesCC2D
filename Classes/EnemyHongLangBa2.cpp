@@ -1,5 +1,7 @@
 #include "EnemyHongLangBa2.h"
-#include "manager/SkeletonManager.h"
+#include "SkeletonManager.h"
+#include "AudioManager.h"
+#include "BaseHero.h"
 
 
 EnemyHongLangBa2::EnemyHongLangBa2(string jsonFile, string atlasFile, float scale):EnemyHongLangBa(jsonFile, atlasFile,scale)
@@ -49,19 +51,26 @@ EnemyHongLangBa2 * EnemyHongLangBa2::create(string filename, float scale)
 void EnemyHongLangBa2::attack()
 {
 	EnemyHongLangBa::attack();
+	AudioManager::playSound(SOUND_HLB2AT);
 	/*slash->getB2Body()->SetTransform(b2Vec2((this->getBoneLocation("bone32").x+this->getParent()->getPosition().x)/PTM_RATIO,
 		(this->getBoneLocation("bone32").y+this->getParent()->getPosition().y)/PTM_RATIO),0);*/
 	enemyDarts->setVisible(true);
 	if (enemyDarts->getB2Body() != nullptr) {
 		enemyDarts->getB2Body()->GetWorld()->DestroyBody(enemyDarts->getB2Body());
 	}
+	enemyDarts->setRotation(angle / PI * 180);
 	enemyDarts->initCirclePhysic(this->getB2Body()->GetWorld(), this->getBoneLocation("bone32") + this->getParent()->getPosition());
-	enemyDarts->getB2Body()->SetLinearVelocity(b2Vec2(-SCREEN_SIZE.width/3/PTM_RATIO,0));
+
+	float vx = SCREEN_SIZE.width / 3 / PTM_RATIO * cosf(angle);
+	float vy = SCREEN_SIZE.width / 3 / PTM_RATIO * sinf(angle);
+
+	enemyDarts->getB2Body()->SetLinearVelocity(b2Vec2(vx, vy));
 }
 
 void EnemyHongLangBa2::die()
 {
 	EnemyHongLangBa::die();
+	AudioManager::playSound(SOUND_HLB2DIE);
 	if (enemyDarts->getB2Body()!=nullptr) {
 		auto world = enemyDarts->getB2Body()->GetWorld();
 		world->DestroyBody(enemyDarts->getB2Body());
@@ -74,8 +83,6 @@ void EnemyHongLangBa2::die()
 void EnemyHongLangBa2::genDarts()
 {
 	enemyDarts = Darts::create("Animation/Enemy_HongLangBa2/HLB2-amkhi.json", "Animation/Enemy_HongLangBa2/HLB2-amkhi.atlas", scaleEnemy*2.0f);
-	//slash->updateWorldTransform();
-	//slash->setAnchorPoint(Point(0.5f, 0.4f));
 	
 	enemyDarts->setPosition(this->getBoneLocation("bone32"));
 	enemyDarts->setVisible(false);
@@ -94,8 +101,11 @@ void EnemyHongLangBa2::listener()
 		}
 
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
-			//slash->removeFromParentAndCleanup(true);
-			this->removeFromParentAndCleanup(true);
+            //this->removeFromParentAndCleanup(true);
+            this->setVisible(false);
+            this->clearTracks();
+            this->setAnimation(0, "idle", true);
+            this->setToSetupPose();
 		}
 
 	});
@@ -118,15 +128,27 @@ void EnemyHongLangBa2::updateMe(BaseHero* hero)
 		//slash->getB2Body()->SetLinearVelocity(b2Vec2(0,0));
 		enemyDarts->setVisible(false);
 	}
+
 	controlAttack++;
-	if (controlAttack > 120) {
-		if (this->body != nullptr) {
-			if (!this->body->GetWorld()->IsLocked()) {
-				controlAttack = 0;	// 2 giay 1 nhat
-				this->attack();
+
+	if (hero->getPositionX() < this->getPositionX() + this->getParent()->getPositionX() && 
+		hero->getPositionY() + SCREEN_SIZE.height * 0.7f > this->getPositionY() &&
+		hero->getPositionY() - SCREEN_SIZE.height * 0.7f < this->getPositionY()) {
+
+		Vec2 vector = Vec2(hero->getPosition() - (this->getPosition() + this->getParent()->getPosition()));
+		angle = vector.getAngle();
+		
+		if (controlAttack > 120) {
+			if (this->body != nullptr) {
+				if (!this->body->GetWorld()->IsLocked()) {
+					controlAttack = 0;	// 2 giay 1 nhat
+					this->attack();
+				}
 			}
 		}
 	}
+
+	
 
 	if (getIsDie() && this->getB2Body() != nullptr) {
 		die();
@@ -156,29 +178,7 @@ void EnemyHongLangBa2::initCirclePhysic(b2World * world, Point pos)
 }
 
 
-
-//void EnemyHongLangBa2::removeFromParentAndCleanup(bool cleanup)
-//{
-//	BaseEnemy::removeAllChildrenWithCleanup(cleanup);
-//	auto world = slash->getB2Body()->GetWorld();
-//	world->DestroyBody(slash->getB2Body());
-//	slash->removeAllChildrenWithCleanup(cleanup);
-//	log("delete slash");
-//}
-
-//void EnemyHongLangBa2::onExit()
-//{
-//	BaseEnemy::removeFromParentAndCleanup(cleanup);
-//	auto world = slash->getB2Body()->GetWorld();
-//	world->DestroyBody(slash->getB2Body());
-//	slash->removeFromParentAndCleanup(cleanup);
-//	log("delete slash");
-//}
-
 void EnemyHongLangBa2::onExit()
 {
 	BaseEnemy::onExit();
-	/*auto world = slash->getB2Body()->GetWorld();
-	world->DestroyBody(slash->getB2Body());
-	log("delete slash");*/
 }

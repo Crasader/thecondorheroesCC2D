@@ -1,5 +1,6 @@
 #include "EnemyToOng.h"
-#include "manager/SkeletonManager.h"
+#include "SkeletonManager.h"
+#include "AudioManager.h"
 
 EnemyToOng::EnemyToOng(spSkeletonData * data):BaseEnemy(data)
 {
@@ -59,7 +60,7 @@ void EnemyToOng::attack()
 void EnemyToOng::die()
 {
 	BaseEnemy::die();
-
+	AudioManager::playSound(SOUND_TOONGDIE);
 	auto world = this->body->GetWorld();
 	world->DestroyBody(this->body);
 	this->body = nullptr;
@@ -122,7 +123,11 @@ void EnemyToOng::listener()
 			this->setToSetupPose();
 		}
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
-			this->removeFromParentAndCleanup(true);
+            //this->removeFromParentAndCleanup(true);
+            this->setVisible(false);
+            this->clearTracks();
+            this->setAnimation(0, "idle", true);
+            this->setToSetupPose();
 		}
 
 	});

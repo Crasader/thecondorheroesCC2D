@@ -52,7 +52,9 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 
 	duongQua->blash = Sprite::create("Animation/DuongQua/blash.png");
 	duongQua->blash->setScale(scale / 2);
+	duongQua->blash->setPosition(duongQua->getContentSize() / 2);
 	duongQua->blash->setVisible(false);
+	duongQua->addChild(duongQua->blash);
 
 	return duongQua;
 }
@@ -61,8 +63,8 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 // SKILL 1
 void DuongQua::createToanChanKiemPhap(Point posSword)
 {
-	auto tckp = ToanChanKiemPhap::create("Animation/DuongQua/skill1.png");
-	tckp->setScale(this->getTrueRadiusOfHero() * 3 / tckp->getContentSize().width);
+	auto tckp = (ToanChanKiemPhap*)poolSkill1->getObjectAtIndex(indexSkill1++);
+	tckp->setVisible(true);
 	auto gameLayer = (GameScene*) this->getParent();
 
 	tckp->setPosition(posSword.x + this->getTrueRadiusOfHero() / 2, posSword.y);
@@ -70,10 +72,14 @@ void DuongQua::createToanChanKiemPhap(Point posSword)
 	tckp->changeBodyCategoryBits(BITMASK_SWORD);
 	tckp->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG);
 
-	this->getParent()->addChild(tckp, ZORDER_SMT);
+	if (!tckp->getIsAdded()) {
+		this->getParent()->addChild(tckp, ZORDER_SMT);
+		tckp->setIsAdded(true);
+	}
 
-	tckp->setAngle(0);
 	listToanChanKiemPhap.push_back(tckp);
+
+	if (indexSkill1 == 4) indexSkill1 = 0;
 }
 
 void DuongQua::slashToanChanKiemPhap()
@@ -94,16 +100,15 @@ void DuongQua::slashToanChanKiemPhap()
 
 					gameLayer->world->DestroyBody(tckp->getB2Body());
 					tckp->setB2Body(nullptr);
-
-					tckp->removeFromParentAndCleanup(true);
+					tckp->setVisible(false);
 				}
 				else
-					tckp->updateMe(this);
+					tckp->updateMe();
 			}
 		}
 
 		// get more time to update
-		if (checkDurationSkill1 > getDurationSkill1() * 100) {
+		if (checkDurationSkill1 > getDurationSkill1() * 80) {
 			listToanChanKiemPhap.clear();
 			checkDurationSkill1 = 0;
 			unschedule("KeySkill1");
@@ -121,15 +126,16 @@ void DuongQua::doCounterSkill1()
 // SKILL 2
 void DuongQua::createKiemPhap(float posX)
 {
-	auto kp = KiemPhap::create("Animation/DuongQua/Sword.png");
+	AudioManager::playSound(SOUND_DQSKILL2);
+	auto kp = KiemPhap::create();
+
 	kp->setScale(this->getTrueRadiusOfHero() * 1.75f / kp->getContentSize().width);
 	auto gameLayer = (GameScene*) this->getParent();
 
-	kp->setPosition(posX, SCREEN_SIZE.height + kp->getBoundingBox().size.height);
+	kp->setPosition(posX, this->getPositionY() + SCREEN_SIZE.height);
 	kp->initBoxPhysic(gameLayer->world, kp->getPosition());
 
-	this->getParent()->addChild(kp, ZORDER_ENEMY);
-	this->getParent()->addChild(kp->getEffectLand(), ZORDER_ENEMY);
+	gameLayer->addChild(kp, ZORDER_ENEMY);
 
 	kp->landingEffect();
 
@@ -140,15 +146,7 @@ void DuongQua::landKiemPhap()
 {
 	this->schedule([&](float dt) {
 		if (checkDurationSkill2 % 8 == 0) {		// every 0.25 second
-			float width;
-			if (getB2Body()->GetLinearVelocity().x <= 0) {
-				width = this->getPositionX() + SCREEN_SIZE.width * 0.5f + (indexKiem++) * SCREEN_SIZE.width * 0.15f;
-			}
-			else if(this->getIsDriverEagle()) {
-				width = this->getPositionX() + SCREEN_SIZE.width * 0.5f + (indexKiem++) * SCREEN_SIZE.width * 0.05f;
-			}
-			else
-				width = this->getPositionX() + SCREEN_SIZE.width * 0.5f;
+			float width = this->getPositionX() + SCREEN_SIZE.width * 0.5f;
 
 			createKiemPhap(width);
 		}
@@ -156,7 +154,6 @@ void DuongQua::landKiemPhap()
 		checkDurationSkill2++;
 
 		if ((checkDurationSkill2 >= getDurationSkill2() * 20)) {
-			numberOfDeadSword = 0;
 			setIsDoneDuration2(true);
 			checkDurationSkill2 = 0;
 			unschedule("KeySkill2");
@@ -175,9 +172,10 @@ void DuongQua::createSpiritHole()
 {
 	auto scale = this->getTrueRadiusOfHero() * 1.4f / 400;  // 400: height of spine
 	spiritHole = new SkeletonAnimation("Effect/skill3.json", "Effect/skill3.atlas", scale);
+	spiritHole->setPosition(this->getContentSize().width / 2 - 1.5f * this->getTrueRadiusOfHero(), 1.5f * this->getTrueRadiusOfHero());
 	spiritHole->update(0.0f);
 	spiritHole->setVisible(false);
-	this->getParent()->addChild(spiritHole, ZORDER_SMT);
+	this->addChild(spiritHole);
 }
 
 void DuongQua::runSpiritHole()
@@ -200,21 +198,26 @@ Point DuongQua::getLocalSpiritBonePos(string boneName)
 
 void DuongQua::createTieuHonChuong(Point posHand, int Zoder)
 {
-	auto thc = TieuHonChuong::create("Animation/DuongQua/tieuhonchuong.png");
-	thc->setScale(this->getTrueRadiusOfHero() * 1.5f / thc->getContentSize().width);
+	AudioManager::playSound(SOUND_DQSKILL3);
+	auto thc = (TieuHonChuong*)poolSkill3->getObjectAtIndex(indexSkill3++);
+	thc->setVisible(true);
+	thc->setIsCollide(false);
 	auto gameLayer = (GameScene*) this->getParent();
 
-	thc->setPosition(posHand.x + this->getTrueRadiusOfHero() / 2, posHand.y);
+	auto worldPos = posHand + this->getPosition();
+	thc->setPosition(worldPos.x + this->getTrueRadiusOfHero() / 2, worldPos.y);
 	thc->initCirclePhysic(gameLayer->world, thc->getPosition());
 	thc->changeBodyCategoryBits(BITMASK_SWORD);
 	thc->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG);
 
-	this->getParent()->addChild(thc, Zoder);
 
-	//thc->getB2Body()->SetTransform(thc->getB2Body()->GetPosition(), angle);
-	thc->setAngle(0);
+	if (!thc->getIsAdded()) {
+		this->getParent()->addChild(thc, Zoder);
+		thc->setIsAdded(true);
+	}
 
 	listTieuHonChuong.push_back(thc);
+	if (indexSkill3 == 10) indexSkill3 = 0;
 }
 
 void DuongQua::shootTieuHonChuong()
@@ -243,7 +246,6 @@ void DuongQua::shootTieuHonChuong()
 			auto scale = ScaleBy::create(0.75f, 0.5f);
 			spiritHole->runAction(Sequence::create(scale, hide, nullptr));
 			setIsDoneDuration3(true);
-			numberOfDeadTHC = 0;
 			checkDurationSkill3 = 0;
 			unschedule("KeySkill3");
 		}
@@ -260,17 +262,19 @@ void DuongQua::doCounterSkill3()
 // SLASH
 void DuongQua::createSlash()
 {
-	auto scale = this->getTrueRadiusOfHero() * 1.8f / 400;  // 400: hieght of spine
+	auto scale = this->getTrueRadiusOfHero() * 1.8f / 400;
 	slash = SkeletonAnimation::createWithFile("Animation/DuongQua/slash2.json", "Animation/DuongQua/slash2.atlas", scale);
+	slash->setPosition(this->getContentSize().width / 2 + this->getTrueRadiusOfHero(), this->getTrueRadiusOfHero() * 0.7f);
 	slash->update(0.0f);
 	slash->setVisible(false);
-	this->getParent()->addChild(slash, ZORDER_SMT);
+	this->addChild(slash);
 
-	auto scaleLand = this->getTrueRadiusOfHero() * 1.8f / 400;  // 400: hieght of spine
-	slashLand = SkeletonAnimation::createWithFile("Animation/DuongQua/slash1.json", "Animation/DuongQua/slash1.atlas", scaleLand);
+	slashLand = SkeletonAnimation::createWithFile("Animation/DuongQua/slash1.json", "Animation/DuongQua/slash1.atlas", scale);
+	slashLand->setPosition(this->getContentSize().width / 2 + this->getTrueRadiusOfHero() * 0.3f, this->getTrueRadiusOfHero() * 0.7f);
 	slashLand->update(0.0f);
 	slashLand->setVisible(false);
-	this->getParent()->addChild(slashLand, ZORDER_SMT);
+
+	this->addChild(slashLand);
 }
 
 void DuongQua::runSlash()
@@ -304,7 +308,7 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 	fixtureDef.shape = &circle_shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_HERO;
-	fixtureDef.filter.maskBits = BITMASK_FLOOR | BITMASK_COIN |
+	fixtureDef.filter.maskBits = BITMASK_FLOOR | BITMASK_ITEM |
 		BITMASK_TOANCHAN1 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION;
 
 
@@ -324,12 +328,34 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 
 void DuongQua::addStuff()
 {
-	this->getParent()->addChild(blash, ZORDER_ENEMY);
 	// spirit hole
 	createSpiritHole();
 
 	// slash here
 	createSlash();
+
+	BaseHero::addStuff();
+}
+
+void DuongQua::createPool()
+{
+	poolSkill1 = CCArray::createWithCapacity(4);
+	poolSkill1->retain();
+
+	for (int i = 0; i < 4; ++i) {
+		auto tckp = ToanChanKiemPhap::create();
+		tckp->setScale(this->getTrueRadiusOfHero() * 3 / tckp->getContentSize().width);
+		poolSkill1->addObject(tckp);
+	}
+
+	poolSkill3 = CCArray::createWithCapacity(10);
+	poolSkill3->retain();
+
+	for (int i = 0; i < 10; ++i) {
+		auto thc = TieuHonChuong::create("tieuhonchuong.png");
+		thc->setScale(this->getTrueRadiusOfHero() * 1.5f / thc->getContentSize().width);
+		poolSkill3->addObject(thc);
+	}
 }
 
 void DuongQua::idle()
@@ -338,7 +364,7 @@ void DuongQua::idle()
 	addAnimation(0, "idle", true);
 	setToSetupPose();
 
-	EM->getSmokeRun()->setVisible(false);
+	getSmokeRun()->setVisible(false);
 }
 
 void DuongQua::run()
@@ -350,9 +376,8 @@ void DuongQua::run()
 	if (getBloodScreen()->isVisible() && health > 1)
 		getBloodScreen()->setVisible(false);
 
-	if (!EM->getSmokeRun()->isVisible()) {
-		EM->getSmokeRun()->setVisible(true);
-		EM->smokeRunAni();
+	if (!getSmokeRun()->isVisible()) {
+		getSmokeRun()->setVisible(true);
 	}
 
 	//log("run");
@@ -360,25 +385,26 @@ void DuongQua::run()
 
 void DuongQua::normalJump()
 {
+	BaseHero::normalJump();
 	clearTracks();
 	addAnimation(0, "jump", false);
 	setToSetupPose();
 
-	EM->getSmokeRun()->setVisible(false);
+	getSmokeRun()->setVisible(false);
 
 	//log("jump");
 }
 
 void DuongQua::doubleJump()
 {
+	BaseHero::doubleJump();
 	clearTracks();
 	addAnimation(0, "jumpx2", false);
 	setToSetupPose();
 
-	EM->getSmokeJumpX2()->setPosition(this->getPosition());
-	EM->getSmokeJumpX2()->setVisible(true);
-	EM->smokeJumpX2Ani();
-
+	getSmokeJumpX2()->setPosition(this->getPosition());
+	getSmokeJumpX2()->setVisible(true);
+	smokeJumpX2Ani();
 	//log("jumpx2");
 }
 
@@ -388,17 +414,52 @@ void DuongQua::landing()
 	addAnimation(0, "landing", true);
 	setToSetupPose();
 
-	EM->getSmokeRun()->setVisible(false);
+	getSmokeRun()->setVisible(false);
 
 	//log("land");
 }
 
 void DuongQua::die()
 {
+
 	--dieHard;
 	if (dieHard < 0) {
-		//log("Die Hard");
 		return;
+	}
+
+	AudioManager::playSound(SOUND_DQDIE);
+
+	if (spiritHole->isVisible())
+		spiritHole->setVisible(false);
+
+	if (!getIsDoneDuration1()) {
+		setIsDoneDuration1(true);
+		if (!listToanChanKiemPhap.empty()) {
+			for (auto tckp : listToanChanKiemPhap) {
+				if (!tckp->getB2Body()) continue;
+
+				auto gameLayer = (GameScene*) this->getParent();
+
+				gameLayer->world->DestroyBody(tckp->getB2Body());
+				tckp->setB2Body(nullptr);
+				tckp->setVisible(false);
+			}
+		}
+		listToanChanKiemPhap.clear();
+		checkDurationSkill1 = 0;
+		unschedule("KeySkill1");
+	}
+
+	if (!getIsDoneDuration2()) {
+		setIsDoneDuration2(true);
+		unschedule("KeySkill2");
+		checkDurationSkill2 = -1;
+	}
+
+	if (!getIsDoneDuration3()) {
+		setIsDoneDuration3(true);
+		unschedule("KeySkill3");
+		checkDurationSkill3 = 0;
 	}
 
 	clearTracks();
@@ -406,9 +467,7 @@ void DuongQua::die()
 	setToSetupPose();
 	getB2Body()->SetLinearDamping(10);
 
-	EM->getSmokeRun()->setVisible(false);
-
-	//log("die");
+	getSmokeRun()->setVisible(false);
 }
 
 void DuongQua::attackNormal()
@@ -419,6 +478,7 @@ void DuongQua::attackNormal()
 	}
 
 	else {
+		BaseHero::attackNormal();
 		changeSwordCategoryBitmask(BITMASK_SWORD);
 
 		setIsPriorAttack(true);
@@ -438,7 +498,7 @@ void DuongQua::attackNormal()
 		//log("atttack");
 		setToSetupPose();
 
-		EM->getSlashBreak()->setVisible(false);
+		getSlashBreak()->setVisible(false);
 	}
 }
 
@@ -449,6 +509,7 @@ void DuongQua::attackLanding()
 		setIsPriorSkill1(true);			// move to attack
 	}
 	else {
+		BaseHero::attackLanding();
 		changeSwordCategoryBitmask(BITMASK_SWORD);
 		setIsPriorAttack(true);
 		runSlashLand();
@@ -457,13 +518,14 @@ void DuongQua::attackLanding()
 		addAnimation(0, "attack3", false);
 		setToSetupPose();
 
-		log("atttack");
-		EM->getSlashBreak()->setVisible(false);
+		//log("atttack");
+		getSlashBreak()->setVisible(false);
 	}
 }
 
 void DuongQua::attackBySkill1()
 {
+	AudioManager::playSound(SOUND_DQSKILL1);
 	clearTracks();
 	addAnimation(0, "attack4", false);
 	setToSetupPose();
@@ -473,6 +535,7 @@ void DuongQua::attackBySkill1()
 
 void DuongQua::attackBySkill2()
 {
+	AudioManager::playSound(SOUND_DQSKILL2);
 	/*clearTracks();
 	addAnimation(0, "skill2", false);
 	setToSetupPose();*/
@@ -480,6 +543,7 @@ void DuongQua::attackBySkill2()
 
 void DuongQua::attackBySkill3()
 {
+	AudioManager::playSound(SOUND_DQSKILL3);
 	/*clearTracks();
 	addAnimation(0, "skill3", false);
 	setToSetupPose();*/
@@ -487,6 +551,7 @@ void DuongQua::attackBySkill3()
 
 void DuongQua::injured()
 {
+	AudioManager::playSound(SOUND_DQHIT);
 	clearTracks();
 	addAnimation(0, "injured", false);
 	setToSetupPose();
@@ -501,11 +566,10 @@ void DuongQua::revive()
 	addAnimation(0, "revive", false);
 	setToSetupPose();
 
-	EM->getSmokeRun()->setVisible(false);
-	EM->getReviveMe()->setPosition(this->getPositionX() + getTrueRadiusOfHero() / 2, this->getPositionY());
-	EM->getReviveMe()->setVisible(true);
-	EM->reviveAni();
-
+	getSmokeRun()->setVisible(false);
+	getReviveMe()->setPosition(this->getPositionX() + getTrueRadiusOfHero() / 2, this->getPositionY());
+	getReviveMe()->setVisible(true);
+	reviveAni();
 	//log("revive");
 }
 
@@ -538,7 +602,7 @@ void DuongQua::listener()
 		}
 
 		else if (strcmp(getCurrent()->animation->name, "revive") == 0) {
-			EM->getReviveMe()->setVisible(false);
+			getReviveMe()->setVisible(false);
 			getFSM()->changeState(MLand);
 			auto gameLayer = (GameScene*) this->getParent();
 			initCirclePhysic(gameLayer->world, this->getPosition());
@@ -573,6 +637,7 @@ void DuongQua::listener()
 		}
 
 		else if (strcmp(getCurrent()->animation->name, "die") == 0) {
+			this->pause();
 			auto gamelayer = (GameScene*)this->getParent();
 			gamelayer->dieGame();
 		}
@@ -596,7 +661,8 @@ void DuongQua::updateMe(float dt)
 	getFSM()->Update();
 
 	if (!listKiemPhap.empty()) {
-		if (numberOfDeadSword > 4 && numberOfDeadSword == listKiemPhap.size()) {
+		if (numberOfDeadSword == listKiemPhap.size()) {
+			numberOfDeadSword = 0;
 			listKiemPhap.clear();
 		}
 
@@ -610,13 +676,11 @@ void DuongQua::updateMe(float dt)
 
 				gameLayer->world->DestroyBody(kp->getB2Body());
 				kp->setB2Body(nullptr);
-
 				kp->removeFromParentAndCleanup(true);
-				kp->getEffectLand()->removeFromParentAndCleanup(true);
 				numberOfDeadSword++;
 			}
 			else
-				kp->updateMe(dt);
+				kp->updateMe();
 
 			if (kp->getIsCollide()) {
 				kp->changeBodyCategoryBits(BITMASK_UNDER_GROUND);
@@ -626,7 +690,8 @@ void DuongQua::updateMe(float dt)
 	}
 
 	if (!listTieuHonChuong.empty()) {
-		if (numberOfDeadTHC > 4 && numberOfDeadTHC == listTieuHonChuong.size()) {
+		if (numberOfDeadTHC == listTieuHonChuong.size()) {
+			numberOfDeadTHC = 0;
 			listTieuHonChuong.clear();
 		}
 
@@ -639,19 +704,15 @@ void DuongQua::updateMe(float dt)
 				gameLayer->world->DestroyBody(thc->getB2Body());
 				thc->setB2Body(nullptr);
 
-				thc->removeFromParentAndCleanup(true);
+				thc->setVisible(false);
 				numberOfDeadTHC++;
 			}
 			else
-				thc->updateMe(this);
+				thc->updateMe();
+
 		}
 	}
 
-	if (EM->getSmokeRun()->isVisible())
-		EM->getSmokeRun()->setPosition(this->getPosition());
-
-	//if (EM->getReviveMe()->isVisible())
-	//	EM->getReviveMe()->setPosition(this->getPosition());
 
 	if (getB2Body() == nullptr)
 		return;
@@ -663,30 +724,14 @@ void DuongQua::updateMe(float dt)
 		return;
 	}
 
-	if (getSlash()->isVisible())
-		getSlash()->setPosition(this->getPositionX() + this->getTrueRadiusOfHero(),
-			this->getPositionY() + this->getTrueRadiusOfHero() * 0.7f);
-
-	if (getSlashLand()->isVisible())
-		getSlashLand()->setPosition(this->getPositionX() + this->getTrueRadiusOfHero() * 0.3f,
-			this->getPositionY() + this->getTrueRadiusOfHero() * 0.7f);
-
-	if (spiritHole->isVisible()) {
-		spiritHole->setPosition(this->getPositionX() - 1.5f * this->getTrueRadiusOfHero(),
-			this->getPositionY() + 1.5f * this->getTrueRadiusOfHero());
-	}
-
 	if (this->getPositionY() < 0) {
 		return;
 	}
 
-	/*if (getPositionY() + getTrueRadiusOfHero() * 2 < 0) {
-		getB2Body()->SetTransform(b2Vec2(SCREEN_SIZE.width * 0.25f / PTM_RATIO,
-			SCREEN_SIZE.height / PTM_RATIO), getB2Body()->GetAngle());
-		return;
-	}*/
 
-	getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
+	if (!isDriverEagle)
+		getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
+
 
 	if (!getIsPriorAttack() && !getIsPriorInjured() && !getIsPriorSkill1()) {
 

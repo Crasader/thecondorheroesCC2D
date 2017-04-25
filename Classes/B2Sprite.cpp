@@ -103,23 +103,25 @@ void B2Sprite::setAngle(float radian)
 //}
 
 
-void B2Sprite::updateMe(BaseHero*hero)
+void B2Sprite::updateMe(BaseHero *hero)
 {
 	if (body != nullptr) {
 		if (this->getParent()) {
-//			if (!strcmp(this->getParent()->getName().c_str(), "gameLayer")) {
+			//if (!strcmp(this->getParent()->getName().c_str(), "gameLayer")) {
 				this->setPositionX(body->GetPosition().x * PTM_RATIO);
 				this->setPositionY(body->GetPosition().y * PTM_RATIO);
 				this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));	// rotate
-//			}
-//			else {
-//				this->setPositionX(body->GetPosition().x * PTM_RATIO - this->getParent()->getPositionX());
-//				this->setPositionY(body->GetPosition().y * PTM_RATIO - this->getParent()->getPositionY());
-//				this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));	// rotate
-//			}
+			//}
+			//else {
+			//	this->setPositionX(body->GetPosition().x * PTM_RATIO - this->getParent()->getPositionX());
+			//	this->setPositionY(body->GetPosition().y * PTM_RATIO - this->getParent()->getPositionY());
+			//	this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));	// rotate
+			//}
 		}
 	}
 }
+
+
 
 void B2Sprite::onExit()
 {

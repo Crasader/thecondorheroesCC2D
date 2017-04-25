@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="10" tilewidth="80" tileheight="80" nextobjectid="18">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="10" tilewidth="80" tileheight="80" nextobjectid="22">
  <tileset firstgid="1" name="transparent" tilewidth="80" tileheight="80" tilecount="20" columns="5">
   <image source="transparent.png" width="466" height="349"/>
  </tileset>
@@ -18,7 +18,7 @@
 </data>
  </layer>
  <objectgroup name="avatar">
-  <object id="1" name="avatar" x="101.152" y="55.2121" width="38.848" height="30.7879"/>
+  <object id="1" name="avatar" x="101" y="55.25" width="38.848" height="30.7879"/>
  </objectgroup>
  <objectgroup name="blood_board">
   <object id="3" name="blood_board" x="246" y="58.303" width="18.0001" height="12.1212"/>
@@ -44,11 +44,22 @@
  <objectgroup name="distance_bar">
   <object id="13" name="distance_bar" x="520" y="741" width="20" height="14"/>
  </objectgroup>
- <objectgroup name="btn_calling">
-  <object id="14" name="btn_calling" x="105.424" y="232.333" width="30" height="24"/>
+ <objectgroup name="btn_special">
+  <object id="14" name="btn_special" x="81" y="232.333" width="30" height="24"/>
  </objectgroup>
  <objectgroup name="btn_pause">
   <object id="15" name="btn_pause" x="1186" y="50" width="28" height="22"/>
-  <object id="16" x="776" y="372"/>
+ </objectgroup>
+ <objectgroup name="icon">
+  <object id="18" name="icon_Skill" x="235" y="123" width="12" height="12">
+   <properties>
+    <property name="order" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="19" name="icon_Item" x="315" y="123" width="12" height="12">
+   <properties>
+    <property name="order" type="int" value="2"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

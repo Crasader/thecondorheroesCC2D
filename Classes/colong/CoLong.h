@@ -2,12 +2,12 @@
 #ifndef __CO_LONG_H__
 #define __CO_LONG_H__
 
-#include "EffectManager.h"
 #include "JSonHeroManager.h"
 #include "BaseHero.h"
 #include "Rada.h"
 #include "DQ_TieuHonChuong.h"
 #include "GameScene.h"
+
 
 class CoLong : public BaseHero {
 public:
@@ -16,6 +16,8 @@ public:
 
 	void initCirclePhysic(b2World *world, Point pos);
 	void addStuff();
+	void createPool();
+
 
 	void idle();
 	void run();
@@ -43,6 +45,8 @@ protected:
 	void createRada(b2World *p_pWorld);
 
 	// Skill 1
+	CCArray *poolSkill1;
+	int indexSkill1 = 0;
 	list<TieuHonChuong *> m_lDocPhongCham;
 	int checkDurationSkill1;
 	void createDocPhongCham(Point p_ptStartPoint, Point p_ptEndPoint);
@@ -61,6 +65,9 @@ protected:
 	void createSlash();
 	void runSlash();
 	void runSlashLand();
+
+	int keysoundSKill3;
 	//////////////////////////////////////////////////////////////////////////
 };
 #endif // __CO_LONG_H__
+

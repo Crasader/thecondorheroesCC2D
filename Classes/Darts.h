@@ -12,7 +12,7 @@ private:
 public:
 	Darts(string jsonFile, string atlasFile, float scale);
 	static Darts* create(string jsonFile, string atlasFile, float scale);
-	virtual void initCirclePhysic(b2World *world, Point pos);
+	void initCirclePhysic(b2World *world, Point pos);
 	void updateMe(BaseHero* hero);
 	//void runAnimation();
 	//void die();

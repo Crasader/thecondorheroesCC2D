@@ -13,11 +13,8 @@ public:
     static Scene* createScene();
     virtual bool init();
 	CREATE_FUNC(SceneIntro);
-	
-	void update(float p_fDelta);
+
 private:
-	void updateFeather(Sprite *p_pFeather);
-	bool checkOutOfScreen(Sprite *p_pFeather);
 	void goToMainMenuScene(Ref* p_pSender);
 };
 

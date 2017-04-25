@@ -1,18 +1,16 @@
 #include "EnemyToanChanStudent2.h"
 #include "SkeletonManager.h"
-
+#include "AudioManager.h"
 
 EnemyToanChanStudent2::EnemyToanChanStudent2(string jsonFile, string atlasFile, float scale):EnemyToanChanStudent(jsonFile, atlasFile,scale)
 {
 	controlAttack = 100;
-	//isDie = false;
 }
 
 EnemyToanChanStudent2::EnemyToanChanStudent2(spSkeletonData*data):EnemyToanChanStudent(data)
 {
 	controlAttack = 100;
 }
-
 
 EnemyToanChanStudent2 * EnemyToanChanStudent2::create(string jsonFile, string atlasFile, float scale)
 {
@@ -48,6 +46,7 @@ EnemyToanChanStudent2 * EnemyToanChanStudent2::create(string filename, float sca
 
 void EnemyToanChanStudent2::attack()
 {
+	AudioManager::playSound(SOUND_TC2AT);
 	EnemyToanChanStudent::attack();
 	/*slash->getB2Body()->SetTransform(b2Vec2((this->getBoneLocation("bone32").x+this->getParent()->getPosition().x)/PTM_RATIO,
 		(this->getBoneLocation("bone32").y+this->getParent()->getPosition().y)/PTM_RATIO),0);*/
@@ -61,13 +60,16 @@ void EnemyToanChanStudent2::attack()
 
 void EnemyToanChanStudent2::die()
 {
+	AudioManager::playSound(SOUND_TC2DIE);
 	EnemyToanChanStudent::die();
 	if (slash->getB2Body()!=nullptr) {
 		auto world = slash->getB2Body()->GetWorld();
 		world->DestroyBody(slash->getB2Body());
 		slash->setB2Body(nullptr);
-        slash->setIsDie(false);
-//		slash->removeFromParentAndCleanup(true);
+		slash->setVisible(false);
+		slash->setIsDie(false);
+		//slash->removeFromParentAndCleanup(true);
+
 	}
 
 }
@@ -95,11 +97,12 @@ void EnemyToanChanStudent2::listener()
 		}
 
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
-			//slash->removeFromParentAndCleanup(true);
-            this->setVisible(false);
-            this->clearTracks();
-            this->setAnimation(0, "idle", true);
-            this->setToSetupPose();
+
+			this->setVisible(false);
+			this->clearTracks();
+			this->setAnimation(0, "idle", true);
+			this->setToSetupPose();
+
 		}
 
 	});

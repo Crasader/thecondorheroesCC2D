@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 #include <spine/spine-cocos2dx.h>
 
+
 using namespace std;
 USING_NS_CC;
 using namespace spine;
@@ -24,5 +25,5 @@ public:
 };
 
 
-
 #endif // __JSON_MANAGER_H__
+

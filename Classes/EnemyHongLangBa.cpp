@@ -1,5 +1,6 @@
 #include "EnemyHongLangBa.h"
-#include "manager/SkeletonManager.h"
+#include "SkeletonManager.h"
+#include "AudioManager.h"
 
 EnemyHongLangBa::EnemyHongLangBa(spSkeletonData * data):BaseEnemy(data)
 {
@@ -49,6 +50,7 @@ void EnemyHongLangBa::run()
 void EnemyHongLangBa::attack()
 {
 	if (!this->getIsDie()) {
+		AudioManager::playSound(SOUND_HLB1AT);
 		this->clearTracks();
 		this->addAnimation(0, "attack", false);
 		//this->splash->setVisible(true);
@@ -59,7 +61,7 @@ void EnemyHongLangBa::attack()
 void EnemyHongLangBa::die()
 {
 	BaseEnemy::die();
-
+	AudioManager::playSound(SOUND_HLB1DIE);
 	auto world = this->body->GetWorld();
 	world->DestroyBody(this->body);
 	this->body = nullptr;
@@ -72,7 +74,7 @@ void EnemyHongLangBa::die()
 void EnemyHongLangBa::initCirclePhysic(b2World * world, Point pos)
 {
 	b2CircleShape circle_shape;
-	circle_shape.m_radius = this->getBoundingBox().size.height / 4 / PTM_RATIO;
+	circle_shape.m_radius = this->getBoundingBox().size.height / 2 / PTM_RATIO;
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 0.0f;
@@ -122,7 +124,11 @@ void EnemyHongLangBa::listener()
 			this->setToSetupPose();
 		}
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
-			this->removeFromParentAndCleanup(true);
+            //this->removeFromParentAndCleanup(true);
+            this->setVisible(false);
+            this->clearTracks();
+            this->setAnimation(0, "idle", true);
+            this->setToSetupPose();
 		}
 
 	});

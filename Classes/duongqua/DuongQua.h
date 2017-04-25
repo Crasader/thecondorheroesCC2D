@@ -1,11 +1,11 @@
 #ifndef __DUONG_QUA_H__
 #define __DUONG_QUA_H__
 
-#include "EffectManager.h"
 #include "DQ_TieuHonChuong.h"
 #include "DQ_ToanChanKiemPhap.h"
 #include "DQ_DocCoKiemPhap.h"
 #include "BaseHero.h"
+#include "AudioManager.h"
 
 class DuongQua : public BaseHero
 {
@@ -17,6 +17,8 @@ public:
 protected:
 
 	// Skill 1
+	CCArray* poolSkill1;
+	int indexSkill1 = 0;
 	list<ToanChanKiemPhap*> listToanChanKiemPhap;
 	int checkDurationSkill1;
 	void createToanChanKiemPhap(Point posSword);
@@ -34,6 +36,8 @@ protected:
 	void doCounterSkill2();
 
 	// Skill 3
+	CCArray *poolSkill3;
+	int indexSkill3 = 0;
 	SkeletonAnimation* spiritHole;
 	int checkDurationSkill3;
 	int numberOfDeadTHC;
@@ -54,6 +58,7 @@ protected:
 
 	void initCirclePhysic(b2World *world, Point pos);
 	void addStuff();
+	void createPool();
 
 	void idle();
 	void run();

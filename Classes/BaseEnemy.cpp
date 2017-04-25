@@ -1,6 +1,7 @@
 #include "BaseEnemy.h"
 #include "GameScene.h"
 
+
 BaseEnemy::BaseEnemy() :B2Skeleton()
 {
 	isDie = false;

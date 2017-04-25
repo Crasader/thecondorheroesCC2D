@@ -1,6 +1,7 @@
 #ifndef __HUD_H__
 #define __HUD_H__
 
+
 #include "MyButton.h"
 #include <spine/spine-cocos2dx.h>
 
@@ -31,6 +32,10 @@ public:
 	bool callBirdCooldown();
 
 	void updateMultiKills(int m_nCombo);
+	void runnerSkillDuration(int skillWhat, float duration);
+	void runnerItemMagnet(int counter);
+	void runnerItemDC(int counter);
+
 protected:
 
 	CC_SYNTHESIZE(MenuItemImage*, pauseItem, PauseItem);
@@ -55,6 +60,13 @@ protected:
 	CC_SYNTHESIZE(MyButton*, btnSkill_3, BtnSkill_3);
 
 	CC_SYNTHESIZE(MenuItemImage*, btnCalling, BtnCalling);
+	CC_SYNTHESIZE(MenuItemImage*, btnMagnet, BtnMagnet);
+	CC_SYNTHESIZE(MenuItemImage*, btnDouleGold, BtnDoubleGold);
+
+	CC_SYNTHESIZE(ProgressTimer*, icon_Skill, Icon_Skill);
+	CC_SYNTHESIZE(ProgressTimer*, icon_Item_Magnet, Icon_Item_Magnet);
+	CC_SYNTHESIZE(ProgressTimer*, icon_Item_DC, Icon_Item_DC);
+
 	CC_SYNTHESIZE(bool, btnCallingHintDone, BtnCallingHintDone);
 
 	CC_SYNTHESIZE(SkeletonAnimation *, multiKills, MultiKills);	//DuongPM Edited for multi kills
@@ -62,12 +74,44 @@ protected:
 private:
 	TMXTiledMap *tmxMap;
 	list<Sprite*> g_lTemp;
+
+	Sprite *coverSkill;
+	Sprite *coverItemMagnet;
+	Sprite *coverItemDC;
+	float timerSkill;
+	float durationSkill;
+
+	float timerItemMagnet;
+	float durationItemMagnet;
+	bool isItemMagnetActive = false;
+
+	float timerItemDC;
+	float durationItemDC;
+	bool isItemDCActive = false;
+
+	Menu* menu;
+
 	void addProfile();
 	void addButton();
 	void createBloodBar();
 
+	void addAttack();
+	void addSkills();
+	void addBird();
+
+	void doSuctionCoin(Ref *pSender);
+	void doDoublingCoin(Ref *pSender);
 	void doCalling(Ref* pSender);
 	void doPause(Ref* pSender);
+
+	void showSpecialButton();
+	void createButtonX(int index, Point position);
+	vector<int> getListIndexOfTypeItemBuy();
+
+	// tuts
+	void introAttack();
+	void introSkills();
+	void introBird();
 };
 
 #endif // __HUD_H__

@@ -2,16 +2,17 @@
 
 DQ_ToanChanKiemPhap::DQ_ToanChanKiemPhap()
 {
+	isAdded = false;
 }
 
 DQ_ToanChanKiemPhap::~DQ_ToanChanKiemPhap()
 {
 }
 
-DQ_ToanChanKiemPhap * DQ_ToanChanKiemPhap::create(string file)
+DQ_ToanChanKiemPhap * DQ_ToanChanKiemPhap::create()
 {
 	DQ_ToanChanKiemPhap* tckp = new DQ_ToanChanKiemPhap();
-	tckp->initWithFile(file);
+	tckp->initWithSpriteFrameName("skill1.png");
 	tckp->setTag(TAG_DQ_TOAN_CHAN_KIEM_PHAP);
 	return tckp;
 }
@@ -19,7 +20,6 @@ DQ_ToanChanKiemPhap * DQ_ToanChanKiemPhap::create(string file)
 void DQ_ToanChanKiemPhap::initCirclePhysic(b2World * world, Point pos)
 {
 	B2Sprite::initCirclePhysic(world, pos);
-	this->getB2Body()->SetType(b2_dynamicBody);
 	this->getB2Body()->GetFixtureList()->SetSensor(true);
 	this->getB2Body()->SetGravityScale(0);
 	this->getB2Body()->SetUserData(this);

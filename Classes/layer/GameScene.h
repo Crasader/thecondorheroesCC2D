@@ -7,6 +7,12 @@
 #include "EnemyWooder.h"
 #include "EnemyToanChanStudent.h"
 #include "EnemyToanChanStudent2.h"
+
+#include "EnemyTNB.h"
+#include "EnemyToOng.h"
+#include "EnemyHongLangBa.h"
+#include "EnemyHongLangBa2.h"
+
 #include "EnemyBoss1.h"
 #include "ChimDieu.h"
 #include "Coin.h"
@@ -19,10 +25,9 @@
 #include "MyData.h"
 #include "MyPool.h"
 #include "MyLayer.h"
-#include "EnemyTNB.h"
-#include "EnemyToOng.h"
-#include "EnemyHongLangBa.h"
-#include "EnemyHongLangBa2.h"
+#include "Item.h"
+
+
 
 
 class GameScene : public cocos2d::Layer
@@ -50,7 +55,10 @@ private:
 
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
 	float scaleOfMap;
-	vector <MyData> listPosAndTag;
+	vector<MyData> listPosAndTag;
+
+	int numberDeadItem = 0;
+	list<Item*> listItem;
 
 	MyLayer * preLayer;
 	MyLayer * posLayer;
@@ -60,10 +68,7 @@ private:
 
 	int indexOfNextMapBoss;// chi so cua map boss cuoi, khoi dau la -1, khi danh boss chuyen 1 va 0(0101010101)
 	int currentButton = 0;
-//	MyPool *coinPool;
-//	MyPool *wooderPool;
-    MyPool *tnbPool;
-	//MyPool *wooderPool;
+
 	
 public:
 	b2World *world;
@@ -88,7 +93,8 @@ private:
 	int m_nMultiKills = 0;
 	float m_fMultiKillsCounterTime;
 
-	int previousGold = 1000;
+
+	int previousGold = 0;
 	int previousScore = 0;
 
 	InfiniteParallaxNode *background;
@@ -135,16 +141,20 @@ private:
 	void creatEnemyWooder(MyLayer* layer, Vec2 pos);
 	void createEnemyToanChanStudent(MyLayer* layer, Vec2 pos);
 	void createEnemyToanChanStudent2(MyLayer* layer, Vec2 pos);
-    void createEnemyTNB(Layer* layer, Vec2 pos);
-    void createEnemyHongLangBa(Layer* layer, Vec2 pos);
-    void createEnemyHongLangBa2(Layer* layer, Vec2 pos);
-    void createEnemyToOng(Layer* layer, Vec2 pos);
+	//void createEnemyTNB(Layer* layer, Vec2 pos);
+	void createEnemyHongLangBa(MyLayer* layer, Vec2 pos);
+	void createEnemyHongLangBa2(MyLayer* layer, Vec2 pos);
+	void createEnemyToOng(MyLayer* layer, Vec2 pos);
 	void creatBoss();
 
-    void createCoin();
-	void createCointBag(Layer *layer, Vec2 pos);
-	void createCoinBullion(Layer *layer, Vec2 pos);
-	void createFormCoin( string objectName, string objectMap, string objectInform);
+	void createCoin();
+	void createCointBag();
+	void createCoinBullion();
+	//void createFormCoin( MyLayer *layer,Vec2 pos, string objectMap, string objectInform, SpriteBatchNode* batchnode);
+	void createFormCoin(string objectName, string objectMap, string objectInform);
+
+
+	void createItem();
 
 	//skeleton data
 	//spSkeletonData* createSkeletonData(string atlasFile, string jsonFile);
@@ -152,7 +162,7 @@ private:
 	// do do se bi roi xuong
 	// bat su kien roi xuong qua man hinh de don dep map
 
-	void danceWithEffect();
+
 	void danceWithCamera();
 	float previousPercentPosition = 0.0f;
 	void updateCharacterPoint();
@@ -174,9 +184,12 @@ public:
 
 	void updateHUD(float dt);
 	void updateMultiKills(); //DuongPM edited for multi kills
+	void runnerItem(Item_type type, int counter);
 	void updateBloodBar(int numberOfHealth, bool isVisible);
 	void updateCamera();
-    void updateCoin();
+
+	void updateCoin();
+
 	//void cleanMap();
 
 	// cache function
@@ -209,10 +222,20 @@ public:
 
 	// quan ly item
 	//void createMapItem();// tao du lieu cho map item.
-	//void updateMapItem();
 
-    // implement the "static create()" method manually
-   // CREATE_FUNC(GameScene);
+	// tutorial
+	bool isFirstPlay;
+	bool isDoneAttackTut = false;
+	bool isDoneSkillTut = false;
+
+	// handle tuts
+	void jump();
+	
+	void introAttack();
+	void introSkills();
+	void introBird();
+
+	void tutorial();
 };
 
 #endif // __GAME_SCENE_H__

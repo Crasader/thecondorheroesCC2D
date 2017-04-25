@@ -3,12 +3,9 @@
 
 #include "Global.h"
 #include <spine/spine-cocos2dx.h>
-#include <string>
 #include "GB2ShapeCache-x.h"
-//#include "Agent.h"
 
 using namespace spine;
-using namespace std;
 class BaseHero;
 class B2Sprite : public Sprite//, public Agent
 {

@@ -14,7 +14,7 @@ public:
 	//Animate *animate;
 
 	static SlashBoss* create(string json, string atlas, float scale);
-	virtual void initCirclePhysic(b2World *world, Point pos);
+	void initCirclePhysic(b2World *world, Point pos);
 	void updateMe(float dt);
 	void die();
 	void setAngle(float radian);

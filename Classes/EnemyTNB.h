@@ -2,7 +2,7 @@
 #define __ENEMY_TNB_H__
 
 #include "BaseEnemy.h"
-#include "manager/SkeletonManager.h"
+#include "SkeletonManager.h"
 
 USING_NS_CC;
 

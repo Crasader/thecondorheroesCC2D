@@ -1,4 +1,5 @@
 #include "EnemyWooder.h"
+#include "AudioManager.h"
 
 EnemyWooder::EnemyWooder() : BaseEnemy()
 {
@@ -61,7 +62,7 @@ void EnemyWooder::attack()
 
 void EnemyWooder::die()
 {
-
+    AudioManager::playSound(SOUND_ENEMY_TRUNGDON);
 	BaseEnemy::die();
 
 	auto world = this->body->GetWorld();
@@ -87,11 +88,9 @@ void EnemyWooder::listener()
 {
 	this->setCompleteListener([&](int trackIndex, int loopCount) {
 		if (strcmp(getCurrent()->animation->name, "broken") == 0 && loopCount == 1) {
-//			this->removeFromParentAndCleanup(false);
-            this->setVisible(false);
-            this->setIsDie(false);
-            this->clearTracks();
-            this->setToSetupPose();
+			this->setVisible(false);
+			this->clearTracks();
+			this->setToSetupPose();
 		}
 
 	});

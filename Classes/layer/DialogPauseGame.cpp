@@ -1,8 +1,10 @@
+
 #include "DialogPauseGame.h"
 #include "GameScene.h"
 #include "MenuScene.h"
 #include "SimpleAudioEngine.h"
 #include "RefManager.h"
+
 
 
 
@@ -44,6 +46,8 @@ void DialogPauseGame::resumeGame(Ref * pSender)
 
 void DialogPauseGame::backHome(Ref * pSender)
 {
+	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
+	gameLayer->removeAllChildrenWithCleanup(true);
 	Director::getInstance()->replaceScene(MenuLayer::createScene());
 }
 
@@ -58,7 +62,7 @@ void DialogPauseGame::overGame()
 
 void DialogPauseGame::replayGame(Ref * pSender, int goldRevive, bool isWatchVideo)
 {
-	log("%i", goldRevive);
+	//log("%i", goldRevive);
 	if (!isWatchVideo) {
 		if (REF->setDownGold(goldRevive)) {
 			auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
@@ -327,6 +331,16 @@ bool DialogStageClear::init(int score, int gold)
 	REF->setUpGoldExplored(gold + bonusGold);
 	REF->setUpScore(score + bonusScore);
 
+
+	int currentScore = REF->getCurrentScore();
+	int currentLevel = REF->getCurrentLevel();
+
+	if (currentScore >= JSHERO->getMaxScoreLevelX(currentLevel)) {
+
+		REF->setCurrentScoreAfterIncrease(currentScore - JSHERO->getMaxScoreLevelX(currentLevel));
+		REF->increaseLevel();
+	}
+
 	effect();
 
 	return true;
@@ -476,6 +490,14 @@ bool DialogOverGame::init(int score, int gold)
 	REF->setUpGoldExplored(gold + bonusGold);
 	REF->setUpScore(score + bonusScore);
 
+	int currentScore = REF->getCurrentScore();
+	int currentLevel = REF->getCurrentLevel();
+
+	if (currentScore >= JSHERO->getMaxScoreLevelX(currentLevel)) {
+
+		REF->setCurrentScoreAfterIncrease(currentScore - JSHERO->getMaxScoreLevelX(currentLevel));
+		REF->increaseLevel();
+	}
 	effect();
 
 	return true;

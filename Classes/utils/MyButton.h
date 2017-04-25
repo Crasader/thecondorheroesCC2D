@@ -2,10 +2,12 @@
 #define __BUTTON_H__
 
 #include "cocos2d.h"
+#include <spine/spine-cocos2dx.h>
 #include <string>
 
 USING_NS_CC;
 using namespace std;
+using namespace spine;
 
 class MyButton : public Sprite
 {
@@ -15,22 +17,26 @@ public:
 
 private:
 	EventListenerTouchOneByOne* listener;
-	int timer;
+	float timer;
 	void checkInterval(float dt);
 	void runTimer();
 
 protected:
 	CC_SYNTHESIZE(Label*, number, NumberCoolDown);
+	CC_SYNTHESIZE(Label*, numberUseLb, NumberUseLb);
 	CC_SYNTHESIZE(float, timeCoolDown, TimeCoolDown);
 	CC_SYNTHESIZE(bool, isActive, IsActive);
 	CC_SYNTHESIZE(bool, canTouch, CanTouch);
-	CC_SYNTHESIZE(Sprite*, coolDown, CoolDownSprite);
-	CC_SYNTHESIZE(Sprite*, effectCoolDown, EffectCoolDown);
+	CC_SYNTHESIZE(int, numberOfUse, NumberOfUse);
+	CC_SYNTHESIZE(int, numberOfUseHasNotUsedYet, NumberOfUseHasNotUsedYet);
+	CC_SYNTHESIZE(ProgressTimer*, main, Main);
 	CC_SYNTHESIZE(bool, isBlocked, IsBlocked);
 
+	void addNumberOfUse(int number);
 	void addEvents();
 	void pauseListener();
 	void refresh();
+	EventListenerTouchOneByOne* getListener() { return listener; }
 };
 
 #endif // __BUTTON_H__

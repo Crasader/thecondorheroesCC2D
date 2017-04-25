@@ -95,7 +95,11 @@ void EnemyHongLangBa2::listener()
 		}
 
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
-			this->removeFromParentAndCleanup(true);
+			//this->removeFromParentAndCleanup(true);
+			this->setVisible(false);
+			this->clearTracks();
+			this->setAnimation(0, "idle", true);
+			this->setToSetupPose();
 		}
 
 	});

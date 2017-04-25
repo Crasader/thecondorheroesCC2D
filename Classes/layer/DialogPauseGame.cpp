@@ -46,6 +46,8 @@ void DialogPauseGame::resumeGame(Ref * pSender)
 
 void DialogPauseGame::backHome(Ref * pSender)
 {
+	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
+	gameLayer->removeAllChildrenWithCleanup(true);
 	Director::getInstance()->replaceScene(MenuLayer::createScene());
 }
 

@@ -1339,27 +1339,20 @@ void GameScene::updateCamera()
 		//background->setPositionZ(background->getPositionZ() - 5);
 	}
 	if (!_aEagle->getIsUp()) {
-		if (hero->getPositionY() > SCREEN_SIZE.height * 5 / 6) {
+		/*if (hero->getPositionY() > SCREEN_SIZE.height * 5 / 6) {
 			background->setPositionY(hero->getPositionY() - SCREEN_SIZE.height * 2 / 6);
 		}
 		else
 		{
 			background->setPositionY(SCREEN_SIZE.height / 2);
-		}
-
-		/*if (hero->getPositionX() >= SCREEN_SIZE.width / 4) {
-			if (!haveboss) {
-				if (hero->getPositionX() < tmx_map->getBoundingBox().size.width - SCREEN_SIZE.width)
-					follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4);
-				if (hero->getPositionX() > follow->getPositionX() + SCREEN_SIZE.width / 4) {
-					this->winGame();
-				}
-			}
-			else {
-				follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4);
-			}
-
 		}*/
+		if (hero->getPositionY() > background->getPositionY() + SCREEN_SIZE.height/4) {
+			background->up();
+		}
+		else if (hero->getPositionY() < background->getPositionY()- SCREEN_SIZE.height/4) {
+			background->down();
+		}
+		
 	}
 	else {
 		if (hero->getPositionY() > SCREEN_SIZE.height * 0.5f) {
@@ -1682,12 +1675,12 @@ void GameScene::loadPosAndTag()
 	loadPosOfObjectInGroup("lms_student lv2", TAG_ENEMY_HONGLANGBA2);
 	loadPosOfObjectInGroup("bee", TAG_ENEMY_TOONG);
 
-	loadPosOfObjectInGroup("coin_parabol", TAG_COIN_PARABOL);
+	/*loadPosOfObjectInGroup("coin_parabol", TAG_COIN_PARABOL);
 	loadPosOfObjectInGroup("coin_straight", TAG_COIN_STRAIGHT);
 	loadPosOfObjectInGroup("coin_zigzag", TAG_COIN_ZIGZAG);
 	loadPosOfObjectInGroup("coin_square", TAG_COIN_SQUARE);
 	loadPosOfObjectInGroup("coin_circle", TAG_COIN_CIRCLE);
-	loadPosOfObjectInGroup("coin_tim", TAG_COIN_TIM);
+	loadPosOfObjectInGroup("coin_tim", TAG_COIN_TIM);*/
 }
 
 void GameScene::loadPosOfObjectInGroup(string nameOfGroup, float tag)

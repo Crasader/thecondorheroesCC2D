@@ -21,6 +21,7 @@ InfiniteParallaxNode* InfiniteParallaxNode::create()
 	if (node) {
 		// Add it to autorelease pool
 		node->autorelease();
+		node->free();
 	}
 	else {
 		// Otherwise delete
@@ -58,21 +59,33 @@ void InfiniteParallaxNode::updatePosition()
 
 void InfiniteParallaxNode::up()
 {
-	auto SCREEN_SIZE = Director::getInstance()->getVisibleSize();
-	this->state = UP;
-	auto call = CallFunc::create([&]() {
-		this->free();
-	});
-	auto target = Vec2(this->getPositionX(), this->getPositionY() + SCREEN_SIZE.height / 4);
-	//this->runAction();
+	if (state == FREE) {
+		auto SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		this->state = UP;
+		auto call = CallFunc::create([&]() {
+			this->free();
+		});
+		auto target = Vec2(this->getPositionX(), this->getPositionY() + SCREEN_SIZE.height/4);
+		//this->runAction(Sequence::createWithTwoActions(EaseIn::create(MoveTo::create(0.5f, target), 2), call));
+		this->runAction(Sequence::createWithTwoActions(MoveTo::create(0.4f, target), call));
+	}
 }
 
 void InfiniteParallaxNode::down()
 {
-	this->state =DOWN;
-	auto call = CallFunc::create([&]() {
-		this->free();
-	});
+	if (state == FREE) {
+		auto SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		this->state = DOWN;
+		auto call = CallFunc::create([&]() {
+			this->free();
+		});
+
+		auto target = Vec2(this->getPositionX(),
+			(this->getPositionY() - SCREEN_SIZE.height/4) <= SCREEN_SIZE.height / 2 ? SCREEN_SIZE.height / 2 :
+			(this->getPositionY() - SCREEN_SIZE.height/4));
+		//this->runAction(Sequence::createWithTwoActions(EaseOut::create(MoveTo::create(0.5f, target), 2), call));
+		this->runAction(Sequence::createWithTwoActions(MoveTo::create(0.4f, target), call));
+	}
 }
 
 void InfiniteParallaxNode::free()

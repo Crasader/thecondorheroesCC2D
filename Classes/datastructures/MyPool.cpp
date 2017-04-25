@@ -19,10 +19,11 @@ MyPool::MyPool()
 
 MyPool::~MyPool()
 {
-	for (int i = 0; i < maxPool; i++) {
+	/*for (int i = 0; i < maxPool; i++) {
+		if(pool[i]!= nullptr)
 		delete pool[i];
-	}
-	delete pool;
+	}*/
+	delete [] pool;
 
 }
 

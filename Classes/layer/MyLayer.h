@@ -13,6 +13,7 @@ class MyLayer : public Layer
 {
 public:
 	MyLayer();
+	~MyLayer();
 	MyPool* wooderPool;
 	MyPool* toanchan1Pool;
 	MyPool* toanchan2Pool;
@@ -26,7 +27,7 @@ public:
 	void refresh();
 
 	static MyLayer* create(TMXTiledMap* tmx_map);
-	void cleanup();
+//	void cleanup();
 
 
 };

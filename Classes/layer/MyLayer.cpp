@@ -17,7 +17,20 @@ MyLayer::MyLayer()
 	 hongLangBa1Pool = nullptr;
 	 hongLangBa2Pool = nullptr;
 }
-
+MyLayer::~MyLayer(){
+	if(wooderPool!= nullptr)
+		delete wooderPool;
+	if(toanchan1Pool!=nullptr)
+		delete toanchan1Pool;
+	if(toanchan2Pool)
+		delete toanchan2Pool;
+	if(toOngPool!=nullptr)
+		delete toOngPool;
+	if(hongLangBa1Pool!=nullptr)
+		delete hongLangBa1Pool;
+	if(hongLangBa2Pool != nullptr)
+		delete hongLangBa2Pool;
+}
 bool MyLayer::init(TMXTiledMap* tmx_map)
 {
 	//////////////////////////////
@@ -120,14 +133,6 @@ MyLayer * MyLayer::create(TMXTiledMap * tmx_map)
 	}
 }
 
-void MyLayer::cleanup()
-{
-	delete wooderPool;
-	delete toanchan1Pool;
-	delete toanchan2Pool;
-	delete toOngPool;
-	delete hongLangBa1Pool;
-	delete hongLangBa2Pool;
-}
+
 
 

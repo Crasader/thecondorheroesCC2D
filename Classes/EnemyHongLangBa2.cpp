@@ -58,7 +58,7 @@ void EnemyHongLangBa2::attack()
 	if (enemyDarts->getB2Body() != nullptr) {
 		enemyDarts->getB2Body()->GetWorld()->DestroyBody(enemyDarts->getB2Body());
 	}
-	enemyDarts->setRotation(angle / PI * 180);
+	enemyDarts->setRotation(180 - angle / PI * 180);
 	enemyDarts->initCirclePhysic(this->getB2Body()->GetWorld(), this->getBoneLocation("bone32") + this->getParent()->getPosition());
 
 	float vx = SCREEN_SIZE.width / 3 / PTM_RATIO * cosf(angle);

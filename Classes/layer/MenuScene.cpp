@@ -79,13 +79,14 @@ void MenuLayer::update(float p_fDelta) {
 			return;
 		}
 		else {
-			m_pTimeCounter->setVisible(true);
+			if (!m_pTimeCounter->isVisible())
+				m_pTimeCounter->setVisible(true);
 			int _nMinute = (300 - _nDeltaTime) / 60;
 			int _nSecond = (300 - _nDeltaTime) % 60;
 			m_pTimeCounter->setString(StringUtils::format(_nSecond < 10 ? "%i:0%i" : "%i:%i", _nMinute, _nSecond));
 		}
 	}
-	else {
+	else if (m_pTimeCounter->isVisible()) {
 		m_pTimeCounter->setVisible(false);
 	}
 }
@@ -916,8 +917,13 @@ void MenuLayer::showMainMenu() {
 }
 
 void MenuLayer::buttonStartHandle() {
+	
+	moveLayerViaDirection(m_pTopMainMenu, 8);
+	moveLayerViaDirection(m_pBottomMainMenu, 2);
+	moveLayerViaDirection(m_pItemBoard, 6);
+
 	auto _scene = SelectStageLayer::createScene(m_nIndexHeroSelected);
-	Director::getInstance()->replaceScene(TransitionFade::create(0.3f, _scene));
+	Director::getInstance()->replaceScene(TransitionFade::create(0.5f, _scene));
 }
 
 void MenuLayer::buttonBackHanle() {

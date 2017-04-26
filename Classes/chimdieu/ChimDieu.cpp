@@ -5,6 +5,7 @@ ChimDieu::ChimDieu(spSkeletonData * data) :B2Skeleton(data) {
 
 ChimDieu::ChimDieu(string jsonFile, string atlasFile, float scale) : B2Skeleton(jsonFile, atlasFile, scale) {
 	isCarry = false;
+	isAbleToDropHero = false;
 }
 
 ChimDieu * ChimDieu::create(string jsonFile, string atlasFile, float scale) {
@@ -89,12 +90,29 @@ void ChimDieu::updateMe(float dt) {
 }
 
 void ChimDieu::initCirclePhysic(b2World * world, Point pos) {
-	B2Skeleton::initCirclePhysic(world, pos);
-	this->getB2Body()->SetType(b2_dynamicBody);
-	this->getB2Body()->GetFixtureList()->SetSensor(true);
-	this->getB2Body()->SetGravityScale(0);
-	this->changeBodyCategoryBits(BITMASK_BIRD);
-	this->changeBodyMaskBits(0);
+	b2CircleShape circle_shape;
+	//circle_shape.m_radius = this->getBoundingBox().size.height / 2 / PTM_RATIO;
+	this->getBoundingBox().size.height > this->getBoundingBox().size.width ? circle_shape.m_radius = this->getBoundingBox().size.width / 6 / PTM_RATIO :
+		circle_shape.m_radius = this->getBoundingBox().size.height / 6 / PTM_RATIO;
+	b2FixtureDef fixtureDef;
+	fixtureDef.density = 0.0f;
+	fixtureDef.friction = 0.5f;
+	fixtureDef.restitution = 0.0f;
+	fixtureDef.shape = &circle_shape;
+
+	fixtureDef.filter.categoryBits = BITMASK_BIRD;
+	fixtureDef.filter.maskBits = 0;
+	fixtureDef.isSensor = true;
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.userData = this;			// pass sprite to bodyDef with argument: userData
+
+	bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);
+
+	body = world->CreateBody(&bodyDef);
+	body->CreateFixture(&fixtureDef);
+	body->SetGravityScale(0);
 }
 
 void ChimDieu::flyUp(b2Vec2 p_b2v2Velocity) {

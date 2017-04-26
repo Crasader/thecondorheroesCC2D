@@ -212,7 +212,10 @@ void GameScene::checkActiveButton()
 		hero->getPositionY() + hero->getTrueRadiusOfHero() * 2 < 0) {
 
 		if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
-			if (!hud->getBtnCalling()->isEnabled())
+			if (haveboss && posXComingBoss < 0) {	// means: hero pass over posXComingBoss
+													// do nothing
+			}
+			else if (!hud->getBtnCalling()->isEnabled())
 				hud->getBtnCalling()->setEnabled(true);
 		}
 
@@ -229,7 +232,10 @@ void GameScene::checkActiveButton()
 				hero->getActiveSkill()->setVisible(false);
 
 				if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
-					if(!hud->getBtnCalling()->isEnabled())
+					if (haveboss && posXComingBoss < 0) {	// means: hero pass over posXComingBoss
+															// do nothing
+					}
+					else if (!hud->getBtnCalling()->isEnabled())
 						hud->getBtnCalling()->setEnabled(true);
 				}
 
@@ -282,7 +288,10 @@ void GameScene::checkActiveButton()
 				hero->getActiveSkill()->setVisible(false);
 
 				if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
-					if (!hud->getBtnCalling()->isEnabled())
+					if (haveboss && posXComingBoss < 0) {	// means: hero pass over posXComingBoss
+															// do nothing
+					}
+					else if (!hud->getBtnCalling()->isEnabled())
 						hud->getBtnCalling()->setEnabled(true);
 				}
 
@@ -320,7 +329,10 @@ void GameScene::checkActiveButton()
 				hero->getActiveSkill()->setVisible(false);
 
 				if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
-					if (!hud->getBtnCalling()->isEnabled())
+					if (haveboss && posXComingBoss < 0) {	// means: hero pass over posXComingBoss
+															// do nothing
+					}
+					else if (!hud->getBtnCalling()->isEnabled())
 						hud->getBtnCalling()->setEnabled(true);
 				}
 
@@ -481,7 +493,7 @@ void GameScene::update(float dt)
 	checkActiveButton();
 
 	_aEagle->updateMe(dt);
-	/*if (_aEagle->getIsAbleToDropHero() == true) {
+	/*if (_aEagle->getIsAbleToDropHero()) {
 		heroGetOffEagle();
 		_aEagle->setIsAbleToDropHero(false);
 	}*/
@@ -495,7 +507,9 @@ void GameScene::update(float dt)
 			_aEagle->flyAway();
 		}
 		else {
-			hero->getB2Body()->SetTransform(_aEagle->getB2Body()->GetPosition(), 0.0f);
+			hero->getB2Body()->SetTransform(b2Vec2(
+				_aEagle->getB2Body()->GetPosition().x - 25.0f / PTM_RATIO,
+				_aEagle->getB2Body()->GetPosition().y + 25.0f / PTM_RATIO), 0.0f);
 		}
 	}
 
@@ -574,6 +588,16 @@ void GameScene::update(float dt)
 
 	if (hero->getBloodScreen()->isVisible())
 		hero->getBloodScreen()->setPosition(follow->getPosition());
+
+	if (posXComingBoss > 0) {
+		if (hero->getPositionX() >= posXComingBoss) {
+			if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isEnabled()) {
+				log("boss is coming");
+				hud->getBtnCalling()->setEnabled(false);
+				posXComingBoss = -1;
+			}
+		}
+	}
 
 	updateHUD(dt);
 }
@@ -660,6 +684,11 @@ void GameScene::loadBackground()
 
 	this->addChild(tmx_map, ZORDER_TMX);
 	if (haveboss) {
+
+		auto groupComingBoss = tmx_map->getObjectGroup("coming_boss");
+		auto mObjectX = groupComingBoss->getObject("coming_boss");
+		posXComingBoss = mObjectX["x"].asFloat() * scaleOfMap;
+
 		for (int i = 0; i < 2; i++) {
 			tmx_mapboss[i] = TMXTiledMap::create(StringUtils::format("Map/map%d/mapboss.tmx", stage));
 			tmx_mapboss[i]->setAnchorPoint(Point::ZERO);
@@ -1535,6 +1564,7 @@ void GameScene::callingBird()
 	}), nullptr);
 	auto _aFinishFly = Sequence::create(DelayTime::create(6.0f), CallFunc::create([&]() {
 		heroGetOffEagle();
+		//_aEagle->changeBodyMaskBits(BITMASK_FLOOR);
 	}), nullptr);
 	_aEagle->runAction(_aEagleFlyDown);
 	_aEagle->runAction(_aFinishFly);
@@ -1675,8 +1705,15 @@ void GameScene::resumeGame()
 
 	hud->resumeIfVisible();
 	hud->getPauseItem()->setEnabled(true);
-	if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible())
-		hud->getBtnCalling()->setEnabled(true);
+
+	if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
+		if (haveboss && posXComingBoss < 0) {	// means: hero pass over posXComingBoss
+			// do nothing
+		} else
+			hud->getBtnCalling()->setEnabled(true);
+	}
+	
+			
 
 
 	this->resume();

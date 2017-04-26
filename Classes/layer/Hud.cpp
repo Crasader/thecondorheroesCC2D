@@ -480,6 +480,10 @@ void Hud::pauseIfVisible()
 		coverItemMagnet->pause();
 	}
 
+	if (coverItemDC->isVisible()) {
+		coverItemDC->pause();
+	}
+
 	if (btnSkill_1->isVisible()) {
 
 		btnAttack->pauseListener();
@@ -509,6 +513,10 @@ void Hud::resumeIfVisible()
 
 	if (coverItemMagnet->isVisible()) {
 		coverItemMagnet->resume();
+	}
+
+	if (coverItemDC->isVisible()) {
+		coverItemDC->resume();
 	}
 
 	if (btnSkill_1->isVisible()) {

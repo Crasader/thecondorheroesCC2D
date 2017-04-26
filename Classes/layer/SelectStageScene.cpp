@@ -100,7 +100,7 @@ bool SelectStageLayer::init(int charId)
 	key_listener->onKeyPressed = CC_CALLBACK_2(SelectStageLayer::onKeyPressed, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(key_listener, this);
 
-	/*this->schedule([&](float dt) {
+	m_pTimeCounter->schedule([&](float dt) {
 		time_t _nCurrentTime = time(0);
 		if (m_nLifeNumber < 5) {
 			int _nDeltaTime = _nCurrentTime - m_nTimeAnchor;
@@ -124,7 +124,7 @@ bool SelectStageLayer::init(int charId)
 		{
 			m_pTimeCounter->setVisible(false);
 		}
-	}, 1.0f, "key");*/
+	}, 0.1f, "key");
 
 	return true;
 }
@@ -153,6 +153,7 @@ void SelectStageLayer::gotoPlay(int stage, int map, int haveBoss, int charId)
 		m_nLifeNumber--;
 		REF->setDownLife(1);
 		REF->resetAnchorTime();
+		initTopMainMenu();
 		auto _aScene = GameScene::createScene(stage, map, haveBoss, charId);
 		Director::getInstance()->replaceScene(TransitionFade::create(0.3f, _aScene));
 	}

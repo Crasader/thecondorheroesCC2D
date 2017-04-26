@@ -6,6 +6,7 @@
 #include "SlashBoss.h"
 #include "StateBoss1.h"
 #include "coin/Coin.h"
+#include "ui\CocosGUI.h"
 
 
 class EnemyBoss1 : public BaseEnemy
@@ -28,7 +29,7 @@ public:
 	Vec2 heroLocation;
 	StateBoss1 *state;
 	CCArray *slashPool;
-	Sprite *spHp;
+	ui::LoadingBar *spHp;
 	int indexSlash;
 	int indexCoin;
 	float scaleBoss;

@@ -75,7 +75,9 @@ void EnemyHongLangBa2::die()
 		auto world = enemyDarts->getB2Body()->GetWorld();
 		world->DestroyBody(enemyDarts->getB2Body());
 		enemyDarts->setB2Body(nullptr);
-		enemyDarts->removeFromParentAndCleanup(true);
+		//enemyDarts->removeFromParentAndCleanup(true);
+		enemyDarts->setVisible(false);
+		enemyDarts->setIsDie(false);
 	}
 
 }
@@ -101,7 +103,11 @@ void EnemyHongLangBa2::listener()
 		}
 
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
-			this->removeFromParentAndCleanup(true);
+			//this->removeFromParentAndCleanup(true);
+			this->setVisible(false);
+			this->clearTracks();
+			this->setAnimation(0, "idle", true);
+			this->setToSetupPose();
 		}
 
 	});

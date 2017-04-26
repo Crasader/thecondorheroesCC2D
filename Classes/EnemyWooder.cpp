@@ -1,4 +1,5 @@
 #include "EnemyWooder.h"
+#include "manager\AudioManager.h"
 
 EnemyWooder::EnemyWooder() : BaseEnemy()
 {
@@ -63,7 +64,7 @@ void EnemyWooder::die()
 {
 
 	BaseEnemy::die();
-
+	AudioManager::playSound(SOUND_ENEMYHIT);
 	auto world = this->body->GetWorld();
 	world->DestroyBody(this->body);
 	this->body = nullptr;

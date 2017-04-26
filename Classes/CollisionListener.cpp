@@ -372,33 +372,33 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 	}
     
-    if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_TOONG)
-        || (bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_TOONG)
-        || (bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_TNB)
-        || (bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_TNB)
-        ) {
-        
-        B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
-        B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
-        auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
-        auto enemy = sA->getTag() == TAG_ENEMY_TOONG || sA->getTag() == TAG_ENEMY_TNB ? (BaseEnemy *)sA : (BaseEnemy *)sB;
-        
-        if (!enemy->getIsDie()) {
-            if (!hero->getIsPriorInjured()
-                && hero->getFSM()->previousState != MInjured
-                && hero->getFSM()->previousState != MDie) {
-                hero->setIsPriorInjured(true);
-                hero->getFSM()->changeState(MInjured);
-                hero->getBloodScreen()->setVisible(true);
-                hero->setHealth(hero->getHealth() - 1);
-                //log("----");
-                auto parentGameScene = (GameScene*)hero->getParent();
-                parentGameScene->updateBloodBar(hero->getHealth(), false);
-            }
-        }
-    }
+    //if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_TOONG)
+    //    || (bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_TOONG)
+    //    || (bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_TNB)
+    //    || (bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_TNB)
+    //    ) {
+    //    
+    //    B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
+    //    B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
+    //    auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
+    //    auto enemy = sA->getTag() == TAG_ENEMY_TOONG || sA->getTag() == TAG_ENEMY_TNB ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+    //    
+    //    if (!enemy->getIsDie()) {
+    //        if (!hero->getIsPriorInjured()
+    //            && hero->getFSM()->previousState != MInjured
+    //            && hero->getFSM()->previousState != MDie) {
+    //            hero->setIsPriorInjured(true);
+    //            hero->getFSM()->changeState(MInjured);
+    //            hero->getBloodScreen()->setVisible(true);
+    //            hero->setHealth(hero->getHealth() - 1);
+    //            //log("----");
+    //            auto parentGameScene = (GameScene*)hero->getParent();
+    //            parentGameScene->updateBloodBar(hero->getHealth(), false);
+    //        }
+    //    }
+    //}
     
-    if ((bitmaskA == BITMASK_TNB && bitmaskB == BITMASK_SWORD) ||
+   /* if ((bitmaskA == BITMASK_TNB && bitmaskB == BITMASK_SWORD) ||
         (bitmaskB == BITMASK_TNB && bitmaskA == BITMASK_SWORD)
         ) {
         
@@ -418,35 +418,35 @@ void CollisionListener::BeginContact(b2Contact * contact)
         auto hero = parentGameScene->getHero();
         hero->setScore(hero->getScore() + enemy->getExp());
         enemy->setIsDie(true);
-    }
+    }*/
     
-    if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_TOONG)
-        || (bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_TOONG)
-        || (bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_TNB)
-        || (bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_TNB)
-        ) {
-        
-        B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
-        B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
-        auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
-        auto enemy = sA->getTag() == TAG_ENEMY_TOONG || sA->getTag() == TAG_ENEMY_TNB ? (BaseEnemy *)sA : (BaseEnemy *)sB;
-        
-        if (!enemy->getIsDie()) {
-            if (!hero->getIsPriorInjured()
-                && hero->getFSM()->previousState != MInjured
-                && hero->getFSM()->previousState != MDie) {
-                hero->setIsPriorInjured(true);
-                hero->getFSM()->changeState(MInjured);
-                hero->getBloodScreen()->setVisible(true);
-                hero->setHealth(hero->getHealth() - 1);
-                //log("----");
-                auto parentGameScene = (GameScene*)hero->getParent();
-                parentGameScene->updateBloodBar(hero->getHealth(), false);
-            }
-        }
-    }
+    //if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_TOONG)
+    //    || (bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_TOONG)
+    //    || (bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_TNB)
+    //    || (bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_TNB)
+    //    ) {
+    //    
+    //    B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
+    //    B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
+    //    auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
+    //    auto enemy = sA->getTag() == TAG_ENEMY_TOONG || sA->getTag() == TAG_ENEMY_TNB ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+    //    
+    //    if (!enemy->getIsDie()) {
+    //        if (!hero->getIsPriorInjured()
+    //            && hero->getFSM()->previousState != MInjured
+    //            && hero->getFSM()->previousState != MDie) {
+    //            hero->setIsPriorInjured(true);
+    //            hero->getFSM()->changeState(MInjured);
+    //            hero->getBloodScreen()->setVisible(true);
+    //            hero->setHealth(hero->getHealth() - 1);
+    //            //log("----");
+    //            auto parentGameScene = (GameScene*)hero->getParent();
+    //            parentGameScene->updateBloodBar(hero->getHealth(), false);
+    //        }
+    //    }
+    //}
     
-    if ((bitmaskA == BITMASK_TOONG && bitmaskB == BITMASK_SWORD) ||
+   /* if ((bitmaskA == BITMASK_TOONG && bitmaskB == BITMASK_SWORD) ||
         (bitmaskB == BITMASK_TOONG && bitmaskA == BITMASK_SWORD)
         ) {
         
@@ -466,7 +466,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
         auto hero = parentGameScene->getHero();
         hero->setScore(hero->getScore() + enemy->getExp());
         enemy->setIsDie(true);
-    }
+    }*/
 }
 
 void CollisionListener::EndContact(b2Contact * contact)

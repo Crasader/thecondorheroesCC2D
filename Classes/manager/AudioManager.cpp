@@ -30,6 +30,22 @@ void AudioManager::cacheAudio()
 	experimental::AudioEngine::preload(SOUND_TC1DIE);
 	experimental::AudioEngine::preload(SOUND_TC2AT);
 	experimental::AudioEngine::preload(SOUND_TC2DIE);
+	experimental::AudioEngine::preload(SOUND_HLB1AT);
+	experimental::AudioEngine::preload(SOUND_HLB1DIE);
+	experimental::AudioEngine::preload(SOUND_HLB2AT);
+	experimental::AudioEngine::preload(SOUND_HLB2DIE);
+	experimental::AudioEngine::preload(SOUND_MCAT);
+	experimental::AudioEngine::preload(SOUND_MCJUMP);
+	experimental::AudioEngine::preload(SOUND_TOONGDIE);
+	experimental::AudioEngine::preload(SOUND_BOSS1CHEM);
+	experimental::AudioEngine::preload(SOUND_BOSS1DIE);
+	experimental::AudioEngine::preload(SOUND_BOSS1SKILL);
+	experimental::AudioEngine::preload(SOUND_COIN);
+	experimental::AudioEngine::preload(SOUND_COINBULLION);
+	experimental::AudioEngine::preload(SOUND_COINBAG);
+	experimental::AudioEngine::preload(SOUND_FAIL);
+	experimental::AudioEngine::preload(SOUND_WIN);
+
 }
 
 void AudioManager::playSound(string keysound)

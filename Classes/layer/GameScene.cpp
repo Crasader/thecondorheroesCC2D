@@ -50,27 +50,6 @@ bool GameScene::init(int stage, int map, int haveboss, int charId)
 		return false;
 	}
 	AudioManager::stopMusic();
-	switch (stage)
-	{
-	case 1: {
-
-		AudioManager::playMusic(MUSIC_STAGE1);
-		break;
-	}
-	case 2: {
-		AudioManager::playMusic(MUSIC_STAGE2);
-		break;
-	}
-	case 3: {
-		AudioManager::playMusic(MUSIC_STAGE3);
-		break;
-	}
-	case 4: {
-		AudioManager::playMusic(MUSIC_STAGE4);
-		break;
-	}
-
-	}
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -184,6 +163,27 @@ void GameScene::createEagle(Point position)
 
 void GameScene::onBegin()
 {
+	switch (stage)
+	{
+	case 1: {
+
+		AudioManager::playMusic(MUSIC_STAGE1);
+		break;
+	}
+	case 2: {
+		AudioManager::playMusic(MUSIC_STAGE2);
+		break;
+	}
+	case 3: {
+		AudioManager::playMusic(MUSIC_STAGE3);
+		break;
+	}
+	case 4: {
+		AudioManager::playMusic(MUSIC_STAGE4);
+		break;
+	}
+
+	}
 	hud->addEvents();
 	if (hud->getBtnCalling() != nullptr)
 		hud->getBtnCalling()->setEnabled(true);
@@ -828,7 +828,27 @@ void GameScene::createEnemyToanChanStudent2(MyLayer * layer, Vec2 pos)
 		}
 		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
 		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN2);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
+		enemy->changeBodyMaskBits( BITMASK_SWORD);
+
+		enemy->listener();
+	}
+}
+
+void GameScene::createEnemyTNB(MyLayer * layer, Vec2 pos)
+{
+	if (layer->tnbPool) {
+		auto enemy = (EnemyTNB*)layer->tnbPool->getObject();
+		enemy->setIsDie(false);
+		enemy->setPosition(pos);
+		enemy->setVisible(true);
+		enemy->resumeSchedulerAndActions();
+		//layer->addChild(enemy, ZORDER_ENEMY);
+		if (enemy->getB2Body()) {
+			world->DestroyBody(enemy->getB2Body());
+		}
+		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2.5f));
+		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
+		enemy->changeBodyMaskBits(BITMASK_SWORD|BITMASK_HERO);
 
 		enemy->listener();
 	}
@@ -884,7 +904,7 @@ void GameScene::createEnemyToOng(MyLayer * layer, Vec2 pos) {
 			world->DestroyBody(enemy->getB2Body());
 		}
 		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 4));
-		enemy->changeBodyCategoryBits(BITMASK_TOONG);
+		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
 		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
 		enemy->listener();
 	}
@@ -1345,7 +1365,7 @@ void GameScene::updateCamera()
 		_aEagle->setSequenceCloud(_aEagle->getSequenceCloud() + 0.04f);
 		//background->setPositionZ(background->getPositionZ() - 5);
 	}
-	if (!_aEagle->getIsUp()) {
+	if (!_aEagle->getIsCarry()) {
 		/*if (hero->getPositionY() > SCREEN_SIZE.height * 5 / 6) {
 			background->setPositionY(hero->getPositionY() - SCREEN_SIZE.height * 2 / 6);
 		}
@@ -1354,10 +1374,10 @@ void GameScene::updateCamera()
 			background->setPositionY(SCREEN_SIZE.height / 2);
 		}*/
 		if (hero->getPositionY() > background->getPositionY() + SCREEN_SIZE.height / 4) {
-			background->up();
+			background->up(hero->getB2Body()->GetLinearVelocity().y*PTM_RATIO);
 		}
 		else if (hero->getPositionY() < background->getPositionY() - SCREEN_SIZE.height / 4) {
-			background->down();
+			background->down(hero->getB2Body()->GetLinearVelocity().y*PTM_RATIO);
 		}
 
 	}
@@ -1681,6 +1701,7 @@ void GameScene::loadPosAndTag()
 	loadPosOfObjectInGroup("lms_student lv1", TAG_ENEMY_HONGLANGBA1);
 	loadPosOfObjectInGroup("lms_student lv2", TAG_ENEMY_HONGLANGBA2);
 	loadPosOfObjectInGroup("bee", TAG_ENEMY_TOONG);
+	loadPosOfObjectInGroup("tnb", TAG_ENEMY_TNB);
 
 	/*loadPosOfObjectInGroup("coin_parabol", TAG_COIN_PARABOL);
 	loadPosOfObjectInGroup("coin_straight", TAG_COIN_STRAIGHT);
@@ -1773,7 +1794,7 @@ void GameScene::creatAgentByMydata(MyLayer * layer, MyData data)
 	}
 
 	case TAG_ENEMY_TNB: {
-		//createEnemyTNB(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
+		createEnemyTNB(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
 		break;
 	}
 	case TAG_ENEMY_HONGLANGBA1: {

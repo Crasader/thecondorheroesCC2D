@@ -64,6 +64,7 @@ void EnemyBoss1::die()
 	if (!isDie && !isNodie) {
 		health--;
 		if (health > 0) {
+			AudioManager::playSound(SOUND_ENEMYHIT);
 			this->isNodie = true;
 			this->clearTracks();
 			this->setAnimation(0, "injured", false);
@@ -82,9 +83,10 @@ void EnemyBoss1::die()
 			//isDie = true;
 		}
 		else {
-			auto scale1 = spHp->getScaleX();
-			auto scale2 = ((float)this->health / (float)(this->health + 1))*spHp->getScaleX();
-			spHp->setScaleX(scale2);
+			//float percent = spHp->getPercent();
+			auto percent = spHp->getPercent();
+			auto percent2 = ((float)this->health / (float)(this->health + 1))*percent;
+			spHp->setPercent(percent2);
 
 		}
 	}
@@ -154,13 +156,20 @@ void EnemyBoss1::creatHidenSlash(float angle)
 
 void EnemyBoss1::creatHpSprite()
 {
-	spHp = Sprite::create("UI/hp.png");
+	auto bloodbg = Sprite::create("Animation/Enemy_Boss1/blood_boss_board.png");
+
+	spHp = ui::LoadingBar::create("Animation/Enemy_Boss1/blood_boss.png");
 	auto tmp = SCREEN_SIZE.width / 6 / spHp->getContentSize().width;
 	spHp->setScaleX(SCREEN_SIZE.width / 6 / spHp->getContentSize().width);
 	spHp->setScaleY(SCREEN_SIZE.height / 100 / spHp->getContentSize().height);
-	spHp->setPosition(0, 0);
+	spHp->setPosition(Vec2(0, 0));
+	spHp->setPercent(100);
+	bloodbg->setScaleX(spHp->getScaleX());
+	bloodbg->setScaleY(spHp->getScaleY());
+	bloodbg->setPosition(0,0);
+	this->addChild(bloodbg);
 	this->addChild(spHp);
-	spHp->update(0.0f);
+	//spHp->update(0.0f);
 }
 
 void EnemyBoss1::boomboom()

@@ -7,6 +7,7 @@
 #include "EnemyHongLangBa.h"
 #include "EnemyHongLangBa2.h"
 #include "EnemyToOng.h"
+#include "EnemyTNB.h"
 
 MyLayer::MyLayer()
 {
@@ -16,6 +17,7 @@ MyLayer::MyLayer()
 	 toOngPool = nullptr;
 	 hongLangBa1Pool = nullptr;
 	 hongLangBa2Pool = nullptr;
+	 tnbPool = nullptr;
 }
 MyLayer::~MyLayer(){
 	if(wooderPool!= nullptr)
@@ -103,7 +105,16 @@ bool MyLayer::init(TMXTiledMap* tmx_map)
 			tmp->genDarts();
 		}
 	}
-	
+	if (tmx_map->getObjectGroup("tnb")) {
+		tnbPool = MyPool::create(5, TAG_ENEMY_TNB);
+		for (int i = 0; i < tnbPool->maxPool; i++) {
+			auto tmp = (EnemyTNB*)tnbPool->getObject();
+			tmp->setPosition(0, -SCREEN_SIZE.height);
+			tmp->setVisible(false);
+			tmp->pauseSchedulerAndActions();
+			this->addChild(tmp);
+		}
+	}
 	return true;
 }
 

@@ -20,7 +20,7 @@ CoinBullion * CoinBullion::create(string jsonFile, string atlasFile, float scale
 	coin->update(0.0f);
 	coin->setTag(TAG_COINBULLION);
 	coin->setAnimation(0,"Gold",true);
-	//coin->effect = nullptr;
+	coin->effect = nullptr;
 	return coin;
 }
 
@@ -31,18 +31,19 @@ CoinBullion * CoinBullion::create(string filename, float scale)
 		SkeletonManager::getInstance()->cacheSkeleton(filename, scale);
 	}
 	auto data = SkeletonManager::getSkeletonData(filename);
-	auto bag = new CoinBullion(data);
+	auto coin = new CoinBullion(data);
 	//enemy->initWithData(data);
-	bag->update(0.0f);
-	bag->setTag(TAG_COINBULLION);
-	bag->setAnimation(0, "Gold", true);
-	return bag;
+	coin->update(0.0f);
+	coin->setTag(TAG_COINBULLION);
+	coin->setAnimation(0, "Gold", true);
+	coin->effect = nullptr;
+	return coin;
 }
 
 void CoinBullion::updateMe(BaseHero* hero)
 {
 	B2Skeleton::updateMe(hero);
-	if (!this->isVisible() && this->getB2Body()->GetType() == b2_staticBody/*&& !this->effect*/) {
+	if (!this->isVisible() && this->getB2Body()->GetType() == b2_staticBody&& this->effect == nullptr) {
 		this->resume();
 		this->setVisible(true);
 		return;

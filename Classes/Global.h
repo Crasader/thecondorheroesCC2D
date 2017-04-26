@@ -23,8 +23,6 @@ using namespace std;
 #define BITMASK_COIN					0x0010
 #define BITMASK_TOANCHAN1				0x0020
 #define BITMASK_TOANCHAN2				0x0040
-#define BITMASK_TNB						0x0050
-#define BITMASK_TOONG					0x0060
 #define BITMASK_SWORD					0x0080
 #define BITMASK_SLASH					0x0100
 #define BITMASK_BOSS					0x0200
@@ -118,6 +116,7 @@ using namespace std;
 #define SOUND_CLSKILL2							"sound/clskill2.mp3"
 #define SOUND_CLSKILL3							"sound/clskill3.mp3"
 
+#define SOUND_ENEMYHIT								"sound/enemyhit.mp3"
 #define SOUND_TC1AT								"sound/tc1at.mp3"
 #define SOUND_TC1DIE							"sound/tc1die.mp3"
 #define SOUND_TC2AT								"sound/tc2at.mp3"

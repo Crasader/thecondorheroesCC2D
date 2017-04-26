@@ -38,11 +38,13 @@ EnemyTNB * EnemyTNB::create(string filename, float scale)
 	}
 	auto data = SkeletonManager::getSkeletonData(filename);
 	auto enemy = new EnemyTNB(data);
+	enemy->setAnimation(0, "idle", true);
 	//enemy->initWithData(data);
 	enemy->update(0.0f);
 	enemy->setTag(TAG_ENEMY_TNB);
-	enemy->setScaleX(1);
-	enemy->setTimeScale(1.4f);
+	//enemy->setScaleX(1);
+	//enemy->setTimeScale(1.4f);
+	
 	enemy->health = 1;
 	enemy->exp = 5;
 	return enemy;
@@ -86,8 +88,10 @@ void EnemyTNB::listener()
 {
 	this->setCompleteListener([&](int trackIndex, int loopCount) {
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
-			this->removeFromParentAndCleanup(false);
+			//this->removeFromParentAndCleanup(false);
 		}
-
+		if (strcmp(getCurrent()->animation->name, "appear") == 0 && loopCount == 1) {
+			//this->removeFromParentAndCleanup(false);
+		}
 	});
 }

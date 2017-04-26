@@ -141,7 +141,7 @@ private:
 	void creatEnemyWooder(MyLayer* layer, Vec2 pos);
 	void createEnemyToanChanStudent(MyLayer* layer, Vec2 pos);
 	void createEnemyToanChanStudent2(MyLayer* layer, Vec2 pos);
-	//void createEnemyTNB(Layer* layer, Vec2 pos);
+	void createEnemyTNB(MyLayer* layer, Vec2 pos);
 	void createEnemyHongLangBa(MyLayer* layer, Vec2 pos);
 	void createEnemyHongLangBa2(MyLayer* layer, Vec2 pos);
 	void createEnemyToOng(MyLayer* layer, Vec2 pos);

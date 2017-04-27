@@ -68,7 +68,7 @@ private:
 
 	int indexOfNextMapBoss;// chi so cua map boss cuoi, khoi dau la -1, khi danh boss chuyen 1 va 0(0101010101)
 	int currentButton = 0;
-
+	float posXComingBoss = -1;
 	
 public:
 	b2World *world;
@@ -184,7 +184,7 @@ public:
 
 	void updateHUD(float dt);
 	void updateMultiKills(); //DuongPM edited for multi kills
-	void runnerItem(int counter);
+	void runnerItem(Item_type type, int counter);
 	void updateBloodBar(int numberOfHealth, bool isVisible);
 	void updateCamera();
 
@@ -222,6 +222,20 @@ public:
 
 	// quan ly item
 	//void createMapItem();// tao du lieu cho map item.
+
+	// tutorial
+	bool isFirstPlay;
+	bool isDoneAttackTut = false;
+	bool isDoneSkillTut = false;
+
+	// handle tuts
+	void jump();
+	
+	void introAttack();
+	void introSkills();
+	void introBird();
+
+	void tutorial();
 };
 
 #endif // __GAME_SCENE_H__

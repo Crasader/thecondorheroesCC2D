@@ -66,7 +66,7 @@ void LoadingLayer::addStuff()
 
 	addChild(avatarHero);
 
-	lbGuide = Label::create("Guide here", "fonts/Marker Felt.ttf", 32);
+	lbGuide = Label::createWithTTF("Guide here", "fonts/Marker Felt.ttf", 32);
 	lbGuide->setAnchorPoint(Vec2::ZERO);
 	lbGuide->setScale(boardTime->getBoundingBox().size.height / lbGuide->getContentSize().height);
 	lbGuide->setPosition(boardTime->getPositionX(), boardTime->getPositionY() - boardTime->getBoundingBox().size.height * 1.3f);

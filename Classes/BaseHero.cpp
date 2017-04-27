@@ -14,6 +14,7 @@ BaseHero::BaseHero(string jsonFile, string atlasFile, float scale) : B2Skeleton(
 	preRunDis = 0.0f;
 
 	dieHard = 1;
+	coinRatio = 1;
 	createMapItem();
 }
 
@@ -89,6 +90,7 @@ void BaseHero::addStuff()
 
 	// magnet effect
 	suctionCoinAni = Sprite::createWithSpriteFrameName("effect_namcham_00.png");
+	suctionCoinAni->setScale(this->getTrueRadiusOfHero() * 4 / suctionCoinAni->getContentSize().height);
 	suctionCoinAni->setPosition(this->getContentSize().width / 2  + this->getTrueRadiusOfHero() / 2, this->getTrueRadiusOfHero());
 	suctionCoinAni->setVisible(false);
 	Vector <SpriteFrame*> aniframes;
@@ -333,14 +335,19 @@ void BaseHero::createMapItem()
 
 void BaseHero::updateMapItem()
 {
-	for (int i = KEY_ITEM_MAGNET; i < KEY_ITEM_DOUPLE_COIN; i++) {
+	for (int i = KEY_ITEM_MAGNET; i <= KEY_ITEM_DOUPLE_COIN; i++) {
 		int value = checkItem[i];
 		if (value > 0) {
 			value--;
 			checkItem[i] = value;
 		}
-		else if (suctionCoinAni->isVisible()) {
+		
+		if (suctionCoinAni->isVisible() && checkItem[KEY_ITEM_MAGNET] <= 0) {
 			suctionCoinAni->setVisible(false);
+		}
+		
+		if (coinRatio != 1 && checkItem[KEY_ITEM_DOUPLE_COIN] <= 0) {
+			coinRatio = 1;
 		}
 	}
 }

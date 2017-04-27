@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="450" height="10" tilewidth="80" tileheight="80" nextobjectid="123">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="450" height="10" tilewidth="80" tileheight="80" nextobjectid="129">
  <tileset firstgid="1" name="Map_CungTrungDuong" tilewidth="80" tileheight="80" tilecount="99" columns="11">
   <image source="Map_CungTrungDuong/Map_CungTrungDuong.png" width="880" height="720"/>
  </tileset>
@@ -161,9 +161,34 @@
   <object id="98" name="coin_circle" x="23821" y="425" width="48" height="52"/>
  </objectgroup>
  <objectgroup name="boss">
-  <object id="32" x="30248" y="252" width="74" height="76"/>
+  <object id="32" name="boss" x="30248" y="252" width="74" height="76"/>
  </objectgroup>
  <objectgroup name="under_ground">
   <object id="33" x="0" y="690" width="35992"/>
+ </objectgroup>
+ <objectgroup name="item">
+  <object id="123" name="item_magnet" x="4803.03" y="330.303" width="63.6364" height="60.6061">
+   <properties>
+    <property name="type" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="124" name="item_health" x="11121.2" y="327.273" width="66.6667" height="60.6061">
+   <properties>
+    <property name="type" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="125" name="item_health" x="16484.8" y="281.818" width="69.697" height="63.6364">
+   <properties>
+    <property name="type" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="126" name="item_magnet" x="21439.4" y="324.242" width="60.6061" height="48.4848">
+   <properties>
+    <property name="type" type="int" value="2"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="coming_boss">
+  <object id="128" name="coming_boss" x="25760" y="2" width="16" height="226"/>
  </objectgroup>
 </map>

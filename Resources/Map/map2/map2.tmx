@@ -204,6 +204,6 @@
   <object id="146" x="34961.3" y="818" width="5046.67" height="4"/>
  </objectgroup>
  <objectgroup name="moon">
-  <object id="147" name="moon" x="885.879" y="557.576" width="66.6667" height="72.7273"/>
+  <object id="147" name="moon" x="960" y="480" width="66.6667" height="72.7273"/>
  </objectgroup>
 </map>

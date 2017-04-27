@@ -1,6 +1,7 @@
 #include "EnemyHongLangBa2.h"
 #include "manager/SkeletonManager.h"
-#include "manager\AudioManager.h"
+#include "manager/AudioManager.h"
+#include "BaseHero.h"
 
 
 EnemyHongLangBa2::EnemyHongLangBa2(string jsonFile, string atlasFile, float scale):EnemyHongLangBa(jsonFile, atlasFile,scale)
@@ -57,8 +58,13 @@ void EnemyHongLangBa2::attack()
 	if (enemyDarts->getB2Body() != nullptr) {
 		enemyDarts->getB2Body()->GetWorld()->DestroyBody(enemyDarts->getB2Body());
 	}
+	enemyDarts->setRotation(180 - angle / PI * 180);
 	enemyDarts->initCirclePhysic(this->getB2Body()->GetWorld(), this->getBoneLocation("bone32") + this->getParent()->getPosition());
-	enemyDarts->getB2Body()->SetLinearVelocity(b2Vec2(-SCREEN_SIZE.width/3/PTM_RATIO,0));
+
+	float vx = SCREEN_SIZE.width / 3 / PTM_RATIO * cosf(angle);
+	float vy = SCREEN_SIZE.width / 3 / PTM_RATIO * sinf(angle);
+
+	enemyDarts->getB2Body()->SetLinearVelocity(b2Vec2(vx, vy));
 }
 
 void EnemyHongLangBa2::die()
@@ -69,7 +75,9 @@ void EnemyHongLangBa2::die()
 		auto world = enemyDarts->getB2Body()->GetWorld();
 		world->DestroyBody(enemyDarts->getB2Body());
 		enemyDarts->setB2Body(nullptr);
-		enemyDarts->removeFromParentAndCleanup(true);
+		//enemyDarts->removeFromParentAndCleanup(true);
+		enemyDarts->setVisible(false);
+		enemyDarts->setIsDie(false);
 	}
 
 }
@@ -122,15 +130,27 @@ void EnemyHongLangBa2::updateMe(BaseHero* hero)
 		//slash->getB2Body()->SetLinearVelocity(b2Vec2(0,0));
 		enemyDarts->setVisible(false);
 	}
+
 	controlAttack++;
-	if (controlAttack > 120) {
-		if (this->body != nullptr) {
-			if (!this->body->GetWorld()->IsLocked()) {
-				controlAttack = 0;	// 2 giay 1 nhat
-				this->attack();
+
+	if (hero->getPositionX() < this->getPositionX() + this->getParent()->getPositionX() && 
+		hero->getPositionY() + SCREEN_SIZE.height * 0.7f > this->getPositionY() &&
+		hero->getPositionY() - SCREEN_SIZE.height * 0.7f < this->getPositionY()) {
+
+		Vec2 vector = Vec2(hero->getPosition() - (this->getPosition() + this->getParent()->getPosition()));
+		angle = vector.getAngle();
+		
+		if (controlAttack > 120) {
+			if (this->body != nullptr) {
+				if (!this->body->GetWorld()->IsLocked()) {
+					controlAttack = 0;	// 2 giay 1 nhat
+					this->attack();
+				}
 			}
 		}
 	}
+
+	
 
 	if (getIsDie() && this->getB2Body() != nullptr) {
 		die();

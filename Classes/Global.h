@@ -28,7 +28,6 @@ using namespace std;
 #define BITMASK_BOSS					0x0200
 #define BITMASK_UNDER_GROUND			0x0400
 #define BITMASK_BIRD					0x0500
-#define BITMASK_ITEM					0x0600
 #define BITMASK_COIN_BAG				0x0800
 #define BITMASK_COIN_BULLION			0x1000
 #define BITMASK_RADA_SKILL_1			0x2000

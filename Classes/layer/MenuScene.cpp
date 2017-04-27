@@ -79,13 +79,14 @@ void MenuLayer::update(float p_fDelta) {
 			return;
 		}
 		else {
-			m_pTimeCounter->setVisible(true);
+			if (!m_pTimeCounter->isVisible())
+				m_pTimeCounter->setVisible(true);
 			int _nMinute = (300 - _nDeltaTime) / 60;
 			int _nSecond = (300 - _nDeltaTime) % 60;
 			m_pTimeCounter->setString(StringUtils::format(_nSecond < 10 ? "%i:0%i" : "%i:%i", _nMinute, _nSecond));
 		}
 	}
-	else {
+	else if (m_pTimeCounter->isVisible()) {
 		m_pTimeCounter->setVisible(false);
 	}
 }
@@ -98,6 +99,7 @@ void MenuLayer::initInputData() {
 	m_arNumberItem[3] = REF->getNumberItemDoubleGold();
 	m_arNumberItem[4] = REF->getNumberItemCoolDown();
 	m_nTimeAnchor = REF->getAnchorTime();
+	m_nLifeNumber = REF->getNumberOfLife();
 }
 
 void MenuLayer::initBackgroundLayer() {
@@ -416,7 +418,7 @@ void MenuLayer::initItemBoard() {
 		_pItemBoard->getContentSize().height * _pItemBoard->getScaleY() * 0.7f));
 	_pItemScrollView->setAnchorPoint(Vec2(0.0f, 0.0f));
 
-	_pItemScrollView->setPosition(Vec2(_pItemBoard->getContentSize().width * 0.1f, _pItemBoard->getContentSize().height * 0.08f));
+	_pItemScrollView->setPosition(Vec2(m_pItemBoard->getContentSize().width * 0.1f, m_pItemBoard->getContentSize().height * 0.08f));
 
 	_pItemScrollView->setDirection(ScrollView::Direction::VERTICAL);
 	_pItemScrollView->setBounceEnabled(true);
@@ -915,11 +917,13 @@ void MenuLayer::showMainMenu() {
 }
 
 void MenuLayer::buttonStartHandle() {
-	m_nLifeNumber--;
-	REF->setDownLife(1);
-	REF->resetAnchorTime();
+	
+	moveLayerViaDirection(m_pTopMainMenu, 8);
+	moveLayerViaDirection(m_pBottomMainMenu, 2);
+	moveLayerViaDirection(m_pItemBoard, 6);
+
 	auto _scene = SelectStageLayer::createScene(m_nIndexHeroSelected);
-	Director::getInstance()->replaceScene(TransitionFade::create(0.3f, _scene));
+	Director::getInstance()->replaceScene(TransitionFade::create(0.5f, _scene));
 }
 
 void MenuLayer::buttonBackHanle() {

@@ -27,8 +27,8 @@ private:
 	int m_nIndexHeroSelected = 0;
 	int m_nIndexHeroPicked = 0;
 	int m_arNumberItem[5];
-	int m_nLifeNumber = 3;
-	int m_nTimeAnchor = 1491987700;
+	int m_nLifeNumber;
+	int m_nTimeAnchor;
 	Label *m_pTimeCounter;
 
 	//

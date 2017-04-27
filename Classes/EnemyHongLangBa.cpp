@@ -1,6 +1,6 @@
 #include "EnemyHongLangBa.h"
 #include "manager/SkeletonManager.h"
-#include "manager\AudioManager.h"
+#include "manager/AudioManager.h"
 
 EnemyHongLangBa::EnemyHongLangBa(spSkeletonData * data):BaseEnemy(data)
 {

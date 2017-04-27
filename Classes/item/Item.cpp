@@ -1,6 +1,8 @@
 #include "Item.h"
 #include "BaseHero.h"
+#include "layer\GameScene.h"
 #include "manager\AudioManager.h"
+#include "manager\RefManager.h"
 
 Item::Item()
 {
@@ -32,8 +34,8 @@ void Item::initCirclePhysic(b2World * world, Point pos)
 	B2Sprite::initCirclePhysic(world, pos);
 	this->getB2Body()->GetFixtureList()->SetSensor(true);
 	this->getB2Body()->SetGravityScale(0);
-	this->changeBodyCategoryBits(BITMASK_ITEM);
-	this->changeBodyMaskBits(BITMASK_HERO);
+	this->changeBodyCategoryBits(0);
+	this->changeBodyMaskBits(0);
 }
 
 
@@ -51,6 +53,34 @@ void Item::updateMe(BaseHero *hero)
 		if (hero->getPositionX() + SCREEN_SIZE.width * 0.8f > this->getPositionX() && 
 			hero->getPositionY() + SCREEN_SIZE.height * 0.8f  > this->getPositionY()) {
 
+			if (this->isVisible() && hero->getB2Body()) {
+				if (((this->getPosition() -
+					(hero->getPosition() + Vec2(0, hero->getB2Body()->GetFixtureList()->GetShape()->m_radius*PTM_RATIO))).length()
+					< SCREEN_SIZE.height / 8)) {
+
+					auto parentGameScene = (GameScene*) this->getParent();
+
+					if (typeItem == Item_type::HEALTH && hero->getHealth() < REF->getCurrentHealth()) {
+						hero->setHealth(hero->getHealth() + 1);
+						parentGameScene->updateBloodBar(hero->getHealth() - 1, true);
+					}
+
+					if (typeItem == Item_type::MAGNET) {
+						parentGameScene->runnerItem(Item_type::MAGNET, DURATION_MAGNET);
+					}
+
+					if (typeItem == Item_type::DOUBLE_COIN) {
+						hero->setCoinRatio(2);
+						parentGameScene->runnerItem(Item_type::DOUBLE_COIN, DURATION_DOUBLE_COIN);
+					}
+
+					taken = true;
+					picked();
+				}
+
+			}
+
+
 			this->setPositionX(body->GetPosition().x * PTM_RATIO);
 			this->setPositionY(body->GetPosition().y * PTM_RATIO);
 			this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
@@ -60,7 +90,7 @@ void Item::updateMe(BaseHero *hero)
 			alpha += tmp;
 			auto vx = vLenght * cos(alpha) / PTM_RATIO;
 			auto vy = vLenght * sin(alpha) / PTM_RATIO;
-			this->body->SetLinearVelocity(b2Vec2(vx, vy) + b2Vec2(SCREEN_SIZE.width / 12.0f / PTM_RATIO, 0));
+			this->body->SetLinearVelocity(b2Vec2(vx, vy) + b2Vec2(SCREEN_SIZE.width / 10.0f / PTM_RATIO, 0));
 
 			if (alpha > 2 * PI) alpha = 0;
 		}

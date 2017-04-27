@@ -37,8 +37,8 @@ void CollisionListener::BeginContact(b2Contact * contact)
 	if ((bitmaskA == BITMASK_BIRD && bitmaskB == BITMASK_FLOOR) ||
 		(bitmaskB == BITMASK_BIRD && bitmaskA == BITMASK_FLOOR)
 		) {
-		B2Skeleton* sA = (BaseHero*)bodyA->GetUserData();
-		B2Skeleton* sB = (BaseHero*)bodyB->GetUserData();
+		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
+		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
 		ChimDieu *bird;
 		
 		bird = sA ? (ChimDieu*)sA : (ChimDieu*)sB;
@@ -169,31 +169,6 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 	}
 */
-	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_ITEM) ||
-		(bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_ITEM)
-		) {
-
-		auto sA = (B2Skeleton*) bodyA->GetUserData();
-		auto sB = (B2Skeleton*) bodyB->GetUserData();
-		auto item = sA->getTag() == TAG_ITEM ? (Item *)sA : (Item *)sB;
-		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
-
-		auto parentGameScene = (GameScene*)hero->getParent();
-		if(hero->getHealth() <= 0) return;		// you cannot eat item while dying
-
-		if (item->getTypeItem() == Item_type::HEALTH && hero->getHealth() < REF->getCurrentHealth()) {
-			hero->setHealth(hero->getHealth() + 1);
-			parentGameScene->updateBloodBar(hero->getHealth() - 1, true);		
-		}
-
-		if (item->getTypeItem() == Item_type::MAGNET) {
-			parentGameScene->runnerItem(DURATION_MAGNET);
-		}
-
-		item->setTaken(true);
-		item->picked();
-		
-	}
 
 	if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_COIN_BULLION) ||
 		(bitmaskB == BITMASK_HERO && bitmaskA == BITMASK_COIN_BULLION)
@@ -201,10 +176,10 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
 		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
-		auto coin = sA->getTag() == TAG_COINBULLION ? (CoinBullion *)sA : (CoinBullion *)sB;
 		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
+		auto coin = sA->getTag() == TAG_HERO ? (CoinBullion *)sB : (CoinBullion *)sA;
 		coin->picked();
-		hero->setCoinExplored(hero->getCoinExplored() + 5);
+		hero->setCoinExplored(hero->getCoinExplored() + 5 * hero->getCoinRatio());
 	}
 
 	if ((bitmaskA == BITMASK_COIN_BAG && bitmaskB == BITMASK_SWORD) ||
@@ -225,7 +200,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		auto parentGameScene = (GameScene*)coin->getParent();
 		auto hero = parentGameScene->getHero();
-		hero->setCoinExplored(hero->getCoinExplored() + 10);
+		hero->setCoinExplored(hero->getCoinExplored() + 10 * hero->getCoinRatio());
 	}
 
 	if ((bitmaskA == BITMASK_WOODER && bitmaskB == BITMASK_SWORD) ||

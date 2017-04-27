@@ -142,7 +142,7 @@ void Coin::updateMe(BaseHero *hero)
 				(hero->getPosition() + Vec2(0, hero->getB2Body()->GetFixtureList()->GetShape()->m_radius*PTM_RATIO))).length()
 				< SCREEN_SIZE.height / 12)) {
 				this->picked();
-				hero->setCoinExplored(hero->getCoinExplored() + 1);
+				hero->setCoinExplored(hero->getCoinExplored() + hero->getCoinRatio());
 			}
 		}
 		if (this->getB2Body()->GetType() == b2_dynamicBody) {

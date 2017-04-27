@@ -59,21 +59,21 @@ void BaseEnemy::die()
 void BaseEnemy::updateMe(BaseHero* hero)
 {
 	if (body != nullptr /*&& body->GetType() == b2_staticBody*/) {
-		this->setPositionX(body->GetPosition().x * PTM_RATIO- this->getParent()->getPositionX());
-		this->setPositionY(body->GetPosition().y * PTM_RATIO - this->body->GetFixtureList()->GetShape()->m_radius*PTM_RATIO
-		-this->getParent()->getPositionY());
-		this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
-
-		if (!isOccur) {
-
-		}
+		this->setPositionX(body->GetPosition().x * PTM_RATIO - this->getParent()->getPositionX());
+		this->setPositionY(body->GetPosition().y * PTM_RATIO - this->body->GetFixtureList()->GetShape()->m_radius*PTM_RATIO - this->getParent()->getPositionY());
 	}
 }
 
 void BaseEnemy::initCirclePhysic(b2World * world, Point pos)
 {
 	B2Skeleton::initCirclePhysic(world, pos);
-	this->getB2Body()->SetType(b2_dynamicBody);
+	this->getB2Body()->GetFixtureList()->SetSensor(true);
+	this->getB2Body()->SetGravityScale(0);
+}
+
+void BaseEnemy::initBoxPhysic(b2World * world, Point pos)
+{
+	B2Skeleton::initBoxPhysic(world, pos);
 	this->getB2Body()->GetFixtureList()->SetSensor(true);
 	this->getB2Body()->SetGravityScale(0);
 }

@@ -28,6 +28,7 @@ public:
 	virtual void die();
 	virtual void updateMe(BaseHero* hero);
 	virtual void initCirclePhysic(b2World *world, Point pos);
+	virtual void initBoxPhysic(b2World *world, Point pos);
 };
 
 #endif // __ENEMY_H__

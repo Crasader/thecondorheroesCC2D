@@ -71,6 +71,12 @@ void JSonHeroManager::readFile(int indexHero)
 
 int JSonHeroManager::getMaxScoreLevelX(int level)
 {
-	assert(level > 0 && level < 20);
+	assert(level > 0 && level <= 15);
 	return jsonDoc["maxScoreLevel"][0][("maxScoreLevel_" + StringUtils::format("%i", level)).c_str()].GetInt();
+}
+
+string JSonHeroManager::getTipAtX(int index)
+{
+	assert(index > 0 && index <= 10);
+	return jsonDoc["tip"][0][("tip_" + StringUtils::format("%i", index)).c_str()].GetString();
 }

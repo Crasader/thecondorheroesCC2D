@@ -28,9 +28,8 @@ ChimDieu * ChimDieu::create(spSkeletonData * data) {
 
 void ChimDieu::updateMe(float dt) {
 	if (body != nullptr) {
-		this->setPositionX(body->GetPosition().x * PTM_RATIO);
-		this->setPositionY(body->GetPosition().y * PTM_RATIO - 100.0f / PTM_RATIO);
-		this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
+		this->setPositionX(body->GetPosition().x * PTM_RATIO + this->getPositionZ());
+		this->setPositionY(body->GetPosition().y * PTM_RATIO);
 	}
 	else
 		return;
@@ -92,8 +91,8 @@ void ChimDieu::updateMe(float dt) {
 void ChimDieu::initCirclePhysic(b2World * world, Point pos) {
 	b2CircleShape circle_shape;
 	//circle_shape.m_radius = this->getBoundingBox().size.height / 2 / PTM_RATIO;
-	this->getBoundingBox().size.height > this->getBoundingBox().size.width ? circle_shape.m_radius = this->getBoundingBox().size.width / 6 / PTM_RATIO :
-		circle_shape.m_radius = this->getBoundingBox().size.height / 6 / PTM_RATIO;
+	this->getBoundingBox().size.height > this->getBoundingBox().size.width ? circle_shape.m_radius = this->getBoundingBox().size.width / 8 / PTM_RATIO :
+		circle_shape.m_radius = this->getBoundingBox().size.height / 8 / PTM_RATIO;
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 0.0f;
 	fixtureDef.friction = 0.5f;
@@ -129,6 +128,7 @@ void ChimDieu::flyDown(b2Vec2 p_b2v2Velocity) {
 	this->isUp = false;
 	this->isDown = true;
 	this->isAbleToDropHero = false;
+	this->changeBodyMaskBits(BITMASK_FLOOR);
 }
 
 void ChimDieu::flyAway() {

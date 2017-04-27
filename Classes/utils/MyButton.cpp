@@ -12,7 +12,8 @@ MyButton * MyButton::create(string file_name_main, string file_name_CoolDown, Po
 	mNode->main->setType(ProgressTimer::Type::RADIAL);
 	mNode->main->setPercentage(100.0f);
 
-	mNode->setPosition(pos);
+	auto originX = Director::getInstance()->getVisibleOrigin().x;
+	mNode->setPosition(originX + pos.x, pos.y);
 
 	mNode->main->setPosition(mNode->getContentSize() / 2);
 	mNode->addChild(mNode->main);

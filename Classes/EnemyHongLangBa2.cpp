@@ -61,8 +61,8 @@ void EnemyHongLangBa2::attack()
 	enemyDarts->setRotation(180 - angle / PI * 180);
 	enemyDarts->initCirclePhysic(this->getB2Body()->GetWorld(), this->getBoneLocation("bone32") + this->getParent()->getPosition());
 
-	float vx = SCREEN_SIZE.width / 3 / PTM_RATIO * cosf(angle);
-	float vy = SCREEN_SIZE.width / 3 / PTM_RATIO * sinf(angle);
+	float vx = SCREEN_SIZE.width / 1.9f / PTM_RATIO * cosf(angle);
+	float vy = SCREEN_SIZE.width / 1.9f / PTM_RATIO * sinf(angle);
 
 	enemyDarts->getB2Body()->SetLinearVelocity(b2Vec2(vx, vy));
 }
@@ -134,13 +134,14 @@ void EnemyHongLangBa2::updateMe(BaseHero* hero)
 	controlAttack++;
 
 	if (hero->getPositionX() < this->getPositionX() + this->getParent()->getPositionX() && 
-		hero->getPositionY() + SCREEN_SIZE.height * 0.7f > this->getPositionY() &&
-		hero->getPositionY() - SCREEN_SIZE.height * 0.7f < this->getPositionY()) {
+		hero->getPositionX() > this->getPositionX() + this->getParent()->getPositionX() - SCREEN_SIZE.width * 0.6f &&
+		hero->getPositionY() + SCREEN_SIZE.height * 0.33f > this->getPositionY() &&
+		hero->getPositionY() - SCREEN_SIZE.height * 0.33f < this->getPositionY()) {
 
 		Vec2 vector = Vec2(hero->getPosition() - (this->getPosition() + this->getParent()->getPosition()));
 		angle = vector.getAngle();
 		
-		if (controlAttack > 120) {
+		if (controlAttack > 120 && !hero->getIsDriverEagle()) {
 			if (this->body != nullptr) {
 				if (!this->body->GetWorld()->IsLocked()) {
 					controlAttack = 0;	// 2 giay 1 nhat

@@ -77,7 +77,7 @@ void EnemyTNB::die()
 
 void EnemyTNB::updateMe(BaseHero* hero)
 {
-	BaseEnemy::updateMe(hero);
+	//BaseEnemy::updateMe(hero);
 	if (this->getIsDie() && this->getB2Body() != nullptr) {
 		this->die();
 	}

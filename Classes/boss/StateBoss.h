@@ -1,59 +1,60 @@
-#ifndef __STATE_BOSS1_H__
-#define __STATE_BOSS1_H__
+#ifndef __STATE_BOSS_H__
+#define __STATE_BOSS_H__
 
 class EnemyBoss1;
 
-class StateBoss1
+
+class StateBoss
 {
 public:
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
-	StateBoss1();
-	~StateBoss1();
+	StateBoss();
+	~StateBoss();
 	virtual void enter(EnemyBoss1 *boss);
 	virtual void execute(EnemyBoss1 *boss) = 0;
 	
 };
 
-class Boss1Idling : public StateBoss1 {
+class BossIdling : public StateBoss {
 public:
-	Boss1Idling();
-	~Boss1Idling();
+	BossIdling();
+	~BossIdling();
 	
 	void enter(EnemyBoss1 *boss);
 	void execute(EnemyBoss1 *boss);
 };
 
-class Boss1Attacking1 : public StateBoss1 {
+class BossAttacking1 : public StateBoss {
 public:
-	Boss1Attacking1();
-	~Boss1Attacking1();
+	BossAttacking1();
+	~BossAttacking1();
 	
 	void enter(EnemyBoss1 *boss);
 	void execute(EnemyBoss1 *boss) ;
 };
 
-class Boss1Attacking2 : public StateBoss1 {
+class BossAttacking2 : public StateBoss {
 public:
-	Boss1Attacking2();
-	~Boss1Attacking2();
+	BossAttacking2();
+	~BossAttacking2();
 	
 	void enter(EnemyBoss1 *boss);
 	void execute(EnemyBoss1 *boss);
 };
 
-class Boss1Stupiding : public StateBoss1 {
+class BossStupiding : public StateBoss {
 public:
-	Boss1Stupiding();
-	~Boss1Stupiding();
+	BossStupiding();
+	~BossStupiding();
 
 	void enter(EnemyBoss1 *boss);
 	void execute(EnemyBoss1 *boss);
 };
 
-class Boss1FixingStupid : public StateBoss1 {
+class BossFixingStupid : public StateBoss {
 public:
-	Boss1FixingStupid();
-	~Boss1FixingStupid();
+	BossFixingStupid();
+	~BossFixingStupid();
 
 	void enter(EnemyBoss1 *boss);
 	void execute(EnemyBoss1 *boss);
@@ -61,10 +62,10 @@ public:
 };
 
 
-class Boss1Die : public StateBoss1 {
+class BossDie : public StateBoss {
 public:
-	Boss1Die();
-	~Boss1Die();
+	BossDie();
+	~BossDie();
 
 	void enter(EnemyBoss1 *boss);
 	void execute(EnemyBoss1 *boss);

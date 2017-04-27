@@ -18,6 +18,7 @@ EnemyBoss1::EnemyBoss1(string jsonFile, string atlasFile, float scale) :BaseEnem
 	realtimeVec = Vec2(SCREEN_SIZE.width / 2.3f, SCREEN_SIZE.height / 10);
 	realMoveVelocity = Vec2::ZERO;
 	exxp = nullptr;
+	randAt2 = 1;
 	//lockState = false;
 }
 
@@ -26,9 +27,10 @@ EnemyBoss1 * EnemyBoss1::create(string jsonFile, string atlasFile, float scale)
 	EnemyBoss1* boss = new EnemyBoss1(jsonFile, atlasFile, scale);
 	boss->setAnimation(0, "idle", true);
 	boss->update(0.0f);
-	boss->state = new Boss1Idling();
+	boss->state = new BossIdling();
 	boss->setTag(TAG_BOSS);
 	boss->scaleBoss = scale;
+	boss->setLevelBoss(1);
 	return boss;
 }
 
@@ -76,7 +78,7 @@ void EnemyBoss1::die()
 			this->clearTracks();
 			this->setAnimation(0, "injured-red", false);
 			this->setToSetupPose();
-			this->changeState(new Boss1Die());
+			this->changeState(new BossDie());
 		}
 		if (health <= 0) {
 			spHp->setVisible(false);
@@ -328,7 +330,7 @@ bool EnemyBoss1::checkStop()
 	return false;
 }
 
-void EnemyBoss1::changeState(StateBoss1 * state)
+void EnemyBoss1::changeState(StateBoss * state)
 {
 	auto tmp = this->state;
 	this->state = state;

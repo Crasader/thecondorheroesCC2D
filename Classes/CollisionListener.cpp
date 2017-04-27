@@ -148,7 +148,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		auto enemy = sA->getTag() == TAG_BOSS ? (EnemyBoss1 *)sA : (EnemyBoss1 *)sB;
 
 		if (enemy->getControlState() < 0)
-			enemy->changeState(new Boss1Attacking1());
+			enemy->changeState(new BossAttacking1());
 
 	}
 

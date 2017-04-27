@@ -4,7 +4,6 @@
 #include "layer/SelectStageScene.h"
 #include "layer/Hud.h"
 #include "layer/LoadingLayer.h"
-
 #include "manager/RefManager.h"
 #include "manager/SkeletonManager.h"
 #include "manager/AudioManager.h"
@@ -54,6 +53,7 @@ bool GameScene::init(int stage, int map, int haveboss, int charId)
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	isModeDebug = false;
+	changebg = 0;
 
 	indexOfNextMapBoss = -1;
 	this->stage = stage;
@@ -479,11 +479,11 @@ void GameScene::heroGetOffEagle() {
 
 void GameScene::update(float dt)
 {
-
+	
 	updateB2World(dt);
 	listener();
 	updateLayer();
-
+	updateChangeBg();
 	if (m_fMultiKillsCounterTime > 0.0f) {
 		m_fMultiKillsCounterTime -= dt;
 	}
@@ -728,15 +728,27 @@ void GameScene::createInfiniteNode()
 		background->addChild(moon, 2, Vec2(0, 1), Vec2(pos.x, pos.y - SCREEN_SIZE.height / 2));
 	}
 
+	auto changebgGR = tmx_map->getObjectGroup("changebg");
+	if (changebgGR) {
+		auto object = changebgGR->getObject("changebg");
+		auto pos = Point(object["x"].asFloat()*tmx_map->getScale(), object["y"].asFloat()*tmx_map->getScale());
+		//auto moon = Sprite::create("moon.png");
+		//moon->setScale(SCREEN_SIZE.height / 4 / moon->getContentSize().height);
+		//background->addChild(moon, 2, Vec2(0, 1), Vec2(pos.x, pos.y - SCREEN_SIZE.height / 2));
+		changebg = pos.x;
+	}
+
 	auto bg2_1 = Sprite::create(StringUtils::format("Map/map%d/bg%d_2.png", stage, map));
 	//auto bg2_1 = Sprite::create("moon.png");
 	bg2_1->setScale(SCREEN_SIZE.width / (bg2_1->getContentSize().width));
 	bg2_1->setAnchorPoint(Point(0, 0.5f));
+	bg2_1->setTag(21);
 
 	auto bg2_2 = Sprite::create(StringUtils::format("Map/map%d/bg%d_2.png", stage, map));
 	//auto bg2_2 = Sprite::create("moon.png");
 	bg2_2->setScale(SCREEN_SIZE.width / (bg2_2->getContentSize().width));
 	bg2_2->setAnchorPoint(Point(0, 0.5f));
+	bg2_2->setTag(22);
 
 
 	background->addChild(bg1_1, 1, Vec2(0.5f, 1), Vec2(0, 0));
@@ -813,7 +825,7 @@ void GameScene::createGroundForMapBoss()
 	}
 
 	auto groupUnderGround = tmx_mapboss[0]->getObjectGroup("under_ground");
-	if (!groupGround) return;
+	if (!groupUnderGround) return;
 	for (auto child : groupUnderGround->getObjects()) {
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap) + tmx_mapboss[0]->getPosition();
@@ -970,8 +982,23 @@ void GameScene::creatBoss()
 		auto scaleOfEnemy = SCREEN_SIZE.height / 3.0f / 560; // 560 la height cua spine
 		/*auto enemy = EnemyBoss1::create("Animation/Enemy_Boss1/Boss1.json",
 			"Animation/Enemy_Boss1/Boss1.atlas", scaleOfEnemy);*/
-		auto enemy = EnemyBoss1::create("Animation/Enemy_Boss1/Boss1.json",
-			"Animation/Enemy_Boss1/Boss1.atlas", scaleOfEnemy);
+		EnemyBoss1* enemy;
+		switch (stage)
+		{
+		case 1: {
+			 enemy = EnemyBoss1::create("Animation/Enemy_Boss1/Boss1.json",
+				"Animation/Enemy_Boss1/Boss1.atlas", scaleOfEnemy);
+			break;
+		}
+		case 2: {
+			 enemy = EnemyBoss2::create("Animation/Enemy_Boss2/Boss2.json",
+				"Animation/Enemy_Boss2/Boss2.atlas", scaleOfEnemy);
+			break;
+		}
+		default:
+			break;
+		}
+		
 		//auto enemy = EnemyBoss1::create("Effect/exxp.json", "Effect/exxp.atlas", scaleOfEnemy);
 		enemy->setPosition(origin);
 		//enemy->setVisible(false);
@@ -1470,6 +1497,26 @@ void GameScene::updateCamera()
 	background->updatePosition();
 	background2->updatePosition();
 	follow->setPositionY(background->getPositionY());
+}
+
+void GameScene::updateChangeBg()
+{
+	if (changebg > 0) {
+		if (hero->getPositionX() > changebg) {
+			//log("changbgggg");
+			changebg = 0;
+			auto call1 = CallFunc::create([&](){
+				background->removeChildByTag(21);
+			});
+			auto call2 = CallFunc::create([&]() {
+				background->removeChildByTag(22); 
+			});
+			background->getChildByTag(21)->runAction(Sequence::createWithTwoActions(FadeTo::create(5.0f,0),call1));
+			background->getChildByTag(22)->runAction(Sequence::createWithTwoActions(FadeTo::create(5.0f,0), call2));
+			/*background->getChildByTag(21)->runAction(FadeTo::create(5.0f,0));
+			background->getChildByTag(22)->runAction(FadeTo::create(5.0f, 0));*/
+		}
+	}
 }
 
 void GameScene::updateCoin()

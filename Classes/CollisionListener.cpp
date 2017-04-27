@@ -7,7 +7,7 @@
 #include "coin/Coin.h"
 #include "Slash.h"
 #include "manager/RefManager.h"
-#include "boss1/EnemyBoss1.h"
+#include "boss/EnemyBoss1.h"
 #include "item/Item.h"
 
 

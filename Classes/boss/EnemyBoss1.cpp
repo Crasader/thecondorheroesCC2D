@@ -156,16 +156,16 @@ void EnemyBoss1::creatHidenSlash(float angle)
 
 void EnemyBoss1::creatHpSprite()
 {
-	auto bloodbg = Sprite::create("Animation/Enemy_Boss1/blood_boss_board.png");
+	auto bloodbg = Sprite::create("UI/blood_boss_board.png");
 
-	spHp = ui::LoadingBar::create("Animation/Enemy_Boss1/blood_boss.png");
+	spHp = ui::LoadingBar::create("UI/blood_boss.png");
 	auto tmp = SCREEN_SIZE.width / 6 / spHp->getContentSize().width;
-	spHp->setScaleX(SCREEN_SIZE.width / 6 / spHp->getContentSize().width);
-	spHp->setScaleY(SCREEN_SIZE.height / 100 / spHp->getContentSize().height);
+	spHp->setScale(SCREEN_SIZE.width / 10 / spHp->getContentSize().width);
+	//spHp->setScaleY(SCREEN_SIZE.height / 100 / spHp->getContentSize().height);
 	spHp->setPosition(Vec2(0, 0));
 	spHp->setPercent(100);
-	bloodbg->setScaleX(spHp->getScaleX());
-	bloodbg->setScaleY(spHp->getScaleY());
+	bloodbg->setScale(spHp->getScaleX());
+	//bloodbg->setScaleY(spHp->getScaleY());
 	bloodbg->setPosition(0,0);
 	this->addChild(bloodbg);
 	this->addChild(spHp);
@@ -182,12 +182,13 @@ void EnemyBoss1::boomboom()
 	exxp->setToSetupPose();
 	exxp->update(0.0f);
 	this->getParent()->addChild(exxp, 100);
-	this->createGold();
-	this->setRealMoveVelocity(Vec2(0, -this->getmoveVelocity().y/3));
+	/*this->createGold();
+	this->setRealMoveVelocity(Vec2(0, -this->getmoveVelocity().y/3));*/
+	//auto vecy = (this->getPositionY() - heroLocation.y)/4;
 	auto callBack = CCCallFunc::create([&]() {
 		createGold();
 
-		this->setRealMoveVelocity(Vec2(0, -this->getmoveVelocity().y/20));
+		this->setRealMoveVelocity(Vec2(0, (this->getPositionY() - heroLocation.y)/2));
 	});
 
 	auto callBack2 = CCCallFunc::create([&]() {

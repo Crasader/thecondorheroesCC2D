@@ -1,4 +1,5 @@
 #include "EnemyTNB.h"
+#include "manager\AudioManager.h"
 
 EnemyTNB::EnemyTNB() : BaseEnemy()
 {
@@ -64,7 +65,7 @@ void EnemyTNB::attack()
 void EnemyTNB::die()
 {
 	BaseEnemy::die();
-
+	AudioManager::playSound(SOUND_TNBDIE);
 	auto world = this->body->GetWorld();
 	world->DestroyBody(this->body);
 	this->body = nullptr;

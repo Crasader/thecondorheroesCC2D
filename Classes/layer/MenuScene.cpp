@@ -927,6 +927,7 @@ void MenuLayer::buttonStartHandle() {
 }
 
 void MenuLayer::buttonBackHanle() {
+	AudioManager::playSound(SOUND_BTCLICK);
 	if (m_nIndexHeroSelected != m_nIndexHeroPicked) {
 		m_nIndexHeroSelected = m_nIndexHeroPicked;
 		REF->pointToCurrentHero(m_nIndexHeroSelected);
@@ -954,17 +955,20 @@ void MenuLayer::buttonBackHanle() {
 }
 
 void MenuLayer::buttonAddLifeHandle() {
+	AudioManager::playSound(SOUND_BTCLICK);
 	m_nLifeNumber += 1;
 	REF->setUpLife(1);
 	initTopMainMenu();
 }
 
 void MenuLayer::buttonAddGoldHandle() {
+	AudioManager::playSound(SOUND_BTCLICK);
 	REF->setUpGoldExplored(10000);
 	initTopMainMenu();
 }
 
 void MenuLayer::buttonAddDiamondHandle() {
+	AudioManager::playSound(SOUND_BTCLICK);
 	REF->setUpDiamondBuy(100);
 	initTopMainMenu();
 }
@@ -974,7 +978,7 @@ void MenuLayer::backFunction() {
 }
 
 void MenuLayer::buttonHeroesHandle() {
-
+	AudioManager::playSound(SOUND_BTCLICK);
 	if (m_nIndexHeroSelected != m_nIndexHeroPicked) {
 		m_nIndexHeroSelected = m_nIndexHeroPicked;
 	}

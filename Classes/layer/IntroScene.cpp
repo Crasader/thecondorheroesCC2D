@@ -74,6 +74,7 @@ bool SceneIntro::init() {
 }
 
 void SceneIntro::goToMainMenuScene(Ref* p_pSender) {
+	AudioManager::playSound(SOUND_BTCLICK);
 	auto _aMainMenuScene = MenuLayer::createScene(); // create main menu scene
 	Director::getInstance()->replaceScene(TransitionFade::create(0.5f, _aMainMenuScene)); // replace current scene by main menu scene, replacing duration is 500ms
 }

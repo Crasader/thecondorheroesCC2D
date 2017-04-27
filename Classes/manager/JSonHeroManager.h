@@ -71,6 +71,8 @@ public:
 	void readFile(int indexHero);
 	int getMaxScoreLevelX(int level);
 
+	// index must be around 1-10
+	string getTipAtX(int index);
 	
 };
 

@@ -93,10 +93,13 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
 		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
 		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
-		auto enemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 || sA->getTag() == TAG_ENEMY_HONGLANGBA1 || sA->getTag() == TAG_ENEMY_TNB || sA->getTag() == TAG_ENEMY_TOONG ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+
+		auto enemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 || sA->getTag() == TAG_ENEMY_HONGLANGBA1 ||
+					sA->getTag() == TAG_ENEMY_TOONG || sA->getTag() == TAG_ENEMY_TNB ? 
+			(BaseEnemy *)sA : (BaseEnemy *)sB;
 
 		enemy->attack();
-		if (!enemy->getIsDie()) {
+		if (!enemy->getIsDie() && !hero->getIsNoDie()) {
 			if (!hero->getIsPriorInjured() 
 				&& hero->getFSM()->previousState != MInjured
 				&& hero->getFSM()->previousState != MDie) {
@@ -126,7 +129,9 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
 
 		auto _aEnemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 || sA->getTag() == TAG_ENEMY_TOANCHAN2
-        || sA->getTag() == TAG_ENEMY_HONGLANGBA1 || sA->getTag() == TAG_ENEMY_HONGLANGBA2 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+        || sA->getTag() == TAG_ENEMY_HONGLANGBA1 || sA->getTag() == TAG_ENEMY_HONGLANGBA2 ||
+			sA->getTag() == TAG_ENEMY_TOONG ?
+			(BaseEnemy *)sA : (BaseEnemy *)sB;
 
 
 		auto parentGameScene = (GameScene*)_aEnemy->getParent()->getParent();
@@ -232,17 +237,19 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		BaseEnemy* sA = (BaseEnemy*)bodyA->GetUserData();
 		BaseEnemy* sB = (BaseEnemy*)bodyB->GetUserData();
 
-		EnemyToanChanStudent *enemy;
+		BaseEnemy *enemy;
 
 		if (sA && sB) {	// sA and sB != nullptr
-
-			enemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 || sA->getTag() == TAG_ENEMY_HONGLANGBA1 ? (EnemyToanChanStudent *)sA : (EnemyToanChanStudent *)sB;
+			enemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 || sA->getTag() == TAG_ENEMY_HONGLANGBA1 ||
+									sA->getTag() == TAG_ENEMY_TOONG || sA->getTag() == TAG_ENEMY_TNB
+				? 
+				(BaseEnemy *)sA : (BaseEnemy *)sB;
 			auto thc = sA->getTag() == TAG_DQ_TIEU_HON_CHUONG ? (TieuHonChuong*)sA : (TieuHonChuong*)sB;
 			if (thc->getTag() == TAG_DQ_TIEU_HON_CHUONG)
 				thc->setIsCollide(true);
 		}
 		else
-			enemy = sA ? (EnemyToanChanStudent *)sA : (EnemyToanChanStudent *)sB;
+			enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 
 		auto parentGameScene = (GameScene*)enemy->getParent()->getParent();
 		parentGameScene->setLastScore(enemy->getExp());
@@ -260,17 +267,19 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		BaseEnemy* sA = (BaseEnemy*)bodyA->GetUserData();
 		BaseEnemy* sB = (BaseEnemy*)bodyB->GetUserData();
 
-		EnemyToanChanStudent2 *enemy;
+		BaseEnemy *enemy;
 
 		if (sA && sB) {		// sA and sB != nullptr
-			enemy = sA->getTag() == TAG_ENEMY_TOANCHAN2 || sA->getTag() == TAG_ENEMY_HONGLANGBA2 ? (EnemyToanChanStudent2 *)sA : (EnemyToanChanStudent2 *)sB;
+			enemy = sA->getTag() == TAG_ENEMY_TOANCHAN2 || sA->getTag() == TAG_ENEMY_HONGLANGBA2
+				?
+				(BaseEnemy *)sA : (BaseEnemy *)sB;
 
 			auto thc = sA->getTag() == TAG_DQ_TIEU_HON_CHUONG ? (TieuHonChuong*)sA : (TieuHonChuong*)sB;
 			if (thc->getTag() == TAG_DQ_TIEU_HON_CHUONG)
 				thc->setIsCollide(true);
 		}
 		else
-			enemy = sA ? (EnemyToanChanStudent2 *)sA : (EnemyToanChanStudent2 *)sB;
+			enemy = sA ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 
 
 		auto parentGameScene = (GameScene*)enemy->getParent()->getParent();
@@ -308,7 +317,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		B2Skeleton* sA = (BaseHero*)bodyA->GetUserData();
 		B2Skeleton* sB = (BaseHero*)bodyB->GetUserData();
 		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
-		if (!hero->getIsPriorInjured() 
+		if (!hero->getIsPriorInjured() && !hero->getIsNoDie()
 			&& hero->getFSM()->previousState != MInjured
 			&& hero->getFSM()->previousState != MDie) {
 			hero->setIsPriorInjured(true);
@@ -491,7 +500,10 @@ void CollisionListener::EndContact(b2Contact * contact)
 		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
 
 		auto _aEnemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 || sA->getTag() == TAG_ENEMY_TOANCHAN2
-        || sA->getTag() == TAG_ENEMY_HONGLANGBA1 || sA->getTag() == TAG_ENEMY_HONGLANGBA2 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+			|| sA->getTag() == TAG_ENEMY_HONGLANGBA1 || sA->getTag() == TAG_ENEMY_HONGLANGBA2 
+			|| sA->getTag() == TAG_ENEMY_TOONG
+			
+			? (BaseEnemy *)sA : (BaseEnemy *)sB;
 
 
 		auto parentGameScene = (GameScene*)_aEnemy->getParent()->getParent();

@@ -210,7 +210,8 @@ void SelectStageLayer::initData()
 	m_nTimeAnchor = REF->getAnchorTime();
 	m_pTopMainMenu = Layer::create();
 	m_pTopMainMenu->setContentSize(Size(m_szVisibleSize.width, m_szVisibleSize.height * 0.1f)); // fill screen width, 10% screen height
-	m_pTopMainMenu->setPosition(m_szVisibleSize.width / 2, m_szVisibleSize.height + m_pTopMainMenu->getContentSize().height / 2);
+	m_pTopMainMenu->setPosition(Director::getInstance()->getVisibleOrigin().x + m_szVisibleSize.width / 2, 
+								m_szVisibleSize.height + m_pTopMainMenu->getContentSize().height / 2);
 	addChild(m_pTopMainMenu, 1);
 	initTopMainMenu();
 

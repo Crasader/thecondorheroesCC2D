@@ -49,7 +49,8 @@ void B2Skeleton::initBoxPhysic(b2World *world, Point pos)
 
 	b2PolygonShape shape;
 	auto size = this->getBoundingBox().size;
-	shape.SetAsBox(size.width / 2 / PTM_RATIO, 0 / PTM_RATIO);
+
+	shape.SetAsBox(size.width / 6 / PTM_RATIO, size.height / 6 / PTM_RATIO);
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 1.0f;
@@ -59,7 +60,7 @@ void B2Skeleton::initBoxPhysic(b2World *world, Point pos)
 
 
 	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
+	bodyDef.type = b2_staticBody;
 	bodyDef.userData = this;		// pass sprite to bodyDef with argument: userData
 
 	bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);
@@ -73,8 +74,8 @@ void B2Skeleton::initCirclePhysic(b2World * world, Point pos)
 {
 	b2CircleShape circle_shape;
 	//circle_shape.m_radius = this->getBoundingBox().size.height / 2 / PTM_RATIO;
-	this->getBoundingBox().size.height > this->getBoundingBox().size.width ? circle_shape.m_radius = this->getBoundingBox().size.width / 2 / PTM_RATIO :
-		circle_shape.m_radius = this->getBoundingBox().size.height / 2 / PTM_RATIO;
+	circle_shape.m_radius = this->getBoundingBox().size.height > this->getBoundingBox().size.width ? this->getBoundingBox().size.width / 2 / PTM_RATIO :
+		this->getBoundingBox().size.height / 2 / PTM_RATIO;
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 0.0f;
 	fixtureDef.friction = 0.5f;

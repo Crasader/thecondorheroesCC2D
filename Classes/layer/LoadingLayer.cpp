@@ -68,10 +68,12 @@ void LoadingLayer::addStuff()
 
 	lbGuide = Label::createWithTTF("Guide here", "fonts/Marker Felt.ttf", 32);
 	lbGuide->setAnchorPoint(Vec2::ZERO);
-	lbGuide->setScale(boardTime->getBoundingBox().size.height / lbGuide->getContentSize().height);
+	lbGuide->setScale(boardTime->getBoundingBox().size.height * 0.6f / lbGuide->getContentSize().height);
 	lbGuide->setPosition(boardTime->getPositionX(), boardTime->getPositionY() - boardTime->getBoundingBox().size.height * 1.3f);
 	addChild(lbGuide);
 
+	int index_tip = rand() % 10 + 1;
+	addGuide(JSHERO->getTipAtX(index_tip));
 
 	doLoading();
 

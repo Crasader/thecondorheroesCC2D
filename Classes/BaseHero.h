@@ -25,6 +25,9 @@ protected:
 	CC_SYNTHESIZE(float, boxHeight, BoxHeight);
 	CC_SYNTHESIZE(float, trueRadiusOfHero, TrueRadiusOfHero);
 
+	// you can not be injured when no die 
+	CC_SYNTHESIZE(bool, isNoDie, IsNoDie);
+
 	CC_SYNTHESIZE(bool, onGround, OnGround);
 	CC_SYNTHESIZE(int, numberOfJump, NumberOfJump);
 	CC_SYNTHESIZE(float, jump_vel, JumpVel);
@@ -43,7 +46,7 @@ protected:
 	CC_SYNTHESIZE(SkeletonAnimation*, smokeRun, SmokeRun);
 	CC_SYNTHESIZE(SkeletonAnimation*, reviveMe, ReviveMe);
 
-	CC_SYNTHESIZE(Sprite*, suctionCoinAni, SuctionCoinAni);
+	CC_SYNTHESIZE(SkeletonAnimation*, suctionCoin, SuctionCoin);
 
 	// stuff here
 	CC_SYNTHESIZE(int, score, Score);
@@ -132,6 +135,7 @@ public:
 	void smokeLandingAni();
 	void smokeRunAni();
 	void reviveAni();
+	void suctionAni();
 
 	StateMachine* getFSM();
 };

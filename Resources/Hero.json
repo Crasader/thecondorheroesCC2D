@@ -19,6 +19,21 @@
     }
   ],
 
+   "tip": [
+    {
+      "tip_1": "Can jump again when  you in the air",
+      "tip_2": "Slash a Gold Bag to take a lot of Gold",
+      "tip_3": "Magnet will automatic collect Gold on your road",
+      "tip_4": "After reborn, you will clear all enemy you can see",
+      "tip_5": "Don't let fall in a abyss on map",
+      "tip_6": "Let's call Cordon when you have scanty of health",
+      "tip_7": "Buy Heart item to increase health",
+      "tip_8": "You can take some Gold after complete a quest",
+      "tip_9": "You can exchange Gold by Diamond",
+      "tip_10": "Upgrade a skill will make it less time of coundown"
+    }
+  ],
+
   "hero": [
     {
       "key": "123456789abc",

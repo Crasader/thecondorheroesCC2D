@@ -12,7 +12,7 @@ BaseHero::BaseHero(string jsonFile, string atlasFile, float scale) : B2Skeleton(
 	isDriverEagle = false;
 	currentRunDis = 0.0f;
 	preRunDis = 0.0f;
-
+	isNoDie = false;
 	dieHard = 1;
 	coinRatio = 1;
 	createMapItem();
@@ -64,6 +64,7 @@ void BaseHero::addStuff()
 	smokeLand = new SkeletonAnimation("Effect/smoke-landing.json", "Effect/smoke-landing.atlas", scale / 2);
 	smokeRun = new SkeletonAnimation("Effect/smoke-run.json", "Effect/smoke-run.atlas", scale);
 	reviveMe = new SkeletonAnimation("Effect/revive.json", "Effect/revive.atlas", scale / 2);
+	suctionCoin = new SkeletonAnimation("Effect/effect_magnet.json", "Effect/effect_magnet.atlas", scale * 1.43f);
 
 	activeSkill->setVisible(false);		activeSkill->update(0.0f);
 	slashBreak->setVisible(false);		slashBreak->update(0.0f);
@@ -71,39 +72,28 @@ void BaseHero::addStuff()
 	smokeLand->setVisible(false);		smokeLand->update(0.0f);
 	smokeRun->setVisible(false);		smokeRun->update(0.0f);
 	reviveMe->setVisible(false);		reviveMe->update(0.0f);
+	suctionCoin->setVisible(false);		suctionCoin->update(0.0f);
 
 
 	activeSkill->setPosition(this->getContentSize().width / 2, 0);
 	smokeLand->setPosition(this->getContentSize().width / 2, 0);
 	smokeRun->setPosition(this->getContentSize().width / 2, 0);
+	suctionCoin->setPosition(this->getContentSize().width / 2, 0);
+
 
 	activeSkillAni();
 	smokeRunAni();
+	suctionAni();
 
 	addChild(activeSkill);
 	addChild(smokeLand);
 	addChild(smokeRun);
+	addChild(suctionCoin);
 
 	this->getParent()->addChild(slashBreak, ZORDER_SMT);
 	this->getParent()->addChild(smokeJumpX2, ZORDER_SMT);
 	this->getParent()->addChild(reviveMe, ZORDER_SMT);
-
-	// magnet effect
-	suctionCoinAni = Sprite::createWithSpriteFrameName("effect_namcham_00.png");
-	suctionCoinAni->setScale(this->getTrueRadiusOfHero() * 4 / suctionCoinAni->getContentSize().height);
-	suctionCoinAni->setPosition(this->getContentSize().width / 2  + this->getTrueRadiusOfHero() / 2, this->getTrueRadiusOfHero());
-	suctionCoinAni->setVisible(false);
-	Vector <SpriteFrame*> aniframes;
-	for (int i = 0; i < 4; ++i) {
-		string frameName = StringUtils::format("effect_namcham_0%d.png", i);
-		aniframes.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName));
-	}
-
-	auto animation = Animation::createWithSpriteFrames(aniframes, 0.08f);
-	auto animate = Animate::create(animation);
-	suctionCoinAni->runAction(RepeatForever::create(animate));
-
-	addChild(suctionCoinAni);
+	
 }
 
 void BaseHero::activeSkillAni()
@@ -148,6 +138,12 @@ void BaseHero::reviveAni()
 	reviveMe->setToSetupPose();
 }
 
+void BaseHero::suctionAni()
+{
+	suctionCoin->clearTracks();
+	suctionCoin->addAnimation(0, "effect_magnet", true);
+	suctionCoin->setToSetupPose();
+}
 
 
 void BaseHero::createPool()
@@ -343,8 +339,8 @@ void BaseHero::updateMapItem()
 			checkItem[i] = value;
 		}
 		
-		if (suctionCoinAni->isVisible() && checkItem[KEY_ITEM_MAGNET] <= 0) {
-			suctionCoinAni->setVisible(false);
+		if (suctionCoin->isVisible() && checkItem[KEY_ITEM_MAGNET] <= 0) {
+			suctionCoin->setVisible(false);
 		}
 		
 		if (coinRatio != 1 && checkItem[KEY_ITEM_DOUPLE_COIN] <= 0) {

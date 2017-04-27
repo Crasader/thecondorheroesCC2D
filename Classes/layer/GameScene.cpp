@@ -828,7 +828,7 @@ void GameScene::createEnemyToanChanStudent2(MyLayer * layer, Vec2 pos)
 		}
 		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
 		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN2);
-		enemy->changeBodyMaskBits( BITMASK_SWORD);
+		enemy->changeBodyMaskBits( BITMASK_HERO|BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
 
 		enemy->listener();
 	}
@@ -1373,11 +1373,13 @@ void GameScene::updateCamera()
 		{
 			background->setPositionY(SCREEN_SIZE.height / 2);
 		}*/
-		if (hero->getPositionY() > background->getPositionY() + SCREEN_SIZE.height / 4) {
-			background->up(hero->getB2Body()->GetLinearVelocity().y*PTM_RATIO);
-		}
-		else if (hero->getPositionY() < background->getPositionY() - SCREEN_SIZE.height / 4) {
-			background->down(hero->getB2Body()->GetLinearVelocity().y*PTM_RATIO);
+		if (hero->getB2Body()) {
+			if (hero->getPositionY() > background->getPositionY() + SCREEN_SIZE.height / 6 && hero->getB2Body()->GetLinearVelocity().y  >0) {
+				background->up(hero->getPosition());
+			}
+			else if (hero->getPositionY() < background->getPositionY() - SCREEN_SIZE.height / 6 && hero->getB2Body()->GetLinearVelocity().y  < 0) {
+				background->down(hero->getPosition());
+			}
 		}
 
 	}

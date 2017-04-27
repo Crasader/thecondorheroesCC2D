@@ -93,7 +93,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
 		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
 		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
-		auto enemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 || sA->getTag() == TAG_ENEMY_HONGLANGBA1 ? (BaseEnemy *)sA : (BaseEnemy *)sB;
+		auto enemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 || sA->getTag() == TAG_ENEMY_HONGLANGBA1 || sA->getTag() == TAG_ENEMY_TNB || sA->getTag() == TAG_ENEMY_TOONG ? (BaseEnemy *)sA : (BaseEnemy *)sB;
 
 		enemy->attack();
 		if (!enemy->getIsDie()) {

@@ -54,6 +54,12 @@ public:
 	void listener();
 	bool checkStop();
 	void changeState(StateBoss *state);
+	void doAttack1();
+	void doAttack2();
+	virtual void playSoundAttack1();
+	virtual void playSoundAttack2();
+	virtual void playSoundHit();
+	virtual void playSoundDie();
 	// void initCirclePhysic(b2World *world, Point pos);
 };
 

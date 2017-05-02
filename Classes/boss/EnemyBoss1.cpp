@@ -44,7 +44,7 @@ void EnemyBoss1::idle()
 
 void EnemyBoss1::attack()
 {
-	AudioManager::playSound(SOUND_BOSS1CHEM);
+	this->playSoundAttack1();
 	this->isNodie = true;
 	this->clearTracks();
 	this->setAnimation(0, "attack", false);
@@ -53,7 +53,7 @@ void EnemyBoss1::attack()
 
 void EnemyBoss1::attack2()
 {
-	AudioManager::playSound(SOUND_BOSS1SKILL);
+	this->playSoundAttack1();
 	this->isNodie = true;
 	this->clearTracks();
 	this->setAnimation(0, "attack2", false);
@@ -66,14 +66,14 @@ void EnemyBoss1::die()
 	if (!isDie && !isNodie) {
 		health--;
 		if (health > 0) {
-			AudioManager::playSound(SOUND_ENEMYHIT);
+			this->playSoundHit();
 			this->isNodie = true;
 			this->clearTracks();
 			this->setAnimation(0, "injured", false);
 			this->setToSetupPose();
 		}
 		else {
-			AudioManager::playSound(SOUND_BOSS1DIE);
+			this->playSoundDie();
 			this->isNodie = true;
 			this->clearTracks();
 			this->setAnimation(0, "injured-red", false);
@@ -336,5 +336,93 @@ void EnemyBoss1::changeState(StateBoss * state)
 	this->state = state;
 	state->enter(this);
 	delete tmp;
+}
+
+void EnemyBoss1::doAttack1()
+{
+	this->schedule([&](float dt) {
+		log("doattack1");
+		this->setControlState(this->getControlState() + 1);
+		if (this->getControlState() % 20 == 0) {
+			if (this->getControlAttack() == 0) {
+				this->changeState(new BossFixingStupid());
+				//delete this;
+				this->unschedule("bossattack1");
+			}
+			this->attack();
+			this->setControlAttack(this->getControlAttack() - 1);
+		}
+	}, 0.1f, "bossattack1");
+}
+
+void EnemyBoss1::doAttack2()
+{
+	this->schedule([&](float dt) {
+		log("do attack2");
+		this->setControlState(this->getControlState() + 1);
+		if (this->getControlState() == 1) {
+			this->attack2();
+		}
+		switch (this->getRandAt2())
+		{
+		case 0: {
+			if (this->getControlState() == 1 || this->getControlState() == 3 || this->getControlState() == 5) {
+				auto posHero = this->heroLocation;
+				auto posBoss = this->getPosition();
+				auto vecBossToHero = posHero - posBoss;
+				this->creatSlash(vecBossToHero.getAngle());
+			}
+			break;
+		}
+		case 1: {
+			if (this->getControlState() == 2 || this->getControlState() == 4) {
+				auto posHero = this->heroLocation;
+				auto posBoss = this->getPosition();
+				auto vecBossToHero = posHero - posBoss;
+				this->creatSlash(vecBossToHero.getAngle() - PI / 24);
+				this->creatSlash(vecBossToHero.getAngle());
+				this->creatSlash(vecBossToHero.getAngle() + PI / 24);
+			}
+			break;
+		}
+		case 2: {
+			break;
+		}
+		default:
+			if (this->getControlState() == 1 || this->getControlState() == 3 || this->getControlState() == 5) {
+				auto posHero = this->heroLocation;
+				auto posBoss = this->getPosition();
+				auto vecBossToHero = posHero - posBoss;
+				this->creatSlash(vecBossToHero.getAngle());
+			}
+			break;
+		}
+		//if (boss->getLevelBoss() == 1) {
+
+		if (this->getControlState() >= 50) {
+			this->changeState(new BossStupiding());
+			this->unschedule("bossattack2");
+		}
+	}, 0.1f, "bossattack2");
+}
+
+void EnemyBoss1::playSoundAttack1()
+{
+	AudioManager::playSound(SOUND_BOSS1CHEM);
+}
+
+void EnemyBoss1::playSoundAttack2()
+{
+	AudioManager::playSound(SOUND_BOSS1SKILL);
+}
+
+void EnemyBoss1::playSoundHit()
+{
+	AudioManager::playSound(SOUND_ENEMYHIT);
+}
+
+void EnemyBoss1::playSoundDie()
+{
+	AudioManager::playSound(SOUND_BOSS1DIE);
 }
 

@@ -864,6 +864,10 @@ void GameScene::createEnemyToanChanStudent(MyLayer * layer, Vec2 pos)
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
 		enemy->resumeSchedulerAndActions();
+		enemy->clearTracks();
+		enemy->setAnimation(0, "idle", true);
+		enemy->setToSetupPose();
+		enemy->update(0.0f);
 		//layer->addChild(enemy, ZORDER_ENEMY);
 		if (enemy->getB2Body()) {
 			world->DestroyBody(enemy->getB2Body());
@@ -884,6 +888,10 @@ void GameScene::createEnemyToanChanStudent2(MyLayer * layer, Vec2 pos)
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
 		enemy->resumeSchedulerAndActions();
+		enemy->clearTracks();
+		enemy->setAnimation(0, "idle", true);
+		enemy->setToSetupPose();
+		enemy->update(0.0f);
 		//layer->addChild(enemy, ZORDER_ENEMY);
 		if (enemy->getB2Body()) {
 			world->DestroyBody(enemy->getB2Body());
@@ -903,6 +911,10 @@ void GameScene::createEnemyTNB(MyLayer * layer, Vec2 pos)
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
 		enemy->resumeSchedulerAndActions();
+		enemy->clearTracks();
+		enemy->setAnimation(0, "idle", true);
+		enemy->setToSetupPose();
+		enemy->update(0.0f);
 		//layer->addChild(enemy, ZORDER_ENEMY);
 		if (enemy->getB2Body()) {
 			world->DestroyBody(enemy->getB2Body());
@@ -925,6 +937,10 @@ void GameScene::createEnemyHongLangBa(MyLayer * layer, Vec2 pos) {
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
 		enemy->resumeSchedulerAndActions();
+		enemy->clearTracks();
+		enemy->setAnimation(0, "idle", true);
+		enemy->setToSetupPose();
+		enemy->update(0.0f);
 		//layer->addChild(enemy, ZORDER_ENEMY);
 		if (enemy->getB2Body()) {
 			world->DestroyBody(enemy->getB2Body());
@@ -944,6 +960,10 @@ void GameScene::createEnemyHongLangBa2(MyLayer * layer, Vec2 pos) {
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
 		enemy->resumeSchedulerAndActions();
+		enemy->clearTracks();
+		enemy->setAnimation(0, "idle", true);
+		enemy->setToSetupPose();
+		enemy->update(0.0f);
 		//layer->addChild(enemy, ZORDER_ENEMY);
 		if (enemy->getB2Body()) {
 			world->DestroyBody(enemy->getB2Body());
@@ -962,6 +982,10 @@ void GameScene::createEnemyToOng(MyLayer * layer, Vec2 pos) {
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
 		enemy->resumeSchedulerAndActions();
+		enemy->clearTracks();
+		enemy->setAnimation(0, "idle", true);
+		enemy->setToSetupPose();
+		enemy->update(0.0f);
 		if (enemy->getB2Body()) {
 			world->DestroyBody(enemy->getB2Body());
 		}

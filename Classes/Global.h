@@ -133,6 +133,10 @@ using namespace std;
 #define SOUND_BOSS1SKILL						"sound/boss1skill.mp3"
 #define SOUND_BOSS1DIE							"sound/boss1die.mp3"
 
+#define SOUND_BOSS2CHEM							"sound/boss2chem.mp3"
+#define SOUND_BOSS2SKILL						"sound/boss2skill.mp3"
+#define SOUND_BOSS2DIE							"sound/boss2die.mp3"
+
 #define SOUND_COIN								"sound/getcoin.mp3"
 #define SOUND_COINBULLION								"sound/getcoinbullion.mp3"
 #define SOUND_COINBAG								"sound/getcoinbag.mp3"

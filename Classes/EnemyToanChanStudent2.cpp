@@ -99,10 +99,10 @@ void EnemyToanChanStudent2::listener()
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
 
 			this->setVisible(false);
-			this->clearTracks();
+			/*this->clearTracks();
 			this->setAnimation(0, "idle", true);
-			this->setToSetupPose();
-
+			this->setToSetupPose();*/
+			this->pauseSchedulerAndActions();
 		}
 
 	});

@@ -57,3 +57,19 @@ void EnemyBoss2::creatSlash(float angel)
 	slash->setRotation(-angel / PI * 180 + 180);
 	slash->getB2Body()->SetLinearVelocity(slash->getB2Body()->GetLinearVelocity() + this->getB2Body()->GetLinearVelocity());
 }
+
+void EnemyBoss2::playSoundAttack1()
+{
+	AudioManager::playSound(SOUND_BOSS2CHEM);
+}
+
+void EnemyBoss2::playSoundAttack2()
+{
+	AudioManager::playSound(SOUND_BOSS2SKILL);
+}
+
+
+void EnemyBoss2::playSoundDie()
+{
+	AudioManager::playSound(SOUND_BOSS2DIE);
+}

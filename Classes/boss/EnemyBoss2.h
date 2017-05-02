@@ -12,6 +12,9 @@ public:
 
 	void createPool();
 	void creatSlash(float angel);
+	void playSoundAttack1();
+	void playSoundAttack2();
+	void playSoundDie();
 };
 
 #endif // __ENEMY_H__

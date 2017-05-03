@@ -205,6 +205,7 @@ void BaseHero::injured()
 
 void BaseHero::revive()
 {
+	AudioManager::playSound(SOUND_MCREVIVE);
 }
 
 void BaseHero::die(Point posOfCammera)

@@ -22,5 +22,7 @@ public:
 	// for music
 	static int playMusic(string keysound);
 	static void stopMusic();
+
+	static void stopSoundandMusic();
 };
 #endif // __TANK_SOLDIER_H__

@@ -18,6 +18,7 @@ EnemyBoss1::EnemyBoss1(string jsonFile, string atlasFile, float scale) :BaseEnem
 	realtimeVec = Vec2(SCREEN_SIZE.width / 2.3f, SCREEN_SIZE.height / 10);
 	realMoveVelocity = Vec2::ZERO;
 	exxp = nullptr;
+	randAt2 = 1;
 	//lockState = false;
 }
 
@@ -26,9 +27,10 @@ EnemyBoss1 * EnemyBoss1::create(string jsonFile, string atlasFile, float scale)
 	EnemyBoss1* boss = new EnemyBoss1(jsonFile, atlasFile, scale);
 	boss->setAnimation(0, "idle", true);
 	boss->update(0.0f);
-	boss->state = new Boss1Idling();
+	boss->state = new BossIdling();
 	boss->setTag(TAG_BOSS);
 	boss->scaleBoss = scale;
+	boss->setLevelBoss(1);
 	return boss;
 }
 
@@ -42,7 +44,7 @@ void EnemyBoss1::idle()
 
 void EnemyBoss1::attack()
 {
-	AudioManager::playSound(SOUND_BOSS1CHEM);
+	this->playSoundAttack1();
 	this->isNodie = true;
 	this->clearTracks();
 	this->setAnimation(0, "attack", false);
@@ -51,7 +53,7 @@ void EnemyBoss1::attack()
 
 void EnemyBoss1::attack2()
 {
-	AudioManager::playSound(SOUND_BOSS1SKILL);
+	this->playSoundAttack1();
 	this->isNodie = true;
 	this->clearTracks();
 	this->setAnimation(0, "attack2", false);
@@ -64,19 +66,19 @@ void EnemyBoss1::die()
 	if (!isDie && !isNodie) {
 		health--;
 		if (health > 0) {
-			AudioManager::playSound(SOUND_ENEMYHIT);
+			this->playSoundHit();
 			this->isNodie = true;
 			this->clearTracks();
 			this->setAnimation(0, "injured", false);
 			this->setToSetupPose();
 		}
 		else {
-			AudioManager::playSound(SOUND_BOSS1DIE);
+			this->playSoundDie();
 			this->isNodie = true;
 			this->clearTracks();
 			this->setAnimation(0, "injured-red", false);
 			this->setToSetupPose();
-			this->changeState(new Boss1Die());
+			this->changeState(new BossDie());
 		}
 		if (health <= 0) {
 			spHp->setVisible(false);
@@ -156,16 +158,16 @@ void EnemyBoss1::creatHidenSlash(float angle)
 
 void EnemyBoss1::creatHpSprite()
 {
-	auto bloodbg = Sprite::create("Animation/Enemy_Boss1/blood_boss_board.png");
+	auto bloodbg = Sprite::create("UI/blood_boss_board.png");
 
-	spHp = ui::LoadingBar::create("Animation/Enemy_Boss1/blood_boss.png");
+	spHp = ui::LoadingBar::create("UI/blood_boss.png");
 	auto tmp = SCREEN_SIZE.width / 6 / spHp->getContentSize().width;
-	spHp->setScaleX(SCREEN_SIZE.width / 6 / spHp->getContentSize().width);
-	spHp->setScaleY(SCREEN_SIZE.height / 100 / spHp->getContentSize().height);
+	spHp->setScale(SCREEN_SIZE.width / 10 / spHp->getContentSize().width);
+	//spHp->setScaleY(SCREEN_SIZE.height / 100 / spHp->getContentSize().height);
 	spHp->setPosition(Vec2(0, 0));
 	spHp->setPercent(100);
-	bloodbg->setScaleX(spHp->getScaleX());
-	bloodbg->setScaleY(spHp->getScaleY());
+	bloodbg->setScale(spHp->getScaleX());
+	//bloodbg->setScaleY(spHp->getScaleY());
 	bloodbg->setPosition(0,0);
 	this->addChild(bloodbg);
 	this->addChild(spHp);
@@ -182,12 +184,13 @@ void EnemyBoss1::boomboom()
 	exxp->setToSetupPose();
 	exxp->update(0.0f);
 	this->getParent()->addChild(exxp, 100);
-	this->createGold();
-	this->setRealMoveVelocity(Vec2(0, -this->getmoveVelocity().y/3));
+	/*this->createGold();
+	this->setRealMoveVelocity(Vec2(0, -this->getmoveVelocity().y/3));*/
+	//auto vecy = (this->getPositionY() - heroLocation.y)/4;
 	auto callBack = CCCallFunc::create([&]() {
 		createGold();
 
-		this->setRealMoveVelocity(Vec2(0, -this->getmoveVelocity().y/20));
+		this->setRealMoveVelocity(Vec2(0, (this->getPositionY() - heroLocation.y)/2));
 	});
 
 	auto callBack2 = CCCallFunc::create([&]() {
@@ -327,11 +330,99 @@ bool EnemyBoss1::checkStop()
 	return false;
 }
 
-void EnemyBoss1::changeState(StateBoss1 * state)
+void EnemyBoss1::changeState(StateBoss * state)
 {
 	auto tmp = this->state;
 	this->state = state;
 	state->enter(this);
 	delete tmp;
+}
+
+void EnemyBoss1::doAttack1()
+{
+	this->schedule([&](float dt) {
+		log("doattack1");
+		this->setControlState(this->getControlState() + 1);
+		if (this->getControlState() % 20 == 0) {
+			if (this->getControlAttack() == 0) {
+				this->changeState(new BossFixingStupid());
+				//delete this;
+				this->unschedule("bossattack1");
+			}
+			this->attack();
+			this->setControlAttack(this->getControlAttack() - 1);
+		}
+	}, 0.1f, "bossattack1");
+}
+
+void EnemyBoss1::doAttack2()
+{
+	this->schedule([&](float dt) {
+		log("do attack2");
+		this->setControlState(this->getControlState() + 1);
+		if (this->getControlState() == 1) {
+			this->attack2();
+		}
+		switch (this->getRandAt2())
+		{
+		case 0: {
+			if (this->getControlState() == 1 || this->getControlState() == 3 || this->getControlState() == 5) {
+				auto posHero = this->heroLocation;
+				auto posBoss = this->getPosition();
+				auto vecBossToHero = posHero - posBoss;
+				this->creatSlash(vecBossToHero.getAngle());
+			}
+			break;
+		}
+		case 1: {
+			if (this->getControlState() == 2 || this->getControlState() == 4) {
+				auto posHero = this->heroLocation;
+				auto posBoss = this->getPosition();
+				auto vecBossToHero = posHero - posBoss;
+				this->creatSlash(vecBossToHero.getAngle() - PI / 24);
+				this->creatSlash(vecBossToHero.getAngle());
+				this->creatSlash(vecBossToHero.getAngle() + PI / 24);
+			}
+			break;
+		}
+		case 2: {
+			break;
+		}
+		default:
+			if (this->getControlState() == 1 || this->getControlState() == 3 || this->getControlState() == 5) {
+				auto posHero = this->heroLocation;
+				auto posBoss = this->getPosition();
+				auto vecBossToHero = posHero - posBoss;
+				this->creatSlash(vecBossToHero.getAngle());
+			}
+			break;
+		}
+		//if (boss->getLevelBoss() == 1) {
+
+		if (this->getControlState() >= 50) {
+			this->changeState(new BossStupiding());
+			this->unschedule("bossattack2");
+		}
+	}, 0.1f, "bossattack2");
+}
+
+void EnemyBoss1::playSoundAttack1()
+{
+	AudioManager::playSound(SOUND_BOSS1CHEM);
+}
+
+void EnemyBoss1::playSoundAttack2()
+{
+	AudioManager::playSound(SOUND_BOSS1SKILL);
+}
+
+void EnemyBoss1::playSoundHit()
+{
+	AudioManager::playSound(SOUND_ENEMYHIT);
+}
+
+void EnemyBoss1::playSoundDie()
+{
+	AudioManager::playSound(SOUND_BOSS1DIE);
 }
 

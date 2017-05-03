@@ -95,3 +95,8 @@ void AudioManager::stopMusic()
 	experimental::AudioEngine::stop(checkSound);
 	//}
 }
+
+void AudioManager::stopSoundandMusic()
+{
+	experimental::AudioEngine::stopAll();
+}

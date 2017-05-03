@@ -57,38 +57,41 @@ void InfiniteParallaxNode::updatePosition()
 	}
 }
 
-void InfiniteParallaxNode::up(float vecy)
+void InfiniteParallaxNode::up(Vec2 posHero)
 {
-	if (state == FREE ) {
+	//if (state == FREE || state == DOWN) {
 	//	if (vecy > 0) {
 			auto SCREEN_SIZE = Director::getInstance()->getVisibleSize();
-			this->state = UP;
-			auto call = CallFunc::create([&]() {
+			//this->state = UP;
+			/*auto call = CallFunc::create([&]() {
 				this->free();
-			});
-			auto target = Vec2(this->getPositionX(), this->getPositionY() + SCREEN_SIZE.height / 8);
-			//this->runAction(Sequence::createWithTwoActions(EaseIn::create(MoveTo::create(0.5f, target), 2), call));
-			this->runAction(Sequence::createWithTwoActions(MoveTo::create(0.2f, target), call));
-		}
+			});*/
+			//auto target = Vec2(this->getPositionX(), this->getPositionY() + SCREEN_SIZE.height / 6);
+			//this->runAction(Sequence::createWithTwoActions(EaseIn::create(MoveTo::create(0.2f, target), 2), call));
+			//this->runAction(Sequence::createWithTwoActions(MoveTo::create(0.2f, target), call));
+			this->setPositionY(posHero.y - SCREEN_SIZE.height / 6);
+		//}
 //	}
 }
 
-void InfiniteParallaxNode::down(float vecy)
+void InfiniteParallaxNode::down(Vec2 posHero)
 {
-	if (state == FREE ) {
+//	if (state == FREE || state == DOWN) {
 	//	if (vecy < 0) {
 			auto SCREEN_SIZE = Director::getInstance()->getVisibleSize();
-			this->state = DOWN;
-			auto call = CallFunc::create([&]() {
+			//this->state = DOWN;
+			/*auto call = CallFunc::create([&]() {
 				this->free();
-			});
+			});*/
 
-			auto target = Vec2(this->getPositionX(),
+			/*auto target = Vec2(this->getPositionX(),
 				(this->getPositionY() - SCREEN_SIZE.height / 8) <= SCREEN_SIZE.height / 2 ? SCREEN_SIZE.height / 2 :
-				(this->getPositionY() - SCREEN_SIZE.height / 8));
+				(this->getPositionY() - SCREEN_SIZE.height / 8));*/
 			//this->runAction(Sequence::createWithTwoActions(EaseOut::create(MoveTo::create(0.5f, target), 2), call));
-			this->runAction(Sequence::createWithTwoActions(MoveTo::create(0.2f, target), call));
-		}
+			//this->runAction(Sequence::createWithTwoActions(MoveTo::create(0.2f, target), call));
+			if(posHero.y + SCREEN_SIZE.height / 6 > SCREEN_SIZE.height/2)
+			this->setPositionY(posHero.y+SCREEN_SIZE.height/6);
+		//}
 	//}
 }
 

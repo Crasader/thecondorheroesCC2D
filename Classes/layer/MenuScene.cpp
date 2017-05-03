@@ -1118,6 +1118,7 @@ void MenuLayer::buttonStartHandle() {
 }
 
 void MenuLayer::buttonBackHandle() {
+	AudioManager::playSound(SOUND_BTCLICK);
 	if (m_nMenuStatus == 0) {
 		auto _aIntroScene = SceneIntro::createScene();
 		Director::getInstance()->replaceScene(TransitionFade::create(0.3f, _aIntroScene));
@@ -1155,12 +1156,14 @@ void MenuLayer::buttonBackHandle() {
 }
 
 void MenuLayer::buttonAddLifeHandle() {
-	m_nLifeNumber++;
+	AudioManager::playSound(SOUND_BTCLICK);
+	m_nLifeNumber += 1;
 	initTopMainMenu();
 	REF->setUpLife(1);
 }
 
 void MenuLayer::buttonAddGoldHandle() {
+	AudioManager::playSound(SOUND_BTCLICK);
 	showBlurScreen();
 	initBuyGoldAndDiamondBoard();
 
@@ -1217,6 +1220,7 @@ void MenuLayer::buttonAddGoldHandle() {
 }
 
 void MenuLayer::buttonAddDiamondHandle() {
+	AudioManager::playSound(SOUND_BTCLICK);
 	showBlurScreen();
 	initBuyGoldAndDiamondBoard();
 
@@ -1271,6 +1275,16 @@ void MenuLayer::buttonAddDiamondHandle() {
 	}
 
 	/*m_nCurrentDiamond += 100;
+=======
+	AudioManager::playSound(SOUND_BTCLICK);
+	REF->setUpGoldExplored(10000);
+	initTopMainMenu();
+}
+
+void MenuLayer::buttonAddDiamondHandle() {
+	AudioManager::playSound(SOUND_BTCLICK);
+	REF->setUpDiamondBuy(100);
+>>>>>>> 6b0cb0aefc9e0c4173a747a9ecc968b035f6b059
 	initTopMainMenu();
 	REF->setUpDiamondBuy(100);*/
 }
@@ -1342,10 +1356,11 @@ void MenuLayer::buttonQuestHandle() {
 }
 
 void MenuLayer::buttonHeroesHandle() {
-	/*if (m_nIndexHeroSelected != m_nIndexHeroPicked) {
-	m_nIndexHeroSelected = m_nIndexHeroPicked;
+	AudioManager::playSound(SOUND_BTCLICK);
+	if (m_nIndexHeroSelected != m_nIndexHeroPicked) {
+		m_nIndexHeroSelected = m_nIndexHeroPicked;
 	}
-	initBottomHeroMenu();*/
+	initBottomHeroMenu();
 	if (m_nMenuStatus != 2) {
 		m_nMenuStatus = 2;
 		hideMainMenu();

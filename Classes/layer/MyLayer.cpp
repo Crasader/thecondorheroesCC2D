@@ -41,8 +41,9 @@ bool MyLayer::init(TMXTiledMap* tmx_map)
 	{
 		return false;
 	}
+	int max = 5;
 	if (tmx_map->getObjectGroup("wooder")) {
-		wooderPool = MyPool::create(5, TAG_ENEMY_WOODER);
+		wooderPool = MyPool::create(max, TAG_ENEMY_WOODER);
 		for (int i = 0; i < wooderPool->maxPool; i++) {
 			auto tmp = (EnemyWooder*)wooderPool->getObject();
 			tmp->setPosition(0, -SCREEN_SIZE.height);
@@ -52,7 +53,7 @@ bool MyLayer::init(TMXTiledMap* tmx_map)
 		}
 	}
 	if (tmx_map->getObjectGroup("toanchan_student")) {
-		toanchan1Pool = MyPool::create(5, TAG_ENEMY_TOANCHAN1);
+		toanchan1Pool = MyPool::create(max, TAG_ENEMY_TOANCHAN1);
 		for (int i = 0; i < toanchan1Pool->maxPool; i++) {
 			auto tmp = (EnemyToanChanStudent*)toanchan1Pool->getObject();
 			tmp->setPosition(0, -SCREEN_SIZE.height);
@@ -62,7 +63,7 @@ bool MyLayer::init(TMXTiledMap* tmx_map)
 		}
 	}
 	if (tmx_map->getObjectGroup("toanchan_student2")) {
-		toanchan2Pool = MyPool::create(5, TAG_ENEMY_TOANCHAN2);
+		toanchan2Pool = MyPool::create(max, TAG_ENEMY_TOANCHAN2);
 		for (int i = 0; i < toanchan2Pool->maxPool; i++) {
 			auto tmp = (EnemyToanChanStudent2*)toanchan2Pool->getObject();
 			tmp->setPosition(0, -SCREEN_SIZE.height);
@@ -73,7 +74,7 @@ bool MyLayer::init(TMXTiledMap* tmx_map)
 		}
 	}
 	if (tmx_map->getObjectGroup("bee")) {
-		toOngPool = MyPool::create(5, TAG_ENEMY_TOONG);
+		toOngPool = MyPool::create(max, TAG_ENEMY_TOONG);
 		for (int i = 0; i < toOngPool->maxPool; i++) {
 			auto tmp = (EnemyToOng*)toOngPool->getObject();
 			tmp->setPosition(0, -SCREEN_SIZE.height);
@@ -84,7 +85,7 @@ bool MyLayer::init(TMXTiledMap* tmx_map)
 		}
 	}
 	if (tmx_map->getObjectGroup("lms_student lv1")) {
-		hongLangBa1Pool = MyPool::create(5, TAG_ENEMY_HONGLANGBA1);
+		hongLangBa1Pool = MyPool::create(max, TAG_ENEMY_HONGLANGBA1);
 		for (int i = 0; i < hongLangBa1Pool->maxPool; i++) {
 			auto tmp = (EnemyHongLangBa*)hongLangBa1Pool->getObject();
 			tmp->setPosition(0, -SCREEN_SIZE.height);
@@ -95,7 +96,7 @@ bool MyLayer::init(TMXTiledMap* tmx_map)
 		}
 	}
 	if (tmx_map->getObjectGroup("lms_student lv2")) {
-		hongLangBa2Pool = MyPool::create(5, TAG_ENEMY_HONGLANGBA2);
+		hongLangBa2Pool = MyPool::create(max, TAG_ENEMY_HONGLANGBA2);
 		for (int i = 0; i < hongLangBa2Pool->maxPool; i++) {
 			auto tmp = (EnemyHongLangBa2*)hongLangBa2Pool->getObject();
 			tmp->setPosition(0, -SCREEN_SIZE.height);
@@ -106,7 +107,7 @@ bool MyLayer::init(TMXTiledMap* tmx_map)
 		}
 	}
 	if (tmx_map->getObjectGroup("tnb")) {
-		tnbPool = MyPool::create(5, TAG_ENEMY_TNB);
+		tnbPool = MyPool::create(max, TAG_ENEMY_TNB);
 		for (int i = 0; i < tnbPool->maxPool; i++) {
 			auto tmp = (EnemyTNB*)tnbPool->getObject();
 			tmp->setPosition(0, -SCREEN_SIZE.height);

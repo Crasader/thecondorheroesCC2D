@@ -75,6 +75,7 @@ void EnemyHongLangBa::initCirclePhysic(b2World * world, Point pos)
 {
 	b2CircleShape circle_shape;
 	circle_shape.m_radius = this->getBoundingBox().size.height / 2 / PTM_RATIO;
+	//log("hlb1: boundingbox height: %f", this->getBoundingBox().size.height);
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 0.0f;
@@ -126,9 +127,10 @@ void EnemyHongLangBa::listener()
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
 			//this->removeFromParentAndCleanup(true);
 			this->setVisible(false);
-			this->clearTracks();
+			/*this->clearTracks();
 			this->setAnimation(0, "idle", true);
-			this->setToSetupPose();
+			this->setToSetupPose();*/
+			this->pauseSchedulerAndActions();
 		}
 
 	});

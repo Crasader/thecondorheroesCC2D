@@ -118,7 +118,9 @@
   <object id="119" name="toanchan1" x="15036" y="471" width="36" height="128"/>
  </objectgroup>
  <objectgroup name="coin_parabol">
+  <object id="29" name="coin_parabol" x="11644" y="452" width="400" height="20"/>
   <object id="73" name="coin_parabol" x="12362" y="452" width="400" height="20"/>
+  <object id="75" name="coin_parabol" x="13082" y="454" width="400" height="20"/>
  </objectgroup>
  <objectgroup name="coin_zigzag">
   <object id="83" name="coin_zigziag" x="17044" y="648" width="792" height="40"/>
@@ -138,11 +140,17 @@
   <object id="16" name="coin_straight" x="479" y="482" width="640" height="28"/>
   <object id="25" name="coin_straight" x="6320" y="536" width="640" height="16"/>
   <object id="59" name="coin_straight" x="475" y="398" width="644" height="28"/>
+  <object id="60" name="coin_straight" x="475" y="322" width="644" height="28"/>
   <object id="66" name="coin_straight" x="6320" y="458" width="640" height="16"/>
+  <object id="67" name="coin_straight" x="6320" y="378" width="640" height="16"/>
   <object id="72" name="coin_straight" x="12240" y="540" width="636" height="12"/>
   <object id="74" name="coin_straight" x="12964" y="540" width="636" height="12"/>
   <object id="84" name="coin_straight" x="18804" y="540" width="636" height="20"/>
   <object id="85" name="coin_straight" x="19040" y="452" width="636" height="20"/>
+  <object id="86" name="coin_straight" x="19281" y="368" width="636" height="20"/>
+  <object id="93" name="coin_straight" x="22084" y="544" width="632" height="16"/>
+  <object id="94" name="coin_straight" x="22800" y="538" width="632" height="16"/>
+  <object id="95" name="coin_straight" x="23520" y="542" width="632" height="16"/>
   <object id="110" name="coin_straight" x="31200" y="540" width="644" height="20"/>
  </objectgroup>
  <objectgroup name="coin_circle">

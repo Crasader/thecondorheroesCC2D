@@ -15,6 +15,7 @@ Scene * SelectStageLayer::createScene(int charId)
 
 bool SelectStageLayer::init(int charId)
 {
+	AudioManager::playMusic(MUSIC_MENU);
 	auto originXY = Director::getInstance()->getVisibleOrigin();
 	auto screenSize = Director::getInstance()->getVisibleSize();
 
@@ -147,7 +148,7 @@ SelectStageLayer * SelectStageLayer::create(int charId)
 
 void SelectStageLayer::gotoPlay(int stage, int map, int haveBoss, int charId)
 {
-
+	AudioManager::playSound(SOUND_BTCLICK);
 	if (m_nLifeNumber > 0) {
 		m_pTopMainMenu->runAction(MoveBy::create(0.3f, Vec2(0.0f, m_pTopMainMenu->getContentSize().height)));
 		m_nLifeNumber--;
@@ -162,6 +163,7 @@ void SelectStageLayer::gotoPlay(int stage, int map, int haveBoss, int charId)
 
 void SelectStageLayer::goBack() 
 {
+	AudioManager::playSound(SOUND_BTCLICK);
 	this->removeAllChildrenWithCleanup(true);
 	auto _aScene = MenuLayer::createScene();
 	Director::getInstance()->replaceScene(TransitionFade::create(0.3f, _aScene));
@@ -173,6 +175,7 @@ void SelectStageLayer::doNothing()
 
 void SelectStageLayer::buttonAddLifeHandle()
 {
+	AudioManager::playSound(SOUND_BTCLICK);
 	m_nLifeNumber += 1;
 	REF->setUpLife(1);
 	initTopMainMenu();
@@ -180,12 +183,14 @@ void SelectStageLayer::buttonAddLifeHandle()
 
 void SelectStageLayer::buttonAddGoldHandle()
 {
+	AudioManager::playSound(SOUND_BTCLICK);
 	REF->setUpGoldExplored(10000);
 	initTopMainMenu();
 }
 
 void SelectStageLayer::buttonAddDiamondHandle()
 {
+	AudioManager::playSound(SOUND_BTCLICK);
 	REF->setUpDiamondBuy(100);
 	initTopMainMenu();
 }

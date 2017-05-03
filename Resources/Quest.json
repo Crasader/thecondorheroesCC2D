@@ -1,0 +1,51 @@
+{
+  "quests_type_1" : [ 
+    {
+	  "questName": "Call bird",
+	  "questDescription": "Use item call bird 20 times",
+	  "completeRequest" : 20,
+	  "goldReward": 10000,
+	  "diamondReward": 0
+    },
+	{
+	  "questName": "Health",
+	  "questDescription": "Use item health 100 times",
+	  "completeRequest" : 100,
+	  "goldReward": 20000,
+	  "diamondReward": 0
+    },
+	{
+	  "questName": "Cooldown",
+	  "questDescription": "Use item cooldown 100 times",
+	  "completeRequest" : 100,
+	  "goldReward": 10000,
+	  "diamondReward": 0
+    },
+	{
+	  "questName": "Score DQ",
+	  "questDescription": "Get 50000 scores by Duong Qua",
+	  "completeRequest" : 50000,
+	  "goldReward": 10000,
+	  "diamondReward": 0
+    },
+	{
+	  "questName": "Score TLN",
+	  "questDescription": "Get 80000 scores by Tieu Long Nu",
+	  "completeRequest" : 80000,
+	  "goldReward": 16000,
+	  "diamondReward": 0
+    },
+	{
+	  "questName": "Score HD",
+	  "questDescription": "Get 120000 scores by Hoang Dung",
+	  "completeRequest" : 120000,
+	  "goldReward": 24000,
+	  "diamondReward": 0
+    }
+  ],
+  "quests_type_2" : [
+    {
+	  
+	}
+  ]
+}

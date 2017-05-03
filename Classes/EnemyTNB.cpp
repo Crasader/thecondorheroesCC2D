@@ -1,5 +1,6 @@
 #include "EnemyTNB.h"
 #include "BaseHero.h"
+#include "manager/AudioManager.h"
 
 EnemyTNB::EnemyTNB() : BaseEnemy()
 {
@@ -65,7 +66,7 @@ void EnemyTNB::attack()
 void EnemyTNB::die()
 {
 	BaseEnemy::die();
-
+	AudioManager::playSound(SOUND_TNBDIE);
 	auto world = this->body->GetWorld();
 	world->DestroyBody(this->body);
 	this->body = nullptr;
@@ -103,6 +104,11 @@ void EnemyTNB::listener()
 	this->setCompleteListener([&](int trackIndex, int loopCount) {
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
 			//this->removeFromParentAndCleanup(false);
+			this->setVisible(false);
+			/*this->clearTracks();
+			this->setAnimation(0, "idle", true);
+			this->setToSetupPose();*/
+			this->pauseSchedulerAndActions();
 		}
 		if (strcmp(getCurrent()->animation->name, "appear") == 0 && loopCount == 1) {
 			//this->removeFromParentAndCleanup(false);

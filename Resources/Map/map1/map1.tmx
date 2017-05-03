@@ -123,6 +123,7 @@
   <object id="39" name="wooder" x="29808" y="504.242" width="72" height="104"/>
   <object id="40" name="wooder" x="32680.3" y="244.485" width="64" height="141.455"/>
   <object id="41" name="wooder" x="32959.5" y="245.515" width="74.9091" height="137.212"/>
+  <object id="42" x="35624" y="513.242" width="64" height="96"/>
   <object id="63" name="wooder" x="27607" y="345.576" width="72" height="116"/>
   <object id="64" name="wooder" x="28401" y="304.727" width="96" height="156.364"/>
   <object id="69" name="wooder" x="32405.3" y="244.121" width="64" height="140"/>
@@ -168,15 +169,28 @@
  </objectgroup>
  <objectgroup name="coin_straight">
   <object id="2" name="coin_straight" x="559" y="481" width="508" height="24"/>
+  <object id="4" name="coin_straight" x="1520" y="318" width="480" height="28"/>
   <object id="5" name="coin_straight" x="4799" y="502" width="720" height="20"/>
+  <object id="52" name="coin_straight" x="11212" y="490" width="584" height="44"/>
+  <object id="169" name="coin_straight" x="560" y="402" width="508" height="28"/>
   <object id="171" name="coin_straight" x="1522" y="404" width="476" height="26"/>
   <object id="172" name="coin_straight" x="1522" y="484" width="476" height="24"/>
+  <object id="174" name="coin_straight" x="3042" y="302" width="474" height="16"/>
+  <object id="175" name="coin_straight" x="4802" y="406" width="718" height="22"/>
+  <object id="213" name="coin_straight" x="17436" y="604" width="706" height="24"/>
   <object id="217" name="coin_straight" x="25922" y="292" width="572" height="26"/>
+  <object id="219" name="coin_straight" x="27206.1" y="539.394" width="712.121" height="21.2121"/>
+  <object id="230" name="coin_straight" x="33606.1" y="518.182" width="627.273" height="36.3636"/>
+  <object id="233" name="coin_straight" x="34321.2" y="515.152" width="627.273" height="36.3636"/>
+  <object id="234" name="coin_straight" x="35045.5" y="515.152" width="627.273" height="36.3636"/>
   <object id="235" name="coin_straight" x="34157.6" y="275.758" width="639.394" height="36.3636"/>
   <object id="236" name="coin_straight" x="34157.6" y="196.97" width="636.364" height="39.3939"/>
   <object id="237" name="coin_straight" x="34159.6" y="115.152" width="633.333" height="39.3939"/>
  </objectgroup>
  <objectgroup name="coin_parabol">
+  <object id="7" name="coin_parabol" x="10629.8" y="476.727" width="328" height="72"/>
+  <object id="8" name="coin_parabol" x="15616" y="356" width="564" height="56"/>
+  <object id="210" name="coin_parabol" x="21640" y="244" width="392" height="46"/>
   <object id="212" name="coin_parabol" x="16674" y="356" width="400" height="52"/>
  </objectgroup>
  <objectgroup name="toanchan_student2" visible="0"/>
@@ -214,7 +228,7 @@
  <objectgroup name="coin_bag">
   <object id="161" name="coin_bag" x="4367" y="242" width="72" height="60"/>
   <object id="162" name="coin_bag" x="10126" y="332" width="72" height="60"/>
-  <object id="165" name="coin_bag" x="32003" y="165.091" width="76" height="84"/>
+  <object id="165" x="32003" y="165.091" width="76" height="84"/>
   <object id="211" name="coin_bag" x="9830" y="334" width="72" height="60"/>
  </objectgroup>
  <objectgroup name="coin_bullion">
@@ -233,22 +247,17 @@
   <object id="242" name="coin_bullion" x="35642.4" y="242.424" width="69.697" height="72.7273"/>
  </objectgroup>
  <objectgroup name="item">
-  <object id="246" name="item_magnet" x="1126.82" y="240.303" width="25" height="21">
-   <properties>
-    <property name="type" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="247" name="item_health" x="21600.9" y="77.303" width="54.5455" height="48.4848">
+  <object id="246" name="item" x="20093.9" y="245.455" width="24" height="24">
    <properties>
     <property name="type" type="int" value="0"/>
    </properties>
   </object>
-  <object id="248" name="item_health" x="30084.8" y="184.848" width="72.7273" height="57.5758">
+  <object id="248" name="item" x="22575.8" y="266.667" width="24" height="24">
    <properties>
     <property name="type" type="int" value="0"/>
    </properties>
   </object>
-  <object id="249" name="item_magnet" x="31366.7" y="166.667" width="69.697" height="69.697">
+  <object id="249" name="item" x="1181.82" y="215.152" width="24" height="24">
    <properties>
     <property name="type" type="int" value="2"/>
    </properties>

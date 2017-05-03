@@ -1,7 +1,6 @@
 #include "EnemyToanChanStudent2.h"
 #include "manager/SkeletonManager.h"
 #include "manager/AudioManager.h"
-#include "BaseHero.h"
 
 EnemyToanChanStudent2::EnemyToanChanStudent2(string jsonFile, string atlasFile, float scale):EnemyToanChanStudent(jsonFile, atlasFile,scale)
 {
@@ -100,10 +99,10 @@ void EnemyToanChanStudent2::listener()
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
 
 			this->setVisible(false);
-			this->clearTracks();
+			/*this->clearTracks();
 			this->setAnimation(0, "idle", true);
-			this->setToSetupPose();
-
+			this->setToSetupPose();*/
+			this->pauseSchedulerAndActions();
 		}
 
 	});

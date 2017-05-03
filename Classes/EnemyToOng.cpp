@@ -1,7 +1,6 @@
 #include "EnemyToOng.h"
 #include "manager/SkeletonManager.h"
 #include "manager/AudioManager.h"
-#include "BaseHero.h"
 
 EnemyToOng::EnemyToOng(spSkeletonData * data):BaseEnemy(data)
 {
@@ -127,9 +126,10 @@ void EnemyToOng::listener()
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
 			//this->removeFromParentAndCleanup(true);
 			this->setVisible(false);
-			this->clearTracks();
+			this->pauseSchedulerAndActions();
+			/*this->clearTracks();
 			this->setAnimation(0, "idle", true);
-			this->setToSetupPose();
+			this->setToSetupPose();*/
 		}
 
 	});

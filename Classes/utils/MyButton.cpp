@@ -12,8 +12,7 @@ MyButton * MyButton::create(string file_name_main, string file_name_CoolDown, Po
 	mNode->main->setType(ProgressTimer::Type::RADIAL);
 	mNode->main->setPercentage(100.0f);
 
-	auto originX = Director::getInstance()->getVisibleOrigin().x;
-	mNode->setPosition(originX + pos.x, pos.y);
+	mNode->setPosition(pos);
 
 	mNode->main->setPosition(mNode->getContentSize() / 2);
 	mNode->addChild(mNode->main);
@@ -53,12 +52,14 @@ void MyButton::addNumberOfUse(int number)
 // add listener to sprite
 void MyButton::addEvents()
 {
+	//auto originX = Director::getInstance()->getVisibleOrigin().x;
 	listener = cocos2d::EventListenerTouchOneByOne::create();
 	listener->setSwallowTouches(true);								// preventing other listener from using it
 
 	listener->onTouchBegan = [&](Touch *mTouch, Event *mEvent)
 	{
-		auto p = mTouch->getLocation();
+		auto location = mTouch->getLocation();
+		auto p = Vec2(location);
 		//convertToNodeSpace(p);
 		Rect rect = this->getBoundingBox();
 		
@@ -80,10 +81,10 @@ void MyButton::addEvents()
 				canTouch = false;
 				isActive = true;
 			}
-			else {
-				//log("Cool Down, B*tch");
-				
-			}
+			//else {
+			//	//log("Cool Down, B*tch");
+			//	
+			//}
 		}
 
 		return false;

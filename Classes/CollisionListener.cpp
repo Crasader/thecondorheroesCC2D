@@ -7,7 +7,7 @@
 #include "coin/Coin.h"
 #include "Slash.h"
 #include "manager/RefManager.h"
-#include "boss1/EnemyBoss1.h"
+#include "boss/EnemyBoss1.h"
 #include "item/Item.h"
 
 
@@ -93,9 +93,9 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
 		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
 		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
+
 		auto enemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 || sA->getTag() == TAG_ENEMY_HONGLANGBA1 ||
 					sA->getTag() == TAG_ENEMY_TOONG || sA->getTag() == TAG_ENEMY_TNB ? 
-			
 			(BaseEnemy *)sA : (BaseEnemy *)sB;
 
 		enemy->attack();
@@ -153,7 +153,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		auto enemy = sA->getTag() == TAG_BOSS ? (EnemyBoss1 *)sA : (EnemyBoss1 *)sB;
 
 		if (enemy->getControlState() < 0)
-			enemy->changeState(new Boss1Attacking1());
+			enemy->changeState(new BossAttacking1());
 
 	}
 

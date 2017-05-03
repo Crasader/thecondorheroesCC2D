@@ -1,6 +1,5 @@
 #include "EnemyWooder.h"
 #include "manager/AudioManager.h"
-#include "BaseHero.h"
 
 EnemyWooder::EnemyWooder() : BaseEnemy()
 {

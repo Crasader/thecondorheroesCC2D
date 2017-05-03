@@ -13,7 +13,8 @@
 #include "EnemyHongLangBa.h"
 #include "EnemyHongLangBa2.h"
 
-#include "boss1/EnemyBoss1.h"
+#include "boss/EnemyBoss1.h"
+#include "boss/EnemyBoss2.h"
 #include "chimdieu/ChimDieu.h"
 #include "coin/Coin.h"
 #include "coin/CoinBag.h"
@@ -48,6 +49,7 @@ private:
 	int stage;
 	int map;
 	int haveboss;
+	float changebg;
 
 
 	int charId;//Thinhnv Edited for select character
@@ -186,6 +188,7 @@ public:
 	void runnerItem(Item_type type, int counter);
 	void updateBloodBar(int numberOfHealth, bool isVisible);
 	void updateCamera();
+	void updateChangeBg();
 
 	void updateCoin();
 

@@ -207,6 +207,7 @@ void BaseHero::injured()
 
 void BaseHero::revive()
 {
+	AudioManager::playSound(SOUND_MCREVIVE);
 }
 
 void BaseHero::die(Point posOfCammera)
@@ -303,6 +304,12 @@ void BaseHero::deSelectEnemyBySkill3()
 
 void BaseHero::killThemAll()
 {
+	auto boss = (BaseEnemy*) this->getParent()->getChildByTag(TAG_BOSS);
+	if (boss != nullptr && boss->getPositionX() < this->getPositionX() + SCREEN_SIZE.width * 0.75f) {
+		boss->die();
+		//log("%i", boss->getHealth());
+	}
+
 	isKillAll = true;
 	blash->setVisible(true);
 	//auto originScale = blash->getScale();
@@ -315,12 +322,6 @@ void BaseHero::killThemAll()
 	});
 
 	blash->runAction(Sequence::create(scale, hide, scale->reverse(), nullptr));
-
-	auto boss = (BaseEnemy*) this->getParent()->getChildByTag(TAG_BOSS);
-	if (boss != nullptr && boss->getPositionX() < this->getPositionX() + SCREEN_SIZE.width * 0.75f) {
-		boss->die();
-		//log("%i", boss->getHealth());
-	}
 }
 
 void BaseHero::createMapItem()

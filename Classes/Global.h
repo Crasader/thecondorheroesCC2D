@@ -103,6 +103,7 @@ using namespace std;
 
 #define SOUND_MCAT							"sound/mcattack.mp3"
 #define SOUND_MCJUMP						"sound/mcjump.mp3"
+#define SOUND_MCREVIVE							"sound/revive.mp3"
 
 #define SOUND_DQDIE							"sound/dqdie.mp3"
 #define SOUND_DQHIT							"sound/dqhit.mp3"
@@ -120,15 +121,21 @@ using namespace std;
 #define SOUND_TC1DIE							"sound/tc1die.mp3"
 #define SOUND_TC2AT								"sound/tc2at.mp3"
 #define SOUND_TC2DIE							"sound/tc2die.mp3"
-#define SOUND_HLB1AT								"sound/hlb1at.mp3"
+#define SOUND_HLB1AT							"sound/hlb1at.mp3"
 #define SOUND_HLB1DIE							"sound/hlb1die.mp3"
-#define SOUND_HLB2AT								"sound/hlb2at.mp3"
+#define SOUND_HLB2AT							"sound/hlb2at.mp3"
 #define SOUND_HLB2DIE							"sound/hlb2die.mp3"
 #define SOUND_TOONGDIE							"sound/toongdie.mp3"
+#define SOUND_TNBDIE							"sound/tnbdie.mp3"
+
 
 #define SOUND_BOSS1CHEM							"sound/boss1chem.mp3"
 #define SOUND_BOSS1SKILL						"sound/boss1skill.mp3"
 #define SOUND_BOSS1DIE							"sound/boss1die.mp3"
+
+#define SOUND_BOSS2CHEM							"sound/boss2chem.mp3"
+#define SOUND_BOSS2SKILL						"sound/boss2skill.mp3"
+#define SOUND_BOSS2DIE							"sound/boss2die.mp3"
 
 #define SOUND_COIN								"sound/getcoin.mp3"
 #define SOUND_COINBULLION								"sound/getcoinbullion.mp3"
@@ -136,7 +143,8 @@ using namespace std;
 #define SOUND_ITEM								"sound/getitem.mp3"
 
 #define SOUND_FAIL						"sound/stagefail.mp3"
-#define SOUND_WIN						"sound/statewin.mp3"
+#define SOUND_WIN						"sound/stagewin.mp3"
+#define SOUND_BTCLICK						"sound/btclick.mp3"
 
 #define KEY_IS_MUSIC							"isMusic"
 #define KEY_IS_SOUND							"isSound"

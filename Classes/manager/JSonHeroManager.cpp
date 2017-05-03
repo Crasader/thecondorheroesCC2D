@@ -67,6 +67,11 @@ void JSonHeroManager::readFile(int indexHero)
 
 	this->goldPrice = jsonDoc["hero"][indexHero]["goldPrice"].GetInt();
 	this->diamondPrice = jsonDoc["hero"][indexHero]["diamondPrice"].GetInt();
+
+	this->m_sIconUnlocked = jsonDoc["hero"][indexHero]["iconUnlocked"].GetString();
+	this->m_sIconUnlockedSelected = jsonDoc["hero"][indexHero]["iconUnlockedSelected"].GetString();
+	this->m_sIconLocked = jsonDoc["hero"][indexHero]["iconLocked"].GetString();
+	this->m_sIconLockedSelected = jsonDoc["hero"][indexHero]["iconLockedSelected"].GetString();
 }
 
 int JSonHeroManager::getMaxScoreLevelX(int level)

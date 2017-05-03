@@ -57,6 +57,9 @@ protected:
 	CC_SYNTHESIZE_READONLY(int, numberItemDoubleGold, NumberItemDoubleGold);
 	CC_SYNTHESIZE_READONLY(int, numberItemCoolDown, NumberItemCoolDown);
 
+	CC_SYNTHESIZE_READONLY(int, m_nNumberQuest, NumberQuest);
+	CC_SYNTHESIZE_READONLY(bool, m_nRewardedQuest, RewardedQuest);
+
 private:
 	UserDefault* ref;
 	static RefManager *refManager;
@@ -65,6 +68,7 @@ public:
 	static RefManager* getInstance();
 
 	void pointToCurrentHero(int index);		// set props to get
+	void setSelectedHero(int index);
 	
 	void setDoneFirstPlay();
 
@@ -116,6 +120,9 @@ public:
 	void increaseNumberItemDoubleGold();			void decreaseNumberItemDoubleGold();
 	void increaseNumberItemCoolDown();				void decreaseNumberItemCoolDown();
 
+	void updateNumberQuest(int p_nQuestIndex, int p_nData);
+	void updateRewardedQuest(int p_nQuestIndex, bool p_bData);
+	void readDataQuest(int p_nQuestIndex);
 };
 
 #define REF RefManager::getInstance()
@@ -171,5 +178,8 @@ public:
 #define NUMBER_OF_ITEM_MAGNET							"NumberOfItemMagnet"
 #define NUMBER_OF_ITEM_DOUBLE_COIN						"NumberOfItemDoubleCoin"
 #define NUMBER_OF_ITEM_COOL_DOWN						"NumberOfItemCoolDown"
+
+#define NUMBER_QUEST_X									"NumberQuest_"
+#define REWARDED_QUEST_X								"RewardedQuest_"
 
 #endif // __REF_MANAGER_H__

@@ -48,12 +48,19 @@ RefManager * RefManager::getInstance()
 	return refManager;
 }
 
+// DuongPM : create function to set selected hero
+void RefManager::setSelectedHero(int index) {
+	selectedHero = index;
+	ref->setIntegerForKey(KEY_SELECTED_HERO, selectedHero);
+	ref->flush();
+}
+
 void RefManager::pointToCurrentHero(int index)
 {
 	JSHERO->readFile(index);
 	auto m_index = StringUtils::format("%i", index);
 	selectedHero = index;
-	ref->setIntegerForKey(KEY_SELECTED_HERO, selectedHero); ref->flush();
+	// ref->setIntegerForKey(KEY_SELECTED_HERO, selectedHero); ref->flush(); // DuongPM commented
 
 	isLockedHero = ref->getBoolForKey((KEY_LOCKED_HERO_X + m_index).c_str(), true);
 	currentLevel = ref->getIntegerForKey((KEY_LEVEL_HERO_X + m_index).c_str(), 1);
@@ -364,4 +371,19 @@ void RefManager::decreaseNumberItemCoolDown()
 		ref->setIntegerForKey(NUMBER_OF_ITEM_COOL_DOWN, --this->numberItemCoolDown);
 		ref->flush();
 	}
+}
+
+void RefManager::readDataQuest(int p_nQuestIndex) {
+	m_nRewardedQuest = ref->getFloatForKey(REWARDED_QUEST_X + p_nQuestIndex, false);
+	m_nNumberQuest = ref->getIntegerForKey(NUMBER_QUEST_X + p_nQuestIndex, 0);
+}
+
+void RefManager::updateRewardedQuest(int p_nQuestIndex, bool p_bData) {
+	ref->setIntegerForKey(REWARDED_QUEST_X + p_nQuestIndex, p_bData);
+	ref->flush();
+}
+
+void RefManager::updateNumberQuest(int p_nQuestIndex, int p_nData) {
+	ref->setIntegerForKey(NUMBER_QUEST_X + p_nQuestIndex, p_nData);
+	ref->flush();
 }

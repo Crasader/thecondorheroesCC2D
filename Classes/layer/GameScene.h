@@ -172,7 +172,7 @@ private:
 	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
 
 public:
-	bool isModeDebug;
+	bool isModeDebug = true;
 	void onBegin();
     
 	// update functions

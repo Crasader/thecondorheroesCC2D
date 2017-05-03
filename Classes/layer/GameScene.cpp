@@ -53,7 +53,7 @@ bool GameScene::init(int stage, int map, int haveboss, int charId)
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	isModeDebug = false;
+	// isModeDebug = false;
 
 	indexOfNextMapBoss = -1;
 	this->stage = stage;
@@ -188,11 +188,11 @@ void GameScene::onBegin()
 	if (hud->getBtnCalling() != nullptr)
 		hud->getBtnCalling()->setEnabled(true);
 
-	if (hud->getBtnMagnet() != nullptr)
+	/*if (hud->getBtnMagnet() != nullptr)
 		hud->getBtnMagnet()->setEnabled(true);
 
 	if (hud->getBtnDoubleGold() != nullptr)
-		hud->getBtnDoubleGold()->setEnabled(true);
+		hud->getBtnDoubleGold()->setEnabled(true);*/
 
 	hud->getPauseItem()->setEnabled(true);
 
@@ -512,7 +512,7 @@ void GameScene::update(float dt)
 		else {
 			hero->getB2Body()->SetTransform(b2Vec2(
 				_aEagle->getB2Body()->GetPosition().x,
-				_aEagle->getB2Body()->GetPosition().y + 25.0f / PTM_RATIO), 0.0f);
+				_aEagle->getB2Body()->GetPosition().y + 40.0f / PTM_RATIO), 0.0f);
 		}
 	}
 
@@ -1596,6 +1596,12 @@ void GameScene::callingBird()
 	//}), nullptr);
 	_aEagle->runAction(_aEagleFlyDown);
 	//_aEagle->runAction(_aFinishFly);
+	auto _aDropHeroAnyWay = Sequence::create(DelayTime::create(7.0f), CallFunc::create([&]() { // chinh thoi gian o day
+		if (hero->getIsDriverEagle()) {
+			heroGetOffEagle();
+		}
+	}), nullptr);
+	_aEagle->runAction(_aDropHeroAnyWay);
 }
 
 void GameScene::blurScreen()

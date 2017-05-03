@@ -30,7 +30,6 @@ protected:
 	
 };
 
-
 #define DURATION_MAGNET				300		// 5s
 #define DURATION_DOUBLE_COIN		300
 

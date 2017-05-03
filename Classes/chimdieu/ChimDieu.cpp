@@ -38,7 +38,7 @@ void ChimDieu::updateMe(float dt) {
 	if (isCarry && isUp && body->GetPosition().y > SCREEN_SIZE.height * 1.5f / PTM_RATIO) {
 		this->getB2Body()->SetLinearVelocity(b2Vec2(this->getB2Body()->GetLinearVelocity().x, 0.0f));
 	}
-	if (isCarry && isDown && body->GetPosition().y < SCREEN_SIZE.height * 0.6f / PTM_RATIO) {
+	if (isCarry && isDown && body->GetPosition().y < SCREEN_SIZE.height * 0.25f / PTM_RATIO) {
 		this->getB2Body()->SetLinearVelocity(b2Vec2(this->getB2Body()->GetLinearVelocity().x, 0.0f));
 	}
 	if (isCarry) {
@@ -111,6 +111,7 @@ void ChimDieu::initCirclePhysic(b2World * world, Point pos) {
 
 	body = world->CreateBody(&bodyDef);
 	body->CreateFixture(&fixtureDef);
+
 	body->SetGravityScale(0);
 }
 

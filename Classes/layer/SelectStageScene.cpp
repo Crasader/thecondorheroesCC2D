@@ -18,9 +18,6 @@ bool SelectStageLayer::init(int charId)
 	AudioManager::playMusic(MUSIC_MENU);
 	auto originXY = Director::getInstance()->getVisibleOrigin();
 	auto screenSize = Director::getInstance()->getVisibleSize();
-
-
-
 	auto tmxMap = TMXTiledMap::create("config_map.tmx");
 	tmxMap->setPosition(Vec2::ZERO);
 
@@ -126,7 +123,6 @@ bool SelectStageLayer::init(int charId)
 			m_pTimeCounter->setVisible(false);
 		}
 	}, 0.1f, "key");
-
 	return true;
 }
 

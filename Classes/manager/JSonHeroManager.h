@@ -18,9 +18,7 @@ public:
 
 	JSonHeroManager();
 	~JSonHeroManager();
-
 protected:
-
 	CC_SYNTHESIZE_READONLY(string, key, Key);
 	CC_SYNTHESIZE_READONLY(string, name, Name);
 	CC_SYNTHESIZE_READONLY(string, infor, Infor);
@@ -77,7 +75,6 @@ public:
 
 	// index must be around 1-10
 	string getTipAtX(int index);
-
 };
 
 #define JSHERO JSonHeroManager::getInstance()

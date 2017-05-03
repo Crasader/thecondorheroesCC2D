@@ -11,7 +11,6 @@ CoinBullion::CoinBullion(spSkeletonData * data) :B2Skeleton(data)
 
 CoinBullion::CoinBullion(string jsonFile, string atlasFile, float scale) :B2Skeleton(jsonFile, atlasFile, scale)
 {
-	
 }
 
 CoinBullion * CoinBullion::create(string jsonFile, string atlasFile, float scale)
@@ -19,7 +18,7 @@ CoinBullion * CoinBullion::create(string jsonFile, string atlasFile, float scale
 	auto coin = new CoinBullion(jsonFile, atlasFile, scale);
 	coin->update(0.0f);
 	coin->setTag(TAG_COINBULLION);
-	coin->setAnimation(0,"Gold",true);
+	coin->setAnimation(0, "Gold", true);
 	coin->effect = nullptr;
 	return coin;
 }

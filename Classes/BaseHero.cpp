@@ -93,7 +93,6 @@ void BaseHero::addStuff()
 	this->getParent()->addChild(slashBreak, ZORDER_SMT);
 	this->getParent()->addChild(smokeJumpX2, ZORDER_SMT);
 	this->getParent()->addChild(reviveMe, ZORDER_SMT);
-	
 }
 
 void BaseHero::activeSkillAni()
@@ -144,7 +143,6 @@ void BaseHero::suctionAni()
 	suctionCoin->addAnimation(0, "effect_magnet", true);
 	suctionCoin->setToSetupPose();
 }
-
 
 void BaseHero::createPool()
 {

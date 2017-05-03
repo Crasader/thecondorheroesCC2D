@@ -45,7 +45,6 @@ EnemyTNB * EnemyTNB::create(string filename, float scale)
 	enemy->setTag(TAG_ENEMY_TNB);
 	//enemy->setScaleX(1);
 	//enemy->setTimeScale(1.4f);
-	
 	enemy->health = 1;
 	enemy->exp = 5;
 	return enemy;
@@ -78,7 +77,6 @@ void EnemyTNB::die()
 
 void EnemyTNB::updateMe(BaseHero* hero)
 {
-	//BaseEnemy::updateMe(hero);
 	if (this->getIsDie() && this->getB2Body() != nullptr) {
 		this->die();
 	}

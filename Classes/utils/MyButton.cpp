@@ -59,7 +59,6 @@ void MyButton::addEvents()
 	listener->onTouchBegan = [&](Touch *mTouch, Event *mEvent)
 	{
 		auto p = mTouch->getLocation();
-		//convertToNodeSpace(p);
 		Rect rect = this->getBoundingBox();
 		
 		if (rect.containsPoint(p) && !isBlocked)	// if this button is blocked (smt while another button is active), cannot active

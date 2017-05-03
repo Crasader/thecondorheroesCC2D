@@ -174,7 +174,7 @@ private:
 	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
 
 public:
-	bool isModeDebug = true;
+	bool isModeDebug;
 	void onBegin();
     
 	// update functions
@@ -233,7 +233,7 @@ public:
 
 	// handle tuts
 	void jump();
-	
+
 	void introAttack();
 	void introSkills();
 	void introBird();

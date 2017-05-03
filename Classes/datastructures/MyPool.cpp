@@ -20,10 +20,10 @@ MyPool::MyPool()
 MyPool::~MyPool()
 {
 	/*for (int i = 0; i < maxPool; i++) {
-		if(pool[i]!= nullptr)
-		delete pool[i];
+	if(pool[i]!= nullptr)
+	delete pool[i];
 	}*/
-	delete [] pool;
+	delete[] pool;
 
 }
 
@@ -33,20 +33,20 @@ MyPool::MyPool(int maxPool, int tag) : MyPool()
 	this->tag = tag;
 	switch (tag)
 	{
-	//case TAG_COIN:
-	//{
-	//	pool = new Ref*[maxPool];
+		//case TAG_COIN:
+		//{
+		//	pool = new Ref*[maxPool];
 
-	//	for (int i = 0; i < maxPool; i++) {
-	//		auto coin = Coin::create();
-	//		auto scale = Director::getInstance()->getVisibleSize().height * 0.075 / coin->getContentSize().height;
-	//		coin->setScale(scale);
-	//		coin->setTag(tag);
-	//		pool[i] = coin;
-	//	}
-	//	//log("%d", pool->count());
-	//	break;
-	//}
+		//	for (int i = 0; i < maxPool; i++) {
+		//		auto coin = Coin::create();
+		//		auto scale = Director::getInstance()->getVisibleSize().height * 0.075 / coin->getContentSize().height;
+		//		coin->setScale(scale);
+		//		coin->setTag(tag);
+		//		pool[i] = coin;
+		//	}
+		//	//log("%d", pool->count());
+		//	break;
+		//}
 
 	case TAG_ENEMY_WOODER: {
 

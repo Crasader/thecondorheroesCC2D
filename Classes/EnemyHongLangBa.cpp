@@ -75,7 +75,6 @@ void EnemyHongLangBa::initCirclePhysic(b2World * world, Point pos)
 {
 	b2CircleShape circle_shape;
 	circle_shape.m_radius = this->getBoundingBox().size.height / 2 / PTM_RATIO;
-	//log("hlb1: boundingbox height: %f", this->getBoundingBox().size.height);
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 0.0f;

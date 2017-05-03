@@ -8,6 +8,7 @@
 #include "manager/JSonQuestManager.h"
 #include "manager/RefManager.h"
 #include "ui_custom/CustomSpriteToBuyPack.h"
+#include "manager/RefManager.h"
 
 Scene * MenuLayer::createScene() {
 	auto scene = Scene::create();
@@ -21,6 +22,7 @@ bool MenuLayer::init() {
 	if (!Layer::init()) {
 		return false;
 	}
+
 	initInputData();
 	Vec2 _v2Origin = Director::getInstance()->getVisibleOrigin();
 
@@ -45,6 +47,7 @@ bool MenuLayer::init() {
 		"UI/UI_main_menu/PreviewDuongQua/s_DuongQua.atlas", m_pGameScene->getContentSize().height / 650);
 	m_arPreviewHero[4] = new SkeletonAnimation("UI/UI_main_menu/PreviewDuongQua/s_DuongQua.json",
 		"UI/UI_main_menu/PreviewDuongQua/s_DuongQua.atlas", m_pGameScene->getContentSize().height / 650);
+
 	m_arPreviewHero[0]->setPosition(Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
 	m_arPreviewHero[1]->setPosition(Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
 	m_arPreviewHero[2]->setPosition(Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
@@ -289,6 +292,7 @@ void MenuLayer::initTopMainMenu() {
 	_aAddDiamondButton->setScale(_pDiamondFrame->getContentSize().width * _pLifeFrame->getScaleX() / _aAddDiamondButton->getContentSize().width);
 	_aAddDiamondButton->setAnchorPoint(Vec2(0.0f, 0.5f));
 	_aAddDiamondButton->setPosition(_fXPositionCounter, 0.0f);
+
 
 	m_pTopMenu = Menu::create(_aBackButton, _aAddLifeButton, _aAddMoneyButton, _aAddDiamondButton, NULL);
 	m_pTopMenu->setContentSize(Size(m_szVisibleSize.width, m_szVisibleSize.height * 0.1f)); // fill screen width, 10% screen height
@@ -638,6 +642,7 @@ void MenuLayer::initUpgradeBoard() {
 		_pSkillInfo->addChild(_CoinSprite, 1);
 
 		int _nCost = 5000;
+
 		Label *_pLabelCost = Label::createWithBMFont("fonts/font_coin-export.fnt", StringUtils::format("%i", _nCost));
 		_pLabelCost->setBMFontSize(_pSkillInfo->getContentSize().height * 0.25f);
 		_pLabelCost->setAnchorPoint(Vec2(1.0f, 0.0f));
@@ -987,6 +992,7 @@ void MenuLayer::initBottomHeroMenu() {
 	_aTryHeroButton->setAnchorPoint(Vec2(0.5f, 0.5f));
 	_aTryHeroButton->setPosition((m_fButtonStartPosition + _fXPositionCounter + m_arHeroButton[4]->getContentSize().width * m_arHeroButton[4]->getScale()) / 2, 0.0f);
 
+
 	// button unlock
 	auto _pUnlockNormal = Sprite::create("UI/UI_main_menu/btn_unlock.png");
 	auto _pUnlockSelected = Sprite::create("UI/UI_main_menu/btn_unlock.png");
@@ -1275,16 +1281,36 @@ void MenuLayer::buttonAddDiamondHandle() {
 	}
 
 	/*m_nCurrentDiamond += 100;
-=======
+	=======
 	AudioManager::playSound(SOUND_BTCLICK);
+	=======
+	moveLayerViaDirection(m_pBottomMainMenu, 8);
+	moveLayerViaDirection(m_pItemBoard, 4);
+	}), nullptr));
+	}
+	else {
+	auto _aIntroScene = SceneIntro::createScene();
+	Director::getInstance()->replaceScene(TransitionFade::create(0.3f, _aIntroScene));
+	}
+	}
+
+	void MenuLayer::buttonAddLifeHandle() {
+	m_nLifeNumber += 1;
+	REF->setUpLife(1);
+	initTopMainMenu();
+	}
+
+	void MenuLayer::buttonAddGoldHandle() {
+	>>>>>>> 92cb3785e8a6d79d739e196f1966cb389bc0cd00
 	REF->setUpGoldExplored(10000);
 	initTopMainMenu();
-}
+	}
 
-void MenuLayer::buttonAddDiamondHandle() {
+	void MenuLayer::buttonAddDiamondHandle() {
+	<<<<<<< HEAD
 	AudioManager::playSound(SOUND_BTCLICK);
 	REF->setUpDiamondBuy(100);
->>>>>>> 6b0cb0aefc9e0c4173a747a9ecc968b035f6b059
+	>>>>>>> 6b0cb0aefc9e0c4173a747a9ecc968b035f6b059
 	initTopMainMenu();
 	REF->setUpDiamondBuy(100);*/
 }
@@ -1522,6 +1548,7 @@ void MenuLayer::unlockButtonHandle() {
 }
 
 void MenuLayer::upgradeButtonHandle() {
+
 }
 
 void MenuLayer::createLayerViaInput(Layer *p_pLayer, Size p_v2Size, Vec2 p_v2Position) {
@@ -1533,19 +1560,19 @@ void MenuLayer::createLayerViaInput(Layer *p_pLayer, Size p_v2Size, Vec2 p_v2Pos
 
 void MenuLayer::moveLayerViaDirection(Layer *p_pLayer, int p_nDirection) {
 	switch (p_nDirection) {
-		case 2:
-			p_pLayer->runAction(MoveBy::create(0.3f, Vec2(0.0f, -p_pLayer->getContentSize().height)));
-			break;
-		case 4:
-			p_pLayer->runAction(MoveBy::create(0.3f, Vec2(-p_pLayer->getContentSize().width, 0.0f)));
-			break;
-		case 6:
-			p_pLayer->runAction(MoveBy::create(0.3f, Vec2(p_pLayer->getContentSize().width, 0.0f)));
-			break;
-		case 8:
-			p_pLayer->runAction(MoveBy::create(0.3f, Vec2(0.0f, p_pLayer->getContentSize().height)));
-			break;
-		default:
-			break;
+	case 2:
+		p_pLayer->runAction(MoveBy::create(0.3f, Vec2(0.0f, -p_pLayer->getContentSize().height)));
+		break;
+	case 4:
+		p_pLayer->runAction(MoveBy::create(0.3f, Vec2(-p_pLayer->getContentSize().width, 0.0f)));
+		break;
+	case 6:
+		p_pLayer->runAction(MoveBy::create(0.3f, Vec2(p_pLayer->getContentSize().width, 0.0f)));
+		break;
+	case 8:
+		p_pLayer->runAction(MoveBy::create(0.3f, Vec2(0.0f, p_pLayer->getContentSize().height)));
+		break;
+	default:
+		break;
 	}
 }

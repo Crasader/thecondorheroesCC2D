@@ -68,8 +68,9 @@ public:
 	static RefManager* getInstance();
 
 	void pointToCurrentHero(int index);		// set props to get
+
 	void setSelectedHero(int index);
-	
+
 	void setDoneFirstPlay();
 
 	void unLockHero(int index);

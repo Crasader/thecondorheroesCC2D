@@ -60,6 +60,7 @@ void RefManager::pointToCurrentHero(int index)
 	JSHERO->readFile(index);
 	auto m_index = StringUtils::format("%i", index);
 	selectedHero = index;
+
 	// ref->setIntegerForKey(KEY_SELECTED_HERO, selectedHero); ref->flush(); // DuongPM commented
 
 	isLockedHero = ref->getBoolForKey((KEY_LOCKED_HERO_X + m_index).c_str(), true);

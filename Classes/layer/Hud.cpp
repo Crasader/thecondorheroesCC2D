@@ -129,6 +129,7 @@ void Hud::addProfile()
 
 void Hud::addButton()
 {
+
 	menu = Menu::create();
 
 	addAttack();
@@ -146,8 +147,6 @@ void Hud::addButton()
 	pauseItem->setAnchorPoint(Vec2::ZERO);
 	pauseItem->setScale(scoreBoard->getBoundingBox().size.height / pauseItem->getContentSize().height);
 	pauseItem->setPosition(origin_5.x, scoreBoard->getPositionY());
-
-	//showSpecialButton();
 
 	menu->addChild(btnCalling);
 	menu->addChild(pauseItem);
@@ -207,7 +206,6 @@ void Hud::addButton()
 			addChild(coverItemMagnet);
 
 			break;
-
 		case 3:
 			icon_Item_DC = ProgressTimer::create(Sprite::create("UI/UI_main_menu/item4_doublecoin.png"));
 			icon_Item_DC->setPosition(coverItemMagnet->getContentSize() / 2);
@@ -225,8 +223,6 @@ void Hud::addButton()
 			addChild(coverItemDC);
 			break;
 		}
-
-		
 	}
 
 }
@@ -315,7 +311,6 @@ void Hud::addBird()
 	btnCalling->setPosition(origin_4);
 	btnCalling->setScale(SCREEN_SIZE.height / 7 / btnCalling->getContentSize().height);
 }
-
 
 void Hud::doSuctionCoin(Ref * pSender)
 {
@@ -496,7 +491,6 @@ void Hud::pauseIfVisible()
 		btnSkill_2->pause();
 
 		btnSkill_3->pause();
-
 	}
 }
 
@@ -513,7 +507,6 @@ void Hud::resumeIfVisible()
 	if (coverItemDC->isVisible()) {
 		coverItemDC->resume();
 	}
-
 	if (btnSkill_1->isVisible()) {
 		addEvents();
 
@@ -662,6 +655,7 @@ void Hud::runnerItemMagnet(int counter)
 {
 	durationItemMagnet = counter / 60.0f;
 	if (isItemMagnetActive) {
+
 		coverItemMagnet->unschedule("itemRunner");
 	}
 	else {

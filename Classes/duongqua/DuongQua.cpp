@@ -308,9 +308,7 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 	fixtureDef.shape = &circle_shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_HERO;
-	fixtureDef.filter.maskBits = BITMASK_FLOOR |
-		BITMASK_TOANCHAN1 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION;
-
+	fixtureDef.filter.maskBits = BITMASK_FLOOR | BITMASK_TOANCHAN1 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION;
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -421,7 +419,6 @@ void DuongQua::landing()
 
 void DuongQua::die()
 {
-
 	--dieHard;
 	if (dieHard < 0) {
 		return;
@@ -461,7 +458,6 @@ void DuongQua::die()
 		unschedule("KeySkill3");
 		checkDurationSkill3 = 0;
 	}
-
 	clearTracks();
 	addAnimation(0, "die", false);
 	setToSetupPose();
@@ -476,7 +472,6 @@ void DuongQua::attackNormal()
 		attackBySkill1();
 		setIsPriorSkill1(true);			// move to attack
 	}
-
 	else {
 		BaseHero::attackNormal();
 		changeSwordCategoryBitmask(BITMASK_SWORD);
@@ -728,10 +723,8 @@ void DuongQua::updateMe(float dt)
 		return;
 	}
 
-
 	if (!isDriverEagle)
 		getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
-
 
 	if (!getIsPriorAttack() && !getIsPriorInjured() && !getIsPriorSkill1()) {
 

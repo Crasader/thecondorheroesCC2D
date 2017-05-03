@@ -88,7 +88,6 @@ private:
 	float timerItemDC;
 	float durationItemDC;
 	bool isItemDCActive = false;
-
 	Menu* menu;
 
 	void addProfile();

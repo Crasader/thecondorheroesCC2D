@@ -479,7 +479,7 @@ void GameScene::heroGetOffEagle() {
 
 void GameScene::update(float dt)
 {
-	
+
 	updateB2World(dt);
 	listener();
 	updateLayer();
@@ -718,6 +718,8 @@ void GameScene::createInfiniteNode()
 	auto bg1_2 = Sprite::create(StringUtils::format("Map/map%d/bg%d_1.png", stage, map));
 	bg1_2->setScale(SCREEN_SIZE.width / (bg1_2->getContentSize().width));
 	bg1_2->setAnchorPoint(Point(0, 0.5f));
+	background->addChild(bg1_1, 1, Vec2(0.5f, 1), Vec2(0, 0));
+	background->addChild(bg1_2, 1, Vec2(0.5f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
 
 	auto moonGr = tmx_map->getObjectGroup("moon");
 	if (moonGr) {
@@ -737,25 +739,27 @@ void GameScene::createInfiniteNode()
 		//background->addChild(moon, 2, Vec2(0, 1), Vec2(pos.x, pos.y - SCREEN_SIZE.height / 2));
 		changebg = pos.x;
 	}
-
-	auto bg2_1 = Sprite::create(StringUtils::format("Map/map%d/bg%d_2.png", stage, map));
-	//auto bg2_1 = Sprite::create("moon.png");
-	bg2_1->setScale(SCREEN_SIZE.width / (bg2_1->getContentSize().width));
-	bg2_1->setAnchorPoint(Point(0, 0.5f));
-	bg2_1->setTag(21);
-
-	auto bg2_2 = Sprite::create(StringUtils::format("Map/map%d/bg%d_2.png", stage, map));
-	//auto bg2_2 = Sprite::create("moon.png");
-	bg2_2->setScale(SCREEN_SIZE.width / (bg2_2->getContentSize().width));
-	bg2_2->setAnchorPoint(Point(0, 0.5f));
-	bg2_2->setTag(22);
+	if (stage == 3 && map == 2) {}
+	else {
+		auto bg2_1 = Sprite::create(StringUtils::format("Map/map%d/bg%d_2.png", stage, map));
+		//auto bg2_1 = Sprite::create("moon.png");
+		bg2_1->setScale(SCREEN_SIZE.width / (bg2_1->getContentSize().width));
+		bg2_1->setAnchorPoint(Point(0, 0.5f));
+		bg2_1->setTag(21);
 
 
-	background->addChild(bg1_1, 1, Vec2(0.5f, 1), Vec2(0, 0));
-	background->addChild(bg1_2, 1, Vec2(0.5f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
+		auto bg2_2 = Sprite::create(StringUtils::format("Map/map%d/bg%d_2.png", stage, map));
+		//auto bg2_2 = Sprite::create("moon.png");
+		bg2_2->setScale(SCREEN_SIZE.width / (bg2_2->getContentSize().width));
+		bg2_2->setAnchorPoint(Point(0, 0.5f));
+		bg2_2->setTag(22);
+		background->addChild(bg2_1, 3, Vec2(0.7f, 1), Vec2(0, 0));
+		background->addChild(bg2_2, 3, Vec2(0.7f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
 
-	background->addChild(bg2_1, 3, Vec2(0.7f, 1), Vec2(0, 0));
-	background->addChild(bg2_2, 3, Vec2(0.7f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
+	}
+
+	
+		
 
 	//background->setPosition(Point(-SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 	background->setPosition(Point(0, SCREEN_SIZE.height / 2));
@@ -764,29 +768,35 @@ void GameScene::createInfiniteNode()
 		background->setVisible(false);
 	this->addChild(background, ZORDER_BG);
 
+	
+
 	background2 = InfiniteParallaxNode::create();
-
-
 	if (stage == 1 || (stage == 3 && map == 2)) {
-		auto bg3_1 = Sprite::create(StringUtils::format("Map/map%d/bg3.png", stage));
-		bg3_1->setScaleX(SCREEN_SIZE.width / (bg3_1->getContentSize().width));
-		bg3_1->setScaleY(bg3_1->getScaleX()*0.7f);
-		//bg2_1->setScaleY(SCREEN_SIZE.height / bg2_1->getContentSize().height);
-		bg3_1->setAnchorPoint(Point(0, 0));
+			
+			auto bg3_1 = Sprite::create(StringUtils::format("Map/map%d/bg3.png", stage));
+			bg3_1->setScaleX(SCREEN_SIZE.width / (bg3_1->getContentSize().width));
+			bg3_1->setScaleY(bg3_1->getScaleX()*0.7f);
+			//bg2_1->setScaleY(SCREEN_SIZE.height / bg2_1->getContentSize().height);
+			bg3_1->setAnchorPoint(Point(0, 0));
 
-		auto bg3_2 = Sprite::create(StringUtils::format("Map/map%d/bg3.png", stage));
-		bg3_2->setScale(SCREEN_SIZE.width / (bg3_1->getContentSize().width));
-		bg3_2->setScaleY(bg3_2->getScaleX()*0.7f);
-		//bg2_1->setScaleY(SCREEN_SIZE.height / bg2_1->getContentSize().height);
-		bg3_2->setAnchorPoint(Point(0, 0));
+			auto bg3_2 = Sprite::create(StringUtils::format("Map/map%d/bg3.png", stage));
+			bg3_2->setScale(SCREEN_SIZE.width / (bg3_1->getContentSize().width));
+			bg3_2->setScaleY(bg3_2->getScaleX()*0.7f);
+			//bg2_1->setScaleY(SCREEN_SIZE.height / bg2_1->getContentSize().height);
+			bg3_2->setAnchorPoint(Point(0, 0));
 
-		background2->addChild(bg3_1, 0, Vec2(0.8f, 1), Vec2(0, 0));
-		background2->addChild(bg3_2, 0, Vec2(0.8f, 1), Vec2(bg3_1->getBoundingBox().size.width, 0));
+			background2->addChild(bg3_1, 0, Vec2(0.8f, 1), Vec2(0, 0));
+			background2->addChild(bg3_2, 0, Vec2(0.8f, 1), Vec2(bg3_1->getBoundingBox().size.width, 0));
 	}
 
 	background2->setPosition(Point(0, 0));
 	background2->setAnchorPoint(Point(0, 0.0f));
-	this->addChild(background2, ZORDER_BG);
+	if (stage == 3) {
+		this->addChild(background2, ZORDER_TMX+1);
+	}
+	else {
+		this->addChild(background2, ZORDER_BG);
+	}
 }
 
 void GameScene::createGroundBody()
@@ -1010,19 +1020,19 @@ void GameScene::creatBoss()
 		switch (stage)
 		{
 		case 1: {
-			 enemy = EnemyBoss1::create("Animation/Enemy_Boss1/Boss1.json",
+			enemy = EnemyBoss1::create("Animation/Enemy_Boss1/Boss1.json",
 				"Animation/Enemy_Boss1/Boss1.atlas", scaleOfEnemy);
 			break;
 		}
 		case 2: {
-			 enemy = EnemyBoss2::create("Animation/Enemy_Boss2/Boss2.json",
+			enemy = EnemyBoss2::create("Animation/Enemy_Boss2/Boss2.json",
 				"Animation/Enemy_Boss2/Boss2.atlas", scaleOfEnemy);
 			break;
 		}
 		default:
 			break;
 		}
-		
+
 		//auto enemy = EnemyBoss1::create("Effect/exxp.json", "Effect/exxp.atlas", scaleOfEnemy);
 		enemy->setPosition(origin);
 		//enemy->setVisible(false);
@@ -1271,71 +1281,61 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 
 void GameScene::updateEnemy()
 {
-	auto child = this->getChildren();
-	for (int i = 0; i < child.size(); i++) {
-		if (child.at(i)->getTag() > 100) {
-			auto tmp = (BaseEnemy*)child.at(i);
-			if (tmp->getTag() == TAG_BOSS) {
-				if (tmp->getIsDie()) {
-					this->isWinGame = true;
-				}
-				else {
-					auto boss = (EnemyBoss1*)tmp;
-					if (tmp->getB2Body()->GetLinearVelocity().x != 0)
-					{
-						boss->updateMe(hero);
-					}
+	// update for boss ok.
+	auto tmp = (BaseEnemy*)this->getChildByTag(TAG_BOSS);
+	if (tmp != nullptr) {
+		if (tmp->getIsDie()) {
+			this->isWinGame = true;
+		}
+		else {
+			auto boss = (EnemyBoss1*)tmp;
+			if (tmp->getB2Body()->GetLinearVelocity().x != 0)
+			{
+				boss->updateMe(hero);
+			}
 
-					else if (tmp->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width * 0.75f) {
-						boss->updateMe(hero);
+			else if (tmp->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width * 0.75f) {
+				boss->updateMe(hero);
 
-					}
-					if (tmp->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width) {
-						hero->updateAttackBossAsTarget(boss);
-					}
-				}
+			}
+			if (tmp->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width) {
+				hero->updateAttackBossAsTarget(boss);
 			}
 		}
 	}
+
 	if (preLayer != nullptr) {
 		auto childLayer1 = preLayer->getChildren();
 
 		for (int i = 0; i < childLayer1.size(); i++) {
 			auto agent = childLayer1.at(i);
+			// nhung enemy trong man hinh
+			if ((agent->getPosition() + preLayer->getPosition()).x < follow->getPositionX() + SCREEN_SIZE.width * 1 / 2
+				&& (agent->getPositionX() + preLayer->getPositionX())>follow->getPositionX() - SCREEN_SIZE.width * 1 / 2) {
+				
 
-			if (agent->getTag() >= 90) {
-				if ((agent->getPosition() + preLayer->getPosition()).x < follow->getPositionX() + SCREEN_SIZE.width * 1 / 2
-					&& (agent->getPositionX() + preLayer->getPositionX())>follow->getPositionX() - SCREEN_SIZE.width * 1 / 2) {
-					auto tmp = (B2Skeleton*)(agent);
-					tmp->updateMe(hero);
-				}
-			}
-			else if (agent->getTag() >= 80 && agent->getTag() < 90) {
-				if ((agent->getPosition() + preLayer->getPosition()).x < follow->getPositionX() + SCREEN_SIZE.width * 1 / 2.5f
-					&& (agent->getPositionX() + preLayer->getPositionX())>follow->getPositionX() - SCREEN_SIZE.width * 1 / 2.5f) {
-					auto tmp = (B2Sprite*)(agent);
-					tmp->updateMe(hero);
-				}
-			}
-			if (childLayer1.at(i)->getTag() > 100) {
-				auto tmp = (BaseEnemy*)childLayer1.at(i);
-				if (tmp->getB2Body() != nullptr) {
-					if (tmp->getIsDie()) {
-						if (tmp->getIsOccur()) {
-							listEnemyOccurInScreen.remove(tmp);
+				if (childLayer1.at(i)->getTag() > 100) {
+					auto tmp = (BaseEnemy*)childLayer1.at(i);
+					// va co body thi moi update
+					if (tmp->getB2Body() != nullptr) {
+						tmp->updateMe(hero);
+						if (tmp->getIsDie()) {
+							if (tmp->getIsOccur()) {
+								listEnemyOccurInScreen.remove(tmp);
+							}
 						}
-					}
-					else {
-						if (tmp->getPositionX() + preLayer->getPosition().x < follow->getPositionX() - SCREEN_SIZE.width * 0.7f) {
-							listEnemyOccurInScreen.remove(tmp);
-						}
+						else {
+							if (tmp->getPositionX() + preLayer->getPosition().x < follow->getPositionX() - SCREEN_SIZE.width * 0.7f) {
+								listEnemyOccurInScreen.remove(tmp);
+							}
 
-						else if (tmp->getPositionX() + preLayer->getPosition().x < follow->getPositionX() + SCREEN_SIZE.width &&
-							tmp->getPositionX() + preLayer->getPosition().x > follow->getPositionX() - SCREEN_SIZE.width / 2) {
-							if (!tmp->getIsOccur() &&
-								(tmp->getPositionX() + preLayer->getPosition().x < follow->getPositionX() + SCREEN_SIZE.width * 0.52f &&
-									tmp->getPositionX() + preLayer->getPosition().x > follow->getPositionX() - SCREEN_SIZE.width / 2)) {
-								listEnemyOccurInScreen.push_back(tmp);
+							else if (tmp->getPositionX() + preLayer->getPosition().x < follow->getPositionX() + SCREEN_SIZE.width &&
+								tmp->getPositionX() + preLayer->getPosition().x > follow->getPositionX() - SCREEN_SIZE.width / 2) {
+								if (!tmp->getIsOccur() &&
+									(tmp->getPositionX() + preLayer->getPosition().x < follow->getPositionX() + SCREEN_SIZE.width * 0.52f &&
+										tmp->getPositionX() + preLayer->getPosition().x > follow->getPositionX() - SCREEN_SIZE.width / 2)) {
+									listEnemyOccurInScreen.push_back(tmp);
+								}
 							}
 						}
 					}
@@ -1351,18 +1351,12 @@ void GameScene::updateEnemy()
 			if ((agent->getPosition() + posLayer->getPosition()).x < follow->getPositionX() + SCREEN_SIZE.width * 1 / 2
 				&& (agent->getPositionX() + posLayer->getPositionX())>follow->getPositionX() - SCREEN_SIZE.width * 1 / 2) {
 
-				if (agent->getTag() >= 90) {
-					auto tmp = (B2Skeleton*)(agent);
-					tmp->updateMe(hero);
-				}
-				else if (agent->getTag() >= 80 && agent->getTag() < 90) {
-					auto tmp = (B2Sprite*)(agent);
-					tmp->updateMe(hero);
-
-				}
+				
+				
 				if (childLayer2.at(i)->getTag() > 100) {
 					auto tmp = (BaseEnemy*)childLayer2.at(i);
 					if (tmp->getB2Body() != nullptr) {
+						tmp->updateMe(hero);
 						if (tmp->getIsDie()) {
 							if (tmp->getIsOccur()) {
 								listEnemyOccurInScreen.remove(tmp);
@@ -1388,6 +1382,7 @@ void GameScene::updateEnemy()
 		}
 	}
 }
+
 
 void GameScene::updateBoss()
 {
@@ -1471,10 +1466,10 @@ void GameScene::updateCamera()
 		}*/
 
 		if (hero->getB2Body()) {
-			if (hero->getPositionY() > background->getPositionY() + SCREEN_SIZE.height / 6 && hero->getB2Body()->GetLinearVelocity().y  >0) {
+			if (hero->getPositionY() > background->getPositionY() + SCREEN_SIZE.height / 6 && hero->getB2Body()->GetLinearVelocity().y > 0) {
 				background->up(hero->getPosition());
 			}
-			else if (hero->getPositionY() < background->getPositionY() - SCREEN_SIZE.height / 6 && hero->getB2Body()->GetLinearVelocity().y  < 0) {
+			else if (hero->getPositionY() < background->getPositionY() - SCREEN_SIZE.height / 6 && hero->getB2Body()->GetLinearVelocity().y < 0) {
 				background->down(hero->getPosition());
 			}
 		}
@@ -1530,14 +1525,14 @@ void GameScene::updateChangeBg()
 		if (hero->getPositionX() > changebg) {
 			//log("changbgggg");
 			changebg = 0;
-			auto call1 = CallFunc::create([&](){
+			auto call1 = CallFunc::create([&]() {
 				background->removeChildByTag(21);
 			});
 			auto call2 = CallFunc::create([&]() {
-				background->removeChildByTag(22); 
+				background->removeChildByTag(22);
 			});
-			background->getChildByTag(21)->runAction(Sequence::createWithTwoActions(FadeTo::create(5.0f,0),call1));
-			background->getChildByTag(22)->runAction(Sequence::createWithTwoActions(FadeTo::create(5.0f,0), call2));
+			background->getChildByTag(21)->runAction(Sequence::createWithTwoActions(FadeTo::create(5.0f, 0), call1));
+			background->getChildByTag(22)->runAction(Sequence::createWithTwoActions(FadeTo::create(5.0f, 0), call2));
 			/*background->getChildByTag(21)->runAction(FadeTo::create(5.0f,0));
 			background->getChildByTag(22)->runAction(FadeTo::create(5.0f, 0));*/
 		}

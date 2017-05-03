@@ -3,6 +3,7 @@
 
 EnemyBoss2::EnemyBoss2(string jsonFile, string atlasFile, float scale) :EnemyBoss1(jsonFile, atlasFile, scale)
 {
+	health = 20;
 }
 
 EnemyBoss2 * EnemyBoss2::create(string jsonFile, string atlasFile, float scale)

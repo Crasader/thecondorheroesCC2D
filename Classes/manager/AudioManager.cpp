@@ -11,11 +11,11 @@ AudioManager::~AudioManager()
 
 void AudioManager::cacheAudio()
 {
-	experimental::AudioEngine::preload(MUSIC_MENU);
+	/*experimental::AudioEngine::preload(MUSIC_MENU);
 	experimental::AudioEngine::preload(MUSIC_STAGE1);
 	experimental::AudioEngine::preload(MUSIC_STAGE2);
 	experimental::AudioEngine::preload(MUSIC_STAGE3);
-	experimental::AudioEngine::preload(MUSIC_STAGE4);
+	experimental::AudioEngine::preload(MUSIC_STAGE4);*/
 	experimental::AudioEngine::preload(SOUND_DQDIE);
 	experimental::AudioEngine::preload(SOUND_DQHIT);
 	experimental::AudioEngine::preload(SOUND_DQSKILL1);

@@ -1,6 +1,7 @@
 #include "EnemyToOng.h"
 #include "manager/SkeletonManager.h"
-#include "manager\AudioManager.h"
+#include "manager/AudioManager.h"
+#include "BaseHero.h"
 
 EnemyToOng::EnemyToOng(spSkeletonData * data):BaseEnemy(data)
 {
@@ -95,6 +96,7 @@ void EnemyToOng::initCirclePhysic(b2World * world, Point pos)
 void EnemyToOng::updateMe(BaseHero * hero)
 {
 	BaseEnemy::updateMe(hero);
+
 	if (getIsDie() && this->getB2Body() != nullptr) {
 		die();
 	}

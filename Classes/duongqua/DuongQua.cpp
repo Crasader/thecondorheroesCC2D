@@ -427,6 +427,8 @@ void DuongQua::die()
 		return;
 	}
 
+	noActive = true;
+
 	AudioManager::playSound(SOUND_DQDIE);
 
 	if (spiritHole->isVisible())
@@ -606,6 +608,11 @@ void DuongQua::listener()
 			getFSM()->changeState(MLand);
 			auto gameLayer = (GameScene*) this->getParent();
 			initCirclePhysic(gameLayer->world, this->getPosition());
+
+			gameLayer->getHud()->resumeIfVisible();
+			gameLayer->enableCalling();
+
+			noActive = false;
 		}
 
 

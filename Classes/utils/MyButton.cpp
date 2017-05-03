@@ -94,6 +94,8 @@ void MyButton::addEvents()
 
 void MyButton::pauseListener()
 {
+	main->setVisible(false);
+	number->setVisible(false);
 	Director::getInstance()->getEventDispatcher()->removeEventListener(listener);
 	listener = nullptr;
 }
@@ -104,7 +106,7 @@ void MyButton::refresh()
 	isActive = false;
 	isBlocked = false;
 	number->setVisible(false);
-	main->setVisible(true);
+	main->setVisible(false);
 	main->setPercentage(100.0f);
 	numberOfUseHasNotUsedYet = numberOfUse;
 	if (numberOfUse > 1) {

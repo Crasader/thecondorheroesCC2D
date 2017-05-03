@@ -1,6 +1,7 @@
 #include "EnemyToanChanStudent.h"
 #include "manager/SkeletonManager.h"
 #include "manager/AudioManager.h"
+#include "BaseHero.h"
 
 
 EnemyToanChanStudent::EnemyToanChanStudent(spSkeletonData * data):BaseEnemy(data)
@@ -98,6 +99,7 @@ void EnemyToanChanStudent::initCirclePhysic(b2World * world, Point pos)
 void EnemyToanChanStudent::updateMe(BaseHero * hero)
 {
 	BaseEnemy::updateMe(hero);
+
 	if (getIsDie() && this->getB2Body() != nullptr) {
 		die();
 	}

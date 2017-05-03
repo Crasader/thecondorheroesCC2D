@@ -1,6 +1,7 @@
 #include "EnemyToanChanStudent2.h"
 #include "manager/SkeletonManager.h"
 #include "manager/AudioManager.h"
+#include "BaseHero.h"
 
 EnemyToanChanStudent2::EnemyToanChanStudent2(string jsonFile, string atlasFile, float scale):EnemyToanChanStudent(jsonFile, atlasFile,scale)
 {
@@ -62,7 +63,7 @@ void EnemyToanChanStudent2::die()
 {
 	AudioManager::playSound(SOUND_TC2DIE);
 	EnemyToanChanStudent::die();
-	if (slash->getB2Body()!=nullptr) {
+	if (slash->getB2Body() != nullptr) {
 		auto world = slash->getB2Body()->GetWorld();
 		world->DestroyBody(slash->getB2Body());
 		slash->setB2Body(nullptr);
@@ -118,6 +119,7 @@ void EnemyToanChanStudent2::updateMe(BaseHero* hero)
 		slash->setVisible(false);
 		slash->setIsDie(false);
 	}
+
 	if (slash->getPositionX() < this->getPositionX() - SCREEN_SIZE.width*3/4 && slash->isVisible()) {
 		//slash->getB2Body()->SetTransform(b2Vec2(this->getBoneLocation("bone32").x / PTM_RATIO, this->getBoneLocation("bone32").y / PTM_RATIO), 0);
 		slash->getB2Body()->GetWorld()->DestroyBody(slash->getB2Body());

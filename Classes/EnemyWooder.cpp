@@ -1,5 +1,6 @@
 #include "EnemyWooder.h"
-#include "manager\AudioManager.h"
+#include "manager/AudioManager.h"
+#include "BaseHero.h"
 
 EnemyWooder::EnemyWooder() : BaseEnemy()
 {
@@ -78,6 +79,7 @@ void EnemyWooder::die()
 void EnemyWooder::updateMe(BaseHero* hero)
 {
 	BaseEnemy::updateMe(hero);
+
 	if (this->getIsDie()&& this->getB2Body()!= nullptr) {
 		this->die();
 	}

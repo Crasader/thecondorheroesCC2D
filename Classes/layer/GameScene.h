@@ -26,7 +26,7 @@
 #include "datastructures/MyPool.h"
 #include "layer/MyLayer.h"
 #include "item/Item.h"
-
+#include "layer/Hud.h"
 
 
 
@@ -40,6 +40,8 @@ public:
 
 	BaseHero * getHero() { return hero; }
 	void setLastScore(int lastScore) { m_lastScore = lastScore; }
+	Hud* getHud();
+	void enableCalling();
 
 private:
 	// props
@@ -82,9 +84,6 @@ private:
 	CCRect left_corner;
 	LayerColor *blur;
 	SpriteBatchNode* batchNode;
-
-	list<BaseEnemy*> listEnemyOccurInScreen;
-
 
 	BaseHero *hero;
 	ChimDieu* _aEagle;

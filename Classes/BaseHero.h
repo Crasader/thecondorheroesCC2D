@@ -31,6 +31,9 @@ protected:
 	CC_SYNTHESIZE(bool, onGround, OnGround);
 	CC_SYNTHESIZE(int, numberOfJump, NumberOfJump);
 	CC_SYNTHESIZE(float, jump_vel, JumpVel);
+	CC_SYNTHESIZE(bool, noActive, NoActive);
+	CC_SYNTHESIZE(bool, isKillAll, IsKillAll);
+
 
 	CC_SYNTHESIZE(Sprite*, bloodScreen, BloodScreen);
 	CC_SYNTHESIZE(Sprite*, blash, Blash);
@@ -119,7 +122,7 @@ public:
 	void selectEnemyBySkill3(BaseEnemy *p_pEnemySelected); //DuongPM edited
 	void deSelectEnemyBySkill3();							//DuongPM edited
 
-	void killThemAll(list<BaseEnemy*> listToKill);
+	void killThemAll();
 
 	
 	void createMapItem();

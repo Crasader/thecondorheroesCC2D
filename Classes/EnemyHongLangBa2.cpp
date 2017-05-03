@@ -123,6 +123,7 @@ void EnemyHongLangBa2::updateMe(BaseHero* hero)
 		enemyDarts->setVisible(false);
 		enemyDarts->setIsDie(false);
 	}
+
 	if (enemyDarts->getPositionX() < this->getPositionX() - SCREEN_SIZE.width*3/4 && enemyDarts->isVisible()) {
 		//slash->getB2Body()->SetTransform(b2Vec2(this->getBoneLocation("bone32").x / PTM_RATIO, this->getBoneLocation("bone32").y / PTM_RATIO), 0);
 		enemyDarts->getB2Body()->GetWorld()->DestroyBody(enemyDarts->getB2Body());

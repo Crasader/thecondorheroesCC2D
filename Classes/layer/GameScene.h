@@ -24,6 +24,7 @@
 #include "utils/InfiniteParallaxNode.h"
 #include "utils/GLES-Render.h"
 #include "layer/DialogPauseGame.h"
+#include "layer/TutorialLayer.h"
 #include "datastructures/MyData.h"
 #include "datastructures/MyPool.h"
 #include "layer/MyLayer.h"
@@ -228,19 +229,34 @@ public:
 	// quan ly item
 	//void createMapItem();// tao du lieu cho map item.
 
-	// tutorial
-	bool isFirstPlay;
-	bool isDoneAttackTut = false;
-	bool isDoneSkillTut = false;
+	
 
 	// handle tuts
-	void jump();
-	
+
+	// tut
+private:
+	TutorialLayer *tut;
+
+	// tutorial
+	bool isFirstPlay = false;
+
+	float posXJump1Tut = -1;
+	float posXJump2Tut = -1;
+	float posXAttackTut = -1;
+	float posXSkillTut = -1;
+	float posXIntroBird = -1;
+
+	void introJump();
 	void introAttack();
 	void introSkills();
 	void introBird();
 
 	void tutorial();
+
+public:
+
+	void jump();
+	void resumeAfterTut(int caseTut);
 };
 
 #endif // __GAME_SCENE_H__

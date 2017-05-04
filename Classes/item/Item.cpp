@@ -60,7 +60,7 @@ void Item::updateMe(BaseHero *hero)
 
 					auto parentGameScene = (GameScene*) this->getParent();
 
-					if (typeItem == Item_type::HEALTH && hero->getHealth() < REF->getCurrentHealth()) {
+					if (typeItem == Item_type::HEALTH && hero->getHealth() < hero->getMaxHealth()) {
 						hero->setHealth(hero->getHealth() + 1);
 						parentGameScene->updateBloodBar(hero->getHealth() - 1, true);
 					}

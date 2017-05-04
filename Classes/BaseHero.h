@@ -25,6 +25,7 @@ protected:
 	CC_SYNTHESIZE(float, boxHeight, BoxHeight);
 	CC_SYNTHESIZE(float, trueRadiusOfHero, TrueRadiusOfHero);
 
+	CC_SYNTHESIZE(int, maxHealth, MaxHealth);
 	// you can not be injured when no die 
 	CC_SYNTHESIZE(bool, isNoDie, IsNoDie);
 

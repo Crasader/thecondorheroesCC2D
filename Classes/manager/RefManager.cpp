@@ -22,7 +22,7 @@ RefManager::RefManager()
 	diamondBuy = ref->getIntegerForKey(KEY_DIAMOND, 0);
 
 	numberItemHealth = ref->getIntegerForKey(NUMBER_OF_ITEM_HEALTH, 0);
-	numberItemBird = ref->getIntegerForKey(NUMBER_OF_ITEM_BIRD, 0);
+	numberItemBird = ref->getIntegerForKey(NUMBER_OF_ITEM_BIRD, 1);
 	numberItemMagnet = ref->getIntegerForKey(NUMBER_OF_ITEM_MAGNET, 0);
 	numberItemDoubleGold = ref->getIntegerForKey(NUMBER_OF_ITEM_DOUBLE_COIN, 0);
 	numberItemCoolDown = ref->getIntegerForKey(NUMBER_OF_ITEM_COOL_DOWN, 0);

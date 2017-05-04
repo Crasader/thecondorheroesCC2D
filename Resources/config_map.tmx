@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="29" height="10" tilewidth="74" tileheight="80" nextobjectid="14">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="29" height="10" tilewidth="74" tileheight="80" nextobjectid="15">
  <tileset firstgid="1" name="map" tilewidth="74" tileheight="80" tilecount="290" columns="29">
   <image source="map.png" width="2152" height="800"/>
  </tileset>
@@ -55,7 +55,7 @@
   </object>
   <object id="6" name="6" x="1048.48" y="466.667" width="15" height="15">
    <properties>
-    <property name="haveBoss" type="int" value="0"/>
+    <property name="haveBoss" type="int" value="1"/>
     <property name="mapId" type="int" value="3"/>
     <property name="stage" type="int" value="2"/>
    </properties>

@@ -60,7 +60,7 @@
 </data>
  </layer>
  <objectgroup name="ground">
-  <object id="2" x="0" y="604" width="35996" height="2"/>
+  <object id="2" x="0" y="625" width="35996" height="2"/>
  </objectgroup>
  <objectgroup name="coin_tim">
   <object id="20" name="coin_tim" x="2960" y="332" width="132" height="128"/>

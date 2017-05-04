@@ -30,6 +30,7 @@ protected:
 	CC_SYNTHESIZE(int, numberOfUse, NumberOfUse);
 	CC_SYNTHESIZE(int, numberOfUseHasNotUsedYet, NumberOfUseHasNotUsedYet);
 	CC_SYNTHESIZE(ProgressTimer*, main, Main);
+	CC_SYNTHESIZE(Sprite*, blocked, BlockedImg);
 	CC_SYNTHESIZE(bool, isBlocked, IsBlocked);
 
 	void addNumberOfUse(int number);

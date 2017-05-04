@@ -13,6 +13,8 @@ BaseHero::BaseHero(string jsonFile, string atlasFile, float scale) : B2Skeleton(
 	currentRunDis = 0.0f;
 	preRunDis = 0.0f;
 	isNoDie = false;
+	noActive = false;
+	isKillAll = false;
 	dieHard = 1;
 	coinRatio = 1;
 	createMapItem();
@@ -300,28 +302,26 @@ void BaseHero::deSelectEnemyBySkill3()
 	}
 }
 
-void BaseHero::killThemAll(list<BaseEnemy*> listToKill)
+void BaseHero::killThemAll()
 {
+	auto boss = (BaseEnemy*) this->getParent()->getChildByTag(TAG_BOSS);
+	if (boss != nullptr && boss->getPositionX() < this->getPositionX() + SCREEN_SIZE.width * 0.75f) {
+		boss->die();
+		//log("%i", boss->getHealth());
+	}
+
+	isKillAll = true;
 	blash->setVisible(true);
 	//auto originScale = blash->getScale();
 	auto scaleFactor = Director::getInstance()->getContentScaleFactor();
 	auto scale = ScaleBy::create(0.7f, 150 * scaleFactor);
 
 	auto hide = CallFunc::create([&]() {
+		isKillAll = false;
 		blash->setVisible(false);
 	});
 
 	blash->runAction(Sequence::create(scale, hide, scale->reverse(), nullptr));
-
-	for (auto enemy : listToKill) {
-		enemy->setIsDie(true);
-	}
-
-	auto boss = (BaseEnemy*) this->getParent()->getChildByTag(TAG_BOSS);
-	if (boss != nullptr && boss->getPositionX() < this->getPositionX() + SCREEN_SIZE.width * 0.75f) {
-		boss->die();
-		//log("%i", boss->getHealth());
-	}
 }
 
 void BaseHero::createMapItem()

@@ -80,3 +80,9 @@ string JSonHeroManager::getTipAtX(int index)
 	assert(index > 0 && index <= 10);
 	return jsonDoc["tip"][0][("tip_" + StringUtils::format("%i", index)).c_str()].GetString();
 }
+
+string JSonHeroManager::getNotifyAtX(int index)
+{
+	assert(index > 0 && index <= 5);
+	return jsonDoc["notification"][0][("noti_" + StringUtils::format("%i", index)).c_str()].GetString();
+}

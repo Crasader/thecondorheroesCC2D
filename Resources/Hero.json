@@ -19,7 +19,7 @@
     }
   ],
 
-   "tip": [
+  "tip": [
     {
       "tip_1": "Can jump again when  you in the air",
       "tip_2": "Slash a Gold Bag to take a lot of Gold",
@@ -31,6 +31,16 @@
       "tip_8": "You can take some Gold after complete a quest",
       "tip_9": "You can exchange Gold by Diamond",
       "tip_10": "Upgrade a skill will make it less time of coundown"
+    }
+  ],
+
+  "notification": [
+    {
+      "noti_1": "Your cake for play is not enough",
+      "noti_2": "Your gold is not enough",
+      "noti_3": "Your diamond is not enough",
+      "noti_4": "Watcher",
+      "noti_5": "Striker"
     }
   ],
 
@@ -61,7 +71,7 @@
       "skill3Name": "Tieu Hon Chuong",
       "pathMainImageSkill3": "UI/btnDQ_skill3_up.png",
       "pathSubImageSkill3": "UI/btnDQ_skill3_down.png",
-      "baseHP": 100,
+      "baseHP": 5,
       "level": 1,
       "maxLevel": 15,
       "percentBonusScore": 0,

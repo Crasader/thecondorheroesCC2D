@@ -97,6 +97,7 @@ void EnemyHongLangBa::initCirclePhysic(b2World * world, Point pos)
 void EnemyHongLangBa::updateMe(BaseHero * hero)
 {
 	BaseEnemy::updateMe(hero);
+
 	if (getIsDie() && this->getB2Body() != nullptr) {
 		die();
 	}

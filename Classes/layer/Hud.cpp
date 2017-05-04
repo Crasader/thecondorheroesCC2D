@@ -329,7 +329,7 @@ void Hud::doDoublingCoin(Ref * pSender)
 
 void Hud::doCalling(Ref * pSender)
 {
-	REF->decreaseNumberItemHealth();
+	REF->decreaseNumberItemBird();
 
 	btnCalling->setVisible(false);
 	btnCalling->setEnabled(false);
@@ -455,16 +455,19 @@ void Hud::showButton()
 	btnAttack->setIsBlocked(false);
 
 	btnSkill_1->setVisible(true);
+	btnSkill_1->getMain()->setVisible(true);
 	if (!btnSkill_1->getCanTouch()) {
 		btnSkill_1->getNumberCoolDown()->setVisible(true);
 	}
 
 	btnSkill_2->setVisible(true);
+	btnSkill_2->getMain()->setVisible(true);
 	if (!btnSkill_2->getCanTouch()) {
 		btnSkill_2->getNumberCoolDown()->setVisible(true);
 	}
 
 	btnSkill_3->setVisible(true);
+	btnSkill_3->getMain()->setVisible(true);
 	if (!btnSkill_3->getCanTouch()) {
 		btnSkill_3->getNumberCoolDown()->setVisible(true);
 	}
@@ -517,15 +520,21 @@ void Hud::resumeIfVisible()
 	if (btnSkill_1->isVisible()) {
 		addEvents();
 
-		if (!btnSkill_1->getCanTouch()) {
+		btnSkill_1->getMain()->setVisible(true);
+		if (!btnSkill_1->getCanTouch()) {	// in scheule
+			btnSkill_1->getNumberCoolDown()->setVisible(true);
 			btnSkill_1->resume();
 		}
 
+		btnSkill_2->getMain()->setVisible(true);
 		if (!btnSkill_2->getCanTouch()) {
+			btnSkill_2->getNumberCoolDown()->setVisible(true);
 			btnSkill_2->resume();
 		}
 
+		btnSkill_3->getMain()->setVisible(true);
 		if (!btnSkill_3->getCanTouch()) {
+			btnSkill_3->getNumberCoolDown()->setVisible(true);
 			btnSkill_3->resume();
 		}
 	}

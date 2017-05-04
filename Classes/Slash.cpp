@@ -14,7 +14,7 @@ Slash * Slash::create(string jsonFile, string atlasFile, float scale)
 	Slash *slash = new Slash(jsonFile, atlasFile, scale);
 	slash->setTag(TAG_SLASH);
 	slash->setScaleX(1);
-	slash->setAnimation(0, "detu2slash", true);
+	slash->setAnimation(0, "animation", true);
 	slash->update(0.0f);
 	slash->isDie = false;
 	slash->setB2Body(nullptr);

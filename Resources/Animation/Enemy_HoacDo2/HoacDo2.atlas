@@ -1,0 +1,202 @@
+
+HoacDo2.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+caidau
+  rotate: true
+  xy: 373, 80
+  size: 102, 120
+  orig: 102, 120
+  offset: 0, 0
+  index: -1
+caidau2
+  rotate: true
+  xy: 495, 80
+  size: 102, 120
+  orig: 102, 120
+  offset: 0, 0
+  index: -1
+canhtay1
+  rotate: true
+  xy: 921, 182
+  size: 56, 72
+  orig: 56, 72
+  offset: 0, 0
+  index: -1
+canhtay2
+  rotate: false
+  xy: 923, 412
+  size: 79, 86
+  orig: 79, 86
+  offset: 0, 0
+  index: -1
+chansau1
+  rotate: true
+  xy: 189, 70
+  size: 88, 182
+  orig: 88, 182
+  offset: 0, 0
+  index: -1
+chantruoc1
+  rotate: false
+  xy: 716, 189
+  size: 100, 184
+  orig: 100, 184
+  offset: 0, 0
+  index: -1
+mau1
+  rotate: false
+  xy: 2, 160
+  size: 338, 338
+  orig: 338, 338
+  offset: 0, 0
+  index: -1
+quat1
+  rotate: true
+  xy: 818, 190
+  size: 183, 101
+  orig: 183, 101
+  offset: 0, 0
+  index: -1
+quat1-eff
+  rotate: false
+  xy: 716, 375
+  size: 205, 123
+  orig: 205, 123
+  offset: 0, 0
+  index: -1
+shadow
+  rotate: false
+  xy: 189, 50
+  size: 126, 18
+  orig: 126, 18
+  offset: 0, 0
+  index: -1
+slash1
+  rotate: false
+  xy: 342, 342
+  size: 185, 156
+  orig: 185, 156
+  offset: 0, 0
+  index: -1
+slash2
+  rotate: false
+  xy: 342, 184
+  size: 185, 156
+  orig: 185, 156
+  offset: 0, 0
+  index: -1
+slash3
+  rotate: false
+  xy: 529, 342
+  size: 185, 156
+  orig: 185, 156
+  offset: 0, 0
+  index: -1
+slash4
+  rotate: false
+  xy: 529, 184
+  size: 185, 156
+  orig: 185, 156
+  offset: 0, 0
+  index: -1
+slash5
+  rotate: false
+  xy: 2, 2
+  size: 185, 156
+  orig: 185, 156
+  offset: 0, 0
+  index: -1
+taysau1
+  rotate: true
+  xy: 880, 147
+  size: 41, 36
+  orig: 41, 36
+  offset: 0, 0
+  index: -1
+taysau2
+  rotate: false
+  xy: 273, 5
+  size: 52, 43
+  orig: 52, 43
+  offset: 0, 0
+  index: -1
+taytruoc
+  rotate: false
+  xy: 826, 142
+  size: 52, 46
+  orig: 52, 46
+  offset: 0, 0
+  index: -1
+taytruoc1-1
+  rotate: true
+  xy: 923, 377
+  size: 33, 44
+  orig: 33, 44
+  offset: 0, 0
+  index: -1
+taytruoc1-2
+  rotate: false
+  xy: 1004, 465
+  size: 16, 33
+  orig: 16, 33
+  offset: 0, 0
+  index: -1
+taytruoc2-1
+  rotate: true
+  xy: 995, 198
+  size: 40, 26
+  orig: 40, 26
+  offset: 0, 0
+  index: -1
+taytruoc2-2
+  rotate: false
+  xy: 342, 163
+  size: 29, 19
+  orig: 29, 19
+  offset: 0, 0
+  index: -1
+than
+  rotate: false
+  xy: 921, 240
+  size: 101, 133
+  orig: 101, 133
+  offset: 0, 0
+  index: -1
+tocsau
+  rotate: false
+  xy: 689, 112
+  size: 41, 70
+  orig: 41, 70
+  offset: 0, 0
+  index: -1
+toctruoc
+  rotate: false
+  xy: 786, 127
+  size: 38, 60
+  orig: 38, 60
+  offset: 0, 0
+  index: -1
+vataoduoi
+  rotate: false
+  xy: 732, 124
+  size: 52, 63
+  orig: 52, 63
+  offset: 0, 0
+  index: -1
+vataosau
+  rotate: true
+  xy: 189, 11
+  size: 37, 82
+  orig: 37, 82
+  offset: 0, 0
+  index: -1
+vataotruoc
+  rotate: false
+  xy: 617, 91
+  size: 70, 91
+  orig: 70, 91
+  offset: 0, 0
+  index: -1

@@ -12,7 +12,8 @@
 #include "EnemyToOng.h"
 #include "EnemyHongLangBa.h"
 #include "EnemyHongLangBa2.h"
-
+#include "EnemyHoacDo.h"
+#include "EnemyHoacDo2.h"
 #include "boss/EnemyBoss1.h"
 #include "boss/EnemyBoss2.h"
 #include "chimdieu/ChimDieu.h"
@@ -27,7 +28,7 @@
 #include "datastructures/MyPool.h"
 #include "layer/MyLayer.h"
 #include "item/Item.h"
-
+#include "layer/Hud.h"
 
 
 
@@ -41,6 +42,8 @@ public:
 
 	BaseHero * getHero() { return hero; }
 	void setLastScore(int lastScore) { m_lastScore = lastScore; }
+	Hud* getHud();
+	void enableCalling();
 
 private:
 	// props
@@ -84,9 +87,6 @@ private:
 	CCRect left_corner;
 	LayerColor *blur;
 	SpriteBatchNode* batchNode;
-
-	list<BaseEnemy*> listEnemyOccurInScreen;
-
 
 	BaseHero *hero;
 	ChimDieu* _aEagle;
@@ -147,6 +147,8 @@ private:
 	void createEnemyHongLangBa(MyLayer* layer, Vec2 pos);
 	void createEnemyHongLangBa2(MyLayer* layer, Vec2 pos);
 	void createEnemyToOng(MyLayer* layer, Vec2 pos);
+	void createEnemyHoacDo(MyLayer* layer, Vec2 pos);
+	void createEnemyHoacDo2(MyLayer* layer, Vec2 pos);
 	void creatBoss();
 
 	void createCoin();

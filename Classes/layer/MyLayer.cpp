@@ -8,6 +8,8 @@
 #include "EnemyHongLangBa2.h"
 #include "EnemyToOng.h"
 #include "EnemyTNB.h"
+#include "EnemyHoacDo.h"
+#include "EnemyHoacDo2.h"
 
 MyLayer::MyLayer()
 {
@@ -18,6 +20,7 @@ MyLayer::MyLayer()
 	 hongLangBa1Pool = nullptr;
 	 hongLangBa2Pool = nullptr;
 	 tnbPool = nullptr;
+	 hoacDo1Pool = nullptr;
 }
 MyLayer::~MyLayer(){
 	if(wooderPool!= nullptr)
@@ -114,6 +117,29 @@ bool MyLayer::init(TMXTiledMap* tmx_map)
 			tmp->setVisible(false);
 			tmp->pauseSchedulerAndActions();
 			this->addChild(tmp);
+		}
+	}
+
+	if (tmx_map->getObjectGroup("hoacdo_1")) {
+		hoacDo1Pool = MyPool::create(max, TAG_ENEMY_HOACDO1);
+		for (int i = 0; i < hoacDo1Pool->maxPool; i++) {
+			auto tmp = (EnemyHoacDo*)hoacDo1Pool->getObject();
+			tmp->setPosition(0, -SCREEN_SIZE.height);
+			tmp->setVisible(false);
+			tmp->pauseSchedulerAndActions();
+			this->addChild(tmp);
+		}
+	}
+
+	if (tmx_map->getObjectGroup("hoacdo_2")) {
+		hoacDo2Pool = MyPool::create(max, TAG_ENEMY_HOACDO2);
+		for (int i = 0; i < hoacDo2Pool->maxPool; i++) {
+			auto tmp = (EnemyHoacDo2*)hoacDo2Pool->getObject();
+			tmp->setPosition(0, -SCREEN_SIZE.height);
+			tmp->setVisible(false);
+			tmp->pauseSchedulerAndActions();
+			this->addChild(tmp);
+			tmp->genSlash();
 		}
 	}
 	return true;

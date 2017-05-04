@@ -241,7 +241,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		if (sA && sB) {	// sA and sB != nullptr
 			enemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 || sA->getTag() == TAG_ENEMY_HONGLANGBA1 ||
-									sA->getTag() == TAG_ENEMY_TOONG || sA->getTag() == TAG_ENEMY_TNB
+									sA->getTag() == TAG_ENEMY_TOONG || sA->getTag() == TAG_ENEMY_TNB || sA->getTag() == TAG_ENEMY_HOACDO1
 				? 
 				(BaseEnemy *)sA : (BaseEnemy *)sB;
 			auto thc = sA->getTag() == TAG_DQ_TIEU_HON_CHUONG ? (TieuHonChuong*)sA : (TieuHonChuong*)sB;
@@ -270,7 +270,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		BaseEnemy *enemy;
 
 		if (sA && sB) {		// sA and sB != nullptr
-			enemy = sA->getTag() == TAG_ENEMY_TOANCHAN2 || sA->getTag() == TAG_ENEMY_HONGLANGBA2
+			enemy = sA->getTag() == TAG_ENEMY_TOANCHAN2 || sA->getTag() == TAG_ENEMY_HONGLANGBA2 || sA->getTag() == TAG_ENEMY_HOACDO2
 				?
 				(BaseEnemy *)sA : (BaseEnemy *)sB;
 

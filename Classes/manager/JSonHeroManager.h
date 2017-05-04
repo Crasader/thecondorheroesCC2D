@@ -74,6 +74,8 @@ public:
 	// index must be around 1-10
 	string getTipAtX(int index);
 	
+	// index must be around 1-x
+	string getNotifyAtX(int index);
 };
 
 #define JSHERO JSonHeroManager::getInstance()

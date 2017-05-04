@@ -69,7 +69,7 @@ void EnemyBoss1::die()
 			this->playSoundHit();
 			this->isNodie = true;
 			this->clearTracks();
-			this->setAnimation(0, "injured", false);
+			this->setAnimation(0, "injured-red", false);
 			this->setToSetupPose();
 		}
 		else {
@@ -306,8 +306,7 @@ void EnemyBoss1::listener()
 				setIsNodie(false);
 			}
 			else if ((strcmp(getCurrent()->animation->name, "injured") == 0 && loopCount == 1)) {
-				setIsNodie(false);
-				this->idle();
+				
 			}
 			else if ((strcmp(getCurrent()->animation->name, "injured-red") == 0 && loopCount == 1)) {
 				//Director::getInstance()->replaceScene(MenuLayer::createScene());
@@ -317,6 +316,11 @@ void EnemyBoss1::listener()
 				//});
 				////this->setControlState(INT_MIN);
 				//this->runAction(Sequence::createWithTwoActions(DelayTime::create(10), call));
+				if (this->getHealth() > 0) {
+					setIsNodie(false);
+					this->idle();
+				}
+				
 			}
 		}
 	});
@@ -341,7 +345,7 @@ void EnemyBoss1::changeState(StateBoss * state)
 void EnemyBoss1::doAttack1()
 {
 	this->schedule([&](float dt) {
-		log("doattack1");
+		//log("doattack1");
 		this->setControlState(this->getControlState() + 1);
 		if (this->getControlState() % 20 == 0) {
 			if (this->getControlAttack() == 0) {
@@ -358,7 +362,7 @@ void EnemyBoss1::doAttack1()
 void EnemyBoss1::doAttack2()
 {
 	this->schedule([&](float dt) {
-		log("do attack2");
+		//log("do attack2");
 		this->setControlState(this->getControlState() + 1);
 		if (this->getControlState() == 1) {
 			this->attack2();

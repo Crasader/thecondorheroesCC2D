@@ -72,6 +72,8 @@ using namespace std;
 #define TAG_ENEMY_TOONG						106
 #define TAG_ENEMY_HONGLANGBA1				107
 #define TAG_ENEMY_HONGLANGBA2				108
+#define TAG_ENEMY_HOACDO1					109
+#define TAG_ENEMY_HOACDO2					110
 
 #define KEY_ITEM_MAGNET						0
 #define KEY_ITEM_DOUPLE_COIN				1
@@ -125,6 +127,10 @@ using namespace std;
 #define SOUND_HLB1DIE							"sound/hlb1die.mp3"
 #define SOUND_HLB2AT							"sound/hlb2at.mp3"
 #define SOUND_HLB2DIE							"sound/hlb2die.mp3"
+#define SOUND_HD1AT								"sound/hd1at.mp3"
+#define SOUND_HD1DIE							"sound/hd1die.mp3"
+#define SOUND_HD2AT								"sound/hd2at.mp3"
+#define SOUND_HD2DIE							"sound/hd2die.mp3"
 #define SOUND_TOONGDIE							"sound/toongdie.mp3"
 #define SOUND_TNBDIE							"sound/tnbdie.mp3"
 
@@ -141,6 +147,7 @@ using namespace std;
 #define SOUND_COINBULLION								"sound/getcoinbullion.mp3"
 #define SOUND_COINBAG								"sound/getcoinbag.mp3"
 #define SOUND_ITEM								"sound/getitem.mp3"
+#define SOUND_BIRD								"sound/bird.mp3"
 
 #define SOUND_FAIL						"sound/stagefail.mp3"
 #define SOUND_WIN						"sound/stagewin.mp3"

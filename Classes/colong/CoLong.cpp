@@ -388,6 +388,9 @@ void CoLong::listener() {
 			getFSM()->changeState(MLand);
 			auto gameLayer = (GameScene*) this->getParent();
 			initCirclePhysic(gameLayer->world, this->getPosition());
+			gameLayer->getHud()->resumeIfVisible();
+			gameLayer->enableCalling();
+			noActive = false;
 		}
 
 		else if ((strcmp(getCurrent()->animation->name, "attack1") == 0) ||
@@ -520,6 +523,8 @@ void CoLong::die() {
 		//log("Die Hard");
 		return;
 	}
+
+	noActive = true;
 
 	if (!getIsDoneDuration1()) {
 		setIsDoneDuration1(true);

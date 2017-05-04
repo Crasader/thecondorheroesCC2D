@@ -10,6 +10,9 @@
 #include "EnemyToOng.h"
 #include "EnemyHongLangBa.h"
 #include "EnemyHongLangBa2.h"
+#include "EnemyHoacDo.h"
+#include "EnemyHoacDo2.h"
+
 
 
 MyPool::MyPool()
@@ -158,6 +161,38 @@ MyPool::MyPool(int maxPool, int tag) : MyPool()
 																  //auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json",
 																  //	"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
 			auto enemy = EnemyHongLangBa2::create("Animation/Enemy_HongLangBa2/HLBa2", scaleOfEnemy);
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
+
+	case TAG_ENEMY_HOACDO1: {
+
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 406; 
+			auto enemy = EnemyHoacDo::create("Animation/Enemy_HoacDo1/HoacDo1", scaleOfEnemy);
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
+
+	case TAG_ENEMY_HOACDO2: {
+
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 406;
+			auto enemy = EnemyHoacDo2::create("Animation/Enemy_HoacDo2/HoacDo2", scaleOfEnemy);
 			//coin->runAnimation();
 
 			enemy->setTag(tag);

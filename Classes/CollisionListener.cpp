@@ -95,7 +95,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
 
 		auto enemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 || sA->getTag() == TAG_ENEMY_HONGLANGBA1 ||
-					sA->getTag() == TAG_ENEMY_TOONG || sA->getTag() == TAG_ENEMY_TNB ? 
+					sA->getTag() == TAG_ENEMY_TOONG || sA->getTag() == TAG_ENEMY_TNB || sA->getTag() == TAG_ENEMY_HOACDO1?
 			(BaseEnemy *)sA : (BaseEnemy *)sB;
 
 		enemy->attack();
@@ -130,7 +130,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 
 		auto _aEnemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 || sA->getTag() == TAG_ENEMY_TOANCHAN2
         || sA->getTag() == TAG_ENEMY_HONGLANGBA1 || sA->getTag() == TAG_ENEMY_HONGLANGBA2 ||
-			sA->getTag() == TAG_ENEMY_TOONG ?
+			sA->getTag() == TAG_ENEMY_TOONG || sA->getTag() == TAG_ENEMY_HOACDO1 || sA->getTag() == TAG_ENEMY_HOACDO2 ?
 			(BaseEnemy *)sA : (BaseEnemy *)sB;
 
 
@@ -501,7 +501,7 @@ void CollisionListener::EndContact(b2Contact * contact)
 
 		auto _aEnemy = sA->getTag() == TAG_ENEMY_TOANCHAN1 || sA->getTag() == TAG_ENEMY_TOANCHAN2
 			|| sA->getTag() == TAG_ENEMY_HONGLANGBA1 || sA->getTag() == TAG_ENEMY_HONGLANGBA2 
-			|| sA->getTag() == TAG_ENEMY_TOONG
+			|| sA->getTag() == TAG_ENEMY_TOONG || sA->getTag() == TAG_ENEMY_HOACDO1 || sA->getTag() == TAG_ENEMY_HOACDO2
 			
 			? (BaseEnemy *)sA : (BaseEnemy *)sB;
 

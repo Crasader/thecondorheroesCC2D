@@ -48,6 +48,9 @@ bool GameScene::init(int stage, int map, int haveboss, int charId)
 		return false;
 	}
 	AudioManager::stopMusic();
+
+	isFirstPlay = REF->getIsFirstPlay();
+
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -67,7 +70,7 @@ bool GameScene::init(int stage, int map, int haveboss, int charId)
 	//auto tmp = Sprite::createWithSpriteFrameName("coin_01.png");
 	batchNode = SpriteBatchNode::create("coin_01.png");
 	this->addChild(batchNode);
-	// tesst
+	// test
 
 	loadBackground();
 	danceWithCamera();
@@ -81,8 +84,10 @@ bool GameScene::init(int stage, int map, int haveboss, int charId)
 			Point(origin.x, visibleSize.height * 0.75f));
 	}
 
-
-
+	if (REF->getNumberItemHealth() > 0) {
+		hero->setHealth(hero->getHealth() + 1);
+		hero->setMaxHealth(hero->getHealth());
+	}
 
 
 	loadPosAndTag();
@@ -96,8 +101,8 @@ bool GameScene::init(int stage, int map, int haveboss, int charId)
 	if (haveboss)
 		creatBoss();
 
-
 	createCoin();
+
 	return true;
 }
 
@@ -199,30 +204,33 @@ void GameScene::onBegin()
 	}
 
 	}
-	hud->addEvents();
+
+	
+
 	if (hud->getBtnCalling() != nullptr)
 		hud->getBtnCalling()->setEnabled(true);
 
-	if (hud->getBtnMagnet() != nullptr)
-		hud->getBtnMagnet()->setEnabled(true);
-
-	if (hud->getBtnDoubleGold() != nullptr)
-		hud->getBtnDoubleGold()->setEnabled(true);
-
 	hud->getPauseItem()->setEnabled(true);
 
-	touch_listener = EventListenerTouchOneByOne::create();
+	
 	key_listener = EventListenerKeyboard::create();
-	touch_listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
+	
 	key_listener->onKeyPressed = CC_CALLBACK_2(GameScene::onKeyPressed, this);
 
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(touch_listener, this);
+	if (!isFirstPlay) {
+		hud->addEvents();
+		touch_listener = EventListenerTouchOneByOne::create();
+		touch_listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
+		_eventDispatcher->addEventListenerWithSceneGraphPriority(touch_listener, this);
+	}
+
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(key_listener, this);
 	this->scheduleUpdate();
 }
 
 void GameScene::checkActiveButton()
 {
+	if (hud->getBtnSkill_1() == nullptr) return;
 	if (hero->getIsDriverEagle() ||
 		hero->getPositionY() + hero->getTrueRadiusOfHero() * 2 < 0) {
 
@@ -364,6 +372,7 @@ void GameScene::listener()
 		}
 	}
 
+	if (hud->getBtnAttack() == nullptr) return;
 	if (hud->getBtnAttack()->getIsActive() && !hud->getBtnAttack()->getIsBlocked()
 		&& hero->getFSM()->currentState != MInjured) {
 
@@ -372,6 +381,7 @@ void GameScene::listener()
 		hud->getBtnAttack()->setIsActive(false);
 	}
 
+	if (hud->getBtnSkill_1() == nullptr) return;
 	if (hud->getBtnSkill_1()->getIsActive() && !hud->getBtnSkill_1()->getIsBlocked()
 		&& hero->getFSM()->currentState != MInjured) {
 
@@ -595,6 +605,10 @@ void GameScene::update(float dt)
 		}
 	}
 
+	if (isFirstPlay && (stage == 1 && map == 1)) {
+		tutorial();
+	}
+
 	updateHUD(dt);
 }
 
@@ -697,6 +711,38 @@ void GameScene::loadBackground()
 		tmx_mapboss[1]->setPosition(tmx_mapboss[0]->getPosition() + Vec2(tmx_mapboss[0]->getBoundingBox().size.width, 0));
 		this->addChild(tmx_mapboss[0], ZORDER_BG2);
 		this->addChild(tmx_mapboss[1], ZORDER_BG2);
+	}
+
+	if (isFirstPlay) {
+		auto groupTut = tmx_map->getObjectGroup("tut");
+		for (auto child : groupTut->getObjects()) {
+			auto mObjectX = child.asValueMap();
+
+			float origin_X = mObjectX["x"].asFloat() * scaleOfMap;
+
+			switch (mObjectX["order"].asInt())
+			{
+			case 1:
+				posXJump1Tut = origin_X;
+				break;
+
+			case 2:
+				posXJump2Tut = origin_X;
+				break;
+
+			case 3:
+				posXAttackTut = origin_X;
+				break;
+
+			case 4:
+				posXSkillTut = origin_X;
+				break;
+
+			case 5:
+				posXIntroBird = origin_X;
+				break;
+			}
+		}
 	}
 
 	createInfiniteNode();
@@ -1589,7 +1635,7 @@ void GameScene::reviveHero()
 	hero->setDieHard(1);
 	hero->setIsPriorInjured(false);
 	hero->getBloodScreen()->setVisible(false);
-	hero->setHealth(REF->getCurrentHealth());
+	hero->setHealth(hero->getMaxHealth());
 	for (int i = 0; i < hero->getHealth(); i++) {
 		auto health = (Sprite*)hud->getListBlood()->getObjectAtIndex(i);
 		health->setVisible(true);
@@ -1942,20 +1988,162 @@ void GameScene::jump()
 	}
 }
 
+void GameScene::introJump()
+{
+	tut = TutorialJump::create("");
+	this->getParent()->addChild(tut);
+
+	blurScreen();
+	
+	hero->getSmokeRun()->pause();
+	hero->pause();
+	hud->getPauseItem()->setEnabled(false);
+	if (posXJump1Tut > 0)
+		posXJump1Tut = -1;
+	else
+		posXJump2Tut = -1;
+	this->pause();
+}
+
 void GameScene::introAttack()
 {
+	tut = TutorialAttack::create();
+	this->getParent()->addChild(tut);
+
+	if (hero->getSmokeRun()->isVisible())
+		hero->getSmokeRun()->pause();
+	hero->pause();
+
+	hud->getPauseItem()->setEnabled(false);
+	hud->introAttack();
+
+	posXAttackTut = -1;
+	this->pause();
 }
 
 void GameScene::introSkills()
 {
+	tut = TutorialSkill::create();
+	this->getParent()->addChild(tut);
+
+	if (hero->getSmokeRun()->isVisible())
+		hero->getSmokeRun()->pause();
+	hero->pause();
+
+	hud->getPauseItem()->setEnabled(false);
+	hud->introSkills();
+
+	posXSkillTut = -1;
+	this->pause();
 }
 
 void GameScene::introBird()
 {
+	tut = TutorialIntroBird::create("");
+	this->getParent()->addChild(tut);
+
+	if (hero->getSmokeRun()->isVisible())
+		hero->getSmokeRun()->pause();
+	hero->pause();
+
+	hud->getPauseItem()->setEnabled(false);
+	hud->introBird();
+
+	if (!hero->getIsDoneDuration1() || !hero->getIsDoneDuration2() || !hero->getIsDoneDuration3()) {
+
+	}
+	else
+		enableCalling();
+
+	posXIntroBird = -1;
+	this->pause();
 }
 
 void GameScene::tutorial()
 {
+	if (posXJump1Tut > 0) {	// no need boolean
+		if (hero->getPositionX() >= posXJump1Tut) {
+			introJump();
+		}
+	}
+
+	if (posXJump2Tut > 0) {	// no need boolean
+		if (hero->getPositionX() >= posXJump2Tut) {
+			introJump();
+		}
+	}
+
+	if (posXAttackTut > 0) {
+		if (hero->getPositionX() >= posXAttackTut) {
+			introAttack();
+		}
+	}
+
+	if (posXSkillTut > 0) {
+		if (hero->getPositionX() >= posXSkillTut) {
+			introSkills();
+		}
+	}
+
+	if (posXIntroBird > 0) {
+		if (hero->getPositionX() >= posXIntroBird) {
+			introBird();
+		}
+	}
+}
+
+void GameScene::resumeAfterTut(int caseTut)
+{
+
+	hero->getSmokeRun()->resume();
+
+	hero->resume();
+
+	tut->removeFromParentAndCleanup(true);
+	tut = nullptr;
+
+
+	hud->getPauseItem()->setEnabled(true);
+	
+
+	switch (caseTut)
+	{
+	case 1:
+		blur->setVisible(false);
+		if (posXJump2Tut > 0) {
+			touch_listener = EventListenerTouchOneByOne::create();
+			touch_listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
+			_eventDispatcher->addEventListenerWithSceneGraphPriority(touch_listener, this);
+		}
+		
+		this->resume();
+		break;
+
+	case 2:
+		if (hud->getCoverSkill()->isVisible()) {
+			hud->getCoverSkill()->resume();
+		}
+
+		if (hud->getCoverItemMagNet()->isVisible()) {
+			hud->getCoverItemMagNet()->resume();
+		}
+
+		if (hud->getCoverItemDC()->isVisible()) {
+			hud->getCoverItemDC()->resume();
+		}
+
+		this->resume();
+		break;
+
+	case 4:
+		hud->resumeIfVisible();
+		isFirstPlay = false;
+		REF->setDoneFirstPlay();
+		this->resume();
+		break;
+	default:
+		break;
+	}
 }
 
 //void GameScene::createMapItem()

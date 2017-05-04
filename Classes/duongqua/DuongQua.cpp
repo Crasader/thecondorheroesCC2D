@@ -25,6 +25,7 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 	duongQua->setJumpVel(duongQua->SCREEN_SIZE.height * 1.4f / PTM_RATIO);
 
 	duongQua->health = REF->getCurrentHealth();
+	duongQua->maxHealth = duongQua->health;
 
 	// set Duration here
 	duongQua->setDurationSkill1(REF->getDurationSkill_1());

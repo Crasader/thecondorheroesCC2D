@@ -21,6 +21,7 @@ CoLong * CoLong::create(string p_sJsonFile, string p_sAtlasFile, float p_fScale)
 	_pCoLong->setJumpVel(_pCoLong->SCREEN_SIZE.height * 1.4f / PTM_RATIO);
 
 	_pCoLong->health = REF->getCurrentHealth();
+	_pCoLong->maxHealth = _pCoLong->health;
 
 	// set Duration here
 	_pCoLong->setDurationSkill1(REF->getDurationSkill_1());

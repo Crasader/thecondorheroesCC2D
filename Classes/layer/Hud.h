@@ -60,8 +60,6 @@ protected:
 	CC_SYNTHESIZE(MyButton*, btnSkill_3, BtnSkill_3);
 
 	CC_SYNTHESIZE(MenuItemImage*, btnCalling, BtnCalling);
-	CC_SYNTHESIZE(MenuItemImage*, btnMagnet, BtnMagnet);
-	CC_SYNTHESIZE(MenuItemImage*, btnDouleGold, BtnDoubleGold);
 
 	CC_SYNTHESIZE(ProgressTimer*, icon_Skill, Icon_Skill);
 	CC_SYNTHESIZE(ProgressTimer*, icon_Item_Magnet, Icon_Item_Magnet);
@@ -71,13 +69,15 @@ protected:
 
 	CC_SYNTHESIZE(SkeletonAnimation *, multiKills, MultiKills);	//DuongPM Edited for multi kills
 
+	CC_SYNTHESIZE(Sprite *, coverSkill, CoverSkill);
+	CC_SYNTHESIZE(Sprite *, coverItemMagnet, CoverItemMagNet);
+	CC_SYNTHESIZE(Sprite *, coverItemDC, CoverItemDC);
+
 private:
 	TMXTiledMap *tmxMap;
 	list<Sprite*> g_lTemp;
 
-	Sprite *coverSkill;
-	Sprite *coverItemMagnet;
-	Sprite *coverItemDC;
+	
 	float timerSkill;
 	float durationSkill;
 
@@ -108,6 +108,7 @@ private:
 	void createButtonX(int index, Point position);
 	vector<int> getListIndexOfTypeItemBuy();
 
+public:
 	// tuts
 	void introAttack();
 	void introSkills();

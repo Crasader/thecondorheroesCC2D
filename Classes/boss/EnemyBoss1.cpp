@@ -245,7 +245,9 @@ void EnemyBoss1::createCoinPool()
 
 void EnemyBoss1::updateMe(BaseHero* hero)
 {
-	this->heroLocation = hero->getPosition();
+	if (hero->getB2Body() != nullptr) {
+		this->heroLocation =Vec2( hero->getB2Body()->GetPosition().x*PTM_RATIO, hero->getB2Body()->GetPosition().y*PTM_RATIO);
+	}
 	//log("ParentBoss: %f, %f, %s", this->getParent()->getPositionX(), this->getParent()->getPositionY(), this->getParent()->getName().c_str());
 	//log();
 	auto posHero = hero->getPosition();
@@ -367,12 +369,12 @@ void EnemyBoss1::doAttack2()
 		if (this->getControlState() == 1) {
 			this->attack2();
 		}
+		auto posHero = this->heroLocation;
+		auto posBoss = this->getPosGenSlash();
 		switch (this->getRandAt2())
 		{
 		case 0: {
 			if (this->getControlState() == 1 || this->getControlState() == 3 || this->getControlState() == 5) {
-				auto posHero = this->heroLocation;
-				auto posBoss = this->getPosition();
 				auto vecBossToHero = posHero - posBoss;
 				this->creatSlash(vecBossToHero.getAngle());
 			}
@@ -380,8 +382,6 @@ void EnemyBoss1::doAttack2()
 		}
 		case 1: {
 			if (this->getControlState() == 2 || this->getControlState() == 4) {
-				auto posHero = this->heroLocation;
-				auto posBoss = this->getPosition();
 				auto vecBossToHero = posHero - posBoss;
 				this->creatSlash(vecBossToHero.getAngle() - PI / 24);
 				this->creatSlash(vecBossToHero.getAngle());
@@ -394,8 +394,6 @@ void EnemyBoss1::doAttack2()
 		}
 		default:
 			if (this->getControlState() == 1 || this->getControlState() == 3 || this->getControlState() == 5) {
-				auto posHero = this->heroLocation;
-				auto posBoss = this->getPosition();
 				auto vecBossToHero = posHero - posBoss;
 				this->creatSlash(vecBossToHero.getAngle());
 			}
@@ -408,6 +406,11 @@ void EnemyBoss1::doAttack2()
 			this->unschedule("bossattack2");
 		}
 	}, 0.1f, "bossattack2");
+}
+
+Vec2 EnemyBoss1::getPosGenSlash()
+{
+	return this->getBoneLocation("bone65");
 }
 
 void EnemyBoss1::playSoundAttack1()

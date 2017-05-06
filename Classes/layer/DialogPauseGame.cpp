@@ -1,7 +1,7 @@
 
-#include "layer/DialogPauseGame.h"
-#include "layer/GameScene.h"
-#include "layer/MenuScene.h"
+#include "DialogPauseGame.h"
+#include "GameScene.h"
+#include "MenuScene.h"
 #include "SimpleAudioEngine.h"
 #include "manager/RefManager.h"
 

@@ -1,5 +1,5 @@
-#include "layer/TutorialLayer.h"
-#include "layer/GameScene.h"
+#include "TutorialLayer.h"
+#include "GameScene.h"
 #include "manager/RefManager.h"
 
 
@@ -21,9 +21,17 @@ bool TutorialLayer::init()
 		return false;
 	}
 
-	listener = EventListenerTouchOneByOne::create();
-	listener->onTouchBegan = CC_CALLBACK_2(TutorialLayer::onTouchBegan, this);
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+	this->schedule([&](float dt) {
+		counter++;
+		if (counter >= 10) {
+			listener = EventListenerTouchOneByOne::create();
+			listener->onTouchBegan = CC_CALLBACK_2(TutorialLayer::onTouchBegan, this);
+			_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+			unschedule("tut_key");
+		}
+	}, 0.1f, "tut_key");
+
+	
 
 	return true;
 }
@@ -69,9 +77,15 @@ bool TutorialJump::init(string image_path)
 		return false;
 	}
 
-	listener = EventListenerTouchOneByOne::create();
-	listener->onTouchBegan = CC_CALLBACK_2(TutorialJump::onTouchBegan, this);
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+	this->schedule([&](float dt) {
+		counter++;
+		if (counter >= 10) {
+			listener = EventListenerTouchOneByOne::create();
+			listener->onTouchBegan = CC_CALLBACK_2(TutorialJump::onTouchBegan, this);
+			_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+			unschedule("tut_key");
+		}
+	}, 0.1f, "tut_key");
 
 	return true;
 }
@@ -148,9 +162,15 @@ bool TutorialIntroBird::init(string image_path)
 		return false;
 	}
 
-	listener = EventListenerTouchOneByOne::create();
-	listener->onTouchBegan = CC_CALLBACK_2(TutorialIntroBird::onTouchBegan, this);
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+	this->schedule([&](float dt) {
+		counter++;
+		if (counter >= 10) {
+			listener = EventListenerTouchOneByOne::create();
+			listener->onTouchBegan = CC_CALLBACK_2(TutorialIntroBird::onTouchBegan, this);
+			_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+			unschedule("tut_key");
+		}
+	}, 0.1f, "tut_key");
 	return true;
 }
 

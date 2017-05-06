@@ -137,8 +137,8 @@ void EnemyHongLangBa2::updateMe(BaseHero* hero)
 
 	if (hero->getPositionX() < this->getPositionX() + this->getParent()->getPositionX() && 
 		hero->getPositionX() > this->getPositionX() + this->getParent()->getPositionX() - SCREEN_SIZE.width * 0.6f &&
-		hero->getPositionY() + SCREEN_SIZE.height * 0.33f > this->getPositionY() &&
-		hero->getPositionY() - SCREEN_SIZE.height * 0.33f < this->getPositionY()) {
+		hero->getPositionY() + SCREEN_SIZE.height * 0.5f > this->getPositionY() &&
+		hero->getPositionY() - SCREEN_SIZE.height * 0.5f < this->getPositionY()) {
 
 		Vec2 vector = Vec2(hero->getPosition() - (this->getPosition() + this->getParent()->getPosition()));
 		angle = vector.getAngle();

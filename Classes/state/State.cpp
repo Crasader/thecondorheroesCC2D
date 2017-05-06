@@ -1,4 +1,4 @@
-#include "state/State.h"
+#include "State.h"
 #include "BaseHero.h"
 
 // define static state here

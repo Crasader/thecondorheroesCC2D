@@ -35,7 +35,7 @@
 //  THE SOFTWARE.
 //
 
-#include "utils/GB2ShapeCache-x.h"
+#include "GB2ShapeCache-x.h"
 #include "Box2D/Box2D.h"
 
 using namespace cocos2d;

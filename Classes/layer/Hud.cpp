@@ -268,7 +268,7 @@ void Hud::addAttack()
 	btnAttack = MyButton::create("UI/btn_attack.png", "UI/btn_attack.png", origin);
 
 	btnAttack->setTimeCoolDown(0.33f);
-	btnAttack->setScale(SCREEN_SIZE.height / 4.3f / btnAttack->getContentSize().height);
+	btnAttack->setScale(SCREEN_SIZE.height / 4.0f / btnAttack->getContentSize().height);
 	addChild(btnAttack);
 }
 
@@ -294,7 +294,7 @@ void Hud::addSkills()
 
 	btnSkill_1->setTimeCoolDown(coolDownS1);
 	btnSkill_1->addNumberOfUse(JSHERO->getNumberOfUseSkill1());
-	btnSkill_1->setScale(SCREEN_SIZE.height / 6.2f / btnSkill_1->getContentSize().height);
+	btnSkill_1->setScale(SCREEN_SIZE.height / 6.0f / btnSkill_1->getContentSize().height);
 	addChild(btnSkill_1);
 
 	//////////////////////////////////////////////////////////////////////////
@@ -307,7 +307,7 @@ void Hud::addSkills()
 
 	btnSkill_2->setTimeCoolDown(coolDownS2);
 	btnSkill_2->addNumberOfUse(JSHERO->getNumberOfUseSkill2());
-	btnSkill_2->setScale(SCREEN_SIZE.height / 6.2f / btnSkill_2->getContentSize().height);
+	btnSkill_2->setScale(SCREEN_SIZE.height / 6.0f / btnSkill_2->getContentSize().height);
 	addChild(btnSkill_2);
 
 	//////////////////////////////////////////////////////////////////////////
@@ -320,7 +320,7 @@ void Hud::addSkills()
 
 	btnSkill_3->setTimeCoolDown(coolDownS3);
 	btnSkill_3->addNumberOfUse(JSHERO->getNumberOfUseSkill3());
-	btnSkill_3->setScale(SCREEN_SIZE.height / 6.2f / btnSkill_3->getContentSize().height);
+	btnSkill_3->setScale(SCREEN_SIZE.height / 6.0f / btnSkill_3->getContentSize().height);
 	addChild(btnSkill_3); 
 }
 

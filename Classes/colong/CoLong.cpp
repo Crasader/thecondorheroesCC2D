@@ -1,6 +1,6 @@
 #include "CoLong.h"
 #include "manager/RefManager.h"
-#include "manager\AudioManager.h"
+#include "manager/AudioManager.h"
 
 CoLong::CoLong(string p_sJsonFile, string p_sAtlasFile, float p_fScale) : BaseHero(p_sJsonFile, p_sAtlasFile, p_fScale) {
 	checkDurationSkill1 = 0;

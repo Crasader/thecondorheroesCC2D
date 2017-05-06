@@ -54,7 +54,7 @@ bool GameScene::init(int stage, int map, int haveboss, int charId)
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	isModeDebug = false;
+	isModeDebug = true;
 	changebg = 0;
 
 	indexOfNextMapBoss = -1;
@@ -1063,7 +1063,7 @@ void GameScene::createEnemyHoacDo(MyLayer * layer, Vec2 pos)
 		if (enemy->getB2Body()) {
 			world->DestroyBody(enemy->getB2Body());
 		}
-		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 4));
+		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
 		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
 		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
 
@@ -1089,6 +1089,31 @@ void GameScene::createEnemyHoacDo2(MyLayer * layer, Vec2 pos)
 		}
 		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
 		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN2);
+		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
+		enemy->listener();
+	}
+}
+
+void GameScene::createEnemyDatNhiBa(MyLayer * layer, Vec2 pos)
+{
+	if (layer->datNhiBa1Pool) {
+		auto enemy = (EnemyDatNhiBa*)layer->datNhiBa1Pool->getObject();
+		enemy->setIsDie(false);
+		enemy->setHealth(2);
+		enemy->setCanRun(false);
+		enemy->setPosition(pos);
+		enemy->setVisible(true);
+		enemy->resumeSchedulerAndActions();
+		enemy->clearTracks();
+		enemy->setAnimation(0, "idle", true);
+		enemy->setToSetupPose();
+		enemy->update(0.0f);
+		//layer->addChild(enemy, ZORDER_ENEMY);
+		if (enemy->getB2Body()) {
+			world->DestroyBody(enemy->getB2Body());
+		}
+		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
+		enemy->changeBodyCategoryBits(BITMASK_DATNHIBA);
 		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
 		enemy->listener();
 	}
@@ -1911,6 +1936,8 @@ void GameScene::loadPosAndTag()
 	loadPosOfObjectInGroup("tnb", TAG_ENEMY_TNB);
 	loadPosOfObjectInGroup("hoacdo_1", TAG_ENEMY_HOACDO1);
 	loadPosOfObjectInGroup("hoacdo_2", TAG_ENEMY_HOACDO2);
+	loadPosOfObjectInGroup("datnhiba_1", TAG_ENEMY_DATNHIBA1);
+
 
 	/*loadPosOfObjectInGroup("coin_parabol", TAG_COIN_PARABOL);
 	loadPosOfObjectInGroup("coin_straight", TAG_COIN_STRAIGHT);
@@ -2025,6 +2052,10 @@ void GameScene::creatAgentByMydata(MyLayer * layer, MyData data)
 	}
 	case TAG_ENEMY_HOACDO2: {
 		createEnemyHoacDo2(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
+		break;
+	}
+	case TAG_ENEMY_DATNHIBA1: {
+		createEnemyDatNhiBa(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
 		break;
 	}
 

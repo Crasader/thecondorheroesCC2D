@@ -9,6 +9,7 @@
 #include "manager/RefManager.h"
 #include "boss/EnemyBoss1.h"
 #include "item/Item.h"
+#include "EnemyDatNhiBa.h"
 
 
 CollisionListener::CollisionListener() {
@@ -379,6 +380,71 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		kp->setTextureRect(Rect(Vec2::ZERO,
 			Size(kp->getContentSize().width, kp->getContentSize().height * random(0.61f, 0.63f))));
 
+	}
+
+	if ((bitmaskA == BITMASK_DATNHIBA && bitmaskB == BITMASK_SWORD) ||
+		(bitmaskB == BITMASK_DATNHIBA && bitmaskA == BITMASK_SWORD)
+		) {
+
+		BaseEnemy* sA = (BaseEnemy*)bodyA->GetUserData();
+		BaseEnemy* sB = (BaseEnemy*)bodyB->GetUserData();
+
+		EnemyDatNhiBa *enemy;
+
+		if (sA && sB) {	// sA and sB != nullptr
+			enemy = sA->getTag() == TAG_ENEMY_DATNHIBA2
+				?
+				(EnemyDatNhiBa *)sA : (EnemyDatNhiBa *)sB;
+			auto thc = sA->getTag() == TAG_DQ_TIEU_HON_CHUONG ? (TieuHonChuong*)sA : (TieuHonChuong*)sB;
+			if (thc->getTag() == TAG_DQ_TIEU_HON_CHUONG)
+				thc->setIsCollide(true);
+			auto parentGameScene = (GameScene*)enemy->getParent()->getParent();
+			parentGameScene->setLastScore(enemy->getExp());
+
+			auto hero = parentGameScene->getHero();
+			hero->setScore(hero->getScore() + enemy->getExp());
+			enemy->setIsDie(true);
+		}
+		else {
+			enemy = sA ? (EnemyDatNhiBa *)sA : (EnemyDatNhiBa *)sB;
+
+			/*auto parentGameScene = (GameScene*)enemy->getParent()->getParent();
+			parentGameScene->setLastScore(enemy->getExp());
+
+			auto hero = parentGameScene->getHero();
+			hero->setScore(hero->getScore() + enemy->getExp());
+			enemy->setIsDie(true);*/
+			enemy->hit();
+
+		}
+
+	}
+
+	if ((bitmaskA == BITMASK_DATNHIBA && bitmaskB == BITMASK_HERO) ||
+		(bitmaskB == BITMASK_DATNHIBA && bitmaskA == BITMASK_HERO)
+		) {
+
+		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
+		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
+		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
+
+		auto enemy = sA->getTag() == TAG_ENEMY_DATNHIBA1|| sA->getTag() == TAG_ENEMY_DATNHIBA2?
+			(EnemyDatNhiBa *)sA : (EnemyDatNhiBa *)sB;
+
+		enemy->attack();
+		if (!enemy->getIsDie() && !hero->getIsNoDie()) {
+			if (!hero->getIsPriorInjured()
+				&& hero->getFSM()->previousState != MInjured
+				&& hero->getFSM()->previousState != MDie) {
+				hero->setIsPriorInjured(true);
+				hero->getFSM()->changeState(MInjured);
+				hero->getBloodScreen()->setVisible(true);
+				hero->setHealth(hero->getHealth() - enemy->getDamage());
+				//log("----");
+				auto parentGameScene = (GameScene*)hero->getParent();
+				parentGameScene->updateBloodBar(hero->getHealth(), false);
+			}
+		}
 	}
     
     //if ((bitmaskA == BITMASK_HERO && bitmaskB == BITMASK_TOONG)

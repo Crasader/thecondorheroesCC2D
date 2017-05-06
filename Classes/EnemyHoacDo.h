@@ -16,9 +16,9 @@ public:
 	EnemyHoacDo(string jsonFile, string atlasFile, float scale);
 	static EnemyHoacDo* create(string jsonFile, string atlasFile, float scale);
 	static EnemyHoacDo* create(string filename, float scale);
-	void playsoundAt();
-	void playsoundDie();
-	void initCirclePhysic(b2World * world, Point pos);
+	virtual void playsoundAt();
+	virtual void playsoundDie();
+	virtual void initCirclePhysic(b2World * world, Point pos);
 };
 
 #endif // __ENEMY_H__

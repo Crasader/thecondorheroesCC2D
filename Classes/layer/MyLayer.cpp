@@ -10,6 +10,7 @@
 #include "EnemyTNB.h"
 #include "EnemyHoacDo.h"
 #include "EnemyHoacDo2.h"
+#include "EnemyDatNhiBa.h"
 
 MyLayer::MyLayer()
 {
@@ -140,6 +141,16 @@ bool MyLayer::init(TMXTiledMap* tmx_map)
 			tmp->pauseSchedulerAndActions();
 			this->addChild(tmp);
 			tmp->genSlash();
+		}
+	}
+	if (tmx_map->getObjectGroup("datnhiba_1")) {
+		datNhiBa1Pool = MyPool::create(max, TAG_ENEMY_DATNHIBA1);
+		for (int i = 0; i < datNhiBa1Pool->maxPool; i++) {
+			auto tmp = (EnemyDatNhiBa*)datNhiBa1Pool->getObject();
+			tmp->setPosition(0, -SCREEN_SIZE.height);
+			tmp->setVisible(false);
+			tmp->pauseSchedulerAndActions();
+			this->addChild(tmp);
 		}
 	}
 	return true;

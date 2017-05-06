@@ -14,6 +14,7 @@
 #include "EnemyHongLangBa2.h"
 #include "EnemyHoacDo.h"
 #include "EnemyHoacDo2.h"
+#include "EnemyDatNhiBa.h"
 #include "boss/EnemyBoss1.h"
 #include "boss/EnemyBoss2.h"
 #include "chimdieu/ChimDieu.h"
@@ -150,6 +151,7 @@ private:
 	void createEnemyToOng(MyLayer* layer, Vec2 pos);
 	void createEnemyHoacDo(MyLayer* layer, Vec2 pos);
 	void createEnemyHoacDo2(MyLayer* layer, Vec2 pos);
+	void createEnemyDatNhiBa(MyLayer* layer, Vec2 pos);
 	void creatBoss();
 
 	void createCoin();

@@ -37,7 +37,16 @@ void Slash::updateMe(BaseHero * hero)
 		this->setPositionX(body->GetPosition().x * PTM_RATIO - this->getParent()->getPositionX());
 		this->setPositionY(body->GetPosition().y * PTM_RATIO - this->body->GetFixtureList()->GetShape()->m_radius*PTM_RATIO
 			- this->getParent()->getPositionY()+this->getBoundingBox().size.height / 4.0f);
-		this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
+		//this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
+	}
+}
+
+void Slash::setAngle(float radian)
+{
+	if (this->getB2Body() != nullptr) {
+		float vx = SCREEN_SIZE.width /1.9f/ PTM_RATIO * cosf(radian);
+		float vy = SCREEN_SIZE.width /1.9f/ PTM_RATIO * sinf(radian);
+		this->body->SetLinearVelocity(b2Vec2(vx, vy));
 	}
 }
 

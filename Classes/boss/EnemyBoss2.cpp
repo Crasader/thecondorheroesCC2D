@@ -37,6 +37,11 @@ void EnemyBoss2::createPool()
 	indexSlash = 0;
 }
 
+Vec2 EnemyBoss2::getPosGenSlash()
+{
+	return this->getBoneLocation("bone5");
+}
+
 void EnemyBoss2::creatSlash(float angel)
 {
 	auto slash = (SlashBoss*)slashPool->getObjectAtIndex(indexSlash);

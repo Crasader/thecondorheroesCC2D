@@ -1,61 +1,92 @@
-#include "EnemyHoacDo.h"
+#include "EnemyDatNhiBa.h"
 #include "manager/SkeletonManager.h"
 #include "manager/AudioManager.h"
 
 
-EnemyHoacDo::EnemyHoacDo(spSkeletonData * data):EnemyToanChanStudent(data)
+EnemyDatNhiBa::EnemyDatNhiBa(spSkeletonData * data):EnemyToanChanStudent(data)
 {
+	canRun = false;
 }
 
-EnemyHoacDo::EnemyHoacDo(string jsonFile, string atlasFile, float scale):EnemyToanChanStudent(jsonFile, atlasFile,scale)
+EnemyDatNhiBa::EnemyDatNhiBa(string jsonFile, string atlasFile, float scale):EnemyToanChanStudent(jsonFile, atlasFile,scale)
 {
+	canRun = false;
 }
 
-EnemyHoacDo * EnemyHoacDo::create(string jsonFile, string atlasFile, float scale)
+EnemyDatNhiBa * EnemyDatNhiBa::create(string jsonFile, string atlasFile, float scale)
 {
-	EnemyHoacDo *enemy = new EnemyHoacDo(jsonFile, atlasFile,scale);
+	EnemyDatNhiBa *enemy = new EnemyDatNhiBa(jsonFile, atlasFile,scale);
 	enemy->update(0.0f);
-	enemy->setTag(TAG_ENEMY_HOACDO1);
+	enemy->setTag(TAG_ENEMY_DATNHIBA1);
 	enemy->setScaleX(1);
 	enemy->setAnimation(0, "idle", true);
 	//enemy->setScaleEnemy(scale);
-	enemy->health = 1;
+	enemy->health = 2;
+	enemy->setDamage(1);
 	enemy->exp = 12;
 	return enemy;
 
 }
 
 
-EnemyHoacDo * EnemyHoacDo::create(string filename, float scale)
+EnemyDatNhiBa * EnemyDatNhiBa::create(string filename, float scale)
 {
 	if (!SkeletonManager::getSkeletonData(filename)) {
 		SkeletonManager::getInstance()->cacheSkeleton(filename, scale);
 	}
 	auto data = SkeletonManager::getSkeletonData(filename);
-	auto enemy = new EnemyHoacDo(data);
+	auto enemy = new EnemyDatNhiBa(data);
 	enemy->update(0.0f);
-	enemy->setTag(TAG_ENEMY_HOACDO1);
+	enemy->setTag(TAG_ENEMY_DATNHIBA1);
 	enemy->setScaleX(1);
 	enemy->setAnimation(0, "idle", true);
 	//enemy->setTimeScale(1.4f);
-	enemy->health = 1;
+	enemy->health = 2;
+	enemy->setDamage(1);
 	enemy->exp = 12;
 	return enemy;
 }
 
-void EnemyHoacDo::playsoundAt()
+void EnemyDatNhiBa::hit()
+{
+	 health--;
+	 
+	 if (health == 0) {
+		 this->setIsDie(true);
+	 }
+	 else {
+		 canRun = true;
+	 }
+}
+
+void EnemyDatNhiBa::updateMe(BaseHero* hero)
+{
+	EnemyToanChanStudent::updateMe(hero);
+	if (canRun&& body != nullptr) {
+		run();
+	}
+}
+
+void EnemyDatNhiBa::run()
+{
+	body->SetLinearVelocity(b2Vec2(SCREEN_SIZE.width/PTM_RATIO, 0));
+	body->SetLinearDamping(SCREEN_SIZE.width/PTM_RATIO / 4);
+	canRun = false;
+}
+
+void EnemyDatNhiBa::playsoundAt()
 {
 	AudioManager::playSound(SOUND_HD1AT);
 }
 
-void EnemyHoacDo::playsoundDie()
+void EnemyDatNhiBa::playsoundDie()
 {
 	AudioManager::playSound(SOUND_HD1DIE);
 }
 
 
 
-void EnemyHoacDo::initCirclePhysic(b2World * world, Point pos)
+void EnemyDatNhiBa::initCirclePhysic(b2World * world, Point pos)
 {
 	b2CircleShape circle_shape;
 	circle_shape.m_radius = this->getBoundingBox().size.height / 2 / PTM_RATIO;
@@ -68,7 +99,8 @@ void EnemyHoacDo::initCirclePhysic(b2World * world, Point pos)
 	fixtureDef.isSensor = true;
 
 	b2BodyDef bodyDef;
-	bodyDef.type = b2_staticBody;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.gravityScale = 0;
 	bodyDef.userData = this;			// pass sprite to bodyDef with argument: userData
 
 	bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);

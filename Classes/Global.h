@@ -34,6 +34,7 @@ using namespace std;
 #define BITMASK_COIN_BULLION			0x1000
 #define BITMASK_RADA_SKILL_1			0x2000
 #define BITMASK_RADA_SKILL_2			0x4000
+#define BITMASK_DATNHIBA				0x8000
 
 
 // tag
@@ -76,6 +77,8 @@ using namespace std;
 #define TAG_ENEMY_HONGLANGBA2				108
 #define TAG_ENEMY_HOACDO1					109
 #define TAG_ENEMY_HOACDO2					110
+#define TAG_ENEMY_DATNHIBA1					111
+#define TAG_ENEMY_DATNHIBA2					112
 
 #define KEY_ITEM_MAGNET						0
 #define KEY_ITEM_DOUPLE_COIN				1

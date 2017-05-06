@@ -1,0 +1,160 @@
+
+DatNhiBa1.png
+size: 4096,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+caidau
+  rotate: true
+  xy: 1937, 75
+  size: 95, 117
+  orig: 95, 117
+  offset: 0, 0
+  index: -1
+caidau2
+  rotate: true
+  xy: 2058, 192
+  size: 95, 117
+  orig: 95, 117
+  offset: 0, 0
+  index: -1
+canhtay1
+  rotate: true
+  xy: 2397, 260
+  size: 65, 102
+  orig: 65, 102
+  offset: 0, 0
+  index: -1
+canhtay2
+  rotate: false
+  xy: 2498, 424
+  size: 79, 86
+  orig: 79, 86
+  offset: 0, 0
+  index: -1
+chansau1
+  rotate: true
+  xy: 2211, 257
+  size: 96, 184
+  orig: 96, 184
+  offset: 0, 0
+  index: -1
+chantruoc1
+  rotate: false
+  xy: 2409, 327
+  size: 87, 152
+  orig: 87, 152
+  offset: 0, 0
+  index: -1
+gay
+  rotate: false
+  xy: 2058, 481
+  size: 428, 29
+  orig: 428, 29
+  offset: 0, 0
+  index: -1
+gay-eff
+  rotate: false
+  xy: 2, 9
+  size: 432, 39
+  orig: 432, 39
+  offset: 0, 0
+  index: -1
+mau1
+  rotate: false
+  xy: 1718, 172
+  size: 338, 338
+  orig: 338, 338
+  offset: 0, 0
+  index: -1
+shadow
+  rotate: false
+  xy: 436, 30
+  size: 126, 18
+  orig: 126, 18
+  offset: 0, 0
+  index: -1
+slash1
+  rotate: false
+  xy: 2, 50
+  size: 284, 460
+  orig: 284, 460
+  offset: 0, 0
+  index: -1
+slash2
+  rotate: false
+  xy: 288, 50
+  size: 284, 460
+  orig: 284, 460
+  offset: 0, 0
+  index: -1
+slash3
+  rotate: false
+  xy: 574, 50
+  size: 284, 460
+  orig: 284, 460
+  offset: 0, 0
+  index: -1
+slash4
+  rotate: false
+  xy: 860, 50
+  size: 284, 460
+  orig: 284, 460
+  offset: 0, 0
+  index: -1
+slash5
+  rotate: false
+  xy: 1146, 50
+  size: 284, 460
+  orig: 284, 460
+  offset: 0, 0
+  index: -1
+slash6
+  rotate: false
+  xy: 1432, 50
+  size: 284, 460
+  orig: 284, 460
+  offset: 0, 0
+  index: -1
+taysau1-1
+  rotate: false
+  xy: 2498, 373
+  size: 50, 49
+  orig: 50, 49
+  offset: 0, 0
+  index: -1
+taysau1-2
+  rotate: false
+  xy: 2498, 327
+  size: 45, 44
+  orig: 45, 44
+  offset: 0, 0
+  index: -1
+taytruoc
+  rotate: false
+  xy: 1718, 2
+  size: 53, 52
+  orig: 53, 52
+  offset: 0, 0
+  index: -1
+than
+  rotate: false
+  xy: 2058, 289
+  size: 151, 190
+  orig: 151, 190
+  offset: 0, 0
+  index: -1
+vataoduoi
+  rotate: false
+  xy: 1718, 56
+  size: 217, 114
+  orig: 217, 114
+  offset: 0, 0
+  index: -1
+vataotruoc
+  rotate: false
+  xy: 2211, 355
+  size: 196, 124
+  orig: 196, 124
+  offset: 0, 0
+  index: -1

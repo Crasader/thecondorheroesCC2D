@@ -58,7 +58,7 @@ protected:
 	CC_SYNTHESIZE_READONLY(int, numberItemCoolDown, NumberItemCoolDown);
 
 	CC_SYNTHESIZE_READONLY(int, m_nNumberQuest, NumberQuest);
-	CC_SYNTHESIZE_READONLY(bool, m_nRewardedQuest, RewardedQuest);
+	CC_SYNTHESIZE_READONLY(int, m_nRewardedQuestTimes, RewardedQuestTimes);
 
 private:
 	UserDefault* ref;
@@ -121,8 +121,8 @@ public:
 	void increaseNumberItemDoubleGold();			void decreaseNumberItemDoubleGold();
 	void increaseNumberItemCoolDown();				void decreaseNumberItemCoolDown();
 
-	void updateNumberQuest(int p_nQuestIndex, int p_nData);
-	void updateRewardedQuest(int p_nQuestIndex, bool p_bData);
+	void setUpNumberQuest(int p_nQuestIndex, int p_nData);
+	void updateRewardedQuestTimes(int p_nQuestIndex);
 	void readDataQuest(int p_nQuestIndex);
 };
 

@@ -23,7 +23,8 @@ protected:
 	CC_SYNTHESIZE_READONLY(int, m_nCompleteRequest, CompleteRequest);
 	CC_SYNTHESIZE_READONLY(int, m_nGoldReward, GoldReward);
 	CC_SYNTHESIZE_READONLY(int, m_nDiamondReward, DiamondReward);
-
+	CC_SYNTHESIZE_READONLY(int, m_nStepRequest, StepRequest);
+	CC_SYNTHESIZE_READONLY(int, m_nLimitRequest, LimitRequest);
 private:
 	Document jsonDoc;
 	static JSonQuestManager *jsonQuestManager;
@@ -31,8 +32,8 @@ private:
 public:
 	static JSonQuestManager * getInstance();
 
-	int getNumberQuestTypeOne();
-	void readQuestTypeOne(int p_nIndexQuest);
+	int getNumberQuest();
+	void readQuest(int p_nIndexQuest);
 };
 
 #define JSQUEST JSonQuestManager::getInstance()

@@ -375,16 +375,19 @@ void RefManager::decreaseNumberItemCoolDown()
 }
 
 void RefManager::readDataQuest(int p_nQuestIndex) {
-	m_nRewardedQuest = ref->getFloatForKey(REWARDED_QUEST_X + p_nQuestIndex, false);
-	m_nNumberQuest = ref->getIntegerForKey(NUMBER_QUEST_X + p_nQuestIndex, 0);
+	m_nRewardedQuestTimes = ref->getIntegerForKey((REWARDED_QUEST_X + StringUtils::format("%i", p_nQuestIndex)).c_str(), 0);
+	m_nNumberQuest = ref->getIntegerForKey((NUMBER_QUEST_X + StringUtils::format("%i", p_nQuestIndex)).c_str(), 0);
 }
 
-void RefManager::updateRewardedQuest(int p_nQuestIndex, bool p_bData) {
-	ref->setIntegerForKey(REWARDED_QUEST_X + p_nQuestIndex, p_bData);
+void RefManager::updateRewardedQuestTimes(int p_nQuestIndex) {
+	readDataQuest(p_nQuestIndex);
+	ref->setIntegerForKey((REWARDED_QUEST_X + StringUtils::format("%i", p_nQuestIndex)).c_str(), ++this->m_nRewardedQuestTimes);
 	ref->flush();
 }
 
-void RefManager::updateNumberQuest(int p_nQuestIndex, int p_nData) {
-	ref->setIntegerForKey(NUMBER_QUEST_X + p_nQuestIndex, p_nData);
+void RefManager::setUpNumberQuest(int p_nQuestIndex, int p_nData) {
+	readDataQuest(p_nQuestIndex);
+	this->m_nNumberQuest += p_nData;
+	ref->setIntegerForKey((NUMBER_QUEST_X + StringUtils::format("%i", p_nQuestIndex)).c_str(), this->m_nNumberQuest);
 	ref->flush();
 }

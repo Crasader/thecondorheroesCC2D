@@ -552,7 +552,5 @@ void CollisionListener::PreSolve(b2Contact * contact, const b2Manifold * oldMani
 				contact->SetEnabled(false);
 			}
 		}
-
 	}
 }
-

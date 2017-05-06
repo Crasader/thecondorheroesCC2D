@@ -16,22 +16,17 @@ JSonQuestManager * JSonQuestManager::getInstance() {
 	return jsonQuestManager;
 }
 
-int JSonQuestManager::getNumberQuestTypeOne() {
-	SizeType _bResult = jsonDoc["quests_type_1"].Size();
+int JSonQuestManager::getNumberQuest() {
+	SizeType _bResult = jsonDoc["quests"].Size();
 	return (int)_bResult;
 }
 
-void JSonQuestManager::readQuestTypeOne(int p_nIndexQuest) {
-	this->m_sQuestName = jsonDoc["quests_type_1"][p_nIndexQuest]["questName"].GetString();
-	this->m_sQuestDescription = jsonDoc["quests_type_1"][p_nIndexQuest]["questDescription"].GetString();
-	this->m_nCompleteRequest = jsonDoc["quests_type_1"][p_nIndexQuest]["completeRequest"].GetInt();
-	this->m_nGoldReward = jsonDoc["quests_type_1"][p_nIndexQuest]["goldReward"].GetInt();
-	this->m_nDiamondReward = jsonDoc["quests_type_1"][p_nIndexQuest]["diamondReward"].GetInt();
+void JSonQuestManager::readQuest(int p_nIndexQuest) {
+	this->m_sQuestName = jsonDoc["quests"][p_nIndexQuest]["questName"].GetString();
+	this->m_sQuestDescription = jsonDoc["quests"][p_nIndexQuest]["questDescription"].GetString();
+	this->m_nCompleteRequest = jsonDoc["quests"][p_nIndexQuest]["completeRequest"].GetInt();
+	this->m_nGoldReward = jsonDoc["quests"][p_nIndexQuest]["goldReward"].GetInt();
+	this->m_nDiamondReward = jsonDoc["quests"][p_nIndexQuest]["diamondReward"].GetInt();
+	this->m_nStepRequest = jsonDoc["quests"][p_nIndexQuest]["stepRequest"].GetInt();
+	this->m_nLimitRequest = jsonDoc["quests"][p_nIndexQuest]["limitRequest"].GetInt();
 }
-
-//void JSonQuestManager::readFile(int firstIndex) {
-//	this->m_sIconFilePath = jsonDoc["items"][firstIndex]["iconFilePath"].GetString();
-//	this->m_nPrice = jsonDoc["items"][firstIndex]["priceItem"].GetInt();
-//	this->m_sName = jsonDoc["items"][firstIndex]["nameItem"].GetString();
-//	this->m_sDescription = jsonDoc["items"][firstIndex]["description"].GetString();
-//}

@@ -48,7 +48,6 @@ bool SceneIntro::init() {
 	_aStartButton->setPosition(origin.x + m_szVisibleSize.width * 3 / 4, origin.y + m_szVisibleSize.height / 4);
 	ScaleBy *_pZoomOut = ScaleBy::create(1.5f, 1.1f);
 	Sequence *_pZoomSequence = Sequence::create(_pZoomOut, _pZoomOut->reverse(), NULL);
-
 	RepeatForever* _pZoomRepeat = RepeatForever::create(_pZoomSequence);
 	_aStartButton->runAction(_pZoomRepeat);
 

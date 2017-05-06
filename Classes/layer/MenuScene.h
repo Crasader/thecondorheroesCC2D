@@ -6,6 +6,7 @@
 #include <spine/spine-cocos2dx.h>
 #include <vector>
 #include <time.h>
+#include "network/HttpClient.h"
 
 #include "ui_custom/CustomSpriteToBuyPack.h"
 #include "ui_custom/CustomLayerToToast.h"
@@ -14,6 +15,7 @@ USING_NS_CC;
 using namespace spine;
 using namespace std;
 using namespace ui;
+using namespace network;
 
 class MenuLayer : public Layer {
 public:
@@ -85,7 +87,7 @@ private:
 	void initBottomMainMenu();
 	void initItemBoard();
 	void initUpgradeBoard();
-	void initQuestBoard();
+	void initQuestBoard(int p_nFocus);
 	void initHeroInfoBoard();
 	void initBottomHeroMenu();
 
@@ -119,7 +121,12 @@ private:
 	// reward quest
 	void buttonRewardQuest(int p_nQuestIndex);
 
+	// daily reward
+	bool createRequestToGoogle();
+	void onHttpRequestCompleted(HttpClient *p_pSender, HttpResponse *p_pResponse);
+
 	// buy coin
+	void buttonBuyLifeHandle();
 	void buttonBuyCoinHandle(int p_nIndexCoinPack);
 	void buttonBuyDiamondHandle(int p_nIndexDiamondPack);
 
@@ -132,7 +139,7 @@ private:
 	// create layer and move them
 	void showMainMenu();
 	void hideMainMenu();
-	void showBlurScreen();
+	void showBlurScreen(int p_nOption);
 	void hideBlurScreen();
 	void initBuyGoldAndDiamondBoard();
 	void createLayerViaInput(Layer *p_pLayer, Size p_v2Size, Vec2 p_v2Position);

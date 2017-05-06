@@ -27,7 +27,7 @@
 #include "TutorialLayer.h"
 #include "datastructures/MyData.h"
 #include "datastructures/MyPool.h"
-#include "layer/MyLayer.h"
+#include "MyLayer.h"
 #include "item/Item.h"
 #include "Hud.h"
 
@@ -162,9 +162,8 @@ private:
 
 	//skeleton data
 	//spSkeletonData* createSkeletonData(string atlasFile, string jsonFile);
-	// sau va cham body cua cac quai khong con static nua
-	// do do se bi roi xuong
-	// bat su kien roi xuong qua man hinh de don dep map
+	
+	void updateQuest();
 
 
 	void danceWithCamera();

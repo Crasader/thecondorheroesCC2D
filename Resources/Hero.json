@@ -39,7 +39,7 @@
       "noti_1": "Your cake for play is not enough",
       "noti_2": "Your gold is not enough",
       "noti_3": "Your diamond is not enough",
-      "noti_4": "Watcher",
+      "noti_4": "Get more diamond to buy",
       "noti_5": "Striker"
     }
   ],
@@ -77,7 +77,11 @@
       "percentBonusScore": 0,
       "percentBonusCoin": 0,
       "goldPrice": 0,
-      "diamondPrice": 0
+      "diamondPrice": 0,
+      "iconUnlocked": "UI/UI_main_menu/icon_hero_dq_2.png",
+      "iconUnlockedSelected": "UI/UI_main_menu/icon_hero_dq_1.png",
+      "iconLocked": "UI/UI_main_menu/icon_hero_dq_3.png",
+      "iconLockedSelected": "UI/UI_main_menu/icon_hero_dq_4.png"
     },
     {
       "key": "132456789abc",
@@ -111,7 +115,11 @@
       "percentBonusScore": 2,
       "percentBonusCoin": 2,
       "goldPrice": 10000,
-      "diamondPrice": 0
+      "diamondPrice": 0,
+      "iconUnlocked": "UI/UI_main_menu/icon_hero_cc_2.png",
+      "iconUnlockedSelected": "UI/UI_main_menu/icon_hero_cc_1.png",
+      "iconLocked": "UI/UI_main_menu/icon_hero_cc_3.png",
+      "iconLockedSelected": "UI/UI_main_menu/icon_hero_cc_4.png"
     },
     {
       "key": "124356789abc",
@@ -145,8 +153,13 @@
       "percentBonusScore": 10,
       "percentBonusCoin": 10,
       "goldPrice": 15000,
-      "diamondPrice": 5
+      "diamondPrice": 0,
+      "iconUnlocked": "UI/UI_main_menu/icon_hero_hd_2.png",
+      "iconUnlockedSelected": "UI/UI_main_menu/icon_hero_hd_1.png",
+      "iconLocked": "UI/UI_main_menu/icon_hero_hd_3.png",
+      "iconLockedSelected": "UI/UI_main_menu/icon_hero_hd_4.png"
     },
+	
     {
       "key": "123546789abc",
       "name": "QuachTinh",
@@ -176,10 +189,14 @@
       "baseHP": 10,
       "level": 1,
       "maxLevel": 15,
-      "percentBonusScore": 15,
-      "percentBonusCoin": 15,
-      "goldPrice": 20000,
-      "diamondPrice": 10
+      "percentBonusScore": 20,
+      "percentBonusCoin": 20,
+      "goldPrice": 0,
+      "diamondPrice": 1000,
+      "iconUnlocked": "UI/UI_main_menu/icon_hero_hds_2.png",
+      "iconUnlockedSelected": "UI/UI_main_menu/icon_hero_hds_1.png",
+      "iconLocked": "UI/UI_main_menu/icon_hero_hds_3.png",
+      "iconLockedSelected": "UI/UI_main_menu/icon_hero_hds_4.png"
     },
     {
       "key": "123457689abc",
@@ -210,10 +227,14 @@
       "baseHP": 10,
       "level": 1,
       "maxLevel": 15,
-      "percentBonusScore": 20,
-      "percentBonusCoin": 20,
-      "goldPrice": 30000,
-      "diamondPrice": 50
+      "percentBonusScore": 15,
+      "percentBonusCoin": 15,
+      "goldPrice": 0,
+      "diamondPrice": 5000,
+      "iconUnlocked": "UI/UI_main_menu/icon_hero_qt_2.png",
+      "iconUnlockedSelected": "UI/UI_main_menu/icon_hero_qt_1.png",
+      "iconLocked": "UI/UI_main_menu/icon_hero_qt_3.png",
+      "iconLockedSelected": "UI/UI_main_menu/icon_hero_qt_4.png"
     }
   ]
 }

@@ -29,7 +29,6 @@ void JSonHeroManager::readFile(int indexHero)
 	this->key = jsonDoc["hero"][indexHero]["key"].GetString();
 	this->name = jsonDoc["hero"][indexHero]["name"].GetString();
 	this->infor = jsonDoc["hero"][indexHero]["inforHero"].GetString();
-
 	this->avatarPath = jsonDoc["hero"][indexHero]["avatarPath"].GetString();
 	this->characterPointPath = jsonDoc["hero"][indexHero]["characterPointPath"].GetString();
 	this->avatarLoadingPath = jsonDoc["hero"][indexHero]["avatarLoadingPath"].GetString();
@@ -57,7 +56,6 @@ void JSonHeroManager::readFile(int indexHero)
 	this->pathMainImageSkill3 = jsonDoc["hero"][indexHero]["pathMainImageSkill3"].GetString();
 	this->pathSubImageSkill3 = jsonDoc["hero"][indexHero]["pathSubImageSkill3"].GetString();
 
-
 	this->baseHP = jsonDoc["hero"][indexHero]["baseHP"].GetInt();
 	this->level = jsonDoc["hero"][indexHero]["level"].GetInt();
 	this->maxLevel = jsonDoc["hero"][indexHero]["maxLevel"].GetInt();
@@ -67,6 +65,11 @@ void JSonHeroManager::readFile(int indexHero)
 
 	this->goldPrice = jsonDoc["hero"][indexHero]["goldPrice"].GetInt();
 	this->diamondPrice = jsonDoc["hero"][indexHero]["diamondPrice"].GetInt();
+
+	this->m_sIconUnlocked = jsonDoc["hero"][indexHero]["iconUnlocked"].GetString();
+	this->m_sIconUnlockedSelected = jsonDoc["hero"][indexHero]["iconUnlockedSelected"].GetString();
+	this->m_sIconLocked = jsonDoc["hero"][indexHero]["iconLocked"].GetString();
+	this->m_sIconLockedSelected = jsonDoc["hero"][indexHero]["iconLockedSelected"].GetString();
 }
 
 int JSonHeroManager::getMaxScoreLevelX(int level)

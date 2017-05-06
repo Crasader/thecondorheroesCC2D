@@ -30,5 +30,69 @@
 	  "nameItem": "Cooldown",
 	  "description": "Skill colldown -15%"
     }
+  ],
+  "gold_packs": [
+    {
+	  "coinPackName": "Ban nong",
+	  "iconGoldPackPath": "UI/UI_main_menu/item4_doublecoin.png",
+	  "goldNumber": 10000,
+	  "diamondPrice": 100
+    },
+	{
+	  "coinPackName": "Phu Nong",
+	  "iconGoldPackPath": "UI/UI_main_menu/item4_doublecoin.png",
+	  "goldNumber": 20000,
+	  "diamondPrice": 200
+    },
+	{
+	  "coinPackName": "Dia chu",
+	  "iconGoldPackPath": "UI/UI_main_menu/item4_doublecoin.png",
+	  "goldNumber": 50000,
+	  "diamondPrice": 400
+    },
+	{
+	  "coinPackName": "Cuong Hao",
+	  "iconGoldPackPath": "UI/UI_main_menu/item4_doublecoin.png",
+	  "goldNumber": 100000,
+	  "diamondPrice": 600
+    },
+	{
+	  "coinPackName": "Dai gia",
+	  "iconGoldPackPath": "UI/UI_main_menu/item4_doublecoin.png",
+	  "goldNumber": 150000,
+	  "diamondPrice": 800
+    }
+  ],
+  "diamond_packs": [
+    {
+	  "diamondPackName": "Diamond",
+	  "iconDiamondPackPath": "UI/UI_main_menu/item3_magnet.png",
+	  "diamondNumber": 100,
+	  "moneyPrice": 10
+    },
+	{
+	  "diamondPackName": "Diamond",
+	  "iconDiamondPackPath": "UI/UI_main_menu/item3_magnet.png",
+	  "diamondNumber": 200,
+	  "moneyPrice": 20
+    },
+	{
+	  "diamondPackName": "Diamond",
+	  "iconDiamondPackPath": "UI/UI_main_menu/item3_magnet.png",
+	  "diamondNumber": 500,
+	  "moneyPrice": 40
+    },
+	{
+	  "diamondPackName": "Diamond",
+	  "iconDiamondPackPath": "UI/UI_main_menu/item3_magnet.png",
+	  "diamondNumber": 1000,
+	  "moneyPrice": 60
+    },
+	{
+	  "diamondPackName": "Diamond",
+	  "iconDiamondPackPath": "UI/UI_main_menu/item3_magnet.png",
+	  "diamondNumber": 1500,
+	  "moneyPrice": 80
+    }
   ]
 }

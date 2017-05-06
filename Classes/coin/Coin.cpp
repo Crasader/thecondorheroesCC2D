@@ -1,6 +1,7 @@
 #include "Coin.h"
 #include "manager\SkeletonManager.h"
 #include "BaseHero.h"
+
 #include "manager\AudioManager.h"
 
 Coin::Coin()

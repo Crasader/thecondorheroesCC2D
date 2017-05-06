@@ -46,7 +46,6 @@ EnemyTNB * EnemyTNB::create(string filename, float scale)
 	enemy->setTag(TAG_ENEMY_TNB);
 	//enemy->setScaleX(1);
 	//enemy->setTimeScale(1.4f);
-	
 	enemy->health = 1;
 	enemy->exp = 5;
 	return enemy;

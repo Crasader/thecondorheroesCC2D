@@ -38,7 +38,7 @@ void ChimDieu::updateMe(float dt) {
 	if (isCarry && isUp && body->GetPosition().y > SCREEN_SIZE.height * 1.5f / PTM_RATIO) {
 		this->getB2Body()->SetLinearVelocity(b2Vec2(this->getB2Body()->GetLinearVelocity().x, 0.0f));
 	}
-	if (isCarry && isDown && body->GetPosition().y < SCREEN_SIZE.height * 0.6f / PTM_RATIO) {
+	if (isCarry && isDown && body->GetPosition().y < SCREEN_SIZE.height * 0.25f / PTM_RATIO) {
 		this->getB2Body()->SetLinearVelocity(b2Vec2(this->getB2Body()->GetLinearVelocity().x, 0.0f));
 	}
 	if (isCarry) {
@@ -91,8 +91,8 @@ void ChimDieu::updateMe(float dt) {
 void ChimDieu::initCirclePhysic(b2World * world, Point pos) {
 	b2CircleShape circle_shape;
 	//circle_shape.m_radius = this->getBoundingBox().size.height / 2 / PTM_RATIO;
-	this->getBoundingBox().size.height > this->getBoundingBox().size.width ? circle_shape.m_radius = this->getBoundingBox().size.width / 8 / PTM_RATIO :
-		circle_shape.m_radius = this->getBoundingBox().size.height / 8 / PTM_RATIO;
+	this->getBoundingBox().size.height > this->getBoundingBox().size.width ? circle_shape.m_radius = this->getBoundingBox().size.width / 64 / PTM_RATIO :
+		circle_shape.m_radius = this->getBoundingBox().size.height / 64 / PTM_RATIO;
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 0.0f;
 	fixtureDef.friction = 0.5f;
@@ -111,6 +111,7 @@ void ChimDieu::initCirclePhysic(b2World * world, Point pos) {
 
 	body = world->CreateBody(&bodyDef);
 	body->CreateFixture(&fixtureDef);
+
 	body->SetGravityScale(0);
 }
 

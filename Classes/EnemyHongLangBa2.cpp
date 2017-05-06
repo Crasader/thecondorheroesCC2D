@@ -152,9 +152,6 @@ void EnemyHongLangBa2::updateMe(BaseHero* hero)
 			}
 		}
 	}
-
-	
-
 	if (getIsDie() && this->getB2Body() != nullptr) {
 		die();
 	}

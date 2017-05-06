@@ -170,7 +170,3 @@ MyLayer * MyLayer::create(TMXTiledMap * tmx_map)
 		return NULL;
 	}
 }
-
-
-
-

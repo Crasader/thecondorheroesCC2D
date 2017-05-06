@@ -14,7 +14,6 @@ EnemyWooder::EnemyWooder(spSkeletonData * data) : BaseEnemy(data)
 {
 	//BaseEnemy:BaseEnemy(data);
 }
-
 EnemyWooder::EnemyWooder(string jsonFile, string atlasFile, float scale) : BaseEnemy(jsonFile, atlasFile, scale)
 {
 }

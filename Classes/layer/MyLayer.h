@@ -30,9 +30,6 @@ public:
 	void refresh();
 
 	static MyLayer* create(TMXTiledMap* tmx_map);
-//	void cleanup();
-
-
 };
 
 #endif // __MY_LAYER_H__

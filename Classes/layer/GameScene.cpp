@@ -2,6 +2,7 @@
 #include "SimpleAudioEngine.h"
 #include "MenuScene.h"
 #include "SelectStageScene.h"
+#include "LoadingLayer.h"
 #include "manager/RefManager.h"
 #include "manager/SkeletonManager.h"
 #include "manager/AudioManager.h"
@@ -510,7 +511,7 @@ void GameScene::update(float dt)
 		else {
 			hero->getB2Body()->SetTransform(b2Vec2(
 				_aEagle->getB2Body()->GetPosition().x,
-				_aEagle->getB2Body()->GetPosition().y + 25.0f / PTM_RATIO), 0.0f);
+				_aEagle->getB2Body()->GetPosition().y + 40.0f / PTM_RATIO), 0.0f);
 		}
 	}
 
@@ -1259,6 +1260,25 @@ void GameScene::createItem()
 	}
 }
 
+void GameScene::updateQuest()
+{
+
+	switch (charId)
+	{
+	case 0:
+		REF->setUpNumberQuest(INDEX_QUEST_DQ, hero->getScore());
+		break;
+
+	case 1:
+		REF->setUpNumberQuest(INDEX_QUEST_TNL, hero->getScore());
+		break;
+
+	default:
+		REF->setUpNumberQuest(INDEX_QUEST_TNL, hero->getScore());
+		break;
+	}
+}
+
 void GameScene::danceWithCamera()
 {
 	follow = Node::create();
@@ -1703,6 +1723,7 @@ void GameScene::reviveHero()
 void GameScene::callingBird()
 {
 	AudioManager::playSound(SOUND_BIRD);
+	REF->setUpNumberQuest(INDEX_QUEST_CALL_BIRD, 1);
 	if (hero->getActiveSkill()->isVisible())
 		hero->getActiveSkill()->setVisible(false);
 
@@ -1728,7 +1749,8 @@ void GameScene::callingBird()
 	//}), nullptr);
 	_aEagle->runAction(_aEagleFlyDown);
 	//_aEagle->runAction(_aFinishFly);
-	auto _aDropHeroAnyWay = Sequence::create(DelayTime::create(10.0f), CallFunc::create([&]() { // chinh thoi gian o day
+
+	auto _aDropHeroAnyWay = Sequence::create(DelayTime::create(7.0f), CallFunc::create([&]() { // chinh thoi gian o day
 		if (hero->getIsDriverEagle()) {
 			heroGetOffEagle();
 		}
@@ -1816,8 +1838,9 @@ void GameScene::overGame()
 	dialogPause = DialogOverGame::create(hero->getScore(), hero->getCoinExplored());
 	this->getParent()->addChild(dialogPause);
 
-	hud->getPauseItem()->setEnabled(false);
+	hud->getPauseItem()->setEnabled(false);	
 
+	updateQuest();
 	this->pause();
 }
 
@@ -1853,7 +1876,7 @@ void GameScene::winGame()
 	this->getParent()->addChild(dialogPause);
 
 	hud->getPauseItem()->setEnabled(false);
-
+	updateQuest();
 	this->pause();
 }
 

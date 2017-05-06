@@ -22,9 +22,6 @@ private:
 
 	void initData();
 	void initTopMainMenu();
-
-	
-
 	void gotoPlay(int stage, int map, int haveBoss, int charId);
 
 	void goBack();

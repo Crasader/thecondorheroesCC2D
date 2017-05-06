@@ -4,6 +4,7 @@
 #include "BaseEnemy.h"
 #include "StateBoss.h"
 #include "SlashBoss.h"
+
 #include "coin/Coin.h"
 #include "ui\CocosGUI.h"
 

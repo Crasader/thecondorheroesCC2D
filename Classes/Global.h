@@ -23,6 +23,8 @@ using namespace std;
 #define BITMASK_COIN					0x0010
 #define BITMASK_TOANCHAN1				0x0020
 #define BITMASK_TOANCHAN2				0x0040
+#define BITMASK_TNB						0x0050
+#define BITMASK_TOONG					0x0060
 #define BITMASK_SWORD					0x0080
 #define BITMASK_SLASH					0x0100
 #define BITMASK_BOSS					0x0200
@@ -94,9 +96,6 @@ using namespace std;
 #define MAX_BOMB_HERO_POOL					7
 #define MAX_BULLET_SOLDIER_ENEMY_POOL		3
 
-
-
-
 #define	MUSIC_MENU							"sound/music/menu.mp3"
 #define MUSIC_STAGE1						"sound/music/stage1.mp3"
 #define MUSIC_STAGE2						"sound/music/stage2.mp3"
@@ -156,7 +155,6 @@ using namespace std;
 #define KEY_IS_MUSIC							"isMusic"
 #define KEY_IS_SOUND							"isSound"
 #define KEY_VALUE_MUSIC							"valuemusic"
-
 
 
 #endif // __GLOBAL_H__

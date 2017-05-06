@@ -4,7 +4,7 @@
 #include "MenuScene.h"
 #include "SimpleAudioEngine.h"
 #include "manager/RefManager.h"
-
+#include "ui_custom/CustomLayerToToast.h"
 
 
 
@@ -69,7 +69,9 @@ void DialogPauseGame::replayGame(Ref * pSender, int goldRevive, bool isWatchVide
 			gameLayer->reviveHero();
 		}
 		else {
-			log("You dont have enough gold to revive");
+			CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(2), TOAST_SHORT);
+			_pToast->setPosition(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 7));
+			addChild(_pToast, 10);
 		}
 	}
 	else {

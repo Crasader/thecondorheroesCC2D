@@ -23,6 +23,16 @@ protected:
 	CC_SYNTHESIZE_READONLY(string, m_sName, Name);
 	CC_SYNTHESIZE_READONLY(string, m_sDescription, Description);
 
+	CC_SYNTHESIZE_READONLY(string, m_sGoldPackName, GoldPackName);
+	CC_SYNTHESIZE_READONLY(string, m_sIconGoldPackPath, IconGoldPackPath);
+	CC_SYNTHESIZE_READONLY(int, m_nCoinPackNumberGold, CoinPackNumberGold);
+	CC_SYNTHESIZE_READONLY(int, m_nCoinPackDiamondPrice, CoinPackDiamondPrice);
+
+	CC_SYNTHESIZE_READONLY(string, m_sDiamondPackName, DiamondPackName);
+	CC_SYNTHESIZE_READONLY(string, m_sIconDiamondPackPath, IconDiamondPackPath);
+	CC_SYNTHESIZE_READONLY(int, m_nDiamondPackNumberDiamond, DiamondPackNumberDiamond);
+	CC_SYNTHESIZE_READONLY(int, m_nDiamondPackMoneyPrice, DiamondPackMoneyPrice);
+
 private:
 	Document jsonDoc;
 	static JSonMenuManager *jsonMenuManager;
@@ -31,6 +41,8 @@ public:
 	static JSonMenuManager * getInstance();
 
 	void readFile(int p_nFirstIndex);
+	void readGoldPack(int p_nFirstIndex);
+	void readDiamondPack(int p_nFirstIndex);
 };
 
 #define JSMENU JSonMenuManager::getInstance()

@@ -168,10 +168,11 @@ void CoLong::updateMe(float p_fDelta) {
 		TieuHonChuong *_pTempDPC = m_lDocPhongCham.front();
 		if (_pTempDPC->getIsCollide() || _pTempDPC->getPositionX() - (this->getPositionX() + SCREEN_SIZE.width * 0.25f) > SCREEN_SIZE.width / 2) {
 			auto gameLayer = (GameScene*) this->getParent();
-
-			gameLayer->world->DestroyBody(_pTempDPC->getB2Body());
-			_pTempDPC->setB2Body(nullptr);
-			_pTempDPC->setVisible(false);
+			if (_pTempDPC->getB2Body() != nullptr) {
+				gameLayer->world->DestroyBody(_pTempDPC->getB2Body());
+				_pTempDPC->setB2Body(nullptr);
+				_pTempDPC->setVisible(false);
+			}		
 		}
 		else {
 			_pTempDPC->updateMe();
@@ -297,7 +298,6 @@ void CoLong::createSlash() {
 	slash->update(0.0f);
 	slash->setVisible(false);
 	this->addChild(slash);
-
 	slashLand = SkeletonAnimation::createWithFile("Animation/CoLong/slash3.json", "Animation/CoLong/slash3.atlas", scale);
 	slashLand->setPosition(this->getContentSize().width / 2 + this->getTrueRadiusOfHero() * 0.3f, this->getTrueRadiusOfHero() * 0.7f);
 	slashLand->update(0.0f);
@@ -320,8 +320,7 @@ void CoLong::initCirclePhysic(b2World * world, Point pos) {
 	fixtureDef.shape = &circle_shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_HERO;
-	fixtureDef.filter.maskBits = BITMASK_FLOOR |
-		BITMASK_TOANCHAN1 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION;
+	fixtureDef.filter.maskBits = BITMASK_FLOOR | BITMASK_TOANCHAN1 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION;
 
 
 	b2BodyDef bodyDef;
@@ -420,8 +419,6 @@ void CoLong::listener() {
 			auto gamelayer = (GameScene*)this->getParent();
 			gamelayer->dieGame();
 		}
-
-
 	});
 }
 

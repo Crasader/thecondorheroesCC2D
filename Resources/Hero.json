@@ -36,7 +36,7 @@
 
   "notification": [
     {
-      "noti_1": "Your cake for play is not enough",
+      "noti_1": "Your cake for play is not enough", 
       "noti_2": "Your gold is not enough",
       "noti_3": "Your diamond is not enough",
       "noti_4": "Watcher",

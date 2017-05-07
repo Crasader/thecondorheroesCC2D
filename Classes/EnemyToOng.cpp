@@ -50,10 +50,6 @@ void EnemyToOng::run()
 void EnemyToOng::attack()
 {
 	if (!this->getIsDie()) {
-		//this->clearTracks();
-		//this->addAnimation(0, "bee-attack", false);
-		////this->splash->setVisible(true);
-		//this->setToSetupPose();
 	}
 }
 

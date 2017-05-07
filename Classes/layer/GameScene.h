@@ -24,13 +24,13 @@
 #include "CollisionListener.h"
 #include "utils/InfiniteParallaxNode.h"
 #include "utils/GLES-Render.h"
-#include "layer/DialogPauseGame.h"
-#include "layer/TutorialLayer.h"
+#include "DialogPauseGame.h"
+#include "TutorialLayer.h"
 #include "datastructures/MyData.h"
 #include "datastructures/MyPool.h"
-#include "layer/MyLayer.h"
+#include "MyLayer.h"
 #include "item/Item.h"
-#include "layer/Hud.h"
+#include "Hud.h"
 
 
 
@@ -38,13 +38,13 @@ class GameScene : public cocos2d::Layer
 {
 public:
 	
-	static Scene* createScene(int stage, int map, int haveboss, int charId);
+	static Scene* createScene(GameScene* gameLayer, Hud *m_hud);
 	virtual bool init(int stage, int map, int haveboss, int charId);
 	static GameScene* create(int stage, int map, int haveboss, int charId);
 
 	BaseHero * getHero() { return hero; }
 	void setLastScore(int lastScore) { m_lastScore = lastScore; }
-	Hud* getHud();
+	CC_SYNTHESIZE(Hud*, hud, Hud);
 	void enableCalling();
 
 private:
@@ -87,7 +87,6 @@ private:
 	Follow *camera;
 	Node* follow;
 	CCRect left_corner;
-	LayerColor *blur;
 	SpriteBatchNode* batchNode;
 
 	BaseHero *hero;
@@ -165,9 +164,8 @@ private:
 
 	//skeleton data
 	//spSkeletonData* createSkeletonData(string atlasFile, string jsonFile);
-	// sau va cham body cua cac quai khong con static nua
-	// do do se bi roi xuong
-	// bat su kien roi xuong qua man hinh de don dep map
+	
+	void updateQuest();
 
 
 	void danceWithCamera();

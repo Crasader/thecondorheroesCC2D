@@ -12,6 +12,7 @@ class TutorialLayer : public Layer
 {
 	
 protected:
+	int counter = 0;
 	EventListenerTouchOneByOne* listener;
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
 

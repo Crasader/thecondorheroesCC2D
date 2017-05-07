@@ -71,7 +71,7 @@ void DuongQua::createToanChanKiemPhap(Point posSword)
 	tckp->setPosition(posSword.x + this->getTrueRadiusOfHero() / 2, posSword.y);
 	tckp->initCirclePhysic(gameLayer->world, tckp->getPosition());
 	tckp->changeBodyCategoryBits(BITMASK_SWORD);
-	tckp->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG);
+	tckp->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG | BITMASK_DATNHIBA);
 
 	if (!tckp->getIsAdded()) {
 		this->getParent()->addChild(tckp, ZORDER_SMT);
@@ -209,7 +209,7 @@ void DuongQua::createTieuHonChuong(Point posHand, int Zoder)
 	thc->setPosition(worldPos.x + this->getTrueRadiusOfHero() / 2, worldPos.y);
 	thc->initCirclePhysic(gameLayer->world, thc->getPosition());
 	thc->changeBodyCategoryBits(BITMASK_SWORD);
-	thc->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG);
+	thc->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG | BITMASK_DATNHIBA);
 
 
 	if (!thc->getIsAdded()) {
@@ -309,6 +309,7 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 	fixtureDef.shape = &circle_shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_HERO;
+
 	fixtureDef.filter.maskBits = BITMASK_FLOOR |
 		BITMASK_TOANCHAN1 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION | BITMASK_DATNHIBA;
 
@@ -422,7 +423,6 @@ void DuongQua::landing()
 
 void DuongQua::die()
 {
-
 	--dieHard;
 	if (dieHard < 0) {
 		return;
@@ -464,7 +464,6 @@ void DuongQua::die()
 		unschedule("KeySkill3");
 		checkDurationSkill3 = 0;
 	}
-
 	clearTracks();
 	addAnimation(0, "die", false);
 	setToSetupPose();
@@ -479,7 +478,6 @@ void DuongQua::attackNormal()
 		attackBySkill1();
 		setIsPriorSkill1(true);			// move to attack
 	}
-
 	else {
 		BaseHero::attackNormal();
 		changeSwordCategoryBitmask(BITMASK_SWORD);
@@ -736,10 +734,8 @@ void DuongQua::updateMe(float dt)
 		return;
 	}
 
-
 	if (!isDriverEagle)
 		getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
-
 
 	if (!getIsPriorAttack() && !getIsPriorInjured() && !getIsPriorSkill1()) {
 

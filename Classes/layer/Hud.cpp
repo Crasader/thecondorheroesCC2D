@@ -1,5 +1,5 @@
-#include "layer/Hud.h"
-#include "layer/GameScene.h"
+#include "Hud.h"
+#include "GameScene.h"
 #include "manager/JSonHeroManager.h"
 #include "manager/RefManager.h"
 
@@ -129,6 +129,7 @@ void Hud::addProfile()
 
 void Hud::addButton()
 {
+
 	menu = Menu::create();
 
 	if (!REF->getIsFirstPlay()) {
@@ -210,7 +211,6 @@ void Hud::addButton()
 			addChild(coverItemMagnet);
 
 			break;
-
 		case 3:
 			icon_Item_DC = ProgressTimer::create(Sprite::create("UI/UI_main_menu/item4_doublecoin.png"));
 			icon_Item_DC->setPosition(coverItemMagnet->getContentSize() / 2);
@@ -228,8 +228,6 @@ void Hud::addButton()
 			addChild(coverItemDC);
 			break;
 		}
-
-		
 	}
 
 }
@@ -240,6 +238,7 @@ void Hud::createBloodBar()
 	int baseHP = REF->getCurrentHealth();
 	if (REF->getNumberItemHealth() > 0) {
 		baseHP++;
+		REF->setUpNumberQuest(INDEX_QUEST_HEALTH, 1);
 		REF->decreaseNumberItemHealth();
 	}
 
@@ -268,7 +267,7 @@ void Hud::addAttack()
 	btnAttack = MyButton::create("UI/btn_attack.png", "UI/btn_attack.png", origin);
 
 	btnAttack->setTimeCoolDown(0.33f);
-	btnAttack->setScale(SCREEN_SIZE.height / 4.3f / btnAttack->getContentSize().height);
+	btnAttack->setScale(SCREEN_SIZE.height / 4.0f / btnAttack->getContentSize().height);
 	addChild(btnAttack);
 }
 
@@ -289,12 +288,13 @@ void Hud::addSkills()
 		coolDownS2 -= coolDownS2 * 0.15f;
 		coolDownS3 -= coolDownS3 * 0.15f;
 
+		REF->setUpNumberQuest(INDEX_QUEST_COOLDOWN, 1);
 		REF->decreaseNumberItemCoolDown();
 	}
 
 	btnSkill_1->setTimeCoolDown(coolDownS1);
 	btnSkill_1->addNumberOfUse(JSHERO->getNumberOfUseSkill1());
-	btnSkill_1->setScale(SCREEN_SIZE.height / 6.2f / btnSkill_1->getContentSize().height);
+	btnSkill_1->setScale(SCREEN_SIZE.height / 6.0f / btnSkill_1->getContentSize().height);
 	addChild(btnSkill_1);
 
 	//////////////////////////////////////////////////////////////////////////
@@ -307,7 +307,7 @@ void Hud::addSkills()
 
 	btnSkill_2->setTimeCoolDown(coolDownS2);
 	btnSkill_2->addNumberOfUse(JSHERO->getNumberOfUseSkill2());
-	btnSkill_2->setScale(SCREEN_SIZE.height / 6.2f / btnSkill_2->getContentSize().height);
+	btnSkill_2->setScale(SCREEN_SIZE.height / 6.0f / btnSkill_2->getContentSize().height);
 	addChild(btnSkill_2);
 
 	//////////////////////////////////////////////////////////////////////////
@@ -320,7 +320,7 @@ void Hud::addSkills()
 
 	btnSkill_3->setTimeCoolDown(coolDownS3);
 	btnSkill_3->addNumberOfUse(JSHERO->getNumberOfUseSkill3());
-	btnSkill_3->setScale(SCREEN_SIZE.height / 6.2f / btnSkill_3->getContentSize().height);
+	btnSkill_3->setScale(SCREEN_SIZE.height / 6.0f / btnSkill_3->getContentSize().height);
 	addChild(btnSkill_3); 
 }
 
@@ -336,7 +336,6 @@ void Hud::addBird()
 	btnCalling->setPosition(origin_4);
 	btnCalling->setScale(SCREEN_SIZE.height / 7 / btnCalling->getContentSize().height);
 }
-
 
 void Hud::doSuctionCoin(Ref * pSender)
 {
@@ -553,7 +552,6 @@ void Hud::pauseIfVisible()
 		btnSkill_2->pause();
 
 		btnSkill_3->pause();
-
 	}
 }
 
@@ -688,6 +686,7 @@ void Hud::updateMultiKills(int m_nCombo)
 		break;
 	}
 	if (m_nCombo > 7) {
+		REF->setUpNumberQuest(INDEX_QUEST_RAMPAGE, 1);
 		multiKills->setSkin("rampage");
 	}
 	multiKills->setSlotsToSetupPose();
@@ -732,6 +731,7 @@ void Hud::runnerItemMagnet(int counter)
 {
 	durationItemMagnet = counter / 60.0f;
 	if (isItemMagnetActive) {
+
 		coverItemMagnet->unschedule("itemRunner");
 	}
 	else {

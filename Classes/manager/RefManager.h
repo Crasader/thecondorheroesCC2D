@@ -57,6 +57,9 @@ protected:
 	CC_SYNTHESIZE_READONLY(int, numberItemDoubleGold, NumberItemDoubleGold);
 	CC_SYNTHESIZE_READONLY(int, numberItemCoolDown, NumberItemCoolDown);
 
+	CC_SYNTHESIZE_READONLY(int, m_nNumberQuest, NumberQuest);
+	CC_SYNTHESIZE_READONLY(int, m_nRewardedQuestTimes, RewardedQuestTimes);
+
 private:
 	UserDefault* ref;
 	static RefManager *refManager;
@@ -65,7 +68,9 @@ public:
 	static RefManager* getInstance();
 
 	void pointToCurrentHero(int index);		// set props to get
-	
+
+	void setSelectedHero(int index);
+
 	void setDoneFirstPlay();
 
 	void unLockHero(int index);
@@ -116,6 +121,9 @@ public:
 	void increaseNumberItemDoubleGold();			void decreaseNumberItemDoubleGold();
 	void increaseNumberItemCoolDown();				void decreaseNumberItemCoolDown();
 
+	void setUpNumberQuest(int p_nQuestIndex, int p_nData);
+	void updateRewardedQuestTimes(int p_nQuestIndex);
+	void readDataQuest(int p_nQuestIndex);
 };
 
 #define REF RefManager::getInstance()
@@ -171,5 +179,18 @@ public:
 #define NUMBER_OF_ITEM_MAGNET							"NumberOfItemMagnet"
 #define NUMBER_OF_ITEM_DOUBLE_COIN						"NumberOfItemDoubleCoin"
 #define NUMBER_OF_ITEM_COOL_DOWN						"NumberOfItemCoolDown"
+
+#define NUMBER_QUEST_X									"NumberQuest_"
+#define REWARDED_QUEST_X								"RewardedQuest_"
+
+
+#define INDEX_QUEST_CALL_BIRD	0
+#define INDEX_QUEST_HEALTH		1
+#define INDEX_QUEST_COOLDOWN	2
+#define INDEX_QUEST_DQ			3
+#define INDEX_QUEST_TNL			4
+#define INDEX_QUEST_HD			5
+#define INDEX_QUEST_RAMPAGE		6
+#define INDEX_QUEST_DIAMOND		7
 
 #endif // __REF_MANAGER_H__

@@ -1,5 +1,5 @@
 #include "SelectStageScene.h"
-#include "GameScene.h"
+#include "LoadingLayer.h"
 #include "MenuScene.h"
 #include "manager/RefManager.h"
 
@@ -18,9 +18,6 @@ bool SelectStageLayer::init(int charId)
 	AudioManager::playMusic(MUSIC_MENU);
 	auto originXY = Director::getInstance()->getVisibleOrigin();
 	auto screenSize = Director::getInstance()->getVisibleSize();
-
-
-
 	auto tmxMap = TMXTiledMap::create("config_map.tmx");
 	tmxMap->setPosition(Vec2::ZERO);
 
@@ -126,7 +123,6 @@ bool SelectStageLayer::init(int charId)
 			m_pTimeCounter->setVisible(false);
 		}
 	}, 0.1f, "key");
-
 	return true;
 }
 
@@ -155,8 +151,8 @@ void SelectStageLayer::gotoPlay(int stage, int map, int haveBoss, int charId)
 		REF->setDownLife(1);
 		REF->resetAnchorTime();
 		initTopMainMenu();
-		auto _aScene = GameScene::createScene(stage, map, haveBoss, charId);
-		Director::getInstance()->replaceScene(TransitionFade::create(0.3f, _aScene));
+		auto _aScene = LoadingLayer::createScene(stage, map, haveBoss, charId);
+		Director::getInstance()->replaceScene(_aScene);
 	}
 }
 

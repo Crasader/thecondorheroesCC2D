@@ -95,7 +95,6 @@ void BaseHero::addStuff()
 	this->getParent()->addChild(slashBreak, ZORDER_SMT);
 	this->getParent()->addChild(smokeJumpX2, ZORDER_SMT);
 	this->getParent()->addChild(reviveMe, ZORDER_SMT);
-	
 }
 
 void BaseHero::activeSkillAni()
@@ -146,7 +145,6 @@ void BaseHero::suctionAni()
 	suctionCoin->addAnimation(0, "effect_magnet", true);
 	suctionCoin->setToSetupPose();
 }
-
 
 void BaseHero::createPool()
 {
@@ -314,11 +312,11 @@ void BaseHero::killThemAll()
 	blash->setVisible(true);
 	//auto originScale = blash->getScale();
 	auto scaleFactor = Director::getInstance()->getContentScaleFactor();
-	auto scale = ScaleBy::create(0.7f, 150 * scaleFactor);
+	auto scale = ScaleBy::create(0.5f, 150 * scaleFactor);
 
 	auto hide = CallFunc::create([&]() {
-		isKillAll = false;
 		blash->setVisible(false);
+		isKillAll = false;
 	});
 
 	blash->runAction(Sequence::create(scale, hide, scale->reverse(), nullptr));

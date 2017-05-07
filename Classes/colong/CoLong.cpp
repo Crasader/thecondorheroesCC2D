@@ -1,6 +1,6 @@
 #include "CoLong.h"
 #include "manager/RefManager.h"
-#include "manager\AudioManager.h"
+#include "manager/AudioManager.h"
 
 CoLong::CoLong(string p_sJsonFile, string p_sAtlasFile, float p_fScale) : BaseHero(p_sJsonFile, p_sAtlasFile, p_fScale) {
 	checkDurationSkill1 = 0;
@@ -70,7 +70,7 @@ void CoLong::createDocPhongCham(Point p_ptStartPoint, Point p_ptEndPoint) {
 	cham->initCirclePhysic(gameLayer->world, cham->getPosition());
 	cham->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), angle);
 	cham->changeBodyCategoryBits(BITMASK_SWORD);
-	cham->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS);
+	cham->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_DATNHIBA);
 
 	if (!cham->getIsAdded()) {
 		this->getParent()->addChild(cham, ZORDER_ENEMY);
@@ -150,7 +150,7 @@ void CoLong::doCounterSkill3() {
 		checkDurationSkill3++;
 
 		if (checkDurationSkill3 >= getDurationSkill3() * 10) {
-			changeBodyMaskBits(BITMASK_FLOOR | BITMASK_SLASH | BITMASK_BOSS | BITMASK_TOANCHAN1 | BITMASK_COIN_BULLION);
+			changeBodyMaskBits(BITMASK_FLOOR | BITMASK_SLASH | BITMASK_BOSS | BITMASK_TOANCHAN1 | BITMASK_COIN_BULLION | BITMASK_DATNHIBA);
 			m_pRadaSkill3->changeBodyCategoryBits(BITMASK_WOODER);
 			setIsDoneDuration3(true);
 			checkDurationSkill3 = 0;
@@ -168,10 +168,11 @@ void CoLong::updateMe(float p_fDelta) {
 		TieuHonChuong *_pTempDPC = m_lDocPhongCham.front();
 		if (_pTempDPC->getIsCollide() || _pTempDPC->getPositionX() - (this->getPositionX() + SCREEN_SIZE.width * 0.25f) > SCREEN_SIZE.width / 2) {
 			auto gameLayer = (GameScene*) this->getParent();
-
-			gameLayer->world->DestroyBody(_pTempDPC->getB2Body());
-			_pTempDPC->setB2Body(nullptr);
-			_pTempDPC->setVisible(false);
+			if (_pTempDPC->getB2Body() != nullptr) {
+				gameLayer->world->DestroyBody(_pTempDPC->getB2Body());
+				_pTempDPC->setB2Body(nullptr);
+				_pTempDPC->setVisible(false);
+			}		
 		}
 		else {
 			_pTempDPC->updateMe();
@@ -297,7 +298,6 @@ void CoLong::createSlash() {
 	slash->update(0.0f);
 	slash->setVisible(false);
 	this->addChild(slash);
-
 	slashLand = SkeletonAnimation::createWithFile("Animation/CoLong/slash3.json", "Animation/CoLong/slash3.atlas", scale);
 	slashLand->setPosition(this->getContentSize().width / 2 + this->getTrueRadiusOfHero() * 0.3f, this->getTrueRadiusOfHero() * 0.7f);
 	slashLand->update(0.0f);
@@ -320,8 +320,10 @@ void CoLong::initCirclePhysic(b2World * world, Point pos) {
 	fixtureDef.shape = &circle_shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_HERO;
+
 	fixtureDef.filter.maskBits = BITMASK_FLOOR |
 		BITMASK_TOANCHAN1 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION | BITMASK_DATNHIBA;
+
 
 
 	b2BodyDef bodyDef;
@@ -420,8 +422,6 @@ void CoLong::listener() {
 			auto gamelayer = (GameScene*)this->getParent();
 			gamelayer->dieGame();
 		}
-
-
 	});
 }
 

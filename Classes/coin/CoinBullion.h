@@ -2,9 +2,6 @@
 #define __COIN_BULLION_H__
 
 #include "B2Skeleton.h"
-//#include "Agent.h"
-
-
 
 class CoinBullion : public B2Skeleton {
 

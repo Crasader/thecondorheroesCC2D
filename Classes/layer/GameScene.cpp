@@ -1,38 +1,33 @@
-#include "layer/GameScene.h"
+#include "GameScene.h"
 #include "SimpleAudioEngine.h"
-#include "layer/MenuScene.h"
-#include "layer/SelectStageScene.h"
-#include "layer/LoadingLayer.h"
+#include "MenuScene.h"
+#include "SelectStageScene.h"
+#include "LoadingLayer.h"
 #include "manager/RefManager.h"
 #include "manager/SkeletonManager.h"
 #include "manager/AudioManager.h"
 
+LayerColor *blur;
 
-Hud *hud;
-LoadingLayer* loadingLayer;
-
-
-Scene* GameScene::createScene(int stage, int map, int haveboss, int charId)
+Scene* GameScene::createScene(GameScene *layer, Hud* m_hud)
 {
 	// 'scene' is an autorelease object
 	auto scene = Scene::create();
 
 	// 'layer' is an autorelease object
 
-	loadingLayer = LoadingLayer::create();
-	auto layer = GameScene::create(stage, map, haveboss, charId);
-	layer->setAnchorPoint(Point(0, 0));
-	layer->setName("gameLayer");
-
-	hud = Hud::create();
-	hud->setPosition(Director::getInstance()->getVisibleOrigin());
+	m_hud->setPosition(Director::getInstance()->getVisibleOrigin());
 
 	// add layer as a child to scene
 	scene->addChild(layer);
-	scene->addChild(hud);
-	scene->addChild(layer->blur);
-	scene->addChild(loadingLayer);
+	scene->addChild(m_hud);
 
+
+	blur = LayerColor::create(Color4B(0, 0, 0, 170));
+	blur->setVisible(false);
+	scene->addChild(blur);
+
+	layer->onBegin();
 
 	// return the scene
 	return scene;
@@ -54,7 +49,7 @@ bool GameScene::init(int stage, int map, int haveboss, int charId)
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	isModeDebug = true;
+	isModeDebug = false;
 	changebg = 0;
 
 	indexOfNextMapBoss = -1;
@@ -102,7 +97,6 @@ bool GameScene::init(int stage, int map, int haveboss, int charId)
 		creatBoss();
 
 	createCoin();
-
 	return true;
 }
 
@@ -120,11 +114,6 @@ GameScene * GameScene::create(int stage, int map, int haveboss, int charId)
 		pRet = NULL;
 		return NULL;
 	}
-}
-
-Hud * GameScene::getHud()
-{
-	return hud;
 }
 
 void GameScene::enableCalling()
@@ -211,6 +200,16 @@ void GameScene::onBegin()
 		hud->getBtnCalling()->setEnabled(true);
 
 	hud->getPauseItem()->setEnabled(true);
+
+	if (REF->getNumberItemDoubleGold() > 0) {
+		runnerItem(Item_type::DOUBLE_COIN, DURATION_DOUBLE_COIN);
+		REF->decreaseNumberItemDoubleGold();
+	}
+
+	if (REF->getNumberItemMagnet() > 0) {
+		runnerItem(Item_type::MAGNET, DURATION_MAGNET);
+		REF->decreaseNumberItemMagnet();
+	}
 
 	
 	key_listener = EventListenerKeyboard::create();
@@ -512,7 +511,7 @@ void GameScene::update(float dt)
 		else {
 			hero->getB2Body()->SetTransform(b2Vec2(
 				_aEagle->getB2Body()->GetPosition().x,
-				_aEagle->getB2Body()->GetPosition().y + 25.0f / PTM_RATIO), 0.0f);
+				_aEagle->getB2Body()->GetPosition().y + 40.0f / PTM_RATIO), 0.0f);
 		}
 	}
 
@@ -1286,11 +1285,29 @@ void GameScene::createItem()
 	}
 }
 
+void GameScene::updateQuest()
+{
+
+	switch (charId)
+	{
+	case 0:
+		REF->setUpNumberQuest(INDEX_QUEST_DQ, hero->getScore());
+		break;
+
+	case 1:
+		REF->setUpNumberQuest(INDEX_QUEST_TNL, hero->getScore());
+		break;
+
+	default:
+		REF->setUpNumberQuest(INDEX_QUEST_TNL, hero->getScore());
+		break;
+	}
+}
+
 void GameScene::danceWithCamera()
 {
-	auto origin = Director::getInstance()->getVisibleOrigin();
 	follow = Node::create();
-	follow->setPosition(/*origin +*/ SCREEN_SIZE / 2);
+	follow->setPosition(SCREEN_SIZE / 2);
 	//follow->setAnchorPoint()
 	this->addChild(follow, ZORDER_MOON);
 
@@ -1298,8 +1315,6 @@ void GameScene::danceWithCamera()
 	camera->setTarget(follow);
 	runAction(camera);
 
-	blur = LayerColor::create(Color4B(0, 0, 0, 170));
-	blur->setVisible(false);
 	left_corner = CCRectMake(0, 0, SCREEN_SIZE.width / 2, SCREEN_SIZE.height);
 }
 
@@ -1733,6 +1748,7 @@ void GameScene::reviveHero()
 void GameScene::callingBird()
 {
 	AudioManager::playSound(SOUND_BIRD);
+	REF->setUpNumberQuest(INDEX_QUEST_CALL_BIRD, 1);
 	if (hero->getActiveSkill()->isVisible())
 		hero->getActiveSkill()->setVisible(false);
 
@@ -1758,7 +1774,8 @@ void GameScene::callingBird()
 	//}), nullptr);
 	_aEagle->runAction(_aEagleFlyDown);
 	//_aEagle->runAction(_aFinishFly);
-	auto _aDropHeroAnyWay = Sequence::create(DelayTime::create(10.0f), CallFunc::create([&]() { // chinh thoi gian o day
+
+	auto _aDropHeroAnyWay = Sequence::create(DelayTime::create(7.0f), CallFunc::create([&]() { // chinh thoi gian o day
 		if (hero->getIsDriverEagle()) {
 			heroGetOffEagle();
 		}
@@ -1846,8 +1863,9 @@ void GameScene::overGame()
 	dialogPause = DialogOverGame::create(hero->getScore(), hero->getCoinExplored());
 	this->getParent()->addChild(dialogPause);
 
-	hud->getPauseItem()->setEnabled(false);
+	hud->getPauseItem()->setEnabled(false);	
 
+	updateQuest();
 	this->pause();
 }
 
@@ -1883,7 +1901,7 @@ void GameScene::winGame()
 	this->getParent()->addChild(dialogPause);
 
 	hud->getPauseItem()->setEnabled(false);
-
+	updateQuest();
 	this->pause();
 }
 
@@ -1918,7 +1936,7 @@ void GameScene::resumeGame()
 void GameScene::restartGame()
 {
 	this->removeAllChildrenWithCleanup(true);
-	Director::getInstance()->replaceScene(GameScene::createScene(stage, map, haveboss, charId));
+	Director::getInstance()->replaceScene(LoadingLayer::createScene(stage, map, haveboss, charId));
 }
 
 void GameScene::loadPosAndTag()

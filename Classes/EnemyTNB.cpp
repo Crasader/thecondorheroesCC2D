@@ -46,7 +46,6 @@ EnemyTNB * EnemyTNB::create(string filename, float scale)
 	enemy->setTag(TAG_ENEMY_TNB);
 	//enemy->setScaleX(1);
 	//enemy->setTimeScale(1.4f);
-	
 	enemy->health = 1;
 	enemy->exp = 5;
 	return enemy;
@@ -82,8 +81,8 @@ void EnemyTNB::updateMe(BaseHero* hero)
 	//BaseEnemy::updateMe(hero);
 
 	if (hero->getIsKillAll() && this->getB2Body() != nullptr) {
-		if (this->getPositionX() + this->getParent()->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width * 0.75f &&
-			this->getPositionX() + this->getParent()->getPositionX() > hero->getPositionX() - SCREEN_SIZE.width * 0.25f &&
+		if (this->getPositionX() + this->getParent()->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width * 0.72f &&
+			this->getPositionX() + this->getParent()->getPositionX() > hero->getPositionX() - SCREEN_SIZE.width * 0.28f &&
 			hero->getPositionY() + SCREEN_SIZE.height * 0.5f > this->getPositionY() &&
 			hero->getPositionY() - SCREEN_SIZE.height * 0.5f < this->getPositionY()
 

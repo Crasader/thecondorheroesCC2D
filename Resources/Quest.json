@@ -1,0 +1,76 @@
+{
+  "quests" : [ 
+    {
+	  "questName": "Call bird",
+	  "questDescription": "Use item call bird 20 times",
+	  "completeRequest" : 20,
+	  "goldReward": 10000,
+	  "diamondReward": 0,
+	  "stepRequest" : 1,
+	  "limitRequest" : 1
+    },
+	{
+	  "questName": "Health",
+	  "questDescription": "Use item health 100 times",
+	  "completeRequest" : 100,
+	  "goldReward": 20000,
+	  "diamondReward": 0,
+	  "stepRequest" : 1,
+	  "limitRequest" : 1
+    },
+	{
+	  "questName": "Cooldown",
+	  "questDescription": "Use item cooldown 100 times",
+	  "completeRequest" : 100,
+	  "goldReward": 10000,
+	  "diamondReward": 0,
+	  "stepRequest" : 1,
+	  "limitRequest" : 1
+    },
+	{
+	  "questName": "Score DQ",
+	  "questDescription": "Get 50000 scores by Duong Qua",
+	  "completeRequest" : 50000,
+	  "goldReward": 10000,
+	  "diamondReward": 0,
+	  "stepRequest" : 1,
+	  "limitRequest" : 1
+    },
+	{
+	  "questName": "Score TLN",
+	  "questDescription": "Get 80000 scores by Tieu Long Nu",
+	  "completeRequest" : 80000,
+	  "goldReward": 16000,
+	  "diamondReward": 0,
+	  "stepRequest" : 1,
+	  "limitRequest" : 1
+    },
+	{
+	  "questName": "Score HD",
+	  "questDescription": "Get 120000 scores by Hoang Dung",
+	  "completeRequest" : 120000,
+	  "goldReward": 24000,
+	  "diamondReward": 0,
+	  "stepRequest" : 1,
+	  "limitRequest" : 1
+    },
+    {
+	  "questName": "Rampage!!!",
+	  "questDescription": "Kill multiple enemy in a short time to get rampages",
+	  "completeRequest" : 1,
+	  "goldReward": 100,
+	  "diamondReward": 0,
+	  "stepRequest" : 5,
+	  "limitRequest" : 5
+	},
+    {
+	  "questName": "Diamondcian",
+	  "questDescription": "Buy diamond as much as posible",
+	  "completeRequest" : 20,
+	  "goldReward": 10000,
+	  "diamondReward": 0,
+	  "stepRequest" : 5,
+	  "limitRequest" : 3
+	}
+  ]
+}

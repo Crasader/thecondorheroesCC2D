@@ -1,9 +1,9 @@
 #ifndef __DUONG_QUA_H__
 #define __DUONG_QUA_H__
 
-#include "duongqua/DQ_TieuHonChuong.h"
-#include "duongqua/DQ_ToanChanKiemPhap.h"
-#include "duongqua/DQ_DocCoKiemPhap.h"
+#include "DQ_TieuHonChuong.h"
+#include "DQ_ToanChanKiemPhap.h"
+#include "DQ_DocCoKiemPhap.h"
 #include "BaseHero.h"
 #include "manager/AudioManager.h"
 

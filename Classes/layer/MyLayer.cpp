@@ -1,6 +1,6 @@
 #include "MyLayer.h"
 #include "Global.h"
-#include "coin\Coin.h"
+#include "coin/Coin.h"
 #include "EnemyWooder.h"
 #include "EnemyToanChanStudent.h"
 #include "EnemyToanChanStudent2.h"
@@ -181,7 +181,3 @@ MyLayer * MyLayer::create(TMXTiledMap * tmx_map)
 		return NULL;
 	}
 }
-
-
-
-

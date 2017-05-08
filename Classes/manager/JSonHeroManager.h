@@ -71,7 +71,7 @@ public:
 
 	int getSelectedHero();
 	void readFile(int indexHero);
-	int getMaxScoreLevelX(int level);
+	int getGoldUpgradeLevelX(int indexHero);
 
 	// index must be around 1-10
 	string getTipAtX(int index);

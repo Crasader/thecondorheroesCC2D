@@ -28,6 +28,10 @@ protected:
 	CC_SYNTHESIZE_READONLY(int, currentHealth, CurrentHealth);
 
 	CC_SYNTHESIZE_READONLY(int, anchorTime, AnchorTime);   //
+	CC_SYNTHESIZE_READONLY(int, lastDailyRewardTime, LastDailyRewardTime);   //
+	CC_SYNTHESIZE_READONLY(int, dailyRewardCounter, DailyRewardCounter);   //
+	CC_SYNTHESIZE_READONLY(bool, dailyRewardAvailable, DailyRewardAvailable);	// to try or smt
+	CC_SYNTHESIZE_READONLY(int, freeCoin, FreeCoin);	// to try or smt
 
 	// life of game
 	CC_SYNTHESIZE_READONLY(int, numberOfLife, NumberOfLife);   //
@@ -97,6 +101,11 @@ public:
 	void increaseBonusGold(int value);
 
 	void resetAnchorTime();
+	void updateTimeFromGoogle(int p_nTime);
+	void increaseDailyRewardCounter();
+	void updateDailyRewardAvailable(bool p_bData);
+	void resetFreeCoin();
+	void decreaseFreeCoin();
 
 	// up and down
 
@@ -135,6 +144,10 @@ public:
 #define KEY_CUR_MAP_UNLOCKED				"CurrentMapUnlocked"
 
 #define KEY_ANCHORTIME						"AnchorTime"
+#define KEY_LAST_DAILY_REWARD_TIME			"LastDailyRewardTime"
+#define KEY_DAILY_REWARD_COUNTER			"DailyRewardCounter"
+#define KEY_DAILY_REWARD_AVAILABLE			"DailyRewardAvailable"
+#define KEY_FREE_COIN						"FreeCoin"
 
 #define KEY_LIFE							"MyLife"
 #define KEY_GOLD							"MyGold"

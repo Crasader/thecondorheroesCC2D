@@ -72,10 +72,9 @@ void JSonHeroManager::readFile(int indexHero)
 	this->m_sIconLockedSelected = jsonDoc["hero"][indexHero]["iconLockedSelected"].GetString();
 }
 
-int JSonHeroManager::getMaxScoreLevelX(int level)
+int JSonHeroManager::getGoldUpgradeLevelX(int indexHero)
 {
-	assert(level > 0 && level <= 15);
-	return jsonDoc["maxScoreLevel"][0][("maxScoreLevel_" + StringUtils::format("%i", level)).c_str()].GetInt();
+	return jsonDoc["goldUpgradeLevel"][0][("goldUpgradeLevel_" + StringUtils::format("%i", indexHero)).c_str()].GetInt();
 }
 
 string JSonHeroManager::getTipAtX(int index)

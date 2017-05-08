@@ -29,6 +29,8 @@ private:
 	int m_nMenuStatus = 0;
 
 	// input value
+	int m_nCurrentTimeFromGoogle = 0;						// time from google.com.vn (-7 hours from Viet Nam)
+
 	int m_nIndexHeroSelected = 0;
 	int m_nIndexHeroPicked = 0;
 	int m_nLifeNumber;										// number of life
@@ -42,12 +44,16 @@ private:
 	MenuItemSprite *m_arHeroButton[5];						// hero mini icon
 	SkeletonAnimation *m_arPreviewHero[5];					// hero preview
 	Label *m_arLabelNumberItemOwning[5];					// 
+	MenuItemSprite *m_arBuyItemButton[5];
+	Sprite *m_arSpriteItemMax[5];
 
 	Sprite *m_pSpriteQuestAttention;						// 
+	Sprite *m_pSpriteFreeCoinAttention;						// 
 
 	Label *m_pLabelNumberGoldOnBuy;
 	Label *m_pLabelNumberDiamondOnBuy;
 	ScrollView *m_pPacksZone;
+	ScrollView *m_pItemScrollView;
 	// score bar
 	/*Sprite *m_pLevelPoint;
 	Label *m_pHealthPointLabel;
@@ -85,11 +91,12 @@ private:
 
 	void initTopMainMenu();
 	void initBottomMainMenu();
-	void initItemBoard();
+	void initItemBoard(float p_fPercent);
 	void initUpgradeBoard();
 	void initQuestBoard(int p_nFocus);
 	void initHeroInfoBoard();
 	void initBottomHeroMenu();
+	void initDailyRewardBoard();
 
 	void backFunction();
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -102,9 +109,12 @@ private:
 
 	void buttonQuestHandle();
 	void buttonHeroesHandle();
+	void buttonFreeCoinHandle();
 	void buttonMoreGameHandle();
 
 	void buttonStartHandle();
+
+	void buttonDailyRewardHandle();
 
 	// upgrade skill handle
 	void buttonUpgradeSkillHandle(int p_nIndexSkill);
@@ -112,8 +122,8 @@ private:
 	// hero menu
 	void buttonPickHeroHandle(int p_nIndexHero);
 	void buttonTryHeroHandle();
-	void unlockButtonHandle();
-	void upgradeButtonHandle();
+	void buttonUnlockHeroHandle();
+	void buttonUpgradeHeroHandle();
 
 	// buy items
 	void buttonBuyItemHandle(int p_nIndexItem);
@@ -122,16 +132,14 @@ private:
 	void buttonRewardQuest(int p_nQuestIndex);
 
 	// daily reward
-	bool createRequestToGoogle();
-	void onHttpRequestCompleted(HttpClient *p_pSender, HttpResponse *p_pResponse);
+	bool createRequestToGoogle();														// send a request to google.com.vn to get data
+	void onHttpRequestCompleted(HttpClient *p_pSender, HttpResponse *p_pResponse);		// handle response an get realtime from google.com.vm
 
 	// buy coin
 	void buttonBuyLifeHandle();
 	void buttonBuyCoinHandle(int p_nIndexCoinPack);
 	void buttonBuyDiamondHandle(int p_nIndexDiamondPack);
 
-	// close dialogs
-	void closeAnyDialog();
 	// TODO: check quest reward;
 
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -144,6 +152,9 @@ private:
 	void initBuyGoldAndDiamondBoard();
 	void createLayerViaInput(Layer *p_pLayer, Size p_v2Size, Vec2 p_v2Position);
 	void moveLayerViaDirection(Layer *p_pLayer, int p_nDirection);
+
+	// supporter
+	int calTimeFromString(string p_sInputString);
 };
 
 #endif // __MENUSCENE_H__

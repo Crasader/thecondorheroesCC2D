@@ -16,6 +16,10 @@ RefManager::RefManager()
 	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 2);
 
 	anchorTime = ref->getIntegerForKey(KEY_ANCHORTIME, time(0));
+	lastDailyRewardTime = ref->getIntegerForKey(KEY_LAST_DAILY_REWARD_TIME, 0);
+	dailyRewardCounter = ref->getIntegerForKey(KEY_DAILY_REWARD_COUNTER, 0);
+	dailyRewardAvailable = ref->getBoolForKey(KEY_DAILY_REWARD_AVAILABLE, false);
+	freeCoin = ref->getIntegerForKey(KEY_FREE_COIN, 3);
 
 	numberOfLife = ref->getIntegerForKey(KEY_LIFE, 3);
 	goldExplored = ref->getIntegerForKey(KEY_GOLD, 0);
@@ -29,7 +33,6 @@ RefManager::RefManager()
 
 	// need to fix
 	unLockHero(0);
-	unLockHero(1);
 	pointToCurrentHero(selectedHero);
 }
 
@@ -102,6 +105,9 @@ void RefManager::unLockHero(int index)
 
 void RefManager::increaseLevel()
 {
+	setUpHealth(1);
+	increaseBonusScore(1);
+	increaseBonusGold(1);
 	ref->setIntegerForKey((KEY_LEVEL_HERO_X + StringUtils::format("%i", selectedHero)).c_str(), ++currentLevel);
 	ref->flush();
 }
@@ -225,6 +231,36 @@ void RefManager::resetAnchorTime()
 {
 	anchorTime = time(0);
 	ref->setIntegerForKey(KEY_ANCHORTIME, anchorTime);
+	ref->flush();
+}
+
+void RefManager::updateTimeFromGoogle(int p_nTime) {
+	lastDailyRewardTime = p_nTime;
+	ref->setIntegerForKey(KEY_LAST_DAILY_REWARD_TIME, lastDailyRewardTime);
+	ref->flush();
+}
+
+void RefManager::increaseDailyRewardCounter() {
+	dailyRewardCounter++;
+	ref->setIntegerForKey(KEY_DAILY_REWARD_COUNTER, dailyRewardCounter);
+	ref->flush();
+}
+
+void RefManager::updateDailyRewardAvailable(bool p_bData) {
+	dailyRewardAvailable = p_bData;
+	ref->setBoolForKey(KEY_DAILY_REWARD_AVAILABLE, dailyRewardAvailable);
+	ref->flush();
+}
+
+void RefManager::resetFreeCoin() {
+	freeCoin = 3;
+	ref->setIntegerForKey(KEY_FREE_COIN, freeCoin);
+	ref->flush();
+}
+
+void RefManager::decreaseFreeCoin() {
+	freeCoin--;
+	ref->setIntegerForKey(KEY_FREE_COIN, freeCoin);
 	ref->flush();
 }
 

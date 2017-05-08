@@ -30,3 +30,8 @@ void JSonQuestManager::readQuest(int p_nIndexQuest) {
 	this->m_nStepRequest = jsonDoc["quests"][p_nIndexQuest]["stepRequest"].GetInt();
 	this->m_nLimitRequest = jsonDoc["quests"][p_nIndexQuest]["limitRequest"].GetInt();
 }
+
+void JSonQuestManager::readDailyReward(int p_nIndexDailyReward) {
+	this->m_sDailyRewardType = jsonDoc["daily_reward"][p_nIndexDailyReward]["type"].GetString();
+	this->m_nDailyRewardNumber = jsonDoc["daily_reward"][p_nIndexDailyReward]["number"].GetInt();
+}

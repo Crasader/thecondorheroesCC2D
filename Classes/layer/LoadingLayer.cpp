@@ -124,7 +124,8 @@ void LoadingLayer::doLoading()
 		timer += 5;
 
 		if (timer >= 200) {
-			start = std::chrono::system_clock::now();
+			start = chrono::system_clock::now();
+			end = start;
 			timer = 0;
 			doProcess();
 			unschedule("Key_loading");
@@ -158,9 +159,10 @@ void LoadingLayer::doProcess()
 	mainScene->setHud(hud);
 	mainScene->setName("gameLayer");
 
-	end = std::chrono::system_clock::now();
+	end = chrono::system_clock::now();
+	
 
-	std::chrono::duration<double> elapsed_seconds = end - start;
+	chrono::duration<double> elapsed_seconds = end - start;
 	log("%f", elapsed_seconds.count());
 
 	this->schedule([&](float dt) {
@@ -173,13 +175,12 @@ void LoadingLayer::doProcess()
 			loading->setVisible(false);
 			lbGuide->setVisible(false);
 			avatarHero->setVisible(false);
-			
+
 			unschedule("key");
-			gameScene = GameScene::createScene(mainScene, hud);
-			Director::getInstance()->replaceScene(gameScene);
+			Director::getInstance()->replaceScene(GameScene::createScene(mainScene, hud));
 		}
 
-	}, (elapsed_seconds.count()) / 100.0f, "key");
+	}, (elapsed_seconds.count()) / 200.0f, "key");
 }
 
 void LoadingLayer::addGuide(string guideWhat)

@@ -246,7 +246,7 @@ private:
 	float posXSkillTut = -1;
 	float posXIntroBird = -1;
 
-	void introJump();
+	void introJump(int type);
 	void introAttack();
 	void introSkills();
 	void introBird();

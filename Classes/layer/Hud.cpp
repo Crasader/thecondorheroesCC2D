@@ -25,9 +25,13 @@ bool Hud::init()
 
 
 	addProfile();
+	createBloodBar();
+
+	blur = LayerColor::create(Color4B(0, 0, 0, 170));
+	blur->setVisible(false);
+	addChild(blur, 1);
 	addButton();
 
-	createBloodBar();
 	btnCallingHintDone = false;
 
 
@@ -146,7 +150,10 @@ void Hud::addButton()
 	auto mObject_5 = groupPause->getObject("btn_pause");
 	Point origin_5 = Point(mObject_5["x"].asFloat() * tmxMap->getScaleX(), mObject_5["y"].asFloat()* tmxMap->getScaleY());
 
+	auto pauseItemDisable = Sprite::create("UI/btn_pause.png");
+	pauseItemDisable->setColor(Color3B(128, 128, 128));
 	pauseItem = MenuItemImage::create("UI/btn_pause.png", "UI/btn_pause.png", CC_CALLBACK_1(Hud::doPause, this));
+	pauseItem->setDisabledImage(pauseItemDisable);
 	pauseItem->setEnabled(false);
 	pauseItem->setAnchorPoint(Vec2::ZERO);
 	pauseItem->setScale(scoreBoard->getBoundingBox().size.height / pauseItem->getContentSize().height);
@@ -268,7 +275,7 @@ void Hud::addAttack()
 
 	btnAttack->setTimeCoolDown(0.33f);
 	btnAttack->setScale(SCREEN_SIZE.height / 4.0f / btnAttack->getContentSize().height);
-	addChild(btnAttack);
+	addChild(btnAttack, 2);
 }
 
 void Hud::addSkills()
@@ -295,7 +302,7 @@ void Hud::addSkills()
 	btnSkill_1->setTimeCoolDown(coolDownS1);
 	btnSkill_1->addNumberOfUse(JSHERO->getNumberOfUseSkill1());
 	btnSkill_1->setScale(SCREEN_SIZE.height / 6.0f / btnSkill_1->getContentSize().height);
-	addChild(btnSkill_1);
+	addChild(btnSkill_1, 2);
 
 	//////////////////////////////////////////////////////////////////////////
 
@@ -308,7 +315,7 @@ void Hud::addSkills()
 	btnSkill_2->setTimeCoolDown(coolDownS2);
 	btnSkill_2->addNumberOfUse(JSHERO->getNumberOfUseSkill2());
 	btnSkill_2->setScale(SCREEN_SIZE.height / 6.0f / btnSkill_2->getContentSize().height);
-	addChild(btnSkill_2);
+	addChild(btnSkill_2, 2);
 
 	//////////////////////////////////////////////////////////////////////////
 
@@ -321,7 +328,7 @@ void Hud::addSkills()
 	btnSkill_3->setTimeCoolDown(coolDownS3);
 	btnSkill_3->addNumberOfUse(JSHERO->getNumberOfUseSkill3());
 	btnSkill_3->setScale(SCREEN_SIZE.height / 6.0f / btnSkill_3->getContentSize().height);
-	addChild(btnSkill_3); 
+	addChild(btnSkill_3, 2); 
 }
 
 void Hud::addBird()
@@ -429,8 +436,14 @@ vector<int> Hud::getListIndexOfTypeItemBuy()
 	return list;
 }
 
+void Hud::disableBlur()
+{
+	blur->setVisible(false);
+}
+
 void Hud::introAttack()
 {
+	blur->setVisible(true);
 	if (coverSkill->isVisible()) {
 		coverSkill->pause();
 	}
@@ -449,6 +462,8 @@ void Hud::introAttack()
 
 void Hud::introSkills()
 {
+	btnAttack->setZOrder(0);
+	blur->setVisible(true);
 	if (coverSkill->isVisible()) {
 		coverSkill->pause();
 	}
@@ -470,6 +485,12 @@ void Hud::introSkills()
 void Hud::introBird()
 {
 	// block skills + attack
+	btnSkill_1->setZOrder(0);
+	btnSkill_2->setZOrder(0);
+	btnSkill_3->setZOrder(0);
+	menu->setZOrder(2);
+	blur->setVisible(true);
+
 	pauseIfVisible();
 
 	addBird();

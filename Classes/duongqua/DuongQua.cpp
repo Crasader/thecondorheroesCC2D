@@ -70,8 +70,6 @@ void DuongQua::createToanChanKiemPhap(Point posSword)
 
 	tckp->setPosition(posSword.x + this->getTrueRadiusOfHero() / 2, posSword.y);
 	tckp->initCirclePhysic(gameLayer->world, tckp->getPosition());
-	tckp->changeBodyCategoryBits(BITMASK_SWORD);
-	tckp->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG | BITMASK_DATNHIBA);
 
 	if (!tckp->getIsAdded()) {
 		this->getParent()->addChild(tckp, ZORDER_SMT);
@@ -208,10 +206,7 @@ void DuongQua::createTieuHonChuong(Point posHand, int Zoder)
 	auto worldPos = posHand + this->getPosition();
 	thc->setPosition(worldPos.x + this->getTrueRadiusOfHero() / 2, worldPos.y);
 	thc->initCirclePhysic(gameLayer->world, thc->getPosition());
-	thc->changeBodyCategoryBits(BITMASK_SWORD);
-	thc->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG | BITMASK_DATNHIBA);
-
-
+	
 	if (!thc->getIsAdded()) {
 		this->getParent()->addChild(thc, Zoder);
 		thc->setIsAdded(true);
@@ -532,22 +527,6 @@ void DuongQua::attackBySkill1()
 	setToSetupPose();
 
 	createToanChanKiemPhap(getBoneLocation("bone52"));
-}
-
-void DuongQua::attackBySkill2()
-{
-	AudioManager::playSound(SOUND_DQSKILL2);
-	/*clearTracks();
-	addAnimation(0, "skill2", false);
-	setToSetupPose();*/
-}
-
-void DuongQua::attackBySkill3()
-{
-	AudioManager::playSound(SOUND_DQSKILL3);
-	/*clearTracks();
-	addAnimation(0, "skill3", false);
-	setToSetupPose();*/
 }
 
 void DuongQua::injured()

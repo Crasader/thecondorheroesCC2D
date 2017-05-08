@@ -2103,12 +2103,11 @@ void GameScene::jump()
 	}
 }
 
-void GameScene::introJump()
+void GameScene::introJump(int type)
 {
-	tut = TutorialJump::create("");
-	this->getParent()->addChild(tut);
-
 	blurScreen();
+	tut = TutorialJump::create("", type);
+	this->getParent()->addChild(tut);
 	
 	hero->getSmokeRun()->pause();
 	hero->pause();
@@ -2178,13 +2177,13 @@ void GameScene::tutorial()
 {
 	if (posXJump1Tut > 0) {	// no need boolean
 		if (hero->getPositionX() >= posXJump1Tut) {
-			introJump();
+			introJump(1);
 		}
 	}
 
 	if (posXJump2Tut > 0) {	// no need boolean
 		if (hero->getPositionX() >= posXJump2Tut) {
-			introJump();
+			introJump(2);
 		}
 	}
 
@@ -2209,7 +2208,9 @@ void GameScene::tutorial()
 
 void GameScene::resumeAfterTut(int caseTut)
 {
-
+	if (blur->isVisible())
+		blur->setVisible(false);
+	hud->disableBlur();
 	hero->getSmokeRun()->resume();
 
 	hero->resume();
@@ -2224,7 +2225,6 @@ void GameScene::resumeAfterTut(int caseTut)
 	switch (caseTut)
 	{
 	case 1:
-		blur->setVisible(false);
 		if (posXJump2Tut > 0) {
 			touch_listener = EventListenerTouchOneByOne::create();
 			touch_listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);

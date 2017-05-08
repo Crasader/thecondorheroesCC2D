@@ -9,7 +9,6 @@
 class EnemyDatNhiBa : public EnemyToanChanStudent
 {
 private:
-	CC_SYNTHESIZE(int, damage, Damage);
 	CC_SYNTHESIZE(bool, canRun, CanRun);
 public:
 	EnemyDatNhiBa(spSkeletonData*data);

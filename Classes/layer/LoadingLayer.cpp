@@ -151,7 +151,9 @@ void LoadingLayer::doOpen()
 
 void LoadingLayer::doProcess()
 {
+	//log("ham 0: %f", (std::chrono::duration<double>)(std::chrono::system_clock::now() - start));
 	mainScene = GameScene::create(stage, map, haveboss, charId);
+	//log("ham 1: %f", (std::chrono::duration<double>)(std::chrono::system_clock::now() - start));
 	mainScene->retain();
 	hud = Hud::create();
 	hud->retain();
@@ -161,7 +163,9 @@ void LoadingLayer::doProcess()
 	end = std::chrono::system_clock::now();
 
 	std::chrono::duration<double> elapsed_seconds = end - start;
-	log("%f", elapsed_seconds.count());
+	log("ham 2 %f", elapsed_seconds.count());
+	gameScene = GameScene::createScene(mainScene, hud);
+	Director::getInstance()->replaceScene(gameScene);
 
 	this->schedule([&](float dt) {
 		++percent;

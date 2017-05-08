@@ -49,12 +49,14 @@ EnemyDatNhiBa * EnemyDatNhiBa::create(string filename, float scale)
 
 void EnemyDatNhiBa::hit()
 {
+	
 	 health--;
 	 
 	 if (health == 0) {
 		 this->setIsDie(true);
 	 }
 	 else {
+		 this->addAnimation(10, "injured-red", false);
 		 canRun = true;
 	 }
 }

@@ -70,7 +70,7 @@ void CoLong::createDocPhongCham(Point p_ptStartPoint, Point p_ptEndPoint) {
 	cham->initCirclePhysic(gameLayer->world, cham->getPosition());
 	cham->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), angle);
 	cham->changeBodyCategoryBits(BITMASK_SWORD);
-	cham->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_DATNHIBA);
+	cham->changeBodyMaskBits(BITMASK_SLASH | BITMASK_BOSS | BITMASK_ENEMY);
 
 	if (!cham->getIsAdded()) {
 		this->getParent()->addChild(cham, ZORDER_ENEMY);
@@ -136,7 +136,7 @@ void CoLong::doCounterSkill2() {
 // SKILL 3
 void CoLong::doCounterSkill3() {
 	keysoundSKill3 = AudioManager::playSoundForever(SOUND_CLSKILL3);
-	changeBodyMaskBits(BITMASK_FLOOR | BITMASK_COIN_BULLION);
+	changeBodyMaskBits(BITMASK_FLOOR | BITMASK_COIN_BULLION| BITMASK_BOSS);
 	
 	m_pRadaSkill3->changeBodyCategoryBits(BITMASK_SWORD);
 	
@@ -270,7 +270,7 @@ void CoLong::createRada(b2World *p_pWorld) {
 	m_pRadaSkill1->setVisible(false);
 	m_pRadaSkill1->initCirclePhysic(p_pWorld, Vec2(this->getB2Body()->GetPosition().x, this->getB2Body()->GetPosition().y));
 	m_pRadaSkill1->changeBodyCategoryBits(BITMASK_RADA_SKILL_1);
-	m_pRadaSkill1->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_DATNHIBA);
+	m_pRadaSkill1->changeBodyMaskBits(BITMASK_ENEMY);
 
 
 	m_pRadaSkill2 = Rada::create("Animation/CoLong/blash.png");
@@ -278,7 +278,7 @@ void CoLong::createRada(b2World *p_pWorld) {
 	m_pRadaSkill2->setVisible(false);
 	m_pRadaSkill2->initCirclePhysic(p_pWorld, Vec2(this->getB2Body()->GetPosition().x, this->getB2Body()->GetPosition().y));
 	m_pRadaSkill2->changeBodyCategoryBits(BITMASK_RADA_SKILL_2);
-	m_pRadaSkill2->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_DATNHIBA);
+	m_pRadaSkill2->changeBodyMaskBits(BITMASK_ENEMY);
 
 
 	m_pRadaSkill3 = Rada::create("Animation/CoLong/blash.png");
@@ -286,7 +286,7 @@ void CoLong::createRada(b2World *p_pWorld) {
 	m_pRadaSkill3->setVisible(false);
 	m_pRadaSkill3->initCirclePhysic(p_pWorld, Vec2(this->getB2Body()->GetPosition().x, this->getB2Body()->GetPosition().y));
 	m_pRadaSkill3->changeBodyCategoryBits(BITMASK_WOODER);
-	m_pRadaSkill3->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG | BITMASK_DATNHIBA);
+	m_pRadaSkill3->changeBodyMaskBits(BITMASK_ENEMY | BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG);
 
 }
 
@@ -322,7 +322,7 @@ void CoLong::initCirclePhysic(b2World * world, Point pos) {
 	fixtureDef.filter.categoryBits = BITMASK_HERO;
 
 	fixtureDef.filter.maskBits = BITMASK_FLOOR |
-		BITMASK_TOANCHAN1 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION | BITMASK_DATNHIBA;
+		BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION | BITMASK_ENEMY;
 
 
 

@@ -71,7 +71,7 @@ void DuongQua::createToanChanKiemPhap(Point posSword)
 	tckp->setPosition(posSword.x + this->getTrueRadiusOfHero() / 2, posSword.y);
 	tckp->initCirclePhysic(gameLayer->world, tckp->getPosition());
 	tckp->changeBodyCategoryBits(BITMASK_SWORD);
-	tckp->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG | BITMASK_DATNHIBA);
+	tckp->changeBodyMaskBits(BITMASK_WOODER|BITMASK_ENEMY | BITMASK_SLASH | BITMASK_BOSS  | BITMASK_COIN_BAG);
 
 	if (!tckp->getIsAdded()) {
 		this->getParent()->addChild(tckp, ZORDER_SMT);
@@ -209,7 +209,7 @@ void DuongQua::createTieuHonChuong(Point posHand, int Zoder)
 	thc->setPosition(worldPos.x + this->getTrueRadiusOfHero() / 2, worldPos.y);
 	thc->initCirclePhysic(gameLayer->world, thc->getPosition());
 	thc->changeBodyCategoryBits(BITMASK_SWORD);
-	thc->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG | BITMASK_DATNHIBA);
+	thc->changeBodyMaskBits(BITMASK_WOODER | BITMASK_ENEMY | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BAG);
 
 
 	if (!thc->getIsAdded()) {
@@ -311,7 +311,7 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 	fixtureDef.filter.categoryBits = BITMASK_HERO;
 
 	fixtureDef.filter.maskBits = BITMASK_FLOOR |
-		BITMASK_TOANCHAN1 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION | BITMASK_DATNHIBA;
+		BITMASK_ENEMY | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION;
 
 
 	b2BodyDef bodyDef;

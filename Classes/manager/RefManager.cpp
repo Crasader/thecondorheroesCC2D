@@ -12,7 +12,7 @@ RefManager::RefManager()
 	isFirstPlay = ref->getBoolForKey(KEY_FIRST, true);
 	selectedHero = ref->getIntegerForKey(KEY_SELECTED_HERO, 0);
 
-	currentStageUnlocked = ref->getIntegerForKey(KEY_CUR_STAGE_UNLOCKED, 3);
+	currentStageUnlocked = ref->getIntegerForKey(KEY_CUR_STAGE_UNLOCKED, 4);
 	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 2);
 
 	anchorTime = ref->getIntegerForKey(KEY_ANCHORTIME, time(0));

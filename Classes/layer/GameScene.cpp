@@ -779,7 +779,7 @@ void GameScene::createInfiniteNode()
 		//background->addChild(moon, 2, Vec2(0, 1), Vec2(pos.x, pos.y - SCREEN_SIZE.height / 2));
 		changebg = pos.x;
 	}
-	if (stage == 3 && map == 2) {}
+	if ((stage == 3 && map == 2 )||(stage == 4 && map == 2) ) {}
 	else {
 		auto bg2_1 = Sprite::create(StringUtils::format("Map/map%d/bg%d_2.png", stage, map));
 		//auto bg2_1 = Sprite::create("moon.png");
@@ -811,7 +811,7 @@ void GameScene::createInfiniteNode()
 
 
 	background2 = InfiniteParallaxNode::create();
-	if (stage == 1 || (stage == 3 && map == 2)) {
+	if (stage == 1 || (stage == 3 && map == 2)||(stage == 4&& map == 1)) {
 
 		auto bg3_1 = Sprite::create(StringUtils::format("Map/map%d/bg3.png", stage));
 		bg3_1->setScaleX(SCREEN_SIZE.width / (bg3_1->getContentSize().width));
@@ -899,8 +899,7 @@ void GameScene::creatEnemyWooder(MyLayer * layer, Vec2 pos)
 			world->DestroyBody(enemy->getB2Body());
 		}
 		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2.5f));
-		enemy->changeBodyCategoryBits(BITMASK_WOODER);
-		enemy->changeBodyMaskBits(BITMASK_SWORD);
+		enemy->makeMask();
 
 		enemy->listener();
 	}
@@ -923,8 +922,7 @@ void GameScene::createEnemyToanChanStudent(MyLayer * layer, Vec2 pos)
 			world->DestroyBody(enemy->getB2Body());
 		}
 		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 4));
-		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
+		enemy->makeMask();
 
 		enemy->listener();
 	}
@@ -947,8 +945,7 @@ void GameScene::createEnemyToanChanStudent2(MyLayer * layer, Vec2 pos)
 			world->DestroyBody(enemy->getB2Body());
 		}
 		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
-		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN2);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
+		enemy->makeMask();
 		enemy->listener();
 	}
 }
@@ -971,8 +968,7 @@ void GameScene::createEnemyTNB(MyLayer * layer, Vec2 pos)
 		}
 
 		enemy->initBoxPhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 1.5f));
-		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
-		enemy->changeBodyMaskBits(BITMASK_SWORD | BITMASK_HERO);
+		enemy->makeMask();
 
 		enemy->listener();
 	}
@@ -996,8 +992,8 @@ void GameScene::createEnemyHongLangBa(MyLayer * layer, Vec2 pos) {
 			world->DestroyBody(enemy->getB2Body());
 		}
 		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
-		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
+		enemy->makeMask();
+
 		//enemy->genSplash();
 		enemy->listener();
 	}
@@ -1019,8 +1015,8 @@ void GameScene::createEnemyHongLangBa2(MyLayer * layer, Vec2 pos) {
 			world->DestroyBody(enemy->getB2Body());
 		}
 		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
-		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN2);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
+		enemy->makeMask();
+
 		enemy->listener();
 	}
 }
@@ -1040,8 +1036,8 @@ void GameScene::createEnemyToOng(MyLayer * layer, Vec2 pos) {
 			world->DestroyBody(enemy->getB2Body());
 		}
 		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 4));
-		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
+		enemy->makeMask();
+
 		enemy->listener();
 	}
 }
@@ -1063,8 +1059,8 @@ void GameScene::createEnemyHoacDo(MyLayer * layer, Vec2 pos)
 			world->DestroyBody(enemy->getB2Body());
 		}
 		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
-		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
+		enemy->makeMask();
+
 
 		enemy->listener();
 	}
@@ -1087,8 +1083,8 @@ void GameScene::createEnemyHoacDo2(MyLayer * layer, Vec2 pos)
 			world->DestroyBody(enemy->getB2Body());
 		}
 		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
-		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN2);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
+		enemy->makeMask();
+
 		enemy->listener();
 	}
 }
@@ -1112,8 +1108,8 @@ void GameScene::createEnemyDatNhiBa(MyLayer * layer, Vec2 pos)
 			world->DestroyBody(enemy->getB2Body());
 		}
 		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
-		enemy->changeBodyCategoryBits(BITMASK_DATNHIBA);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
+		enemy->makeMask();
+
 		enemy->listener();
 	}
 }

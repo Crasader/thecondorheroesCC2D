@@ -136,7 +136,8 @@ void CoLong::doCounterSkill2() {
 // SKILL 3
 void CoLong::doCounterSkill3() {
 	keysoundSKill3 = AudioManager::playSoundForever(SOUND_CLSKILL3);
-	changeBodyMaskBits(BITMASK_FLOOR | BITMASK_COIN_BULLION| BITMASK_BOSS);
+
+	changeBodyMaskBits(BITMASK_FLOOR | BITMASK_COIN_BULLION | BITMASK_BOSS);
 	
 	m_pRadaSkill3->changeBodyCategoryBits(BITMASK_SWORD);
 	
@@ -150,9 +151,13 @@ void CoLong::doCounterSkill3() {
 		checkDurationSkill3++;
 
 		if (checkDurationSkill3 >= getDurationSkill3() * 10) {
-			changeBodyMaskBits(BITMASK_FLOOR | BITMASK_SLASH | BITMASK_BOSS | BITMASK_TOANCHAN1 | BITMASK_COIN_BULLION | BITMASK_DATNHIBA);
+			changeBodyMaskBits(BITMASK_FLOOR | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION | BITMASK_ENEMY);
 			m_pRadaSkill3->changeBodyCategoryBits(BITMASK_WOODER);
 			setIsDoneDuration3(true);
+			if (getOnGround()) {
+				getFSM()->changeState(MRun);
+				run();
+			}
 			checkDurationSkill3 = 0;
 			AudioManager::stopSoundForever(keysoundSKill3);
 			unschedule("KeySkill3");

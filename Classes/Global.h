@@ -144,6 +144,8 @@ using namespace std;
 #define SOUND_HD1DIE							"sound/hd1die.mp3"
 #define SOUND_HD2AT								"sound/hd2at.mp3"
 #define SOUND_HD2DIE							"sound/hd2die.mp3"
+#define SOUND_DNBAT								"sound/dnbat.mp3"
+#define SOUND_DNBDIE							"sound/dnbdie.mp3"
 #define SOUND_TOONGDIE							"sound/toongdie.mp3"
 #define SOUND_TNBDIE							"sound/tnbdie.mp3"
 

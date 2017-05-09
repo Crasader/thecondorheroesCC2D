@@ -76,7 +76,7 @@ protected:
 private:
 	TMXTiledMap *tmxMap;
 	list<Sprite*> g_lTemp;
-
+	LayerColor *blur;
 	
 	float timerSkill;
 	float durationSkill;
@@ -109,6 +109,7 @@ private:
 
 public:
 	// tuts
+	void disableBlur();
 	void introAttack();
 	void introSkills();
 	void introBird();

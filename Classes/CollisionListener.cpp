@@ -105,12 +105,13 @@ void CollisionListener::BeginContact(b2Contact * contact)
 					hero->setIsPriorInjured(true);
 					hero->getFSM()->changeState(MInjured);
 					hero->getBloodScreen()->setVisible(true);
-					hero->setHealth(hero->getHealth() - 1);
+					auto hp = hero->getHealth() - enemy->getDamage();
+					hero->setHealth(hp <= 0 ? 0: hp);
 					//log("----");
 					auto parentGameScene = (GameScene*)hero->getParent();
-					for (int i = 0; i < enemy->getDamage(); i++) {
-						parentGameScene->updateBloodBar(hero->getHealth(), false);
-					}
+
+					parentGameScene->updateBloodBar(hero->getHealth(), false);
+
 				}
 			}
 		}

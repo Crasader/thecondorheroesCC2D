@@ -69,8 +69,6 @@ protected:
 	void attackNormal();
 	void attackLanding();
 	void attackBySkill1();
-	void attackBySkill2();
-	void attackBySkill3();
 	void injured();
 	void revive();
 	void die(Point posOfCammera);

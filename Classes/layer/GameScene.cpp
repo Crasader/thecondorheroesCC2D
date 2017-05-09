@@ -49,7 +49,7 @@ bool GameScene::init(int stage, int map, int haveboss, int charId)
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	isModeDebug = false;
+	isModeDebug = true;
 	changebg = 0;
 
 	indexOfNextMapBoss = -1;
@@ -1114,6 +1114,31 @@ void GameScene::createEnemyDatNhiBa(MyLayer * layer, Vec2 pos)
 	}
 }
 
+void GameScene::createEnemyDatNhiBa2(MyLayer * layer, Vec2 pos)
+{
+	if (layer->datNhiBa2Pool) {
+		auto enemy = (EnemyDatNhiBa2*)layer->datNhiBa2Pool->getObject();
+		enemy->setIsDie(false);
+		enemy->setHealth(2);
+		enemy->setCanRun(false);
+		enemy->setPosition(pos);
+		enemy->setVisible(true);
+		enemy->resumeSchedulerAndActions();
+		enemy->clearTracks();
+		enemy->setAnimation(0, "idle", true);
+		enemy->setToSetupPose();
+		enemy->update(0.0f);
+		//layer->addChild(enemy, ZORDER_ENEMY);
+		if (enemy->getB2Body()) {
+			world->DestroyBody(enemy->getB2Body());
+		}
+		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 3));
+		enemy->makeMask();
+
+		enemy->listener();
+	}
+}
+
 void GameScene::creatBoss()
 {
 	auto groupBoss = tmx_map->getObjectGroup("boss");
@@ -1524,8 +1549,10 @@ void GameScene::runnerItem(Item_type type, int counter)
 void GameScene::updateBloodBar(int numberOfHealth, bool isVisible)
 {
 	if (numberOfHealth >= 0) {
-		auto blood = (Sprite*)hud->getListBlood()->getObjectAtIndex(numberOfHealth);
-		blood->setVisible(isVisible);
+		for (int i = numberOfHealth; i < hero->getMaxHealth(); i++) {
+			auto blood = (Sprite*)hud->getListBlood()->getObjectAtIndex(i);
+			blood->setVisible(isVisible);
+		}
 	}
 }
 
@@ -1951,6 +1978,7 @@ void GameScene::loadPosAndTag()
 	loadPosOfObjectInGroup("hoacdo_1", TAG_ENEMY_HOACDO1);
 	loadPosOfObjectInGroup("hoacdo_2", TAG_ENEMY_HOACDO2);
 	loadPosOfObjectInGroup("datnhiba_1", TAG_ENEMY_DATNHIBA1);
+	loadPosOfObjectInGroup("datnhiba_2", TAG_ENEMY_DATNHIBA2);
 
 
 	/*loadPosOfObjectInGroup("coin_parabol", TAG_COIN_PARABOL);
@@ -2072,6 +2100,10 @@ void GameScene::creatAgentByMydata(MyLayer * layer, MyData data)
 		createEnemyDatNhiBa(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
 		break;
 	}
+	case TAG_ENEMY_DATNHIBA2: {
+		createEnemyDatNhiBa2(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
+		break;
+	}
 
 	}
 }
@@ -2099,12 +2131,11 @@ void GameScene::jump()
 	}
 }
 
-void GameScene::introJump()
+void GameScene::introJump(int type)
 {
-	tut = TutorialJump::create("");
-	this->getParent()->addChild(tut);
-
 	blurScreen();
+	tut = TutorialJump::create("", type);
+	this->getParent()->addChild(tut);
 	
 	hero->getSmokeRun()->pause();
 	hero->pause();
@@ -2174,13 +2205,13 @@ void GameScene::tutorial()
 {
 	if (posXJump1Tut > 0) {	// no need boolean
 		if (hero->getPositionX() >= posXJump1Tut) {
-			introJump();
+			introJump(1);
 		}
 	}
 
 	if (posXJump2Tut > 0) {	// no need boolean
 		if (hero->getPositionX() >= posXJump2Tut) {
-			introJump();
+			introJump(2);
 		}
 	}
 
@@ -2205,7 +2236,9 @@ void GameScene::tutorial()
 
 void GameScene::resumeAfterTut(int caseTut)
 {
-
+	if (blur->isVisible())
+		blur->setVisible(false);
+	hud->disableBlur();
 	hero->getSmokeRun()->resume();
 
 	hero->resume();
@@ -2220,7 +2253,6 @@ void GameScene::resumeAfterTut(int caseTut)
 	switch (caseTut)
 	{
 	case 1:
-		blur->setVisible(false);
 		if (posXJump2Tut > 0) {
 			touch_listener = EventListenerTouchOneByOne::create();
 			touch_listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);

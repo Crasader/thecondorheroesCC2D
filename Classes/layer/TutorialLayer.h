@@ -27,8 +27,8 @@ class TutorialJump : public TutorialLayer
 {
 
 public:
-	virtual bool init(string image_path);
-	static TutorialJump* create(string image_path);
+	virtual bool init(string image_path, int type);
+	static TutorialJump* create(string image_path, int type);
 	bool onTouchBegan(Touch *touch, Event *unused_event);
 };
 

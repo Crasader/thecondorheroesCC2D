@@ -146,11 +146,11 @@ void SelectStageLayer::gotoPlay(int stage, int map, int haveBoss, int charId)
 {
 	AudioManager::playSound(SOUND_BTCLICK);
 	if (m_nLifeNumber > 0) {
-		m_pTopMainMenu->runAction(MoveBy::create(0.3f, Vec2(0.0f, m_pTopMainMenu->getContentSize().height)));
 		m_nLifeNumber--;
 		REF->setDownLife(1);
 		REF->resetAnchorTime();
 		initTopMainMenu();
+		AudioManager::stopMusic();
 		auto _aScene = LoadingLayer::createScene(stage, map, haveBoss, charId);
 		Director::getInstance()->replaceScene(_aScene);
 	}

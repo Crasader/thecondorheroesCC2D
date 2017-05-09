@@ -20,7 +20,7 @@ public:
 	void run();
 	void playsoundAt();
 	void playsoundDie();
-	void initCirclePhysic(b2World * world, Point pos);
+	virtual void initCirclePhysic(b2World * world, Point pos);
 };
 
 #endif // __ENEMY_H__

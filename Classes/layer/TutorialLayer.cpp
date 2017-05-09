@@ -68,7 +68,7 @@ bool TutorialJump::onTouchBegan(Touch * touch, Event * unused_event)
 	return false;
 }
 
-bool TutorialJump::init(string image_path)
+bool TutorialJump::init(string image_path, int type)
 {
 	//////////////////////////////
 	// 1. super init first
@@ -76,6 +76,15 @@ bool TutorialJump::init(string image_path)
 	{
 		return false;
 	}
+	auto origin = Director::getInstance()->getVisibleOrigin();
+
+	auto lbText = Label::createWithTTF("Tap on the left screen to jump, tap again to double jump", "fonts/Marker Felt.ttf", 32);
+	lbText->setScale(SCREEN_SIZE.height * 0.06f / lbText->getContentSize().height);
+
+	lbText->setPosition(origin.x + SCREEN_SIZE.width / 2, origin.y + SCREEN_SIZE.height * 0.73f);
+	addChild(lbText);
+
+	if (type == 2) lbText->setString("Don't let hero down on abyss");
 
 	this->schedule([&](float dt) {
 		counter++;
@@ -90,11 +99,11 @@ bool TutorialJump::init(string image_path)
 	return true;
 }
 
-TutorialJump * TutorialJump::create(string image_path)
+TutorialJump * TutorialJump::create(string image_path, int type)
 {
 	TutorialJump* tut = new TutorialJump();
 
-	if (tut && tut->init(image_path))
+	if (tut && tut->init(image_path, type))
 	{
 		tut->autorelease();
 		return tut;
@@ -110,6 +119,14 @@ TutorialJump * TutorialJump::create(string image_path)
 bool TutorialAttack::init()
 {
 	TutorialLayer::init();
+
+	auto origin = Director::getInstance()->getVisibleOrigin();
+	auto lbText = Label::createWithTTF("Press Attack Button to hit Enemy nearby", "fonts/Marker Felt.ttf", 32);
+	lbText->setScale(SCREEN_SIZE.height * 0.06f / lbText->getContentSize().height);
+
+	lbText->setPosition(origin.x + SCREEN_SIZE.width / 2, origin.y + SCREEN_SIZE.height * 0.73f);
+	addChild(lbText);
+
 	return true;
 }
 
@@ -133,6 +150,13 @@ TutorialAttack * TutorialAttack::create()
 bool TutorialSkill::init()
 {
 	TutorialLayer::init();
+	auto origin = Director::getInstance()->getVisibleOrigin();
+
+	auto lbText = Label::createWithTTF("Use Skill Button to active special hero's skill", "fonts/Marker Felt.ttf", 32);
+	lbText->setScale(SCREEN_SIZE.height * 0.06f / lbText->getContentSize().height);
+
+	lbText->setPosition(origin.x + SCREEN_SIZE.width / 2, origin.y + SCREEN_SIZE.height * 0.73f);
+	addChild(lbText);
 	return true;
 }
 
@@ -161,6 +185,14 @@ bool TutorialIntroBird::init(string image_path)
 	{
 		return false;
 	}
+	
+	auto origin = Director::getInstance()->getVisibleOrigin();
+
+	auto lbText = Label::createWithTTF("Call your Cordon and you will fly with him.\nEnemy can not give attack on you", "fonts/Marker Felt.ttf", 32);
+	lbText->setAlignment(TextHAlignment::CENTER);
+	lbText->setScale(SCREEN_SIZE.height * 0.12f / lbText->getContentSize().height);
+	lbText->setPosition(origin.x + SCREEN_SIZE.width / 2, origin.y + SCREEN_SIZE.height * 0.73f);
+	addChild(lbText);
 
 	this->schedule([&](float dt) {
 		counter++;

@@ -13,6 +13,7 @@
 #include "EnemyHoacDo.h"
 #include "EnemyHoacDo2.h"
 #include "EnemyDatNhiBa.h"
+#include "EnemyDatNhiBa2.h"
 
 
 
@@ -209,6 +210,21 @@ MyPool::MyPool(int maxPool, int tag) : MyPool()
 		for (int i = 0; i < maxPool; i++) {
 			auto scaleOfEnemy = SCREEN_SIZE.height / 4.0f / 406;
 			auto enemy = EnemyDatNhiBa::create("Animation/Enemy_DatNhiBa/DatNhiBa1", scaleOfEnemy);
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
+	case TAG_ENEMY_DATNHIBA2: {
+
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfEnemy = SCREEN_SIZE.height / 4.0f / 406;
+			auto enemy = EnemyDatNhiBa2::create("Animation/Enemy_DatNhiBa/DatNhiBa2", scaleOfEnemy);
 			//coin->runAnimation();
 
 			enemy->setTag(tag);

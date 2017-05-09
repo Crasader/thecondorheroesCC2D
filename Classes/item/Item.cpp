@@ -66,7 +66,9 @@ void Item::updateMe(BaseHero *hero)
 					}
 
 					if (typeItem == Item_type::MAGNET) {
-						parentGameScene->runnerItem(Item_type::MAGNET, DURATION_MAGNET);
+						REF->getSelectedHero() == 1 ? 
+							parentGameScene->runnerItem(Item_type::MAGNET, DURATION_MAGNET * 1.15f) : 
+							parentGameScene->runnerItem(Item_type::MAGNET, DURATION_MAGNET);
 					}
 
 					if (typeItem == Item_type::DOUBLE_COIN) {

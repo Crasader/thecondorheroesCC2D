@@ -114,13 +114,10 @@ void MenuLayer::initInputData() {
 
 void MenuLayer::initBackgroundLayer() {
 	auto _aMainMenuBackground = Sprite::create("UI/UI_main_menu/bg_1.png");
-	float _fTemp = _aMainMenuBackground->getContentSize().height * m_szVisibleSize.width / _aMainMenuBackground->getContentSize().width;
-	if (_fTemp > m_szVisibleSize.height) {
-		_aMainMenuBackground->setScaleX(m_szVisibleSize.width / _aMainMenuBackground->getContentSize().width); // full screen size width
-	}
-	else {
-		_aMainMenuBackground->setScaleY(m_szVisibleSize.height / _aMainMenuBackground->getContentSize().height); // full screen size height
-	}
+	float _fTempWidth = m_szVisibleSize.width / _aMainMenuBackground->getContentSize().width;
+	float _fTempHeight = m_szVisibleSize.height / _aMainMenuBackground->getContentSize().height;
+	_aMainMenuBackground->setScaleX(_fTempWidth); // full screen size
+	_aMainMenuBackground->setScaleY(_fTempHeight);
 	_aMainMenuBackground->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 2)); // center screen
 	m_pGameBackground->addChild(_aMainMenuBackground, 1);
 }
@@ -1543,6 +1540,9 @@ void MenuLayer::buttonBuyItemHandle(int p_nIndexItem) {
 	}
 	else {
 		// TODO : show "naptien" dialog
+		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(5), TOAST_SHORT);
+		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 7));
+		addChild(_pToast, 10);
 	}
 }
 
@@ -1608,6 +1608,9 @@ void MenuLayer::buttonBuyLifeHandle() {
 	}
 	else {
 		// show dialog mua them kim cuong
+		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(3), TOAST_SHORT);
+		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 7));
+		addChild(_pToast, 10);
 	}
 }
 

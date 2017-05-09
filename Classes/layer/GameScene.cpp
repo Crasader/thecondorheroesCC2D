@@ -207,7 +207,9 @@ void GameScene::onBegin()
 	}
 
 	if (REF->getNumberItemMagnet() > 0) {
-		runnerItem(Item_type::MAGNET, DURATION_MAGNET);
+		REF->getSelectedHero() == 1 ?
+			runnerItem(Item_type::MAGNET, DURATION_MAGNET * 1.15f) :
+			runnerItem(Item_type::MAGNET, DURATION_MAGNET);
 		REF->decreaseNumberItemMagnet();
 	}
 
@@ -1762,6 +1764,8 @@ void GameScene::callingBird()
 	if (_aEagle->getB2Body() == nullptr || hero->getB2Body() == nullptr) {
 		log("Crazy fox");
 	}
+
+	//auto velX = charId == 0 ? hero->getMoveVel() * 1.15f :	hero->getMoveVel();
 	_aEagle->getB2Body()->SetTransform(hero->getB2Body()->GetPosition(), 0.0f);
 	_aEagle->flyUp(b2Vec2(hero->getMoveVel(), 10.0f));
 
@@ -2106,7 +2110,7 @@ void GameScene::jump()
 void GameScene::introJump(int type)
 {
 	blurScreen();
-	tut = TutorialJump::create("", type);
+	tut = TutorialJump::create(type);
 	this->getParent()->addChild(tut);
 	
 	hero->getSmokeRun()->pause();
@@ -2153,7 +2157,7 @@ void GameScene::introSkills()
 
 void GameScene::introBird()
 {
-	tut = TutorialIntroBird::create("");
+	tut = TutorialIntroBird::create();
 	this->getParent()->addChild(tut);
 
 	if (hero->getSmokeRun()->isVisible())

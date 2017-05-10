@@ -14,7 +14,7 @@ bool SceneIntro::init() {
     if ( !Layer::init() ) {
         return false;
 	}
-	AudioManager::cacheAudio();
+	//AudioManager::cacheAudio();
 	AudioManager::playMusic(MUSIC_MENU);
 	auto origin = Director::getInstance()->getVisibleOrigin();
 

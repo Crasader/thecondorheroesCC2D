@@ -207,7 +207,7 @@ void GameScene::onBegin()
 	}
 
 	if (REF->getNumberItemMagnet() > 0) {
-		REF->getSelectedHero() == 1 ?
+		charId == 1 ?
 			runnerItem(Item_type::MAGNET, DURATION_MAGNET * 1.15f) :
 			runnerItem(Item_type::MAGNET, DURATION_MAGNET);
 		REF->decreaseNumberItemMagnet();
@@ -781,7 +781,7 @@ void GameScene::createInfiniteNode()
 		//background->addChild(moon, 2, Vec2(0, 1), Vec2(pos.x, pos.y - SCREEN_SIZE.height / 2));
 		changebg = pos.x;
 	}
-	if (stage == 3 && map == 2) {}
+	if ((stage == 3 && map == 2 )||(stage == 4 && map == 2) ) {}
 	else {
 		auto bg2_1 = Sprite::create(StringUtils::format("Map/map%d/bg%d_2.png", stage, map));
 		//auto bg2_1 = Sprite::create("moon.png");
@@ -813,7 +813,7 @@ void GameScene::createInfiniteNode()
 
 
 	background2 = InfiniteParallaxNode::create();
-	if (stage == 1 || (stage == 3 && map == 2)) {
+	if (stage == 1 || (stage == 3 && map == 2)||(stage == 4&& map == 1)) {
 
 		auto bg3_1 = Sprite::create(StringUtils::format("Map/map%d/bg3.png", stage));
 		bg3_1->setScaleX(SCREEN_SIZE.width / (bg3_1->getContentSize().width));
@@ -901,8 +901,7 @@ void GameScene::creatEnemyWooder(MyLayer * layer, Vec2 pos)
 			world->DestroyBody(enemy->getB2Body());
 		}
 		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2.5f));
-		enemy->changeBodyCategoryBits(BITMASK_WOODER);
-		enemy->changeBodyMaskBits(BITMASK_SWORD);
+		enemy->makeMask();
 
 		enemy->listener();
 	}
@@ -925,8 +924,7 @@ void GameScene::createEnemyToanChanStudent(MyLayer * layer, Vec2 pos)
 			world->DestroyBody(enemy->getB2Body());
 		}
 		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 4));
-		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
+		enemy->makeMask();
 
 		enemy->listener();
 	}
@@ -949,8 +947,7 @@ void GameScene::createEnemyToanChanStudent2(MyLayer * layer, Vec2 pos)
 			world->DestroyBody(enemy->getB2Body());
 		}
 		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
-		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN2);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
+		enemy->makeMask();
 		enemy->listener();
 	}
 }
@@ -973,8 +970,7 @@ void GameScene::createEnemyTNB(MyLayer * layer, Vec2 pos)
 		}
 
 		enemy->initBoxPhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 1.5f));
-		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
-		enemy->changeBodyMaskBits(BITMASK_SWORD | BITMASK_HERO);
+		enemy->makeMask();
 
 		enemy->listener();
 	}
@@ -998,8 +994,8 @@ void GameScene::createEnemyHongLangBa(MyLayer * layer, Vec2 pos) {
 			world->DestroyBody(enemy->getB2Body());
 		}
 		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
-		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
+		enemy->makeMask();
+
 		//enemy->genSplash();
 		enemy->listener();
 	}
@@ -1021,8 +1017,8 @@ void GameScene::createEnemyHongLangBa2(MyLayer * layer, Vec2 pos) {
 			world->DestroyBody(enemy->getB2Body());
 		}
 		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
-		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN2);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
+		enemy->makeMask();
+
 		enemy->listener();
 	}
 }
@@ -1042,8 +1038,8 @@ void GameScene::createEnemyToOng(MyLayer * layer, Vec2 pos) {
 			world->DestroyBody(enemy->getB2Body());
 		}
 		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 4));
-		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
+		enemy->makeMask();
+
 		enemy->listener();
 	}
 }
@@ -1065,8 +1061,8 @@ void GameScene::createEnemyHoacDo(MyLayer * layer, Vec2 pos)
 			world->DestroyBody(enemy->getB2Body());
 		}
 		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
-		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN1);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
+		enemy->makeMask();
+
 
 		enemy->listener();
 	}
@@ -1089,8 +1085,8 @@ void GameScene::createEnemyHoacDo2(MyLayer * layer, Vec2 pos)
 			world->DestroyBody(enemy->getB2Body());
 		}
 		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
-		enemy->changeBodyCategoryBits(BITMASK_TOANCHAN2);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
+		enemy->makeMask();
+
 		enemy->listener();
 	}
 }
@@ -1114,8 +1110,33 @@ void GameScene::createEnemyDatNhiBa(MyLayer * layer, Vec2 pos)
 			world->DestroyBody(enemy->getB2Body());
 		}
 		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
-		enemy->changeBodyCategoryBits(BITMASK_DATNHIBA);
-		enemy->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
+		enemy->makeMask();
+
+		enemy->listener();
+	}
+}
+
+void GameScene::createEnemyDatNhiBa2(MyLayer * layer, Vec2 pos)
+{
+	if (layer->datNhiBa2Pool) {
+		auto enemy = (EnemyDatNhiBa2*)layer->datNhiBa2Pool->getObject();
+		enemy->setIsDie(false);
+		enemy->setHealth(2);
+		enemy->setCanRun(false);
+		enemy->setPosition(pos);
+		enemy->setVisible(true);
+		enemy->resumeSchedulerAndActions();
+		enemy->clearTracks();
+		enemy->setAnimation(0, "idle", true);
+		enemy->setToSetupPose();
+		enemy->update(0.0f);
+		//layer->addChild(enemy, ZORDER_ENEMY);
+		if (enemy->getB2Body()) {
+			world->DestroyBody(enemy->getB2Body());
+		}
+		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 3));
+		enemy->makeMask();
+
 		enemy->listener();
 	}
 }
@@ -1529,9 +1550,18 @@ void GameScene::runnerItem(Item_type type, int counter)
 
 void GameScene::updateBloodBar(int numberOfHealth, bool isVisible)
 {
+	
 	if (numberOfHealth >= 0) {
-		auto blood = (Sprite*)hud->getListBlood()->getObjectAtIndex(numberOfHealth);
-		blood->setVisible(isVisible);
+		if (isVisible) {
+			auto blood = (Sprite*)hud->getListBlood()->getObjectAtIndex(numberOfHealth);
+			blood->setVisible(true);
+		}
+		else {
+			for (int i = numberOfHealth; i < hero->getMaxHealth(); i++) {
+				auto blood = (Sprite*)hud->getListBlood()->getObjectAtIndex(i);
+				blood->setVisible(false);
+			}
+		}
 	}
 }
 
@@ -1675,40 +1705,6 @@ void GameScene::updateCoin()
 	}
 }
 
-//void GameScene::cleanMap()
-//{
-//	for (auto body = world->GetBodyList(); ; body != NULL) {
-//		log("a");
-//		auto tmp = body;
-//		body->GetNext();
-//		if (tmp->GetPosition().y < 0) {
-//			auto data = (Node*)tmp->GetUserData();
-//			data->removeFromParentAndCleanup(true);
-//			world->DestroyBody(tmp);
-//		}
-//	}
-//}
-
-
-void GameScene::cachePlist()
-{
-	/*SpriteFrameCache::getInstance()->addSpriteFramesWithFile("item/coin.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Map/bg.plist");*/
-}
-
-void GameScene::cacheSkeleton()
-{
-
-
-	//auto scaleOfToanchan1 = SCREEN_SIZE.height / 5 / 401; // 401 la height cua spine
-	//sr_toanchan1 = createSkeletonData("Animation/Enemy_DeTuToanChan1/ToanChan1.atlas", "Animation/Enemy_DeTuToanChan1/ToanChan1.json");
-
-//	sr_wooder = createSkeletonData("Animation/Enemy_MocNhan/MocNhan.atlas","Animation/Enemy_MocNhan/MocNhan.json");
-	//sr_toanchan1 = createSkeletonData("ToanChan1.atlas", "ToanChan1.json");
-
-	//sr_wooder = createSkeletonData("MocNhan.atlas", "MocNhan.json");
-
-}
 
 void GameScene::shakeTheScreen()
 {
@@ -1765,7 +1761,7 @@ void GameScene::callingBird()
 		log("Crazy fox");
 	}
 
-	//auto velX = charId == 0 ? hero->getMoveVel() * 1.15f :	hero->getMoveVel();
+	auto velX = (charId == 0) ? hero->getMoveVel() * 1.15f : hero->getMoveVel();
 	_aEagle->getB2Body()->SetTransform(hero->getB2Body()->GetPosition(), 0.0f);
 	_aEagle->flyUp(b2Vec2(hero->getMoveVel(), 10.0f));
 
@@ -1959,6 +1955,7 @@ void GameScene::loadPosAndTag()
 	loadPosOfObjectInGroup("hoacdo_1", TAG_ENEMY_HOACDO1);
 	loadPosOfObjectInGroup("hoacdo_2", TAG_ENEMY_HOACDO2);
 	loadPosOfObjectInGroup("datnhiba_1", TAG_ENEMY_DATNHIBA1);
+	loadPosOfObjectInGroup("datnhiba_2", TAG_ENEMY_DATNHIBA2);
 
 
 	/*loadPosOfObjectInGroup("coin_parabol", TAG_COIN_PARABOL);
@@ -2078,6 +2075,10 @@ void GameScene::creatAgentByMydata(MyLayer * layer, MyData data)
 	}
 	case TAG_ENEMY_DATNHIBA1: {
 		createEnemyDatNhiBa(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
+		break;
+	}
+	case TAG_ENEMY_DATNHIBA2: {
+		createEnemyDatNhiBa2(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
 		break;
 	}
 

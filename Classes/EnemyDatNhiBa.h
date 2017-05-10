@@ -9,7 +9,6 @@
 class EnemyDatNhiBa : public EnemyToanChanStudent
 {
 private:
-	CC_SYNTHESIZE(int, damage, Damage);
 	CC_SYNTHESIZE(bool, canRun, CanRun);
 public:
 	EnemyDatNhiBa(spSkeletonData*data);
@@ -21,7 +20,7 @@ public:
 	void run();
 	void playsoundAt();
 	void playsoundDie();
-	void initCirclePhysic(b2World * world, Point pos);
+	virtual void initCirclePhysic(b2World * world, Point pos);
 };
 
 #endif // __ENEMY_H__

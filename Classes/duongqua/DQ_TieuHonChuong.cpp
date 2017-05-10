@@ -26,7 +26,7 @@ void DQ_TieuHonChuong::initCirclePhysic(b2World * world, Point pos)
 	this->getB2Body()->GetFixtureList()->SetSensor(true);
 	this->getB2Body()->SetGravityScale(0);
 	this->changeBodyCategoryBits(BITMASK_SWORD);
-	this->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG | BITMASK_DATNHIBA);
+	this->changeBodyMaskBits(BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG | BITMASK_ENEMY);
 }
 
 void DQ_TieuHonChuong::updateMe()

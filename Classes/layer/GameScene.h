@@ -15,6 +15,7 @@
 #include "EnemyHoacDo.h"
 #include "EnemyHoacDo2.h"
 #include "EnemyDatNhiBa.h"
+#include "EnemyDatNhiBa2.h"
 #include "boss/EnemyBoss1.h"
 #include "boss/EnemyBoss2.h"
 #include "chimdieu/ChimDieu.h"
@@ -151,6 +152,7 @@ private:
 	void createEnemyHoacDo(MyLayer* layer, Vec2 pos);
 	void createEnemyHoacDo2(MyLayer* layer, Vec2 pos);
 	void createEnemyDatNhiBa(MyLayer* layer, Vec2 pos);
+	void createEnemyDatNhiBa2(MyLayer* layer, Vec2 pos);
 	void creatBoss();
 
 	void createCoin();
@@ -196,11 +198,6 @@ public:
 
 	void updateCoin();
 
-	//void cleanMap();
-
-	// cache function
-	void cachePlist();
-	void cacheSkeleton();
 
 
 	// shaking

@@ -161,7 +161,6 @@ void LoadingLayer::doProcess()
 
 	end = chrono::system_clock::now();
 	
-
 	chrono::duration<double> elapsed_seconds = end - start;
 	log("%f", elapsed_seconds.count());
 
@@ -180,7 +179,7 @@ void LoadingLayer::doProcess()
 			Director::getInstance()->replaceScene(GameScene::createScene(mainScene, hud));
 		}
 
-	}, (elapsed_seconds.count()) / 100.0f, "key");
+	}, 1.0f / (100.0f - percent), "key");
 }
 
 void LoadingLayer::addGuide(string guideWhat)

@@ -47,14 +47,17 @@ EnemyDatNhiBa * EnemyDatNhiBa::create(string filename, float scale)
 	return enemy;
 }
 
+
 void EnemyDatNhiBa::hit()
 {
+	
 	 health--;
 	 
 	 if (health == 0) {
 		 this->setIsDie(true);
 	 }
 	 else {
+		 this->addAnimation(10, "injured-red", false);
 		 canRun = true;
 	 }
 }
@@ -72,6 +75,13 @@ void EnemyDatNhiBa::run()
 	body->SetLinearVelocity(b2Vec2(SCREEN_SIZE.width/PTM_RATIO, 0));
 	body->SetLinearDamping(SCREEN_SIZE.width/PTM_RATIO / 4);
 	canRun = false;
+	this->changeBodyMaskBits(BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
+	this->schedule([&](float dt) {
+		if (this->getB2Body() != nullptr) {
+			this->changeBodyMaskBits((BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2));
+		}
+		this->unschedule("datmaAttack");
+	}, 0.5f, "datmaAttack");
 }
 
 void EnemyDatNhiBa::playsoundAt()

@@ -22,7 +22,7 @@ private:
 
 	void initData();
 	void initTopMainMenu();
-	void gotoPlay(int stage, int map, int haveBoss, int charId);
+	void gotoPlay(int id, int stage, int map, int haveBoss, int charId);
 
 	void goBack();
 	void doNothing();

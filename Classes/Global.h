@@ -67,18 +67,29 @@ using namespace std;
 // tag b2Skeleton
 #define TAG_COINBULLION						99
 #define TAG_COINBAG							100
+
+// tag enemy body vo hai
 #define TAG_ENEMY_WOODER					101
-#define TAG_ENEMY_TOANCHAN1					102
-#define TAG_ENEMY_TOANCHAN2					103
-#define TAG_BOSS							104
-#define TAG_ENEMY_TNB						105
-#define TAG_ENEMY_TOONG						106
-#define TAG_ENEMY_HONGLANGBA1				107
-#define TAG_ENEMY_HONGLANGBA2				108
-#define TAG_ENEMY_HOACDO1					109
-#define TAG_ENEMY_HOACDO2					110
-#define TAG_ENEMY_DATNHIBA1					111
-#define TAG_ENEMY_DATNHIBA2					112
+#define TAG_ENEMY_TOANCHAN2					102
+#define TAG_ENEMY_HONGLANGBA2				103
+#define TAG_ENEMY_HOACDO2					104
+
+// tag enemy body co hai
+
+	//tag enemy tinh 
+#define TAG_ENEMY_TNB						120
+#define TAG_ENEMY_TOONG						121
+	//tag enemy dong
+#define TAG_ENEMY_TOANCHAN1					130
+#define TAG_ENEMY_HONGLANGBA1				131
+#define TAG_ENEMY_HOACDO1					132
+#define TAG_ENEMY_DATNHIBA1					133
+#define TAG_ENEMY_DATNHIBA2					134
+
+
+
+// tag boss
+#define TAG_BOSS							150
 
 #define KEY_ITEM_MAGNET						0
 #define KEY_ITEM_DOUPLE_COIN				1
@@ -133,6 +144,8 @@ using namespace std;
 #define SOUND_HD1DIE							"sound/hd1die.mp3"
 #define SOUND_HD2AT								"sound/hd2at.mp3"
 #define SOUND_HD2DIE							"sound/hd2die.mp3"
+#define SOUND_DNBAT								"sound/dnbat.mp3"
+#define SOUND_DNBDIE							"sound/dnbdie.mp3"
 #define SOUND_TOONGDIE							"sound/toongdie.mp3"
 #define SOUND_TNBDIE							"sound/tnbdie.mp3"
 

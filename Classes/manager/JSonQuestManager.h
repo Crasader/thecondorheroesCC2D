@@ -25,6 +25,9 @@ protected:
 	CC_SYNTHESIZE_READONLY(int, m_nDiamondReward, DiamondReward);
 	CC_SYNTHESIZE_READONLY(int, m_nStepRequest, StepRequest);
 	CC_SYNTHESIZE_READONLY(int, m_nLimitRequest, LimitRequest);
+
+	CC_SYNTHESIZE_READONLY(string, m_sDailyRewardType, DailyRewardType);
+	CC_SYNTHESIZE_READONLY(int, m_nDailyRewardNumber, DailyRewardNumber);
 private:
 	Document jsonDoc;
 	static JSonQuestManager *jsonQuestManager;
@@ -34,6 +37,7 @@ public:
 
 	int getNumberQuest();
 	void readQuest(int p_nIndexQuest);
+	void readDailyReward(int p_nIndexDailyReward);
 };
 
 #define JSQUEST JSonQuestManager::getInstance()

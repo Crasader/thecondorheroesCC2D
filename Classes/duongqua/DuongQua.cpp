@@ -206,7 +206,6 @@ void DuongQua::createTieuHonChuong(Point posHand, int Zoder)
 	auto worldPos = posHand + this->getPosition();
 	thc->setPosition(worldPos.x + this->getTrueRadiusOfHero() / 2, worldPos.y);
 	thc->initCirclePhysic(gameLayer->world, thc->getPosition());
-	
 	if (!thc->getIsAdded()) {
 		this->getParent()->addChild(thc, Zoder);
 		thc->setIsAdded(true);
@@ -306,7 +305,7 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 	fixtureDef.filter.categoryBits = BITMASK_HERO;
 
 	fixtureDef.filter.maskBits = BITMASK_FLOOR |
-		BITMASK_TOANCHAN1 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION | BITMASK_DATNHIBA;
+		BITMASK_ENEMY | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION;
 
 
 	b2BodyDef bodyDef;

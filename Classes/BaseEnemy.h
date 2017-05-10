@@ -31,6 +31,7 @@ public:
 	virtual void initCirclePhysic(b2World *world, Point pos);
 	virtual void initBoxPhysic(b2World *world, Point pos);
 	virtual void makeMask();
+	virtual void updatePos();
 };
 
 #endif // __ENEMY_H__

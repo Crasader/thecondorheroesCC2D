@@ -60,6 +60,7 @@ void EnemyToanChanStudent2::attack()
 	if (slash->getB2Body() != nullptr) {
 		slash->getB2Body()->GetWorld()->DestroyBody(slash->getB2Body());
 	}
+	slash->setAnimation(0, "animation", true);
 	slash->initCirclePhysic(this->getB2Body()->GetWorld(), this->getBoneLocation("bone32") + this->getParent()->getPosition());
 	slash->getB2Body()->SetLinearVelocity(b2Vec2(-SCREEN_SIZE.width/3/PTM_RATIO,0));
 }
@@ -208,6 +209,11 @@ void EnemyToanChanStudent2::playsoundDie()
 //	slash->removeFromParentAndCleanup(cleanup);
 //	log("delete slash");
 //}
+
+void EnemyToanChanStudent2::updatePos()
+{
+	BaseEnemy::updatePos();
+}
 
 void EnemyToanChanStudent2::onExit()
 {

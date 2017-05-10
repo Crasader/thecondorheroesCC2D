@@ -27,6 +27,7 @@ public:
 	virtual void playsoundDie();
 	//virtual void genSplash();
 	virtual void listener();
+	virtual void updatePos();
 };
 
 #endif // __ENEMY_H__

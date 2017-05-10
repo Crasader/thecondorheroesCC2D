@@ -93,25 +93,30 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		) {
 		auto enemy = bitmaskA == BITMASK_HERO ? (BaseEnemy*)bodyB->GetUserData() : (BaseEnemy*)bodyA->GetUserData();
 		auto hero = bitmaskA == BITMASK_HERO ? (BaseHero*)bodyA->GetUserData() : (BaseHero*)bodyB->GetUserData();
+		auto bodyEnemy = bitmaskA == BITMASK_HERO ? bodyB : bodyA;
+		auto bodyHero = bitmaskA == BITMASK_HERO ? bodyA : bodyB;
 		if (enemy->getTag() > 100 && enemy->getTag() < 120) {
 			// do nothing
 		}
 		else {
-			enemy->attack();
-			if (!enemy->getIsDie() && !hero->getIsNoDie()) {
-				if (!hero->getIsPriorInjured()
-					&& hero->getFSM()->previousState != MInjured
-					&& hero->getFSM()->previousState != MDie) {
-					hero->setIsPriorInjured(true);
-					hero->getFSM()->changeState(MInjured);
-					hero->getBloodScreen()->setVisible(true);
-					auto hp = hero->getHealth() - enemy->getDamage();
-					hero->setHealth(hp <= 0 ? 0: hp);
-					//log("----");
-					auto parentGameScene = (GameScene*)hero->getParent();
+			
+			if (bodyHero->GetPosition().x < (bodyEnemy->GetPosition().x + bodyEnemy->GetFixtureList()->GetShape()->m_radius/3) ){
+				enemy->attack();
+				if (!enemy->getIsDie() && !hero->getIsNoDie()) {
+					if (!hero->getIsPriorInjured()
+						&& hero->getFSM()->previousState != MInjured
+						&& hero->getFSM()->previousState != MDie) {
+						hero->setIsPriorInjured(true);
+						hero->getFSM()->changeState(MInjured);
+						hero->getBloodScreen()->setVisible(true);
+						auto hp = hero->getHealth() - enemy->getDamage();
+						hero->setHealth(hp <= 0 ? 0 : hp);
+						//log("----");
+						auto parentGameScene = (GameScene*)hero->getParent();
 
-					parentGameScene->updateBloodBar(hero->getHealth(), false);
+						parentGameScene->updateBloodBar(hero->getHealth(), false);
 
+					}
 				}
 			}
 		}

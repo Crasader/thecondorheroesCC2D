@@ -119,6 +119,11 @@ void EnemyDatNhiBa::initCirclePhysic(b2World * world, Point pos)
 	body->CreateFixture(&fixtureDef);
 }
 
+void EnemyDatNhiBa::updatePos()
+{
+	BaseEnemy::updatePos();
+}
+
 
 
 

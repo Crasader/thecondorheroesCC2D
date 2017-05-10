@@ -1,0 +1,174 @@
+
+Boss3.png
+size: 2048,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+caidau
+  rotate: false
+  xy: 1330, 290
+  size: 123, 172
+  orig: 123, 172
+  offset: 0, 0
+  index: -1
+canhtayphai1a
+  rotate: true
+  xy: 1100, 154
+  size: 85, 130
+  orig: 85, 130
+  offset: 0, 0
+  index: -1
+canhtayphai2
+  rotate: true
+  xy: 1878, 338
+  size: 124, 131
+  orig: 124, 131
+  offset: 0, 0
+  index: -1
+canhtaytrai1a
+  rotate: false
+  xy: 1232, 124
+  size: 84, 129
+  orig: 84, 129
+  offset: 0, 0
+  index: -1
+canhtaytrai2
+  rotate: true
+  xy: 1075, 42
+  size: 110, 115
+  orig: 110, 115
+  offset: 0, 0
+  index: -1
+chanphai1
+  rotate: false
+  xy: 1209, 255
+  size: 119, 207
+  orig: 119, 207
+  offset: 0, 0
+  index: -1
+chanphai2
+  rotate: false
+  xy: 1455, 324
+  size: 133, 138
+  orig: 133, 138
+  offset: 0, 0
+  index: -1
+chantrai1
+  rotate: true
+  xy: 1590, 335
+  size: 127, 140
+  orig: 127, 140
+  offset: 0, 0
+  index: -1
+chantrai2
+  rotate: true
+  xy: 829, 67
+  size: 117, 107
+  orig: 117, 107
+  offset: 0, 0
+  index: -1
+chuoihat
+  rotate: false
+  xy: 708, 69
+  size: 119, 115
+  orig: 119, 115
+  offset: 0, 0
+  index: -1
+giayphai
+  rotate: true
+  xy: 1732, 343
+  size: 119, 144
+  orig: 119, 144
+  offset: 0, 0
+  index: -1
+giaytrai
+  rotate: true
+  xy: 938, 54
+  size: 98, 135
+  orig: 98, 135
+  offset: 0, 0
+  index: -1
+luan
+  rotate: false
+  xy: 650, 186
+  size: 287, 276
+  orig: 287, 276
+  offset: 0, 0
+  index: -1
+manhphai
+  rotate: false
+  xy: 939, 241
+  size: 268, 221
+  orig: 268, 221
+  offset: 0, 0
+  index: -1
+manhsau
+  rotate: false
+  xy: 2, 6
+  size: 349, 202
+  orig: 349, 202
+  offset: 0, 0
+  index: -1
+slash
+  rotate: true
+  xy: 2, 210
+  size: 252, 646
+  orig: 252, 646
+  offset: 0, 0
+  index: -1
+tayphai1
+  rotate: false
+  xy: 708, 2
+  size: 70, 65
+  orig: 70, 65
+  offset: 0, 0
+  index: -1
+taytrai
+  rotate: false
+  xy: 1330, 237
+  size: 51, 51
+  orig: 51, 51
+  offset: 0, 0
+  index: -1
+thantren
+  rotate: true
+  xy: 353, 20
+  size: 188, 258
+  orig: 188, 258
+  offset: 0, 0
+  index: -1
+thatlung
+  rotate: true
+  xy: 1209, 241
+  size: 12, 18
+  orig: 12, 18
+  offset: 0, 0
+  index: -1
+thatlung2
+  rotate: true
+  xy: 1192, 130
+  size: 22, 38
+  orig: 22, 38
+  offset: 0, 0
+  index: -1
+thatlung3
+  rotate: false
+  xy: 1455, 291
+  size: 27, 31
+  orig: 27, 31
+  offset: 0, 0
+  index: -1
+thatlung4
+  rotate: true
+  xy: 939, 154
+  size: 85, 159
+  orig: 85, 159
+  offset: 0, 0
+  index: -1
+thatlung5
+  rotate: false
+  xy: 613, 28
+  size: 93, 156
+  orig: 93, 156
+  offset: 0, 0
+  index: -1

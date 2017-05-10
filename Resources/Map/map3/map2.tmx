@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="450" height="20" tilewidth="80" tileheight="80" nextobjectid="198">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="450" height="20" tilewidth="80" tileheight="80" nextobjectid="204">
  <tileset firstgid="1" name="street1" tilewidth="80" tileheight="80" tilecount="42" columns="7">
   <image source="street2_1.png" width="560" height="480"/>
  </tileset>
@@ -252,7 +252,7 @@
   <object id="110" x="17878.8" y="1290.91" width="51.5152" height="87.8788"/>
   <object id="145" x="22290.9" y="1281.82" width="51.5152" height="81.8182"/>
  </objectgroup>
- <objectgroup name="hoacdo_1">
+ <objectgroup name="datnhiba_1">
   <object id="86" x="3675.76" y="1100" width="54.5455" height="90.9091"/>
   <object id="87" x="5912.12" y="1003.03" width="63.6364" height="103.03"/>
   <object id="88" x="8915.15" y="1000" width="54.5455" height="103.03"/>
@@ -279,7 +279,7 @@
   <object id="189" x="33412" y="1300" width="48" height="80"/>
   <object id="190" x="33996" y="1292" width="44" height="84"/>
  </objectgroup>
- <objectgroup name="hoacdo_2">
+ <objectgroup name="datnhiba_2">
   <object id="99" x="7693.94" y="990.909" width="42.4242" height="103.03"/>
   <object id="100" x="10390.9" y="1069.7" width="51.5152" height="112.121"/>
   <object id="101" x="13700" y="1012.12" width="42.4242" height="93.9394"/>
@@ -296,5 +296,11 @@
   <object id="184" x="21824.2" y="1106.06" width="63.6364" height="96.9697"/>
   <object id="191" x="32880" y="1288" width="56" height="96"/>
   <object id="192" x="34940" y="1284" width="64" height="104"/>
+ </objectgroup>
+ <objectgroup name="boss">
+  <object id="202" name="boss" x="35605.8" y="1114.3" width="75.7576" height="75.7576"/>
+ </objectgroup>
+ <objectgroup name="coming_boss">
+  <object id="203" name="coming_boss" x="32920.2" y="-4.84848" width="24.2424" height="1609.09"/>
  </objectgroup>
 </map>

@@ -1166,9 +1166,9 @@ void MenuLayer::showBlurScreen(int p_nOption) {
 
 	Sprite *_pBlurBlackLayer = Sprite::create("UI/toast.png");
 	_pBlurBlackLayer->setScale(m_pBlurScreen->getContentSize().width / _pBlurBlackLayer->getContentSize().width,
-		m_pBlurScreen->getContentSize().height / _pBlurBlackLayer->getContentSize().height);
-	_pBlurBlackLayer->setAnchorPoint(Vec2(0.5f, 0.5f));
-	_pBlurBlackLayer->setPosition(m_pBlurScreen->getContentSize().width * 0.5f, m_pBlurScreen->getContentSize().height * 0.5f);
+		m_pBlurScreen->getContentSize().height / _pBlurBlackLayer->getContentSize().height * 2);
+	_pBlurBlackLayer->setAnchorPoint(Vec2(0.5f, 1.0f));
+	_pBlurBlackLayer->setPosition(m_pBlurScreen->getContentSize().width * 0.5f, m_pBlurScreen->getContentSize().height);
 	_pBlurBlackLayer->setOpacity(150);
 	m_pBlurScreen->addChild(_pBlurBlackLayer, 0);
 
@@ -1811,9 +1811,10 @@ void MenuLayer::buttonUnlockHeroHandle() {
 		initTopMainMenu();
 		runAction(Sequence::create(DelayTime::create(0.2f), CallFunc::create([&]() { initBottomHeroMenu(); }), nullptr));
 		// save data
-		REF->unLockHero(m_nIndexHeroSelected);
+		REF->unLockHero(m_nIndexHeroPicked);
 		REF->setDownGold(JSHERO->getGoldPrice());
 		REF->setDownDiamond(JSHERO->getDiamondPrice());
+		initBottomHeroMenu();
 	}
 }
 
@@ -1847,16 +1848,16 @@ void MenuLayer::createLayerViaInput(Layer *p_pLayer, Size p_v2Size, Vec2 p_v2Pos
 void MenuLayer::moveLayerViaDirection(Layer *p_pLayer, int p_nDirection) {
 	switch (p_nDirection) {
 		case 2:
-			p_pLayer->runAction(MoveBy::create(0.3f, Vec2(0.0f, -p_pLayer->getContentSize().height)));
+			p_pLayer->runAction(MoveBy::create(0.2f, Vec2(0.0f, -p_pLayer->getContentSize().height)));
 			break;
 		case 4:
-			p_pLayer->runAction(MoveBy::create(0.3f, Vec2(-p_pLayer->getContentSize().width, 0.0f)));
+			p_pLayer->runAction(MoveBy::create(0.2f, Vec2(-p_pLayer->getContentSize().width, 0.0f)));
 			break;
 		case 6:
-			p_pLayer->runAction(MoveBy::create(0.3f, Vec2(p_pLayer->getContentSize().width, 0.0f)));
+			p_pLayer->runAction(MoveBy::create(0.2f, Vec2(p_pLayer->getContentSize().width, 0.0f)));
 			break;
 		case 8:
-			p_pLayer->runAction(MoveBy::create(0.3f, Vec2(0.0f, p_pLayer->getContentSize().height)));
+			p_pLayer->runAction(MoveBy::create(0.2f, Vec2(0.0f, p_pLayer->getContentSize().height)));
 			break;
 		default:
 			break;

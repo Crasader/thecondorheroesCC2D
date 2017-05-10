@@ -79,10 +79,7 @@ void BaseEnemy::die()
 
 void BaseEnemy::updateMe(BaseHero* hero)
 {
-	if (body != nullptr /*&& body->GetType() == b2_staticBody*/) {
-		this->setPositionX(body->GetPosition().x * PTM_RATIO - this->getParent()->getPositionX());
-		this->setPositionY(body->GetPosition().y * PTM_RATIO - this->body->GetFixtureList()->GetShape()->m_radius*PTM_RATIO - this->getParent()->getPositionY());
-	}
+	updatePos();
 
 
 	if (hero->getIsKillAll() && this->getB2Body() != nullptr) {
@@ -123,6 +120,14 @@ void BaseEnemy::makeMask()
 	// phan vung vo hai
 	else if (this->getTag() >= 100 && this->getTag() < 120) {
 		this->changeBodyMaskBits(BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
+	}
+}
+
+void BaseEnemy::updatePos()
+{
+	if (body != nullptr /*&& body->GetType() == b2_staticBody*/) {
+		this->setPositionX(body->GetPosition().x * PTM_RATIO - this->getParent()->getPositionX());
+		this->setPositionY(body->GetPosition().y * PTM_RATIO - this->body->GetFixtureList()->GetShape()->m_radius*PTM_RATIO - this->getParent()->getPositionY());
 	}
 }
 

@@ -71,6 +71,12 @@ void EnemyBoss1::die()
 			this->clearTracks();
 			this->setAnimation(0, "injured-red", false);
 			this->setToSetupPose();
+			this->scheduleOnce([&](float dt) {
+				this->isNodie = false;
+				this->clearTracks();
+				this->setAnimation(0, "idle", false);
+				this->setToSetupPose();
+			}, 0.2f, "bossinjured");
 		}
 		else {
 			this->playSoundDie();

@@ -941,6 +941,7 @@ void GameScene::createEnemyToanChanStudent2(MyLayer * layer, Vec2 pos)
 		enemy->clearTracks();
 		enemy->setAnimation(0, "idle", true);
 		enemy->setToSetupPose();
+		enemy->setControlAttack(100);
 		enemy->update(0.0f);
 		//layer->addChild(enemy, ZORDER_ENEMY);
 		if (enemy->getB2Body()) {
@@ -1011,6 +1012,7 @@ void GameScene::createEnemyHongLangBa2(MyLayer * layer, Vec2 pos) {
 		enemy->clearTracks();
 		enemy->setAnimation(0, "idle", true);
 		enemy->setToSetupPose();
+		enemy->setControlAttack(100);
 		enemy->update(0.0f);
 		//layer->addChild(enemy, ZORDER_ENEMY);
 		if (enemy->getB2Body()) {
@@ -1079,6 +1081,7 @@ void GameScene::createEnemyHoacDo2(MyLayer * layer, Vec2 pos)
 		enemy->clearTracks();
 		enemy->setAnimation(0, "idle", true);
 		enemy->setToSetupPose();
+		enemy->setControlAttack(100);
 		enemy->update(0.0f);
 		//layer->addChild(enemy, ZORDER_ENEMY);
 		if (enemy->getB2Body()) {
@@ -1162,6 +1165,11 @@ void GameScene::creatBoss()
 		case 2: {
 			enemy = EnemyBoss2::create("Animation/Enemy_Boss2/Boss2.json",
 				"Animation/Enemy_Boss2/Boss2.atlas", scaleOfEnemy);
+			break;
+		}
+		case 3: {
+			enemy = EnemyBoss3::create("Animation/Enemy_Boss3/Boss3.json",
+				"Animation/Enemy_Boss3/Boss3.atlas", scaleOfEnemy);
 			break;
 		}
 		default:

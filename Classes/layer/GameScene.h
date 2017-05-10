@@ -18,6 +18,7 @@
 #include "EnemyDatNhiBa2.h"
 #include "boss/EnemyBoss1.h"
 #include "boss/EnemyBoss2.h"
+#include "boss/EnemyBoss3.h"
 #include "chimdieu/ChimDieu.h"
 #include "coin/Coin.h"
 #include "coin/CoinBag.h"

@@ -21,6 +21,7 @@ public:
 	void playsoundAt();
 	void playsoundDie();
 	virtual void initCirclePhysic(b2World * world, Point pos);
+	virtual void updatePos();
 };
 
 #endif // __ENEMY_H__

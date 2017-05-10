@@ -77,6 +77,7 @@ void EnemyToanChanStudent::initCirclePhysic(b2World * world, Point pos)
 {
 	b2CircleShape circle_shape;
 	circle_shape.m_radius = this->getBoundingBox().size.height / 4 / PTM_RATIO;
+	//pos = Point(pos.x-circle_shape.m_radius/2, pos.y);
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 0.0f;
@@ -89,7 +90,7 @@ void EnemyToanChanStudent::initCirclePhysic(b2World * world, Point pos)
 	bodyDef.type = b2_staticBody;
 	bodyDef.userData = this;			// pass sprite to bodyDef with argument: userData
 
-	bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);
+	bodyDef.position.Set(pos.x / PTM_RATIO - circle_shape.m_radius / 2, pos.y / PTM_RATIO);
 
 	body = world->CreateBody(&bodyDef);
 	body->CreateFixture(&fixtureDef);
@@ -147,4 +148,8 @@ void EnemyToanChanStudent::listener()
 		}
 
 	});
+}
+
+void EnemyToanChanStudent::updatePos()
+{
 }

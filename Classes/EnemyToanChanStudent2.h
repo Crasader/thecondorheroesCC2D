@@ -31,7 +31,7 @@ public:
 	virtual void playsoundAt();
 	virtual void playsoundDie();
 	//void removeFromParentAndCleanup(bool onExit);
-
+	virtual void updatePos();
 	virtual void onExit();
 };
 

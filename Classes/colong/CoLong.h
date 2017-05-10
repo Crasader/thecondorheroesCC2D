@@ -53,6 +53,9 @@ protected:
 	void doCounterSkill1();
 
 	// Skill 2
+	CCArray *poolSkill2;
+	int indexSkill2 = 0;
+	bool isAddedAll = false;
 	int checkDurationSkill2;
 	void createNgocNuKiemPhap(Point p_ptPoint);
 	void doCounterSkill2();

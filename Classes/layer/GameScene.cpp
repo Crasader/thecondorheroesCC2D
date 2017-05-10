@@ -207,7 +207,9 @@ void GameScene::onBegin()
 	}
 
 	if (REF->getNumberItemMagnet() > 0) {
-		runnerItem(Item_type::MAGNET, DURATION_MAGNET);
+		charId == 1 ?
+			runnerItem(Item_type::MAGNET, DURATION_MAGNET * 1.15f) :
+			runnerItem(Item_type::MAGNET, DURATION_MAGNET);
 		REF->decreaseNumberItemMagnet();
 	}
 
@@ -1556,10 +1558,17 @@ void GameScene::runnerItem(Item_type type, int counter)
 
 void GameScene::updateBloodBar(int numberOfHealth, bool isVisible)
 {
+	
 	if (numberOfHealth >= 0) {
-		for (int i = numberOfHealth; i < hero->getMaxHealth(); i++) {
-			auto blood = (Sprite*)hud->getListBlood()->getObjectAtIndex(i);
-			blood->setVisible(isVisible);
+		if (isVisible) {
+			auto blood = (Sprite*)hud->getListBlood()->getObjectAtIndex(numberOfHealth);
+			blood->setVisible(true);
+		}
+		else {
+			for (int i = numberOfHealth; i < hero->getMaxHealth(); i++) {
+				auto blood = (Sprite*)hud->getListBlood()->getObjectAtIndex(i);
+				blood->setVisible(false);
+			}
 		}
 	}
 }
@@ -1704,40 +1713,6 @@ void GameScene::updateCoin()
 	}
 }
 
-//void GameScene::cleanMap()
-//{
-//	for (auto body = world->GetBodyList(); ; body != NULL) {
-//		log("a");
-//		auto tmp = body;
-//		body->GetNext();
-//		if (tmp->GetPosition().y < 0) {
-//			auto data = (Node*)tmp->GetUserData();
-//			data->removeFromParentAndCleanup(true);
-//			world->DestroyBody(tmp);
-//		}
-//	}
-//}
-
-
-void GameScene::cachePlist()
-{
-	/*SpriteFrameCache::getInstance()->addSpriteFramesWithFile("item/coin.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Map/bg.plist");*/
-}
-
-void GameScene::cacheSkeleton()
-{
-
-
-	//auto scaleOfToanchan1 = SCREEN_SIZE.height / 5 / 401; // 401 la height cua spine
-	//sr_toanchan1 = createSkeletonData("Animation/Enemy_DeTuToanChan1/ToanChan1.atlas", "Animation/Enemy_DeTuToanChan1/ToanChan1.json");
-
-//	sr_wooder = createSkeletonData("Animation/Enemy_MocNhan/MocNhan.atlas","Animation/Enemy_MocNhan/MocNhan.json");
-	//sr_toanchan1 = createSkeletonData("ToanChan1.atlas", "ToanChan1.json");
-
-	//sr_wooder = createSkeletonData("MocNhan.atlas", "MocNhan.json");
-
-}
 
 void GameScene::shakeTheScreen()
 {
@@ -1793,6 +1768,8 @@ void GameScene::callingBird()
 	if (_aEagle->getB2Body() == nullptr || hero->getB2Body() == nullptr) {
 		log("Crazy fox");
 	}
+
+	auto velX = (charId == 0) ? hero->getMoveVel() * 1.15f : hero->getMoveVel();
 	_aEagle->getB2Body()->SetTransform(hero->getB2Body()->GetPosition(), 0.0f);
 	_aEagle->flyUp(b2Vec2(hero->getMoveVel(), 10.0f));
 
@@ -2142,7 +2119,7 @@ void GameScene::jump()
 void GameScene::introJump(int type)
 {
 	blurScreen();
-	tut = TutorialJump::create("", type);
+	tut = TutorialJump::create(type);
 	this->getParent()->addChild(tut);
 	
 	hero->getSmokeRun()->pause();
@@ -2189,7 +2166,7 @@ void GameScene::introSkills()
 
 void GameScene::introBird()
 {
-	tut = TutorialIntroBird::create("");
+	tut = TutorialIntroBird::create();
 	this->getParent()->addChild(tut);
 
 	if (hero->getSmokeRun()->isVisible())

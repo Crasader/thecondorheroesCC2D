@@ -10,14 +10,19 @@ RefManager::RefManager()
 	ref = UserDefault::sharedUserDefault();
 
 	isFirstPlay = ref->getBoolForKey(KEY_FIRST, true);
+	lastMapIdPlay = ref->getIntegerForKey(KEY_LAST_MAP_ID, 1);
 	selectedHero = ref->getIntegerForKey(KEY_SELECTED_HERO, 0);
 
 	currentStageUnlocked = ref->getIntegerForKey(KEY_CUR_STAGE_UNLOCKED, 4);
 	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 3);
 
 	anchorTime = ref->getIntegerForKey(KEY_ANCHORTIME, time(0));
+	lastDailyRewardTime = ref->getIntegerForKey(KEY_LAST_DAILY_REWARD_TIME, 0);
+	dailyRewardCounter = ref->getIntegerForKey(KEY_DAILY_REWARD_COUNTER, 0);
+	dailyRewardAvailable = ref->getBoolForKey(KEY_DAILY_REWARD_AVAILABLE, false);
+	freeCoin = ref->getIntegerForKey(KEY_FREE_COIN, 3);
 
-	numberOfLife = ref->getIntegerForKey(KEY_LIFE, 3);
+	numberOfLife = ref->getIntegerForKey(KEY_LIFE, 5);
 	goldExplored = ref->getIntegerForKey(KEY_GOLD, 0);
 	diamondBuy = ref->getIntegerForKey(KEY_DIAMOND, 0);
 
@@ -29,7 +34,6 @@ RefManager::RefManager()
 
 	// need to fix
 	unLockHero(0);
-	unLockHero(1);
 	pointToCurrentHero(selectedHero);
 }
 
@@ -94,6 +98,13 @@ void RefManager::setDoneFirstPlay()
 	ref->flush();
 }
 
+void RefManager::setLastMapId(int id)
+{
+	lastMapIdPlay = id;
+	ref->setIntegerForKey(KEY_LAST_MAP_ID, lastMapIdPlay);
+	ref->flush();
+}
+
 void RefManager::unLockHero(int index)
 {
 	ref->setBoolForKey((KEY_LOCKED_HERO_X + StringUtils::format("%i", index)).c_str(), false);
@@ -104,6 +115,12 @@ void RefManager::increaseLevel()
 {
 	ref->setIntegerForKey((KEY_LEVEL_HERO_X + StringUtils::format("%i", selectedHero)).c_str(), ++currentLevel);
 	ref->flush();
+
+	if ((currentLevel % 10) == 0) {
+		setUpHealth(1);
+		increaseBonusScore(3);
+		increaseBonusGold(3);
+	}
 }
 
 void RefManager::increaseStateUnlocked()
@@ -225,6 +242,36 @@ void RefManager::resetAnchorTime()
 {
 	anchorTime = time(0);
 	ref->setIntegerForKey(KEY_ANCHORTIME, anchorTime);
+	ref->flush();
+}
+
+void RefManager::updateTimeFromGoogle(int p_nTime) {
+	lastDailyRewardTime = p_nTime;
+	ref->setIntegerForKey(KEY_LAST_DAILY_REWARD_TIME, lastDailyRewardTime);
+	ref->flush();
+}
+
+void RefManager::increaseDailyRewardCounter() {
+	dailyRewardCounter++;
+	ref->setIntegerForKey(KEY_DAILY_REWARD_COUNTER, dailyRewardCounter);
+	ref->flush();
+}
+
+void RefManager::updateDailyRewardAvailable(bool p_bData) {
+	dailyRewardAvailable = p_bData;
+	ref->setBoolForKey(KEY_DAILY_REWARD_AVAILABLE, dailyRewardAvailable);
+	ref->flush();
+}
+
+void RefManager::resetFreeCoin() {
+	freeCoin = 3;
+	ref->setIntegerForKey(KEY_FREE_COIN, freeCoin);
+	ref->flush();
+}
+
+void RefManager::decreaseFreeCoin() {
+	freeCoin--;
+	ref->setIntegerForKey(KEY_FREE_COIN, freeCoin);
 	ref->flush();
 }
 

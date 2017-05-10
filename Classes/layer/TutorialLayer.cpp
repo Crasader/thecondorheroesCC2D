@@ -23,7 +23,7 @@ bool TutorialLayer::init()
 
 	this->schedule([&](float dt) {
 		counter++;
-		if (counter >= 10) {
+		if (counter >= 5) {
 			listener = EventListenerTouchOneByOne::create();
 			listener->onTouchBegan = CC_CALLBACK_2(TutorialLayer::onTouchBegan, this);
 			_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
@@ -59,7 +59,7 @@ bool TutorialJump::onTouchBegan(Touch * touch, Event * unused_event)
 
 	auto location = touch->getLocation();
 	if (location.x < SCREEN_SIZE.width / 2) {
-		log("Done Jump Tutorial");
+		//log("Done Jump Tutorial");
 		parentLayer->jump();
 	}
 
@@ -68,7 +68,7 @@ bool TutorialJump::onTouchBegan(Touch * touch, Event * unused_event)
 	return false;
 }
 
-bool TutorialJump::init(string image_path, int type)
+bool TutorialJump::init(int type)
 {
 	//////////////////////////////
 	// 1. super init first
@@ -77,18 +77,24 @@ bool TutorialJump::init(string image_path, int type)
 		return false;
 	}
 	auto origin = Director::getInstance()->getVisibleOrigin();
+	
+	if (type == 1) {
+		auto guideImage = Sprite::create("UI/UI_tutorial/imgtut1.png");
+		guideImage->setScale(SCREEN_SIZE.height * 0.75f / guideImage->getContentSize().height);
+		guideImage->setPosition(origin + SCREEN_SIZE / 2);
+		addChild(guideImage);
+	}
+	else {
+		auto lbText = Label::createWithTTF("Don't let hero fall down into abyss", "fonts/Marker Felt.ttf", 32);
+		lbText->setScale(SCREEN_SIZE.height * 0.06f / lbText->getContentSize().height);
 
-	auto lbText = Label::createWithTTF("Tap on the left screen to jump, tap again to double jump", "fonts/Marker Felt.ttf", 32);
-	lbText->setScale(SCREEN_SIZE.height * 0.06f / lbText->getContentSize().height);
-
-	lbText->setPosition(origin.x + SCREEN_SIZE.width / 2, origin.y + SCREEN_SIZE.height * 0.73f);
-	addChild(lbText);
-
-	if (type == 2) lbText->setString("Don't let hero down on abyss");
+		lbText->setPosition(origin.x + SCREEN_SIZE.width / 2, origin.y + SCREEN_SIZE.height * 0.73f);
+		addChild(lbText);
+	}
 
 	this->schedule([&](float dt) {
 		counter++;
-		if (counter >= 10) {
+		if (counter >= 5) {
 			listener = EventListenerTouchOneByOne::create();
 			listener->onTouchBegan = CC_CALLBACK_2(TutorialJump::onTouchBegan, this);
 			_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
@@ -99,11 +105,11 @@ bool TutorialJump::init(string image_path, int type)
 	return true;
 }
 
-TutorialJump * TutorialJump::create(string image_path, int type)
+TutorialJump * TutorialJump::create(int type)
 {
 	TutorialJump* tut = new TutorialJump();
 
-	if (tut && tut->init(image_path, type))
+	if (tut && tut->init(type))
 	{
 		tut->autorelease();
 		return tut;
@@ -121,11 +127,15 @@ bool TutorialAttack::init()
 	TutorialLayer::init();
 
 	auto origin = Director::getInstance()->getVisibleOrigin();
-	auto lbText = Label::createWithTTF("Press Attack Button to hit Enemy nearby", "fonts/Marker Felt.ttf", 32);
+	/*auto lbText = Label::createWithTTF("Press Attack Button to hit Enemy nearby", "fonts/Marker Felt.ttf", 32);
 	lbText->setScale(SCREEN_SIZE.height * 0.06f / lbText->getContentSize().height);
-
 	lbText->setPosition(origin.x + SCREEN_SIZE.width / 2, origin.y + SCREEN_SIZE.height * 0.73f);
-	addChild(lbText);
+	addChild(lbText);*/
+
+	auto guideImage = Sprite::create("UI/UI_tutorial/imgtut2.png");
+	guideImage->setScale(SCREEN_SIZE.height * 0.75f / guideImage->getContentSize().height);
+	guideImage->setPosition(origin + SCREEN_SIZE / 2);
+	addChild(guideImage);
 
 	return true;
 }
@@ -152,11 +162,16 @@ bool TutorialSkill::init()
 	TutorialLayer::init();
 	auto origin = Director::getInstance()->getVisibleOrigin();
 
-	auto lbText = Label::createWithTTF("Use Skill Button to active special hero's skill", "fonts/Marker Felt.ttf", 32);
+	/*auto lbText = Label::createWithTTF("Use Skill Button to active special hero's skill", "fonts/Marker Felt.ttf", 32);
 	lbText->setScale(SCREEN_SIZE.height * 0.06f / lbText->getContentSize().height);
-
 	lbText->setPosition(origin.x + SCREEN_SIZE.width / 2, origin.y + SCREEN_SIZE.height * 0.73f);
-	addChild(lbText);
+	addChild(lbText);*/
+
+	auto guideImage = Sprite::create("UI/UI_tutorial/imgtut3.png");
+	guideImage->setScale(SCREEN_SIZE.height * 0.75f / guideImage->getContentSize().height);
+	guideImage->setPosition(origin + SCREEN_SIZE / 2);
+	addChild(guideImage);
+
 	return true;
 }
 
@@ -177,7 +192,7 @@ TutorialSkill * TutorialSkill::create()
 	}
 }
 
-bool TutorialIntroBird::init(string image_path)
+bool TutorialIntroBird::init()
 {
 	//////////////////////////////
 	// 1. super init first
@@ -188,15 +203,20 @@ bool TutorialIntroBird::init(string image_path)
 	
 	auto origin = Director::getInstance()->getVisibleOrigin();
 
-	auto lbText = Label::createWithTTF("Call your Cordon and you will fly with him.\nEnemy can not give attack on you", "fonts/Marker Felt.ttf", 32);
+	/*auto lbText = Label::createWithTTF("Call your Cordon and you will fly with him.\nYou will be protected", "fonts/Marker Felt.ttf", 32);
 	lbText->setAlignment(TextHAlignment::CENTER);
 	lbText->setScale(SCREEN_SIZE.height * 0.12f / lbText->getContentSize().height);
 	lbText->setPosition(origin.x + SCREEN_SIZE.width / 2, origin.y + SCREEN_SIZE.height * 0.73f);
-	addChild(lbText);
+	addChild(lbText);*/
+
+	auto guideImage = Sprite::create("UI/UI_tutorial/imgtut4.png");
+	guideImage->setScale(SCREEN_SIZE.height * 0.75f / guideImage->getContentSize().height);
+	guideImage->setPosition(origin + SCREEN_SIZE / 2);
+	addChild(guideImage);
 
 	this->schedule([&](float dt) {
 		counter++;
-		if (counter >= 10) {
+		if (counter >= 5) {
 			listener = EventListenerTouchOneByOne::create();
 			listener->onTouchBegan = CC_CALLBACK_2(TutorialIntroBird::onTouchBegan, this);
 			_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
@@ -206,11 +226,11 @@ bool TutorialIntroBird::init(string image_path)
 	return true;
 }
 
-TutorialIntroBird * TutorialIntroBird::create(string image_path)
+TutorialIntroBird * TutorialIntroBird::create()
 {
 	TutorialIntroBird* tut = new TutorialIntroBird();
 
-	if (tut && tut->init(image_path))
+	if (tut && tut->init())
 	{
 		tut->autorelease();
 		return tut;

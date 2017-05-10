@@ -46,8 +46,8 @@ void DialogPauseGame::resumeGame(Ref * pSender)
 
 void DialogPauseGame::backHome(Ref * pSender)
 {
-	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
-	gameLayer->removeAllChildrenWithCleanup(true);
+	auto gameScene = this->getParent();
+	gameScene->removeAllChildrenWithCleanup(true);
 	Director::getInstance()->replaceScene(MenuLayer::createScene());
 }
 
@@ -337,12 +337,6 @@ bool DialogStageClear::init(int score, int gold)
 	int currentScore = REF->getCurrentScore();
 	int currentLevel = REF->getCurrentLevel();
 
-	if (currentScore >= JSHERO->getMaxScoreLevelX(currentLevel)) {
-
-		REF->setCurrentScoreAfterIncrease(currentScore - JSHERO->getMaxScoreLevelX(currentLevel));
-		REF->increaseLevel();
-	}
-
 	effect();
 
 	return true;
@@ -495,11 +489,6 @@ bool DialogOverGame::init(int score, int gold)
 	int currentScore = REF->getCurrentScore();
 	int currentLevel = REF->getCurrentLevel();
 
-	if (currentScore >= JSHERO->getMaxScoreLevelX(currentLevel)) {
-
-		REF->setCurrentScoreAfterIncrease(currentScore - JSHERO->getMaxScoreLevelX(currentLevel));
-		REF->increaseLevel();
-	}
 	effect();
 
 	return true;

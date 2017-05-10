@@ -199,11 +199,6 @@ public:
 
 	void updateCoin();
 
-	//void cleanMap();
-
-	// cache function
-	void cachePlist();
-	void cacheSkeleton();
 
 
 	// shaking

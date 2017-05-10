@@ -34,7 +34,6 @@ void ChimDieu::updateMe(float dt) {
 	else
 		return;
 
-
 	if (isCarry && isUp && body->GetPosition().y > SCREEN_SIZE.height * 1.5f / PTM_RATIO) {
 		this->getB2Body()->SetLinearVelocity(b2Vec2(this->getB2Body()->GetLinearVelocity().x, 0.0f));
 	}
@@ -79,7 +78,7 @@ void ChimDieu::updateMe(float dt) {
 		}
 	}
 	else {
-		if (body->GetPosition().y > SCREEN_SIZE.height * 3.0f / PTM_RATIO) {
+		if (body->GetPosition().y > SCREEN_SIZE.height * 2.0f / PTM_RATIO) {
 			// this->getB2Body()->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
 			this->getB2Body()->GetWorld()->DestroyBody(this->getB2Body());
 			this->setB2Body(nullptr);

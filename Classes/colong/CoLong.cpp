@@ -100,8 +100,12 @@ void CoLong::doCounterSkill1() {
 // SKILL 2
 void CoLong::createNgocNuKiemPhap(Point p_ptPoint) {
 	AudioManager::playSound(SOUND_CLSKILL2);
-	auto scale = this->getTrueRadiusOfHero() * 1.4f / 250;
-	SkeletonAnimation * clone = new SkeletonAnimation("Animation/CoLong/skill2.json", "Animation/CoLong/skill2.atlas", scale);
+	auto * clone = (SkeletonAnimation*) poolSkill2->getObjectAtIndex(indexSkill2++);
+
+	clone->clearTracks();
+	clone->addAnimation(0, "skill2", false);
+	clone->setToSetupPose();
+
 	auto parentGameScene = (GameScene*)this->getParent();
 
 	if (!m_lEnemiesSelectedBySkill2.empty()) {
@@ -111,15 +115,26 @@ void CoLong::createNgocNuKiemPhap(Point p_ptPoint) {
 		m_lEnemiesSelectedBySkill2.pop_front();
 		enemy->die();
 
-		auto hero = parentGameScene->getHero();
-		hero->setScore(hero->getScore() + 15);
+		this->setScore(this->getScore() + 15);
 	}
 	else {
 		clone->setPosition(p_ptPoint);
 	}
 
-	parentGameScene->addChild(clone, ZORDER_SMT);
-	clone->addAnimation(0, "skill2", false);
+	if (!isAddedAll) {
+		/*clone->setEndListener([&](int trackIndex) {
+			if ((strcmp(clone->getCurrent()->animation->name, "skill2") == 0)) {
+
+			}
+		});*/
+
+		parentGameScene->addChild(clone, ZORDER_SMT);
+	}
+
+	if (indexSkill2 == 3) {
+		indexSkill2 = 0;
+		if (!isAddedAll) isAddedAll = true;
+	}
 }
 
 void CoLong::doCounterSkill2() {
@@ -363,6 +378,15 @@ void CoLong::createPool()
 		auto cham = TieuHonChuong::create("cham.png");
 		cham->setScale(this->getTrueRadiusOfHero() * 1.5f / cham->getContentSize().width);
 		poolSkill1->addObject(cham);
+	}
+
+	poolSkill2 = CCArray::createWithCapacity(3);
+	poolSkill2->retain();
+
+	auto scale = this->getTrueRadiusOfHero() * 1.4f / 250;
+	for (int i = 0; i < 3; ++i) {
+		SkeletonAnimation * clone = new SkeletonAnimation("Animation/CoLong/skill2.json", "Animation/CoLong/skill2.atlas", scale);
+		poolSkill2->addObject(clone);
 	}
 }
 
@@ -619,7 +643,7 @@ void CoLong::injured() {
 		clearTracks();
 		addAnimation(0, "injured", false);
 		setToSetupPose();
-		log("Injured");
+		//log("Injured");
 	}
 }
 

@@ -125,7 +125,6 @@ void LoadingLayer::doLoading()
 
 		if (timer >= 200) {
 			start = chrono::system_clock::now();
-			end = start;
 			timer = 0;
 			doProcess();
 			unschedule("Key_loading");
@@ -152,19 +151,16 @@ void LoadingLayer::doOpen()
 
 void LoadingLayer::doProcess()
 {
-	//log("ham 0: %f", (std::chrono::duration<double>)(std::chrono::system_clock::now() - start));
 	mainScene = GameScene::create(stage, map, haveboss, charId);
-	//log("ham 1: %f", (std::chrono::duration<double>)(std::chrono::system_clock::now() - start));
+	mainScene->setName("gameLayer");
 	mainScene->retain();
 	hud = Hud::create();
 	hud->retain();
 	mainScene->setHud(hud);
-	mainScene->setName("gameLayer");
+	
 
 	end = chrono::system_clock::now();
 	
-
-
 	chrono::duration<double> elapsed_seconds = end - start;
 	log("%f", elapsed_seconds.count());
 
@@ -183,7 +179,7 @@ void LoadingLayer::doProcess()
 			Director::getInstance()->replaceScene(GameScene::createScene(mainScene, hud));
 		}
 
-	}, (elapsed_seconds.count()) / 200.0f, "key");
+	}, 1.0f / (100.0f - percent), "key");
 }
 
 void LoadingLayer::addGuide(string guideWhat)

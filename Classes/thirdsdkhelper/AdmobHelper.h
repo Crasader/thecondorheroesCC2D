@@ -8,22 +8,33 @@
 
 class AdmobHelper{
 public:
-	static AdmobHelper *INSTANCE;
+	//static AdmobHelper *INSTANCE;
 	AdmobHelper(){
 #ifdef SDKBOX_ENABLED
 		sdkbox::PluginAdMob::init();
-		sdkbox::PluginAdMob::cache("home");
+		sdkbox::PluginAdMob::cache("top_home");
+		sdkbox::PluginAdMob::cache("bottom_home");
 		sdkbox::PluginAdMob::cache("gameover");
 #endif
 	}
-	void showBanner(){
+	void showTopBanner(){
 #ifdef SDKBOX_ENABLED
-		sdkbox::PluginAdMob::show("home");
+		sdkbox::PluginAdMob::show("top_home");
 #endif
 	}
-	void hideBanner(){
+	void showBottomBanner() {
 #ifdef SDKBOX_ENABLED
-		sdkbox::PluginAdMob::hide("home");
+		sdkbox::PluginAdMob::show("bottom_home");
+#endif
+	}
+	void hideTopBanner(){
+#ifdef SDKBOX_ENABLED
+		sdkbox::PluginAdMob::hide("top_home");
+#endif
+	}
+	void hideBottomBanner() {
+#ifdef SDKBOX_ENABLED
+		sdkbox::PluginAdMob::hide("bottom_home");
 #endif
 	}
 	void showFullAd(){
@@ -33,10 +44,11 @@ public:
 	}
 
 	static AdmobHelper* getInstance() {
-		if (!INSTANCE) {
-			INSTANCE = new AdmobHelper();
+		static  AdmobHelper *admobInstance;
+		if (admobInstance == nullptr) {
+			admobInstance = new AdmobHelper();
 		}
-		return INSTANCE;
+		return admobInstance;
 	}
 };
 

@@ -54,7 +54,7 @@ bool GameScene::init(int stage, int map, int haveboss, int charId)
 
 	indexOfNextMapBoss = -1;
 	this->stage = stage;
-	this->haveboss = haveboss;
+	//this->haveboss = haveboss;
 	this->charId = charId;
 	this->map = map;
 
@@ -92,8 +92,7 @@ bool GameScene::init(int stage, int map, int haveboss, int charId)
 
 
 	createEagle(Point(hero->getB2Body()->GetPosition().x - visibleSize.width, visibleSize.height / 2));
-
-	if (haveboss)
+	if (this->haveboss)
 		creatBoss();
 
 	createCoin();
@@ -694,6 +693,7 @@ void GameScene::loadBackground()
 		tmx_map->setVisible(false);
 
 	this->addChild(tmx_map, ZORDER_TMX);
+	this->haveboss = tmx_map->getObjectGroup("boss") != nullptr ? 1 : 0;
 	if (haveboss) {
 
 		auto groupComingBoss = tmx_map->getObjectGroup("coming_boss");
@@ -1639,7 +1639,7 @@ void GameScene::updateCamera()
 			follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4);
 		}
 		else {
-			if (hero->getPositionX() > follow->getPositionX() + SCREEN_SIZE.width / 2) {
+			if (hero->getPositionX() > follow->getPositionX() + SCREEN_SIZE.width / 1.8f) {
 				this->winGame();
 			}
 		}

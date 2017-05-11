@@ -97,7 +97,7 @@ void EnemyHoacDo2::updateMe(BaseHero * hero)
 	}
 	auto thisToHero = hero->getPosition() - (this->getPosition()+ this->getParent()->getPosition());
 	if (thisToHero.x < 0) {
-		if (-thisToHero.x < SCREEN_SIZE.width *0.6f) {
+		if (-thisToHero.x < SCREEN_SIZE.width *0.6f && fabs(thisToHero.y) <SCREEN_SIZE.height/2.2f ) {
 			if (controlAttack % 120 == 0) {
 				if (this->body != nullptr) {
 					if (!this->body->GetWorld()->IsLocked()) {

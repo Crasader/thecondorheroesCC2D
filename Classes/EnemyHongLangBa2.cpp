@@ -181,6 +181,11 @@ void EnemyHongLangBa2::initCirclePhysic(b2World * world, Point pos)
 }
 
 
+void EnemyHongLangBa2::updatePos()
+{
+	BaseEnemy::updatePos();
+}
+
 void EnemyHongLangBa2::onExit()
 {
 	BaseEnemy::onExit();

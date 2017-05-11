@@ -22,7 +22,7 @@ bool MenuLayer::init() {
 	if (!Layer::init()) {
 		return false;
 	}
-
+	AudioManager::playMusic(MUSIC_MENU);
 	initInputData();
 	Vec2 _v2Origin = Director::getInstance()->getVisibleOrigin();
 

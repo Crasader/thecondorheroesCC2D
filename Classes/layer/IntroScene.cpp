@@ -1,6 +1,7 @@
 #include "IntroScene.h"
 #include "manager/AudioManager.h"
 #include "Global.h"
+#include "thirdsdkhelper\AdmobHelper.h"
 
 Scene* SceneIntro::createScene() {
     auto scene = Scene::create();
@@ -15,6 +16,7 @@ bool SceneIntro::init() {
         return false;
 	}
 	//AudioManager::cacheAudio();
+	AdmobHelper::getInstance()->showTopBanner();
 	AudioManager::playMusic(MUSIC_MENU);
 	auto origin = Director::getInstance()->getVisibleOrigin();
 
@@ -72,6 +74,7 @@ bool SceneIntro::init() {
 }
 
 void SceneIntro::goToMainMenuScene(Ref* p_pSender) {
+	AdmobHelper::getInstance()->hideTopBanner();
 	AudioManager::playSound(SOUND_BTCLICK);
 	auto _aMainMenuScene = MenuLayer::createScene(); // create main menu scene
 	Director::getInstance()->replaceScene(TransitionFade::create(0.5f, _aMainMenuScene)); // replace current scene by main menu scene, replacing duration is 500ms

@@ -25,7 +25,7 @@ public:
 	void updateMe(BaseHero* hero);
 	//virtual void genSplash();
 	virtual void listener();
-	void updatePos();
+	virtual void updatePos();
 };
 
 #endif // __ENEMY_HONGLANGBA_H__

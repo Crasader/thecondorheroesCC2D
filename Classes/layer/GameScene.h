@@ -41,8 +41,8 @@ class GameScene : public cocos2d::Layer
 public:
 	
 	static Scene* createScene(GameScene* gameLayer, Hud *m_hud);
-	virtual bool init(int stage, int map, int haveboss, int charId);
-	static GameScene* create(int stage, int map, int haveboss, int charId);
+	virtual bool init(int stage, int map, int charId);
+	static GameScene* create(int stage, int map, int charId);
 
 	BaseHero * getHero() { return hero; }
 	void setLastScore(int lastScore) { m_lastScore = lastScore; }
@@ -57,7 +57,7 @@ private:
 	float changebg;
 
 
-	int charId;//Thinhnv Edited for select character
+	int charId;	//Thinhnv Edited for select character
 	int numberRevive = 0;
 
 	bool isWinGame;
@@ -81,11 +81,13 @@ private:
 	
 public:
 	b2World *world;
+
+
+private:
 	GLESDebugDraw *debugDraw;
 	Mat4 _modelViewMV;
 	CustomCommand _customCommand;
 
-private:
 	Follow *camera;
 	Node* follow;
 	CCRect left_corner;
@@ -104,11 +106,6 @@ private:
 
 	InfiniteParallaxNode *background;
 	InfiniteParallaxNode *background2;
-
-	// skeleton cache
-	spSkeletonData *sr_toanchan1;
-	spSkeletonData *sr_wooder;
-	//end skeleton cache
 
 
 	// dialog here
@@ -159,14 +156,10 @@ private:
 	void createCoin();
 	void createCointBag();
 	void createCoinBullion();
-	//void createFormCoin( MyLayer *layer,Vec2 pos, string objectMap, string objectInform, SpriteBatchNode* batchnode);
 	void createFormCoin(string objectName, string objectMap, string objectInform);
 
 
 	void createItem();
-
-	//skeleton data
-	//spSkeletonData* createSkeletonData(string atlasFile, string jsonFile);
 	
 	void updateQuest();
 
@@ -188,7 +181,6 @@ public:
 	void listener();		// attack button listener | see update function
 	void update(float dt);
 	void updateEnemy();
-	void updateBoss();
 
 	void updateHUD(float dt);
 	void updateMultiKills(); //DuongPM edited for multi kills
@@ -198,7 +190,6 @@ public:
 	void updateChangeBg();
 
 	void updateCoin();
-
 
 
 	// shaking
@@ -216,7 +207,7 @@ public:
 	void restartGame();
 
 	// toi uu cho game
-	void loadPosAndTag();// luu tru cac vi tri sinh agent
+	void loadPosAndTag();	// luu tru cac vi tri sinh agent
 	void loadPosOfObjectInGroup(string nameOfGroup, float tag);// 
 	void initLayerToAddAgent();
 	void updateLayer();
@@ -224,12 +215,6 @@ public:
 	void createAgentOnLayer(MyLayer* layer);
 	void creatAgentByMydata(MyLayer* layer, MyData data);
 
-	// quan ly item
-	//void createMapItem();// tao du lieu cho map item.
-
-	
-
-	// handle tuts
 
 	// tut
 private:

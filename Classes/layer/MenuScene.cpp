@@ -98,7 +98,7 @@ void MenuLayer::update(float p_fDelta) {
 }
 
 void MenuLayer::initInputData() {
-	m_nIndexHeroSelected = m_nIndexHeroPicked = REF->getSelectedHero();
+	m_nIndexHeroSelected = m_nIndexHeroPicked = REF->getLastPickHero();
 	m_nAnchorTime = REF->getAnchorTime();
 	m_nLifeNumber = REF->getNumberOfLife();
 	m_nCurrentGold = REF->getGoldExplored();
@@ -1025,7 +1025,6 @@ void MenuLayer::initBottomHeroMenu() {
 
 	for (int i = 0; i < 5; i++) {
 		REF->pointToCurrentHero(i);
-		JSHERO->readFile(i);
 		Sprite *_pHeroSprite;
 		if (REF->getIsLockedHero()) {
 			_pHeroSprite = Sprite::create(JSHERO->getIconLocked());
@@ -1215,6 +1214,7 @@ void MenuLayer::hideBlurScreen() {
 }
 
 void MenuLayer::buttonStartHandle() {
+	REF->setLastPickHero(m_nIndexHeroSelected);
 	auto _scene = SelectStageLayer::createScene(m_nIndexHeroSelected);
 	Director::getInstance()->replaceScene(TransitionFade::create(0.3f, _scene));
 }
@@ -1769,7 +1769,7 @@ void MenuLayer::buttonPickHeroHandle(int p_nIndexHero) {
 }
 
 void MenuLayer::buttonTryHeroHandle() {
-	auto _scene = LoadingLayer::createScene(1, 1, 0, m_nIndexHeroPicked);
+	auto _scene = LoadingLayer::createScene(1, 1, m_nIndexHeroPicked);
 	Director::getInstance()->replaceScene(TransitionFade::create(0.3f, _scene));
 }
 

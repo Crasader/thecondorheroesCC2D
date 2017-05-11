@@ -19,6 +19,7 @@ protected:
 	CC_SYNTHESIZE_READONLY(int, lastMapIdPlay, LastMapIdPlay);
 
 	CC_SYNTHESIZE_READONLY(int, selectedHero, SelectedHero);
+	CC_SYNTHESIZE_READONLY(int, lastPickHero, LastPickHero);
 	CC_SYNTHESIZE_READONLY(bool, isLockedHero, IsLockedHero);	// to try or smt
 
 	CC_SYNTHESIZE_READONLY(int, currentStageUnlocked, CurrentStageUnlocked);
@@ -76,6 +77,7 @@ public:
 	void pointToCurrentHero(int index);		// set props to get
 
 	void setSelectedHero(int index);
+	void setLastPickHero(int lastPickIndex);
 
 	void setDoneFirstPlay();
 	void setLastMapId(int id);
@@ -143,6 +145,7 @@ public:
 #define KEY_FIRST							"FirstPlay"
 #define KEY_LAST_MAP_ID						"LastMapID"
 #define KEY_SELECTED_HERO					"SelectedHero"		// integer
+#define KEY_LAST_PICK_HERO					"LastPick"
 
 #define KEY_CUR_STAGE_UNLOCKED				"CurrentStageUnlocked"
 #define KEY_CUR_MAP_UNLOCKED				"CurrentMapUnlocked"

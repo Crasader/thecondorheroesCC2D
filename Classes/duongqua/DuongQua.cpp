@@ -426,8 +426,11 @@ void DuongQua::die()
 
 	AudioManager::playSound(SOUND_DQDIE);
 
-	if (spiritHole->isVisible())
+	if (spiritHole->isVisible()) {
+		auto scale = this->getTrueRadiusOfHero() * 1.4f / 400;
+		spiritHole->setScale(scale);
 		spiritHole->setVisible(false);
+	}
 
 	if (!getIsDoneDuration1()) {
 		setIsDoneDuration1(true);
@@ -675,6 +678,8 @@ void DuongQua::updateMe(float dt)
 
 	if (!listTieuHonChuong.empty()) {
 		if (numberOfDeadTHC == listTieuHonChuong.size()) {
+			for (auto thc : listTieuHonChuong)	// for sure
+				thc->setVisible(false);
 			numberOfDeadTHC = 0;
 			listTieuHonChuong.clear();
 		}
@@ -683,12 +688,11 @@ void DuongQua::updateMe(float dt)
 			if (!thc->getB2Body()) continue;
 			if (thc->getIsCollide() ||
 				thc->getPositionX() - (this->getPositionX() + SCREEN_SIZE.width * 0.25f) > SCREEN_SIZE.width / 2) {
+				thc->setVisible(false);
 				auto gameLayer = (GameScene*) this->getParent();
 
 				gameLayer->world->DestroyBody(thc->getB2Body());
 				thc->setB2Body(nullptr);
-
-				thc->setVisible(false);
 				numberOfDeadTHC++;
 			}
 			else

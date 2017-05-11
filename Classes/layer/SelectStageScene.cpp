@@ -46,8 +46,10 @@ bool SelectStageLayer::init(int charId)
 	auto character_point = Sprite::create(JSHERO->getSelectCharacterPoint());
 	character_point->setAnchorPoint(Vec2(0.5f, 0));
 	character_point->setScale(screenSize.height / 8.5f / character_point->getContentSize().width);
-	auto moveUp = MoveBy::create(0.1f, Vec2(0, character_point->getBoundingBox().size.height * 0.02f));
-	auto seq = Sequence::createWithTwoActions(moveUp, moveUp->reverse());
+	auto moveUp = MoveBy::create(0.3f, Vec2(0, character_point->getBoundingBox().size.height * 0.04f));
+	auto scaleUp = ScaleBy::create(0.3f, 1.04f);
+	auto seq = Sequence::createWithTwoActions(Spawn::create(EaseInOut::create(moveUp, 2), scaleUp, nullptr), 
+											Spawn::create(EaseInOut::create(moveUp->reverse(), 2), scaleUp->reverse(), nullptr));
 	character_point->runAction(RepeatForever::create(seq));
 	scrollView->addChild(character_point, 2);
 
@@ -69,7 +71,6 @@ bool SelectStageLayer::init(int charId)
 		MenuItemSprite* mapBtn;
 		int stage = mObject["stage"].asInt();
 		int mapId = mObject["mapId"].asInt();
-		int haveBoss = mObject["haveBoss"].asInt();
 
 
 		Sprite* un_locked = Sprite::create("UI/Select_Stage/level_on.png");
@@ -80,12 +81,12 @@ bool SelectStageLayer::init(int charId)
 
 		if (stage < currentStageUnlocked) {
 			mapBtn = MenuItemSprite::create(un_locked, un_locked_press,
-					CC_CALLBACK_0(SelectStageLayer::gotoPlay, this, id, stage, mapId, haveBoss, charId));
+					CC_CALLBACK_0(SelectStageLayer::gotoPlay, this, id, stage, mapId, charId));
 		}
 		else if (stage == currentStageUnlocked) {
 			if (mapId <= currentMapUnlocked) {
 				mapBtn = MenuItemSprite::create(un_locked, un_locked_press,
-					CC_CALLBACK_0(SelectStageLayer::gotoPlay, this, id, stage, mapId, haveBoss, charId));
+					CC_CALLBACK_0(SelectStageLayer::gotoPlay, this, id, stage, mapId, charId));
 			}
 			else {
 				mapBtn = MenuItemSprite::create(locked, locked,
@@ -164,7 +165,7 @@ SelectStageLayer * SelectStageLayer::create(int charId)
 	}
 }
 
-void SelectStageLayer::gotoPlay(int id, int stage, int map, int haveBoss, int charId)
+void SelectStageLayer::gotoPlay(int id, int stage, int map, int charId)
 {
 	AudioManager::playSound(SOUND_BTCLICK);
 	if (m_nLifeNumber > 0) {
@@ -174,7 +175,7 @@ void SelectStageLayer::gotoPlay(int id, int stage, int map, int haveBoss, int ch
 		REF->resetAnchorTime();
 		initTopMainMenu();
 		AudioManager::stopMusic();
-		auto _aScene = LoadingLayer::createScene(stage, map, haveBoss, charId);
+		auto _aScene = LoadingLayer::createScene(stage, map, charId);
 		Director::getInstance()->replaceScene(_aScene);
 	} else {
 		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(1), TOAST_LONG);

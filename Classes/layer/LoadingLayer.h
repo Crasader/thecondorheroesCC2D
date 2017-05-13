@@ -15,10 +15,10 @@ class LoadingLayer : public Layer
 {
 public:
 
-	static Scene* createScene(int stage, int map, int haveboss, int charId);
+	static Scene* createScene(int stage, int map, int charId);
 	
-	virtual bool init(int stage, int map, int haveboss, int charId);
-	static LoadingLayer* create(int stage, int map, int haveboss, int charId);
+	virtual bool init(int stage, int map, int charId);
+	static LoadingLayer* create(int stage, int map, int charId);
 
 
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
@@ -42,7 +42,6 @@ private:
 	// props
 	int stage;
 	int map;
-	int haveboss;
 	float charId;
 	float percent = 0.0f;
 	chrono::time_point<std::chrono::system_clock> start, end;

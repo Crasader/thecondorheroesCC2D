@@ -89,8 +89,15 @@ void DialogPauseGame::replayGame(Ref * pSender, int goldRevive, bool isWatchVide
 
 void DialogPauseGame::nextState(Ref * pSender)
 {
-	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
-	gameLayer->nextGame();
+	if (!REF->getIsLockedHero()) {
+		auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
+		gameLayer->nextGame();
+	}
+	else {
+		auto gameScene = this->getParent();
+		gameScene->removeAllChildrenWithCleanup(true);
+		Director::getInstance()->replaceScene(MenuLayer::createScene());
+	}
 }
 
 void DialogPauseGame::restartGame(Ref * pSender)
@@ -114,6 +121,40 @@ void DialogPauseGame::effect()
 }
 
 
+void DialogPause::selectedEventMusic(Ref * pSender, ui::CheckBox::EventType type)
+{
+	switch (type)
+	{
+	case ui::CheckBox::EventType::SELECTED:
+		log("Music enable");
+		break;
+
+	case ui::CheckBox::EventType::UNSELECTED:
+		log("Music disable");
+		break;
+
+	default:
+		break;
+	}
+}
+
+void DialogPause::selectedEventSound(Ref * pSender, ui::CheckBox::EventType type)
+{
+	switch (type)
+	{
+	case ui::CheckBox::EventType::SELECTED:
+		log("Sound enable");
+		break;
+
+	case ui::CheckBox::EventType::UNSELECTED:
+		log("Sound disable");
+		break;
+
+	default:
+		break;
+	}
+}
+
 bool DialogPause::init()
 {
 	DialogPauseGame::init();
@@ -126,10 +167,12 @@ bool DialogPause::init()
 	addChild(background);
 
 	auto checkBoxMusic = ui::CheckBox::create("UI/UI_Endgame/btn_off.png", "UI/UI_Endgame/btn_on.png");
+	checkBoxMusic->addEventListener(CC_CALLBACK_2(DialogPause::selectedEventMusic, this));
 	checkBoxMusic->setPosition(Vec2(background->getContentSize().width*0.25f, background->getContentSize().height*0.7f));
 	background->addChild(checkBoxMusic);
 
 	auto checkBoxSound = ui::CheckBox::create("UI/UI_Endgame/btn_off.png", "UI/UI_Endgame/btn_on.png");
+	checkBoxSound->addEventListener(CC_CALLBACK_2(DialogPause::selectedEventSound, this));
 	checkBoxSound->setPosition(Vec2(background->getContentSize().width*0.63f, background->getContentSize().height*0.7f));
 	background->addChild(checkBoxSound);
 
@@ -338,13 +381,11 @@ bool DialogStageClear::init(int score, int gold)
 	bonusScoreLb->setPosition(background->getContentSize().width * 0.55f, background->getContentSize().height * 0.33f);
 	background->addChild(bonusScoreLb);
 
-	REF->setUpGoldExplored(gold + bonusGold);
-	REF->setUpScore(score + bonusScore);
-
-
-	int currentScore = REF->getCurrentScore();
-	int currentLevel = REF->getCurrentLevel();
-
+	if (!REF->getIsLockedHero()) {	// if hero is unlocked
+		REF->setUpScore(score + bonusScore);
+		REF->setUpGoldExplored(gold + bonusGold);
+	}
+	
 	effect();
 
 	return true;
@@ -491,11 +532,11 @@ bool DialogOverGame::init(int score, int gold)
 	bonusScoreLb->setPosition(background->getContentSize().width * 0.55f, background->getContentSize().height * 0.33f);
 	background->addChild(bonusScoreLb);
 
-	REF->setUpGoldExplored(gold + bonusGold);
-	REF->setUpScore(score + bonusScore);
+	if (!REF->getIsLockedHero()) {		// if hero is unlocked
+		REF->setUpScore(score + bonusScore);
+		REF->setUpGoldExplored(gold + bonusGold);
+	}
 
-	int currentScore = REF->getCurrentScore();
-	int currentLevel = REF->getCurrentLevel();
 
 	effect();
 

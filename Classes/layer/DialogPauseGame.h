@@ -39,6 +39,9 @@ public:
 
 class DialogPause : public DialogPauseGame
 {
+private:
+	void selectedEventMusic(Ref* pSender, ui::CheckBox::EventType type);
+	void selectedEventSound(Ref* pSender, ui::CheckBox::EventType type);
 
 public:
 	bool init();

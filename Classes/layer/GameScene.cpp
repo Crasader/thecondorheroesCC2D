@@ -34,7 +34,7 @@ Scene* GameScene::createScene(GameScene *layer, Hud* m_hud)
 }
 
 // on "init" you need to initialize your instance
-bool GameScene::init(int stage, int map, int haveboss, int charId)
+bool GameScene::init(int stage, int map, int charId)
 {
 	//////////////////////////////
 	// 1. super init first
@@ -49,12 +49,11 @@ bool GameScene::init(int stage, int map, int haveboss, int charId)
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	isModeDebug = false;
+	isModeDebug = true;
 	changebg = 0;
 
 	indexOfNextMapBoss = -1;
 	this->stage = stage;
-	//this->haveboss = haveboss;
 	this->charId = charId;
 	this->map = map;
 
@@ -62,7 +61,6 @@ bool GameScene::init(int stage, int map, int haveboss, int charId)
 
 	initB2World();
 	// cache batchnode
-	//auto tmp = Sprite::createWithSpriteFrameName("coin_01.png");
 	batchNode = SpriteBatchNode::create("coin_01.png");
 	this->addChild(batchNode);
 	// test
@@ -92,6 +90,7 @@ bool GameScene::init(int stage, int map, int haveboss, int charId)
 
 
 	createEagle(Point(hero->getB2Body()->GetPosition().x - visibleSize.width, visibleSize.height / 2));
+
 	if (this->haveboss)
 		creatBoss();
 
@@ -99,10 +98,10 @@ bool GameScene::init(int stage, int map, int haveboss, int charId)
 	return true;
 }
 
-GameScene * GameScene::create(int stage, int map, int haveboss, int charId)
+GameScene * GameScene::create(int stage, int map, int charId)
 {
 	GameScene *pRet = new(std::nothrow) GameScene();
-	if (pRet && pRet->init(stage, map, haveboss, charId))
+	if (pRet && pRet->init(stage, map, charId))
 	{
 		pRet->autorelease();
 		return pRet;
@@ -190,10 +189,7 @@ void GameScene::onBegin()
 		AudioManager::playMusic(MUSIC_STAGE4);
 		break;
 	}
-
 	}
-
-	
 
 	if (hud->getBtnCalling() != nullptr)
 		hud->getBtnCalling()->setEnabled(true);
@@ -545,7 +541,7 @@ void GameScene::update(float dt)
 
 	// fall down some hole
 	if (hero->getHealth() > 0) {
-		if (hero->getPositionY() + hero->getTrueRadiusOfHero() * 3.3f < 0) {
+		if (hero->getPositionY() + hero->getTrueRadiusOfHero() * 3.3f <= follow->getPositionY() - SCREEN_SIZE.height / 2) {
 			if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isEnabled()) {
 				hud->hideButton();
 				hud->moveCallBirdToCenterScreen(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
@@ -574,8 +570,6 @@ void GameScene::update(float dt)
 			}
 		}
 	}
-
-
 
 	if (haveboss) {
 		if (hero->getPositionX() > tmx_map->getBoundingBox().size.width - SCREEN_SIZE.width / 2 && indexOfNextMapBoss < 0) {
@@ -679,7 +673,6 @@ void GameScene::onDraw()
 void GameScene::loadBackground()
 {
 	// khoi tao map
-
 	tmx_map = TMXTiledMap::create(StringUtils::format("Map/map%d/map%d.tmx", stage, map));
 	tmx_map->setAnchorPoint(Point::ZERO);
 	float numberOfTileHeight = tmx_map->getMapSize().height;
@@ -691,6 +684,8 @@ void GameScene::loadBackground()
 
 	if (isModeDebug)
 		tmx_map->setVisible(false);
+
+	this->haveboss = tmx_map->getObjectGroup("boss") != nullptr ? 1 : 0;
 
 	this->addChild(tmx_map, ZORDER_TMX);
 	this->haveboss = tmx_map->getObjectGroup("boss") != nullptr ? 1 : 0;
@@ -801,8 +796,6 @@ void GameScene::createInfiniteNode()
 	}
 
 
-
-
 	//background->setPosition(Point(-SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 	background->setPosition(Point(0, SCREEN_SIZE.height / 2));
 	background->setAnchorPoint(Point(0, 0.5f));
@@ -810,10 +803,8 @@ void GameScene::createInfiniteNode()
 		background->setVisible(false);
 	this->addChild(background, ZORDER_BG);
 
-
-
 	background2 = InfiniteParallaxNode::create();
-	if (stage == 1 || (stage == 3 && map == 2)||(stage == 4&& map == 1)) {
+	if (stage == 1 || (stage == 3 && map == 2)||(stage == 4 && map == 1)) {
 
 		auto bg3_1 = Sprite::create(StringUtils::format("Map/map%d/bg3.png", stage));
 		bg3_1->setScaleX(SCREEN_SIZE.width / (bg3_1->getContentSize().width));
@@ -1228,10 +1219,6 @@ void GameScene::createCointBag()
 		//coin->update(0);
 	}
 
-
-
-
-
 }
 
 void GameScene::createCoinBullion()
@@ -1504,12 +1491,6 @@ void GameScene::updateEnemy()
 	}
 }
 
-
-void GameScene::updateBoss()
-{
-
-}
-
 void GameScene::updateHUD(float dt)
 {
 
@@ -1614,23 +1595,6 @@ void GameScene::updateCamera()
 			background->setPositionY(SCREEN_SIZE.height / 2);
 		}
 
-
-		//if (hero->getPositionX() >= SCREEN_SIZE.width / 4) {
-		//	// ngungcamemra
-		//	if (!haveboss) {
-		//		if (hero->getPositionX() < (tmx_map->getBoundingBox().size.width - SCREEN_SIZE.width))
-		//			follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4);
-
-		//		if (hero->getPositionX() > follow->getPositionX()+SCREEN_SIZE.width/4) {
-		//			this->winGame();
-		//		}
-
-		//	}
-		//	else {
-		//		follow->setPositionX(hero->getPositionX() + SCREEN_SIZE.width / 4);
-		//	}
-		//	follow->setPositionY(background->getPositionY());
-		//}
 	}
 	if (hero->getPositionX() >= SCREEN_SIZE.width / 4) {
 		if (hero->getPositionX() > (tmx_map->getBoundingBox().size.width - SCREEN_SIZE.width) && !haveboss)
@@ -1823,6 +1787,11 @@ void GameScene::pauseGame()
 
 void GameScene::dieGame()
 {
+	if (REF->getIsLockedHero()) {	// if hero is locked
+		overGame();
+		return;
+	}
+
 	blurScreen();
 	/*if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
 		hud->getBtnCalling()->setEnabled(false);
@@ -1944,7 +1913,7 @@ void GameScene::resumeGame()
 void GameScene::restartGame()
 {
 	this->removeAllChildrenWithCleanup(true);
-	Director::getInstance()->replaceScene(LoadingLayer::createScene(stage, map, haveboss, charId));
+	Director::getInstance()->replaceScene(LoadingLayer::createScene(stage, map, charId));
 }
 
 void GameScene::loadPosAndTag()
@@ -1964,14 +1933,6 @@ void GameScene::loadPosAndTag()
 	loadPosOfObjectInGroup("hoacdo_2", TAG_ENEMY_HOACDO2);
 	loadPosOfObjectInGroup("datnhiba_1", TAG_ENEMY_DATNHIBA1);
 	loadPosOfObjectInGroup("datnhiba_2", TAG_ENEMY_DATNHIBA2);
-
-
-	/*loadPosOfObjectInGroup("coin_parabol", TAG_COIN_PARABOL);
-	loadPosOfObjectInGroup("coin_straight", TAG_COIN_STRAIGHT);
-	loadPosOfObjectInGroup("coin_zigzag", TAG_COIN_ZIGZAG);
-	loadPosOfObjectInGroup("coin_square", TAG_COIN_SQUARE);
-	loadPosOfObjectInGroup("coin_circle", TAG_COIN_CIRCLE);
-	loadPosOfObjectInGroup("coin_tim", TAG_COIN_TIM);*/
 }
 
 void GameScene::loadPosOfObjectInGroup(string nameOfGroup, float tag)
@@ -2273,20 +2234,3 @@ void GameScene::resumeAfterTut(int caseTut)
 		break;
 	}
 }
-
-//void GameScene::createMapItem()
-//{
-//	hero->checkItem.insert(KEY_ITEM_MAGNET,100);
-//	hero->checkItem.insert(KEY_ITEM_DOUPLE_COIN, 0);
-//}
-//
-//void GameScene::updateMapItem()
-//{
-//	for (int i = KEY_ITEM_MAGNET; i < KEY_ITEM_DOUPLE_COIN; i++) {
-//		int value = hero->checkItem.at(i);
-//		if (value > 0) {
-//			value--;
-//			hero->checkItem.insert(i, value);
-//		};
-//	}
-//}

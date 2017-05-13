@@ -19,11 +19,6 @@ JSonHeroManager * JSonHeroManager::getInstance()
 	return jsonHeroManager;
 }
 
-int JSonHeroManager::getSelectedHero()
-{
-	return 0;
-}
-
 void JSonHeroManager::readFile(int indexHero)
 {
 	this->key = jsonDoc["hero"][indexHero]["key"].GetString();

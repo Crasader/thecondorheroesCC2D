@@ -5,6 +5,7 @@
 #include <string>
 #include "ui/CocosGUI.h"
 #include <spine/spine-cocos2dx.h>
+#include "thirdsdkhelper\AdmobHelper.h"
 
 USING_NS_CC;
 using namespace std;
@@ -20,6 +21,7 @@ protected:
 public:
 	virtual bool init();
 	static DialogPauseGame* create();
+	void onExit();
 
 public:
 

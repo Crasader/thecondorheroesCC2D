@@ -2,6 +2,7 @@
 #include "LoadingLayer.h"
 #include "MenuScene.h"
 #include "manager/RefManager.h"
+#include "thirdsdkhelper\AdmobHelper.h"
 
 
 Scene * SelectStageLayer::createScene(int charId)
@@ -15,6 +16,7 @@ Scene * SelectStageLayer::createScene(int charId)
 
 bool SelectStageLayer::init(int charId)
 {
+	AdmobHelper::getInstance()->showBottomBanner();
 	AudioManager::playMusic(MUSIC_MENU);
 	auto originXY = Director::getInstance()->getVisibleOrigin();
 	auto screenSize = Director::getInstance()->getVisibleSize();

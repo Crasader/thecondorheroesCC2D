@@ -56,7 +56,7 @@ public:
 	bool checkStop();
 	void changeState(StateBoss *state);
 	void doAttack1();
-	void doAttack2();
+	virtual void doAttack2();
 	virtual Vec2 getPosGenSlash();
 	virtual void playSoundAttack1();
 	virtual void playSoundAttack2();

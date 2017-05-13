@@ -31,7 +31,7 @@ public:
 	void updatePos();
 
 	//void removeFromParentAndCleanup(bool onExit);
-
+	void updatePos();
 	void onExit();
 };
 

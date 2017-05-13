@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
 #include "layer/IntroScene.h"
+#include "thirdsdkhelper\AdmobHelper.h"
 
 
 USING_NS_CC;
@@ -78,7 +79,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // create a scene. it's an autorelease object
     //auto scene = GameScene::createScene();
 	auto scene = SceneIntro::createScene();
-
+	AdmobHelper::getInstance();
     // run
     director->runWithScene(scene);
 

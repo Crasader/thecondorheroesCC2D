@@ -8,7 +8,7 @@ Scene * SelectStageLayer::createScene(int charId)
 {
 	auto scene = Scene::create();
 	auto layer = SelectStageLayer::create(charId);
-
+	layer->setName("selectLayer");
 	scene->addChild(layer);
 	return scene;
 }
@@ -18,14 +18,14 @@ bool SelectStageLayer::init(int charId)
 	AudioManager::playMusic(MUSIC_MENU);
 	auto originXY = Director::getInstance()->getVisibleOrigin();
 	auto screenSize = Director::getInstance()->getVisibleSize();
-	auto tmxMap = TMXTiledMap::create("UI/Select_Stage/config_map.tmx");
+	tmxMap = TMXTiledMap::create("UI/Select_Stage/config_map.tmx");
 	tmxMap->setPosition(Vec2::ZERO);
 
 	auto scaleY = screenSize.height / tmxMap->getContentSize().height;
 	tmxMap->setScale(scaleY);
 
 
-	ui::ScrollView* scrollView = ui::ScrollView::create();
+	scrollView = ui::ScrollView::create();
 	scrollView->setContentSize(Size(screenSize.width, screenSize.height));
 	scrollView->setInnerContainerSize(Size(tmxMap->getBoundingBox().size.width, screenSize.height));
 	scrollView->setPosition(originXY);
@@ -42,8 +42,9 @@ bool SelectStageLayer::init(int charId)
 	int currentStageUnlocked = REF->getCurrentStageUnlocked();
 	int currentMapUnlocked = REF->getCurrentMapUnLocked();
 	int lastMapId = REF->getLastMapIdPlay();
+	int nextMapId = lastMapId < 12 ? lastMapId + 1 : 12;
 
-	auto character_point = Sprite::create(JSHERO->getSelectCharacterPoint());
+	character_point = Sprite::create(JSHERO->getSelectCharacterPoint());
 	character_point->setAnchorPoint(Vec2(0.5f, 0));
 	character_point->setScale(screenSize.height / 8.5f / character_point->getContentSize().width);
 	auto moveUp = MoveBy::create(0.3f, Vec2(0, character_point->getBoundingBox().size.height * 0.04f));
@@ -65,7 +66,12 @@ bool SelectStageLayer::init(int charId)
 			character_point->setPosition(origin.x, origin.y + character_point->getBoundingBox().size.height * 0.25f);
 			float percent = origin.x / tmxMap->getBoundingBox().size.width * 100.0f;
 			if(percent > 15.0f)
-				scrollView->scrollToPercentHorizontal(origin.x / tmxMap->getBoundingBox().size.width * 100.0f, 1.0f, true);
+				scrollView->scrollToPercentHorizontal(percent, 1.0f, true);
+		}
+
+		
+		if (id == nextMapId) {
+			nextMapPos = Point(origin.x, origin.y + character_point->getBoundingBox().size.height * 0.25f);
 		}
 
 		MenuItemSprite* mapBtn;
@@ -103,6 +109,13 @@ bool SelectStageLayer::init(int charId)
 		lblID->setBMFontSize(mapBtn->getContentSize().height / 1.8f);
 		lblID->setAnchorPoint(Vec2(0.5f, 0.07f));
 		lblID->setPosition(mapBtn->getContentSize() / 2);
+
+		if (!mObject["boss_order"].isNull()) {
+			int boss_order = mObject["boss_order"].asInt();
+			auto b = bossSprite(boss_order);
+			b->setPosition(mapBtn->getContentSize().width, 0);
+			mapBtn->addChild(b);
+		}
 
 		mapBtn->addChild(lblID);
 		mapBtn->setPosition(origin);
@@ -165,6 +178,21 @@ SelectStageLayer * SelectStageLayer::create(int charId)
 	}
 }
 
+void SelectStageLayer::moveAva()
+{
+	int lastMapId = REF->getLastMapIdPlay();
+	if (lastMapId < 12) {
+		auto actionMove = MoveTo::create(1.2f, nextMapPos);
+		auto scroll = CallFunc::create([&]() {
+			float percent = nextMapPos.x / tmxMap->getBoundingBox().size.width * 100.0f;
+			if (percent > 15.0f)
+				scrollView->scrollToPercentHorizontal(percent, 4.3f, true);
+		});
+		character_point->runAction(Sequence::createWithTwoActions(DelayTime::create(0.5f), Spawn::createWithTwoActions(actionMove, scroll)));
+		REF->setLastMapId(lastMapId + 1);
+	}
+}
+
 void SelectStageLayer::gotoPlay(int id, int stage, int map, int charId)
 {
 	AudioManager::playSound(SOUND_BTCLICK);
@@ -185,7 +213,36 @@ void SelectStageLayer::gotoPlay(int id, int stage, int map, int charId)
 }
 
 
-void SelectStageLayer::goBack() 
+Sprite* SelectStageLayer::bossSprite(int order)
+{
+	Sprite* boss;
+	switch (order)
+	{
+	case 1:
+		boss = Sprite::create("UI/Select_Stage/boss_TTK_off.png");
+		break;
+
+	case 2:
+		boss = Sprite::create("UI/Select_Stage/boss_LMS_off.png");
+		break;
+
+	case 3:
+		boss = Sprite::create("UI/Select_Stage/boss_KLPV_off.png");
+		break;
+	default:
+		break;
+	}
+
+	boss->setAnchorPoint(Vec2::ZERO);
+	boss->setScale(boss->getScale() * 1.5f);
+	auto scaleUp = ScaleBy::create(0.8f, 1.04f);
+	auto seq = Sequence::createWithTwoActions(EaseInOut::create(scaleUp, 2), EaseInOut::create(scaleUp->reverse(), 2));
+	boss->runAction(RepeatForever::create(seq));
+
+	return boss;
+}
+
+void SelectStageLayer::goBack()
 {
 	AudioManager::playSound(SOUND_BTCLICK);
 	this->removeAllChildrenWithCleanup(true);

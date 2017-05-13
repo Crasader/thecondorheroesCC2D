@@ -30,7 +30,8 @@
       "noti_2": "Your gold is not enough",
       "noti_3": "Your diamond is not enough",
       "noti_4": "Get more diamond to buy",
-      "noti_5": "Purchase to more fun"
+      "noti_5": "Purchase to more fun",
+      "noti_6": "Be careful the Boss is coming"
     }
   ],
 
@@ -140,7 +141,7 @@
       "skill3Name": "Jingu Mastery",
       "pathMainImageSkill3": "UI/btnDQ_skill1_up.png",
       "pathSubImageSkill3": "UI/btnDQ_skill1_up.png",
-      "baseHP": 4,
+      "baseHP": 5,
       "level": 1,
       "maxLevel": 40,
       "percentBonusScore": 10,

@@ -2,6 +2,7 @@
 #define __SELECT_STAGE_SCENE_H__
 
 #include "cocos2d.h"
+#include "ui/CocosGUI.h"
 
 USING_NS_CC;
 
@@ -12,6 +13,7 @@ public:
 	static Scene* createScene(int charId);
 	virtual bool init(int charId);	
 	static SelectStageLayer* create(int charId);
+	void moveAva();
 
 private:
 	const Size m_szVisibleSize = Director::getInstance()->getVisibleSize();
@@ -19,11 +21,16 @@ private:
 	int m_nTimeAnchor;
 	Label *m_pTimeCounter;
 	Layer *m_pTopMainMenu;
+	TMXTiledMap *tmxMap;
+	ui::ScrollView* scrollView;
+	Point nextMapPos;
 
 	void initData();
 	void initTopMainMenu();
 	void gotoPlay(int id, int stage, int map, int charId);
 
+	Sprite *character_point;
+	Sprite* bossSprite(int order);
 	void goBack();
 	void doNothing();
 	void buttonAddLifeHandle();

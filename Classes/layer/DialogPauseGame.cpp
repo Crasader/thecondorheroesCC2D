@@ -96,7 +96,21 @@ void DialogPauseGame::nextState(Ref * pSender)
 void DialogPauseGame::restartGame(Ref * pSender)
 {
 	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
-	gameLayer->restartGame();
+	
+	if (!REF->getIsLockedHero()) {
+		if (REF->getNumberOfLife() > 0) {
+			REF->setDownLife(1);
+			gameLayer->restartGame();
+		}
+		else {
+			CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(1), TOAST_SHORT);
+			_pToast->setPosition(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 4));
+			addChild(_pToast, 10);
+		}
+	}
+	else {
+		gameLayer->restartGame();
+	}
 }
 
 void DialogPauseGame::upgrade(Ref * pSender)

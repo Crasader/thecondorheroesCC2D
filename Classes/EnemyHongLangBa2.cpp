@@ -134,7 +134,7 @@ void EnemyHongLangBa2::updateMe(BaseHero* hero)
 	}
 
 	
-
+	controlAttack++;
 	if (hero->getPositionX() < this->getPositionX() + this->getParent()->getPositionX() && 
 		hero->getPositionX() > this->getPositionX() + this->getParent()->getPositionX() - SCREEN_SIZE.width * 0.6f &&
 		hero->getPositionY() + SCREEN_SIZE.height * 0.33f > this->getPositionY() &&
@@ -142,7 +142,7 @@ void EnemyHongLangBa2::updateMe(BaseHero* hero)
 
 		Vec2 vector = Vec2(hero->getPosition() - (this->getPosition() + this->getParent()->getPosition()));
 		angle = vector.getAngle();
-		controlAttack++;
+		
 
 		if (controlAttack > 120 && !hero->getIsDriverEagle()) {
 			if (this->body != nullptr) {
@@ -179,6 +179,11 @@ void EnemyHongLangBa2::initCirclePhysic(b2World * world, Point pos)
 
 	body = world->CreateBody(&bodyDef);
 	body->CreateFixture(&fixtureDef);
+}
+
+void EnemyHongLangBa2::updatePos()
+{
+	BaseEnemy::updatePos();
 }
 
 

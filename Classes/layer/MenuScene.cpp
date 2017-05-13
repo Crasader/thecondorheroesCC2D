@@ -325,7 +325,7 @@ void MenuLayer::initBottomMainMenu() {
 	_fXPositionCounter += _aQuestButton->getContentSize().width * _aQuestButton->getScaleX() + _fPadding;
 
 	m_pSpriteQuestAttention = Sprite::create("UI/UI_main_menu/noti.png");
-	m_pSpriteQuestAttention->setScaleX(m_pBottomMainLayer->getContentSize().height / m_pSpriteQuestAttention->getContentSize().height * 0.4f);
+	m_pSpriteQuestAttention->setScale(m_pBottomMainLayer->getContentSize().height / m_pSpriteQuestAttention->getContentSize().height * 0.4f);
 	m_pSpriteQuestAttention->setAnchorPoint(Vec2(0.5f, 0.5f));
 	m_pSpriteQuestAttention->setPosition(_fXPositionCounter - m_pBottomMainLayer->getContentSize().height * 0.1f,
 		m_pBottomMainLayer->getContentSize().height * 0.9f);
@@ -385,7 +385,7 @@ void MenuLayer::initBottomMainMenu() {
 	_fXPositionCounter += _aFreeCoinButton->getContentSize().width * _aFreeCoinButton->getScaleX() + _fPadding;
 
 	m_pSpriteFreeCoinAttention = Sprite::create("UI/UI_main_menu/noti.png");
-	m_pSpriteFreeCoinAttention->setScaleX(m_pBottomMainLayer->getContentSize().height / m_pSpriteFreeCoinAttention->getContentSize().height * 0.4f);
+	m_pSpriteFreeCoinAttention->setScale(m_pBottomMainLayer->getContentSize().height / m_pSpriteFreeCoinAttention->getContentSize().height * 0.4f);
 	m_pSpriteFreeCoinAttention->setAnchorPoint(Vec2(0.5f, 0.5f));
 	m_pSpriteFreeCoinAttention->setPosition(_fXPositionCounter - m_pBottomMainLayer->getContentSize().height * 0.1f,
 		m_pBottomMainLayer->getContentSize().height * 0.9f);

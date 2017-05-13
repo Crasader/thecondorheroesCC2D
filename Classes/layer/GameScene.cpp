@@ -592,7 +592,10 @@ void GameScene::update(float dt)
 	if (posXComingBoss > 0) {
 		if (hero->getPositionX() >= posXComingBoss) {
 			if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isEnabled()) {
-				log("boss is coming");
+				CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(6), TOAST_LONG);
+				_pToast->setPosition(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 4));
+				this->getParent()->addChild(_pToast, 10);
+
 				hud->getBtnCalling()->setEnabled(false);
 				posXComingBoss = -1;
 			}
@@ -883,6 +886,7 @@ void GameScene::creatEnemyWooder(MyLayer * layer, Vec2 pos)
 	if (layer->wooderPool) {
 		auto enemy = (EnemyWooder*)layer->wooderPool->getObject();
 		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
 		enemy->resumeSchedulerAndActions();
@@ -902,6 +906,7 @@ void GameScene::createEnemyToanChanStudent(MyLayer * layer, Vec2 pos)
 	if (layer->toanchan1Pool) {
 		auto enemy = (EnemyToanChanStudent*)layer->toanchan1Pool->getObject();
 		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
 		enemy->resumeSchedulerAndActions();
@@ -925,6 +930,7 @@ void GameScene::createEnemyToanChanStudent2(MyLayer * layer, Vec2 pos)
 	if (layer->toanchan2Pool) {
 		auto enemy = (EnemyToanChanStudent2*)layer->toanchan2Pool->getObject();
 		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
 		enemy->resumeSchedulerAndActions();
@@ -948,6 +954,7 @@ void GameScene::createEnemyTNB(MyLayer * layer, Vec2 pos)
 	if (layer->tnbPool) {
 		auto enemy = (EnemyTNB*)layer->tnbPool->getObject();
 		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
 		enemy->resumeSchedulerAndActions();
@@ -973,6 +980,7 @@ void GameScene::createEnemyHongLangBa(MyLayer * layer, Vec2 pos) {
 	if (layer->hongLangBa1Pool) {
 		auto enemy = (EnemyHongLangBa*)layer->hongLangBa1Pool->getObject();
 		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
 		enemy->resumeSchedulerAndActions();
@@ -996,6 +1004,7 @@ void GameScene::createEnemyHongLangBa2(MyLayer * layer, Vec2 pos) {
 	if (layer->hongLangBa2Pool) {
 		auto enemy = (EnemyHongLangBa2*)layer->hongLangBa2Pool->getObject();
 		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
 		enemy->resumeSchedulerAndActions();
@@ -1019,6 +1028,7 @@ void GameScene::createEnemyToOng(MyLayer * layer, Vec2 pos) {
 	if (layer->toOngPool) {
 		auto enemy = (EnemyToOng*)layer->toOngPool->getObject();
 		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
 		enemy->resumeSchedulerAndActions();
@@ -1041,6 +1051,7 @@ void GameScene::createEnemyHoacDo(MyLayer * layer, Vec2 pos)
 	if (layer->hoacDo1Pool) {
 		auto enemy = (EnemyHoacDo*)layer->hoacDo1Pool->getObject();
 		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
 		enemy->resumeSchedulerAndActions();
@@ -1065,6 +1076,7 @@ void GameScene::createEnemyHoacDo2(MyLayer * layer, Vec2 pos)
 	if (layer->hoacDo2Pool) {
 		auto enemy = (EnemyHoacDo2*)layer->hoacDo2Pool->getObject();
 		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
 		enemy->resumeSchedulerAndActions();
@@ -1089,6 +1101,7 @@ void GameScene::createEnemyDatNhiBa(MyLayer * layer, Vec2 pos)
 	if (layer->datNhiBa1Pool) {
 		auto enemy = (EnemyDatNhiBa*)layer->datNhiBa1Pool->getObject();
 		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
 		enemy->setHealth(2);
 		enemy->setCanRun(false);
 		enemy->setPosition(pos);
@@ -1114,6 +1127,7 @@ void GameScene::createEnemyDatNhiBa2(MyLayer * layer, Vec2 pos)
 	if (layer->datNhiBa2Pool) {
 		auto enemy = (EnemyDatNhiBa2*)layer->datNhiBa2Pool->getObject();
 		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
 		enemy->setHealth(2);
 		enemy->setCanRun(false);
 		enemy->setPosition(pos);
@@ -1456,7 +1470,7 @@ void GameScene::updateEnemy()
 			auto agent = childLayer1.at(i);
 			// nhung enemy trong man hinh
 			if ((agent->getPosition() + preLayer->getPosition()).x < follow->getPositionX() + SCREEN_SIZE.width * 1 / 2
-				&& (agent->getPositionX() + preLayer->getPositionX())>follow->getPositionX() - SCREEN_SIZE.width * 1 / 2) {
+				&& (agent->getPositionX() + preLayer->getPositionX()) > follow->getPositionX() - SCREEN_SIZE.width * 1 / 2) {
 
 
 				if (childLayer1.at(i)->getTag() > 100) {
@@ -1732,12 +1746,12 @@ void GameScene::callingBird()
 		log("Crazy fox");
 	}
 
-	auto velX = (charId == 0) ? hero->getMoveVel() * 1.15f : hero->getMoveVel();
+	// DQ increase 30% move
 	_aEagle->getB2Body()->SetTransform(hero->getB2Body()->GetPosition(), 0.0f);
-	_aEagle->flyUp(b2Vec2(hero->getMoveVel(), 10.0f));
+	_aEagle->flyUp(b2Vec2((charId == 0) ? hero->getMoveVel() * 1.3f : hero->getMoveVel(), 10.0f));
 
 	auto _aEagleFlyDown = Sequence::create(DelayTime::create(4.0f), CallFunc::create([&]() {
-		_aEagle->flyDown(b2Vec2(hero->getMoveVel(), -10.0f));
+		_aEagle->flyDown(b2Vec2((charId == 0) ? hero->getMoveVel() * 1.3f : hero->getMoveVel(), -10.0f));
 	}), nullptr);
 	//auto _aFinishFly = Sequence::create(DelayTime::create(6.0f), CallFunc::create([&]() {
 	//	//heroGetOffEagle();
@@ -1849,6 +1863,8 @@ void GameScene::nextGame()
 {
 	this->removeAllChildrenWithCleanup(true);
 	auto _scene = SelectStageLayer::createScene(charId);
+	auto layer = (SelectStageLayer*) _scene->getChildByName("selectLayer");
+	layer->moveAva();
 	Director::getInstance()->replaceScene(TransitionFade::create(0.3f, _scene));
 }
 

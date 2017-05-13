@@ -28,7 +28,6 @@ public:
 	void listener();
 	void updateMe(BaseHero* hero);
 	void initCirclePhysic(b2World * world, Point pos);
-	void updatePos();
 
 	//void removeFromParentAndCleanup(bool onExit);
 	void updatePos();

@@ -49,7 +49,7 @@ bool GameScene::init(int stage, int map, int charId)
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	isModeDebug = true;
+	isModeDebug = false;
 	changebg = 0;
 
 	indexOfNextMapBoss = -1;
@@ -240,7 +240,7 @@ void GameScene::checkActiveButton()
 	if (hud->getBtnSkill_1()->getIsBlocked()) {		// 2 and 3 active
 		if (currentButton == 2) {
 			if (hero->getIsDoneDuration2()) {
-				if (hero->getFSM()->currentState != MRevive)
+				if (hero->getFSM()->currentState != MRevive && !hud->getBtnSkill_2()->getNumberOfUseHasNotUsedYet() >= 1)
 					hero->killThemAll();
 				hero->getActiveSkill()->setVisible(false);
 
@@ -290,7 +290,7 @@ void GameScene::checkActiveButton()
 		}
 		else if (currentButton == 3) {
 			if (hero->getIsDoneDuration3()) {
-				if (hero->getFSM()->currentState != MRevive)
+				if (hero->getFSM()->currentState != MRevive && !hud->getBtnSkill_3()->getNumberOfUseHasNotUsedYet() >= 1)
 					hero->killThemAll();
 				hero->getActiveSkill()->setVisible(false);
 
@@ -325,7 +325,7 @@ void GameScene::checkActiveButton()
 		}
 		else if (currentButton == 1) {
 			if (hero->getIsDoneDuration1()) {
-				if (hero->getFSM()->currentState != MRevive)
+				if (hero->getFSM()->currentState != MRevive && !hud->getBtnSkill_1()->getNumberOfUseHasNotUsedYet() >= 1)
 					hero->killThemAll();
 				hero->getActiveSkill()->setVisible(false);
 
@@ -614,14 +614,15 @@ void GameScene::initB2World()
 	world = new b2World(b2Vec2(0, -SCREEN_SIZE.height * 10.0f / 3.0f / PTM_RATIO));
 
 	// draw debug
-	auto debugDraw = new (std::nothrow) GLESDebugDraw(PTM_RATIO);
-	if (isModeDebug)
+	if (isModeDebug) {
+		auto debugDraw = new (std::nothrow) GLESDebugDraw(PTM_RATIO);
 		world->SetDebugDraw(debugDraw);
-	uint32 flags = 0;
-	flags += b2Draw::e_shapeBit;
-	flags += b2Draw::e_jointBit;
+		uint32 flags = 0;
+		flags += b2Draw::e_shapeBit;
+		flags += b2Draw::e_jointBit;
 
-	debugDraw->SetFlags(flags);
+		debugDraw->SetFlags(flags);
+	}
 
 	world->SetAllowSleeping(true);
 	world->SetContinuousPhysics(true);
@@ -847,14 +848,16 @@ void GameScene::createGroundBody()
 		initGroundPhysic(world, pos, sizeOfBound);
 	}
 
-	auto groupUnderGround = tmx_map->getObjectGroup("under_ground");
-	if (!groupUnderGround) return;
-	for (auto child : groupUnderGround->getObjects()) {
-		auto mObject = child.asValueMap();
-		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		Size sizeOfBound = Size(mObject["width"].asFloat() *scaleOfMap, mObject["height"].asFloat() *scaleOfMap);
-		Point pos = Point(origin.x + sizeOfBound.width / 2, origin.y);
-		initUnderGroundPhysic(world, pos, sizeOfBound);
+	if (charId == 0) {
+		auto groupUnderGround = tmx_map->getObjectGroup("under_ground");
+		if (!groupUnderGround) return;
+		for (auto child : groupUnderGround->getObjects()) {
+			auto mObject = child.asValueMap();
+			Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+			Size sizeOfBound = Size(mObject["width"].asFloat() *scaleOfMap, mObject["height"].asFloat() *scaleOfMap);
+			Point pos = Point(origin.x + sizeOfBound.width / 2, origin.y);
+			initUnderGroundPhysic(world, pos, sizeOfBound);
+		}
 	}
 }
 
@@ -870,14 +873,16 @@ void GameScene::createGroundForMapBoss()
 		initGroundPhysic(world, origin, Size(INT_MAX / 4, sizeOfBound.height));
 	}
 
-	auto groupUnderGround = tmx_mapboss[0]->getObjectGroup("under_ground");
-	if (!groupUnderGround) return;
-	for (auto child : groupUnderGround->getObjects()) {
-		auto mObject = child.asValueMap();
-		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap) + tmx_mapboss[0]->getPosition();
-		Size sizeOfBound = Size(mObject["width"].asFloat() *scaleOfMap, mObject["height"].asFloat() *scaleOfMap);
-		//Point pos = Point(origin.x + sizeOfBound.width / 2, origin.y);
-		initUnderGroundPhysic(world, origin, Size(INT_MAX / 4, sizeOfBound.height));
+	if (charId == 0) {
+		auto groupUnderGround = tmx_mapboss[0]->getObjectGroup("under_ground");
+		if (!groupUnderGround) return;
+		for (auto child : groupUnderGround->getObjects()) {
+			auto mObject = child.asValueMap();
+			Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap) + tmx_mapboss[0]->getPosition();
+			Size sizeOfBound = Size(mObject["width"].asFloat() *scaleOfMap, mObject["height"].asFloat() *scaleOfMap);
+			//Point pos = Point(origin.x + sizeOfBound.width / 2, origin.y);
+			initUnderGroundPhysic(world, origin, Size(INT_MAX / 4, sizeOfBound.height));
+		}
 	}
 }
 

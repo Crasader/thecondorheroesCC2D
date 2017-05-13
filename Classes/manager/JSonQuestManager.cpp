@@ -3,7 +3,7 @@
 JSonQuestManager* JSonQuestManager::jsonQuestManager;
 
 JSonQuestManager::JSonQuestManager() {
-	auto menubuffer = FileUtils::getInstance()->getStringFromFile("Quest.json");
+	auto menubuffer = FileUtils::getInstance()->getStringFromFile("json/Quest.json");
 	this->jsonDoc.Parse(menubuffer.c_str());
 }
 

@@ -1,6 +1,6 @@
 #include "AppDelegate.h"
 #include "layer/IntroScene.h"
-#include "thirdsdkhelper\AdmobHelper.h"
+#include "thirdsdkhelper/AdmobHelper.h"
 
 
 USING_NS_CC;

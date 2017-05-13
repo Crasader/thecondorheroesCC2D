@@ -24,10 +24,6 @@ MyPool::MyPool()
 
 MyPool::~MyPool()
 {
-	/*for (int i = 0; i < maxPool; i++) {
-	if(pool[i]!= nullptr)
-	delete pool[i];
-	}*/
 	delete[] pool;
 
 }
@@ -38,20 +34,6 @@ MyPool::MyPool(int maxPool, int tag) : MyPool()
 	this->tag = tag;
 	switch (tag)
 	{
-		//case TAG_COIN:
-		//{
-		//	pool = new Ref*[maxPool];
-
-		//	for (int i = 0; i < maxPool; i++) {
-		//		auto coin = Coin::create();
-		//		auto scale = Director::getInstance()->getVisibleSize().height * 0.075 / coin->getContentSize().height;
-		//		coin->setScale(scale);
-		//		coin->setTag(tag);
-		//		pool[i] = coin;
-		//	}
-		//	//log("%d", pool->count());
-		//	break;
-		//}
 
 	case TAG_ENEMY_WOODER: {
 
@@ -60,8 +42,6 @@ MyPool::MyPool(int maxPool, int tag) : MyPool()
 
 		for (int i = 0; i < maxPool; i++) {
 			auto scaleOfWooder = (SCREEN_SIZE.height / 3.5) / 490; // 490 la height cua spine
-																   //auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json",
-																   //	"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
 			auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan", scaleOfWooder);
 			//coin->runAnimation();
 
@@ -76,8 +56,6 @@ MyPool::MyPool(int maxPool, int tag) : MyPool()
 
 		for (int i = 0; i < maxPool; i++) {
 			auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401; // 401 la height cua spine
-																 /*auto enemy = EnemyToanChanStudent::create("Animation/Enemy_DeTuToanChan1/ToanChan1.json",
-																 "Animation/Enemy_DeTuToanChan1/ToanChan1.atlas", scaleOfEnemy);*/
 			auto enemy = EnemyToanChanStudent::create("Animation/Enemy_DeTuToanChan1/ToanChan1", scaleOfEnemy);
 			//auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan", scaleOfEnemy);
 			//coin->runAnimation();
@@ -93,8 +71,6 @@ MyPool::MyPool(int maxPool, int tag) : MyPool()
 
 		for (int i = 0; i < maxPool; i++) {
 			auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401; // 401 la height cua spine
-																 /*auto enemy = EnemyToanChanStudent2::create("Animation/Enemy_DeTuToanChan2/ToanChan2.json",
-																 "Animation/Enemy_DeTuToanChan2/ToanChan2.atlas", scaleOfEnemy);*/
 			auto enemy = EnemyToanChanStudent2::create("Animation/Enemy_DeTuToanChan2/ToanChan2", scaleOfEnemy);
 			//coin->runAnimation();
 
@@ -126,8 +102,6 @@ MyPool::MyPool(int maxPool, int tag) : MyPool()
 
 		for (int i = 0; i < maxPool; i++) {
 			auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401; // 490 la height cua spine
-																   //auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json",
-																   //	"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
 			auto enemy = EnemyToOng::create("Animation/Enemy_ToOng/toong", scaleOfEnemy);
 			//coin->runAnimation();
 
@@ -143,8 +117,6 @@ MyPool::MyPool(int maxPool, int tag) : MyPool()
 
 		for (int i = 0; i < maxPool; i++) {
 			auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401;// 490 la height cua spine
-																  //auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json",
-																  //	"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
 			auto enemy = EnemyHongLangBa::create("Animation/Enemy_HongLangBa/HLBa1", scaleOfEnemy);
 			//coin->runAnimation();
 
@@ -160,8 +132,6 @@ MyPool::MyPool(int maxPool, int tag) : MyPool()
 
 		for (int i = 0; i < maxPool; i++) {
 			auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401; // 490 la height cua spine
-																  //auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json",
-																  //	"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
 			auto enemy = EnemyHongLangBa2::create("Animation/Enemy_HongLangBa2/HLBa2", scaleOfEnemy);
 			//coin->runAnimation();
 

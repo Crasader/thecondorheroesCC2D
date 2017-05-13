@@ -4,7 +4,7 @@ JSonHeroManager* JSonHeroManager::jsonHeroManager;
 
 JSonHeroManager::JSonHeroManager()
 {
-	auto herobuffer = FileUtils::getInstance()->getStringFromFile("Hero.json");
+	auto herobuffer = FileUtils::getInstance()->getStringFromFile("json/Hero.json");
 	this->jsonDoc.Parse(herobuffer.c_str());
 }
 

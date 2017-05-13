@@ -25,6 +25,8 @@ protected:
 	void slashToanChanKiemPhap();
 	void doCounterSkill1();
 
+	void fastAndFurious();
+
 
 	// Skill 2
 	list<KiemPhap*> listKiemPhap;

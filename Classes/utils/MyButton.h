@@ -20,6 +20,7 @@ private:
 	float timer;
 	void checkInterval(float dt);
 	void runTimer();
+	void runSpecialTimer();
 
 protected:
 	CC_SYNTHESIZE(Label*, number, NumberCoolDown);

@@ -33,6 +33,10 @@ protected:
 	CC_SYNTHESIZE_READONLY(int, m_nDiamondPackNumberDiamond, DiamondPackNumberDiamond);
 	CC_SYNTHESIZE_READONLY(int, m_nDiamondPackMoneyPrice, DiamondPackMoneyPrice);
 
+	CC_SYNTHESIZE_READONLY(string, m_sEnergyPackName, EnergyPackName);
+	CC_SYNTHESIZE_READONLY(string, m_sIconEnergyPackPath, IconEnergyPackPath);
+	CC_SYNTHESIZE_READONLY(int, m_nEnergyPackNumberEnergy, EnergyPackNumberEnergy);
+	CC_SYNTHESIZE_READONLY(int, m_nEnergyPackDiamondPrice, EnergyPackDiamondPrice);
 private:
 	Document jsonDoc;
 	static JSonMenuManager *jsonMenuManager;
@@ -43,6 +47,7 @@ public:
 	void readFile(int p_nFirstIndex);
 	void readGoldPack(int p_nFirstIndex);
 	void readDiamondPack(int p_nFirstIndex);
+	void readEnergyPack(int p_nFirstIndex);
 };
 
 #define JSMENU JSonMenuManager::getInstance()

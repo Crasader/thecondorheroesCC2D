@@ -39,6 +39,7 @@ private:
 	int m_nCurrentDiamond;									// current diamond
 	int m_arNumberItemOwning[5];							// number of item owning
 	int m_arItemPrice[5];									// cost of items
+	int m_nShopOption = 0;
 
 	Label *m_pTimeCounter;									// time counter to increase life
 	MenuItemSprite *m_arHeroButton[5];						// hero mini icon
@@ -47,8 +48,8 @@ private:
 	MenuItemSprite *m_arBuyItemButton[5];
 	Sprite *m_arSpriteItemMax[5];
 
-	Sprite *m_pSpriteQuestAttention;						// 
-	Sprite *m_pSpriteFreeCoinAttention;						// 
+	SkeletonAnimation *m_pSpriteQuestAttention;						// 
+	SkeletonAnimation *m_pSpriteFreeCoinAttention;						// 
 
 	Label *m_pLabelNumberGoldOnBuy;
 	Label *m_pLabelNumberDiamondOnBuy;
@@ -71,6 +72,7 @@ private:
 	Layer *m_pItemBoard;
 	Layer *m_pHeroInfoBoard;
 	Layer *m_pBottomHeroLayer;
+	Layer *m_pShopBoardLayer;
 
 	Layer *m_pBlurScreen;
 
@@ -98,6 +100,8 @@ private:
 	void initBottomHeroMenu();
 	void initDailyRewardBoard();
 
+	void initShopBoard(int p_nOption);
+
 	void backFunction();
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// HANDLE
@@ -109,6 +113,7 @@ private:
 
 	void buttonQuestHandle();
 	void buttonHeroesHandle();
+	void buttonShopHandle();
 	void buttonFreeCoinHandle();
 	void buttonMoreGameHandle();
 
@@ -136,9 +141,10 @@ private:
 	void onHttpRequestCompleted(HttpClient *p_pSender, HttpResponse *p_pResponse);		// handle response an get realtime from google.com.vm
 
 																						// buy coin
-	void buttonBuyLifeHandle();
+	void buttonBuyLifeHandle(int p_nIndexEnergyPack);
 	void buttonBuyCoinHandle(int p_nIndexCoinPack);
 	void buttonBuyDiamondHandle(int p_nIndexDiamondPack);
+	void buttonCloseShopHandle();
 
 	// TODO: check quest reward;
 
@@ -147,9 +153,8 @@ private:
 	// create layer and move them
 	void showMainMenu();
 	void hideMainMenu();
-	void showBlurScreen(int p_nOption);
+	void showBlurScreen();
 	void hideBlurScreen();
-	void initBuyGoldAndDiamondBoard();
 	void createLayerViaInput(Layer *p_pLayer, Size p_v2Size, Vec2 p_v2Position);
 	void moveLayerViaDirection(Layer *p_pLayer, int p_nDirection);
 

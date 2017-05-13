@@ -39,6 +39,7 @@ DialogPauseGame* DialogPauseGame::create()
 
 void DialogPauseGame::onExit()
 {
+	Layer::onExit();
 	AdmobHelper::getInstance()->hideTopBanner();
 }
 

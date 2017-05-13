@@ -1,0 +1,27 @@
+
+skill-boss-3.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+luan
+  rotate: false
+  xy: 342, 51
+  size: 287, 276
+  orig: 287, 276
+  offset: 0, 0
+  index: -1
+luan-eff
+  rotate: false
+  xy: 2, 2
+  size: 338, 325
+  orig: 338, 325
+  offset: 0, 0
+  index: -1
+luan2
+  rotate: false
+  xy: 631, 51
+  size: 287, 276
+  orig: 287, 276
+  offset: 0, 0
+  index: -1

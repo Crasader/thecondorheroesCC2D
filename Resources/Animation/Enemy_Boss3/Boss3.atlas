@@ -1,173 +1,271 @@
 
 Boss3.png
-size: 2048,512
+size: 4096,1024
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 caidau
-  rotate: false
-  xy: 1330, 290
+  rotate: true
+  xy: 637, 19
+  size: 123, 172
+  orig: 123, 172
+  offset: 0, 0
+  index: -1
+caidau2
+  rotate: true
+  xy: 811, 19
+  size: 123, 172
+  orig: 123, 172
+  offset: 0, 0
+  index: -1
+caidau3
+  rotate: true
+  xy: 985, 19
+  size: 123, 172
+  orig: 123, 172
+  offset: 0, 0
+  index: -1
+caidau4
+  rotate: true
+  xy: 1159, 19
   size: 123, 172
   orig: 123, 172
   offset: 0, 0
   index: -1
 canhtayphai1a
   rotate: true
-  xy: 1100, 154
+  xy: 3719, 733
   size: 85, 130
   orig: 85, 130
   offset: 0, 0
   index: -1
 canhtayphai2
-  rotate: true
-  xy: 1878, 338
+  rotate: false
+  xy: 1473, 11
   size: 124, 131
   orig: 124, 131
   offset: 0, 0
   index: -1
 canhtaytrai1a
-  rotate: false
-  xy: 1232, 124
+  rotate: true
+  xy: 3851, 734
   size: 84, 129
   orig: 84, 129
   offset: 0, 0
   index: -1
 canhtaytrai2
-  rotate: true
-  xy: 1075, 42
+  rotate: false
+  xy: 1989, 23
   size: 110, 115
   orig: 110, 115
   offset: 0, 0
   index: -1
 chanphai1
-  rotate: false
-  xy: 1209, 255
+  rotate: true
+  xy: 2128, 209
   size: 119, 207
   orig: 119, 207
   offset: 0, 0
   index: -1
 chanphai2
-  rotate: false
-  xy: 1455, 324
+  rotate: true
+  xy: 1333, 9
   size: 133, 138
   orig: 133, 138
   offset: 0, 0
   index: -1
 chantrai1
-  rotate: true
-  xy: 1590, 335
+  rotate: false
+  xy: 508, 2
   size: 127, 140
   orig: 127, 140
   offset: 0, 0
   index: -1
 chantrai2
-  rotate: true
-  xy: 829, 67
+  rotate: false
+  xy: 2128, 100
   size: 117, 107
   orig: 117, 107
   offset: 0, 0
   index: -1
 chuoihat
   rotate: false
-  xy: 708, 69
+  xy: 1868, 23
   size: 119, 115
   orig: 119, 115
   offset: 0, 0
   index: -1
+circle-power
+  rotate: true
+  xy: 2, 5
+  size: 137, 504
+  orig: 137, 504
+  offset: 0, 0
+  index: -1
 giayphai
   rotate: true
-  xy: 1732, 343
+  xy: 2337, 209
   size: 119, 144
   orig: 119, 144
   offset: 0, 0
   index: -1
 giaytrai
   rotate: true
-  xy: 938, 54
+  xy: 2959, 597
   size: 98, 135
   orig: 98, 135
   offset: 0, 0
   index: -1
 luan
   rotate: false
-  xy: 650, 186
+  xy: 3141, 746
+  size: 287, 276
+  orig: 287, 276
+  offset: 0, 0
+  index: -1
+luan-eff
+  rotate: false
+  xy: 2801, 697
+  size: 338, 325
+  orig: 338, 325
+  offset: 0, 0
+  index: -1
+luan2
+  rotate: false
+  xy: 3430, 746
   size: 287, 276
   orig: 287, 276
   offset: 0, 0
   index: -1
 manhphai
   rotate: false
-  xy: 939, 241
+  xy: 2516, 361
   size: 268, 221
   orig: 268, 221
   offset: 0, 0
   index: -1
 manhsau
   rotate: false
-  xy: 2, 6
+  xy: 3719, 820
   size: 349, 202
   orig: 349, 202
   offset: 0, 0
   index: -1
+mat-eff
+  rotate: false
+  xy: 2516, 330
+  size: 79, 29
+  orig: 79, 29
+  offset: 0, 0
+  index: -1
+power1
+  rotate: false
+  xy: 2, 584
+  size: 931, 438
+  orig: 931, 438
+  offset: 0, 0
+  index: -1
+power2
+  rotate: false
+  xy: 2, 144
+  size: 931, 438
+  orig: 931, 438
+  offset: 0, 0
+  index: -1
+power3
+  rotate: false
+  xy: 935, 584
+  size: 931, 438
+  orig: 931, 438
+  offset: 0, 0
+  index: -1
+power4
+  rotate: false
+  xy: 935, 144
+  size: 931, 438
+  orig: 931, 438
+  offset: 0, 0
+  index: -1
+power5
+  rotate: false
+  xy: 1868, 584
+  size: 931, 438
+  orig: 931, 438
+  offset: 0, 0
+  index: -1
 slash
   rotate: true
-  xy: 2, 210
+  xy: 1868, 330
   size: 252, 646
   orig: 252, 646
   offset: 0, 0
   index: -1
 tayphai1
   rotate: false
-  xy: 708, 2
-  size: 70, 65
-  orig: 70, 65
+  xy: 3982, 740
+  size: 80, 78
+  orig: 80, 78
+  offset: 0, 0
+  index: -1
+tayphai1-eff
+  rotate: true
+  xy: 1760, 34
+  size: 108, 106
+  orig: 108, 106
   offset: 0, 0
   index: -1
 taytrai
   rotate: false
-  xy: 1330, 237
-  size: 51, 51
-  orig: 51, 51
+  xy: 2342, 129
+  size: 64, 78
+  orig: 64, 78
+  offset: 0, 0
+  index: -1
+taytrai-eff
+  rotate: false
+  xy: 2247, 102
+  size: 93, 105
+  orig: 93, 105
   offset: 0, 0
   index: -1
 thantren
   rotate: true
-  xy: 353, 20
+  xy: 1868, 140
   size: 188, 258
   orig: 188, 258
   offset: 0, 0
   index: -1
 thatlung
-  rotate: true
-  xy: 1209, 241
+  rotate: false
+  xy: 2786, 564
   size: 12, 18
   orig: 12, 18
   offset: 0, 0
   index: -1
 thatlung2
-  rotate: true
-  xy: 1192, 130
+  rotate: false
+  xy: 4070, 984
   size: 22, 38
   orig: 22, 38
   offset: 0, 0
   index: -1
 thatlung3
   rotate: false
-  xy: 1455, 291
+  xy: 2483, 297
   size: 27, 31
   orig: 27, 31
   offset: 0, 0
   index: -1
 thatlung4
   rotate: true
-  xy: 939, 154
+  xy: 1599, 57
   size: 85, 159
   orig: 85, 159
   offset: 0, 0
   index: -1
 thatlung5
-  rotate: false
-  xy: 613, 28
+  rotate: true
+  xy: 2801, 602
   size: 93, 156
   orig: 93, 156
   offset: 0, 0

@@ -186,12 +186,6 @@ void EnemyHongLangBa2::updatePos()
 	BaseEnemy::updatePos();
 }
 
-
-void EnemyHongLangBa2::updatePos()
-{
-	BaseEnemy::updatePos();
-}
-
 void EnemyHongLangBa2::onExit()
 {
 	BaseEnemy::onExit();

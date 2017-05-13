@@ -119,6 +119,25 @@ void DuongQua::slashToanChanKiemPhap()
 void DuongQua::doCounterSkill1()
 {
 	slashToanChanKiemPhap();
+	//fastAndFurious();
+}
+
+void DuongQua::fastAndFurious()
+{
+	
+	this->schedule([&](float dt) {
+		checkDurationSkill1++;
+
+		this->getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel() * 3, 0));
+
+		if (checkDurationSkill1 >= getDurationSkill1() * 60) {
+			this->getB2Body()->SetLinearVelocity(b2Vec2(0, 0));
+			setIsDoneDuration1(true);
+			checkDurationSkill1 = 0;
+			unschedule("KeySkill1");
+		}
+
+	}, 1.0f / 60, "KeySkill1");		//  run every delta second
 }
 
 
@@ -716,7 +735,7 @@ void DuongQua::updateMe(float dt)
 		return;
 	}
 
-	if (!isDriverEagle)
+	if (!isDriverEagle/* || !isDoneDuration1*/)
 		getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
 
 	if (!getIsPriorAttack() && !getIsPriorInjured() && !getIsPriorSkill1()) {

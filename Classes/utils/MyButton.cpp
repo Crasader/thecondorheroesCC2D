@@ -47,6 +47,10 @@ void MyButton::addNumberOfUse(int number)
 {
 	setNumberOfUse(number);
 	setNumberOfUseHasNotUsedYet(number);
+	if (number > 1) {
+		numberUseLb->setString(StringUtils::format("%i", number));
+		numberUseLb->setVisible(true);
+	}
 }
 
 // add listener to sprite
@@ -75,16 +79,12 @@ void MyButton::addEvents()
 					this->schedule(schedule_selector(MyButton::checkInterval), timeCoolDown, 1, 0);
 				}
 
-				if(numberOfUseHasNotUsedYet > 1)
+				if(numberOfUseHasNotUsedYet >= 1)
 					numberUseLb->setString(StringUtils::format("%i", numberOfUseHasNotUsedYet));
 							
 				canTouch = false;
 				isActive = true;
 			}
-			//else {
-			//	//log("Cool Down, B*tch");
-			//	
-			//}
 		}
 
 		return false;
@@ -133,15 +133,19 @@ void MyButton::checkInterval(float dt)
 
 void MyButton::runTimer()
 {
-	if (timeCoolDown < 1)
-		return;
 	timer = timeCoolDown;
-	number->setString(StringUtils::format("%i",(int) timer));
-	number->setVisible(true);
+	if (timeCoolDown < 1)
+		number->setVisible(false);
+	else {
+		number->setString(StringUtils::format("%i", (int)timer));
+		number->setVisible(true);
+	}
+	
 	this->schedule([&](float dt) {
 		timer -= 0.01f;
 		main->setPercentage((timeCoolDown - timer) / timeCoolDown * 100.0f);
-		number->setString(StringUtils::format("%i", (int)timer));
+		if(timeCoolDown > 1)
+			number->setString(StringUtils::format("%i", (int)timer));
 
 		if ((int)timer == 0) {
 			number->setVisible(false);

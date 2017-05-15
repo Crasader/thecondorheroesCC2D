@@ -49,7 +49,7 @@ bool GameScene::init(int stage, int map, int charId)
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	isModeDebug = true;
+	isModeDebug = false;
 	changebg = 0;
 
 	indexOfNextMapBoss = -1;

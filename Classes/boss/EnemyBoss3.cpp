@@ -42,6 +42,19 @@ void EnemyBoss3::attack3()
 	this->isNodie = true;
 	this->clearTracks();
 	this->setAnimation(0, "attack3", false);
+	
+}
+
+void EnemyBoss3::fixStupid()
+{
+	int randnumber = RandomHelper::random_int(0,1);
+	if (randnumber) {
+		EnemyBoss1::fixStupid();
+	}
+		
+	else {
+		this->setRealMoveVelocity(Vec2(this->getmoveVelocity().x, this->getmoveVelocity().y*CCRANDOM_0_1()*-1));
+	}
 }
 
 Vec2 EnemyBoss3::getPosGenSlash()
@@ -89,7 +102,7 @@ void EnemyBoss3::playSoundDie()
 
 void EnemyBoss3::doAttack2()
 {
-	if (this->getPositionY() > SCREEN_SIZE.height / 3) {
+	if (this->getPositionY() > SCREEN_SIZE.height / 5) {
 		this->schedule([&](float dt) {
 			//log("do attack2");
 			this->setControlState(this->getControlState() + 1);
@@ -149,8 +162,14 @@ void EnemyBoss3::doAttack2()
 			this->setControlState(this->getControlState() + 1);
 			if (this->getControlState() == 1) {
 				this->attack3();
+				
+			this->creatHidenSlash(PI);
+				
+				
 			}
-
+			if (this->getControlState() == 2 || this->getControlState() == 4) {
+				this->creatHidenSlash(PI);
+			}
 			//if (boss->getLevelBoss() == 1) {
 			if (this->getControlState() == 10) {
 				this->clearTracks();

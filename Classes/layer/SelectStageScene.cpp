@@ -16,7 +16,6 @@ Scene * SelectStageLayer::createScene(int charId)
 
 bool SelectStageLayer::init(int charId)
 {
-	AdmobHelper::getInstance()->showBottomBanner();
 	AudioManager::playMusic(MUSIC_MENU);
 	auto originXY = Director::getInstance()->getVisibleOrigin();
 	auto screenSize = Director::getInstance()->getVisibleSize();
@@ -227,6 +226,11 @@ void SelectStageLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * even
 		auto _aScene = MenuLayer::createScene();
 		Director::getInstance()->replaceScene(TransitionFade::create(0.3f, _aScene));
 	}
+}
+
+void SelectStageLayer::onExit()
+{
+	Layer::onExit();
 }
 
 

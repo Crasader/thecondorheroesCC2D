@@ -875,6 +875,7 @@ void MenuLayer::initHeroInfoBoard() {
 
 	string _sHeroInfo = JSHERO->getInfor();
 	Label *_pHeroDescription = Label::createWithBMFont("fonts/font_normal-export.fnt", StringUtils::format("%s", _sHeroInfo.c_str()));
+	_pHeroDescription->setAlignment(TextHAlignment::CENTER);
 	_pHeroDescription->setBMFontSize(m_pHeroInfoBoard->getContentSize().height * 0.05f);
 	_pHeroDescription->setMaxLineWidth(m_pHeroInfoBoard->getContentSize().width * 0.7f);
 	_pHeroDescription->setLineHeight(m_pHeroInfoBoard->getContentSize().height * 0.1f);

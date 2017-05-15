@@ -12,6 +12,7 @@ public:
 
 	void createPool();
 	void attack3();
+	void fixStupid();
 	Vec2 getPosGenSlash();
 	void creatSlash(float angel);
 	void playSoundAttack1();

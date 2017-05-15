@@ -27,7 +27,8 @@ bool LoadingLayer::init(int stage, int map, int charId)
 	{
 		return false;
 	}
-
+	AdmobHelper::getInstance()->showBanner();
+	AdmobHelper::getInstance()->showRewardVideoToRevive();
 	this->stage = stage;
 	this->map = map;
 	this->charId = charId;
@@ -175,6 +176,7 @@ void LoadingLayer::doProcess()
 			avatarHero->setVisible(false);
 
 			unschedule("key");
+			AdmobHelper::getInstance()->hideBanner();
 			Director::getInstance()->replaceScene(GameScene::createScene(mainScene, hud));
 		}
 

@@ -14,8 +14,8 @@ RefManager::RefManager()
 	selectedHero = ref->getIntegerForKey(KEY_SELECTED_HERO, 0);
 	lastPickHero = ref->getIntegerForKey(KEY_LAST_PICK_HERO, 0);
 
-	currentStageUnlocked = ref->getIntegerForKey(KEY_CUR_STAGE_UNLOCKED, 4);
-	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 3);
+	currentStageUnlocked = ref->getIntegerForKey(KEY_CUR_STAGE_UNLOCKED, 1);
+	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 1);
 
 	anchorTime = ref->getIntegerForKey(KEY_ANCHORTIME, time(0));
 	lastDailyRewardTime = ref->getIntegerForKey(KEY_LAST_DAILY_REWARD_TIME, 0);
@@ -131,7 +131,7 @@ void RefManager::increaseLevel()
 	}
 }
 
-void RefManager::increaseStateUnlocked()
+void RefManager::increaseStageUnlocked()
 {
 	ref->setIntegerForKey(KEY_CUR_STAGE_UNLOCKED, ++this->currentStageUnlocked);
 	ref->flush();

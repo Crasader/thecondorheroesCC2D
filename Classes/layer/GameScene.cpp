@@ -208,9 +208,9 @@ void GameScene::onBegin()
 		REF->decreaseNumberItemMagnet();
 	}
 
-	
+
 	key_listener = EventListenerKeyboard::create();
-	
+
 	key_listener->onKeyPressed = CC_CALLBACK_2(GameScene::onKeyPressed, this);
 
 	if (!isFirstPlay) {
@@ -238,6 +238,11 @@ void GameScene::checkActiveButton()
 	if (hero->getFSM()->currentState == MDie) return;
 
 	if (hud->getBtnSkill_1()->getIsBlocked()) {		// 2 and 3 active
+		if (hud->getBtnSkill_1()->getMain()->getPercentage() >= 99.9f &&
+			hud->getBtnSkill_1()->getMain()->isVisible()) {
+			hud->getBtnSkill_1()->getMain()->setVisible(false);
+		}
+
 		if (currentButton == 2) {
 			if (hero->getIsDoneDuration2()) {
 				if (hero->getFSM()->currentState != MRevive && !hud->getBtnSkill_2()->getNumberOfUseHasNotUsedYet() >= 1)
@@ -273,6 +278,10 @@ void GameScene::checkActiveButton()
 	}
 
 	if (hud->getBtnSkill_2()->getIsBlocked()) {		// 1 and 3 active
+		if (hud->getBtnSkill_2()->getMain()->getPercentage() >= 99.9f &&
+			hud->getBtnSkill_2()->getMain()->isVisible()) {
+			hud->getBtnSkill_2()->getMain()->setVisible(false);
+		}
 		if (currentButton == 1) {
 			if (hero->getIsDoneDuration1()) {
 
@@ -307,6 +316,10 @@ void GameScene::checkActiveButton()
 	}
 
 	if (hud->getBtnSkill_3()->getIsBlocked()) {		// 2 and 1 active
+		if (hud->getBtnSkill_3()->getMain()->getPercentage() >= 99.9f &&
+			hud->getBtnSkill_3()->getMain()->isVisible()) {
+			hud->getBtnSkill_3()->getMain()->setVisible(false);
+		}
 		if (currentButton == 2) {
 			if (hero->getIsDoneDuration2()) {
 
@@ -780,7 +793,7 @@ void GameScene::createInfiniteNode()
 		//background->addChild(moon, 2, Vec2(0, 1), Vec2(pos.x, pos.y - SCREEN_SIZE.height / 2));
 		changebg = pos.x;
 	}
-	if ((stage == 3 && map == 2 )||(stage == 4 && map == 2) ) {}
+	if ((stage == 3 && map == 2) || (stage == 4 && map == 2)) {}
 	else {
 		auto bg2_1 = Sprite::create(StringUtils::format("Map/map%d/bg%d_2.png", stage, map));
 		//auto bg2_1 = Sprite::create("moon.png");
@@ -808,7 +821,7 @@ void GameScene::createInfiniteNode()
 	this->addChild(background, ZORDER_BG);
 
 	background2 = InfiniteParallaxNode::create();
-	if (stage == 1 || (stage == 3 && map == 2)||(stage == 4 && map == 1)) {
+	if (stage == 1 || (stage == 3 && map == 2) || (stage == 4 && map == 1)) {
 
 		auto bg3_1 = Sprite::create(StringUtils::format("Map/map%d/bg3.png", stage));
 		bg3_1->setScaleX(SCREEN_SIZE.width / (bg3_1->getContentSize().width));
@@ -1341,6 +1354,47 @@ void GameScene::updateQuest()
 	}
 }
 
+void GameScene::reachNewMap()
+{
+	int stageUnlocked = REF->getCurrentStageUnlocked();
+	if (stageUnlocked == stage) {
+		int mapUnlocked = REF->getCurrentMapUnLocked();
+		if (mapUnlocked == map) {
+			switch (stageUnlocked)
+			{
+			case 1: case 2:
+				if (map < 3) {
+					REF->setMapUnlocked(map + 1);
+				}
+				else {
+					REF->increaseStageUnlocked();
+					REF->setMapUnlocked(1);
+				}
+
+				break;
+
+			case 3:
+				if (map < 2) {
+					REF->setMapUnlocked(map + 1);
+				}
+				else {
+					REF->increaseStageUnlocked();
+					REF->setMapUnlocked(1);
+				}
+				break;
+
+			case 4:
+				if (map < 2) {
+					REF->setMapUnlocked(map + 1);
+				}
+				break;
+			default:
+				break;
+			}
+		}
+	}
+}
+
 void GameScene::danceWithCamera()
 {
 	follow = Node::create();
@@ -1558,7 +1612,6 @@ void GameScene::runnerItem(Item_type type, int counter)
 
 void GameScene::updateBloodBar(int numberOfHealth, bool isVisible)
 {
-	
 	if (numberOfHealth >= 0) {
 		if (isVisible) {
 			auto blood = (Sprite*)hud->getListBlood()->getObjectAtIndex(numberOfHealth);
@@ -1859,7 +1912,7 @@ void GameScene::overGame()
 	dialogPause = DialogOverGame::create(hero->getScore(), hero->getCoinExplored());
 	this->getParent()->addChild(dialogPause);
 
-	hud->getPauseItem()->setEnabled(false);	
+	hud->getPauseItem()->setEnabled(false);
 
 	updateQuest();
 	this->pause();
@@ -1869,7 +1922,7 @@ void GameScene::nextGame()
 {
 	this->removeAllChildrenWithCleanup(true);
 	auto _scene = SelectStageLayer::createScene(charId);
-	auto layer = (SelectStageLayer*) _scene->getChildByName("selectLayer");
+	auto layer = (SelectStageLayer*)_scene->getChildByName("selectLayer");
 	layer->moveAva();
 	Director::getInstance()->replaceScene(TransitionFade::create(0.3f, _scene));
 }
@@ -1878,6 +1931,9 @@ void GameScene::winGame()
 {
 	AudioManager::stopSoundandMusic();
 	AudioManager::playSound(SOUND_WIN);
+
+	reachNewMap();
+
 	blurScreen();
 	if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
 		hud->getBtnCalling()->setEnabled(false);
@@ -2103,7 +2159,7 @@ void GameScene::introJump(int type)
 	blurScreen();
 	tut = TutorialJump::create(type);
 	this->getParent()->addChild(tut);
-	
+
 	hero->getSmokeRun()->pause();
 	hero->pause();
 	hud->getPauseItem()->setEnabled(false);
@@ -2215,7 +2271,7 @@ void GameScene::resumeAfterTut(int caseTut)
 
 
 	hud->getPauseItem()->setEnabled(true);
-	
+
 
 	switch (caseTut)
 	{
@@ -2225,7 +2281,7 @@ void GameScene::resumeAfterTut(int caseTut)
 			touch_listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
 			_eventDispatcher->addEventListenerWithSceneGraphPriority(touch_listener, this);
 		}
-		
+
 		this->resume();
 		break;
 

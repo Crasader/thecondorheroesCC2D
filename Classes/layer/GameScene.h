@@ -163,7 +163,7 @@ private:
 	
 	void updateQuest();
 
-
+	void reachNewMap();
 	void danceWithCamera();
 	float previousPercentPosition = 0.0f;
 	void updateCharacterPoint();

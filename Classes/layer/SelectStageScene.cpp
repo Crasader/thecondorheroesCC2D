@@ -18,6 +18,7 @@ bool SelectStageLayer::init(int charId)
 {
 	AdmobHelper::getInstance()->showBottomBanner();
 	AudioManager::playMusic(MUSIC_MENU);
+
 	auto originXY = Director::getInstance()->getVisibleOrigin();
 	auto screenSize = Director::getInstance()->getVisibleSize();
 	tmxMap = TMXTiledMap::create("UI/Select_Stage/config_map.tmx");
@@ -234,6 +235,15 @@ Sprite* SelectStageLayer::bossSprite(int order)
 	default:
 		break;
 	}
+
+	/*Vector <SpriteFrame*> aniframes;
+	for (int i = 0; i < 1; ++i) {
+		string frameName = StringUtils::format("boss%d_0%d.png", order, i);
+		aniframes.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName));
+	}
+
+	auto animation = Animation::createWithSpriteFrames(aniframes, 0.08f);
+	auto animate = Animate::create(animation);*/
 
 	boss->setAnchorPoint(Vec2::ZERO);
 	boss->setScale(boss->getScale() * 1.5f);

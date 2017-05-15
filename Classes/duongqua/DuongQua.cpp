@@ -128,10 +128,11 @@ void DuongQua::fastAndFurious()
 	this->schedule([&](float dt) {
 		checkDurationSkill1++;
 
-		this->getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel() * 3, 0));
+		this->getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel() * 5, 0));
 
 		if (checkDurationSkill1 >= getDurationSkill1() * 60) {
-			this->getB2Body()->SetLinearVelocity(b2Vec2(0, 0));
+			auto currentVelY = getB2Body()->GetLinearVelocity().y;
+			this->getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
 			setIsDoneDuration1(true);
 			checkDurationSkill1 = 0;
 			unschedule("KeySkill1");

@@ -85,7 +85,7 @@ public:
 	void unLockHero(int index);
 	void increaseLevel();
 
-	void increaseStateUnlocked();
+	void increaseStageUnlocked();
 	void setMapUnlocked(int index);
 	
 	// baseHP

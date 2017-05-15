@@ -69,7 +69,7 @@ void EnemyToOng::die()
 void EnemyToOng::initCirclePhysic(b2World * world, Point pos)
 {
 	b2CircleShape circle_shape;
-	circle_shape.m_radius = this->getBoundingBox().size.height / 3 / PTM_RATIO;
+	circle_shape.m_radius = this->getBoundingBox().size.height / 4 / PTM_RATIO;
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 0.0f;

@@ -136,7 +136,10 @@ void BossFixingStupid::execute(EnemyBoss1 * boss)
 		boss->changeState(new BossIdling());
 	}
 
-	if (boss->getPositionY() > SCREEN_SIZE.height *2.5f / 4 || boss->getPositionY() < SCREEN_SIZE.height/6) {
+	if (boss->getPositionY() > SCREEN_SIZE.height *2.5f / 4) {
+		boss->setRealMoveVelocity(Vec2(boss->getRealMoveVelocity().x, 0));
+	}
+	if (boss->getPositionY() < SCREEN_SIZE.height / 6 && boss->getRealMoveVelocity().y < 0) {
 		boss->setRealMoveVelocity(Vec2(boss->getRealMoveVelocity().x, 0));
 	}
 }

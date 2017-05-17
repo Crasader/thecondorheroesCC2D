@@ -30,7 +30,7 @@
 	}
 },
 "animations": {
-	"attack2": {
+	"skill-boss": {
 		"slots": {
 			"luan": {
 				"color": [

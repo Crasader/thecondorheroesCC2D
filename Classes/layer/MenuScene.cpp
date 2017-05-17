@@ -42,7 +42,20 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 		// select stage layer
 		m_pSelectStageLayer = SelectStageLayer::create(m_nIndexHeroSelected);
 		m_pSelectStageLayer->moveAva();
-		this->addChild(m_pSelectStageLayer, 4);
+		this->addChild(m_pSelectStageLayer, 3);
+
+		m_pBlurScreen = Layer::create();
+		m_pBlurScreen->setScaleX(m_szVisibleSize.width / m_pBlurScreen->getContentSize().width); // full screen size width
+		m_pBlurScreen->setScaleY(m_szVisibleSize.height / m_pBlurScreen->getContentSize().height); // full screen size height
+		m_pBlurScreen->setPosition(Vec2(0.0f, m_szVisibleSize.height)); // center screen
+		this->addChild(m_pBlurScreen, 4);
+		m_pBlurScreen->setVisible(false);
+
+		// shop
+		m_pShopBoardLayer = Layer::create();
+		m_pShopBoardLayer->setContentSize(Size(m_szVisibleSize.width, m_szVisibleSize.height)); // fill screen width, 25% screen height
+		m_pShopBoardLayer->setPosition(0.0f, m_pShopBoardLayer->getContentSize().height);
+		this->addChild(m_pShopBoardLayer, 5);
 
 		return true;
 	}
@@ -1151,12 +1164,14 @@ void MenuLayer::hideMainMenu() {
 
 void MenuLayer::showBlurScreen() {
 	m_pTopMenu->setEnabled(false);
-	
-	m_pBottomMainMenu->setEnabled(false);
-	m_pItemBoardMenu->setEnabled(false);
-	m_pSkillBoardMenu->setEnabled(false);
-	m_pBottomHeroMenu->setEnabled(false);
-	m_pQuestBoardMenu->setEnabled(false);
+
+	if (m_nMenuStatus != 4) {
+		m_pBottomMainMenu->setEnabled(false);
+		m_pItemBoardMenu->setEnabled(false);
+		m_pSkillBoardMenu->setEnabled(false);
+		m_pBottomHeroMenu->setEnabled(false);
+		m_pQuestBoardMenu->setEnabled(false);
+	}
 	m_pBlurScreen->setVisible(true);
 
 	Sprite *_pBlurBlackLayer = Sprite::create("UI/toast.png");
@@ -1172,7 +1187,7 @@ void MenuLayer::showBlurScreen() {
 
 void MenuLayer::hideBlurScreen() {
 	m_pTopMenu->setEnabled(true);
-	if (m_nMenuStatus != 3) {
+	if (m_nMenuStatus != 4) {
 		m_pBottomMainMenu->setEnabled(true);
 		m_pItemBoardMenu->setEnabled(true);
 		m_pSkillBoardMenu->setEnabled(true);

@@ -57,6 +57,7 @@ public:
 	void changeState(StateBoss *state);
 	void doAttack1();
 	void doAttack2();
+	virtual Vec2 getPosGenSlash();
 	virtual void playSoundAttack1();
 	virtual void playSoundAttack2();
 	virtual void playSoundHit();

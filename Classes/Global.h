@@ -1,4 +1,4 @@
-#ifndef __GLOBAL_H__
+﻿#ifndef __GLOBAL_H__
 #define __GLOBAL_H__
 
 #include "cocos2d.h"
@@ -34,6 +34,7 @@ using namespace std;
 #define BITMASK_COIN_BULLION			0x1000
 #define BITMASK_RADA_SKILL_1			0x2000
 #define BITMASK_RADA_SKILL_2			0x4000
+#define BITMASK_DATNHIBA				0x8000
 
 
 // tag
@@ -66,14 +67,29 @@ using namespace std;
 // tag b2Skeleton
 #define TAG_COINBULLION						99
 #define TAG_COINBAG							100
+
+// tag enemy body vo hai
 #define TAG_ENEMY_WOODER					101
-#define TAG_ENEMY_TOANCHAN1					102
-#define TAG_ENEMY_TOANCHAN2					103
-#define TAG_BOSS							104
-#define TAG_ENEMY_TNB						105
-#define TAG_ENEMY_TOONG						106
-#define TAG_ENEMY_HONGLANGBA1				107
-#define TAG_ENEMY_HONGLANGBA2				108
+#define TAG_ENEMY_TOANCHAN2					102
+#define TAG_ENEMY_HONGLANGBA2				103
+#define TAG_ENEMY_HOACDO2					104
+
+// tag enemy body co hai
+
+	//tag enemy tinh 
+#define TAG_ENEMY_TNB						120
+#define TAG_ENEMY_TOONG						121
+	//tag enemy dong
+#define TAG_ENEMY_TOANCHAN1					130
+#define TAG_ENEMY_HONGLANGBA1				131
+#define TAG_ENEMY_HOACDO1					132
+#define TAG_ENEMY_DATNHIBA1					133
+#define TAG_ENEMY_DATNHIBA2					134
+
+
+
+// tag boss
+#define TAG_BOSS							150
 
 #define KEY_ITEM_MAGNET						0
 #define KEY_ITEM_DOUPLE_COIN				1
@@ -124,6 +140,12 @@ using namespace std;
 #define SOUND_HLB1DIE							"sound/hlb1die.mp3"
 #define SOUND_HLB2AT							"sound/hlb2at.mp3"
 #define SOUND_HLB2DIE							"sound/hlb2die.mp3"
+#define SOUND_HD1AT								"sound/hd1at.mp3"
+#define SOUND_HD1DIE							"sound/hd1die.mp3"
+#define SOUND_HD2AT								"sound/hd2at.mp3"
+#define SOUND_HD2DIE							"sound/hd2die.mp3"
+#define SOUND_DNBAT								"sound/dnbat.mp3"
+#define SOUND_DNBDIE							"sound/dnbdie.mp3"
 #define SOUND_TOONGDIE							"sound/toongdie.mp3"
 #define SOUND_TNBDIE							"sound/tnbdie.mp3"
 
@@ -140,10 +162,16 @@ using namespace std;
 #define SOUND_COINBULLION								"sound/getcoinbullion.mp3"
 #define SOUND_COINBAG								"sound/getcoinbag.mp3"
 #define SOUND_ITEM								"sound/getitem.mp3"
+#define SOUND_BIRD								"sound/bird.mp3"
 
 #define SOUND_FAIL						"sound/stagefail.mp3"
 #define SOUND_WIN						"sound/stagewin.mp3"
 #define SOUND_BTCLICK						"sound/btclick.mp3"
+
+// DuongPM
+#define SOUND_SCROLL_SLIDE						"sound/scrollslide.mp3"
+#define SOUND_UNLOCK_HERO						"sound/unlockhero.mp3"
+#define SOUND_UPGRADE_LEVEL						"sound/upgradelevel.mp3"
 
 #define KEY_IS_MUSIC							"isMusic"
 #define KEY_IS_SOUND							"isSound"

@@ -24,6 +24,7 @@ protected:
 	CC_SYNTHESIZE_READONLY(string, infor, Infor);
 	CC_SYNTHESIZE_READONLY(string, avatarPath, avatarPath);
 	CC_SYNTHESIZE_READONLY(string, characterPointPath, CharacterPointPath);
+	CC_SYNTHESIZE_READONLY(string, selectCharacterPoint, SelectCharacterPoint);
 	CC_SYNTHESIZE_READONLY(string, avatarLoadingPath, AvatarLoadingPath);
 	CC_SYNTHESIZE_READONLY(bool, isLocked, IsLocked);
 
@@ -75,6 +76,9 @@ public:
 
 	// index must be around 1-10
 	string getTipAtX(int index);
+	
+	// index must be around 1-x
+	string getNotifyAtX(int index);
 };
 
 #define JSHERO JSonHeroManager::getInstance()

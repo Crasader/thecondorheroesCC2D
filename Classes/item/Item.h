@@ -30,7 +30,8 @@ protected:
 	
 };
 
-#define DURATION_MAGNET				300		// 5s
-#define DURATION_DOUBLE_COIN		300
+#define DURATION_MAGNET				420		// 7s
+#define DURATION_DOUBLE_COIN		420
+
 
 #endif // __B2_SPRITE_H__

@@ -11,6 +11,7 @@ public:
 	static EnemyBoss2* create(string jsonFile, string atlasFile, float scale);
 
 	void createPool();
+	Vec2 getPosGenSlash();
 	void creatSlash(float angel);
 	void playSoundAttack1();
 	void playSoundAttack2();

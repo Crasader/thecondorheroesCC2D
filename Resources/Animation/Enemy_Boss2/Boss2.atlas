@@ -1,0 +1,272 @@
+
+Boss2.png
+size: 4096,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+caidau
+  rotate: true
+  xy: 2716, 377
+  size: 125, 159
+  orig: 125, 159
+  offset: 0, 0
+  index: -1
+caidau2
+  rotate: true
+  xy: 2877, 377
+  size: 125, 159
+  orig: 125, 159
+  offset: 0, 0
+  index: -1
+caidau3
+  rotate: true
+  xy: 3038, 377
+  size: 125, 159
+  orig: 125, 159
+  offset: 0, 0
+  index: -1
+caidau4
+  rotate: true
+  xy: 3199, 377
+  size: 125, 159
+  orig: 125, 159
+  offset: 0, 0
+  index: -1
+caimu
+  rotate: false
+  xy: 2111, 328
+  size: 51, 53
+  orig: 51, 53
+  offset: 0, 0
+  index: -1
+canhtayphai1a
+  rotate: false
+  xy: 1424, 50
+  size: 63, 110
+  orig: 63, 110
+  offset: 0, 0
+  index: -1
+canhtayphai2
+  rotate: true
+  xy: 1523, 124
+  size: 124, 131
+  orig: 124, 131
+  offset: 0, 0
+  index: -1
+canhtaytrai1a
+  rotate: true
+  xy: 2018, 328
+  size: 53, 91
+  orig: 53, 91
+  offset: 0, 0
+  index: -1
+canhtaytrai2
+  rotate: false
+  xy: 3739, 301
+  size: 110, 115
+  orig: 110, 115
+  offset: 0, 0
+  index: -1
+chanphai1
+  rotate: true
+  xy: 3678, 418
+  size: 84, 161
+  orig: 84, 161
+  offset: 0, 0
+  index: -1
+chanphai2
+  rotate: true
+  xy: 3360, 369
+  size: 133, 138
+  orig: 133, 138
+  offset: 0, 0
+  index: -1
+chantrai1
+  rotate: false
+  xy: 1771, 155
+  size: 101, 120
+  orig: 101, 120
+  offset: 0, 0
+  index: -1
+chantrai2
+  rotate: false
+  xy: 3620, 309
+  size: 117, 107
+  orig: 117, 107
+  offset: 0, 0
+  index: -1
+eff-slash
+  rotate: false
+  xy: 1656, 149
+  size: 113, 126
+  orig: 113, 126
+  offset: 0, 0
+  index: -1
+giayphai
+  rotate: true
+  xy: 1920, 322
+  size: 59, 96
+  orig: 59, 96
+  offset: 0, 0
+  index: -1
+giaytrai
+  rotate: true
+  xy: 1489, 57
+  size: 65, 83
+  orig: 65, 83
+  offset: 0, 0
+  index: -1
+manhphai
+  rotate: false
+  xy: 1006, 28
+  size: 206, 220
+  orig: 206, 220
+  offset: 0, 0
+  index: -1
+manhsau
+  rotate: false
+  xy: 1654, 344
+  size: 264, 158
+  orig: 264, 158
+  offset: 0, 0
+  index: -1
+manhtrai
+  rotate: true
+  xy: 3500, 421
+  size: 81, 176
+  orig: 81, 176
+  offset: 0, 0
+  index: -1
+phattran1
+  rotate: false
+  xy: 2149, 396
+  size: 200, 106
+  orig: 200, 106
+  offset: 0, 0
+  index: -1
+phattran2
+  rotate: true
+  xy: 1654, 277
+  size: 65, 206
+  orig: 65, 206
+  offset: 0, 0
+  index: -1
+quay
+  rotate: false
+  xy: 2, 2
+  size: 500, 500
+  orig: 500, 500
+  offset: 0, 0
+  index: -1
+quay1
+  rotate: false
+  xy: 504, 2
+  size: 500, 500
+  orig: 500, 500
+  offset: 0, 0
+  index: -1
+slash
+  rotate: true
+  xy: 1006, 250
+  size: 252, 646
+  orig: 252, 646
+  offset: 0, 0
+  index: -1
+tayphai
+  rotate: true
+  xy: 4022, 444
+  size: 58, 69
+  orig: 58, 69
+  offset: 0, 0
+  index: -1
+tayphai1
+  rotate: true
+  xy: 1574, 64
+  size: 58, 69
+  orig: 58, 69
+  offset: 0, 0
+  index: -1
+taytrai
+  rotate: false
+  xy: 2164, 343
+  size: 51, 51
+  orig: 51, 51
+  offset: 0, 0
+  index: -1
+taytrai2
+  rotate: false
+  xy: 1862, 282
+  size: 49, 60
+  orig: 49, 60
+  offset: 0, 0
+  index: -1
+thantren
+  rotate: true
+  xy: 2541, 404
+  size: 98, 173
+  orig: 98, 173
+  offset: 0, 0
+  index: -1
+thantren2
+  rotate: false
+  xy: 3500, 311
+  size: 118, 108
+  orig: 118, 108
+  offset: 0, 0
+  index: -1
+thatlung
+  rotate: false
+  xy: 1656, 129
+  size: 12, 18
+  orig: 12, 18
+  offset: 0, 0
+  index: -1
+thatlung2
+  rotate: true
+  xy: 1006, 4
+  size: 22, 38
+  orig: 22, 38
+  offset: 0, 0
+  index: -1
+thatlung3
+  rotate: true
+  xy: 1214, 31
+  size: 27, 31
+  orig: 27, 31
+  offset: 0, 0
+  index: -1
+thatlung4
+  rotate: true
+  xy: 1214, 162
+  size: 86, 307
+  orig: 86, 307
+  offset: 0, 0
+  index: -1
+thatlung5
+  rotate: true
+  xy: 1920, 383
+  size: 119, 227
+  orig: 119, 227
+  offset: 0, 0
+  index: -1
+tocsau
+  rotate: true
+  xy: 1214, 60
+  size: 100, 208
+  orig: 100, 208
+  offset: 0, 0
+  index: -1
+toctruoc1
+  rotate: true
+  xy: 2351, 403
+  size: 99, 188
+  orig: 99, 188
+  offset: 0, 0
+  index: -1
+toctruoc2
+  rotate: true
+  xy: 3841, 456
+  size: 46, 179
+  orig: 46, 179
+  offset: 0, 0
+  index: -1

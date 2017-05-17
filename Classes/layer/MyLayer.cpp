@@ -1,6 +1,6 @@
 #include "MyLayer.h"
 #include "Global.h"
-#include "coin\Coin.h"
+#include "coin/Coin.h"
 #include "EnemyWooder.h"
 #include "EnemyToanChanStudent.h"
 #include "EnemyToanChanStudent2.h"
@@ -8,6 +8,10 @@
 #include "EnemyHongLangBa2.h"
 #include "EnemyToOng.h"
 #include "EnemyTNB.h"
+#include "EnemyHoacDo.h"
+#include "EnemyHoacDo2.h"
+#include "EnemyDatNhiBa.h"
+#include "EnemyDatNhiBa2.h"
 
 MyLayer::MyLayer()
 {
@@ -18,6 +22,9 @@ MyLayer::MyLayer()
 	 hongLangBa1Pool = nullptr;
 	 hongLangBa2Pool = nullptr;
 	 tnbPool = nullptr;
+	 hoacDo1Pool = nullptr;
+	 datNhiBa1Pool = nullptr;
+	 datNhiBa2Pool = nullptr;
 }
 MyLayer::~MyLayer(){
 	if(wooderPool!= nullptr)
@@ -32,6 +39,12 @@ MyLayer::~MyLayer(){
 		delete hongLangBa1Pool;
 	if(hongLangBa2Pool != nullptr)
 		delete hongLangBa2Pool;
+	if (tnbPool != nullptr)
+		delete tnbPool;
+	if (datNhiBa1Pool != nullptr)
+		delete datNhiBa1Pool;
+	if (datNhiBa2Pool != nullptr)
+		delete datNhiBa2Pool;
 }
 bool MyLayer::init(TMXTiledMap* tmx_map)
 {
@@ -110,6 +123,49 @@ bool MyLayer::init(TMXTiledMap* tmx_map)
 		tnbPool = MyPool::create(max, TAG_ENEMY_TNB);
 		for (int i = 0; i < tnbPool->maxPool; i++) {
 			auto tmp = (EnemyTNB*)tnbPool->getObject();
+			tmp->setPosition(0, -SCREEN_SIZE.height);
+			tmp->setVisible(false);
+			tmp->pauseSchedulerAndActions();
+			this->addChild(tmp);
+		}
+	}
+
+	if (tmx_map->getObjectGroup("hoacdo_1")) {
+		hoacDo1Pool = MyPool::create(max, TAG_ENEMY_HOACDO1);
+		for (int i = 0; i < hoacDo1Pool->maxPool; i++) {
+			auto tmp = (EnemyHoacDo*)hoacDo1Pool->getObject();
+			tmp->setPosition(0, -SCREEN_SIZE.height);
+			tmp->setVisible(false);
+			tmp->pauseSchedulerAndActions();
+			this->addChild(tmp);
+		}
+	}
+
+	if (tmx_map->getObjectGroup("hoacdo_2")) {
+		hoacDo2Pool = MyPool::create(max, TAG_ENEMY_HOACDO2);
+		for (int i = 0; i < hoacDo2Pool->maxPool; i++) {
+			auto tmp = (EnemyHoacDo2*)hoacDo2Pool->getObject();
+			tmp->setPosition(0, -SCREEN_SIZE.height);
+			tmp->setVisible(false);
+			tmp->pauseSchedulerAndActions();
+			this->addChild(tmp);
+			tmp->genSlash();
+		}
+	}
+	if (tmx_map->getObjectGroup("datnhiba_1")) {
+		datNhiBa1Pool = MyPool::create(max, TAG_ENEMY_DATNHIBA1);
+		for (int i = 0; i < datNhiBa1Pool->maxPool; i++) {
+			auto tmp = (EnemyDatNhiBa*)datNhiBa1Pool->getObject();
+			tmp->setPosition(0, -SCREEN_SIZE.height);
+			tmp->setVisible(false);
+			tmp->pauseSchedulerAndActions();
+			this->addChild(tmp);
+		}
+	}
+	if (tmx_map->getObjectGroup("datnhiba_2")) {
+		datNhiBa2Pool = MyPool::create(max, TAG_ENEMY_DATNHIBA2);
+		for (int i = 0; i < datNhiBa2Pool->maxPool; i++) {
+			auto tmp = (EnemyDatNhiBa2*)datNhiBa2Pool->getObject();
 			tmp->setPosition(0, -SCREEN_SIZE.height);
 			tmp->setVisible(false);
 			tmp->pauseSchedulerAndActions();

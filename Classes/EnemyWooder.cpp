@@ -1,9 +1,9 @@
 #include "EnemyWooder.h"
-#include "manager\AudioManager.h"
+#include "manager/AudioManager.h"
 
 EnemyWooder::EnemyWooder() : BaseEnemy()
 {
-	
+
 }
 
 EnemyWooder::~EnemyWooder()
@@ -77,7 +77,8 @@ void EnemyWooder::die()
 void EnemyWooder::updateMe(BaseHero* hero)
 {
 	BaseEnemy::updateMe(hero);
-	if (this->getIsDie()&& this->getB2Body()!= nullptr) {
+
+	if (this->getIsDie() && this->getB2Body() != nullptr) {
 		this->die();
 	}
 
@@ -93,4 +94,11 @@ void EnemyWooder::listener()
 		}
 
 	});
+}
+
+void EnemyWooder::makeMask()
+{
+	this->changeBodyCategoryBits(BITMASK_WOODER);
+	this->changeBodyMaskBits(BITMASK_SWORD);
+
 }

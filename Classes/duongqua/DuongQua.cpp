@@ -25,6 +25,7 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 	duongQua->setJumpVel(duongQua->SCREEN_SIZE.height * 1.4f / PTM_RATIO);
 
 	duongQua->health = REF->getCurrentHealth();
+	duongQua->maxHealth = duongQua->health;
 
 	// set Duration here
 	duongQua->setDurationSkill1(REF->getDurationSkill_1());
@@ -69,8 +70,6 @@ void DuongQua::createToanChanKiemPhap(Point posSword)
 
 	tckp->setPosition(posSword.x + this->getTrueRadiusOfHero() / 2, posSword.y);
 	tckp->initCirclePhysic(gameLayer->world, tckp->getPosition());
-	tckp->changeBodyCategoryBits(BITMASK_SWORD);
-	tckp->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG);
 
 	if (!tckp->getIsAdded()) {
 		this->getParent()->addChild(tckp, ZORDER_SMT);
@@ -207,10 +206,6 @@ void DuongQua::createTieuHonChuong(Point posHand, int Zoder)
 	auto worldPos = posHand + this->getPosition();
 	thc->setPosition(worldPos.x + this->getTrueRadiusOfHero() / 2, worldPos.y);
 	thc->initCirclePhysic(gameLayer->world, thc->getPosition());
-	thc->changeBodyCategoryBits(BITMASK_SWORD);
-	thc->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG);
-
-
 	if (!thc->getIsAdded()) {
 		this->getParent()->addChild(thc, Zoder);
 		thc->setIsAdded(true);
@@ -308,7 +303,10 @@ void DuongQua::initCirclePhysic(b2World * world, Point pos)
 	fixtureDef.shape = &circle_shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_HERO;
-	fixtureDef.filter.maskBits = BITMASK_FLOOR | BITMASK_TOANCHAN1 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION;
+
+	fixtureDef.filter.maskBits = BITMASK_FLOOR |
+		BITMASK_ENEMY | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION;
+
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -424,6 +422,8 @@ void DuongQua::die()
 		return;
 	}
 
+	noActive = true;
+
 	AudioManager::playSound(SOUND_DQDIE);
 
 	if (spiritHole->isVisible())
@@ -528,22 +528,6 @@ void DuongQua::attackBySkill1()
 	createToanChanKiemPhap(getBoneLocation("bone52"));
 }
 
-void DuongQua::attackBySkill2()
-{
-	AudioManager::playSound(SOUND_DQSKILL2);
-	/*clearTracks();
-	addAnimation(0, "skill2", false);
-	setToSetupPose();*/
-}
-
-void DuongQua::attackBySkill3()
-{
-	AudioManager::playSound(SOUND_DQSKILL3);
-	/*clearTracks();
-	addAnimation(0, "skill3", false);
-	setToSetupPose();*/
-}
-
 void DuongQua::injured()
 {
 	AudioManager::playSound(SOUND_DQHIT);
@@ -601,6 +585,11 @@ void DuongQua::listener()
 			getFSM()->changeState(MLand);
 			auto gameLayer = (GameScene*) this->getParent();
 			initCirclePhysic(gameLayer->world, this->getPosition());
+
+			gameLayer->getHud()->resumeIfVisible();
+			gameLayer->enableCalling();
+
+			noActive = false;
 		}
 
 

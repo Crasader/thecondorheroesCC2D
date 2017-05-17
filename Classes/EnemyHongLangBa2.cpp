@@ -124,6 +124,7 @@ void EnemyHongLangBa2::updateMe(BaseHero* hero)
 		enemyDarts->setVisible(false);
 		enemyDarts->setIsDie(false);
 	}
+
 	if (enemyDarts->getPositionX() < this->getPositionX() - SCREEN_SIZE.width*3/4 && enemyDarts->isVisible()) {
 		//slash->getB2Body()->SetTransform(b2Vec2(this->getBoneLocation("bone32").x / PTM_RATIO, this->getBoneLocation("bone32").y / PTM_RATIO), 0);
 		enemyDarts->getB2Body()->GetWorld()->DestroyBody(enemyDarts->getB2Body());
@@ -136,8 +137,8 @@ void EnemyHongLangBa2::updateMe(BaseHero* hero)
 
 	if (hero->getPositionX() < this->getPositionX() + this->getParent()->getPositionX() && 
 		hero->getPositionX() > this->getPositionX() + this->getParent()->getPositionX() - SCREEN_SIZE.width * 0.6f &&
-		hero->getPositionY() + SCREEN_SIZE.height * 0.33f > this->getPositionY() &&
-		hero->getPositionY() - SCREEN_SIZE.height * 0.33f < this->getPositionY()) {
+		hero->getPositionY() + SCREEN_SIZE.height * 0.5f > this->getPositionY() &&
+		hero->getPositionY() - SCREEN_SIZE.height * 0.5f < this->getPositionY()) {
 
 		Vec2 vector = Vec2(hero->getPosition() - (this->getPosition() + this->getParent()->getPosition()));
 		angle = vector.getAngle();

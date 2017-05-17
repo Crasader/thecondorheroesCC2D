@@ -10,7 +10,7 @@ EnemyBoss1::EnemyBoss1(string jsonFile, string atlasFile, float scale) :BaseEnem
 	controlAttack = 2;
 	controlState = 0;
 
-	health = 5;
+	health = 10;
 	exp = 50;
 	baseVelocity =Vec2(SCREEN_SIZE.width / 2.3f, SCREEN_SIZE.height / 10);
 	moveVelocity = Vec2(SCREEN_SIZE.height / 2, SCREEN_SIZE.height / 2);
@@ -69,8 +69,14 @@ void EnemyBoss1::die()
 			this->playSoundHit();
 			this->isNodie = true;
 			this->clearTracks();
-			this->setAnimation(0, "injured", false);
+			this->setAnimation(0, "injured-red", false);
 			this->setToSetupPose();
+			this->scheduleOnce([&](float dt) {
+				this->isNodie = false;
+				this->clearTracks();
+				this->setAnimation(0, "idle", false);
+				this->setToSetupPose();
+			}, 0.2f, "bossinjured");
 		}
 		else {
 			this->playSoundDie();
@@ -245,7 +251,9 @@ void EnemyBoss1::createCoinPool()
 
 void EnemyBoss1::updateMe(BaseHero* hero)
 {
-	this->heroLocation = hero->getPosition();
+	if (hero->getB2Body() != nullptr) {
+		this->heroLocation =Vec2( hero->getB2Body()->GetPosition().x*PTM_RATIO, hero->getB2Body()->GetPosition().y*PTM_RATIO);
+	}
 	//log("ParentBoss: %f, %f, %s", this->getParent()->getPositionX(), this->getParent()->getPositionY(), this->getParent()->getName().c_str());
 	//log();
 	auto posHero = hero->getPosition();
@@ -306,8 +314,7 @@ void EnemyBoss1::listener()
 				setIsNodie(false);
 			}
 			else if ((strcmp(getCurrent()->animation->name, "injured") == 0 && loopCount == 1)) {
-				setIsNodie(false);
-				this->idle();
+				
 			}
 			else if ((strcmp(getCurrent()->animation->name, "injured-red") == 0 && loopCount == 1)) {
 				//Director::getInstance()->replaceScene(MenuLayer::createScene());
@@ -317,6 +324,11 @@ void EnemyBoss1::listener()
 				//});
 				////this->setControlState(INT_MIN);
 				//this->runAction(Sequence::createWithTwoActions(DelayTime::create(10), call));
+				if (this->getHealth() > 0) {
+					setIsNodie(false);
+					this->idle();
+				}
+				
 			}
 		}
 	});
@@ -341,7 +353,7 @@ void EnemyBoss1::changeState(StateBoss * state)
 void EnemyBoss1::doAttack1()
 {
 	this->schedule([&](float dt) {
-		log("doattack1");
+		//log("doattack1");
 		this->setControlState(this->getControlState() + 1);
 		if (this->getControlState() % 20 == 0) {
 			if (this->getControlAttack() == 0) {
@@ -358,17 +370,17 @@ void EnemyBoss1::doAttack1()
 void EnemyBoss1::doAttack2()
 {
 	this->schedule([&](float dt) {
-		log("do attack2");
+		//log("do attack2");
 		this->setControlState(this->getControlState() + 1);
 		if (this->getControlState() == 1) {
 			this->attack2();
 		}
+		auto posHero = this->heroLocation;
+		auto posBoss = this->getPosGenSlash();
 		switch (this->getRandAt2())
 		{
 		case 0: {
 			if (this->getControlState() == 1 || this->getControlState() == 3 || this->getControlState() == 5) {
-				auto posHero = this->heroLocation;
-				auto posBoss = this->getPosition();
 				auto vecBossToHero = posHero - posBoss;
 				this->creatSlash(vecBossToHero.getAngle());
 			}
@@ -376,8 +388,6 @@ void EnemyBoss1::doAttack2()
 		}
 		case 1: {
 			if (this->getControlState() == 2 || this->getControlState() == 4) {
-				auto posHero = this->heroLocation;
-				auto posBoss = this->getPosition();
 				auto vecBossToHero = posHero - posBoss;
 				this->creatSlash(vecBossToHero.getAngle() - PI / 24);
 				this->creatSlash(vecBossToHero.getAngle());
@@ -390,8 +400,6 @@ void EnemyBoss1::doAttack2()
 		}
 		default:
 			if (this->getControlState() == 1 || this->getControlState() == 3 || this->getControlState() == 5) {
-				auto posHero = this->heroLocation;
-				auto posBoss = this->getPosition();
 				auto vecBossToHero = posHero - posBoss;
 				this->creatSlash(vecBossToHero.getAngle());
 			}
@@ -404,6 +412,11 @@ void EnemyBoss1::doAttack2()
 			this->unschedule("bossattack2");
 		}
 	}, 0.1f, "bossattack2");
+}
+
+Vec2 EnemyBoss1::getPosGenSlash()
+{
+	return this->getBoneLocation("bone65");
 }
 
 void EnemyBoss1::playSoundAttack1()

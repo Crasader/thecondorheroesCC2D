@@ -23,7 +23,7 @@ void CustomSpriteToBuyPack::initOptions(ScrollView *p_pParent, ccMenuCallback p_
 	m_bTouchMoved = false;
 	m_pParent = p_pParent;
 	m_pCallBack = p_pCallBack;
-	m_fBigScale = m_pParent->getContentSize().height / this->getContentSize().height * 0.9;
+	m_fBigScale = m_pParent->getContentSize().height / this->getContentSize().height * 0.9f;
 	m_fSmallScale = m_pParent->getContentSize().height / this->getContentSize().height * 0.8f;
 }
 
@@ -38,7 +38,8 @@ void CustomSpriteToBuyPack::addEvents() {
 }
 
 bool CustomSpriteToBuyPack::touchBegan(Touch *p_pTouch, Event *p_pEvent) {
-	Vec2 _v2TouchPoint = p_pTouch->getLocation() - m_pParent->getInnerContainerPosition();
+	Vec2 _v2TouchPoint = Vec2(p_pTouch->getLocation().x - m_pParent->getInnerContainerPosition().x - m_pParent->getPosition().x,
+		p_pTouch->getLocation().y - m_pParent->getPosition().y);
 	Rect _rBoundingBox = this->getBoundingBox();
 	m_bTouchMoved = false;
 	if (_rBoundingBox.containsPoint(_v2TouchPoint)) {
@@ -49,7 +50,7 @@ bool CustomSpriteToBuyPack::touchBegan(Touch *p_pTouch, Event *p_pEvent) {
 }
 
 void CustomSpriteToBuyPack::touchCancelled(Touch *p_pTouch, Event *p_pEvent) {
-	if (m_bTouchMoved) {
+	if (m_bTouchMoved == true) {
 		return;
 	}
 	this->runAction(ScaleTo::create(0.1f, m_fBigScale, m_fBigScale));
@@ -57,10 +58,11 @@ void CustomSpriteToBuyPack::touchCancelled(Touch *p_pTouch, Event *p_pEvent) {
 }
 
 void CustomSpriteToBuyPack::touchEnded(Touch *p_pTouch, Event *p_pEvent) {
-	if (m_bTouchMoved) {
+	if (m_bTouchMoved == true) {
 		return;
 	}
-	Vec2 _v2TouchPoint = p_pTouch->getLocation() - m_pParent->getInnerContainerPosition();
+	Vec2 _v2TouchPoint = Vec2(p_pTouch->getLocation().x - m_pParent->getInnerContainerPosition().x - m_pParent->getPosition().x,
+		p_pTouch->getLocation().y - m_pParent->getPosition().y);
 	Rect _rBoundingBox = this->getBoundingBox();
 	if (_rBoundingBox.containsPoint(_v2TouchPoint)) {
 		this->runAction(ScaleTo::create(0.1f, m_fBigScale, m_fBigScale));

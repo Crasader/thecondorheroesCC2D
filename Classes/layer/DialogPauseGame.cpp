@@ -1,10 +1,10 @@
 
-#include "layer/DialogPauseGame.h"
-#include "layer/GameScene.h"
-#include "layer/MenuScene.h"
+#include "DialogPauseGame.h"
+#include "GameScene.h"
+#include "MenuScene.h"
 #include "SimpleAudioEngine.h"
 #include "manager/RefManager.h"
-
+#include "ui_custom/CustomLayerToToast.h"
 
 
 
@@ -46,9 +46,12 @@ void DialogPauseGame::resumeGame(Ref * pSender)
 
 void DialogPauseGame::backHome(Ref * pSender)
 {
-	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
-	gameLayer->removeAllChildrenWithCleanup(true);
-	Director::getInstance()->replaceScene(MenuLayer::createScene());
+	auto gameScene = this->getParent();
+	gameScene->removeAllChildrenWithCleanup(true);
+	Layer *_pMenuScene = MenuLayer::create(false);
+	auto _aMainMenuScene = Scene::create();
+	_aMainMenuScene->addChild(_pMenuScene);
+	Director::getInstance()->replaceScene(_aMainMenuScene);
 }
 
 void DialogPauseGame::overGame()
@@ -69,7 +72,9 @@ void DialogPauseGame::replayGame(Ref * pSender, int goldRevive, bool isWatchVide
 			gameLayer->reviveHero();
 		}
 		else {
-			log("You dont have enough gold to revive");
+			CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(2), TOAST_SHORT);
+			_pToast->setPosition(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 7));
+			addChild(_pToast, 10);
 		}
 	}
 	else {
@@ -334,13 +339,6 @@ bool DialogStageClear::init(int score, int gold)
 
 	int currentScore = REF->getCurrentScore();
 	int currentLevel = REF->getCurrentLevel();
-
-	/*if (currentScore >= JSHERO->getMaxScoreLevelX(currentLevel)) {
-
-		REF->setCurrentScoreAfterIncrease(currentScore - JSHERO->getMaxScoreLevelX(currentLevel));
-		REF->increaseLevel();
-	}*/
-
 	effect();
 
 	return true;
@@ -493,11 +491,6 @@ bool DialogOverGame::init(int score, int gold)
 	int currentScore = REF->getCurrentScore();
 	int currentLevel = REF->getCurrentLevel();
 
-	/*if (currentScore >= JSHERO->getMaxScoreLevelX(currentLevel)) {
-
-		REF->setCurrentScoreAfterIncrease(currentScore - JSHERO->getMaxScoreLevelX(currentLevel));
-		REF->increaseLevel();
-	}*/
 	effect();
 
 	return true;

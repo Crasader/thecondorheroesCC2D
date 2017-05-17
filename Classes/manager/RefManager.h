@@ -6,7 +6,6 @@
 
 USING_NS_CC;
 
-
 class RefManager
 {
 public:
@@ -15,7 +14,9 @@ public:
 	~RefManager();
 
 protected:
+	CC_SYNTHESIZE_READONLY(int, language, Language);
 	CC_SYNTHESIZE_READONLY(bool, isFirstPlay, IsFirstPlay);
+	CC_SYNTHESIZE_READONLY(int, lastMapIdPlay, LastMapIdPlay);
 
 	CC_SYNTHESIZE_READONLY(int, selectedHero, SelectedHero);
 	CC_SYNTHESIZE_READONLY(bool, isLockedHero, IsLockedHero);	// to try or smt
@@ -71,11 +72,14 @@ private:
 public:
 	static RefManager* getInstance();
 
+	void setLanguage(int p_nLanguage);
+
 	void pointToCurrentHero(int index);		// set props to get
 
 	void setSelectedHero(int index);
 
 	void setDoneFirstPlay();
+	void setLastMapId(int id);
 
 	void unLockHero(int index);
 	void increaseLevel();
@@ -137,7 +141,9 @@ public:
 
 #define REF RefManager::getInstance()
 // Ref
+#define KEY_LANGUAGE						"Language"
 #define KEY_FIRST							"FirstPlay"
+#define KEY_LAST_MAP_ID						"LastMapID"
 #define KEY_SELECTED_HERO					"SelectedHero"		// integer
 
 #define KEY_CUR_STAGE_UNLOCKED				"CurrentStageUnlocked"
@@ -195,5 +201,15 @@ public:
 
 #define NUMBER_QUEST_X									"NumberQuest_"
 #define REWARDED_QUEST_X								"RewardedQuest_"
+
+
+#define INDEX_QUEST_CALL_BIRD	0
+#define INDEX_QUEST_HEALTH		1
+#define INDEX_QUEST_COOLDOWN	2
+#define INDEX_QUEST_DQ			3
+#define INDEX_QUEST_TNL			4
+#define INDEX_QUEST_HD			5
+#define INDEX_QUEST_RAMPAGE		6
+#define INDEX_QUEST_DIAMOND		7
 
 #endif // __REF_MANAGER_H__

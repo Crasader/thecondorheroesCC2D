@@ -12,9 +12,13 @@
 #include "EnemyToOng.h"
 #include "EnemyHongLangBa.h"
 #include "EnemyHongLangBa2.h"
-
+#include "EnemyHoacDo.h"
+#include "EnemyHoacDo2.h"
+#include "EnemyDatNhiBa.h"
+#include "EnemyDatNhiBa2.h"
 #include "boss/EnemyBoss1.h"
 #include "boss/EnemyBoss2.h"
+#include "boss/EnemyBoss3.h"
 #include "chimdieu/ChimDieu.h"
 #include "coin/Coin.h"
 #include "coin/CoinBag.h"
@@ -22,12 +26,13 @@
 #include "CollisionListener.h"
 #include "utils/InfiniteParallaxNode.h"
 #include "utils/GLES-Render.h"
-#include "layer/DialogPauseGame.h"
+#include "DialogPauseGame.h"
+#include "TutorialLayer.h"
 #include "datastructures/MyData.h"
 #include "datastructures/MyPool.h"
-#include "layer/MyLayer.h"
+#include "MyLayer.h"
 #include "item/Item.h"
-
+#include "Hud.h"
 
 
 
@@ -35,12 +40,14 @@ class GameScene : public cocos2d::Layer
 {
 public:
 	
-	static Scene* createScene(int stage, int map, int haveboss, int charId);
+	static Scene* createScene(GameScene* gameLayer, Hud *m_hud);
 	virtual bool init(int stage, int map, int haveboss, int charId);
 	static GameScene* create(int stage, int map, int haveboss, int charId);
 
 	BaseHero * getHero() { return hero; }
 	void setLastScore(int lastScore) { m_lastScore = lastScore; }
+	CC_SYNTHESIZE(Hud*, hud, Hud);
+	void enableCalling();
 
 private:
 	// props
@@ -82,11 +89,7 @@ private:
 	Follow *camera;
 	Node* follow;
 	CCRect left_corner;
-	LayerColor *blur;
 	SpriteBatchNode* batchNode;
-
-	list<BaseEnemy*> listEnemyOccurInScreen;
-
 
 	BaseHero *hero;
 	ChimDieu* _aEagle;
@@ -147,6 +150,10 @@ private:
 	void createEnemyHongLangBa(MyLayer* layer, Vec2 pos);
 	void createEnemyHongLangBa2(MyLayer* layer, Vec2 pos);
 	void createEnemyToOng(MyLayer* layer, Vec2 pos);
+	void createEnemyHoacDo(MyLayer* layer, Vec2 pos);
+	void createEnemyHoacDo2(MyLayer* layer, Vec2 pos);
+	void createEnemyDatNhiBa(MyLayer* layer, Vec2 pos);
+	void createEnemyDatNhiBa2(MyLayer* layer, Vec2 pos);
 	void creatBoss();
 
 	void createCoin();
@@ -160,9 +167,8 @@ private:
 
 	//skeleton data
 	//spSkeletonData* createSkeletonData(string atlasFile, string jsonFile);
-	// sau va cham body cua cac quai khong con static nua
-	// do do se bi roi xuong
-	// bat su kien roi xuong qua man hinh de don dep map
+	
+	void updateQuest();
 
 
 	void danceWithCamera();
@@ -193,11 +199,6 @@ public:
 
 	void updateCoin();
 
-	//void cleanMap();
-
-	// cache function
-	void cachePlist();
-	void cacheSkeleton();
 
 
 	// shaking
@@ -226,19 +227,34 @@ public:
 	// quan ly item
 	//void createMapItem();// tao du lieu cho map item.
 
-	// tutorial
-	bool isFirstPlay;
-	bool isDoneAttackTut = false;
-	bool isDoneSkillTut = false;
+	
 
 	// handle tuts
-	void jump();
 
+	// tut
+private:
+	TutorialLayer *tut;
+
+	// tutorial
+	bool isFirstPlay = false;
+
+	float posXJump1Tut = -1;
+	float posXJump2Tut = -1;
+	float posXAttackTut = -1;
+	float posXSkillTut = -1;
+	float posXIntroBird = -1;
+
+	void introJump(int type);
 	void introAttack();
 	void introSkills();
 	void introBird();
 
 	void tutorial();
+
+public:
+
+	void jump();
+	void resumeAfterTut(int caseTut);
 };
 
 #endif // __GAME_SCENE_H__

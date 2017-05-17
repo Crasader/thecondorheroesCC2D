@@ -37,7 +37,7 @@
 	}
 },
 "animations": {
-	"detu2slash": {
+	"animation": {
 		"slots": {
 			"slashenemy1": {
 				"attachment": [

@@ -22,9 +22,12 @@ public:
 	virtual void attack();
 	virtual void die();
 	virtual void initCirclePhysic(b2World * world, Point pos);
-	void updateMe(BaseHero* hero);
+	virtual void updateMe(BaseHero* hero);
+	virtual void playsoundAt();
+	virtual void playsoundDie();
 	//virtual void genSplash();
 	virtual void listener();
+	virtual void updatePos();
 };
 
 #endif // __ENEMY_H__

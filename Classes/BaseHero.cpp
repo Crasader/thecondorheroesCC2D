@@ -13,6 +13,8 @@ BaseHero::BaseHero(string jsonFile, string atlasFile, float scale) : B2Skeleton(
 	currentRunDis = 0.0f;
 	preRunDis = 0.0f;
 	isNoDie = false;
+	noActive = false;
+	isKillAll = false;
 	dieHard = 1;
 	coinRatio = 1;
 	createMapItem();
@@ -38,7 +40,7 @@ void BaseHero::initSwordPhysic(b2World *world, Point position, float width)
 	fixtureDef.shape = &shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_WOODER;
-	fixtureDef.filter.maskBits = BITMASK_WOODER | BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BAG;
+	fixtureDef.filter.maskBits = BITMASK_WOODER | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BAG | BITMASK_ENEMY;
 
 	bodyDef.position.Set(position.x / PTM_RATIO, position.y / PTM_RATIO);
 	bodyDef.type = b2_dynamicBody;
@@ -298,28 +300,26 @@ void BaseHero::deSelectEnemyBySkill3()
 	}
 }
 
-void BaseHero::killThemAll(list<BaseEnemy*> listToKill)
+void BaseHero::killThemAll()
 {
-	blash->setVisible(true);
-	//auto originScale = blash->getScale();
-	auto scaleFactor = Director::getInstance()->getContentScaleFactor();
-	auto scale = ScaleBy::create(0.7f, 150 * scaleFactor);
-
-	auto hide = CallFunc::create([&]() {
-		blash->setVisible(false);
-	});
-
-	blash->runAction(Sequence::create(scale, hide, scale->reverse(), nullptr));
-
-	for (auto enemy : listToKill) {
-		enemy->setIsDie(true);
-	}
-
 	auto boss = (BaseEnemy*) this->getParent()->getChildByTag(TAG_BOSS);
 	if (boss != nullptr && boss->getPositionX() < this->getPositionX() + SCREEN_SIZE.width * 0.75f) {
 		boss->die();
 		//log("%i", boss->getHealth());
 	}
+
+	isKillAll = true;
+	blash->setVisible(true);
+	//auto originScale = blash->getScale();
+	auto scaleFactor = Director::getInstance()->getContentScaleFactor();
+	auto scale = ScaleBy::create(0.5f, 150 * scaleFactor);
+
+	auto hide = CallFunc::create([&]() {
+		blash->setVisible(false);
+		isKillAll = false;
+	});
+
+	blash->runAction(Sequence::create(scale, hide, scale->reverse(), nullptr));
 }
 
 void BaseHero::createMapItem()

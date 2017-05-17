@@ -14,8 +14,8 @@ bool SceneIntro::init() {
     if ( !Layer::init() ) {
         return false;
 	}
-	AudioManager::cacheAudio();
-	AudioManager::playMusic(MUSIC_MENU);
+	//AudioManager::cacheAudio();
+	//AudioManager::playMusic(MUSIC_MENU);
 	auto origin = Director::getInstance()->getVisibleOrigin();
 
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("item/coin.plist");
@@ -73,6 +73,8 @@ bool SceneIntro::init() {
 
 void SceneIntro::goToMainMenuScene(Ref* p_pSender) {
 	AudioManager::playSound(SOUND_BTCLICK);
-	auto _aMainMenuScene = MenuLayer::createScene(); // create main menu scene
-	Director::getInstance()->replaceScene(TransitionFade::create(0.5f, _aMainMenuScene)); // replace current scene by main menu scene, replacing duration is 500ms
+	Layer *_pMenuScene = MenuLayer::create(false);
+	auto _aMainMenuScene = Scene::create();
+	_aMainMenuScene->addChild(_pMenuScene);
+	Director::getInstance()->replaceScene(TransitionFade::create(0.5f, _aMainMenuScene));
 }

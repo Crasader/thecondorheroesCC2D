@@ -3,6 +3,7 @@
 
 EnemyBoss2::EnemyBoss2(string jsonFile, string atlasFile, float scale) :EnemyBoss1(jsonFile, atlasFile, scale)
 {
+	health = 20;
 }
 
 EnemyBoss2 * EnemyBoss2::create(string jsonFile, string atlasFile, float scale)
@@ -34,6 +35,11 @@ void EnemyBoss2::createPool()
 	}
 
 	indexSlash = 0;
+}
+
+Vec2 EnemyBoss2::getPosGenSlash()
+{
+	return this->getBoneLocation("bone5");
 }
 
 void EnemyBoss2::creatSlash(float angel)

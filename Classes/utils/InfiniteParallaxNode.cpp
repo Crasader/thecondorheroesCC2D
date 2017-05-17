@@ -1,4 +1,4 @@
-#include "utils/InfiniteParallaxNode.h"
+#include "InfiniteParallaxNode.h"
 
 class PointObject : public Ref
 {

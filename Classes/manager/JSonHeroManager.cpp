@@ -1,10 +1,11 @@
 #include "JSonHeroManager.h"
+#include "RefManager.h"
 
 JSonHeroManager* JSonHeroManager::jsonHeroManager;
 
 JSonHeroManager::JSonHeroManager()
 {
-	auto herobuffer = FileUtils::getInstance()->getStringFromFile("Hero.json");
+	auto herobuffer = FileUtils::getInstance()->getStringFromFile(String::createWithFormat("json/Hero.json")->getCString());
 	this->jsonDoc.Parse(herobuffer.c_str());
 }
 
@@ -31,6 +32,7 @@ void JSonHeroManager::readFile(int indexHero)
 	this->infor = jsonDoc["hero"][indexHero]["inforHero"].GetString();
 	this->avatarPath = jsonDoc["hero"][indexHero]["avatarPath"].GetString();
 	this->characterPointPath = jsonDoc["hero"][indexHero]["characterPointPath"].GetString();
+	this->selectCharacterPoint = jsonDoc["hero"][indexHero]["selectCharacterPoint"].GetString();
 	this->avatarLoadingPath = jsonDoc["hero"][indexHero]["avatarLoadingPath"].GetString();
 
 	this->isLocked = jsonDoc["hero"][indexHero]["isLocked"].GetBool();
@@ -81,4 +83,10 @@ string JSonHeroManager::getTipAtX(int index)
 {
 	assert(index > 0 && index <= 10);
 	return jsonDoc["tip"][0][("tip_" + StringUtils::format("%i", index)).c_str()].GetString();
+}
+
+string JSonHeroManager::getNotifyAtX(int index)
+{
+	assert(index > 0 && index <= 9);
+	return jsonDoc["notification"][0][("noti_" + StringUtils::format("%i", index)).c_str()].GetString();
 }

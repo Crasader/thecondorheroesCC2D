@@ -60,13 +60,15 @@ void Item::updateMe(BaseHero *hero)
 
 					auto parentGameScene = (GameScene*) this->getParent();
 
-					if (typeItem == Item_type::HEALTH && hero->getHealth() < REF->getCurrentHealth()) {
+					if (typeItem == Item_type::HEALTH && hero->getHealth() < hero->getMaxHealth()) {
 						hero->setHealth(hero->getHealth() + 1);
 						parentGameScene->updateBloodBar(hero->getHealth() - 1, true);
 					}
 
 					if (typeItem == Item_type::MAGNET) {
-						parentGameScene->runnerItem(Item_type::MAGNET, DURATION_MAGNET);
+						REF->getSelectedHero() == 1 ? 
+							parentGameScene->runnerItem(Item_type::MAGNET, DURATION_MAGNET * 1.15f) : 
+							parentGameScene->runnerItem(Item_type::MAGNET, DURATION_MAGNET);
 					}
 
 					if (typeItem == Item_type::DOUBLE_COIN) {

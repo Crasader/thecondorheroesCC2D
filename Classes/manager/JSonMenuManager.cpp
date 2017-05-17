@@ -1,9 +1,10 @@
 #include "JSonMenuManager.h"
+#include "RefManager.h"
 
 JSonMenuManager* JSonMenuManager::jsonMenuManager;
 
 JSonMenuManager::JSonMenuManager() {
-	auto menubuffer = FileUtils::getInstance()->getStringFromFile("Menu1.json");
+	auto menubuffer = FileUtils::getInstance()->getStringFromFile(String::createWithFormat("json/Menu.json")->getCString());
 	this->jsonDoc.Parse(menubuffer.c_str());
 }
 
@@ -35,5 +36,12 @@ void JSonMenuManager::readDiamondPack(int firstIndex) {
 	this->m_sIconDiamondPackPath = jsonDoc["diamond_packs"][firstIndex]["iconDiamondPackPath"].GetString();
 	this->m_nDiamondPackNumberDiamond = jsonDoc["diamond_packs"][firstIndex]["diamondNumber"].GetInt();
 	this->m_nDiamondPackMoneyPrice = jsonDoc["diamond_packs"][firstIndex]["moneyPrice"].GetInt();
+}
+
+void JSonMenuManager::readEnergyPack(int firstIndex) {
+	this->m_sEnergyPackName = jsonDoc["energy_packs"][firstIndex]["energyPackName"].GetString();
+	this->m_sIconEnergyPackPath = jsonDoc["energy_packs"][firstIndex]["iconEnergyPackPath"].GetString();
+	this->m_nEnergyPackNumberEnergy = jsonDoc["energy_packs"][firstIndex]["energyNumber"].GetInt();
+	this->m_nEnergyPackDiamondPrice = jsonDoc["energy_packs"][firstIndex]["diamondPrice"].GetInt();
 }
 

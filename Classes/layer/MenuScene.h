@@ -20,13 +20,14 @@ using namespace network;
 class MenuLayer : public Layer {
 public:
 	static Scene * createScene();
-	virtual bool init();
+	virtual bool init(bool p_bOnlySelectStage);
 	void update(float p_fDelta);
-	CREATE_FUNC(MenuLayer);
+	static MenuLayer* create(bool p_bOnlySelectStage);
 private:
 	const Size m_szVisibleSize = Director::getInstance()->getVisibleSize();
 	float m_fButtonStartPosition;							// make start and unlock button at same position
 	int m_nMenuStatus = 0;
+	bool m_nOnlySelectStage;
 
 	// input value
 	int m_nCurrentTimeFromGoogle = 0;						// time from google.com.vn (-7 hours from Viet Nam)
@@ -74,6 +75,7 @@ private:
 	Layer *m_pBottomHeroLayer;
 	Layer *m_pShopBoardLayer;
 
+	Layer *m_pSelectStageLayer;
 	Layer *m_pBlurScreen;
 
 	// menus
@@ -160,6 +162,7 @@ private:
 
 	// supporter
 	int calTimeFromString(string p_sInputString);
+	void scrollSlideHandle(Ref* sender, ui::ScrollView::EventType type);
 };
 
 #endif // __MENUSCENE_H__

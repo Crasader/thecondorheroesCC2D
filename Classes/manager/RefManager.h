@@ -6,7 +6,6 @@
 
 USING_NS_CC;
 
-
 class RefManager
 {
 public:
@@ -15,6 +14,7 @@ public:
 	~RefManager();
 
 protected:
+	CC_SYNTHESIZE_READONLY(int, language, Language);
 	CC_SYNTHESIZE_READONLY(bool, isFirstPlay, IsFirstPlay);
 	CC_SYNTHESIZE_READONLY(int, lastMapIdPlay, LastMapIdPlay);
 
@@ -34,7 +34,6 @@ protected:
 	CC_SYNTHESIZE_READONLY(int, dailyRewardCounter, DailyRewardCounter);   //
 	CC_SYNTHESIZE_READONLY(bool, dailyRewardAvailable, DailyRewardAvailable);	// to try or smt
 	CC_SYNTHESIZE_READONLY(int, freeCoin, FreeCoin);	// to try or smt
-
 
 	// life of game
 	CC_SYNTHESIZE_READONLY(int, numberOfLife, NumberOfLife);   //
@@ -73,6 +72,8 @@ private:
 
 public:
 	static RefManager* getInstance();
+
+	void setLanguage(int p_nLanguage);
 
 	void pointToCurrentHero(int index);		// set props to get
 
@@ -142,6 +143,7 @@ public:
 
 #define REF RefManager::getInstance()
 // Ref
+#define KEY_LANGUAGE						"Language"
 #define KEY_FIRST							"FirstPlay"
 #define KEY_LAST_MAP_ID						"LastMapID"
 #define KEY_SELECTED_HERO					"SelectedHero"		// integer

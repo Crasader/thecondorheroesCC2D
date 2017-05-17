@@ -1,4 +1,5 @@
 #include "JSonHeroManager.h"
+#include "RefManager.h"
 
 JSonHeroManager* JSonHeroManager::jsonHeroManager;
 
@@ -81,6 +82,6 @@ string JSonHeroManager::getTipAtX(int index)
 
 string JSonHeroManager::getNotifyAtX(int index)
 {
-	assert(index > 0 && index <= 10);
+	assert(index > 0 && index <= 9);
 	return jsonDoc["notification"][0][("noti_" + StringUtils::format("%i", index)).c_str()].GetString();
 }

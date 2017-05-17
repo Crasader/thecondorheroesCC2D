@@ -1,10 +1,11 @@
 #include "JSonQuestManager.h"
+#include "RefManager.h"
 
 JSonQuestManager* JSonQuestManager::jsonQuestManager;
 
 JSonQuestManager::JSonQuestManager() {
-	auto menubuffer = FileUtils::getInstance()->getStringFromFile("json/Quest.json");
-	this->jsonDoc.Parse(menubuffer.c_str());
+	auto questbuffer = FileUtils::getInstance()->getStringFromFile(String::createWithFormat("json/Quest.json")->getCString());
+	this->jsonDoc.Parse(questbuffer.c_str());
 }
 
 JSonQuestManager::~JSonQuestManager() {

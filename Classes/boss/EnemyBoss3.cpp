@@ -39,10 +39,11 @@ void EnemyBoss3::createPool()
 
 void EnemyBoss3::attack3()
 {
+	AudioManager::playSound(SOUND_BOSS3SKILL2);
 	this->isNodie = true;
 	this->clearTracks();
 	this->setAnimation(0, "attack3", false);
-	
+	this->setTimeScale(0.4f);
 }
 
 void EnemyBoss3::fixStupid()
@@ -86,18 +87,18 @@ void EnemyBoss3::creatSlash(float angel)
 
 void EnemyBoss3::playSoundAttack1()
 {
-	AudioManager::playSound(SOUND_BOSS2CHEM);
+	AudioManager::playSound(SOUND_BOSS3CHEM);
 }
 
 void EnemyBoss3::playSoundAttack2()
 {
-	AudioManager::playSound(SOUND_BOSS2SKILL);
+	AudioManager::playSound(SOUND_BOSS3SKILL1);
 }
 
 
 void EnemyBoss3::playSoundDie()
 {
-	AudioManager::playSound(SOUND_BOSS2DIE);
+	AudioManager::playSound(SOUND_BOSS3DIE);
 }
 
 void EnemyBoss3::doAttack2()
@@ -162,18 +163,18 @@ void EnemyBoss3::doAttack2()
 			this->setControlState(this->getControlState() + 1);
 			if (this->getControlState() == 1) {
 				this->attack3();
-				
-			this->creatHidenSlash(PI);
-				
-				
+
+
 			}
-			if (this->getControlState() == 2 || this->getControlState() == 4) {
+			if (this->getControlState() == 7 ||this->getControlState() == 12 || this->getControlState() == 17) {
 				this->creatHidenSlash(PI);
 			}
 			//if (boss->getLevelBoss() == 1) {
-			if (this->getControlState() == 10) {
+			if (this->getControlState() == 25) {
 				this->clearTracks();
 				this->setAnimation(0, "idle", true);
+				this->setTimeScale(1);
+				this->setToSetupPose();
 			}
 
 			if (this->getControlState() >= 50) {

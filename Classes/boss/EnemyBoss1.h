@@ -48,7 +48,7 @@ public:
 	void creatHidenSlash(float angel); // tao check chem
 	void creatHpSprite();
 	void boomboom();
-	void createGold();
+	int createGold();
 	void createCoinPool();
 	void updateMe(BaseHero* hero);
 

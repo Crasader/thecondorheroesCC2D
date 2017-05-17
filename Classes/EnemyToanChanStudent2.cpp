@@ -61,6 +61,7 @@ void EnemyToanChanStudent2::attack()
 		slash->getB2Body()->GetWorld()->DestroyBody(slash->getB2Body());
 	}
 	slash->setAnimation(0, "animation", true);
+	slash->resume();
 	slash->initCirclePhysic(this->getB2Body()->GetWorld(), this->getBoneLocation("bone32") + this->getParent()->getPosition());
 	slash->getB2Body()->SetLinearVelocity(b2Vec2(-SCREEN_SIZE.width/3/PTM_RATIO,0));
 }

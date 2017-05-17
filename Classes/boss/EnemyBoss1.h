@@ -41,7 +41,7 @@ public:
 	void idle();
 	void attack();
 	void attack2();
-	
+	virtual void fixStupid();
 	void die();
 	virtual void createPool();
 	virtual void creatSlash(float angel);

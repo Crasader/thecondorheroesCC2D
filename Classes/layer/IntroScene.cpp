@@ -16,7 +16,7 @@ bool SceneIntro::init() {
         return false;
 	}
 	//AudioManager::cacheAudio();
-	AdmobHelper::getInstance()->showTopBanner();
+	AdmobHelper::getInstance()->showBanner();
 	AudioManager::playMusic(MUSIC_MENU);
 	auto origin = Director::getInstance()->getVisibleOrigin();
 
@@ -75,7 +75,8 @@ bool SceneIntro::init() {
 }
 
 void SceneIntro::goToMainMenuScene(Ref* p_pSender) {
-	AdmobHelper::getInstance()->hideTopBanner();
+	
+	AdmobHelper::getInstance()->hideBanner();
 	AudioManager::playSound(SOUND_BTCLICK);
 	auto _aMainMenuScene = MenuLayer::createScene(); // create main menu scene
 	Director::getInstance()->replaceScene(TransitionFade::create(0.5f, _aMainMenuScene)); // replace current scene by main menu scene, replacing duration is 500ms

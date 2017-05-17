@@ -17,6 +17,7 @@ BaseHero::BaseHero(string jsonFile, string atlasFile, float scale) : B2Skeleton(
 	isKillAll = false;
 	dieHard = 1;
 	coinRatio = 1;
+	scoreRatio = 1;
 	createMapItem();
 }
 

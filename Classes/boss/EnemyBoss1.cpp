@@ -59,6 +59,12 @@ void EnemyBoss1::attack2()
 	this->setAnimation(0, "attack2", false);
 }
 
+void EnemyBoss1::fixStupid()
+{
+	this->setRealMoveVelocity(Vec2(this->getmoveVelocity().x, this->getmoveVelocity().y*CCRANDOM_0_1()));
+	log("fixstupid");
+}
+
 
 
 void EnemyBoss1::die()
@@ -154,7 +160,7 @@ void EnemyBoss1::creatHidenSlash(float angle)
 		world->DestroyBody(slash->getB2Body());
 	}
 	auto world = this->getB2Body()->GetWorld();
-	slash->initCirclePhysic(world, this->getPosition());
+	slash->initCirclePhysic(world, this->getPosGenSlash());
 	slash->changeBodyCategoryBits(BITMASK_SLASH);
 	slash->changeBodyMaskBits(BITMASK_HERO);
 	//slash->setRotation(180 - 180 / 4);

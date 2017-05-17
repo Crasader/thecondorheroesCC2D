@@ -37,6 +37,7 @@ private:
 	void buttonAddGoldHandle();
 	void buttonAddDiamondHandle();
 	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
+	void onExit();
 };
 
 #endif // __SELECT_STAGE_SCENE_H__

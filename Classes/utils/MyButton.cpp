@@ -72,7 +72,7 @@ void MyButton::addEvents()
 			if (canTouch) {
 				--numberOfUseHasNotUsedYet;
 				
-				if (numberOfUseHasNotUsedYet == 0) {
+				if (numberOfUseHasNotUsedYet <= 0) {
 					if(numberOfUse > 1)
 						numberUseLb->setVisible(false);
 					runTimer();
@@ -155,5 +155,13 @@ void MyButton::runTimer()
 		}
 	}, 0.01f, "Key_timer");
 
+}
+
+void MyButton::runSpecialTimer(float dt)
+{
+	this->unschedule(schedule_selector(MyButton::runSpecialTimer));
+	numberOfUseHasNotUsedYet++;		// increase 
+
+	numberUseLb->setString(StringUtils::format("%i", numberOfUseHasNotUsedYet));
 }
 

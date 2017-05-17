@@ -1932,7 +1932,7 @@ void GameScene::winGame()
 	AudioManager::stopSoundandMusic();
 	AudioManager::playSound(SOUND_WIN);
 
-	reachNewMap();
+	//reachNewMap();
 
 	blurScreen();
 	if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {

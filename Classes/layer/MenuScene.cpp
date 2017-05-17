@@ -879,6 +879,7 @@ void MenuLayer::initHeroInfoBoard() {
 
 	string _sHeroInfo = JSHERO->getInfor();
 	Label *_pHeroDescription = Label::createWithBMFont("fonts/font_normal-export.fnt", StringUtils::format("%s", _sHeroInfo.c_str()));
+	_pHeroDescription->setAlignment(TextHAlignment::CENTER);
 	_pHeroDescription->setBMFontSize(m_pHeroInfoBoard->getContentSize().height * 0.05f);
 	_pHeroDescription->setMaxLineWidth(m_pHeroInfoBoard->getContentSize().width * 0.7f);
 	_pHeroDescription->setLineHeight(m_pHeroInfoBoard->getContentSize().height * 0.1f);
@@ -1390,7 +1391,7 @@ void MenuLayer::buttonBuyItemHandle(int p_nIndexItem) {
 		}
 	}
 	else {
-		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(8), TOAST_LONG);
+		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(5), TOAST_LONG);
 		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
 		this->addChild(_pToast, 10);
 	}

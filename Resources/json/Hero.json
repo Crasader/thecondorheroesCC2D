@@ -31,7 +31,11 @@
       "noti_3": "Your diamond is not enough",
       "noti_4": "Get more diamond to buy",
       "noti_5": "Purchase to more fun",
-      "noti_6": "Be careful the Boss is coming"
+      "noti_6": "Be careful the Boss is coming",
+      "noti_7": "Your cake for play is not enough", 
+      "noti_8": "Upgrade fails",
+      "noti_9": "Coin",
+      "noti_10": "Get more diamond to buy"
     }
   ],
 

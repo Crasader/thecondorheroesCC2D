@@ -108,11 +108,11 @@ void BossStupiding::enter(EnemyBoss1 * boss)
 void BossStupiding::execute(EnemyBoss1 * boss)
 {
 	//log("stupiding ex");
-	if (boss->getPositionY() < boss->heroLocation.y) {
+	if (boss->getPositionY() < SCREEN_SIZE.height/5) {
 		boss->setRealMoveVelocity(Vec2(boss->getRealMoveVelocity().x, 0));
 	}
 	if (boss->getPositionX() < boss->heroLocation.x + boss->getB2Body()->GetFixtureList()->GetShape()->m_radius*PTM_RATIO) {
-		boss->setRealMoveVelocity(Vec2(0, -boss->getmoveVelocity().y));
+		boss->setRealMoveVelocity(Vec2(0, -boss->getRealMoveVelocity().y));
 	}
 }
 
@@ -127,8 +127,7 @@ BossFixingStupid::~BossFixingStupid()
 void BossFixingStupid::enter(EnemyBoss1 * boss)
 {
 	StateBoss::enter(boss);
-	boss->setRealMoveVelocity(Vec2(boss->getmoveVelocity().x, boss->getmoveVelocity().y*CCRANDOM_0_1()));
-	log("fixstupid");
+	boss->fixStupid();
 }
 
 void BossFixingStupid::execute(EnemyBoss1 * boss)
@@ -137,7 +136,7 @@ void BossFixingStupid::execute(EnemyBoss1 * boss)
 		boss->changeState(new BossIdling());
 	}
 
-	if (boss->getPositionY() > SCREEN_SIZE.height *2.5f / 4) {
+	if (boss->getPositionY() > SCREEN_SIZE.height *2.5f / 4 || boss->getPositionY() < SCREEN_SIZE.height/6) {
 		boss->setRealMoveVelocity(Vec2(boss->getRealMoveVelocity().x, 0));
 	}
 }

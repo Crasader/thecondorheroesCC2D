@@ -16,7 +16,7 @@ bool DialogPauseGame::init()
 	{
 		return false;
 	}
-	AdmobHelper::getInstance()->showTopBanner();
+	AdmobHelper::getInstance()->showBanner();
 	return true;
 }
 
@@ -40,7 +40,7 @@ DialogPauseGame* DialogPauseGame::create()
 void DialogPauseGame::onExit()
 {
 	Layer::onExit();
-	AdmobHelper::getInstance()->hideTopBanner();
+	AdmobHelper::getInstance()->hideBanner();
 }
 
 
@@ -53,8 +53,8 @@ void DialogPauseGame::resumeGame(Ref * pSender)
 void DialogPauseGame::backHome(Ref * pSender)
 {
 	AdmobHelper::getInstance()->showFullAd();
-	auto gameScene = this->getParent();
-	gameScene->removeAllChildrenWithCleanup(true);
+	auto parentLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
+	this->removeFromParentAndCleanup(true);
 	Director::getInstance()->replaceScene(MenuLayer::createScene());
 }
 
@@ -69,7 +69,7 @@ void DialogPauseGame::overGame()
 
 void DialogPauseGame::replayGame(Ref * pSender, int goldRevive, bool isWatchVideo)
 {
-	AdmobHelper::getInstance()->showFullAd();
+	//AdmobHelper::getInstance()->showFullAd();
 	//log("%i", goldRevive);
 	if (!isWatchVideo) {
 		if (REF->setDownGold(goldRevive)) {
@@ -83,10 +83,12 @@ void DialogPauseGame::replayGame(Ref * pSender, int goldRevive, bool isWatchVide
 		}
 	}
 	else {
+		AdmobHelper::getInstance()->showRewardVideoToRevive();
 		auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
 		gameLayer->reviveHero();
 	}
 }
+
 
 void DialogPauseGame::nextState(Ref * pSender)
 {
@@ -105,7 +107,7 @@ void DialogPauseGame::restartGame(Ref * pSender)
 {
 	AdmobHelper::getInstance()->showFullAd();
 	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
-	
+
 	if (!REF->getIsLockedHero()) {
 		if (REF->getNumberOfLife() > 0) {
 			REF->setDownLife(1);
@@ -400,7 +402,7 @@ bool DialogStageClear::init(int score, int gold)
 		REF->setUpScore(score + bonusScore);
 		REF->setUpGoldExplored(gold + bonusGold);
 	}
-	
+
 	effect();
 
 	return true;

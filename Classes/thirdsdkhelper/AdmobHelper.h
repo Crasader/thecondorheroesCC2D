@@ -3,43 +3,83 @@
 #ifdef SDKBOX_ENABLED
 #include "pluginadmob/PluginAdMob.h"
 #endif
+#include <string>
+using namespace std;
 
+#ifdef SDKBOX_ENABLED
 
+class IMListener : public sdkbox::AdMobListener {
+public:
 
-class AdmobHelper{
+	virtual void reward(const std::string &name, const std::string &currency, double amount) {
+		
+	}
+};
+#endif
+
+class AdmobHelper {
 public:
 	//static AdmobHelper *INSTANCE;
-	AdmobHelper(){
+	AdmobHelper() {
 #ifdef SDKBOX_ENABLED
 		sdkbox::PluginAdMob::init();
-		sdkbox::PluginAdMob::cache("top_home");
-		sdkbox::PluginAdMob::cache("bottom_home");
+		sdkbox::PluginAdMob::cache("home");
+		sdkbox::PluginAdMob::cache("gameover");
+		sdkbox::PluginAdMob::cache("rewarded");
+#endif
+	}
+	bool isAvailable(std::string adname) {
+#ifdef SDKBOX_ENABLED
+		return sdkbox::PluginAdMob::isAvailable(adname);
+#endif
+		return false;
+	}
+	/*bool showBanner() {
+#ifdef SDKBOX_ENABLED
+		if (isAvailable("home")) {
+			sdkbox::PluginAdMob::show("home");
+			return true;
+		}
+		sdkbox::PluginAdMob::cache("home");
+		return false;
+#endif
+		return false;
+	}*/
+	void showBanner() {
+#ifdef SDKBOX_ENABLED
+		sdkbox::PluginAdMob::show("home");
+#endif
+	}
+
+	void hideBanner() {
+#ifdef SDKBOX_ENABLED
+		sdkbox::PluginAdMob::hide("home");
+#endif
+	}
+
+	/*bool showFullAd() {
+#ifdef SDKBOX_ENABLED
+		if (isAvailable("gameover")) {
+			sdkbox::PluginAdMob::show("gameover");
+			return true;
+		}
+		sdkbox::PluginAdMob::cache("gameover");
+		return false;
+#endif
+		return false;
+	}*/
+	void showFullAd() {
+#ifdef SDKBOX_ENABLED
+		
+		sdkbox::PluginAdMob::show("gameover");
 		sdkbox::PluginAdMob::cache("gameover");
 #endif
 	}
-	void showTopBanner(){
+
+	void showRewardVideoToRevive() {
 #ifdef SDKBOX_ENABLED
-		sdkbox::PluginAdMob::show("top_home");
-#endif
-	}
-	void showBottomBanner() {
-#ifdef SDKBOX_ENABLED
-		sdkbox::PluginAdMob::show("bottom_home");
-#endif
-	}
-	void hideTopBanner(){
-#ifdef SDKBOX_ENABLED
-		sdkbox::PluginAdMob::hide("top_home");
-#endif
-	}
-	void hideBottomBanner() {
-#ifdef SDKBOX_ENABLED
-		sdkbox::PluginAdMob::hide("bottom_home");
-#endif
-	}
-	void showFullAd(){
-#ifdef SDKBOX_ENABLED
-		sdkbox::PluginAdMob::show("gameover");
+		sdkbox::PluginAdMob::show("rewarded");
+		sdkbox::PluginAdMob::cache("rewarded");
 #endif
 	}
 

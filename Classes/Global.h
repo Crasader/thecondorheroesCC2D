@@ -21,15 +21,11 @@ using namespace std;
 #define BITMASK_FLOOR					0x0004
 #define BITMASK_WOODER					0x0008
 #define BITMASK_COIN					0x0010
-#define BITMASK_TOANCHAN1				0x0020
-#define BITMASK_TOANCHAN2				0x0040
-#define BITMASK_TNB						0x0050
-#define BITMASK_TOONG					0x0060
+#define BITMASK_BIRD					0x0020
 #define BITMASK_SWORD					0x0080
 #define BITMASK_SLASH					0x0100
 #define BITMASK_BOSS					0x0200
 #define BITMASK_UNDER_GROUND			0x0400
-#define BITMASK_BIRD					0x0500
 #define BITMASK_COIN_BAG				0x0800
 #define BITMASK_COIN_BULLION			0x1000
 #define BITMASK_RADA_SKILL_1			0x2000

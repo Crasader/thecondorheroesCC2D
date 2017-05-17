@@ -102,7 +102,7 @@ void DialogPauseGame::nextStage(Ref * pSender)
 	else {
 		auto gameScene = this->getParent();
 		gameScene->removeAllChildrenWithCleanup(true);
-		Layer *_pMenuScene = MenuLayer::create(true);
+		Layer *_pMenuScene = MenuLayer::create(false);
 		auto _aMainMenuScene = Scene::create();
 		_aMainMenuScene->addChild(_pMenuScene);
 		Director::getInstance()->replaceScene(_aMainMenuScene);

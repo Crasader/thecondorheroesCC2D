@@ -1,6 +1,5 @@
 #include "MenuScene.h"
 #include "LoadingLayer.h"
-#include "SelectStageScene.h"
 #include "IntroScene.h"
 
 #include "manager/JSonHeroManager.h"
@@ -35,13 +34,14 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 		m_nMenuStatus = 4;
 		m_pTopMainMenu = Layer::create();
 		m_pTopMainMenu->setContentSize(Size(m_szVisibleSize.width, m_szVisibleSize.height * 0.1f));
-		m_pTopMainMenu->setPosition(m_szVisibleSize.width / 2, m_szVisibleSize.height - m_pTopMainMenu->getContentSize().height / 2);
+		m_pTopMainMenu->setPosition(m_szVisibleSize.width / 2, m_szVisibleSize.height + m_pTopMainMenu->getContentSize().height / 2);
 		this->addChild(m_pTopMainMenu, 5);
 		initTopMainMenu();
-		//moveLayerViaDirection(m_pTopMainMenu, 2);
+		moveLayerViaDirection(m_pTopMainMenu, 2);
 
 		// select stage layer
 		m_pSelectStageLayer = SelectStageLayer::create(m_nIndexHeroSelected);
+		m_pSelectStageLayer->moveAva();
 		this->addChild(m_pSelectStageLayer, 4);
 
 		return true;
@@ -1151,6 +1151,7 @@ void MenuLayer::hideMainMenu() {
 
 void MenuLayer::showBlurScreen() {
 	m_pTopMenu->setEnabled(false);
+	
 	m_pBottomMainMenu->setEnabled(false);
 	m_pItemBoardMenu->setEnabled(false);
 	m_pSkillBoardMenu->setEnabled(false);

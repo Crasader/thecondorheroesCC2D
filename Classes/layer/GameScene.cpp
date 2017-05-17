@@ -1921,10 +1921,10 @@ void GameScene::overGame()
 void GameScene::nextGame()
 {
 	this->removeAllChildrenWithCleanup(true);
-	auto _scene = SelectStageLayer::createScene(charId);
-	auto layer = (SelectStageLayer*)_scene->getChildByName("selectLayer");
-	layer->moveAva();
-	Director::getInstance()->replaceScene(TransitionFade::create(0.3f, _scene));
+	Layer *_pMenuScene = MenuLayer::create(true);
+	auto _aMainMenuScene = Scene::create();
+	_aMainMenuScene->addChild(_pMenuScene);
+	Director::getInstance()->replaceScene(_aMainMenuScene);
 }
 
 void GameScene::winGame()

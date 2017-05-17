@@ -5,15 +5,6 @@
 #include "thirdsdkhelper\AdmobHelper.h"
 
 
-Scene * SelectStageLayer::createScene(int charId)
-{
-	auto scene = Scene::create();
-	auto layer = SelectStageLayer::create(charId);
-	layer->setName("selectLayer");
-	scene->addChild(layer);
-	return scene;
-}
-
 bool SelectStageLayer::init(int charId)
 {
 	AudioManager::playMusic(MUSIC_MENU);

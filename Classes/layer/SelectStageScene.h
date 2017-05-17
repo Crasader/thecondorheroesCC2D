@@ -9,8 +9,6 @@ USING_NS_CC;
 class SelectStageLayer : public Layer
 {
 public:
-
-	static Scene* createScene(int charId);
 	virtual bool init(int charId);
 	static SelectStageLayer* create(int charId);
 	void moveAva();

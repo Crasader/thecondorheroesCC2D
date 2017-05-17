@@ -10,6 +10,7 @@
 
 #include "ui_custom/CustomSpriteToBuyPack.h"
 #include "ui_custom/CustomLayerToToast.h"
+#include "SelectStageScene.h"
 
 USING_NS_CC;
 using namespace spine;
@@ -75,7 +76,7 @@ private:
 	Layer *m_pBottomHeroLayer;
 	Layer *m_pShopBoardLayer;
 
-	Layer *m_pSelectStageLayer;
+	SelectStageLayer *m_pSelectStageLayer;
 	Layer *m_pBlurScreen;
 
 	// menus

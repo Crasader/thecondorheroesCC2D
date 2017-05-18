@@ -751,10 +751,13 @@ void GameScene::createInfiniteNode()
 	auto bg1_1 = Sprite::create(StringUtils::format("Map/map%d/bg%d_1.png", stage, map));
 	bg1_1->setScale(SCREEN_SIZE.width / (bg1_1->getContentSize().width));
 	bg1_1->setAnchorPoint(Point(0, 0.5f));
+	//bg1_1->setVisible(false);
 
 	auto bg1_2 = Sprite::create(StringUtils::format("Map/map%d/bg%d_1.png", stage, map));
 	bg1_2->setScale(SCREEN_SIZE.width / (bg1_2->getContentSize().width));
 	bg1_2->setAnchorPoint(Point(0, 0.5f));
+	//bg1_2->setVisible(false);
+
 	background->addChild(bg1_1, 1, Vec2(0.5f, 1), Vec2(0, 0));
 	background->addChild(bg1_2, 1, Vec2(0.5f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
 
@@ -783,6 +786,7 @@ void GameScene::createInfiniteNode()
 		bg2_1->setScale(SCREEN_SIZE.width / (bg2_1->getContentSize().width));
 		bg2_1->setAnchorPoint(Point(0, 0.5f));
 		bg2_1->setTag(21);
+		//bg2_1->setVisible(false);
 
 
 		auto bg2_2 = Sprite::create(StringUtils::format("Map/map%d/bg%d_2.png", stage, map));
@@ -790,6 +794,7 @@ void GameScene::createInfiniteNode()
 		bg2_2->setScale(SCREEN_SIZE.width / (bg2_2->getContentSize().width));
 		bg2_2->setAnchorPoint(Point(0, 0.5f));
 		bg2_2->setTag(22);
+		//bg2_2->setVisible(false);
 		background->addChild(bg2_1, 3, Vec2(0.7f, 1), Vec2(0, 0));
 		background->addChild(bg2_2, 3, Vec2(0.7f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
 

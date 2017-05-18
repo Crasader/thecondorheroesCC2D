@@ -298,7 +298,7 @@
   <object id="192" x="34940" y="1284" width="64" height="104"/>
  </objectgroup>
  <objectgroup name="boss">
-  <object id="202" name="boss" x="35605.8" y="1114.3" width="75.7576" height="75.7576"/>
+  <object id="202" name="boss" x="2000" y="1114.3" width="75.7576" height="75.7576"/>
  </objectgroup>
  <objectgroup name="coming_boss">
   <object id="203" name="coming_boss" x="32920.2" y="-4.84848" width="24.2424" height="1609.09"/>

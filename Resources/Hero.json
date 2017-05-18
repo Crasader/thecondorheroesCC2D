@@ -62,7 +62,7 @@
       "skill3Name": "Hold of fire",
       "pathMainImageSkill3": "UI/btnDQ_skill3_up.png",
       "pathSubImageSkill3": "UI/btnDQ_skill3_down.png",
-      "baseHP": 4,
+      "baseHP": 100,
       "level": 1,
       "maxLevel": 20,
       "percentBonusScore": 0,

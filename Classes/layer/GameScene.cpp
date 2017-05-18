@@ -194,8 +194,6 @@ void GameScene::onBegin()
 
 	}
 
-	
-
 	if (hud->getBtnCalling() != nullptr)
 		hud->getBtnCalling()->setEnabled(true);
 

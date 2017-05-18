@@ -35,7 +35,7 @@ void JSonMenuManager::readDiamondPack(int firstIndex) {
 	this->m_sDiamondPackName = jsonDoc["diamond_packs"][firstIndex]["diamondPackName"].GetString();
 	this->m_sIconDiamondPackPath = jsonDoc["diamond_packs"][firstIndex]["iconDiamondPackPath"].GetString();
 	this->m_nDiamondPackNumberDiamond = jsonDoc["diamond_packs"][firstIndex]["diamondNumber"].GetInt();
-	this->m_nDiamondPackMoneyPrice = jsonDoc["diamond_packs"][firstIndex]["moneyPrice"].GetInt();
+	this->m_sDiamondPackMoneyPrice = jsonDoc["diamond_packs"][firstIndex]["moneyPrice"].GetString();
 }
 
 void JSonMenuManager::readEnergyPack(int firstIndex) {

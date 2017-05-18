@@ -1,6 +1,6 @@
-info face="font_diamond-export" size=32 bold=0 italic=0 charset="" unicode=0 stretchH=100 smooth=1 aa=1 padding=0,0,0,0 spacing=1,1
+info face="/Users/macone/Desktop\font_diamond-export" size=32 bold=0 italic=0 charset="" unicode=0 stretchH=100 smooth=1 aa=1 padding=0,0,0,0 spacing=1,1
 common lineHeight=80 base=26 scaleW=128 scaleH=128 pages=1 packed=0 alphaChnl=1 redChnl=0 greenChnl=0 blueChnl=0
-page id=0 file="font_diamond-export.png"
+page id=0 file="/Users/macone/Desktop\font_diamond-export.png"
 chars count=19
 char id=36 x=44 y=26 width=18 height=32 xoffset=0 yoffset=51 xadvance=17 page=0 chnl=0 letter="$"
 char id=37 x=0 y=0 width=26 height=26 xoffset=0 yoffset=54 xadvance=25 page=0 chnl=0 letter="%"

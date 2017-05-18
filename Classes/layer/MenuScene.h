@@ -27,7 +27,6 @@ private:
 	const Size m_szVisibleSize = Director::getInstance()->getVisibleSize();
 	float m_fButtonStartPosition;							// make start and unlock button at same position
 	int m_nMenuStatus = 0;
-	bool m_nOnlySelectStage;
 
 	// input value
 	int m_nCurrentTimeFromGoogle = 0;						// time from google.com.vn (-7 hours from Viet Nam)
@@ -52,8 +51,6 @@ private:
 	SkeletonAnimation *m_pSpriteQuestAttention;						// 
 	SkeletonAnimation *m_pSpriteFreeCoinAttention;						// 
 
-	Label *m_pLabelNumberGoldOnBuy;
-	Label *m_pLabelNumberDiamondOnBuy;
 	ScrollView *m_pPacksZone;
 	ScrollView *m_pItemScrollView;
 	// score bar
@@ -85,6 +82,7 @@ private:
 	Menu *m_pQuestBoardMenu;
 	Menu *m_pSkillBoardMenu;
 	Menu *m_pBottomHeroMenu;
+	RadioButtonGroup *m_pLanguageButtonGroup;
 
 	//////////////////////////////////////////////////////////////////////////////////
 	// INIT
@@ -95,7 +93,7 @@ private:
 
 	void initTopMainMenu();
 	void initBottomMainMenu();
-	void initItemBoard(float p_fPercent);
+	void initItemBoard();
 	void initUpgradeBoard();
 	void initQuestBoard(int p_nFocus);
 	void initHeroInfoBoard();
@@ -117,6 +115,7 @@ private:
 	void buttonHeroesHandle();
 	void buttonShopHandle();
 	void buttonFreeCoinHandle();
+	void buttonSettingHandle();
 	void buttonMoreGameHandle();
 
 	void buttonStartHandle();
@@ -163,6 +162,9 @@ private:
 	// supporter
 	int calTimeFromString(string p_sInputString);
 	void scrollSlideHandle(Ref* sender, ui::ScrollView::EventType type);
+	void onChangedLanguage();
+	void buttonSoundControlHandle(Ref* p_pSender);
+	void buttonMusicControlHandle(Ref* p_pSender);
 };
 
 #endif // __MENUSCENE_H__

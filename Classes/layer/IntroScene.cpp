@@ -14,8 +14,8 @@ bool SceneIntro::init() {
     if ( !Layer::init() ) {
         return false;
 	}
-	//AudioManager::cacheAudio();
-	//AudioManager::playMusic(MUSIC_MENU);
+	AudioManager::cacheAudio();
+	AudioManager::playMusic(MUSIC_MENU);
 	auto origin = Director::getInstance()->getVisibleOrigin();
 
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("item/coin.plist");

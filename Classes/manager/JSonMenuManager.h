@@ -31,7 +31,7 @@ protected:
 	CC_SYNTHESIZE_READONLY(string, m_sDiamondPackName, DiamondPackName);
 	CC_SYNTHESIZE_READONLY(string, m_sIconDiamondPackPath, IconDiamondPackPath);
 	CC_SYNTHESIZE_READONLY(int, m_nDiamondPackNumberDiamond, DiamondPackNumberDiamond);
-	CC_SYNTHESIZE_READONLY(int, m_nDiamondPackMoneyPrice, DiamondPackMoneyPrice);
+	CC_SYNTHESIZE_READONLY(string, m_sDiamondPackMoneyPrice, DiamondPackMoneyPrice);
 
 	CC_SYNTHESIZE_READONLY(string, m_sEnergyPackName, EnergyPackName);
 	CC_SYNTHESIZE_READONLY(string, m_sIconEnergyPackPath, IconEnergyPackPath);

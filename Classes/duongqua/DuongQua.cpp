@@ -21,36 +21,9 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 	duongQua->stateMachine = new StateMachine(duongQua);
 	duongQua->stateMachine->setCurrentState(MLand);
 
-	duongQua->setMoveVel(duongQua->SCREEN_SIZE.width / PTM_RATIO / 2.3f);
-	duongQua->setJumpVel(duongQua->SCREEN_SIZE.height * 1.4f / PTM_RATIO);
-
-	duongQua->health = REF->getCurrentHealth();
-	duongQua->maxHealth = duongQua->health;
-
-	// set Duration here
-	duongQua->setDurationSkill1(REF->getDurationSkill_1());
-	duongQua->setDurationSkill2(REF->getDurationSkill_2());
-	duongQua->setDurationSkill3(REF->getDurationSkill_3());
-
 	duongQua->setBoxHeight(duongQua->getBoundingBox().size.height / 6.7f);
-	duongQua->numberOfJump = 2;
-	duongQua->coinExplored = 0;
-	duongQua->score = 0;
-
-
-	duongQua->setOnGround(false);
-	duongQua->setIsPriorInjured(false);		// future, we need to add props into base class
-	duongQua->setIsPriorAttack(false);
-	duongQua->setIsPriorSkill1(false);
-	duongQua->setIsPriorSkill2(false);
-	duongQua->setIsPriorSkill3(false);
-
-	duongQua->setIsDoneDuration1(true);
-	duongQua->setIsDoneDuration2(true);
-	duongQua->setIsDoneDuration3(true);
 
 	//
-
 	duongQua->blash = Sprite::create("Animation/DuongQua/blash.png");
 	duongQua->blash->setScale(scale / 2);
 	duongQua->blash->setPosition(duongQua->getContentSize() / 2);
@@ -401,15 +374,6 @@ void DuongQua::createPool()
 	}
 }
 
-void DuongQua::idle()
-{
-	clearTracks();
-	addAnimation(0, "idle", true);
-	setToSetupPose();
-
-	getSmokeRun()->setVisible(false);
-}
-
 void DuongQua::run()
 {
 	clearTracks();
@@ -584,24 +548,6 @@ void DuongQua::injured()
 	setToSetupPose();
 
 	//log("injured");
-
-}
-
-void DuongQua::revive()
-{
-	clearTracks();
-	addAnimation(0, "revive", false);
-	setToSetupPose();
-
-	getSmokeRun()->setVisible(false);
-	getReviveMe()->setPosition(this->getPositionX() + getTrueRadiusOfHero() / 2, this->getPositionY());
-	getReviveMe()->setVisible(true);
-	reviveAni();
-	//log("revive");
-}
-
-void DuongQua::die(Point posOfCammera)
-{
 
 }
 

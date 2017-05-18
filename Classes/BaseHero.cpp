@@ -1,4 +1,5 @@
 #include "BaseHero.h"
+#include "manager\RefManager.h"
 #include "manager\AudioManager.h"
 
 
@@ -9,12 +10,40 @@ BaseHero::BaseHero(string jsonFile, string atlasFile, float scale) : B2Skeleton(
 	bloodScreen->setScaleX(SCREEN_SIZE.width * 1.1f / bloodScreen->getContentSize().width);
 	bloodScreen->setScaleY(SCREEN_SIZE.height / bloodScreen->getContentSize().height);
 	bloodScreen->setVisible(false);
+
+	move_vel = SCREEN_SIZE.width / PTM_RATIO / 2.3f;
+	jump_vel = SCREEN_SIZE.height * 1.4f / PTM_RATIO;
+
+	health = REF->getCurrentHealth();
+	maxHealth = health;
+
+	// set Duration here
+	durationSkill1 = REF->getDurationSkill_1();
+	durationSkill2 = REF->getDurationSkill_2();
+	durationSkill3 = REF->getDurationSkill_3();
+
 	isDriverEagle = false;
 	currentRunDis = 0.0f;
 	preRunDis = 0.0f;
 	isNoDie = false;
 	noActive = false;
 	isKillAll = false;
+
+	numberOfJump = 2;
+	coinExplored = 0;
+	score = 0;
+
+	onGround = false;
+	isPriorInjured = false;		// future, we need to add props into base class
+	isPriorAttack = false;
+	isPriorSkill1 = false;
+	isPriorSkill2 = false;
+	isPriorSkill3 = false;
+
+	isDoneDuration1 = true;
+	isDoneDuration2 = true;
+	isDoneDuration3 = true;
+
 	dieHard = 1;
 	coinRatio = 1;
 	scoreRatio = 1;
@@ -153,6 +182,10 @@ void BaseHero::createPool()
 
 void BaseHero::idle()
 {
+	clearTracks();
+	addAnimation(0, "idle", false);
+	setToSetupPose();
+	getSmokeRun()->setVisible(false);
 }
 
 void BaseHero::run()
@@ -207,10 +240,15 @@ void BaseHero::injured()
 void BaseHero::revive()
 {
 	AudioManager::playSound(SOUND_MCREVIVE);
-}
 
-void BaseHero::die(Point posOfCammera)
-{
+	clearTracks();
+	addAnimation(0, "revive", false);
+	setToSetupPose();
+
+	getSmokeRun()->setVisible(false);
+	getReviveMe()->setPosition(this->getPositionX() + getTrueRadiusOfHero() / 2, this->getPositionY());
+	getReviveMe()->setVisible(true);
+	reviveAni();
 }
 
 void BaseHero::listener()

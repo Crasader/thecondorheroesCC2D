@@ -105,7 +105,6 @@ public:
 	virtual void attackBySkill3();
 	virtual void injured();
 	virtual void revive();
-	virtual void die(Point posOfCammera);
 	virtual void listener();
 	virtual void updateMe(float dt);
 

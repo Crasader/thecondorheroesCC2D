@@ -57,6 +57,7 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 		m_pShopBoardLayer->setPosition(0.0f, m_pShopBoardLayer->getContentSize().height);
 		this->addChild(m_pShopBoardLayer, 5);
 
+		// schedule Update timer???
 		return true;
 	}
 
@@ -1204,6 +1205,7 @@ void MenuLayer::hideBlurScreen() {
 
 void MenuLayer::buttonStartHandle()
 {
+	REF->setLastPickHero(m_nIndexHeroSelected);
 	// select stage layer
 	m_pSelectStageLayer = SelectStageLayer::create(m_nIndexHeroSelected);
 	m_nMenuStatus = 3;

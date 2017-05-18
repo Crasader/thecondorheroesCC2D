@@ -17,33 +17,7 @@ CoLong * CoLong::create(string p_sJsonFile, string p_sAtlasFile, float p_fScale)
 	_pCoLong->stateMachine = new StateMachine(_pCoLong);
 	_pCoLong->stateMachine->setCurrentState(MLand);
 
-	_pCoLong->setMoveVel(_pCoLong->SCREEN_SIZE.width / PTM_RATIO / 2.3f);
-	_pCoLong->setJumpVel(_pCoLong->SCREEN_SIZE.height * 1.4f / PTM_RATIO);
-
-	_pCoLong->health = REF->getCurrentHealth();
-	_pCoLong->maxHealth = _pCoLong->health;
-
-	// set Duration here
-	_pCoLong->setDurationSkill1(REF->getDurationSkill_1());
-	_pCoLong->setDurationSkill2(REF->getDurationSkill_2());
-	_pCoLong->setDurationSkill3(REF->getDurationSkill_3());
-
-	_pCoLong->numberOfJump = 2;
-	_pCoLong->coinExplored = 0;
-	_pCoLong->score = 0;
-
 	_pCoLong->setBoxHeight(_pCoLong->getBoundingBox().size.height / 3.4f);
-
-	_pCoLong->setOnGround(false);
-	_pCoLong->setIsPriorInjured(false);		// future, we need to add props into base class
-	_pCoLong->setIsPriorAttack(false);
-	_pCoLong->setIsPriorSkill1(false);
-	_pCoLong->setIsPriorSkill2(false);
-	_pCoLong->setIsPriorSkill3(false);
-
-	_pCoLong->setIsDoneDuration1(true);
-	_pCoLong->setIsDoneDuration2(true);
-	_pCoLong->setIsDoneDuration3(true);
 
 	_pCoLong->blash = Sprite::create("Animation/CoLong/blash.png");
 	_pCoLong->blash->setScale(p_fScale / 2);
@@ -539,14 +513,6 @@ void CoLong::landing() {
 	}
 }
 
-void CoLong::idle() {
-	clearTracks();
-	addAnimation(0, "idle", false);
-	setToSetupPose();
-	getB2Body()->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
-	getSmokeRun()->setVisible(false);
-}
-
 void CoLong::die() {
 	--dieHard;
 	if (dieHard < 0) {
@@ -647,21 +613,3 @@ void CoLong::injured() {
 	}
 }
 
-void CoLong::revive()
-{
-	clearTracks();
-	addAnimation(0, "revive", false);
-	setToSetupPose();
-
-	getSmokeRun()->setVisible(false);
-	getReviveMe()->setPosition(this->getPositionX() + getTrueRadiusOfHero() / 2, this->getPositionY());
-	getReviveMe()->setVisible(true);
-	reviveAni();
-
-	//log("revive");
-}
-
-void CoLong::die(Point p_ptPositionOfCammera)
-{
-
-}

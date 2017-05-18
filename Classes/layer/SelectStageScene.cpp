@@ -147,6 +147,19 @@ void SelectStageLayer::moveAva()
 {
 	int lastMapId = REF->getLastMapIdPlay();
 	if (lastMapId < 12) {
+		if (convertId() == lastMapId + 1 && REF->getIsGetNewMap()) {
+			auto screenSize = Director::getInstance()->getVisibleSize();
+			auto effectUpLvMap = Sprite::create("UI/Select_Stage/effect_lv.png");
+			effectUpLvMap->setScale(screenSize.height / 5.0f / effectUpLvMap->getContentSize().width);
+			auto pos = Point(nextMapPos.x, nextMapPos.y - character_point->getBoundingBox().size.height * 0.25f);
+			effectUpLvMap->setPosition(pos);
+			scrollView->addChild(effectUpLvMap);
+
+			auto scale = ScaleBy::create(0.5f, 1.2f);
+			effectUpLvMap->runAction(RepeatForever::create(Sequence::createWithTwoActions(scale, scale->reverse())));
+			REF->setReachNewMap(false);
+		}
+
 		auto actionMove = MoveTo::create(1.2f, nextMapPos);
 		auto scroll = CallFunc::create([&]() {
 			float percent = nextMapPos.x / tmxMap->getBoundingBox().size.width * 100.0f;
@@ -231,5 +244,25 @@ void SelectStageLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * even
 void SelectStageLayer::onExit()
 {
 	Layer::onExit();
+}
+
+int SelectStageLayer::convertId()
+{
+	int currentStageUnlocked = REF->getCurrentStageUnlocked();
+	int currentMapUnlocked = REF->getCurrentMapUnLocked();
+	int convertValue = 1;
+	switch (currentStageUnlocked)
+	{
+	case 1: case 2: case 3:
+		convertValue = currentMapUnlocked + (currentStageUnlocked - 1 ) * 3;
+		break;
+
+	case 4:
+		convertValue = currentStageUnlocked + 8;
+		break;
+	default:
+		break;
+	}
+	return convertValue;
 }
 

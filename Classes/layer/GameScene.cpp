@@ -208,9 +208,9 @@ void GameScene::onBegin()
 		REF->decreaseNumberItemMagnet();
 	}
 
-	
+
 	key_listener = EventListenerKeyboard::create();
-	
+
 	key_listener->onKeyPressed = CC_CALLBACK_2(GameScene::onKeyPressed, this);
 
 	if (!isFirstPlay) {
@@ -238,9 +238,14 @@ void GameScene::checkActiveButton()
 	if (hero->getFSM()->currentState == MDie) return;
 
 	if (hud->getBtnSkill_1()->getIsBlocked()) {		// 2 and 3 active
+		if (hud->getBtnSkill_1()->getMain()->getPercentage() >= 99.9f &&
+			hud->getBtnSkill_1()->getMain()->isVisible()) {
+			hud->getBtnSkill_1()->getMain()->setVisible(false);
+		}
+
 		if (currentButton == 2) {
 			if (hero->getIsDoneDuration2()) {
-				if (hero->getFSM()->currentState != MRevive)
+				if (hero->getFSM()->currentState != MRevive && !hud->getBtnSkill_2()->getNumberOfUseHasNotUsedYet() >= 1)
 					hero->killThemAll();
 				hero->getActiveSkill()->setVisible(false);
 
@@ -273,6 +278,10 @@ void GameScene::checkActiveButton()
 	}
 
 	if (hud->getBtnSkill_2()->getIsBlocked()) {		// 1 and 3 active
+		if (hud->getBtnSkill_2()->getMain()->getPercentage() >= 99.9f &&
+			hud->getBtnSkill_2()->getMain()->isVisible()) {
+			hud->getBtnSkill_2()->getMain()->setVisible(false);
+		}
 		if (currentButton == 1) {
 			if (hero->getIsDoneDuration1()) {
 
@@ -290,7 +299,7 @@ void GameScene::checkActiveButton()
 		}
 		else if (currentButton == 3) {
 			if (hero->getIsDoneDuration3()) {
-				if (hero->getFSM()->currentState != MRevive)
+				if (hero->getFSM()->currentState != MRevive && !hud->getBtnSkill_3()->getNumberOfUseHasNotUsedYet() >= 1)
 					hero->killThemAll();
 				hero->getActiveSkill()->setVisible(false);
 
@@ -307,6 +316,10 @@ void GameScene::checkActiveButton()
 	}
 
 	if (hud->getBtnSkill_3()->getIsBlocked()) {		// 2 and 1 active
+		if (hud->getBtnSkill_3()->getMain()->getPercentage() >= 99.9f &&
+			hud->getBtnSkill_3()->getMain()->isVisible()) {
+			hud->getBtnSkill_3()->getMain()->setVisible(false);
+		}
 		if (currentButton == 2) {
 			if (hero->getIsDoneDuration2()) {
 
@@ -325,7 +338,7 @@ void GameScene::checkActiveButton()
 		}
 		else if (currentButton == 1) {
 			if (hero->getIsDoneDuration1()) {
-				if (hero->getFSM()->currentState != MRevive)
+				if (hero->getFSM()->currentState != MRevive && !hud->getBtnSkill_1()->getNumberOfUseHasNotUsedYet() >= 1)
 					hero->killThemAll();
 				hero->getActiveSkill()->setVisible(false);
 
@@ -592,7 +605,10 @@ void GameScene::update(float dt)
 	if (posXComingBoss > 0) {
 		if (hero->getPositionX() >= posXComingBoss) {
 			if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isEnabled()) {
-				log("boss is coming");
+				CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(6), TOAST_LONG);
+				_pToast->setPosition(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 4));
+				this->getParent()->addChild(_pToast, 10);
+
 				hud->getBtnCalling()->setEnabled(false);
 				posXComingBoss = -1;
 			}
@@ -611,14 +627,15 @@ void GameScene::initB2World()
 	world = new b2World(b2Vec2(0, -SCREEN_SIZE.height * 10.0f / 3.0f / PTM_RATIO));
 
 	// draw debug
-	auto debugDraw = new (std::nothrow) GLESDebugDraw(PTM_RATIO);
-	if (isModeDebug)
+	if (isModeDebug) {
+		auto debugDraw = new (std::nothrow) GLESDebugDraw(PTM_RATIO);
 		world->SetDebugDraw(debugDraw);
-	uint32 flags = 0;
-	flags += b2Draw::e_shapeBit;
-	flags += b2Draw::e_jointBit;
+		uint32 flags = 0;
+		flags += b2Draw::e_shapeBit;
+		flags += b2Draw::e_jointBit;
 
-	debugDraw->SetFlags(flags);
+		debugDraw->SetFlags(flags);
+	}
 
 	world->SetAllowSleeping(true);
 	world->SetContinuousPhysics(true);
@@ -779,7 +796,7 @@ void GameScene::createInfiniteNode()
 		//background->addChild(moon, 2, Vec2(0, 1), Vec2(pos.x, pos.y - SCREEN_SIZE.height / 2));
 		changebg = pos.x;
 	}
-	if ((stage == 3 && map == 2 )||(stage == 4 && map == 2) ) {}
+	if ((stage == 3 && map == 2) || (stage == 4 && map == 2)) {}
 	else {
 		auto bg2_1 = Sprite::create(StringUtils::format("Map/map%d/bg%d_2.png", stage, map));
 		//auto bg2_1 = Sprite::create("moon.png");
@@ -809,7 +826,7 @@ void GameScene::createInfiniteNode()
 	this->addChild(background, ZORDER_BG);
 
 	background2 = InfiniteParallaxNode::create();
-	if (stage == 1 || (stage == 3 && map == 2)||(stage == 4 && map == 1)) {
+	if (stage == 1 || (stage == 3 && map == 2) || (stage == 4 && map == 1)) {
 
 		auto bg3_1 = Sprite::create(StringUtils::format("Map/map%d/bg3.png", stage));
 		bg3_1->setScaleX(SCREEN_SIZE.width / (bg3_1->getContentSize().width));
@@ -849,14 +866,16 @@ void GameScene::createGroundBody()
 		initGroundPhysic(world, pos, sizeOfBound);
 	}
 
-	auto groupUnderGround = tmx_map->getObjectGroup("under_ground");
-	if (!groupUnderGround) return;
-	for (auto child : groupUnderGround->getObjects()) {
-		auto mObject = child.asValueMap();
-		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
-		Size sizeOfBound = Size(mObject["width"].asFloat() *scaleOfMap, mObject["height"].asFloat() *scaleOfMap);
-		Point pos = Point(origin.x + sizeOfBound.width / 2, origin.y);
-		initUnderGroundPhysic(world, pos, sizeOfBound);
+	if (charId == 0) {
+		auto groupUnderGround = tmx_map->getObjectGroup("under_ground");
+		if (!groupUnderGround) return;
+		for (auto child : groupUnderGround->getObjects()) {
+			auto mObject = child.asValueMap();
+			Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap);
+			Size sizeOfBound = Size(mObject["width"].asFloat() *scaleOfMap, mObject["height"].asFloat() *scaleOfMap);
+			Point pos = Point(origin.x + sizeOfBound.width / 2, origin.y);
+			initUnderGroundPhysic(world, pos, sizeOfBound);
+		}
 	}
 }
 
@@ -872,14 +891,16 @@ void GameScene::createGroundForMapBoss()
 		initGroundPhysic(world, origin, Size(INT_MAX / 4, sizeOfBound.height));
 	}
 
-	auto groupUnderGround = tmx_mapboss[0]->getObjectGroup("under_ground");
-	if (!groupUnderGround) return;
-	for (auto child : groupUnderGround->getObjects()) {
-		auto mObject = child.asValueMap();
-		Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap) + tmx_mapboss[0]->getPosition();
-		Size sizeOfBound = Size(mObject["width"].asFloat() *scaleOfMap, mObject["height"].asFloat() *scaleOfMap);
-		//Point pos = Point(origin.x + sizeOfBound.width / 2, origin.y);
-		initUnderGroundPhysic(world, origin, Size(INT_MAX / 4, sizeOfBound.height));
+	if (charId == 0) {
+		auto groupUnderGround = tmx_mapboss[0]->getObjectGroup("under_ground");
+		if (!groupUnderGround) return;
+		for (auto child : groupUnderGround->getObjects()) {
+			auto mObject = child.asValueMap();
+			Point origin = Point(mObject["x"].asFloat() *scaleOfMap, mObject["y"].asFloat()* scaleOfMap) + tmx_mapboss[0]->getPosition();
+			Size sizeOfBound = Size(mObject["width"].asFloat() *scaleOfMap, mObject["height"].asFloat() *scaleOfMap);
+			//Point pos = Point(origin.x + sizeOfBound.width / 2, origin.y);
+			initUnderGroundPhysic(world, origin, Size(INT_MAX / 4, sizeOfBound.height));
+		}
 	}
 }
 
@@ -889,6 +910,7 @@ void GameScene::creatEnemyWooder(MyLayer * layer, Vec2 pos)
 	if (layer->wooderPool) {
 		auto enemy = (EnemyWooder*)layer->wooderPool->getObject();
 		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
 		enemy->resumeSchedulerAndActions();
@@ -908,6 +930,7 @@ void GameScene::createEnemyToanChanStudent(MyLayer * layer, Vec2 pos)
 	if (layer->toanchan1Pool) {
 		auto enemy = (EnemyToanChanStudent*)layer->toanchan1Pool->getObject();
 		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
 		enemy->resumeSchedulerAndActions();
@@ -931,6 +954,7 @@ void GameScene::createEnemyToanChanStudent2(MyLayer * layer, Vec2 pos)
 	if (layer->toanchan2Pool) {
 		auto enemy = (EnemyToanChanStudent2*)layer->toanchan2Pool->getObject();
 		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
 		enemy->resumeSchedulerAndActions();
@@ -954,6 +978,7 @@ void GameScene::createEnemyTNB(MyLayer * layer, Vec2 pos)
 	if (layer->tnbPool) {
 		auto enemy = (EnemyTNB*)layer->tnbPool->getObject();
 		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
 		enemy->resumeSchedulerAndActions();
@@ -979,6 +1004,7 @@ void GameScene::createEnemyHongLangBa(MyLayer * layer, Vec2 pos) {
 	if (layer->hongLangBa1Pool) {
 		auto enemy = (EnemyHongLangBa*)layer->hongLangBa1Pool->getObject();
 		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
 		enemy->resumeSchedulerAndActions();
@@ -1002,6 +1028,7 @@ void GameScene::createEnemyHongLangBa2(MyLayer * layer, Vec2 pos) {
 	if (layer->hongLangBa2Pool) {
 		auto enemy = (EnemyHongLangBa2*)layer->hongLangBa2Pool->getObject();
 		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
 		enemy->resumeSchedulerAndActions();
@@ -1025,6 +1052,7 @@ void GameScene::createEnemyToOng(MyLayer * layer, Vec2 pos) {
 	if (layer->toOngPool) {
 		auto enemy = (EnemyToOng*)layer->toOngPool->getObject();
 		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
 		enemy->resumeSchedulerAndActions();
@@ -1047,6 +1075,7 @@ void GameScene::createEnemyHoacDo(MyLayer * layer, Vec2 pos)
 	if (layer->hoacDo1Pool) {
 		auto enemy = (EnemyHoacDo*)layer->hoacDo1Pool->getObject();
 		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
 		enemy->resumeSchedulerAndActions();
@@ -1071,6 +1100,7 @@ void GameScene::createEnemyHoacDo2(MyLayer * layer, Vec2 pos)
 	if (layer->hoacDo2Pool) {
 		auto enemy = (EnemyHoacDo2*)layer->hoacDo2Pool->getObject();
 		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
 		enemy->resumeSchedulerAndActions();
@@ -1095,6 +1125,7 @@ void GameScene::createEnemyDatNhiBa(MyLayer * layer, Vec2 pos)
 	if (layer->datNhiBa1Pool) {
 		auto enemy = (EnemyDatNhiBa*)layer->datNhiBa1Pool->getObject();
 		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
 		enemy->setHealth(2);
 		enemy->setCanRun(false);
 		enemy->setPosition(pos);
@@ -1120,6 +1151,7 @@ void GameScene::createEnemyDatNhiBa2(MyLayer * layer, Vec2 pos)
 	if (layer->datNhiBa2Pool) {
 		auto enemy = (EnemyDatNhiBa2*)layer->datNhiBa2Pool->getObject();
 		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
 		enemy->setHealth(2);
 		enemy->setCanRun(false);
 		enemy->setPosition(pos);
@@ -1134,6 +1166,83 @@ void GameScene::createEnemyDatNhiBa2(MyLayer * layer, Vec2 pos)
 			world->DestroyBody(enemy->getB2Body());
 		}
 		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 3));
+		enemy->makeMask();
+
+		enemy->listener();
+	}
+}
+
+void GameScene::createEnemyChong1(MyLayer * layer, Vec2 pos)
+{
+	if (layer->chong1Pool) {
+		auto enemy = (EnemyChong1*)layer->chong1Pool->getObject();
+		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
+		enemy->setPosition(pos);
+		enemy->setVisible(true);
+		enemy->resumeSchedulerAndActions();
+		enemy->clearTracks();
+		enemy->setAnimation(0, "idle", true);
+		enemy->setToSetupPose();
+		enemy->update(0.0f);
+		//layer->addChild(enemy, ZORDER_ENEMY);
+		if (enemy->getB2Body()) {
+			world->DestroyBody(enemy->getB2Body());
+		}
+
+		enemy->initBoxPhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
+		enemy->makeMask();
+
+		enemy->listener();
+	}
+}
+
+void GameScene::createEnemyChong2(MyLayer * layer, Vec2 pos)
+{
+	if (layer->chong2Pool) {
+		auto enemy = (EnemyChong2*)layer->chong2Pool->getObject();
+		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
+		enemy->setPosition(pos);
+		enemy->setVisible(true);
+		enemy->resumeSchedulerAndActions();
+		enemy->clearTracks();
+		enemy->setToSetupPose();
+		enemy->setAnimation(0, "appear", false);
+		enemy->pause();
+		enemy->update(0.0f);
+		//layer->addChild(enemy, ZORDER_ENEMY);
+		if (enemy->getB2Body()) {
+			world->DestroyBody(enemy->getB2Body());
+		}
+
+		enemy->initBoxPhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
+		enemy->makeMask();
+
+		enemy->listener();
+	}
+}
+
+void GameScene::createEnemyChong3(MyLayer * layer, Vec2 pos)
+{
+	if (layer->chong3Pool) {
+		auto enemy = (EnemyChong3*)layer->chong3Pool->getObject();
+		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
+		enemy->setPosition(pos);
+		enemy->setVisible(true);
+		enemy->resumeSchedulerAndActions();
+		enemy->clearTracks();
+		enemy->setToSetupPose();
+		enemy->setAnimation(0, "appear", false);
+		enemy->pause();
+		enemy->update(0.0f);
+		//layer->addChild(enemy, ZORDER_ENEMY);
+		if (enemy->getB2Body()) {
+			world->DestroyBody(enemy->getB2Body());
+		}
+
+		enemy->initBoxPhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
 		enemy->makeMask();
 
 		enemy->listener();
@@ -1327,6 +1436,47 @@ void GameScene::updateQuest()
 	}
 }
 
+void GameScene::reachNewMap()
+{
+	int stageUnlocked = REF->getCurrentStageUnlocked();
+	if (stageUnlocked == stage) {
+		int mapUnlocked = REF->getCurrentMapUnLocked();
+		if (mapUnlocked == map) {
+			switch (stageUnlocked)
+			{
+			case 1: case 2:
+				if (map < 3) {
+					REF->setMapUnlocked(map + 1);
+				}
+				else {
+					REF->increaseStageUnlocked();
+					REF->setMapUnlocked(1);
+				}
+
+				break;
+
+			case 3:
+				if (map < 2) {
+					REF->setMapUnlocked(map + 1);
+				}
+				else {
+					REF->increaseStageUnlocked();
+					REF->setMapUnlocked(1);
+				}
+				break;
+
+			case 4:
+				if (map < 2) {
+					REF->setMapUnlocked(map + 1);
+				}
+				break;
+			default:
+				break;
+			}
+		}
+	}
+}
+
 void GameScene::danceWithCamera()
 {
 	follow = Node::create();
@@ -1445,7 +1595,7 @@ void GameScene::updateEnemy()
 				boss->updateMe(hero);
 			}
 
-			else if (tmp->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width * 0.75f) {
+			else if (tmp->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width * 0.65f) {
 				boss->updateMe(hero);
 
 			}
@@ -1462,7 +1612,7 @@ void GameScene::updateEnemy()
 			auto agent = childLayer1.at(i);
 			// nhung enemy trong man hinh
 			if ((agent->getPosition() + preLayer->getPosition()).x < follow->getPositionX() + SCREEN_SIZE.width * 1 / 2
-				&& (agent->getPositionX() + preLayer->getPositionX())>follow->getPositionX() - SCREEN_SIZE.width * 1 / 2) {
+				&& (agent->getPositionX() + preLayer->getPositionX()) > follow->getPositionX() - SCREEN_SIZE.width * 1 / 2) {
 
 
 				if (childLayer1.at(i)->getTag() > 100) {
@@ -1544,7 +1694,6 @@ void GameScene::runnerItem(Item_type type, int counter)
 
 void GameScene::updateBloodBar(int numberOfHealth, bool isVisible)
 {
-	
 	if (numberOfHealth >= 0) {
 		if (isVisible) {
 			auto blood = (Sprite*)hud->getListBlood()->getObjectAtIndex(numberOfHealth);
@@ -1738,12 +1887,12 @@ void GameScene::callingBird()
 		log("Crazy fox");
 	}
 
-	auto velX = (charId == 0) ? hero->getMoveVel() * 1.15f : hero->getMoveVel();
+	// DQ increase 30% move
 	_aEagle->getB2Body()->SetTransform(hero->getB2Body()->GetPosition(), 0.0f);
-	_aEagle->flyUp(b2Vec2(hero->getMoveVel(), 10.0f));
+	_aEagle->flyUp(b2Vec2((charId == 0) ? hero->getMoveVel() * 1.3f : hero->getMoveVel(), 10.0f));
 
 	auto _aEagleFlyDown = Sequence::create(DelayTime::create(4.0f), CallFunc::create([&]() {
-		_aEagle->flyDown(b2Vec2(hero->getMoveVel(), -10.0f));
+		_aEagle->flyDown(b2Vec2((charId == 0) ? hero->getMoveVel() * 1.3f : hero->getMoveVel(), -10.0f));
 	}), nullptr);
 	//auto _aFinishFly = Sequence::create(DelayTime::create(6.0f), CallFunc::create([&]() {
 	//	//heroGetOffEagle();
@@ -1845,7 +1994,7 @@ void GameScene::overGame()
 	dialogPause = DialogOverGame::create(hero->getScore(), hero->getCoinExplored());
 	this->getParent()->addChild(dialogPause);
 
-	hud->getPauseItem()->setEnabled(false);	
+	hud->getPauseItem()->setEnabled(false);
 
 	updateQuest();
 	this->pause();
@@ -1854,14 +2003,19 @@ void GameScene::overGame()
 void GameScene::nextGame()
 {
 	this->removeAllChildrenWithCleanup(true);
-	auto _scene = SelectStageLayer::createScene(charId);
-	Director::getInstance()->replaceScene(TransitionFade::create(0.3f, _scene));
+	Layer *_pMenuScene = MenuLayer::create(true);
+	auto _aMainMenuScene = Scene::create();
+	_aMainMenuScene->addChild(_pMenuScene);
+	Director::getInstance()->replaceScene(_aMainMenuScene);
 }
 
 void GameScene::winGame()
 {
 	AudioManager::stopSoundandMusic();
 	AudioManager::playSound(SOUND_WIN);
+
+	//reachNewMap();
+
 	blurScreen();
 	if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
 		hud->getBtnCalling()->setEnabled(false);
@@ -1938,6 +2092,9 @@ void GameScene::loadPosAndTag()
 	loadPosOfObjectInGroup("hoacdo_2", TAG_ENEMY_HOACDO2);
 	loadPosOfObjectInGroup("datnhiba_1", TAG_ENEMY_DATNHIBA1);
 	loadPosOfObjectInGroup("datnhiba_2", TAG_ENEMY_DATNHIBA2);
+	loadPosOfObjectInGroup("chonggo", TAG_ENEMY_CHONG1);
+	loadPosOfObjectInGroup("chonggo2", TAG_ENEMY_CHONG2);
+	loadPosOfObjectInGroup("chonggo3", TAG_ENEMY_CHONG3);
 }
 
 void GameScene::loadPosOfObjectInGroup(string nameOfGroup, float tag)
@@ -2055,6 +2212,18 @@ void GameScene::creatAgentByMydata(MyLayer * layer, MyData data)
 		createEnemyDatNhiBa2(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
 		break;
 	}
+	case TAG_ENEMY_CHONG1: {
+		createEnemyChong1(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
+		break;
+	}
+	case TAG_ENEMY_CHONG2: {
+		createEnemyChong2(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
+		break;
+	}
+	case TAG_ENEMY_CHONG3: {
+		createEnemyChong3(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
+		break;
+	}
 
 	}
 }
@@ -2087,7 +2256,7 @@ void GameScene::introJump(int type)
 	blurScreen();
 	tut = TutorialJump::create(type);
 	this->getParent()->addChild(tut);
-	
+
 	hero->getSmokeRun()->pause();
 	hero->pause();
 	hud->getPauseItem()->setEnabled(false);
@@ -2199,7 +2368,7 @@ void GameScene::resumeAfterTut(int caseTut)
 
 
 	hud->getPauseItem()->setEnabled(true);
-	
+
 
 	switch (caseTut)
 	{
@@ -2209,7 +2378,7 @@ void GameScene::resumeAfterTut(int caseTut)
 			touch_listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
 			_eventDispatcher->addEventListenerWithSceneGraphPriority(touch_listener, this);
 		}
-		
+
 		this->resume();
 		break;
 

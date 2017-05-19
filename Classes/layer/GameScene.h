@@ -151,6 +151,9 @@ private:
 	void createEnemyHoacDo2(MyLayer* layer, Vec2 pos);
 	void createEnemyDatNhiBa(MyLayer* layer, Vec2 pos);
 	void createEnemyDatNhiBa2(MyLayer* layer, Vec2 pos);
+	void createEnemyChong1(MyLayer* layer, Vec2 pos);
+	void createEnemyChong2(MyLayer* layer, Vec2 pos);
+	void createEnemyChong3(MyLayer* layer, Vec2 pos);
 	void creatBoss();
 
 	void createCoin();
@@ -163,7 +166,7 @@ private:
 	
 	void updateQuest();
 
-
+	void reachNewMap();
 	void danceWithCamera();
 	float previousPercentPosition = 0.0f;
 	void updateCharacterPoint();

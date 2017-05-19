@@ -1,4 +1,4 @@
-#ifndef __GLOBAL_H__
+﻿#ifndef __GLOBAL_H__
 #define __GLOBAL_H__
 
 #include "cocos2d.h"
@@ -21,15 +21,11 @@ using namespace std;
 #define BITMASK_FLOOR					0x0004
 #define BITMASK_WOODER					0x0008
 #define BITMASK_COIN					0x0010
-#define BITMASK_TOANCHAN1				0x0020
-#define BITMASK_TOANCHAN2				0x0040
-#define BITMASK_TNB						0x0050
-#define BITMASK_TOONG					0x0060
+#define BITMASK_BIRD					0x0020
 #define BITMASK_SWORD					0x0080
 #define BITMASK_SLASH					0x0100
 #define BITMASK_BOSS					0x0200
 #define BITMASK_UNDER_GROUND			0x0400
-#define BITMASK_BIRD					0x0500
 #define BITMASK_COIN_BAG				0x0800
 #define BITMASK_COIN_BULLION			0x1000
 #define BITMASK_RADA_SKILL_1			0x2000
@@ -79,6 +75,10 @@ using namespace std;
 	//tag enemy tinh 
 #define TAG_ENEMY_TNB						120
 #define TAG_ENEMY_TOONG						121
+#define TAG_ENEMY_CHONG1					122
+#define TAG_ENEMY_CHONG2					123
+#define TAG_ENEMY_CHONG3					124
+
 	//tag enemy dong
 #define TAG_ENEMY_TOANCHAN1					130
 #define TAG_ENEMY_HONGLANGBA1				131
@@ -110,18 +110,18 @@ using namespace std;
 #define MAX_BOMB_HERO_POOL					7
 #define MAX_BULLET_SOLDIER_ENEMY_POOL		3
 
-#define	MUSIC_MENU							"sound/music/menu.mp3"
-#define MUSIC_STAGE1						"sound/music/stage1.mp3"
-#define MUSIC_STAGE2						"sound/music/stage2.mp3"
-#define MUSIC_STAGE3						"sound/music/stage3.mp3"
-#define MUSIC_STAGE4						"sound/music/stage4.mp3"
+#define	MUSIC_MENU								"sound/music/menu.mp3"
+#define MUSIC_STAGE1							"sound/music/stage1.mp3"
+#define MUSIC_STAGE2							"sound/music/stage2.mp3"
+#define MUSIC_STAGE3							"sound/music/stage3.mp3"
+#define MUSIC_STAGE4							"sound/music/stage4.mp3"
 
-#define SOUND_MCAT							"sound/mcattack.mp3"
-#define SOUND_MCJUMP						"sound/mcjump.mp3"
+#define SOUND_MCAT								"sound/mcattack.mp3"
+#define SOUND_MCJUMP							"sound/mcjump.mp3"
 #define SOUND_MCREVIVE							"sound/revive.mp3"
 
-#define SOUND_DQDIE							"sound/dqdie.mp3"
-#define SOUND_DQHIT							"sound/dqhit.mp3"
+#define SOUND_DQDIE								"sound/dqdie.mp3"
+#define SOUND_DQHIT								"sound/dqhit.mp3"
 #define SOUND_DQSKILL1							"sound/dqskill1.mp3"
 #define SOUND_DQSKILL2							"sound/dqskill2.mp3"
 #define SOUND_DQSKILL3							"sound/dqskill3.mp3"
@@ -131,7 +131,7 @@ using namespace std;
 #define SOUND_CLSKILL2							"sound/clskill2.mp3"
 #define SOUND_CLSKILL3							"sound/clskill3.mp3"
 
-#define SOUND_ENEMYHIT								"sound/enemyhit.mp3"
+#define SOUND_ENEMYHIT							"sound/enemyhit.mp3"
 #define SOUND_TC1AT								"sound/tc1at.mp3"
 #define SOUND_TC1DIE							"sound/tc1die.mp3"
 #define SOUND_TC2AT								"sound/tc2at.mp3"
@@ -164,14 +164,19 @@ using namespace std;
 #define SOUND_BOSS3DIE							"sound/boss3die.mp3"
 
 #define SOUND_COIN								"sound/getcoin.mp3"
-#define SOUND_COINBULLION								"sound/getcoinbullion.mp3"
-#define SOUND_COINBAG								"sound/getcoinbag.mp3"
+#define SOUND_COINBULLION						"sound/getcoinbullion.mp3"
+#define SOUND_COINBAG							"sound/getcoinbag.mp3"
 #define SOUND_ITEM								"sound/getitem.mp3"
 #define SOUND_BIRD								"sound/bird.mp3"
 
-#define SOUND_FAIL						"sound/stagefail.mp3"
-#define SOUND_WIN						"sound/stagewin.mp3"
-#define SOUND_BTCLICK						"sound/btclick.mp3"
+#define SOUND_FAIL								"sound/stagefail.mp3"
+#define SOUND_WIN								"sound/stagewin.mp3"
+#define SOUND_BTCLICK							"sound/btclick.mp3"
+
+// DuongPM
+#define SOUND_SCROLL_SLIDE						"sound/scrollslide.mp3"
+#define SOUND_UNLOCK_HERO						"sound/unlockhero.mp3"
+#define SOUND_UPGRADE_LEVEL						"sound/upgradelevel.mp3"
 
 #define KEY_IS_MUSIC							"isMusic"
 #define KEY_IS_SOUND							"isSound"

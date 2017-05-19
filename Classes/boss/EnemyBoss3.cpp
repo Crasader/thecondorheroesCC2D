@@ -82,7 +82,8 @@ void EnemyBoss3::creatSlash(float angel)
 	//slash->setRotation(180 - 180 / 4);
 	slash->setAngle(angel);
 	slash->setRotation(-angel / PI * 180 + 180);
-	slash->getB2Body()->SetLinearVelocity(slash->getB2Body()->GetLinearVelocity() + this->getB2Body()->GetLinearVelocity());
+	slash->getB2Body()->SetLinearVelocity(b2Vec2(slash->getB2Body()->GetLinearVelocity().x/1.5f, slash->getB2Body()->GetLinearVelocity().y / 1.5f) +
+		this->getB2Body()->GetLinearVelocity());
 }
 
 void EnemyBoss3::playSoundAttack1()
@@ -164,7 +165,6 @@ void EnemyBoss3::doAttack2()
 			if (this->getControlState() == 1) {
 				this->attack3();
 
-
 			}
 			if (this->getControlState() == 7 ||this->getControlState() == 12 || this->getControlState() == 17) {
 				this->creatHidenSlash(PI);
@@ -175,6 +175,7 @@ void EnemyBoss3::doAttack2()
 				this->setAnimation(0, "idle", true);
 				this->setTimeScale(1);
 				this->setToSetupPose();
+				this->setIsNodie(false);
 			}
 
 			if (this->getControlState() >= 50) {
@@ -185,4 +186,44 @@ void EnemyBoss3::doAttack2()
 		}, 0.1f, "bossattack2");
 	}
 
+}
+
+bool EnemyBoss3::checkStop()
+{
+	if (this->getRealMoveVelocity().y > 0) {
+		if (this->getPositionX() - heroLocation.x > SCREEN_SIZE.width / 1.8f) {
+			return true;
+		}
+	}
+	else {
+		if (this->getPositionX() - heroLocation.x > SCREEN_SIZE.width / 2.5f) {
+			return true;
+		}
+	}
+	return false;
+	
+}
+
+void EnemyBoss3::listener()
+{
+	this->setCompleteListener([&](int trackIndex, int loopCount) {
+		if (getCurrent()) {
+			if ((strcmp(getCurrent()->animation->name, "attack2") == 0 && loopCount == 1)) {
+				this->idle();
+				setIsNodie(false);
+			}
+			else if ((strcmp(getCurrent()->animation->name, "attack") == 0 && loopCount == 1)) {
+				this->idle();
+				setIsNodie(false);
+			}
+			
+			else if ((strcmp(getCurrent()->animation->name, "injured-red") == 0 && loopCount == 1)) {
+				if (this->getHealth() > 0) {
+					setIsNodie(false);
+					this->idle();
+				}
+
+			}
+		}
+	});
 }

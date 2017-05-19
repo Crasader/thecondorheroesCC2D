@@ -548,6 +548,7 @@ void CoLong::idle() {
 }
 
 void CoLong::die() {
+	BaseHero::die();
 	--dieHard;
 	if (dieHard < 0) {
 		//log("Die Hard");

@@ -29,7 +29,7 @@ public:
 	void backHome(Ref* pSender);
 	void overGame();
 	void replayGame(Ref* pSender, int goldRevive, bool isWatchVideo);
-	void nextState(Ref* pSender);
+	void nextStage(Ref* pSender);
 	void restartGame(Ref* pSender);
 	void upgrade(Ref* pSender);
 

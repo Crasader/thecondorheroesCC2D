@@ -56,6 +56,7 @@ protected:
 	CC_SYNTHESIZE(int, score, Score);
 	CC_SYNTHESIZE(int, coinExplored, CoinExplored);
 	CC_SYNTHESIZE(int, coinRatio, CoinRatio);
+	CC_SYNTHESIZE(int, scoreRatio, ScoreRatio);
 
 	// bool to make separate animation
 	CC_SYNTHESIZE(bool, isPriorInjured, IsPriorInjured);

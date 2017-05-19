@@ -1,33 +1,33 @@
 {
-  "daily_reward": [
+  "daily_reward" : [
     {
-      "type": "gold",
-      "number": 300
-    },
+	  "type" : "gold",
+	  "number" : 300
+	},
     {
-      "type": "play_turn",
-      "number": 5
-    },
+	  "type" : "play_turn",
+	  "number" : 5
+	},
     {
-      "type": "item_bird",
-      "number": 1
-    },
+	  "type" : "item_bird",
+	  "number" : 1
+	},
     {
-      "type": "gold",
-      "number": 1000
-    },
+	  "type" : "gold",
+	  "number" : 1000
+	},
     {
-      "type": "diamond",
-      "number": 5
-    },
+	  "type" : "diamond",
+	  "number" : 5
+	},
     {
-      "type": "play_turn",
-      "number": 10
-    },
+	  "type" : "play_turn",
+	  "number" : 10
+	},
     {
-      "type": "diamond",
-      "number": 20
-    }
+	  "type" : "diamond",
+	  "number" : 20
+	}
   ],
   "quests": [
     {

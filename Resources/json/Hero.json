@@ -30,7 +30,11 @@
       "noti_2": "Your gold is not enough",
       "noti_3": "Your diamond is not enough",
       "noti_4": "Get more diamond to buy",
-      "noti_5": "Purchase to more fun"
+      "noti_5": "Purchase to more fun",
+	    "noti_6": "You've take free coin 3 times today, comeback on tomorrow to get more",
+	    "noti_7": "Come to Pipo game to get more",
+	    "noti_8": "You dont have enough gold, get more to buy",
+	    "noti_9": "You dont have enough diamond, get more to buy"
     }
   ],
 
@@ -62,7 +66,7 @@
       "skill3Name": "Hold of fire",
       "pathMainImageSkill3": "UI/btnDQ_skill3_up.png",
       "pathSubImageSkill3": "UI/btnDQ_skill3_down.png",
-      "baseHP": 100,
+      "baseHP": 4,
       "level": 1,
       "maxLevel": 20,
       "percentBonusScore": 0,
@@ -77,7 +81,7 @@
     {
       "key": "132456789abc",
       "name": "Hana",
-      "inforHero": "The Johan's master. Excellent at using concealed weapon. Raise 15% magnet's item",
+      "inforHero": "The Johan’s master. Excellent at using concealed weapon. Raise 15% magnet’s item",
       "avatarPath": "UI/UI_info_ingame/avatar_CoCo.png",
       "characterPointPath": "UI/UI_info_ingame/CoCo_point.png",
       "selectCharacterPoint": "UI/Select_Stage/character_point_CL.png",
@@ -116,7 +120,7 @@
     {
       "key": "124356789abc",
       "name": "Kim",
-      "inforHero": "Robin's wife. Master of using stick. Revive with one time usage of Marvel Shield",
+      "inforHero": "Robin’s wife. Master of using stick. Revive with one time usage of Marvel Shield",
       "avatarPath": "UI/UI_info_ingame/avatar_HoangDung.png",
       "characterPointPath": "UI/UI_info_ingame/HoangDung_point.png",
       "selectCharacterPoint": "UI/Select_Stage/character_point_HD.png",
@@ -140,7 +144,7 @@
       "skill3Name": "Jingu Mastery",
       "pathMainImageSkill3": "UI/btnDQ_skill1_up.png",
       "pathSubImageSkill3": "UI/btnDQ_skill1_up.png",
-      "baseHP": 4,
+      "baseHP": 5,
       "level": 1,
       "maxLevel": 40,
       "percentBonusScore": 10,
@@ -155,7 +159,7 @@
     {
       "key": "123457689abc",
       "name": "Athur",
-      "inforHero": "Master of Kungfu. Kim's father. Double score when using skills",
+      "inforHero": "Master of Kungfu. Kim’s father. Double score when using skills",
       "avatarPath": "UI/UI_info_ingame/avatar_HoangDuocSu.png",
       "characterPointPath": "UI/UI_info_ingame/HoangDuocSu_point.png",
       "selectCharacterPoint": "UI/Select_Stage/character_point_HDS.png",

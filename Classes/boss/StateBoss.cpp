@@ -15,6 +15,7 @@ void StateBoss::enter(EnemyBoss1 * boss)
 	boss->setControlState(0);
 	boss->clearTracks();
 	boss->setAnimation(0, "idle", true);
+	boss->setToSetupPose();
 	boss->setControlState(0);
 }
 

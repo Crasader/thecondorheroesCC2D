@@ -1,10 +1,11 @@
 #include "JSonHeroManager.h"
+#include "RefManager.h"
 
 JSonHeroManager* JSonHeroManager::jsonHeroManager;
 
 JSonHeroManager::JSonHeroManager()
 {
-	auto herobuffer = FileUtils::getInstance()->getStringFromFile("Hero.json");
+	auto herobuffer = FileUtils::getInstance()->getStringFromFile("json/Hero.json");
 	this->jsonDoc.Parse(herobuffer.c_str());
 }
 
@@ -81,6 +82,6 @@ string JSonHeroManager::getTipAtX(int index)
 
 string JSonHeroManager::getNotifyAtX(int index)
 {
-	assert(index > 0 && index <= 5);
+	assert(index > 0 && index <= 9);
 	return jsonDoc["notification"][0][("noti_" + StringUtils::format("%i", index)).c_str()].GetString();
 }

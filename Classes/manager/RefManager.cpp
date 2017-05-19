@@ -15,7 +15,7 @@ RefManager::RefManager()
 	lastPickHero = ref->getIntegerForKey(KEY_LAST_PICK_HERO, 0);
 
 	currentStageUnlocked = ref->getIntegerForKey(KEY_CUR_STAGE_UNLOCKED, 4);
-	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 3);
+	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 2);
 
 	anchorTime = ref->getIntegerForKey(KEY_ANCHORTIME, time(0));
 	lastDailyRewardTime = ref->getIntegerForKey(KEY_LAST_DAILY_REWARD_TIME, 0);
@@ -32,6 +32,7 @@ RefManager::RefManager()
 	numberItemMagnet = ref->getIntegerForKey(NUMBER_OF_ITEM_MAGNET, 0);
 	numberItemDoubleGold = ref->getIntegerForKey(NUMBER_OF_ITEM_DOUBLE_COIN, 0);
 	numberItemCoolDown = ref->getIntegerForKey(NUMBER_OF_ITEM_COOL_DOWN, 0);
+	language = ref->getIntegerForKey(KEY_LANGUAGE, 0);
 
 	// need to fix
 	unLockHero(0);
@@ -126,12 +127,12 @@ void RefManager::increaseLevel()
 
 	if ((currentLevel % 10) == 0) {
 		setUpHealth(1);
-		increaseBonusScore(3);
-		increaseBonusGold(3);
 	}
+	increaseBonusScore(1);
+	increaseBonusGold(1);
 }
 
-void RefManager::increaseStateUnlocked()
+void RefManager::increaseStageUnlocked()
 {
 	ref->setIntegerForKey(KEY_CUR_STAGE_UNLOCKED, ++this->currentStageUnlocked);
 	ref->flush();
@@ -250,6 +251,13 @@ void RefManager::resetAnchorTime()
 {
 	anchorTime = time(0);
 	ref->setIntegerForKey(KEY_ANCHORTIME, anchorTime);
+	ref->flush();
+}
+
+void RefManager::setLanguage(int p_nLanguage)
+{
+	language = p_nLanguage;
+	ref->setIntegerForKey(KEY_LANGUAGE, language);
 	ref->flush();
 }
 

@@ -19,6 +19,8 @@ public:
 	void playSoundAttack2();
 	void playSoundDie();
 	void doAttack2();
+	bool checkStop();
+	void listener();
 };
 
 #endif // __ENEMY_H__

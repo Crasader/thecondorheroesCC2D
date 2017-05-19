@@ -1,4 +1,4 @@
-#include "SlashBoss.h"
+#include "boss/SlashBoss.h"
 
 
 SlashBoss::SlashBoss(string json, string atlas, float scale):B2Skeleton(json,atlas,scale)

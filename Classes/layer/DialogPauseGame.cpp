@@ -53,9 +53,12 @@ void DialogPauseGame::resumeGame(Ref * pSender)
 void DialogPauseGame::backHome(Ref * pSender)
 {
 	AdmobHelper::getInstance()->showFullAd();
-	auto parentLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
-	this->removeFromParentAndCleanup(true);
-	Director::getInstance()->replaceScene(MenuLayer::createScene());
+	auto gameScene = this->getParent();
+	gameScene->removeAllChildrenWithCleanup(true);
+	Layer *_pMenuScene = MenuLayer::create(false);
+	auto _aMainMenuScene = Scene::create();
+	_aMainMenuScene->addChild(_pMenuScene);
+	Director::getInstance()->replaceScene(_aMainMenuScene);
 }
 
 void DialogPauseGame::overGame()
@@ -90,7 +93,7 @@ void DialogPauseGame::replayGame(Ref * pSender, int goldRevive, bool isWatchVide
 }
 
 
-void DialogPauseGame::nextState(Ref * pSender)
+void DialogPauseGame::nextStage(Ref * pSender)
 {
 	if (!REF->getIsLockedHero()) {
 		auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
@@ -99,7 +102,10 @@ void DialogPauseGame::nextState(Ref * pSender)
 	else {
 		auto gameScene = this->getParent();
 		gameScene->removeAllChildrenWithCleanup(true);
-		Director::getInstance()->replaceScene(MenuLayer::createScene());
+		Layer *_pMenuScene = MenuLayer::create(false);
+		auto _aMainMenuScene = Scene::create();
+		_aMainMenuScene->addChild(_pMenuScene);
+		Director::getInstance()->replaceScene(_aMainMenuScene);
 	}
 }
 
@@ -363,7 +369,7 @@ bool DialogStageClear::init(int score, int gold)
 	auto nextBtnNormal = Sprite::create("UI/UI_Endgame/btn_next.png");
 	auto nextBtnActive = Sprite::create("UI/UI_Endgame/btn_next.png");
 	nextBtnActive->setColor(Color3B(128, 128, 128));
-	auto nextBtn = MenuItemSprite::create(nextBtnNormal, nextBtnActive, CC_CALLBACK_1(DialogPauseGame::nextState, this));
+	auto nextBtn = MenuItemSprite::create(nextBtnNormal, nextBtnActive, CC_CALLBACK_1(DialogPauseGame::nextStage, this));
 	nextBtn->setAnchorPoint(Vec2(1, 1));
 	nextBtn->setPosition(background->getContentSize().width*0.9, 0);
 
@@ -402,7 +408,6 @@ bool DialogStageClear::init(int score, int gold)
 		REF->setUpScore(score + bonusScore);
 		REF->setUpGoldExplored(gold + bonusGold);
 	}
-
 	effect();
 
 	return true;

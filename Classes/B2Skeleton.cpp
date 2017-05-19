@@ -50,7 +50,7 @@ void B2Skeleton::initBoxPhysic(b2World *world, Point pos)
 	b2PolygonShape shape;
 	auto size = this->getBoundingBox().size;
 
-	shape.SetAsBox(size.width / 6 / PTM_RATIO, size.height / 6 / PTM_RATIO);
+	shape.SetAsBox(size.width / 2 / PTM_RATIO, size.height / 2 / PTM_RATIO);
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 1.0f;

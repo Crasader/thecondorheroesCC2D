@@ -8,8 +8,8 @@
 #include <time.h>
 #include "network/HttpClient.h"
 
-#include "ui_custom/CustomSpriteToBuyPack.h"
 #include "ui_custom/CustomLayerToToast.h"
+#include "ui_custom/CustomSpriteToBuyPack.h"
 #include "SelectStageScene.h"
 
 USING_NS_CC;
@@ -53,8 +53,6 @@ private:
 	SkeletonAnimation *m_pSpriteQuestAttention;						// 
 	SkeletonAnimation *m_pSpriteFreeCoinAttention;						// 
 
-	Label *m_pLabelNumberGoldOnBuy;
-	Label *m_pLabelNumberDiamondOnBuy;
 	ScrollView *m_pPacksZone;
 	ScrollView *m_pItemScrollView;
 	// score bar

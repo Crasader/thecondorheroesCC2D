@@ -89,11 +89,11 @@ void BaseEnemy::updateMe(BaseHero* hero)
 	if (hero->getIsKillAll() && this->getB2Body() != nullptr) {
 		if (this->getPositionX() + this->getParent()->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width * 0.75f &&
 			this->getPositionX() + this->getParent()->getPositionX() > hero->getPositionX() - SCREEN_SIZE.width * 0.26f &&
-			hero->getPositionY() + SCREEN_SIZE.height * 0.5f > this->getPositionY() &&
-			hero->getPositionY() - SCREEN_SIZE.height * 0.35f < this->getPositionY()
+			hero->getPositionY() + SCREEN_SIZE.height * 0.5f > this->getPositionY() + this->getParent()->getPositionY() &&
+			hero->getPositionY() - SCREEN_SIZE.height * 0.4f < this->getPositionY() + this->getParent()->getPositionY()
 
 			) {
-
+			
 			die();
 		}
 	}

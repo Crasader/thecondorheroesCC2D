@@ -28,6 +28,7 @@ public:
 	void injured();
 	void listener();
 
+	void stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSkill3);
 	void doDestroyBodies(b2World *world);
 
 	void updateMe(float p_fDelta);

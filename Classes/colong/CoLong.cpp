@@ -140,8 +140,6 @@ void CoLong::doCounterSkill3() {
 		checkDurationSkill3++;
 
 		if (checkDurationSkill3 >= getDurationSkill3() * 10) {
-			changeBodyMaskBits(BITMASK_FLOOR | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION | BITMASK_ENEMY);
-			m_pRadaSkill3->changeBodyCategoryBits(BITMASK_WOODER);
 			setIsDoneDuration3(true);
 			if (getOnGround()) {
 				getFSM()->changeState(MRun);
@@ -420,12 +418,41 @@ void CoLong::listener() {
 
 		}
 
+
+		else if (strcmp(getCurrent()->animation->name, "skill3") == 0) {
+			changeBodyMaskBits(BITMASK_FLOOR | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION | BITMASK_ENEMY);
+			m_pRadaSkill3->changeBodyCategoryBits(BITMASK_WOODER);
+		}
+
 		else if (strcmp(getCurrent()->animation->name, "die") == 0) {
 			this->pause();
 			auto gamelayer = (GameScene*)this->getParent();
 			gamelayer->dieGame();
-		}
+		} 
+
 	});
+}
+
+void CoLong::stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSkill3)
+{
+	if (stopSkill1 && !getIsDoneDuration1()) {
+		setIsDoneDuration1(true);
+		checkDurationSkill1 = 0;
+		unschedule("KeySkill1");
+	}
+
+	if (stopSkill2 && !getIsDoneDuration2()) {
+		setIsDoneDuration2(true);
+		unschedule("KeySkill2");
+		checkDurationSkill2 = 0;
+	}
+
+	if (stopSkill3 && !getIsDoneDuration3()) {
+		AudioManager::stopSoundForever(keysoundSKill3);
+		setIsDoneDuration3(true);
+		unschedule("KeySkill3");
+		checkDurationSkill3 = 0;
+	}
 }
 
 void CoLong::doDestroyBodies(b2World *world)
@@ -514,47 +541,14 @@ void CoLong::landing() {
 }
 
 void CoLong::die() {
-	--dieHard;
-	if (dieHard < 0) {
-		//log("Die Hard");
-		return;
-	}
-
-	noActive = true;
-
-	if (!getIsDoneDuration1()) {
-		setIsDoneDuration1(true);
-		checkDurationSkill1 = 0;
-		unschedule("KeySkill1");
-	}
-
-	if (!getIsDoneDuration2()) {
-		setIsDoneDuration2(true);
-		unschedule("KeySkill2");
-		checkDurationSkill2 = 0;
-	}
-
-	if (!getIsDoneDuration3()) {
-		setIsDoneDuration3(true);
-		unschedule("KeySkill3");
-		checkDurationSkill3 = 0;
-	}
-
-
+	BaseHero::die();
 	AudioManager::playSound(SOUND_CLDIE);
-	clearTracks();
-	addAnimation(0, "die", false);
-	setToSetupPose();
-	getB2Body()->SetLinearDamping(10);
-
-	getSmokeRun()->setVisible(false);
-
 	//log("die");
 }
 
 void CoLong::attackNormal() {
 	if (!getIsDoneDuration3()) {		// is in Skill 3
-
+		getFSM()->revertToGlobalState();
 	}
 	else {
 		BaseHero::attackNormal();
@@ -584,7 +578,7 @@ void CoLong::attackNormal() {
 
 void CoLong::attackLanding() {
 	if (!getIsDoneDuration3()) {		// is in Skill 3
-
+		getFSM()->revertToGlobalState();
 	}
 	else {
 		BaseHero::attackLanding();

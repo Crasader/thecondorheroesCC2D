@@ -147,7 +147,7 @@ void SelectStageLayer::moveAva()
 {
 	int lastMapId = REF->getLastMapIdPlay();
 	if (lastMapId < 12) {
-		if (convertId() == lastMapId + 1 && REF->getIsGetNewMap()) {
+		if (REF->getIsGetNewMap()) {
 			auto screenSize = Director::getInstance()->getVisibleSize();
 			auto effectUpLvMap = Sprite::create("UI/Select_Stage/effect_lv.png");
 			effectUpLvMap->setScale(screenSize.height / 5.0f / effectUpLvMap->getContentSize().width);

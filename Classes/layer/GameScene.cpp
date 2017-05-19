@@ -209,7 +209,7 @@ void GameScene::onBegin()
 	}
 
 
-	key_listener = EventListenerKeyboard::create();
+	auto key_listener = EventListenerKeyboard::create();
 
 	key_listener->onKeyPressed = CC_CALLBACK_2(GameScene::onKeyPressed, this);
 
@@ -556,6 +556,17 @@ void GameScene::update(float dt)
 	if (hero->getHealth() > 0) {
 		if (hero->getPositionY() + hero->getTrueRadiusOfHero() * 3.3f <= follow->getPositionY() - SCREEN_SIZE.height / 2) {
 			if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isEnabled()) {
+
+				switch (charId) {
+				case 0:
+					hero->stopSkillAction(false, false, true);
+					break;
+
+				default:
+					hero->stopSkillAction(true, false, true);
+					break;
+				}
+
 				hud->hideButton();
 				hud->moveCallBirdToCenterScreen(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 				hero->setOnGround(false);
@@ -1360,6 +1371,7 @@ void GameScene::reachNewMap()
 	if (stageUnlocked == stage) {
 		int mapUnlocked = REF->getCurrentMapUnLocked();
 		if (mapUnlocked == map) {
+			REF->setReachNewMap(true);
 			switch (stageUnlocked)
 			{
 			case 1: case 2:
@@ -1761,7 +1773,6 @@ void GameScene::reviveHero()
 	AudioManager::playSound(SOUND_MCREVIVE);
 	hud->refreshControl();
 	resumeGame();
-	hero->resume();
 
 	if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
 		hud->getBtnCalling()->setEnabled(false);
@@ -1932,7 +1943,7 @@ void GameScene::winGame()
 	AudioManager::stopSoundandMusic();
 	AudioManager::playSound(SOUND_WIN);
 
-	//reachNewMap();
+	reachNewMap();
 
 	blurScreen();
 	if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {

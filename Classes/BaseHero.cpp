@@ -209,6 +209,22 @@ void BaseHero::landing()
 
 void BaseHero::die()
 {
+	--dieHard;
+	if (dieHard < 0) {
+		//log("Die Hard");
+		return;
+	}
+
+	noActive = true;
+
+	stopSkillAction(true, true, true);
+
+	clearTracks();
+	addAnimation(0, "die", false);
+	setToSetupPose();
+	getB2Body()->SetLinearDamping(10);
+
+	getSmokeRun()->setVisible(false);
 }
 
 void BaseHero::attackNormal()
@@ -291,6 +307,10 @@ void BaseHero::doCounterSkill3()
 {
 }
 
+void BaseHero::stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSkill3)
+{
+}
+
 void BaseHero::doDestroyBodies(b2World *world)
 {
 	world->DestroyBody(getB2Body());
@@ -351,7 +371,7 @@ void BaseHero::killThemAll()
 	blash->setVisible(true);
 	//auto originScale = blash->getScale();
 	auto scaleFactor = Director::getInstance()->getContentScaleFactor();
-	auto scale = ScaleBy::create(0.5f, 150 * scaleFactor);
+	auto scale = ScaleBy::create(1.0f, 175 * scaleFactor);
 
 	auto hide = CallFunc::create([&]() {
 		blash->setVisible(false);

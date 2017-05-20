@@ -108,7 +108,7 @@ public:
 	void increaseBonusScore(int value);
 	void increaseBonusGold(int value);
 
-	void resetAnchorTime();
+	void setAnchorTime(int value);
 	void updateTimeFromGoogle(int p_nTime);
 	void increaseDailyRewardCounter();
 	void updateDailyRewardAvailable(bool p_bData);
@@ -120,6 +120,7 @@ public:
 	// eat to play
 	void setUpLife(int life);   
 	bool setDownLife(int life);
+	void setLife(int life);
 	
 	void setUpGoldExplored(int gold);
 	bool setDownGold(int gold);

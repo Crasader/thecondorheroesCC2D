@@ -255,9 +255,9 @@ void RefManager::increaseBonusGold(int value)
 	ref->flush();
 }
 
-void RefManager::resetAnchorTime()
+void RefManager::setAnchorTime(int value)
 {
-	anchorTime = time(0);
+	anchorTime = value;
 	ref->setIntegerForKey(KEY_ANCHORTIME, anchorTime);
 	ref->flush();
 }
@@ -302,6 +302,13 @@ void RefManager::decreaseFreeCoin() {
 void RefManager::setUpLife(int life)
 {
 	this->numberOfLife += life;
+	ref->setIntegerForKey(KEY_LIFE, this->numberOfLife);
+	ref->flush();
+}
+
+void RefManager::setLife(int life)
+{
+	this->numberOfLife = life;
 	ref->setIntegerForKey(KEY_LIFE, this->numberOfLife);
 	ref->flush();
 }

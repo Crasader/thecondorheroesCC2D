@@ -36,7 +36,7 @@ public:
 	static JSonQuestManager * getInstance();
 
 	int getNumberQuest();
-	void readQuest(int p_nIndexQuest);
+	void readQuest(int p_nLanguage, int p_nIndexQuest);
 	void readDailyReward(int p_nIndexDailyReward);
 };
 

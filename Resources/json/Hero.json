@@ -32,10 +32,11 @@
       "noti_4": "Get more diamond to buy",
       "noti_5": "Purchase to more fun",
       "noti_6": "Boss is coming",
-	    "noti_7": "You've take free coin 3 times today, comeback on tomorrow to get more",
-	    "noti_8": "Come to Pipo game to get more",
-	    "noti_9": "You dont have enough gold, get more to buy",
-	    "noti_10": "You dont have enough diamond, get more to buy"
+	    "noti_7": "Come to Pipo game to get more",
+	    "noti_8": "You dont have enough gold, get more to buy",
+	    "noti_9": "You dont have enough diamond, get more to buy",
+	    "noti_10": "Do you want to buy this pack?",
+	    "noti_11": "You've take free coin 3 times today, comeback on tomorrow to get more"
     }
   ],
 

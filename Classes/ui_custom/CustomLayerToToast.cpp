@@ -25,6 +25,7 @@ void CustomLayerToToast::setMessage(string p_sMessage, float p_fTimeOption) {
 	m_pLabelMessage->setTextColor(Color4B::WHITE);
 	m_pLabelMessage->setAnchorPoint(Vec2(0.5f, 0.5f));
 	m_pLabelMessage->setPosition(this->getContentSize().width / 2, this->getContentSize().height / 2);
+	m_pLabelMessage->setMaxLineWidth(Director::getInstance()->getVisibleSize().width * 0.9f);
 	this->addChild(m_pLabelMessage, 1);
 
 	m_pToastBackground = Sprite::create("UI/toast.png");

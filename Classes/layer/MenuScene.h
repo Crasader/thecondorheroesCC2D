@@ -28,7 +28,6 @@ private:
 	const Size m_szVisibleSize = Director::getInstance()->getVisibleSize();
 	float m_fButtonStartPosition;							// make start and unlock button at same position
 	int m_nMenuStatus = 0;
-	bool m_nOnlySelectStage;
 
 	// input value
 	int m_nCurrentTimeFromGoogle = 0;						// time from google.com.vn (-7 hours from Viet Nam)
@@ -36,7 +35,6 @@ private:
 	int m_nIndexHeroSelected = 0;
 	int m_nIndexHeroPicked = 0;
 	int m_nLifeNumber;										// number of life
-	int m_nAnchorTime;										// time number of life was changed by time
 	int m_nCurrentGold;										// current gold
 	int m_nCurrentDiamond;									// current diamond
 	int m_arNumberItemOwning[5];							// number of item owning
@@ -53,7 +51,7 @@ private:
 	SkeletonAnimation *m_pSpriteQuestAttention;						// 
 	SkeletonAnimation *m_pSpriteFreeCoinAttention;						// 
 
-	ScrollView *m_pPacksZone;
+	ListView *m_pPacksZone;
 	ScrollView *m_pItemScrollView;
 	// score bar
 	/*Sprite *m_pLevelPoint;
@@ -76,6 +74,7 @@ private:
 
 	SelectStageLayer *m_pSelectStageLayer;
 	Layer *m_pBlurScreen;
+	LayerColor *m_pBuyPackConfirmBackground;
 
 	// menus
 	Menu *m_pTopMenu;
@@ -84,6 +83,8 @@ private:
 	Menu *m_pQuestBoardMenu;
 	Menu *m_pSkillBoardMenu;
 	Menu *m_pBottomHeroMenu;
+	Menu *m_pShopMenu;
+	RadioButtonGroup *m_pLanguageButtonGroup;
 
 	//////////////////////////////////////////////////////////////////////////////////
 	// INIT
@@ -94,7 +95,7 @@ private:
 
 	void initTopMainMenu();
 	void initBottomMainMenu();
-	void initItemBoard(float p_fPercent);
+	void initItemBoard();
 	void initUpgradeBoard();
 	void initQuestBoard(int p_nFocus);
 	void initHeroInfoBoard();
@@ -116,6 +117,7 @@ private:
 	void buttonHeroesHandle();
 	void buttonShopHandle();
 	void buttonFreeCoinHandle();
+	void buttonSettingHandle();
 	void buttonMoreGameHandle();
 
 	void buttonStartHandle();
@@ -142,6 +144,7 @@ private:
 	void onHttpRequestCompleted(HttpClient *p_pSender, HttpResponse *p_pResponse);		// handle response an get realtime from google.com.vm
 
 																						// buy coin
+	void buttonConfirmHandle(bool p_bConfirm, int p_nIndexPack);
 	void buttonBuyLifeHandle(int p_nIndexEnergyPack);
 	void buttonBuyCoinHandle(int p_nIndexCoinPack);
 	void buttonBuyDiamondHandle(int p_nIndexDiamondPack);
@@ -161,7 +164,12 @@ private:
 
 	// supporter
 	int calTimeFromString(string p_sInputString);
-	void scrollSlideHandle(Ref* sender, ui::ScrollView::EventType type);
+	void scrollSlideHandle(Ref* sender, ScrollView::EventType type);
+	void scrollShopHandle(Ref* sender, ScrollView::EventType type);
+	void selectedItemEvent(Ref* sender, ListView::EventType type);
+	void onChangedLanguage();
+	void buttonSoundControlHandle(Ref* p_pSender);
+	void buttonMusicControlHandle(Ref* p_pSender);
 };
 
 #endif // __MENUSCENE_H__

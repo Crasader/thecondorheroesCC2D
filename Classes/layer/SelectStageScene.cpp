@@ -180,7 +180,7 @@ void SelectStageLayer::gotoPlay(int id, int stage, int map, int charId)
 		REF->setLastMapId(id);
 		m_nLifeNumber--;
 		REF->setDownLife(1);
-		REF->resetAnchorTime();
+		REF->setAnchorTime(time(0));
 		AudioManager::stopMusic();
 		auto _aScene = LoadingLayer::createScene(stage, map, charId);
 		Director::getInstance()->replaceScene(_aScene);

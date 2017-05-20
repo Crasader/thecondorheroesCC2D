@@ -46,6 +46,9 @@ void AudioManager::cacheAudio()
 	experimental::AudioEngine::preload(SOUND_FAIL);
 	experimental::AudioEngine::preload(SOUND_WIN);
 
+	experimental::AudioEngine::preload(SOUND_SCROLL_SLIDE);
+	experimental::AudioEngine::preload(SOUND_UNLOCK_HERO);
+	experimental::AudioEngine::preload(SOUND_UPGRADE_LEVEL);
 }
 
 void AudioManager::playSound(string keysound)
@@ -79,7 +82,6 @@ int AudioManager::playMusic(string keysound)
 	bool checkSound = ref->getBoolForKey(KEY_IS_MUSIC, true);
 	//log("check sound: %d: ", checkSound);
 	if (checkSound) {
-		
 		int a = experimental::AudioEngine::play2d(keysound,true);
 		ref->setIntegerForKey(KEY_VALUE_MUSIC, a);
 		return a;

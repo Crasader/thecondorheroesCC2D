@@ -67,32 +67,32 @@
     {
 	  "diamondPackName": "Diamond",
 	  "iconDiamondPackPath": "UI/UI_main_menu/UI_shop/diamond_board1.png",
-	  "diamondNumber": 100,
-	  "moneyPrice": 10
+	  "diamondNumber": 1000,
+	  "moneyPrice": "0.99$"
     },
 	{
 	  "diamondPackName": "Diamond",
 	  "iconDiamondPackPath": "UI/UI_main_menu/UI_shop/diamond_board2.png",
-	  "diamondNumber": 200,
-	  "moneyPrice": 20
+	  "diamondNumber": 2000,
+	  "moneyPrice": "1.99$"
     },
 	{
 	  "diamondPackName": "Diamond",
 	  "iconDiamondPackPath": "UI/UI_main_menu/UI_shop/diamond_board3.png",
-	  "diamondNumber": 500,
-	  "moneyPrice": 40
+	  "diamondNumber": 3000,
+	  "moneyPrice": "2.99$"
     },
 	{
 	  "diamondPackName": "Diamond",
 	  "iconDiamondPackPath": "UI/UI_main_menu/UI_shop/diamond_board4.png",
-	  "diamondNumber": 1000,
-	  "moneyPrice": 60
+	  "diamondNumber": 4000,
+	  "moneyPrice": "3.99$"
     },
 	{
 	  "diamondPackName": "Diamond",
 	  "iconDiamondPackPath": "UI/UI_main_menu/UI_shop/diamond_board5.png",
-	  "diamondNumber": 1500,
-	  "moneyPrice": 80
+	  "diamondNumber": 5000,
+	  "moneyPrice": "4.99$"
     }
   ],
   "energy_packs": [

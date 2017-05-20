@@ -89,35 +89,35 @@
   <object id="144" x="7972" y="1284" width="388"/>
   <object id="145" x="4692" y="1124" width="788" height="4"/>
  </objectgroup>
- <objectgroup name="chonggo">
-  <object id="26" x="357.572" y="1227.27" width="212.121" height="172.727"/>
-  <object id="27" x="1887.88" y="1254.55" width="209.091" height="163.636"/>
-  <object id="28" x="2136.36" y="1260.61" width="206.061" height="169.697"/>
-  <object id="31" x="7181.81" y="1248.49" width="178.788" height="190.909"/>
-  <object id="32" x="7418.18" y="1257.58" width="193.939" height="181.818"/>
-  <object id="33" x="8554.54" y="1269.7" width="184.848" height="154.545"/>
-  <object id="34" x="8769.69" y="1269.7" width="203.03" height="172.727"/>
-  <object id="35" x="10136.4" y="1257.58" width="206.061" height="163.636"/>
-  <object id="36" x="12381.9" y="1266.67" width="206.061" height="169.697"/>
-  <object id="37" x="13027.3" y="1248.49" width="193.939" height="184.848"/>
-  <object id="38" x="13748.5" y="1251.52" width="184.848" height="172.727"/>
-  <object id="39" x="15124.3" y="1269.7" width="163.636" height="145.455"/>
-  <object id="40" x="15360.6" y="1275.76" width="172.727" height="142.424"/>
-  <object id="41" x="16633.4" y="1278.79" width="181.818" height="133.333"/>
-  <object id="42" x="16884.9" y="1281.82" width="145.455" height="130.303"/>
-  <object id="43" x="18006.1" y="1269.7" width="160.606" height="139.394"/>
-  <object id="44" x="18712.2" y="1269.7" width="172.727" height="145.455"/>
-  <object id="45" x="19736.4" y="1263.64" width="193.939" height="154.545"/>
-  <object id="46" x="20624.3" y="1263.64" width="190.909" height="184.848"/>
-  <object id="47" x="20872.8" y="1266.67" width="172.727" height="163.636"/>
-  <object id="48" x="22060.6" y="1260.61" width="209.091" height="166.667"/>
-  <object id="49" x="22303.1" y="1260.61" width="190.909" height="184.848"/>
-  <object id="50" x="23894" y="1260.61" width="215.152" height="178.788"/>
-  <object id="52" x="25563.7" y="1245.46" width="221.212" height="190.909"/>
-  <object id="58" x="32139.4" y="1254.55" width="196.97" height="172.727"/>
-  <object id="59" x="32369.7" y="1263.64" width="212.121" height="163.636"/>
-  <object id="60" x="33900" y="1257.58" width="196.97" height="172.727"/>
-  <object id="30" x="5751.51" y="1260.61" width="187.879" height="181.818"/>
+ <objectgroup name="chonggo" visible="0">
+  <object id="26" x="1136.36" y="1296.97" width="212.121" height="172.727"/>
+  <object id="27" x="2651.52" y="1303.03" width="209.091" height="163.636"/>
+  <object id="28" x="2900" y="1309.09" width="206.061" height="169.697"/>
+  <object id="31" x="7945.45" y="1296.97" width="178.788" height="190.909"/>
+  <object id="32" x="8181.82" y="1306.06" width="193.939" height="181.818"/>
+  <object id="33" x="9318.18" y="1318.18" width="184.848" height="154.545"/>
+  <object id="34" x="9533.33" y="1318.18" width="203.03" height="172.727"/>
+  <object id="35" x="10900" y="1306.06" width="206.061" height="163.636"/>
+  <object id="36" x="13145.5" y="1315.15" width="206.061" height="169.697"/>
+  <object id="37" x="13790.9" y="1296.97" width="193.939" height="184.848"/>
+  <object id="38" x="14512.1" y="1300" width="184.848" height="172.727"/>
+  <object id="39" x="15887.9" y="1318.18" width="163.636" height="145.455"/>
+  <object id="40" x="16124.2" y="1324.24" width="172.727" height="142.424"/>
+  <object id="41" x="17397" y="1327.27" width="181.818" height="133.333"/>
+  <object id="42" x="17648.5" y="1330.3" width="145.455" height="130.303"/>
+  <object id="43" x="18769.7" y="1318.18" width="160.606" height="139.394"/>
+  <object id="44" x="19475.8" y="1318.18" width="172.727" height="145.455"/>
+  <object id="45" x="20500" y="1312.12" width="193.939" height="154.545"/>
+  <object id="46" x="21387.9" y="1312.12" width="190.909" height="184.848"/>
+  <object id="47" x="21636.4" y="1315.15" width="172.727" height="163.636"/>
+  <object id="48" x="22824.2" y="1309.09" width="209.091" height="166.667"/>
+  <object id="49" x="23066.7" y="1309.09" width="190.909" height="184.848"/>
+  <object id="50" x="24657.6" y="1309.09" width="215.152" height="178.788"/>
+  <object id="52" x="26327.3" y="1293.94" width="221.212" height="190.909"/>
+  <object id="58" x="32903" y="1303.03" width="196.97" height="172.727"/>
+  <object id="59" x="33133.3" y="1312.12" width="212.121" height="163.636"/>
+  <object id="60" x="34663.6" y="1306.06" width="196.97" height="172.727"/>
+  <object id="30" x="6515.15" y="1309.09" width="187.879" height="181.818"/>
  </objectgroup>
  <objectgroup name="straight">
   <object id="1" x="596.97" y="1309.09" width="400" height="21.2121"/>
@@ -189,15 +189,16 @@
   <object id="125" x="24044" y="1308" width="60" height="124"/>
  </objectgroup>
  <objectgroup name="chonggo2">
-  <object id="51" x="25272.7" y="1257.58" width="215.152" height="178.788"/>
-  <object id="53" x="27672.7" y="1257.58" width="215.152" height="172.727"/>
-  <object id="55" x="28139.4" y="1260.61" width="227.273" height="181.818"/>
-  <object id="54" x="27912.1" y="1266.67" width="212.121" height="172.727"/>
-  <object id="57" x="30157.6" y="1254.55" width="209.091" height="184.848"/>
-  <object id="56" x="29912.1" y="1248.49" width="221.212" height="190.909"/>
-  <object id="29" x="5215.15" y="1272.73" width="209.091" height="172.727"/>
+  <object id="51" x="25454.5" y="1303.03" width="215.152" height="178.788"/>
+  <object id="53" x="27854.5" y="1303.03" width="215.152" height="172.727"/>
+  <object id="55" x="28321.2" y="1306.06" width="227.273" height="181.818"/>
+  <object id="54" x="28093.9" y="1312.12" width="212.121" height="172.727"/>
+  <object id="57" x="30339.4" y="1300" width="209.091" height="184.848"/>
+  <object id="56" x="30093.9" y="1293.94" width="221.212" height="190.909"/>
  </objectgroup>
- <objectgroup name="chonggo3"/>
+ <objectgroup name="chonggo3" visible="0">
+  <object id="29" x="5215.15" y="1300" width="209.091" height="172.727"/>
+ </objectgroup>
  <objectgroup name="under_ground">
   <object id="146" x="8" y="1532" width="35964"/>
  </objectgroup>

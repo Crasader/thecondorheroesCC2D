@@ -1,8 +1,8 @@
 {
-"skeleton": { "hash": "gIj8/dKFQwAJ7QbDNmGeST8RJG4", "spine": "3.5.51", "width": 303.92, "height": 251.02, "images": "" },
+"skeleton": { "hash": "/j6f+tfF4K/7QfYjk103x4E8Y8M", "spine": "3.5.51", "width": 303.92, "height": 251.02, "images": "" },
 "bones": [
 	{ "name": "root" },
-	{ "name": "vukhi", "parent": "root", "y": 113.36, "scaleX": 0.892, "scaleY": 0.766 },
+	{ "name": "vukhi", "parent": "root", "scaleX": 0.892, "scaleY": 0.766 },
 	{ "name": "bone", "parent": "vukhi", "x": -0.05, "y": 1.64 },
 	{ "name": "xoay", "parent": "vukhi", "length": 71.71, "rotation": 91.41, "y": 4.43 },
 	{ "name": "xoay2", "parent": "xoay", "length": 71.71, "rotation": -0.23 }

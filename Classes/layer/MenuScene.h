@@ -39,7 +39,6 @@ private:
 	int m_nCurrentDiamond;									// current diamond
 	int m_arNumberItemOwning[5];							// number of item owning
 	int m_arItemPrice[5];									// cost of items
-	bool m_bIsShopShow = false;
 	int m_nShopOption = 0;
 
 	Label *m_pTimeCounter;									// time counter to increase life

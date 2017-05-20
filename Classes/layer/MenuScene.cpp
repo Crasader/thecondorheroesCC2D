@@ -1278,18 +1278,21 @@ void MenuLayer::buttonAddLifeHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	showBlurScreen();
 	initShopBoard(2);
+	moveLayerViaDirection(m_pShopBoardLayer, 2);
 }
 
 void MenuLayer::buttonAddGoldHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	showBlurScreen();
 	initShopBoard(0);
+	moveLayerViaDirection(m_pShopBoardLayer, 2);
 }
 
 void MenuLayer::buttonAddDiamondHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	showBlurScreen();
 	initShopBoard(1);
+	moveLayerViaDirection(m_pShopBoardLayer, 2);
 }
 
 void MenuLayer::buttonQuestHandle() {
@@ -1332,6 +1335,7 @@ void MenuLayer::buttonShopHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	showBlurScreen();
 	initShopBoard(m_nShopOption);
+	moveLayerViaDirection(m_pShopBoardLayer, 2);
 }
 
 void MenuLayer::buttonFreeCoinHandle() {
@@ -1838,16 +1842,11 @@ void MenuLayer::initShopBoard(int p_nOption) {
 			_pPackCostSprite->addChild(_pLabelDiamondCost, 1);
 		}
 	}
-	if (m_bIsShopShow == false) {
-		moveLayerViaDirection(m_pShopBoardLayer, 2);
-		m_bIsShopShow = true;
-	}
 }
 
 void MenuLayer::buttonCloseShopHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	moveLayerViaDirection(m_pShopBoardLayer, 8);
-	m_bIsShopShow = false;
 	hideBlurScreen();
 	// TODO: fix custom sprite to buy pack, because if you dont remove children of shop board, they still get response clicks on screen
 	runAction(Sequence::create(DelayTime::create(0.2f), CallFunc::create([&]() {

@@ -236,6 +236,36 @@ MyPool::MyPool(int maxPool, int tag) : MyPool()
 		}
 		break;
 	}
+	case TAG_ENEMY_LINHCAMGIAO1: {
+
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfEnemy = SCREEN_SIZE.height / 4.0f / (406);
+			auto enemy = EnemyLinhCamGiao::create("Animation/Enemy_LinhCamGiao/LinhCamGiao", scaleOfEnemy);
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
+	case TAG_ENEMY_LINHCAMGIAO2: {
+
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfEnemy = SCREEN_SIZE.height / 4.0f / (406);
+			auto enemy = EnemyLinhCamGiao2::create("Animation/Enemy_LinhCamGiao/LinhCamGiao", scaleOfEnemy);
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
 	default:
 		break;
 	}

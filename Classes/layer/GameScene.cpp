@@ -1261,6 +1261,56 @@ void GameScene::createEnemyChong3(MyLayer * layer, Vec2 pos)
 	}
 }
 
+void GameScene::createEnemyLinhCamGiao(MyLayer * layer, Vec2 pos)
+{
+	if (layer->linhcamgiao1Pool) {
+		auto enemy = (EnemyLinhCamGiao*)layer->linhcamgiao1Pool->getObject();
+		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
+		enemy->setPosition(pos);
+		enemy->setVisible(true);
+		enemy->resumeSchedulerAndActions();
+		enemy->clearTracks();
+		enemy->setToSetupPose();
+		enemy->setAnimation(0, "idle", false);
+		enemy->update(0.0f);
+		//layer->addChild(enemy, ZORDER_ENEMY);
+		if (enemy->getB2Body()) {
+			world->DestroyBody(enemy->getB2Body());
+		}
+
+		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
+		enemy->makeMask();
+
+		enemy->listener();
+	}
+}
+
+void GameScene::createEnemyLinhCamGiao2(MyLayer * layer, Vec2 pos)
+{
+	if (layer->linhcamgiao2Pool) {
+		auto enemy = (EnemyLinhCamGiao2*)layer->linhcamgiao2Pool->getObject();
+		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
+		enemy->setPosition(pos);
+		enemy->setVisible(true);
+		enemy->resumeSchedulerAndActions();
+		enemy->clearTracks();
+		enemy->setToSetupPose();
+		enemy->setAnimation(0, "idle", false);
+		enemy->update(0.0f);
+		//layer->addChild(enemy, ZORDER_ENEMY);
+		if (enemy->getB2Body()) {
+			world->DestroyBody(enemy->getB2Body());
+		}
+
+		enemy->initBoxPhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
+		enemy->makeMask();
+
+		enemy->listener();
+	}
+}
+
 void GameScene::creatBoss()
 {
 	auto groupBoss = tmx_map->getObjectGroup("boss");
@@ -1525,13 +1575,13 @@ void GameScene::initGroundPhysic(b2World * world, Point pos, Size size)
 
 	shape.SetAsBox(size.width / 2 / PTM_RATIO, 0 / PTM_RATIO);
 
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 1.0f;
+	fixtureDef.density = 0.0f;
+	fixtureDef.friction = 0.0f;
 	fixtureDef.restitution = 0.0f;
 	fixtureDef.shape = &shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_FLOOR;
-	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR | BITMASK_COIN | BITMASK_BIRD;
+	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR | BITMASK_COIN | BITMASK_BIRD| BITMASK_WOODER;
 
 	bodyDef.type = b2_staticBody;
 
@@ -2027,7 +2077,7 @@ void GameScene::winGame()
 	AudioManager::stopSoundandMusic();
 	AudioManager::playSound(SOUND_WIN);
 
-	reachNewMap();
+	//reachNewMap();
 
 	blurScreen();
 	if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
@@ -2108,6 +2158,8 @@ void GameScene::loadPosAndTag()
 	loadPosOfObjectInGroup("chonggo", TAG_ENEMY_CHONG1);
 	loadPosOfObjectInGroup("chonggo2", TAG_ENEMY_CHONG2);
 	loadPosOfObjectInGroup("chonggo3", TAG_ENEMY_CHONG3);
+	loadPosOfObjectInGroup("linhcamgiao1", TAG_ENEMY_LINHCAMGIAO1);
+	loadPosOfObjectInGroup("linhcamgiao2", TAG_ENEMY_LINHCAMGIAO2);
 }
 
 void GameScene::loadPosOfObjectInGroup(string nameOfGroup, float tag)
@@ -2235,6 +2287,15 @@ void GameScene::creatAgentByMydata(MyLayer * layer, MyData data)
 	}
 	case TAG_ENEMY_CHONG3: {
 		createEnemyChong3(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
+		break;
+	}
+	case TAG_ENEMY_LINHCAMGIAO1: {
+		createEnemyLinhCamGiao(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
+		break;
+	}
+
+	case TAG_ENEMY_LINHCAMGIAO2: {
+		createEnemyLinhCamGiao2(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
 		break;
 	}
 

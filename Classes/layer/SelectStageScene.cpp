@@ -159,7 +159,6 @@ void SelectStageLayer::moveAva()
 			effectUpLvMap->runAction(RepeatForever::create(Sequence::createWithTwoActions(scale, scale->reverse())));
 			REF->setReachNewMap(false);
 		}
-
 		auto actionMove = MoveTo::create(1.2f, nextMapPos);
 		auto scroll = CallFunc::create([&]() {
 			float percent = nextMapPos.x / tmxMap->getBoundingBox().size.width * 100.0f;
@@ -265,4 +264,3 @@ int SelectStageLayer::convertId()
 	}
 	return convertValue;
 }
-

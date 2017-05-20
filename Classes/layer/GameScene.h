@@ -144,6 +144,9 @@ private:
 	void createEnemyHoacDo2(MyLayer* layer, Vec2 pos);
 	void createEnemyDatNhiBa(MyLayer* layer, Vec2 pos);
 	void createEnemyDatNhiBa2(MyLayer* layer, Vec2 pos);
+	void createEnemyChong1(MyLayer * layer, Vec2 pos);
+	void createEnemyChong2(MyLayer * layer, Vec2 pos);
+	void createEnemyChong3(MyLayer * layer, Vec2 pos);
 	void creatBoss();
 
 
@@ -191,7 +194,6 @@ private:
 	void updateCoin();
 	void updateCharacterPoint();
 	void updateLayer();
-
 
 	// Utils
 	void reachNewMap();

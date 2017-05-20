@@ -91,8 +91,8 @@ void DuongQua::slashToanChanKiemPhap()
 
 void DuongQua::doCounterSkill1()
 {
-	slashToanChanKiemPhap();
-	//fastAndFurious();
+	//slashToanChanKiemPhap();
+	fastAndFurious();
 }
 
 void DuongQua::fastAndFurious()

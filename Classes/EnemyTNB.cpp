@@ -86,7 +86,7 @@ void EnemyTNB::updateMe(BaseHero* hero)
 		if (this->getPositionX() + this->getParent()->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width * 0.75f &&
 			this->getPositionX() + this->getParent()->getPositionX() > hero->getPositionX() - SCREEN_SIZE.width * 0.26f &&
 			hero->getPositionY() + SCREEN_SIZE.height * 0.5f > this->getPositionY() &&
-			hero->getPositionY() - SCREEN_SIZE.height * 0.35f < this->getPositionY()
+			hero->getPositionY() - SCREEN_SIZE.height * 0.4f < this->getPositionY()
 
 			) {
 
@@ -115,4 +115,31 @@ void EnemyTNB::listener()
 			//this->removeFromParentAndCleanup(false);
 		}
 	});
+}
+
+void EnemyTNB::initBoxPhysic(b2World * world, Point pos)
+{
+	b2PolygonShape shape;
+	auto size = this->getBoundingBox().size;
+
+	shape.SetAsBox(size.width / 6 / PTM_RATIO, size.height / 6 / PTM_RATIO);
+
+	b2FixtureDef fixtureDef;
+	fixtureDef.density = 1.0f;
+	fixtureDef.friction = 1.0f;
+	fixtureDef.restitution = 0.0f;
+	fixtureDef.shape = &shape;
+	fixtureDef.isSensor = true;
+
+
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_staticBody;
+	bodyDef.userData = this;		// pass sprite to bodyDef with argument: userData
+
+	bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);
+
+	body = world->CreateBody(&bodyDef);
+	body->CreateFixture(&fixtureDef);
+	body->SetGravityScale(0);
 }

@@ -26,6 +26,8 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 		return false;
 	}
 
+	AudioManager::stopSoundandMusic();
+	AudioManager::playMusic(MUSIC_MENU);
 	initInputData();
 	Vec2 _v2Origin = Director::getInstance()->getVisibleOrigin();
 
@@ -47,7 +49,9 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 		m_pBlurScreen->setScaleX(m_szVisibleSize.width / m_pBlurScreen->getContentSize().width); // full screen size width
 		m_pBlurScreen->setScaleY(m_szVisibleSize.height / m_pBlurScreen->getContentSize().height); // full screen size height
 		m_pBlurScreen->setPosition(Vec2(0.0f, m_szVisibleSize.height)); // center screen
+
 		this->addChild(m_pBlurScreen, 5);
+
 		m_pBlurScreen->setVisible(false);
 
 		// shop
@@ -1204,6 +1208,7 @@ void MenuLayer::hideBlurScreen() {
 void MenuLayer::buttonStartHandle()
 {
 	REF->setLastPickHero(m_nIndexHeroSelected);
+
 	// select stage layer
 	m_pSelectStageLayer = SelectStageLayer::create(m_nIndexHeroSelected);
 	m_nMenuStatus = 3;
@@ -1542,6 +1547,7 @@ void MenuLayer::initShopBoard(int p_nOption) {
 	_pShopBackground->setScale(m_pShopBoardLayer->getContentSize().width / _pShopBackground->getContentSize().width * 0.9f,
 		m_pShopBoardLayer->getContentSize().height / _pShopBackground->getContentSize().height * 0.8f);
 	_pShopBackground->setAnchorPoint(Vec2(0.5f, 0.0f));
+
 	_pShopBackground->setPosition(m_pShopBoardLayer->getContentSize().width * 0.5f, m_pShopBoardLayer->getContentSize().height * 0.05f);
 	m_pShopBoardLayer->addChild(_pShopBackground, 1);
 
@@ -1575,6 +1581,7 @@ void MenuLayer::initShopBoard(int p_nOption) {
 	m_pPacksZone->setContentSize(Size(m_pShopBoardLayer->getContentSize().width * 0.8f, m_pShopBoardLayer->getContentSize().height * 0.65f));
 	m_pPacksZone->setAnchorPoint(Vec2(0.0f, 0.0f));
 	m_pPacksZone->setPosition(Vec2(m_pShopBoardLayer->getContentSize().width * 0.1f, m_pShopBoardLayer->getContentSize().height * 0.1f));
+
 	m_pPacksZone->setDirection(ScrollView::Direction::HORIZONTAL);
 	m_pPacksZone->setBounceEnabled(true);
 	m_pPacksZone->setTouchEnabled(true);
@@ -1591,6 +1598,7 @@ void MenuLayer::initShopBoard(int p_nOption) {
 	_aGoldTabTabButton->setAnchorPoint(Vec2(0.5f, 1.0f));
 	_aGoldTabTabButton->setPosition(m_pShopBoardLayer->getContentSize().width * 0.25f, m_pShopBoardLayer->getContentSize().height * 0.85f);
 
+
 	// button diamond tab
 	auto _pDiamondTabNormal = Sprite::create("UI/UI_main_menu/UI_shop/tab_diamond_off.png");
 	auto _pDiamondTabSelected = Sprite::create("UI/UI_main_menu/UI_shop/tab_diamond_off.png");
@@ -1598,6 +1606,7 @@ void MenuLayer::initShopBoard(int p_nOption) {
 	_aDiamondTabButton->setScale(m_pShopBoardLayer->getContentSize().width / _aDiamondTabButton->getContentSize().width * 0.25f);
 	_aDiamondTabButton->setAnchorPoint(Vec2(0.5f, 1.0f));
 	_aDiamondTabButton->setPosition(m_pShopBoardLayer->getContentSize().width * 0.5f, m_pShopBoardLayer->getContentSize().height * 0.85f);
+
 
 	// button diamond tab
 	auto _pEnergyTabNormal = Sprite::create("UI/UI_main_menu/UI_shop/tab_energy_off.png");
@@ -1607,6 +1616,7 @@ void MenuLayer::initShopBoard(int p_nOption) {
 	_aEnergyTabButton->setAnchorPoint(Vec2(0.5f, 1.0f));
 	_aEnergyTabButton->setPosition(m_pShopBoardLayer->getContentSize().width * 0.75f, m_pShopBoardLayer->getContentSize().height * 0.85f);
 
+
 	// button close shop
 	auto _pCloseNormal = Sprite::create("UI/UI_Endgame/btn_close.png");
 	auto _pCloseSelected = Sprite::create("UI/UI_Endgame/btn_close.png");
@@ -1615,6 +1625,7 @@ void MenuLayer::initShopBoard(int p_nOption) {
 	_aCloseButton->setScale(m_pShopBoardLayer->getContentSize().height / _aCloseButton->getContentSize().height * 0.1f);
 	_aCloseButton->setAnchorPoint(Vec2(1.0f, 1.0f));
 	_aCloseButton->setPosition(m_pShopBoardLayer->getContentSize().width * 0.95f, m_pShopBoardLayer->getContentSize().height * 0.85f);
+
 
 	Menu *_pShopMenu = Menu::create(_aGoldTabTabButton, _aDiamondTabButton, _aEnergyTabButton, _aCloseButton, NULL);
 	_pShopMenu->setContentSize(Size(m_pShopBoardLayer->getContentSize().width, m_pShopBoardLayer->getContentSize().height));
@@ -1665,7 +1676,8 @@ void MenuLayer::initShopBoard(int p_nOption) {
 			_pDiamondSprite->setAnchorPoint(Vec2(0.5f, 0.0f));
 			_pDiamondSprite->setPosition(Vec2(_pPackCostSprite->getContentSize().width * 0.2f, _pPackCostSprite->getContentSize().height * 0.2f));
 			_pPackCostSprite->addChild(_pDiamondSprite, 1);
-			Label *_pLabelDiamondCost = Label::createWithBMFont("fonts/font_life-export.fnt", StringUtils::format("%d", JSMENU->getCoinPackDiamondPrice()));
+
+			Label *_pLabelDiamondCost = Label::createWithBMFont("fonts/font_diamond-export.fnt", StringUtils::format("%d", JSMENU->getCoinPackDiamondPrice()));
 			_pLabelDiamondCost->setBMFontSize(_pPackCostSprite->getContentSize().height * 0.6f);
 			_pLabelDiamondCost->setAnchorPoint(Vec2(0.5f, 0.0f));
 			_pLabelDiamondCost->setPosition(Vec2(_pPackCostSprite->getContentSize().width * 0.6f, _pPackCostSprite->getContentSize().height * 0.2f));
@@ -1716,7 +1728,8 @@ void MenuLayer::initShopBoard(int p_nOption) {
 			_pDiamondSprite->setAnchorPoint(Vec2(0.0f, 0.0f));
 			_pDiamondSprite->setPosition(Vec2(_pPackCostSprite->getContentSize().width * 0.15f, _pPackCostSprite->getContentSize().height * 0.2f));
 			_pPackCostSprite->addChild(_pDiamondSprite, 1);
-			Label *_pLabelDiamondCost = Label::createWithBMFont("fonts/font_life-export.fnt", StringUtils::format("%d", JSMENU->getDiamondPackMoneyPrice()));
+
+			Label *_pLabelDiamondCost = Label::createWithBMFont("fonts/font_diamond-export.fnt", StringUtils::format("%d", JSMENU->getDiamondPackMoneyPrice()));
 			_pLabelDiamondCost->setBMFontSize(_pPackCostSprite->getContentSize().height * 0.6f);
 			_pLabelDiamondCost->setAnchorPoint(Vec2(0.5f, 0.0f));
 			_pLabelDiamondCost->setPosition(Vec2(_pPackCostSprite->getContentSize().width * 0.6f, _pPackCostSprite->getContentSize().height * 0.2f));
@@ -1767,7 +1780,8 @@ void MenuLayer::initShopBoard(int p_nOption) {
 			_pDiamondSprite->setAnchorPoint(Vec2(0.0f, 0.0f));
 			_pDiamondSprite->setPosition(Vec2(_pPackCostSprite->getContentSize().width * 0.15f, _pPackCostSprite->getContentSize().height * 0.2f));
 			_pPackCostSprite->addChild(_pDiamondSprite, 1);
-			Label *_pLabelDiamondCost = Label::createWithBMFont("fonts/font_life-export.fnt", StringUtils::format("%d", JSMENU->getEnergyPackDiamondPrice()));
+
+			Label *_pLabelDiamondCost = Label::createWithBMFont("fonts/font_diamond-export.fnt", StringUtils::format("%d", JSMENU->getEnergyPackDiamondPrice()));
 			_pLabelDiamondCost->setBMFontSize(_pPackCostSprite->getContentSize().height * 0.6f);
 			_pLabelDiamondCost->setAnchorPoint(Vec2(0.5f, 0.0f));
 			_pLabelDiamondCost->setPosition(Vec2(_pPackCostSprite->getContentSize().width * 0.6f, _pPackCostSprite->getContentSize().height * 0.2f));

@@ -70,7 +70,6 @@ private:
 public:
 	static JSonHeroManager* getInstance();
 
-	int getSelectedHero();
 	void readFile(int indexHero);
 	int getGoldUpgradeLevelX(int indexHero);
 

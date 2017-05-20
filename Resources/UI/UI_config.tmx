@@ -3,9 +3,9 @@
  <tileset firstgid="1" name="transparent" tilewidth="80" tileheight="80" tilecount="20" columns="5">
   <image source="transparent.png" width="466" height="349"/>
  </tileset>
- <layer name="Tile Layer 1" width="16" height="10">
+ <layer name="BG" width="16" height="10">
   <data encoding="csv">
-15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

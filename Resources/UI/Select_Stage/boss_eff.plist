@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+			<key>boss1_00.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{250,132},{101,129}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{2,1},{101,129}}</string>
+				<key>sourceSize</key>
+				<string>{103,131}</string>
+			</dict>
+
+			<key>boss1_01.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{246,0},{103,131}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{103,131}}</string>
+				<key>sourceSize</key>
+				<string>{103,131}</string>
+			</dict>
+
+			<key>boss2_00.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{129,0},{116,135}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{8,6},{116,135}}</string>
+				<key>sourceSize</key>
+				<string>{124,146}</string>
+			</dict>
+
+			<key>boss2_01.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{125,149},{124,146}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{124,146}}</string>
+				<key>sourceSize</key>
+				<string>{124,146}</string>
+			</dict>
+
+			<key>boss3_00.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,149},{124,135}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{4,7},{124,135}}</string>
+				<key>sourceSize</key>
+				<string>{128,148}</string>
+			</dict>
+
+			<key>boss3_01.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,0},{128,148}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{128,148}}</string>
+				<key>sourceSize</key>
+				<string>{128,148}</string>
+			</dict>
+
+		</dict>
+
+		<key>metadata</key>
+		<dict>
+			<key>format</key>
+			<integer>2</integer>
+			<key>size</key>
+			<string>{352,296}</string>
+			<key>textureFileName</key>
+			<string>boss_eff.png</string>
+			</dict>
+		</dict>
+</plist>

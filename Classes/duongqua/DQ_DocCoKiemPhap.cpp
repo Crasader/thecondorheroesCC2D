@@ -3,6 +3,7 @@
 DQ_DocCoKiemPhap::DQ_DocCoKiemPhap()
 {
 	isCollide = false;
+	//isAdded = false;
 }
 
 DQ_DocCoKiemPhap::~DQ_DocCoKiemPhap()
@@ -13,6 +14,11 @@ DQ_DocCoKiemPhap * DQ_DocCoKiemPhap::create()
 {
 	DQ_DocCoKiemPhap* kp = new DQ_DocCoKiemPhap();
 	kp->initWithFile("Animation/DuongQua/Sword.png");
+	/*kp->initWithFile("Animation/DuongQua/SubSword.png");
+	kp->subImage = Sprite::create("Animation/DuongQua/Sword.png");
+	kp->setAnchorPoint(Vec2(0.5f, 0.8f));
+	kp->subImage->setPosition(kp->getContentSize() / 2);
+	kp->addChild(kp->subImage);*/
 	kp->setTag(TAG_DQ_DOC_CO_KIEM_PHAP);
 
 	kp->effectLand = Sprite::createWithSpriteFrameName("star2.png");
@@ -62,12 +68,13 @@ void DQ_DocCoKiemPhap::landingEffect()
 
 	auto action = ScaleBy::create(0.3f, 2);
 
-	auto seq = Sequence::create(action, hideFX, nullptr);
+	auto seq = Sequence::create(action, hideFX, action->reverse(), nullptr);
 	effectLand->runAction(seq);
 }
 
 void DQ_DocCoKiemPhap::hitGround()
 {
+	//subImage->setVisible(false);
 	auto gameLayer = this->getParent();
 
 	particle = ParticleSystemQuad::create("Effect/breakearth.plist");

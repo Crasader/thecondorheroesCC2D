@@ -2,30 +2,23 @@
 #include "LoadingLayer.h"
 #include "MenuScene.h"
 #include "manager/RefManager.h"
+#include "thirdsdkhelper\AdmobHelper.h"
 
-
-Scene * SelectStageLayer::createScene(int charId)
-{
-	auto scene = Scene::create();
-	auto layer = SelectStageLayer::create(charId);
-
-	scene->addChild(layer);
-	return scene;
-}
 
 bool SelectStageLayer::init(int charId)
 {
 	AudioManager::playMusic(MUSIC_MENU);
+
 	auto originXY = Director::getInstance()->getVisibleOrigin();
 	auto screenSize = Director::getInstance()->getVisibleSize();
-	auto tmxMap = TMXTiledMap::create("UI/Select_Stage/config_map.tmx");
+	tmxMap = TMXTiledMap::create("UI/Select_Stage/config_map.tmx");
 	tmxMap->setPosition(Vec2::ZERO);
 
 	auto scaleY = screenSize.height / tmxMap->getContentSize().height;
 	tmxMap->setScale(scaleY);
 
 
-	ui::ScrollView* scrollView = ui::ScrollView::create();
+	scrollView = ui::ScrollView::create();
 	scrollView->setContentSize(Size(screenSize.width, screenSize.height));
 	scrollView->setInnerContainerSize(Size(tmxMap->getBoundingBox().size.width, screenSize.height));
 	scrollView->setPosition(originXY);
@@ -42,12 +35,15 @@ bool SelectStageLayer::init(int charId)
 	int currentStageUnlocked = REF->getCurrentStageUnlocked();
 	int currentMapUnlocked = REF->getCurrentMapUnLocked();
 	int lastMapId = REF->getLastMapIdPlay();
+	int nextMapId = lastMapId < 12 ? lastMapId + 1 : 12;
 
-	auto character_point = Sprite::create(JSHERO->getSelectCharacterPoint());
+	character_point = Sprite::create(JSHERO->getSelectCharacterPoint());
 	character_point->setAnchorPoint(Vec2(0.5f, 0));
 	character_point->setScale(screenSize.height / 8.5f / character_point->getContentSize().width);
-	auto moveUp = MoveBy::create(0.1f, Vec2(0, character_point->getBoundingBox().size.height * 0.02f));
-	auto seq = Sequence::createWithTwoActions(moveUp, moveUp->reverse());
+	auto moveUp = MoveBy::create(0.3f, Vec2(0, character_point->getBoundingBox().size.height * 0.04f));
+	auto scaleUp = ScaleBy::create(0.3f, 1.04f);
+	auto seq = Sequence::createWithTwoActions(Spawn::create(EaseInOut::create(moveUp, 2), scaleUp, nullptr), 
+											Spawn::create(EaseInOut::create(moveUp->reverse(), 2), scaleUp->reverse(), nullptr));
 	character_point->runAction(RepeatForever::create(seq));
 	scrollView->addChild(character_point, 2);
 
@@ -63,13 +59,17 @@ bool SelectStageLayer::init(int charId)
 			character_point->setPosition(origin.x, origin.y + character_point->getBoundingBox().size.height * 0.25f);
 			float percent = origin.x / tmxMap->getBoundingBox().size.width * 100.0f;
 			if(percent > 15.0f)
-				scrollView->scrollToPercentHorizontal(origin.x / tmxMap->getBoundingBox().size.width * 100.0f, 1.0f, true);
+				scrollView->scrollToPercentHorizontal(percent, 1.0f, true);
+		}
+
+		
+		if (id == nextMapId) {
+			nextMapPos = Point(origin.x, origin.y + character_point->getBoundingBox().size.height * 0.25f);
 		}
 
 		MenuItemSprite* mapBtn;
 		int stage = mObject["stage"].asInt();
 		int mapId = mObject["mapId"].asInt();
-		int haveBoss = mObject["haveBoss"].asInt();
 
 
 		Sprite* un_locked = Sprite::create("UI/Select_Stage/level_on.png");
@@ -80,12 +80,12 @@ bool SelectStageLayer::init(int charId)
 
 		if (stage < currentStageUnlocked) {
 			mapBtn = MenuItemSprite::create(un_locked, un_locked_press,
-					CC_CALLBACK_0(SelectStageLayer::gotoPlay, this, id, stage, mapId, haveBoss, charId));
+					CC_CALLBACK_0(SelectStageLayer::gotoPlay, this, id, stage, mapId, charId));
 		}
 		else if (stage == currentStageUnlocked) {
 			if (mapId <= currentMapUnlocked) {
 				mapBtn = MenuItemSprite::create(un_locked, un_locked_press,
-					CC_CALLBACK_0(SelectStageLayer::gotoPlay, this, id, stage, mapId, haveBoss, charId));
+					CC_CALLBACK_0(SelectStageLayer::gotoPlay, this, id, stage, mapId, charId));
 			}
 			else {
 				mapBtn = MenuItemSprite::create(locked, locked,
@@ -103,6 +103,13 @@ bool SelectStageLayer::init(int charId)
 		lblID->setAnchorPoint(Vec2(0.5f, 0.07f));
 		lblID->setPosition(mapBtn->getContentSize() / 2);
 
+		if (!mObject["boss_order"].isNull()) {
+			int boss_order = mObject["boss_order"].asInt();
+			auto b = bossSprite(boss_order);
+			b->setPosition(mapBtn->getContentSize().width, 0);
+			mapBtn->addChild(b);
+		}
+
 		mapBtn->addChild(lblID);
 		mapBtn->setPosition(origin);
 		mapBtn->setScale(screenSize.height / 9 / mapBtn->getContentSize().width);
@@ -112,9 +119,6 @@ bool SelectStageLayer::init(int charId)
 	
 	menu->setPosition(Vec2::ZERO);
 	scrollView->addChild(menu);
-
-
-	initData();
 
 	auto key_listener = EventListenerKeyboard::create();
 	key_listener->onKeyPressed = CC_CALLBACK_2(SelectStageLayer::onKeyPressed, this);
@@ -139,22 +143,76 @@ SelectStageLayer * SelectStageLayer::create(int charId)
 	}
 }
 
-void SelectStageLayer::gotoPlay(int id, int stage, int map, int haveBoss, int charId)
+void SelectStageLayer::moveAva()
+{
+	int lastMapId = REF->getLastMapIdPlay();
+	if (lastMapId < 12) {
+		auto actionMove = MoveTo::create(1.2f, nextMapPos);
+		auto scroll = CallFunc::create([&]() {
+			float percent = nextMapPos.x / tmxMap->getBoundingBox().size.width * 100.0f;
+			if (percent > 15.0f)
+				scrollView->scrollToPercentHorizontal(percent, 4.3f, true);
+		});
+		character_point->runAction(Sequence::createWithTwoActions(DelayTime::create(0.5f), Spawn::createWithTwoActions(actionMove, scroll)));
+		REF->setLastMapId(lastMapId + 1);
+	}
+}
+
+void SelectStageLayer::gotoPlay(int id, int stage, int map, int charId)
 {
 	AudioManager::playSound(SOUND_BTCLICK);
+	m_nLifeNumber = REF->getNumberOfLife();
 	if (m_nLifeNumber > 0) {
 		REF->setLastMapId(id);
 		m_nLifeNumber--;
 		REF->setDownLife(1);
-		REF->resetAnchorTime();
+		REF->setAnchorTime(time(0));
 		AudioManager::stopMusic();
-		auto _aScene = LoadingLayer::createScene(stage, map, haveBoss, charId);
+		auto _aScene = LoadingLayer::createScene(stage, map, charId);
 		Director::getInstance()->replaceScene(_aScene);
 	} else {
 		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(1), TOAST_LONG);
 		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
 		addChild(_pToast, 10);
 	}
+}
+
+Sprite* SelectStageLayer::bossSprite(int order)
+{
+	Sprite* boss;
+	switch (order)
+	{
+	case 1:
+		boss = Sprite::create("UI/Select_Stage/boss_TTK_off.png");
+		break;
+
+	case 2:
+		boss = Sprite::create("UI/Select_Stage/boss_LMS_off.png");
+		break;
+
+	case 3:
+		boss = Sprite::create("UI/Select_Stage/boss_KLPV_off.png");
+		break;
+	default:
+		break;
+	}
+
+	/*Vector <SpriteFrame*> aniframes;
+	for (int i = 0; i < 1; ++i) {
+		string frameName = StringUtils::format("boss%d_0%d.png", order, i);
+		aniframes.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName));
+	}
+
+	auto animation = Animation::createWithSpriteFrames(aniframes, 0.08f);
+	auto animate = Animate::create(animation);*/
+
+	boss->setAnchorPoint(Vec2::ZERO);
+	boss->setScale(boss->getScale() * 1.5f);
+	auto scaleUp = ScaleBy::create(0.8f, 1.04f);
+	auto seq = Sequence::createWithTwoActions(EaseInOut::create(scaleUp, 2), EaseInOut::create(scaleUp->reverse(), 2));
+	boss->runAction(RepeatForever::create(seq));
+
+	return boss;
 }
 
 void SelectStageLayer::doNothing()
@@ -169,7 +227,9 @@ void SelectStageLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * even
 	}
 }
 
-void SelectStageLayer::initData() {
-	m_nLifeNumber = REF->getNumberOfLife();
-	m_nTimeAnchor = REF->getAnchorTime();
+
+void SelectStageLayer::onExit()
+{
+	Layer::onExit();
 }
+

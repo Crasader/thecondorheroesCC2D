@@ -1,6 +1,7 @@
 #include "IntroScene.h"
 #include "manager/AudioManager.h"
 #include "Global.h"
+#include "thirdsdkhelper\AdmobHelper.h"
 
 Scene* SceneIntro::createScene() {
     auto scene = Scene::create();
@@ -14,13 +15,15 @@ bool SceneIntro::init() {
     if ( !Layer::init() ) {
         return false;
 	}
-	AudioManager::cacheAudio();
+	AdmobHelper::getInstance()->showBanner();
 	AudioManager::playMusic(MUSIC_MENU);
+
 	auto origin = Director::getInstance()->getVisibleOrigin();
 
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("item/coin.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Map/bg.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/skill.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/Select_Stage/boss_eff.plist");
 
 	auto _aIntroBackground = Sprite::create("UI/UI_intro/background.jpg");
 	_aIntroBackground->setScaleX(m_szVisibleSize.width / _aIntroBackground->getContentSize().width); // full screen size width
@@ -72,6 +75,8 @@ bool SceneIntro::init() {
 }
 
 void SceneIntro::goToMainMenuScene(Ref* p_pSender) {
+	
+	AdmobHelper::getInstance()->hideBanner();
 	AudioManager::playSound(SOUND_BTCLICK);
 	Layer *_pMenuScene = MenuLayer::create(false);
 	auto _aMainMenuScene = Scene::create();

@@ -5,6 +5,7 @@
 #include <string>
 #include "ui/CocosGUI.h"
 #include <spine/spine-cocos2dx.h>
+#include "thirdsdkhelper\AdmobHelper.h"
 
 USING_NS_CC;
 using namespace std;
@@ -20,6 +21,7 @@ protected:
 public:
 	virtual bool init();
 	static DialogPauseGame* create();
+	void onExit();
 
 public:
 
@@ -27,7 +29,7 @@ public:
 	void backHome(Ref* pSender);
 	void overGame();
 	void replayGame(Ref* pSender, int goldRevive, bool isWatchVideo);
-	void nextState(Ref* pSender);
+	void nextStage(Ref* pSender);
 	void restartGame(Ref* pSender);
 	void upgrade(Ref* pSender);
 
@@ -37,6 +39,9 @@ public:
 
 class DialogPause : public DialogPauseGame
 {
+private:
+	void selectedEventMusic(Ref* pSender, ui::CheckBox::EventType type);
+	void selectedEventSound(Ref* pSender, ui::CheckBox::EventType type);
 
 public:
 	bool init();

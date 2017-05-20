@@ -74,19 +74,23 @@ void BaseEnemy::die()
 	parentGameScene->setLastScore(this->getExp());
 
 	auto hero = parentGameScene->getHero();
-	hero->setScore(hero->getScore() + this->getExp());
+	hero->setScore(hero->getScore() + this->getExp() * hero->getScoreRatio());
+	// when Authur using Skill, hero's score ratio is 2. // Ending return to 1.
 }
 
 void BaseEnemy::updateMe(BaseHero* hero)
 {
 	updatePos();
 
+	if (!isEndOfScreen && this->getPositionX() + this->getParent()->getPositionX() < hero->getPositionX() - SCREEN_SIZE.width * 0.25f) {
+		isEndOfScreen = true;
+	}
 
 	if (hero->getIsKillAll() && this->getB2Body() != nullptr) {
-		if (this->getPositionX() + this->getParent()->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width * 0.72f &&
-			this->getPositionX() + this->getParent()->getPositionX() > hero->getPositionX() - SCREEN_SIZE.width * 0.28f &&
+		if (this->getPositionX() + this->getParent()->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width * 0.75f &&
+			this->getPositionX() + this->getParent()->getPositionX() > hero->getPositionX() - SCREEN_SIZE.width * 0.26f &&
 			hero->getPositionY() + SCREEN_SIZE.height * 0.5f > this->getPositionY() &&
-			hero->getPositionY() - SCREEN_SIZE.height * 0.75f < this->getPositionY()
+			hero->getPositionY() - SCREEN_SIZE.height * 0.35f < this->getPositionY()
 
 			) {
 

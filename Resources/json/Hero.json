@@ -34,7 +34,8 @@
 	  "noti_6": "You've take free coin 3 times today, comeback on tomorrow to get more",
 	  "noti_7": "Come to Pipo game to get more",
 	  "noti_8": "You dont have enough gold, get more to buy",
-	  "noti_9": "You dont have enough diamond, get more to buy"
+	  "noti_9": "You dont have enough diamond, get more to buy",
+	  "noti_21": "Do you want to buy this pack?"
     }
   ],
 
@@ -144,7 +145,7 @@
       "skill3Name": "Jingu Mastery",
       "pathMainImageSkill3": "UI/btnDQ_skill1_up.png",
       "pathSubImageSkill3": "UI/btnDQ_skill1_up.png",
-      "baseHP": 4,
+      "baseHP": 5,
       "level": 1,
       "maxLevel": 40,
       "percentBonusScore": 10,

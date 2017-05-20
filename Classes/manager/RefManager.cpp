@@ -12,9 +12,10 @@ RefManager::RefManager()
 	isFirstPlay = ref->getBoolForKey(KEY_FIRST, true);
 	lastMapIdPlay = ref->getIntegerForKey(KEY_LAST_MAP_ID, 1);
 	selectedHero = ref->getIntegerForKey(KEY_SELECTED_HERO, 0);
+	lastPickHero = ref->getIntegerForKey(KEY_LAST_PICK_HERO, 0);
 
 	currentStageUnlocked = ref->getIntegerForKey(KEY_CUR_STAGE_UNLOCKED, 4);
-	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 3);
+	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 2);
 
 	anchorTime = ref->getIntegerForKey(KEY_ANCHORTIME, time(0));
 	lastDailyRewardTime = ref->getIntegerForKey(KEY_LAST_DAILY_REWARD_TIME, 0);
@@ -57,6 +58,13 @@ RefManager * RefManager::getInstance()
 void RefManager::setSelectedHero(int index) {
 	selectedHero = index;
 	ref->setIntegerForKey(KEY_SELECTED_HERO, selectedHero);
+	ref->flush();
+}
+
+void RefManager::setLastPickHero(int lastPickIndex)
+{
+	lastPickHero = lastPickIndex;
+	ref->setIntegerForKey(KEY_LAST_PICK_HERO, lastPickHero);
 	ref->flush();
 }
 
@@ -124,7 +132,7 @@ void RefManager::increaseLevel()
 	increaseBonusGold(1);
 }
 
-void RefManager::increaseStateUnlocked()
+void RefManager::increaseStageUnlocked()
 {
 	ref->setIntegerForKey(KEY_CUR_STAGE_UNLOCKED, ++this->currentStageUnlocked);
 	ref->flush();
@@ -239,9 +247,9 @@ void RefManager::increaseBonusGold(int value)
 	ref->flush();
 }
 
-void RefManager::resetAnchorTime()
+void RefManager::setAnchorTime(int value)
 {
-	anchorTime = time(0);
+	anchorTime = value;
 	ref->setIntegerForKey(KEY_ANCHORTIME, anchorTime);
 	ref->flush();
 }
@@ -286,6 +294,13 @@ void RefManager::decreaseFreeCoin() {
 void RefManager::setUpLife(int life)
 {
 	this->numberOfLife += life;
+	ref->setIntegerForKey(KEY_LIFE, this->numberOfLife);
+	ref->flush();
+}
+
+void RefManager::setLife(int life)
+{
+	this->numberOfLife = life;
 	ref->setIntegerForKey(KEY_LIFE, this->numberOfLife);
 	ref->flush();
 }

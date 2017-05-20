@@ -30,7 +30,7 @@ public:
 	void initCirclePhysic(b2World * world, Point pos);
 
 	//void removeFromParentAndCleanup(bool onExit);
-
+	void updatePos();
 	void onExit();
 };
 

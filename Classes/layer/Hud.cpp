@@ -272,7 +272,7 @@ void Hud::addAttack()
 	Point origin = Point(mObject["x"].asFloat() * tmxMap->getScaleX(), mObject["y"].asFloat()* tmxMap->getScaleY());
 
 	btnAttack = MyButton::create("UI/btn_attack.png", "UI/btn_attack.png", origin);
-
+	
 	btnAttack->setTimeCoolDown(0.33f);
 	btnAttack->setScale(SCREEN_SIZE.height / 4.0f / btnAttack->getContentSize().height);
 	addChild(btnAttack, 2);

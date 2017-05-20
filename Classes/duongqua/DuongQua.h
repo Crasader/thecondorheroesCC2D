@@ -25,8 +25,12 @@ protected:
 	void slashToanChanKiemPhap();
 	void doCounterSkill1();
 
+	void fastAndFurious();
+
 
 	// Skill 2
+	/*CCArray* poolSkill2;
+	int indexSkill2 = 0;*/
 	list<KiemPhap*> listKiemPhap;
 	int checkDurationSkill2;
 	int numberOfDeadSword;
@@ -43,7 +47,6 @@ protected:
 	int numberOfDeadTHC;
 	list<TieuHonChuong*> listTieuHonChuong;
 	void createSpiritHole();
-	void runSpiritHole();
 	Point getLocalSpiritBonePos(string boneName);
 	void createTieuHonChuong(Point posHand, int Zoder);
 	void shootTieuHonChuong();

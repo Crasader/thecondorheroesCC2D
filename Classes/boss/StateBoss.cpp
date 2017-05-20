@@ -31,7 +31,7 @@ void BossIdling::enter(EnemyBoss1 * boss)
 {
 	StateBoss::enter(boss);
 	boss->setRealMoveVelocity(Vec2::ZERO);
-	//log("idle");
+	log("idle");
 }
 
 void BossIdling::execute(EnemyBoss1 * boss)
@@ -57,7 +57,7 @@ void BossAttacking1::enter(EnemyBoss1 * boss)
 	boss->setRealMoveVelocity(Vec2::ZERO);
 	srand(time(NULL));
 	boss->setControlAttack(rand() % 3 + 1);
-	//log("attack1");
+	log("attack1");
 	boss->doAttack1();
 }
 
@@ -79,7 +79,7 @@ void BossAttacking2::enter(EnemyBoss1 * boss)
 	StateBoss::enter(boss);
 	boss->setRealMoveVelocity(Vec2::ZERO);
 	boss->setRandAt2(cocos2d::random() % (boss->getLevelBoss()));
-	//log("attack2");
+	log("attack2");
 	boss->doAttack2();
 }
 
@@ -102,17 +102,17 @@ void BossStupiding::enter(EnemyBoss1 * boss)
 	StateBoss::enter(boss);
 	boss->setRealMoveVelocity(-boss->getmoveVelocity());
 	boss->setControlState(-1);
-	//log("stupiding");
+	log("stupiding");
 }
 
 void BossStupiding::execute(EnemyBoss1 * boss)
 {
 	//log("stupiding ex");
-	if (boss->getPositionY() < boss->heroLocation.y) {
+	if (boss->getPositionY() < SCREEN_SIZE.height/5) {
 		boss->setRealMoveVelocity(Vec2(boss->getRealMoveVelocity().x, 0));
 	}
-	if (boss->getPositionX() < boss->heroLocation.x + boss->getBoundingBox().size.width / 3) {
-		boss->setRealMoveVelocity(Vec2(0, -boss->getmoveVelocity().y));
+	if (boss->getPositionX() < boss->heroLocation.x + boss->getB2Body()->GetFixtureList()->GetShape()->m_radius*PTM_RATIO) {
+		boss->setRealMoveVelocity(Vec2(0, -boss->getRealMoveVelocity().y));
 	}
 }
 
@@ -127,8 +127,7 @@ BossFixingStupid::~BossFixingStupid()
 void BossFixingStupid::enter(EnemyBoss1 * boss)
 {
 	StateBoss::enter(boss);
-	boss->setRealMoveVelocity(Vec2(boss->getmoveVelocity().x, boss->getmoveVelocity().y*CCRANDOM_0_1()));
-	//log("fixstupid");
+	boss->fixStupid();
 }
 
 void BossFixingStupid::execute(EnemyBoss1 * boss)
@@ -138,6 +137,9 @@ void BossFixingStupid::execute(EnemyBoss1 * boss)
 	}
 
 	if (boss->getPositionY() > SCREEN_SIZE.height *2.5f / 4) {
+		boss->setRealMoveVelocity(Vec2(boss->getRealMoveVelocity().x, 0));
+	}
+	if (boss->getPositionY() < SCREEN_SIZE.height / 6 && boss->getRealMoveVelocity().y < 0) {
 		boss->setRealMoveVelocity(Vec2(boss->getRealMoveVelocity().x, 0));
 	}
 }

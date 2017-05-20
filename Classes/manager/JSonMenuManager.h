@@ -44,10 +44,14 @@ private:
 public:
 	static JSonMenuManager * getInstance();
 
-	void readFile(int p_nFirstIndex);
+	void readItem(int p_nFirstIndex);
 	void readGoldPack(int p_nFirstIndex);
 	void readDiamondPack(int p_nFirstIndex);
 	void readEnergyPack(int p_nFirstIndex);
+
+	int getNumberGoldPack();
+	int getNumberDiamondPack();
+	int getNumberEnergyPack();
 };
 
 #define JSMENU JSonMenuManager::getInstance()

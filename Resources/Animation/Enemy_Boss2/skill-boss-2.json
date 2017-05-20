@@ -40,7 +40,7 @@
 	}
 },
 "animations": {
-	"animation": {
+	"skill-boss": {
 		"slots": {
 			"light-neddle": {
 				"color": [

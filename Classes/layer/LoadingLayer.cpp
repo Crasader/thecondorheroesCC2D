@@ -1,14 +1,14 @@
 #include "LoadingLayer.h"
 #include "manager/RefManager.h"
 
-Scene * LoadingLayer::createScene(int stage, int map, int haveboss, int charId)
+Scene * LoadingLayer::createScene(int stage, int map, int charId)
 {
 	// 'scene' is an autorelease object
 	auto scene = Scene::create();
 
 	// 'layer' is an autorelease object
 
-	auto loadingLayer = LoadingLayer::create(stage, map, haveboss, charId);
+	auto loadingLayer = LoadingLayer::create(stage, map, charId);
 	loadingLayer->setName("loading");
 
 	// add layer as a child to scene
@@ -18,7 +18,7 @@ Scene * LoadingLayer::createScene(int stage, int map, int haveboss, int charId)
 	return scene;
 }
 
-bool LoadingLayer::init(int stage, int map, int haveboss, int charId)
+bool LoadingLayer::init(int stage, int map, int charId)
 {
 
 	//////////////////////////////
@@ -27,10 +27,10 @@ bool LoadingLayer::init(int stage, int map, int haveboss, int charId)
 	{
 		return false;
 	}
-
+	AdmobHelper::getInstance()->showBanner();
+	AdmobHelper::getInstance()->showRewardVideoToRevive();
 	this->stage = stage;
 	this->map = map;
-	this->haveboss = haveboss;
 	this->charId = charId;
 
 	addStuff();
@@ -38,10 +38,10 @@ bool LoadingLayer::init(int stage, int map, int haveboss, int charId)
 	return true;
 }
 
-LoadingLayer * LoadingLayer::create(int stage, int map, int haveboss, int charId)
+LoadingLayer * LoadingLayer::create(int stage, int map, int charId)
 {
 	LoadingLayer *pRet = new(std::nothrow) LoadingLayer();
-	if (pRet && pRet->init(stage, map, haveboss, charId))
+	if (pRet && pRet->init(stage, map, charId))
 	{
 		pRet->autorelease();
 		return pRet;
@@ -151,7 +151,7 @@ void LoadingLayer::doOpen()
 
 void LoadingLayer::doProcess()
 {
-	mainScene = GameScene::create(stage, map, haveboss, charId);
+	mainScene = GameScene::create(stage, map, charId);
 	mainScene->setName("gameLayer");
 	mainScene->retain();
 	hud = Hud::create();
@@ -176,6 +176,7 @@ void LoadingLayer::doProcess()
 			avatarHero->setVisible(false);
 
 			unschedule("key");
+			AdmobHelper::getInstance()->hideBanner();
 			Director::getInstance()->replaceScene(GameScene::createScene(mainScene, hud));
 		}
 

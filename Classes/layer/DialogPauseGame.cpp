@@ -16,7 +16,7 @@ bool DialogPauseGame::init()
 	{
 		return false;
 	}
-
+	AdmobHelper::getInstance()->showBanner();
 	return true;
 }
 
@@ -37,6 +37,12 @@ DialogPauseGame* DialogPauseGame::create()
 	}
 }
 
+void DialogPauseGame::onExit()
+{
+	Layer::onExit();
+	AdmobHelper::getInstance()->hideBanner();
+}
+
 
 void DialogPauseGame::resumeGame(Ref * pSender)
 {
@@ -46,6 +52,7 @@ void DialogPauseGame::resumeGame(Ref * pSender)
 
 void DialogPauseGame::backHome(Ref * pSender)
 {
+	AdmobHelper::getInstance()->showFullAd();
 	auto gameScene = this->getParent();
 	gameScene->removeAllChildrenWithCleanup(true);
 	Layer *_pMenuScene = MenuLayer::create(false);
@@ -65,6 +72,7 @@ void DialogPauseGame::overGame()
 
 void DialogPauseGame::replayGame(Ref * pSender, int goldRevive, bool isWatchVideo)
 {
+	//AdmobHelper::getInstance()->showFullAd();
 	//log("%i", goldRevive);
 	if (!isWatchVideo) {
 		if (REF->setDownGold(goldRevive)) {
@@ -78,21 +86,48 @@ void DialogPauseGame::replayGame(Ref * pSender, int goldRevive, bool isWatchVide
 		}
 	}
 	else {
+		AdmobHelper::getInstance()->showRewardVideoToRevive();
 		auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
 		gameLayer->reviveHero();
 	}
 }
 
-void DialogPauseGame::nextState(Ref * pSender)
+
+void DialogPauseGame::nextStage(Ref * pSender)
 {
-	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
-	gameLayer->nextGame();
+	if (!REF->getIsLockedHero()) {
+		auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
+		gameLayer->nextGame();
+	}
+	else {
+		auto gameScene = this->getParent();
+		gameScene->removeAllChildrenWithCleanup(true);
+		Layer *_pMenuScene = MenuLayer::create(false);
+		auto _aMainMenuScene = Scene::create();
+		_aMainMenuScene->addChild(_pMenuScene);
+		Director::getInstance()->replaceScene(_aMainMenuScene);
+	}
 }
 
 void DialogPauseGame::restartGame(Ref * pSender)
 {
+	AdmobHelper::getInstance()->showFullAd();
 	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
-	gameLayer->restartGame();
+
+	if (!REF->getIsLockedHero()) {
+		if (REF->getNumberOfLife() > 0) {
+			REF->setDownLife(1);
+			gameLayer->restartGame();
+		}
+		else {
+			CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(1), TOAST_SHORT);
+			_pToast->setPosition(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 4));
+			addChild(_pToast, 10);
+		}
+	}
+	else {
+		gameLayer->restartGame();
+	}
 }
 
 void DialogPauseGame::upgrade(Ref * pSender)
@@ -109,6 +144,40 @@ void DialogPauseGame::effect()
 }
 
 
+void DialogPause::selectedEventMusic(Ref * pSender, ui::CheckBox::EventType type)
+{
+	switch (type)
+	{
+	case ui::CheckBox::EventType::SELECTED:
+		log("Music enable");
+		break;
+
+	case ui::CheckBox::EventType::UNSELECTED:
+		log("Music disable");
+		break;
+
+	default:
+		break;
+	}
+}
+
+void DialogPause::selectedEventSound(Ref * pSender, ui::CheckBox::EventType type)
+{
+	switch (type)
+	{
+	case ui::CheckBox::EventType::SELECTED:
+		log("Sound enable");
+		break;
+
+	case ui::CheckBox::EventType::UNSELECTED:
+		log("Sound disable");
+		break;
+
+	default:
+		break;
+	}
+}
+
 bool DialogPause::init()
 {
 	DialogPauseGame::init();
@@ -121,10 +190,12 @@ bool DialogPause::init()
 	addChild(background);
 
 	auto checkBoxMusic = ui::CheckBox::create("UI/UI_Endgame/btn_off.png", "UI/UI_Endgame/btn_on.png");
+	checkBoxMusic->addEventListener(CC_CALLBACK_2(DialogPause::selectedEventMusic, this));
 	checkBoxMusic->setPosition(Vec2(background->getContentSize().width*0.25f, background->getContentSize().height*0.7f));
 	background->addChild(checkBoxMusic);
 
 	auto checkBoxSound = ui::CheckBox::create("UI/UI_Endgame/btn_off.png", "UI/UI_Endgame/btn_on.png");
+	checkBoxSound->addEventListener(CC_CALLBACK_2(DialogPause::selectedEventSound, this));
 	checkBoxSound->setPosition(Vec2(background->getContentSize().width*0.63f, background->getContentSize().height*0.7f));
 	background->addChild(checkBoxSound);
 
@@ -298,7 +369,7 @@ bool DialogStageClear::init(int score, int gold)
 	auto nextBtnNormal = Sprite::create("UI/UI_Endgame/btn_next.png");
 	auto nextBtnActive = Sprite::create("UI/UI_Endgame/btn_next.png");
 	nextBtnActive->setColor(Color3B(128, 128, 128));
-	auto nextBtn = MenuItemSprite::create(nextBtnNormal, nextBtnActive, CC_CALLBACK_1(DialogPauseGame::nextState, this));
+	auto nextBtn = MenuItemSprite::create(nextBtnNormal, nextBtnActive, CC_CALLBACK_1(DialogPauseGame::nextStage, this));
 	nextBtn->setAnchorPoint(Vec2(1, 1));
 	nextBtn->setPosition(background->getContentSize().width*0.9, 0);
 
@@ -333,12 +404,10 @@ bool DialogStageClear::init(int score, int gold)
 	bonusScoreLb->setPosition(background->getContentSize().width * 0.55f, background->getContentSize().height * 0.33f);
 	background->addChild(bonusScoreLb);
 
-	REF->setUpGoldExplored(gold + bonusGold);
-	REF->setUpScore(score + bonusScore);
-
-
-	int currentScore = REF->getCurrentScore();
-	int currentLevel = REF->getCurrentLevel();
+	if (!REF->getIsLockedHero()) {	// if hero is unlocked
+		REF->setUpScore(score + bonusScore);
+		REF->setUpGoldExplored(gold + bonusGold);
+	}
 	effect();
 
 	return true;
@@ -485,11 +554,11 @@ bool DialogOverGame::init(int score, int gold)
 	bonusScoreLb->setPosition(background->getContentSize().width * 0.55f, background->getContentSize().height * 0.33f);
 	background->addChild(bonusScoreLb);
 
-	REF->setUpGoldExplored(gold + bonusGold);
-	REF->setUpScore(score + bonusScore);
+	if (!REF->getIsLockedHero()) {		// if hero is unlocked
+		REF->setUpScore(score + bonusScore);
+		REF->setUpGoldExplored(gold + bonusGold);
+	}
 
-	int currentScore = REF->getCurrentScore();
-	int currentLevel = REF->getCurrentLevel();
 
 	effect();
 

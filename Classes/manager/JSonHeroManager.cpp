@@ -5,7 +5,7 @@ JSonHeroManager* JSonHeroManager::jsonHeroManager;
 
 JSonHeroManager::JSonHeroManager()
 {
-	auto herobuffer = FileUtils::getInstance()->getStringFromFile(String::createWithFormat("json/Hero.json")->getCString());
+	auto herobuffer = FileUtils::getInstance()->getStringFromFile("json/Hero.json");
 	this->jsonDoc.Parse(herobuffer.c_str());
 }
 
@@ -18,11 +18,6 @@ JSonHeroManager * JSonHeroManager::getInstance()
 	if (jsonHeroManager == nullptr)
 		jsonHeroManager = new JSonHeroManager();
 	return jsonHeroManager;
-}
-
-int JSonHeroManager::getSelectedHero()
-{
-	return 0;
 }
 
 void JSonHeroManager::readFile(int indexHero)
@@ -87,6 +82,6 @@ string JSonHeroManager::getTipAtX(int index)
 
 string JSonHeroManager::getNotifyAtX(int index)
 {
-	assert(index > 0 && index <= 9);
+	assert(index > 0 && index <= 21);
 	return jsonDoc["notification"][0][("noti_" + StringUtils::format("%i", index)).c_str()].GetString();
 }

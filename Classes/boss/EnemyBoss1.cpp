@@ -59,6 +59,14 @@ void EnemyBoss1::attack2()
 	this->setAnimation(0, "attack2", false);
 }
 
+void EnemyBoss1::fixStupid()
+{
+	float a = CCRANDOM_0_1();
+	log("fixstupid %f", a);
+	this->setRealMoveVelocity(Vec2(this->getmoveVelocity().x, this->getmoveVelocity().y*a));
+	//log("fixstupid");
+}
+
 
 
 void EnemyBoss1::die()
@@ -154,7 +162,7 @@ void EnemyBoss1::creatHidenSlash(float angle)
 		world->DestroyBody(slash->getB2Body());
 	}
 	auto world = this->getB2Body()->GetWorld();
-	slash->initCirclePhysic(world, this->getPosition());
+	slash->initCirclePhysic(world, this->getPosGenSlash());
 	slash->changeBodyCategoryBits(BITMASK_SLASH);
 	slash->changeBodyMaskBits(BITMASK_HERO);
 	//slash->setRotation(180 - 180 / 4);
@@ -196,42 +204,53 @@ void EnemyBoss1::boomboom()
 	auto callBack = CCCallFunc::create([&]() {
 		createGold();
 
-		this->setRealMoveVelocity(Vec2(0, (this->getPositionY() - heroLocation.y)/2));
+		this->setRealMoveVelocity(Vec2(0, (this->getPositionY() - heroLocation.y) / 2));
 	});
 
 	auto callBack2 = CCCallFunc::create([&]() {
-		//createGold();
+		createGold();
 
 		this->setRealMoveVelocity(Vec2(0, -this->getmoveVelocity().y));
 	});
 	this->runAction(Sequence::create(DelayTime::create(1), callBack, DelayTime::create(1), callBack,
 		DelayTime::create(1), callBack, DelayTime::create(1), callBack,callBack2, nullptr));
+	/*this->schedule([&](float dt){
+		this->setRealMoveVelocity(Vec2(0, (this->getPositionY() - heroLocation.y) / 2));
+		if (createGold() > this->getCoinPool()->count()) {
+			this->setRealMoveVelocity(Vec2(0, -this->getmoveVelocity().y));
+			this->unschedule("bossboom");
+		};
+		
+	}, 1, "bossboom");*/
 }
 //22/4 thuandv edited
-void EnemyBoss1::createGold()
+int EnemyBoss1::createGold()
 {
-	int tmp = int(indexCoin + 5 + CCRANDOM_0_1() * 10);
-	if (tmp > coinPool->count()) tmp = coinPool->count();
-	for (; indexCoin < tmp; indexCoin++) {
-		auto coin = (Coin*)coinPool->getObjectAtIndex(indexCoin);
-		coin->setVisible(true);
-		coin->setPosition(this->getPosition());
-		this->getParent()->addChild(coin, ZORDER_ENEMY);
-		coin->initCirclePhysic(this->getB2Body()->GetWorld(), this->getPosition());
-		coin->getB2Body()->GetFixtureList()->SetSensor(false);
-		coin->getB2Body()->SetType(b2_dynamicBody);
-		coin->changeBodyCategoryBits(BITMASK_COIN);
-		coin->changeBodyMaskBits(BITMASK_FLOOR);
-		coin->setAngle(CCRANDOM_0_1()*PI);
-		coin->getB2Body()->SetFixedRotation(true);
-		coin->runAnimation();
+	int tmp = int(indexCoin +levelBoss*24);
+	if (tmp < coinPool->count()) {
+		if (tmp > coinPool->count()) tmp = coinPool->count();
+		for (; indexCoin < tmp; indexCoin++) {
+			auto coin = (Coin*)coinPool->getObjectAtIndex(indexCoin);
+			coin->setVisible(true);
+			coin->setPosition(this->getPosition());
+			this->getParent()->addChild(coin, ZORDER_ENEMY);
+			coin->initCirclePhysic(this->getB2Body()->GetWorld(), this->getPosition());
+			coin->getB2Body()->GetFixtureList()->SetSensor(false);
+			coin->getB2Body()->SetType(b2_dynamicBody);
+			coin->changeBodyCategoryBits(BITMASK_COIN);
+			coin->changeBodyMaskBits(BITMASK_FLOOR);
+			coin->setAngle(CCRANDOM_0_1()*PI);
+			coin->getB2Body()->SetFixedRotation(true);
+			coin->runAnimation();
+		}
 	}
+	return tmp;
 }
 
 void EnemyBoss1::createCoinPool()
 {
-	int count = int(50 + CCRANDOM_0_1() * 50);
-	coinPool = CCArray::createWithCapacity(int(50 + CCRANDOM_0_1() * 50));
+	int count = int(levelBoss * 100);
+	coinPool = CCArray::createWithCapacity(count);
 	coinPool->retain();
 	for (int i = 0; i < count; i++) {
 		auto coin = Coin::create();

@@ -11,11 +11,14 @@ public:
 	static EnemyBoss3* create(string jsonFile, string atlasFile, float scale);
 
 	void createPool();
+	void attack3();
+	void fixStupid();
 	Vec2 getPosGenSlash();
 	void creatSlash(float angel);
 	void playSoundAttack1();
 	void playSoundAttack2();
 	void playSoundDie();
+	void doAttack2();
 };
 
 #endif // __ENEMY_H__

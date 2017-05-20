@@ -41,14 +41,14 @@ public:
 	void idle();
 	void attack();
 	void attack2();
-	
+	virtual void fixStupid();
 	void die();
 	virtual void createPool();
 	virtual void creatSlash(float angel);
 	void creatHidenSlash(float angel); // tao check chem
 	void creatHpSprite();
 	void boomboom();
-	void createGold();
+	int createGold();
 	void createCoinPool();
 	void updateMe(BaseHero* hero);
 
@@ -56,7 +56,7 @@ public:
 	bool checkStop();
 	void changeState(StateBoss *state);
 	void doAttack1();
-	void doAttack2();
+	virtual void doAttack2();
 	virtual Vec2 getPosGenSlash();
 	virtual void playSoundAttack1();
 	virtual void playSoundAttack2();

@@ -6,9 +6,7 @@
 
 DuongQua::DuongQua(string jsonFile, string atlasFile, float scale) : BaseHero(jsonFile, atlasFile, scale)
 {
-	checkDurationSkill1 = 0;
-	checkDurationSkill2 = 0;
-	checkDurationSkill3 = 0;
+
 }
 
 DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
@@ -91,8 +89,8 @@ void DuongQua::slashToanChanKiemPhap()
 
 void DuongQua::doCounterSkill1()
 {
-	//slashToanChanKiemPhap();
-	fastAndFurious();
+	slashToanChanKiemPhap();
+	//fastAndFurious();
 }
 
 void DuongQua::fastAndFurious()
@@ -297,40 +295,6 @@ void DuongQua::runSlashLand()
 	slashLand->clearTracks();
 	slashLand->addAnimation(0, "slash1", false);
 	slashLand->setToSetupPose();
-}
-
-void DuongQua::initCirclePhysic(b2World * world, Point pos)
-{
-	b2CircleShape circle_shape;
-	circle_shape.m_radius = getBoxHeight() / PTM_RATIO;
-
-	// True radius of hero is here
-	setTrueRadiusOfHero(circle_shape.m_radius * PTM_RATIO);
-
-	b2FixtureDef fixtureDef;
-	fixtureDef.density = 0.0f;
-	fixtureDef.friction = 0.0f;
-	fixtureDef.restitution = 0.0f;
-	fixtureDef.shape = &circle_shape;
-
-	fixtureDef.filter.categoryBits = BITMASK_HERO;
-
-	fixtureDef.filter.maskBits = BITMASK_FLOOR |
-		BITMASK_ENEMY | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION;
-
-
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
-	bodyDef.userData = this;			// pass sprite to bodyDef with argument: userData
-
-	bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);
-
-	body = world->CreateBody(&bodyDef);
-	body->CreateFixture(&fixtureDef);
-
-
-	// connect sword with body
-	initSwordPhysic(world, Point(pos.x + trueRadiusOfHero * 2.2f, pos.y), trueRadiusOfHero);
 }
 
 void DuongQua::addStuff()

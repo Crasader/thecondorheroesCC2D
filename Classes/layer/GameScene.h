@@ -2,8 +2,6 @@
 #define __GAME_SCENE_H__
 
 #include "Global.h"
-#include "colong/CoLong.h"
-#include "duongqua/DuongQua.h"
 #include "EnemyWooder.h"
 #include "EnemyToanChanStudent.h"
 #include "EnemyToanChanStudent2.h"
@@ -58,6 +56,7 @@ private:
 	int map;
 	int haveboss;
 	float changebg;
+	Point heroStartPosition;
 
 
 	int charId;	//Thinhnv Edited for select character
@@ -119,11 +118,12 @@ private:
 	// listener
 	EventListenerTouchOneByOne* touch_listener;
 
-
+	void selectHero();
 
 	// Create For Hero
-	void createDuongQua(string path_Json, string path_Atlas, Point position);
-	void createCoLong(string path_Json, string path_Atlas, Point position);
+	void createDuongQua(string path_Json, string path_Atlas);
+	void createCoLong(string path_Json, string path_Atlas);
+	void createQuachTinh(string path_Json, string path_Atlas);
 	void createEagle(Point position);
 	void heroGetOffEagle();
 

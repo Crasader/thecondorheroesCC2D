@@ -4,6 +4,7 @@
 #include "MenuScene.h"
 #include "SimpleAudioEngine.h"
 #include "manager/RefManager.h"
+#include "manager/JSonHeroManager.h"
 #include "ui_custom/CustomLayerToToast.h"
 
 

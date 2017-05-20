@@ -99,8 +99,8 @@ void CollisionListener::BeginContact(b2Contact * contact)
 			// do nothing
 		}
 		else {
-			
-			if (bodyHero->GetPosition().x < (bodyEnemy->GetPosition().x + bodyEnemy->GetFixtureList()->GetShape()->m_radius/3) ){
+
+			if (bodyHero->GetPosition().x < (bodyEnemy->GetPosition().x + bodyEnemy->GetFixtureList()->GetShape()->m_radius / 3)) {
 				enemy->attack();
 				if (!enemy->getIsDie() && !hero->getIsNoDie()) {
 					if (!hero->getIsPriorInjured()
@@ -290,18 +290,20 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		(bitmaskB == BITMASK_SWORD && bitmaskA == BITMASK_UNDER_GROUND)
 		) {
 
-		KiemPhap* sA = (KiemPhap*)bodyA->GetUserData();
-		KiemPhap* sB = (KiemPhap*)bodyB->GetUserData();
-		auto kp = sA ? (KiemPhap *)sA : (KiemPhap *)sB;
+		B2Sprite* sA = (B2Sprite*)bodyA->GetUserData();
+		B2Sprite* sB = (B2Sprite*)bodyB->GetUserData();
+		auto not_ground = sA ? (B2Sprite *)sA : (B2Sprite *)sB;
 
-		auto parentGameScene = (GameScene*)kp->getParent();
+		auto parentGameScene = (GameScene*)not_ground->getParent();
 		parentGameScene->shakeTheScreen();
 
-		kp->hitGround();
-		kp->setIsCollide(true);
-
-		kp->setTextureRect(Rect(Vec2::ZERO,
-			Size(kp->getContentSize().width, kp->getContentSize().height * random(0.61f, 0.63f))));
+		if (not_ground->getTag() == TAG_DQ_DOC_CO_KIEM_PHAP) {
+			auto kp = (KiemPhap*)not_ground;
+			kp->hitGround();
+			kp->setIsCollide(true);
+			kp->setTextureRect(Rect(Vec2::ZERO,
+				Size(kp->getContentSize().width, kp->getContentSize().height * random(0.61f, 0.63f))));
+		}
 
 	}
 }

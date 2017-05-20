@@ -7,6 +7,10 @@
 #include "manager/SkeletonManager.h"
 #include "manager/AudioManager.h"
 
+#include "colong/CoLong.h"
+#include "duongqua/DuongQua.h"
+#include "quachtinh/QuachTinh.h"
+
 LayerColor *blur;
 
 Scene* GameScene::createScene(GameScene *layer, Hud* m_hud)
@@ -17,7 +21,7 @@ Scene* GameScene::createScene(GameScene *layer, Hud* m_hud)
 	// 'layer' is an autorelease object
 
 	m_hud->setPosition(Director::getInstance()->getVisibleOrigin());
-
+	layer->onBegin();
 	// add layer as a child to scene
 	scene->addChild(layer);
 	scene->addChild(m_hud);
@@ -26,8 +30,6 @@ Scene* GameScene::createScene(GameScene *layer, Hud* m_hud)
 	blur = LayerColor::create(Color4B(0, 0, 0, 170));
 	blur->setVisible(false);
 	scene->addChild(blur);
-
-	layer->onBegin();
 
 	// return the scene
 	return scene;
@@ -46,10 +48,7 @@ bool GameScene::init(int stage, int map, int charId)
 
 	isFirstPlay = REF->getIsFirstPlay();
 
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-	isModeDebug = false;
+	isModeDebug = true;
 	changebg = 0;
 
 	indexOfNextMapBoss = -1;
@@ -67,15 +66,8 @@ bool GameScene::init(int stage, int map, int charId)
 
 	loadBackground();
 	danceWithCamera();
-	//cacheSkeleton();
-	if (charId == 0) {
-		createDuongQua("Animation/DuongQua/DuongQua.json", "Animation/DuongQua/DuongQua.atlas",
-			Point(origin.x, visibleSize.height * 0.75f));
-	}
-	else {
-		createCoLong("Animation/CoLong/CoLong.json", "Animation/CoLong/CoLong.atlas",
-			Point(origin.x, visibleSize.height * 0.75f));
-	}
+
+	selectHero();
 
 	if (REF->getNumberItemHealth() > 0) {
 		hero->setHealth(hero->getHealth() + 1);
@@ -87,9 +79,6 @@ bool GameScene::init(int stage, int map, int charId)
 	createGroundBody();
 	createItem();
 	initLayerToAddAgent();
-
-
-	createEagle(Point(hero->getB2Body()->GetPosition().x - visibleSize.width, visibleSize.height / 2));
 
 	if (this->haveboss)
 		creatBoss();
@@ -126,11 +115,38 @@ void GameScene::enableCalling()
 }
 
 
-void GameScene::createDuongQua(string path_Json, string path_Atlas, Point position)
+void GameScene::selectHero()
+{
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+	heroStartPosition = Point(origin.x, visibleSize.height * 0.75f);
+
+	switch (charId)
+	{
+	case 0:
+		createDuongQua("Animation/DuongQua/DuongQua.json", "Animation/DuongQua/DuongQua.atlas");
+		break;
+
+	case 1:
+		createCoLong("Animation/CoLong/CoLong.json", "Animation/CoLong/CoLong.atlas");
+		break;
+
+	case 4:
+		createQuachTinh("Animation/QuachTinh/QuachTinh.json", "Animation/QuachTinh/QuachTinh.atlas");
+		break;
+
+	default:
+		createCoLong("Animation/CoLong/CoLong.json", "Animation/CoLong/CoLong.atlas");
+		break;
+	}
+}
+
+void GameScene::createDuongQua(string path_Json, string path_Atlas)
 {
 	hero = DuongQua::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 340);
 	hero->listener();
-	hero->setPosition(position);
+	hero->setPosition(heroStartPosition);
 
 	addChild(hero, ZORDER_HERO);
 
@@ -142,11 +158,27 @@ void GameScene::createDuongQua(string path_Json, string path_Atlas, Point positi
 	addChild(hero->getBloodScreen(), ZORDER_SMT);
 }
 
-void GameScene::createCoLong(string path_Json, string path_Atlas, Point position)
+void GameScene::createCoLong(string path_Json, string path_Atlas)
 {
 	hero = CoLong::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 340);
 	hero->listener();
-	hero->setPosition(position);
+	hero->setPosition(heroStartPosition);
+
+	addChild(hero, ZORDER_HERO);
+
+	hero->initCirclePhysic(world, hero->getPosition());
+	hero->addStuff();
+	hero->createPool();
+
+	hero->getBloodScreen()->setPosition(follow->getPosition());
+	addChild(hero->getBloodScreen(), ZORDER_SMT);
+}
+
+void GameScene::createQuachTinh(string path_Json, string path_Atlas)
+{
+	hero = QuachTinh::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 300);
+	hero->listener();
+	hero->setPosition(heroStartPosition);
 
 	addChild(hero, ZORDER_HERO);
 
@@ -191,8 +223,10 @@ void GameScene::onBegin()
 	}
 	}
 
-	if (hud->getBtnCalling() != nullptr)
+	if (hud->getBtnCalling() != nullptr) {
+		createEagle(Point(hero->getB2Body()->GetPosition().x - SCREEN_SIZE.width, SCREEN_SIZE.height / 2));
 		hud->getBtnCalling()->setEnabled(true);
+	}
 
 	hud->getPauseItem()->setEnabled(true);
 
@@ -503,10 +537,12 @@ void GameScene::update(float dt)
 
 	checkActiveButton();
 
-	_aEagle->updateMe(dt);
-	if (_aEagle->getIsAbleToDropHero()) {
-		heroGetOffEagle();
-		_aEagle->setIsAbleToDropHero(false);
+	if (_aEagle != nullptr) {
+		_aEagle->updateMe(dt);
+		if (_aEagle->getIsAbleToDropHero()) {
+			heroGetOffEagle();
+			_aEagle->setIsAbleToDropHero(false);
+		}
 	}
 
 	if (hero->getIsDriverEagle()) {
@@ -554,7 +590,7 @@ void GameScene::update(float dt)
 	// fall down some hole
 	if (hero->getHealth() > 0) {
 		if (hero->getPositionY() + hero->getTrueRadiusOfHero() * 2.8f <= follow->getPositionY() - SCREEN_SIZE.height / 2) {
-			
+
 			// with every single hero
 			switch (charId) {
 			case 0:
@@ -1480,7 +1516,7 @@ void GameScene::reachNewMap()
 				break;
 
 			case 4:
-				if (map < 2) {
+				if (map < 3) {
 					REF->setMapUnlocked(map + 1);
 				}
 				break;
@@ -1724,35 +1760,27 @@ void GameScene::updateBloodBar(int numberOfHealth, bool isVisible)
 
 void GameScene::updateCamera()
 {
-
-	if (_aEagle->getIsUp() && _aEagle->getPositionZ() < 100.0f) {
-		_aEagle->setPositionZ(_aEagle->getPositionZ() + 5.0f);
-		_aEagle->setSequenceCloud(_aEagle->getSequenceCloud() - 0.04f);
-		//background->setPositionZ(background->getPositionZ() + 5);
-	}
-	if (_aEagle->getIsDown() && _aEagle->getPositionZ() > 0.0f) {
-		_aEagle->setPositionZ(_aEagle->getPositionZ() - 5.0f);
-		_aEagle->setSequenceCloud(_aEagle->getSequenceCloud() + 0.04f);
-		//background->setPositionZ(background->getPositionZ() - 5);
-	}
-	if (!_aEagle->getIsCarry()) {
-		/*if (hero->getPositionY() > SCREEN_SIZE.height * 5 / 6) {
-			background->setPositionY(hero->getPositionY() - SCREEN_SIZE.height * 2 / 6);
+	if (_aEagle != nullptr) {
+		if (_aEagle->getIsUp() && _aEagle->getPositionZ() < 100.0f) {
+			_aEagle->setPositionZ(_aEagle->getPositionZ() + 5.0f);
+			_aEagle->setSequenceCloud(_aEagle->getSequenceCloud() - 0.04f);
 		}
-		else
-		{
-			background->setPositionY(SCREEN_SIZE.height / 2);
-		}*/
-
-		if (hero->getB2Body()) {
-			if (hero->getPositionY() > background->getPositionY() + SCREEN_SIZE.height / 6 && hero->getB2Body()->GetLinearVelocity().y > 0) {
-				background->up(hero->getPosition());
-			}
-			else if (hero->getPositionY() < background->getPositionY() - SCREEN_SIZE.height / 6 && hero->getB2Body()->GetLinearVelocity().y < 0) {
-				background->down(hero->getPosition());
-			}
+		if (_aEagle->getIsDown() && _aEagle->getPositionZ() > 0.0f) {
+			_aEagle->setPositionZ(_aEagle->getPositionZ() - 5.0f);
+			_aEagle->setSequenceCloud(_aEagle->getSequenceCloud() + 0.04f);
 		}
+		if (!_aEagle->getIsCarry()) {
 
+			if (hero->getB2Body()) {
+				if (hero->getPositionY() > background->getPositionY() + SCREEN_SIZE.height / 6 && hero->getB2Body()->GetLinearVelocity().y > 0) {
+					background->up(hero->getPosition());
+				}
+				else if (hero->getPositionY() < background->getPositionY() - SCREEN_SIZE.height / 6 && hero->getB2Body()->GetLinearVelocity().y < 0) {
+					background->down(hero->getPosition());
+				}
+			}
+
+		}
 	}
 	else {
 		if (hero->getPositionY() > SCREEN_SIZE.height * 0.5f) {

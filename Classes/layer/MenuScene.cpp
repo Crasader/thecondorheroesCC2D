@@ -60,7 +60,7 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 		// shop
 		m_pShopBoardLayer = Layer::create();
 		m_pShopBoardLayer->setContentSize(Size(m_szVisibleSize.width, m_szVisibleSize.height)); // fill screen width, 25% screen height
-		m_pShopBoardLayer->setPosition(0.0f, m_pShopBoardLayer->getContentSize().height);
+		m_pShopBoardLayer->setPosition(0.0f, 0.0f);
 		this->addChild(m_pShopBoardLayer, 6);
 		this->scheduleUpdate();
 
@@ -102,7 +102,7 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 	m_pBlurScreen = Layer::create();
 	m_pBlurScreen->setScaleX(m_szVisibleSize.width / m_pBlurScreen->getContentSize().width); // full screen size width
 	m_pBlurScreen->setScaleY(m_szVisibleSize.height / m_pBlurScreen->getContentSize().height); // full screen size height
-	m_pBlurScreen->setPosition(Vec2(0.0f, m_szVisibleSize.height)); // center screen
+	m_pBlurScreen->setPosition(Vec2(0.0f, 0.0f)); // center screen
 	this->addChild(m_pBlurScreen, 5);
 	m_pBlurScreen->setVisible(false);
 
@@ -232,7 +232,7 @@ void MenuLayer::initControlLayer() {
 	// shop
 	m_pShopBoardLayer = Layer::create();
 	m_pShopBoardLayer->setContentSize(Size(m_szVisibleSize.width, m_szVisibleSize.height)); // fill screen width, 25% screen height
-	m_pShopBoardLayer->setPosition(0.0f, m_pShopBoardLayer->getContentSize().height);
+	m_pShopBoardLayer->setPosition(0.0f, 0.0f);
 	this->addChild(m_pShopBoardLayer, 6);
 
 	moveLayerViaDirection(m_pTopMainMenu, 2);
@@ -1179,17 +1179,14 @@ void MenuLayer::showBlurScreen() {
 
 	Sprite *_pBlurBlackLayer = Sprite::create("UI/toast.png");
 	_pBlurBlackLayer->setScale(m_pBlurScreen->getContentSize().width / _pBlurBlackLayer->getContentSize().width,
-		m_pBlurScreen->getContentSize().height / _pBlurBlackLayer->getContentSize().height * 2);
-	_pBlurBlackLayer->setAnchorPoint(Vec2(0.5f, 1.0f));
-	_pBlurBlackLayer->setPosition(m_pBlurScreen->getContentSize().width * 0.5f, m_pBlurScreen->getContentSize().height);
+		m_pBlurScreen->getContentSize().height / _pBlurBlackLayer->getContentSize().height);
+	_pBlurBlackLayer->setAnchorPoint(Vec2(0.5f, 0.5f));
+	_pBlurBlackLayer->setPosition(m_pBlurScreen->getContentSize().width * 0.5f, m_pBlurScreen->getContentSize().height * 0.5f);
 	_pBlurBlackLayer->setOpacity(150.0f);
 	m_pBlurScreen->addChild(_pBlurBlackLayer, 0);
-
-	moveLayerViaDirection(m_pBlurScreen, 2);
 }
 
 void MenuLayer::hideBlurScreen() {
-	moveLayerViaDirection(m_pBlurScreen, 8);
 	runAction(Sequence::create(DelayTime::create(0.2f), CallFunc::create([&]() {
 		m_pBlurScreen->removeAllChildrenWithCleanup(true);
 		m_pBlurScreen->setVisible(false);
@@ -1278,21 +1275,18 @@ void MenuLayer::buttonAddLifeHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	showBlurScreen();
 	initShopBoard(2);
-	moveLayerViaDirection(m_pShopBoardLayer, 2);
 }
 
 void MenuLayer::buttonAddGoldHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	showBlurScreen();
 	initShopBoard(0);
-	moveLayerViaDirection(m_pShopBoardLayer, 2);
 }
 
 void MenuLayer::buttonAddDiamondHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	showBlurScreen();
 	initShopBoard(1);
-	moveLayerViaDirection(m_pShopBoardLayer, 2);
 }
 
 void MenuLayer::buttonQuestHandle() {
@@ -1335,7 +1329,6 @@ void MenuLayer::buttonShopHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	showBlurScreen();
 	initShopBoard(m_nShopOption);
-	moveLayerViaDirection(m_pShopBoardLayer, 2);
 }
 
 void MenuLayer::buttonFreeCoinHandle() {
@@ -1842,14 +1835,16 @@ void MenuLayer::initShopBoard(int p_nOption) {
 			_pPackCostSprite->addChild(_pLabelDiamondCost, 1);
 		}
 	}
+	
+	m_pShopBoardLayer->runAction(ScaleTo::create(0.2f, 1.0f));
 }
 
 void MenuLayer::buttonCloseShopHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
-	moveLayerViaDirection(m_pShopBoardLayer, 8);
-	hideBlurScreen();
+	m_pShopBoardLayer->runAction(ScaleTo::create(0.2f, 0.0f));
 	// TODO: fix custom sprite to buy pack, because if you dont remove children of shop board, they still get response clicks on screen
 	runAction(Sequence::create(DelayTime::create(0.2f), CallFunc::create([&]() {
+		hideBlurScreen();
 		m_pShopBoardLayer->removeAllChildrenWithCleanup(true);
 	}), nullptr));
 }

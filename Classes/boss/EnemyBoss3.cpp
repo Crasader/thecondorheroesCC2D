@@ -66,6 +66,7 @@ Vec2 EnemyBoss3::getPosGenSlash()
 void EnemyBoss3::creatSlash(float angel)
 {
 	auto slash = (SlashBoss*)slashPool->getObjectAtIndex(indexSlash);
+	slash->setIsDie(false);
 	slash->setVisible(true);
 	indexSlash++;
 	if (indexSlash >= slashPool->count()) {

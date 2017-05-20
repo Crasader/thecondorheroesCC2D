@@ -26,7 +26,7 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 	if (!Layer::init()) {
 		return false;
 	}
-	AudioManager::stopMusic();
+	AudioManager::stopSoundandMusic();
 	AudioManager::playMusic(MUSIC_MENU);
 	initInputData();
 	Vec2 _v2Origin = Director::getInstance()->getVisibleOrigin();
@@ -1205,6 +1205,7 @@ void MenuLayer::hideBlurScreen() {
 
 void MenuLayer::buttonStartHandle()
 {
+	REF->setLastPickHero(m_nIndexHeroSelected);
 	// select stage layer
 	m_pSelectStageLayer = SelectStageLayer::create(m_nIndexHeroSelected);
 	m_nMenuStatus = 3;

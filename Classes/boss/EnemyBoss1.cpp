@@ -134,6 +134,7 @@ void EnemyBoss1::createPool()
 void EnemyBoss1::creatSlash(float angel)
 {
 	auto slash = (SlashBoss*)slashPool->getObjectAtIndex(indexSlash);
+	slash->setIsDie(false);
 	slash->setVisible(true);
 	indexSlash++;
 	if (indexSlash >= slashPool->count()) {
@@ -316,7 +317,7 @@ void EnemyBoss1::updateMe(BaseHero* hero)
 	for (int i = 0; i < slashPool->count(); i++) {
 		auto slash = (SlashBoss*)slashPool->getObjectAtIndex(i);
 		slash->updateMe(0.0f);
-		if (slash->getB2Body() != nullptr && slash->getPositionX() < posHero.x) {
+		if (slash->getB2Body() != nullptr && slash->getPositionX() < (posHero.x-SCREEN_SIZE.width/4)) {
 			slash->die();
 		}
 	}

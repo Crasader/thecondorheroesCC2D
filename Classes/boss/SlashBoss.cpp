@@ -52,6 +52,10 @@ void SlashBoss::updateMe(float dt)
 		this->setPositionX(this->getB2Body()->GetPosition().x * PTM_RATIO);
 		this->setPositionY(this->getB2Body()->GetPosition().y * PTM_RATIO);
 	}
+	if (this->getIsDie() && this->getB2Body()) {
+		this->die();
+		this->setIsDie(false);
+	}
 }
 
 

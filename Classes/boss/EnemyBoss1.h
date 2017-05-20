@@ -45,15 +45,15 @@ public:
 	void die();
 	virtual void createPool();
 	virtual void creatSlash(float angel);
-	void creatHidenSlash(float angel); // tao check chem
-	void creatHpSprite();
+	virtual void creatHidenSlash(float angel); // tao check chem
+	virtual void creatHpSprite();
 	void boomboom();
 	int createGold();
 	void createCoinPool();
 	void updateMe(BaseHero* hero);
 
-	void listener();
-	bool checkStop();
+	virtual void listener();
+	virtual bool checkStop();
 	void changeState(StateBoss *state);
 	void doAttack1();
 	virtual void doAttack2();

@@ -3,17 +3,6 @@
 #include "coin\Coin.h"
 #include "coin\CoinBag.h"
 #include "coin\CoinBullion.h"
-#include "EnemyToanChanStudent.h"
-#include "EnemyToanChanStudent2.h"
-#include "EnemyWooder.h"
-#include "EnemyTNB.h"
-#include "EnemyToOng.h"
-#include "EnemyHongLangBa.h"
-#include "EnemyHongLangBa2.h"
-#include "EnemyHoacDo.h"
-#include "EnemyHoacDo2.h"
-#include "EnemyDatNhiBa.h"
-#include "EnemyDatNhiBa2.h"
 
 
 
@@ -195,6 +184,51 @@ MyPool::MyPool(int maxPool, int tag) : MyPool()
 		for (int i = 0; i < maxPool; i++) {
 			auto scaleOfEnemy = SCREEN_SIZE.height / 4.0f / 406;
 			auto enemy = EnemyDatNhiBa2::create("Animation/Enemy_DatNhiBa/DatNhiBa2", scaleOfEnemy);
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
+	case TAG_ENEMY_CHONG1: {
+
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfEnemy = SCREEN_SIZE.height / 6.0f / 200;
+			auto enemy = EnemyChong1::create("Animation/EnemyChong1/BayChong1", scaleOfEnemy);
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
+	case TAG_ENEMY_CHONG2: {
+
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfEnemy = SCREEN_SIZE.height / 4.0f / (205*1.5f);
+			auto enemy = EnemyChong2::create("Animation/EnemyChong2/BayChong2", scaleOfEnemy);
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
+	case TAG_ENEMY_CHONG3: {
+
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfEnemy = SCREEN_SIZE.height / 3.0f / (205*2);
+			auto enemy = EnemyChong3::create("Animation/EnemyChong3/BayChong3", scaleOfEnemy);
 			//coin->runAnimation();
 
 			enemy->setTag(tag);

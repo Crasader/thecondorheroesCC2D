@@ -105,7 +105,6 @@ public:
 	virtual void attackBySkill3();
 	virtual void injured();
 	virtual void revive();
-	virtual void die(Point posOfCammera);
 	virtual void listener();
 	virtual void updateMe(float dt);
 
@@ -113,6 +112,7 @@ public:
 	virtual void doCounterSkill2();
 	virtual void doCounterSkill3();
 
+	virtual void stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSkill3);
 	virtual void doDestroyBodies(b2World* world);
 	virtual void updateAttackBossAsTarget(BaseEnemy *p_pBoss);
 

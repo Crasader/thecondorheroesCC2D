@@ -18,8 +18,6 @@ public:
 	void addStuff();
 	void createPool();
 
-
-	void idle();
 	void run();
 	void normalJump();
 	void doubleJump();
@@ -28,10 +26,9 @@ public:
 	void attackNormal();
 	void attackLanding();
 	void injured();
-	void revive();
-	void die(Point p_ptPositionOfCammera);
 	void listener();
 
+	void stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSkill3);
 	void doDestroyBodies(b2World *world);
 
 	void updateMe(float p_fDelta);

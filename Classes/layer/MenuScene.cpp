@@ -7,7 +7,6 @@
 #include "manager/JSonQuestManager.h"
 #include "manager/RefManager.h"
 #include "ui_custom/CustomSpriteToBuyPack.h"
-#include "manager/RefManager.h"
 
 MenuLayer * MenuLayer::create(bool p_bOnlySelectStage) {
 	MenuLayer *pRet = new(std::nothrow) MenuLayer();
@@ -27,6 +26,8 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 		return false;
 	}
 
+	AudioManager::stopSoundandMusic();
+	AudioManager::playMusic(MUSIC_MENU);
 	initInputData();
 	Vec2 _v2Origin = Director::getInstance()->getVisibleOrigin();
 	this->setPosition(_v2Origin);
@@ -61,7 +62,6 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 		m_pShopBoardLayer->setContentSize(Size(m_szVisibleSize.width, m_szVisibleSize.height)); // fill screen width, 25% screen height
 		m_pShopBoardLayer->setPosition(0.0f, m_pShopBoardLayer->getContentSize().height);
 		this->addChild(m_pShopBoardLayer, 6);
-
 		this->scheduleUpdate();
 
 		return true;
@@ -1278,21 +1278,18 @@ void MenuLayer::buttonAddLifeHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	showBlurScreen();
 	initShopBoard(2);
-	moveLayerViaDirection(m_pShopBoardLayer, 2);
 }
 
 void MenuLayer::buttonAddGoldHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	showBlurScreen();
 	initShopBoard(0);
-	moveLayerViaDirection(m_pShopBoardLayer, 2);
 }
 
 void MenuLayer::buttonAddDiamondHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	showBlurScreen();
 	initShopBoard(1);
-	moveLayerViaDirection(m_pShopBoardLayer, 2);
 }
 
 void MenuLayer::buttonQuestHandle() {
@@ -1335,7 +1332,6 @@ void MenuLayer::buttonShopHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	showBlurScreen();
 	initShopBoard(m_nShopOption);
-	moveLayerViaDirection(m_pShopBoardLayer, 2);
 }
 
 void MenuLayer::buttonFreeCoinHandle() {
@@ -1349,7 +1345,7 @@ void MenuLayer::buttonFreeCoinHandle() {
 		// after that, increase gold
 	}
 	else {
-		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(6), TOAST_LONG);
+		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(11), TOAST_LONG);
 		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
 		this->addChild(_pToast, 10);
 	}
@@ -1734,6 +1730,7 @@ void MenuLayer::initShopBoard(int p_nOption) {
 			_pDiamondSprite->setAnchorPoint(Vec2(1.0f, 0.0f));
 			_pDiamondSprite->setPosition(Vec2(_pPackCostSprite->getContentSize().width * 0.4f, _pPackCostSprite->getContentSize().height * 0.2f));
 			_pPackCostSprite->addChild(_pDiamondSprite, 1);
+
 			Label *_pLabelDiamondCost = Label::createWithBMFont("fonts/font_life-export.fnt", StringUtils::format("%d", JSMENU->getCoinPackDiamondPrice()));
 			_pLabelDiamondCost->setBMFontSize(_pPackCostSprite->getContentSize().height * 0.5f);
 			_pLabelDiamondCost->setAnchorPoint(Vec2(0.0f, 0.0f));
@@ -1841,11 +1838,16 @@ void MenuLayer::initShopBoard(int p_nOption) {
 			_pPackCostSprite->addChild(_pLabelDiamondCost, 1);
 		}
 	}
+	if (m_bIsShopShow == false) {
+		moveLayerViaDirection(m_pShopBoardLayer, 2);
+		m_bIsShopShow = true;
+	}
 }
 
 void MenuLayer::buttonCloseShopHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	moveLayerViaDirection(m_pShopBoardLayer, 8);
+	m_bIsShopShow = false;
 	hideBlurScreen();
 	// TODO: fix custom sprite to buy pack, because if you dont remove children of shop board, they still get response clicks on screen
 	runAction(Sequence::create(DelayTime::create(0.2f), CallFunc::create([&]() {
@@ -1948,7 +1950,7 @@ void MenuLayer::buttonPickHeroHandle(int p_nIndexHero) {
 	if (!REF->getIsLockedHero()) {
 		m_nIndexHeroSelected = m_nIndexHeroPicked;
 		REF->setSelectedHero(m_nIndexHeroPicked);
-		REF->setLastPickHero(m_nIndexHeroPicked);
+		REF->setLastPickHero(m_nIndexHeroSelected);
 	}
 	initSceneLayer();
 	initBottomHeroMenu();
@@ -1967,7 +1969,7 @@ void MenuLayer::buttonUnlockHeroHandle() {
 	AudioManager::playSound(SOUND_UNLOCK_HERO);
 	REF->pointToCurrentHero(m_nIndexHeroPicked - 1); // point to pre-hero
 	int _nPreHeroLevel = REF->getCurrentLevel(); // get level of pre-hero
-	if (_nPreHeroLevel < m_nIndexHeroPicked * 20) {
+	if (_nPreHeroLevel < m_nIndexHeroPicked * 0) {
 		REF->pointToCurrentHero(m_nIndexHeroPicked);
 		string _arTipToUnlockHero[5] = {
 			"This hero is unlocked!",
@@ -2094,7 +2096,7 @@ void MenuLayer::selectedItemEvent(Ref* sender, ListView::EventType type) {
 			_pConfirmBackground->setPosition(m_pBuyPackConfirmBackground->getContentSize().width * 0.5f, m_pBuyPackConfirmBackground->getContentSize().height * 0.5f);
 			m_pBuyPackConfirmBackground->addChild(_pConfirmBackground, 1);
 
-			Label *_pLabelConfirm = Label::createWithBMFont("fonts/font_normal-export.fnt", StringUtils::format("%s", JSHERO->getNotifyAtX(21).c_str()));
+			Label *_pLabelConfirm = Label::createWithBMFont("fonts/font_normal-export.fnt", StringUtils::format("%s", JSHERO->getNotifyAtX(10).c_str()));
 			_pLabelConfirm->setBMFontSize(_pConfirmBackground->getContentSize().height);
 			_pLabelConfirm->setScale(_pConfirmBackground->getContentSize().width / _pLabelConfirm->getContentSize().width * 0.7f);
 			_pLabelConfirm->setAnchorPoint(Vec2(0.5f, 0.0f));
@@ -2105,7 +2107,7 @@ void MenuLayer::selectedItemEvent(Ref* sender, ListView::EventType type) {
 			Sprite *_pDiamondSprite = Sprite::create("UI/UI_main_menu/icon_diamond.png");
 			_pDiamondSprite->setScale(_pConfirmBackground->getContentSize().height / _pDiamondSprite->getContentSize().height * 0.1f);
 			_pDiamondSprite->setAnchorPoint(Vec2(1.0f, 0.0f));
-			_pDiamondSprite->setPosition(Vec2(_pConfirmBackground->getContentSize().width * 0.45f, _pConfirmBackground->getContentSize().height * 0.5f));
+			_pDiamondSprite->setPosition(Vec2(_pConfirmBackground->getContentSize().width * 0.49f, _pConfirmBackground->getContentSize().height * 0.5f));
 			_pConfirmBackground->addChild(_pDiamondSprite, 1);
 
 			int _nTempPrice = 0;

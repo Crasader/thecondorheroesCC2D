@@ -21,36 +21,9 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 	duongQua->stateMachine = new StateMachine(duongQua);
 	duongQua->stateMachine->setCurrentState(MLand);
 
-	duongQua->setMoveVel(duongQua->SCREEN_SIZE.width / PTM_RATIO / 2.3f);
-	duongQua->setJumpVel(duongQua->SCREEN_SIZE.height * 1.4f / PTM_RATIO);
-
-	duongQua->health = REF->getCurrentHealth();
-	duongQua->maxHealth = duongQua->health;
-
-	// set Duration here
-	duongQua->setDurationSkill1(REF->getDurationSkill_1());
-	duongQua->setDurationSkill2(REF->getDurationSkill_2());
-	duongQua->setDurationSkill3(REF->getDurationSkill_3());
-
 	duongQua->setBoxHeight(duongQua->getBoundingBox().size.height / 6.7f);
-	duongQua->numberOfJump = 2;
-	duongQua->coinExplored = 0;
-	duongQua->score = 0;
-
-
-	duongQua->setOnGround(false);
-	duongQua->setIsPriorInjured(false);		// future, we need to add props into base class
-	duongQua->setIsPriorAttack(false);
-	duongQua->setIsPriorSkill1(false);
-	duongQua->setIsPriorSkill2(false);
-	duongQua->setIsPriorSkill3(false);
-
-	duongQua->setIsDoneDuration1(true);
-	duongQua->setIsDoneDuration2(true);
-	duongQua->setIsDoneDuration3(true);
 
 	//
-
 	duongQua->blash = Sprite::create("Animation/DuongQua/blash.png");
 	duongQua->blash->setScale(scale / 2);
 	duongQua->blash->setPosition(duongQua->getContentSize() / 2);
@@ -118,8 +91,8 @@ void DuongQua::slashToanChanKiemPhap()
 
 void DuongQua::doCounterSkill1()
 {
-	slashToanChanKiemPhap();
-	//fastAndFurious();
+	//slashToanChanKiemPhap();
+	fastAndFurious();
 }
 
 void DuongQua::fastAndFurious()
@@ -401,15 +374,6 @@ void DuongQua::createPool()
 	}
 }
 
-void DuongQua::idle()
-{
-	clearTracks();
-	addAnimation(0, "idle", true);
-	setToSetupPose();
-
-	getSmokeRun()->setVisible(false);
-}
-
 void DuongQua::run()
 {
 	clearTracks();
@@ -464,54 +428,8 @@ void DuongQua::landing()
 
 void DuongQua::die()
 {
-	--dieHard;
-	if (dieHard < 0) {
-		return;
-	}
-
-	noActive = true;
-
+	BaseHero::die();
 	AudioManager::playSound(SOUND_DQDIE);
-
-	if (!getIsDoneDuration1()) {
-		setIsDoneDuration1(true);
-		if (!listToanChanKiemPhap.empty()) {
-			for (auto tckp : listToanChanKiemPhap) {
-				if (!tckp->getB2Body()) continue;
-
-				auto gameLayer = (GameScene*) this->getParent();
-
-				gameLayer->world->DestroyBody(tckp->getB2Body());
-				tckp->setB2Body(nullptr);
-				tckp->setVisible(false);
-			}
-		}
-		listToanChanKiemPhap.clear();
-		checkDurationSkill1 = 0;
-		unschedule("KeySkill1");
-	}
-
-	if (!getIsDoneDuration2()) {
-		setIsDoneDuration2(true);
-		unschedule("KeySkill2");
-		checkDurationSkill2 = -1;
-	}
-
-	if (!getIsDoneDuration3()) {
-		spiritHole->setVisible(false);
-		auto scaleRe = ScaleBy::create(0.1f, 0.5f);
-		spiritHole->runAction(scaleRe);
-
-		setIsDoneDuration3(true);
-		unschedule("KeySkill3");
-		checkDurationSkill3 = 0;
-	}
-	clearTracks();
-	addAnimation(0, "die", false);
-	setToSetupPose();
-	getB2Body()->SetLinearDamping(10);
-
-	getSmokeRun()->setVisible(false);
 }
 
 void DuongQua::attackNormal()
@@ -584,24 +502,6 @@ void DuongQua::injured()
 	setToSetupPose();
 
 	//log("injured");
-
-}
-
-void DuongQua::revive()
-{
-	clearTracks();
-	addAnimation(0, "revive", false);
-	setToSetupPose();
-
-	getSmokeRun()->setVisible(false);
-	getReviveMe()->setPosition(this->getPositionX() + getTrueRadiusOfHero() / 2, this->getPositionY());
-	getReviveMe()->setVisible(true);
-	reviveAni();
-	//log("revive");
-}
-
-void DuongQua::die(Point posOfCammera)
-{
 
 }
 
@@ -679,6 +579,43 @@ void DuongQua::listener()
 	/*this->setCompleteListener([&](int trackIndex, int loopCount) {
 
 	});*/
+}
+
+void DuongQua::stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSkill3)
+{
+	if (stopSkill1 && !getIsDoneDuration1()) {
+		setIsDoneDuration1(true);
+		if (!listToanChanKiemPhap.empty()) {
+			for (auto tckp : listToanChanKiemPhap) {
+				if (!tckp->getB2Body()) continue;
+
+				auto gameLayer = (GameScene*) this->getParent();
+
+				gameLayer->world->DestroyBody(tckp->getB2Body());
+				tckp->setB2Body(nullptr);
+				tckp->setVisible(false);
+			}
+		}
+		listToanChanKiemPhap.clear();
+		checkDurationSkill1 = 0;
+		unschedule("KeySkill1");
+	}
+
+	if (stopSkill2 && !getIsDoneDuration2()) {
+		setIsDoneDuration2(true);
+		unschedule("KeySkill2");
+		checkDurationSkill2 = -1;
+	}
+
+	if (stopSkill3 && !getIsDoneDuration3()) {
+		spiritHole->setVisible(false);
+		auto scaleRe = ScaleBy::create(0.1f, 0.5f);
+		spiritHole->runAction(scaleRe);
+
+		setIsDoneDuration3(true);
+		unschedule("KeySkill3");
+		checkDurationSkill3 = 0;
+	}
 }
 
 void DuongQua::doDestroyBodies(b2World* world)
@@ -763,8 +700,9 @@ void DuongQua::updateMe(float dt)
 		return;
 	}
 
-	if (!isDriverEagle/* || !isDoneDuration1*/)
+	if (!isDriverEagle/* || !isDoneDuration1*/) {
 		getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
+	}
 
 	if (!getIsPriorAttack() && !getIsPriorInjured() && !getIsPriorSkill1()) {
 

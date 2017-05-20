@@ -29,6 +29,7 @@ private:
 	void doNothing();
 	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
 	void onExit();
+	int convertId();
 };
 
 #endif // __SELECT_STAGE_SCENE_H__

@@ -82,6 +82,6 @@ string JSonHeroManager::getTipAtX(int index)
 
 string JSonHeroManager::getNotifyAtX(int index)
 {
-	assert(index > 0 && index <= 21);
+	assert(index > 0 && index <= 11);
 	return jsonDoc["notification"][0][("noti_" + StringUtils::format("%i", index)).c_str()].GetString();
 }

@@ -16,7 +16,7 @@ class DialogPauseGame : public Layer
 {
 protected:
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
-
+	Menu* menu;
 
 public:
 	virtual bool init();

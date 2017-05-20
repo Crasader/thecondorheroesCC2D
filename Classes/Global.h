@@ -75,6 +75,10 @@ using namespace std;
 	//tag enemy tinh 
 #define TAG_ENEMY_TNB						120
 #define TAG_ENEMY_TOONG						121
+#define TAG_ENEMY_CHONG1					122
+#define TAG_ENEMY_CHONG2					123
+#define TAG_ENEMY_CHONG3					124
+
 	//tag enemy dong
 #define TAG_ENEMY_TOANCHAN1					130
 #define TAG_ENEMY_HONGLANGBA1				131

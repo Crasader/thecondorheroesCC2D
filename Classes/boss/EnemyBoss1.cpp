@@ -12,7 +12,7 @@ EnemyBoss1::EnemyBoss1(string jsonFile, string atlasFile, float scale) :BaseEnem
 
 	health = 10;
 	exp = 50;
-	baseVelocity =Vec2(SCREEN_SIZE.width / 2.3f, SCREEN_SIZE.height / 10);
+	baseVelocity = Vec2(SCREEN_SIZE.width / 2.3f, SCREEN_SIZE.height / 10);
 	moveVelocity = Vec2(SCREEN_SIZE.height / 2, SCREEN_SIZE.height / 2);
 
 	realtimeVec = Vec2(SCREEN_SIZE.width / 2.3f, SCREEN_SIZE.height / 10);
@@ -48,7 +48,11 @@ void EnemyBoss1::attack()
 	this->isNodie = true;
 	this->clearTracks();
 	this->setAnimation(0, "attack", false);
-	this->creatHidenSlash((heroLocation - this->getPosition()).getAngle());
+	auto callfun = CallFunc::create([&] {
+		this->creatHidenSlash((heroLocation - this->getPosition()).getAngle());
+		this->setIsNodie(false);
+	});
+	this->runAction(Sequence::createWithTwoActions(DelayTime::create(0.3f),callfun));
 }
 
 void EnemyBoss1::attack2()
@@ -182,7 +186,7 @@ void EnemyBoss1::creatHpSprite()
 	spHp->setPercent(100);
 	bloodbg->setScale(spHp->getScaleX());
 	//bloodbg->setScaleY(spHp->getScaleY());
-	bloodbg->setPosition(0,0);
+	bloodbg->setPosition(0, 0);
 	this->addChild(bloodbg);
 	this->addChild(spHp);
 	//spHp->update(0.0f);
@@ -213,20 +217,20 @@ void EnemyBoss1::boomboom()
 		this->setRealMoveVelocity(Vec2(0, -this->getmoveVelocity().y));
 	});
 	this->runAction(Sequence::create(DelayTime::create(1), callBack, DelayTime::create(1), callBack,
-		DelayTime::create(1), callBack, DelayTime::create(1), callBack,callBack2, nullptr));
+		DelayTime::create(1), callBack, DelayTime::create(1), callBack, callBack2, nullptr));
 	/*this->schedule([&](float dt){
 		this->setRealMoveVelocity(Vec2(0, (this->getPositionY() - heroLocation.y) / 2));
 		if (createGold() > this->getCoinPool()->count()) {
 			this->setRealMoveVelocity(Vec2(0, -this->getmoveVelocity().y));
 			this->unschedule("bossboom");
 		};
-		
+
 	}, 1, "bossboom");*/
 }
 //22/4 thuandv edited
 int EnemyBoss1::createGold()
 {
-	int tmp = int(indexCoin +levelBoss*24);
+	int tmp = int(indexCoin + levelBoss * 24);
 	if (tmp < coinPool->count()) {
 		if (tmp > coinPool->count()) tmp = coinPool->count();
 		for (; indexCoin < tmp; indexCoin++) {
@@ -271,7 +275,7 @@ void EnemyBoss1::createCoinPool()
 void EnemyBoss1::updateMe(BaseHero* hero)
 {
 	if (hero->getB2Body() != nullptr) {
-		this->heroLocation =Vec2( hero->getB2Body()->GetPosition().x*PTM_RATIO, hero->getB2Body()->GetPosition().y*PTM_RATIO);
+		this->heroLocation = Vec2(hero->getB2Body()->GetPosition().x*PTM_RATIO, hero->getB2Body()->GetPosition().y*PTM_RATIO);
 	}
 	//log("ParentBoss: %f, %f, %s", this->getParent()->getPositionX(), this->getParent()->getPositionY(), this->getParent()->getName().c_str());
 	//log();
@@ -286,13 +290,21 @@ void EnemyBoss1::updateMe(BaseHero* hero)
 		exxp->setPosition(this->getPosition());
 	}
 
-
+	
 	state->execute(this);
-	if (this->getPositionX() - posHero.x < SCREEN_SIZE.width / 1.7f)
+	
+	if (hero->getHealth() <= 0 || hero->getB2Body() == nullptr) {
+		this->getB2Body()->SetLinearVelocity(b2Vec2(0, 0));
+	}
+	else {
+
 		this->getB2Body()->SetLinearVelocity(b2Vec2(this->realtimeVec.x / PTM_RATIO, this->realtimeVec.y*cosf(control / 120.0f * 2 * PI) / PTM_RATIO) +
 			b2Vec2(realMoveVelocity.x / PTM_RATIO, realMoveVelocity.y / PTM_RATIO));
-	else
-		this->getB2Body()->SetLinearVelocity(b2Vec2(0, 0));
+	}
+
+
+	//else
+	//	this->getB2Body()->SetLinearVelocity(b2Vec2(0, 0));
 	//////////////
 	control++;
 	if (control == maxControl) {
@@ -333,21 +345,14 @@ void EnemyBoss1::listener()
 				setIsNodie(false);
 			}
 			else if ((strcmp(getCurrent()->animation->name, "injured") == 0 && loopCount == 1)) {
-				
+
 			}
 			else if ((strcmp(getCurrent()->animation->name, "injured-red") == 0 && loopCount == 1)) {
-				//Director::getInstance()->replaceScene(MenuLayer::createScene());
-				//setIsDie(true);
-				//auto call = CCCallFunc::create([&]() {
-				//	this->setIsDie(true);
-				//});
-				////this->setControlState(INT_MIN);
-				//this->runAction(Sequence::createWithTwoActions(DelayTime::create(10), call));
 				if (this->getHealth() > 0) {
 					setIsNodie(false);
 					this->idle();
 				}
-				
+
 			}
 		}
 	});
@@ -355,7 +360,7 @@ void EnemyBoss1::listener()
 
 bool EnemyBoss1::checkStop()
 {
-	if (this->getPositionX() - heroLocation.x > SCREEN_SIZE.width / 1.8f) {
+	if (this->getPositionX() - heroLocation.x > SCREEN_SIZE.width*0.65) {
 		return true;
 	}
 	return false;

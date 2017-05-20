@@ -31,11 +31,12 @@
       "noti_3": "Your diamond is not enough",
       "noti_4": "Get more diamond to buy",
       "noti_5": "Purchase to more fun",
-	  "noti_6": "You've take free coin 3 times today, comeback on tomorrow to get more",
+      "noti_6": "Boss is coming",
 	  "noti_7": "Come to Pipo game to get more",
 	  "noti_8": "You dont have enough gold, get more to buy",
 	  "noti_9": "You dont have enough diamond, get more to buy",
-	  "noti_21": "Do you want to buy this pack?"
+	  "noti_10": "Do you want to buy this pack?",
+	  "noti_11": "You've take free coin 3 times today, comeback on tomorrow to get more"
     }
   ],
 
@@ -50,8 +51,8 @@
       "avatarLoadingPath": "UI/Loading/DQ.png",
       "isLocked": false,
       "coolDownSkill1": 37,
-      "durationSkill1": 6,
-      "numberOfUseSkill1": 1,
+      "durationSkill1": 0.3,
+      "numberOfUseSkill1": 5,
       "skill1Name": "Wind Blade",
       "pathMainImageSkill1": "UI/btnDQ_skill1_up.png",
       "pathSubImageSkill1": "UI/btnDQ_skill1_down.png",

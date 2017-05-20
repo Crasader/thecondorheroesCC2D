@@ -1,4 +1,5 @@
 #include "BaseHero.h"
+#include "manager\RefManager.h"
 #include "manager\AudioManager.h"
 
 
@@ -9,12 +10,40 @@ BaseHero::BaseHero(string jsonFile, string atlasFile, float scale) : B2Skeleton(
 	bloodScreen->setScaleX(SCREEN_SIZE.width * 1.1f / bloodScreen->getContentSize().width);
 	bloodScreen->setScaleY(SCREEN_SIZE.height / bloodScreen->getContentSize().height);
 	bloodScreen->setVisible(false);
+
+	move_vel = SCREEN_SIZE.width / PTM_RATIO / 2.3f;
+	jump_vel = SCREEN_SIZE.height * 1.4f / PTM_RATIO;
+
+	health = REF->getCurrentHealth();
+	maxHealth = health;
+
+	// set Duration here
+	durationSkill1 = REF->getDurationSkill_1();
+	durationSkill2 = REF->getDurationSkill_2();
+	durationSkill3 = REF->getDurationSkill_3();
+
 	isDriverEagle = false;
 	currentRunDis = 0.0f;
 	preRunDis = 0.0f;
 	isNoDie = false;
 	noActive = false;
 	isKillAll = false;
+
+	numberOfJump = 2;
+	coinExplored = 0;
+	score = 0;
+
+	onGround = false;
+	isPriorInjured = false;		// future, we need to add props into base class
+	isPriorAttack = false;
+	isPriorSkill1 = false;
+	isPriorSkill2 = false;
+	isPriorSkill3 = false;
+
+	isDoneDuration1 = true;
+	isDoneDuration2 = true;
+	isDoneDuration3 = true;
+
 	dieHard = 1;
 	coinRatio = 1;
 	scoreRatio = 1;
@@ -153,6 +182,10 @@ void BaseHero::createPool()
 
 void BaseHero::idle()
 {
+	clearTracks();
+	addAnimation(0, "idle", false);
+	setToSetupPose();
+	getSmokeRun()->setVisible(false);
 }
 
 void BaseHero::run()
@@ -176,6 +209,22 @@ void BaseHero::landing()
 
 void BaseHero::die()
 {
+	--dieHard;
+	if (dieHard < 0) {
+		//log("Die Hard");
+		return;
+	}
+
+	noActive = true;
+
+	stopSkillAction(true, true, true);
+
+	clearTracks();
+	addAnimation(0, "die", false);
+	setToSetupPose();
+	getB2Body()->SetLinearDamping(10);
+
+	getSmokeRun()->setVisible(false);
 }
 
 void BaseHero::attackNormal()
@@ -207,10 +256,15 @@ void BaseHero::injured()
 void BaseHero::revive()
 {
 	AudioManager::playSound(SOUND_MCREVIVE);
-}
 
-void BaseHero::die(Point posOfCammera)
-{
+	clearTracks();
+	addAnimation(0, "revive", false);
+	setToSetupPose();
+
+	getSmokeRun()->setVisible(false);
+	getReviveMe()->setPosition(this->getPositionX() + getTrueRadiusOfHero() / 2, this->getPositionY());
+	getReviveMe()->setVisible(true);
+	reviveAni();
 }
 
 void BaseHero::listener()
@@ -250,6 +304,10 @@ void BaseHero::doCounterSkill2()
 }
 
 void BaseHero::doCounterSkill3()
+{
+}
+
+void BaseHero::stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSkill3)
 {
 }
 
@@ -313,7 +371,7 @@ void BaseHero::killThemAll()
 	blash->setVisible(true);
 	//auto originScale = blash->getScale();
 	auto scaleFactor = Director::getInstance()->getContentScaleFactor();
-	auto scale = ScaleBy::create(0.5f, 150 * scaleFactor);
+	auto scale = ScaleBy::create(1.0f, 175 * scaleFactor);
 
 	auto hide = CallFunc::create([&]() {
 		blash->setVisible(false);

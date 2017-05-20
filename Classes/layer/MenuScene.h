@@ -8,8 +8,8 @@
 #include <time.h>
 #include "network/HttpClient.h"
 
-#include "ui_custom/CustomSpriteToBuyPack.h"
 #include "ui_custom/CustomLayerToToast.h"
+#include "ui_custom/CustomSpriteToBuyPack.h"
 #include "SelectStageScene.h"
 
 USING_NS_CC;
@@ -39,6 +39,7 @@ private:
 	int m_nCurrentDiamond;									// current diamond
 	int m_arNumberItemOwning[5];							// number of item owning
 	int m_arItemPrice[5];									// cost of items
+	bool m_bIsShopShow = false;
 	int m_nShopOption = 0;
 
 	Label *m_pTimeCounter;									// time counter to increase life

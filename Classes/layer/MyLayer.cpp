@@ -1,50 +1,33 @@
 #include "MyLayer.h"
 #include "Global.h"
 #include "coin/Coin.h"
-#include "EnemyWooder.h"
-#include "EnemyToanChanStudent.h"
-#include "EnemyToanChanStudent2.h"
-#include "EnemyHongLangBa.h"
-#include "EnemyHongLangBa2.h"
-#include "EnemyToOng.h"
-#include "EnemyTNB.h"
-#include "EnemyHoacDo.h"
-#include "EnemyHoacDo2.h"
-#include "EnemyDatNhiBa.h"
-#include "EnemyDatNhiBa2.h"
+
 
 MyLayer::MyLayer()
 {
-	 wooderPool = nullptr;
-	 toanchan1Pool = nullptr;
-	 toanchan2Pool = nullptr;
-	 toOngPool = nullptr;
-	 hongLangBa1Pool = nullptr;
-	 hongLangBa2Pool = nullptr;
-	 tnbPool = nullptr;
-	 hoacDo1Pool = nullptr;
-	 datNhiBa1Pool = nullptr;
-	 datNhiBa2Pool = nullptr;
+	wooderPool = nullptr;
+	toanchan1Pool = nullptr;
+	toanchan2Pool = nullptr;
+	toOngPool = nullptr;
+	hongLangBa1Pool = nullptr;
+	hongLangBa2Pool = nullptr;
+	tnbPool = nullptr;
+	hoacDo1Pool = nullptr;
+	datNhiBa1Pool = nullptr;
+	datNhiBa2Pool = nullptr;
+	chong1Pool = nullptr;
+	chong2Pool = nullptr;
+	chong3Pool = nullptr;
 }
-MyLayer::~MyLayer(){
-	if(wooderPool!= nullptr)
-		delete wooderPool;
-	if(toanchan1Pool!=nullptr)
-		delete toanchan1Pool;
-	if(toanchan2Pool)
-		delete toanchan2Pool;
-	if(toOngPool!=nullptr)
-		delete toOngPool;
-	if(hongLangBa1Pool!=nullptr)
-		delete hongLangBa1Pool;
-	if(hongLangBa2Pool != nullptr)
-		delete hongLangBa2Pool;
-	if (tnbPool != nullptr)
-		delete tnbPool;
-	if (datNhiBa1Pool != nullptr)
-		delete datNhiBa1Pool;
-	if (datNhiBa2Pool != nullptr)
-		delete datNhiBa2Pool;
+MyLayer::~MyLayer() {
+	delete wooderPool;
+	delete toanchan1Pool;
+	delete toanchan2Pool;
+	delete toOngPool;
+	delete hongLangBa2Pool;
+	delete tnbPool;
+	delete datNhiBa1Pool;
+	delete datNhiBa2Pool;
 }
 bool MyLayer::init(TMXTiledMap* tmx_map)
 {
@@ -166,6 +149,36 @@ bool MyLayer::init(TMXTiledMap* tmx_map)
 		datNhiBa2Pool = MyPool::create(max, TAG_ENEMY_DATNHIBA2);
 		for (int i = 0; i < datNhiBa2Pool->maxPool; i++) {
 			auto tmp = (EnemyDatNhiBa2*)datNhiBa2Pool->getObject();
+			tmp->setPosition(0, -SCREEN_SIZE.height);
+			tmp->setVisible(false);
+			tmp->pauseSchedulerAndActions();
+			this->addChild(tmp);
+		}
+	}
+	if (tmx_map->getObjectGroup("chonggo")) {
+		chong1Pool = MyPool::create(max, TAG_ENEMY_CHONG1);
+		for (int i = 0; i < chong1Pool->maxPool; i++) {
+			auto tmp = (EnemyChong1*)chong1Pool->getObject();
+			tmp->setPosition(0, -SCREEN_SIZE.height);
+			tmp->setVisible(false);
+			tmp->pauseSchedulerAndActions();
+			this->addChild(tmp);
+		}
+	}
+	if (tmx_map->getObjectGroup("chonggo2")) {
+		chong2Pool = MyPool::create(max, TAG_ENEMY_CHONG2);
+		for (int i = 0; i < chong2Pool->maxPool; i++) {
+			auto tmp = (EnemyChong2*)chong2Pool->getObject();
+			tmp->setPosition(0, -SCREEN_SIZE.height);
+			tmp->setVisible(false);
+			tmp->pauseSchedulerAndActions();
+			this->addChild(tmp);
+		}
+	}
+	if (tmx_map->getObjectGroup("chonggo3")) {
+		chong3Pool = MyPool::create(max, TAG_ENEMY_CHONG3);
+		for (int i = 0; i < chong3Pool->maxPool; i++) {
+			auto tmp = (EnemyChong3*)chong3Pool->getObject();
 			tmp->setPosition(0, -SCREEN_SIZE.height);
 			tmp->setVisible(false);
 			tmp->pauseSchedulerAndActions();

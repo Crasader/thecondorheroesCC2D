@@ -22,6 +22,7 @@ public:
 	void die();
 	void updateMe(BaseHero* hero);
 	void listener();
+	void initBoxPhysic(b2World *world, Point pos);
 
 };
 

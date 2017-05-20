@@ -85,6 +85,8 @@ using namespace std;
 #define TAG_ENEMY_HOACDO1					132
 #define TAG_ENEMY_DATNHIBA1					133
 #define TAG_ENEMY_DATNHIBA2					134
+#define TAG_ENEMY_LINHCAMGIAO1				135
+#define TAG_ENEMY_LINHCAMGIAO2				136
 
 
 

@@ -147,6 +147,8 @@ private:
 	void createEnemyChong1(MyLayer * layer, Vec2 pos);
 	void createEnemyChong2(MyLayer * layer, Vec2 pos);
 	void createEnemyChong3(MyLayer * layer, Vec2 pos);
+	void createEnemyLinhCamGiao(MyLayer * layer, Vec2 pos);
+	void createEnemyLinhCamGiao2(MyLayer * layer, Vec2 pos);
 	void creatBoss();
 
 

@@ -1,0 +1,202 @@
+
+LinhCamGiao.png
+size: 2048,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+caidau
+  rotate: false
+  xy: 675, 144
+  size: 117, 126
+  orig: 117, 126
+  offset: 0, 0
+  index: -1
+caidau2
+  rotate: false
+  xy: 794, 162
+  size: 117, 126
+  orig: 117, 126
+  offset: 0, 0
+  index: -1
+caidau3
+  rotate: true
+  xy: 913, 158
+  size: 117, 126
+  orig: 117, 126
+  offset: 0, 0
+  index: -1
+canhtay1
+  rotate: true
+  xy: 2, 2
+  size: 56, 72
+  orig: 56, 72
+  offset: 0, 0
+  index: -1
+canhtay2
+  rotate: false
+  xy: 1685, 424
+  size: 79, 86
+  orig: 79, 86
+  offset: 0, 0
+  index: -1
+chansau1
+  rotate: true
+  xy: 342, 182
+  size: 88, 185
+  orig: 88, 185
+  offset: 0, 0
+  index: -1
+chantruoc1
+  rotate: true
+  xy: 741, 290
+  size: 100, 184
+  orig: 100, 184
+  offset: 0, 0
+  index: -1
+light
+  rotate: false
+  xy: 2, 80
+  size: 200, 90
+  orig: 200, 90
+  offset: 0, 0
+  index: -1
+mau1
+  rotate: false
+  xy: 2, 172
+  size: 338, 338
+  orig: 338, 338
+  offset: 0, 0
+  index: -1
+musau
+  rotate: false
+  xy: 927, 277
+  size: 147, 113
+  orig: 147, 113
+  offset: 0, 0
+  index: -1
+mutruoc
+  rotate: false
+  xy: 1076, 322
+  size: 58, 68
+  orig: 58, 68
+  offset: 0, 0
+  index: -1
+shadow
+  rotate: false
+  xy: 2, 60
+  size: 126, 18
+  orig: 126, 18
+  offset: 0, 0
+  index: -1
+slash1
+  rotate: false
+  xy: 342, 392
+  size: 397, 118
+  orig: 397, 118
+  offset: 0, 0
+  index: -1
+slash2
+  rotate: false
+  xy: 342, 272
+  size: 397, 118
+  orig: 397, 118
+  offset: 0, 0
+  index: -1
+slash3
+  rotate: false
+  xy: 741, 392
+  size: 397, 118
+  orig: 397, 118
+  offset: 0, 0
+  index: -1
+taysau1-1
+  rotate: false
+  xy: 1898, 475
+  size: 35, 35
+  orig: 35, 35
+  offset: 0, 0
+  index: -1
+taysau1-2
+  rotate: true
+  xy: 1859, 476
+  size: 34, 37
+  orig: 34, 37
+  offset: 0, 0
+  index: -1
+taysau2-1
+  rotate: false
+  xy: 1076, 280
+  size: 41, 40
+  orig: 41, 40
+  offset: 0, 0
+  index: -1
+taysau2-2
+  rotate: false
+  xy: 1820, 474
+  size: 37, 36
+  orig: 37, 36
+  offset: 0, 0
+  index: -1
+taytruoc
+  rotate: false
+  xy: 76, 12
+  size: 52, 46
+  orig: 52, 46
+  offset: 0, 0
+  index: -1
+than
+  rotate: true
+  xy: 204, 79
+  size: 91, 131
+  orig: 91, 131
+  offset: 0, 0
+  index: -1
+trangtri
+  rotate: false
+  xy: 1041, 181
+  size: 31, 94
+  orig: 31, 94
+  offset: 0, 0
+  index: -1
+vataoduoi
+  rotate: false
+  xy: 529, 145
+  size: 144, 125
+  orig: 144, 125
+  offset: 0, 0
+  index: -1
+vataogiua
+  rotate: false
+  xy: 1766, 441
+  size: 52, 69
+  orig: 52, 69
+  offset: 0, 0
+  index: -1
+vataosau
+  rotate: false
+  xy: 130, 25
+  size: 38, 53
+  orig: 38, 53
+  offset: 0, 0
+  index: -1
+vataotruoc
+  rotate: true
+  xy: 1554, 405
+  size: 105, 129
+  orig: 105, 129
+  offset: 0, 0
+  index: -1
+vukhi
+  rotate: true
+  xy: 1140, 401
+  size: 49, 408
+  orig: 49, 408
+  offset: 0, 0
+  index: -1
+vukhi-eff
+  rotate: true
+  xy: 1140, 452
+  size: 58, 412
+  orig: 58, 412
+  offset: 0, 0
+  index: -1

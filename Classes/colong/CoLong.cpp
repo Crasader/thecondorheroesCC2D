@@ -17,33 +17,7 @@ CoLong * CoLong::create(string p_sJsonFile, string p_sAtlasFile, float p_fScale)
 	_pCoLong->stateMachine = new StateMachine(_pCoLong);
 	_pCoLong->stateMachine->setCurrentState(MLand);
 
-	_pCoLong->setMoveVel(_pCoLong->SCREEN_SIZE.width / PTM_RATIO / 2.3f);
-	_pCoLong->setJumpVel(_pCoLong->SCREEN_SIZE.height * 1.4f / PTM_RATIO);
-
-	_pCoLong->health = REF->getCurrentHealth();
-	_pCoLong->maxHealth = _pCoLong->health;
-
-	// set Duration here
-	_pCoLong->setDurationSkill1(REF->getDurationSkill_1());
-	_pCoLong->setDurationSkill2(REF->getDurationSkill_2());
-	_pCoLong->setDurationSkill3(REF->getDurationSkill_3());
-
-	_pCoLong->numberOfJump = 2;
-	_pCoLong->coinExplored = 0;
-	_pCoLong->score = 0;
-
 	_pCoLong->setBoxHeight(_pCoLong->getBoundingBox().size.height / 3.4f);
-
-	_pCoLong->setOnGround(false);
-	_pCoLong->setIsPriorInjured(false);		// future, we need to add props into base class
-	_pCoLong->setIsPriorAttack(false);
-	_pCoLong->setIsPriorSkill1(false);
-	_pCoLong->setIsPriorSkill2(false);
-	_pCoLong->setIsPriorSkill3(false);
-
-	_pCoLong->setIsDoneDuration1(true);
-	_pCoLong->setIsDoneDuration2(true);
-	_pCoLong->setIsDoneDuration3(true);
 
 	_pCoLong->blash = Sprite::create("Animation/CoLong/blash.png");
 	_pCoLong->blash->setScale(p_fScale / 2);
@@ -166,8 +140,6 @@ void CoLong::doCounterSkill3() {
 		checkDurationSkill3++;
 
 		if (checkDurationSkill3 >= getDurationSkill3() * 10) {
-			changeBodyMaskBits(BITMASK_FLOOR | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION | BITMASK_ENEMY);
-			m_pRadaSkill3->changeBodyCategoryBits(BITMASK_WOODER);
 			setIsDoneDuration3(true);
 			if (getOnGround()) {
 				getFSM()->changeState(MRun);
@@ -446,12 +418,41 @@ void CoLong::listener() {
 
 		}
 
+
+		else if (strcmp(getCurrent()->animation->name, "skill3") == 0) {
+			changeBodyMaskBits(BITMASK_FLOOR | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION | BITMASK_ENEMY);
+			m_pRadaSkill3->changeBodyCategoryBits(BITMASK_WOODER);
+		}
+
 		else if (strcmp(getCurrent()->animation->name, "die") == 0) {
 			this->pause();
 			auto gamelayer = (GameScene*)this->getParent();
 			gamelayer->dieGame();
-		}
+		} 
+
 	});
+}
+
+void CoLong::stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSkill3)
+{
+	if (stopSkill1 && !getIsDoneDuration1()) {
+		setIsDoneDuration1(true);
+		checkDurationSkill1 = 0;
+		unschedule("KeySkill1");
+	}
+
+	if (stopSkill2 && !getIsDoneDuration2()) {
+		setIsDoneDuration2(true);
+		unschedule("KeySkill2");
+		checkDurationSkill2 = 0;
+	}
+
+	if (stopSkill3 && !getIsDoneDuration3()) {
+		AudioManager::stopSoundForever(keysoundSKill3);
+		setIsDoneDuration3(true);
+		unschedule("KeySkill3");
+		checkDurationSkill3 = 0;
+	}
 }
 
 void CoLong::doDestroyBodies(b2World *world)
@@ -539,57 +540,15 @@ void CoLong::landing() {
 	}
 }
 
-void CoLong::idle() {
-	clearTracks();
-	addAnimation(0, "idle", false);
-	setToSetupPose();
-	getB2Body()->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
-	getSmokeRun()->setVisible(false);
-}
-
 void CoLong::die() {
 	BaseHero::die();
-	--dieHard;
-	if (dieHard < 0) {
-		//log("Die Hard");
-		return;
-	}
-
-	noActive = true;
-
-	if (!getIsDoneDuration1()) {
-		setIsDoneDuration1(true);
-		checkDurationSkill1 = 0;
-		unschedule("KeySkill1");
-	}
-
-	if (!getIsDoneDuration2()) {
-		setIsDoneDuration2(true);
-		unschedule("KeySkill2");
-		checkDurationSkill2 = 0;
-	}
-
-	if (!getIsDoneDuration3()) {
-		setIsDoneDuration3(true);
-		unschedule("KeySkill3");
-		checkDurationSkill3 = 0;
-	}
-
-
 	AudioManager::playSound(SOUND_CLDIE);
-	clearTracks();
-	addAnimation(0, "die", false);
-	setToSetupPose();
-	getB2Body()->SetLinearDamping(10);
-
-	getSmokeRun()->setVisible(false);
-
 	//log("die");
 }
 
 void CoLong::attackNormal() {
 	if (!getIsDoneDuration3()) {		// is in Skill 3
-
+		getFSM()->revertToGlobalState();
 	}
 	else {
 		BaseHero::attackNormal();
@@ -619,7 +578,7 @@ void CoLong::attackNormal() {
 
 void CoLong::attackLanding() {
 	if (!getIsDoneDuration3()) {		// is in Skill 3
-
+		getFSM()->revertToGlobalState();
 	}
 	else {
 		BaseHero::attackLanding();
@@ -648,21 +607,3 @@ void CoLong::injured() {
 	}
 }
 
-void CoLong::revive()
-{
-	clearTracks();
-	addAnimation(0, "revive", false);
-	setToSetupPose();
-
-	getSmokeRun()->setVisible(false);
-	getReviveMe()->setPosition(this->getPositionX() + getTrueRadiusOfHero() / 2, this->getPositionY());
-	getReviveMe()->setVisible(true);
-	reviveAni();
-
-	//log("revive");
-}
-
-void CoLong::die(Point p_ptPositionOfCammera)
-{
-
-}

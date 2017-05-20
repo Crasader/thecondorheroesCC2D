@@ -100,7 +100,7 @@ void DialogPauseGame::nextStage(Ref * pSender)
 		gameLayer->nextGame();
 	}
 	else {
-		auto gameScene = this->getParent();
+		auto gameScene = this->getParent()->getChildByName("gameLayer");
 		gameScene->removeAllChildrenWithCleanup(true);
 		Layer *_pMenuScene = MenuLayer::create(false);
 		auto _aMainMenuScene = Scene::create();
@@ -139,8 +139,10 @@ void DialogPauseGame::effect()
 	this->setPosition(0, SCREEN_SIZE.height * 1.1f);
 	auto actionMove = MoveTo::create(0.4f, Vec2::ZERO);
 	auto effect = EaseBackOut::create(actionMove);
-
-	this->runAction(effect);
+	auto enableMenu = CallFunc::create([&]() {
+		menu->setEnabled(true);
+	});
+	this->runAction(Sequence::createWithTwoActions(effect, enableMenu));
 }
 
 
@@ -213,7 +215,8 @@ bool DialogPause::init()
 	resumeBtn->setAnchorPoint(Vec2(0.4, 0.5));
 	resumeBtn->setPosition(background->getContentSize().width * 2 / 3, background->getContentSize().height * 1 / 3);
 
-	auto menu = Menu::create(homeBtn, resumeBtn, nullptr);
+	menu = Menu::create(homeBtn, resumeBtn, nullptr);
+	menu->setEnabled(false);
 	menu->setPosition(Vec2::ZERO);
 	background->addChild(menu);
 
@@ -296,7 +299,8 @@ bool DialogRevive::init(int numberOfRevive)
 	reviveBtn->addChild(goldReviveLb);
 
 
-	auto menu = Menu::create(reviveBtn, videoBtn, exitBtn, nullptr);
+	menu = Menu::create(reviveBtn, videoBtn, exitBtn, nullptr);
+	menu->setEnabled(false);
 	menu->setPosition(Vec2::ZERO);
 	background->addChild(menu);
 
@@ -373,7 +377,8 @@ bool DialogStageClear::init(int score, int gold)
 	nextBtn->setAnchorPoint(Vec2(1, 1));
 	nextBtn->setPosition(background->getContentSize().width*0.9, 0);
 
-	auto menu = Menu::create(backBtn, nextBtn, nullptr);
+	menu = Menu::create(backBtn, nextBtn, nullptr);
+	menu->setEnabled(false);
 	menu->setPosition(Vec2::ZERO);
 	background->addChild(menu);
 
@@ -523,7 +528,8 @@ bool DialogOverGame::init(int score, int gold)
 	restartBtn->setAnchorPoint(Vec2(0, 1));
 	restartBtn->setPosition(background->getContentSize().width*0.9f, 0);
 
-	auto menu = Menu::create(backBtn, upgradeBtn, restartBtn, nullptr);
+	menu = Menu::create(backBtn, upgradeBtn, restartBtn, nullptr);
+	menu->setEnabled(false);
 	menu->setPosition(Vec2::ZERO);
 	background->addChild(menu);
 

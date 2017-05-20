@@ -133,19 +133,16 @@ void MyButton::checkInterval(float dt)
 
 void MyButton::runTimer()
 {
-	timer = timeCoolDown;
 	if (timeCoolDown < 1)
-		number->setVisible(false);
-	else {
-		number->setString(StringUtils::format("%i", (int)timer));
-		number->setVisible(true);
-	}
+		return;
+	timer = timeCoolDown;
+	number->setString(StringUtils::format("%i", (int)timer));
+	number->setVisible(true);
 	
 	this->schedule([&](float dt) {
 		timer -= 0.01f;
 		main->setPercentage((timeCoolDown - timer) / timeCoolDown * 100.0f);
-		if(timeCoolDown > 1)
-			number->setString(StringUtils::format("%i", (int)timer));
+		number->setString(StringUtils::format("%i", (int)timer));
 
 		if ((int)timer == 0) {
 			number->setVisible(false);

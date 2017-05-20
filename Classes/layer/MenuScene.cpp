@@ -7,7 +7,6 @@
 #include "manager/JSonQuestManager.h"
 #include "manager/RefManager.h"
 #include "ui_custom/CustomSpriteToBuyPack.h"
-#include "manager/RefManager.h"
 
 MenuLayer * MenuLayer::create(bool p_bOnlySelectStage) {
 	MenuLayer *pRet = new(std::nothrow) MenuLayer();
@@ -36,7 +35,7 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 		m_pTopMainMenu = Layer::create();
 		m_pTopMainMenu->setContentSize(Size(m_szVisibleSize.width, m_szVisibleSize.height * 0.1f));
 		m_pTopMainMenu->setPosition(m_szVisibleSize.width / 2, m_szVisibleSize.height + m_pTopMainMenu->getContentSize().height / 2);
-		this->addChild(m_pTopMainMenu, 5);
+		this->addChild(m_pTopMainMenu, 7);
 		initTopMainMenu();
 		moveLayerViaDirection(m_pTopMainMenu, 2);
 
@@ -49,14 +48,16 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 		m_pBlurScreen->setScaleX(m_szVisibleSize.width / m_pBlurScreen->getContentSize().width); // full screen size width
 		m_pBlurScreen->setScaleY(m_szVisibleSize.height / m_pBlurScreen->getContentSize().height); // full screen size height
 		m_pBlurScreen->setPosition(Vec2(0.0f, m_szVisibleSize.height)); // center screen
-		this->addChild(m_pBlurScreen, 4);
+
+		this->addChild(m_pBlurScreen, 5);
+
 		m_pBlurScreen->setVisible(false);
 
 		// shop
 		m_pShopBoardLayer = Layer::create();
 		m_pShopBoardLayer->setContentSize(Size(m_szVisibleSize.width, m_szVisibleSize.height)); // fill screen width, 25% screen height
 		m_pShopBoardLayer->setPosition(0.0f, m_pShopBoardLayer->getContentSize().height);
-		this->addChild(m_pShopBoardLayer, 5);
+		this->addChild(m_pShopBoardLayer, 6);
 
 		return true;
 	}
@@ -100,7 +101,7 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 	m_pBlurScreen->setScaleX(m_szVisibleSize.width / m_pBlurScreen->getContentSize().width); // full screen size width
 	m_pBlurScreen->setScaleY(m_szVisibleSize.height / m_pBlurScreen->getContentSize().height); // full screen size height
 	m_pBlurScreen->setPosition(Vec2(0.0f, m_szVisibleSize.height)); // center screen
-	this->addChild(m_pBlurScreen, 4);
+	this->addChild(m_pBlurScreen, 5);
 	m_pBlurScreen->setVisible(false);
 
 	this->scheduleUpdate();
@@ -172,7 +173,7 @@ void MenuLayer::initControlLayer() {
 	m_pTopMainMenu = Layer::create();
 	m_pTopMainMenu->setContentSize(Size(m_szVisibleSize.width, m_szVisibleSize.height * 0.1f)); // fill screen width, 10% screen height
 	m_pTopMainMenu->setPosition(m_szVisibleSize.width / 2, m_szVisibleSize.height + m_pTopMainMenu->getContentSize().height / 2);
-	this->addChild(m_pTopMainMenu, 5);
+	this->addChild(m_pTopMainMenu, 7);
 	initTopMainMenu();
 
 	// bottom main menu
@@ -216,7 +217,7 @@ void MenuLayer::initControlLayer() {
 	m_pShopBoardLayer = Layer::create();
 	m_pShopBoardLayer->setContentSize(Size(m_szVisibleSize.width, m_szVisibleSize.height)); // fill screen width, 25% screen height
 	m_pShopBoardLayer->setPosition(0.0f, m_pShopBoardLayer->getContentSize().height);
-	this->addChild(m_pShopBoardLayer, 5);
+	this->addChild(m_pShopBoardLayer, 6);
 
 	moveLayerViaDirection(m_pTopMainMenu, 2);
 	showMainMenu();
@@ -1544,39 +1545,41 @@ void MenuLayer::initShopBoard(int p_nOption) {
 	_pShopBackground->setScale(m_pShopBoardLayer->getContentSize().width / _pShopBackground->getContentSize().width * 0.9f,
 		m_pShopBoardLayer->getContentSize().height / _pShopBackground->getContentSize().height * 0.8f);
 	_pShopBackground->setAnchorPoint(Vec2(0.5f, 0.0f));
-	_pShopBackground->setPosition(m_pShopBoardLayer->getContentSize().width * 0.5f, m_pShopBoardLayer->getContentSize().height * 0.15f);
+
+	_pShopBackground->setPosition(m_pShopBoardLayer->getContentSize().width * 0.5f, m_pShopBoardLayer->getContentSize().height * 0.05f);
 	m_pShopBoardLayer->addChild(_pShopBackground, 1);
 
-	Sprite *_pCoinSprite = Sprite::create("UI/UI_main_menu/frame_money.png");
-	_pCoinSprite->setScale(m_pShopBoardLayer->getContentSize().height / _pCoinSprite->getContentSize().height * 0.1f);
-	_pCoinSprite->setAnchorPoint(Vec2(0.5f, 1.0f));
-	_pCoinSprite->setPosition(Vec2(m_pShopBoardLayer->getContentSize().width * 0.3f, m_pShopBoardLayer->getContentSize().height * 0.15f));
-	m_pShopBoardLayer->addChild(_pCoinSprite, 1);
-
-	m_pLabelNumberGoldOnBuy = Label::createWithBMFont("fonts/font_coin-export.fnt", StringUtils::format("%i", m_nCurrentGold));
-	m_pLabelNumberGoldOnBuy->setBMFontSize(_pCoinSprite->getContentSize().height * 0.6f);
-	m_pLabelNumberGoldOnBuy->setAlignment(TextHAlignment::CENTER);
-	m_pLabelNumberGoldOnBuy->setAnchorPoint(Vec2(0.5f, 0.0f));
-	m_pLabelNumberGoldOnBuy->setPosition(Vec2(_pCoinSprite->getContentSize().width / 2, _pCoinSprite->getContentSize().height / 4));
-	_pCoinSprite->addChild(m_pLabelNumberGoldOnBuy, 1);
-
-	Sprite *_pDiamondSprite = Sprite::create("UI/UI_main_menu/frame_diamond.png");
-	_pDiamondSprite->setScale(m_pShopBoardLayer->getContentSize().height / _pDiamondSprite->getContentSize().height * 0.1f);
-	_pDiamondSprite->setAnchorPoint(Vec2(0.5f, 1.0f));
-	_pDiamondSprite->setPosition(Vec2(m_pShopBoardLayer->getContentSize().width * 0.7f, m_pShopBoardLayer->getContentSize().height * 0.15f));
-	m_pShopBoardLayer->addChild(_pDiamondSprite, 1);
-
-	m_pLabelNumberDiamondOnBuy = Label::createWithBMFont("fonts/font_diamond-export.fnt", StringUtils::format("%i", m_nCurrentDiamond));
-	m_pLabelNumberDiamondOnBuy->setBMFontSize(_pDiamondSprite->getContentSize().height * 0.6f);
-	m_pLabelNumberDiamondOnBuy->setAlignment(TextHAlignment::CENTER);
-	m_pLabelNumberDiamondOnBuy->setAnchorPoint(Vec2(0.5f, 0.0f));
-	m_pLabelNumberDiamondOnBuy->setPosition(Vec2(_pDiamondSprite->getContentSize().width / 2, _pDiamondSprite->getContentSize().height / 4));
-	_pDiamondSprite->addChild(m_pLabelNumberDiamondOnBuy, 1);
+//	Sprite *_pCoinSprite = Sprite::create("UI/UI_main_menu/frame_money.png");
+//	_pCoinSprite->setScale(m_pShopBoardLayer->getContentSize().height / _pCoinSprite->getContentSize().height * 0.1f);
+//	_pCoinSprite->setAnchorPoint(Vec2(0.5f, 1.0f));
+//	_pCoinSprite->setPosition(Vec2(m_pShopBoardLayer->getContentSize().width * 0.3f, m_pShopBoardLayer->getContentSize().height * 0.15f));
+//	m_pShopBoardLayer->addChild(_pCoinSprite, 1);
+//
+//	m_pLabelNumberGoldOnBuy = Label::createWithBMFont("fonts/font_coin-export.fnt", StringUtils::format("%i", m_nCurrentGold));
+//	m_pLabelNumberGoldOnBuy->setBMFontSize(_pCoinSprite->getContentSize().height * 0.6f);
+//	m_pLabelNumberGoldOnBuy->setAlignment(TextHAlignment::CENTER);
+//	m_pLabelNumberGoldOnBuy->setAnchorPoint(Vec2(0.5f, 0.0f));
+//	m_pLabelNumberGoldOnBuy->setPosition(Vec2(_pCoinSprite->getContentSize().width / 2, _pCoinSprite->getContentSize().height / 4));
+//	_pCoinSprite->addChild(m_pLabelNumberGoldOnBuy, 1);
+//
+//	Sprite *_pDiamondSprite = Sprite::create("UI/UI_main_menu/frame_diamond.png");
+//	_pDiamondSprite->setScale(m_pShopBoardLayer->getContentSize().height / _pDiamondSprite->getContentSize().height * 0.1f);
+//	_pDiamondSprite->setAnchorPoint(Vec2(0.5f, 1.0f));
+//	_pDiamondSprite->setPosition(Vec2(m_pShopBoardLayer->getContentSize().width * 0.7f, m_pShopBoardLayer->getContentSize().height * 0.15f));
+//	m_pShopBoardLayer->addChild(_pDiamondSprite, 1);
+//
+//	m_pLabelNumberDiamondOnBuy = Label::createWithBMFont("fonts/font_diamond-export.fnt", StringUtils::format("%i", m_nCurrentDiamond));
+//	m_pLabelNumberDiamondOnBuy->setBMFontSize(_pDiamondSprite->getContentSize().height * 0.6f);
+//	m_pLabelNumberDiamondOnBuy->setAlignment(TextHAlignment::CENTER);
+//	m_pLabelNumberDiamondOnBuy->setAnchorPoint(Vec2(0.5f, 0.0f));
+//	m_pLabelNumberDiamondOnBuy->setPosition(Vec2(_pDiamondSprite->getContentSize().width / 2, _pDiamondSprite->getContentSize().height / 4));
+//	_pDiamondSprite->addChild(m_pLabelNumberDiamondOnBuy, 1);
 
 	m_pPacksZone = ScrollView::create();
 	m_pPacksZone->setContentSize(Size(m_pShopBoardLayer->getContentSize().width * 0.8f, m_pShopBoardLayer->getContentSize().height * 0.65f));
 	m_pPacksZone->setAnchorPoint(Vec2(0.0f, 0.0f));
-	m_pPacksZone->setPosition(Vec2(m_pShopBoardLayer->getContentSize().width * 0.1f, m_pShopBoardLayer->getContentSize().height * 0.2f));
+	m_pPacksZone->setPosition(Vec2(m_pShopBoardLayer->getContentSize().width * 0.1f, m_pShopBoardLayer->getContentSize().height * 0.1f));
+
 	m_pPacksZone->setDirection(ScrollView::Direction::HORIZONTAL);
 	m_pPacksZone->setBounceEnabled(true);
 	m_pPacksZone->setTouchEnabled(true);
@@ -1591,7 +1594,8 @@ void MenuLayer::initShopBoard(int p_nOption) {
 	auto _aGoldTabTabButton = MenuItemSprite::create(_pGoldTabNormal, _pGoldTabTabSelected, CC_CALLBACK_0(MenuLayer::initShopBoard, this, 0));
 	_aGoldTabTabButton->setScale(m_pShopBoardLayer->getContentSize().width / _aGoldTabTabButton->getContentSize().width * 0.25f);
 	_aGoldTabTabButton->setAnchorPoint(Vec2(0.5f, 1.0f));
-	_aGoldTabTabButton->setPosition(m_pShopBoardLayer->getContentSize().width * 0.25f, m_pShopBoardLayer->getContentSize().height * 0.95f);
+	_aGoldTabTabButton->setPosition(m_pShopBoardLayer->getContentSize().width * 0.25f, m_pShopBoardLayer->getContentSize().height * 0.85f);
+
 
 	// button diamond tab
 	auto _pDiamondTabNormal = Sprite::create("UI/UI_main_menu/UI_shop/tab_diamond_off.png");
@@ -1599,7 +1603,8 @@ void MenuLayer::initShopBoard(int p_nOption) {
 	auto _aDiamondTabButton = MenuItemSprite::create(_pDiamondTabNormal, _pDiamondTabSelected, CC_CALLBACK_0(MenuLayer::initShopBoard, this, 1));
 	_aDiamondTabButton->setScale(m_pShopBoardLayer->getContentSize().width / _aDiamondTabButton->getContentSize().width * 0.25f);
 	_aDiamondTabButton->setAnchorPoint(Vec2(0.5f, 1.0f));
-	_aDiamondTabButton->setPosition(m_pShopBoardLayer->getContentSize().width * 0.5f, m_pShopBoardLayer->getContentSize().height * 0.95f);
+	_aDiamondTabButton->setPosition(m_pShopBoardLayer->getContentSize().width * 0.5f, m_pShopBoardLayer->getContentSize().height * 0.85f);
+
 
 	// button diamond tab
 	auto _pEnergyTabNormal = Sprite::create("UI/UI_main_menu/UI_shop/tab_energy_off.png");
@@ -1607,7 +1612,8 @@ void MenuLayer::initShopBoard(int p_nOption) {
 	auto _aEnergyTabButton = MenuItemSprite::create(_pEnergyTabNormal, _pEnergyTabSelected, CC_CALLBACK_0(MenuLayer::initShopBoard, this, 2));
 	_aEnergyTabButton->setScale(m_pShopBoardLayer->getContentSize().width / _aEnergyTabButton->getContentSize().width * 0.25f);
 	_aEnergyTabButton->setAnchorPoint(Vec2(0.5f, 1.0f));
-	_aEnergyTabButton->setPosition(m_pShopBoardLayer->getContentSize().width * 0.75f, m_pShopBoardLayer->getContentSize().height * 0.95f);
+	_aEnergyTabButton->setPosition(m_pShopBoardLayer->getContentSize().width * 0.75f, m_pShopBoardLayer->getContentSize().height * 0.85f);
+
 
 	// button close shop
 	auto _pCloseNormal = Sprite::create("UI/UI_Endgame/btn_close.png");
@@ -1616,7 +1622,8 @@ void MenuLayer::initShopBoard(int p_nOption) {
 	auto _aCloseButton = MenuItemSprite::create(_pCloseNormal, _pCloseSelected, CC_CALLBACK_0(MenuLayer::buttonCloseShopHandle, this));
 	_aCloseButton->setScale(m_pShopBoardLayer->getContentSize().height / _aCloseButton->getContentSize().height * 0.1f);
 	_aCloseButton->setAnchorPoint(Vec2(1.0f, 1.0f));
-	_aCloseButton->setPosition(m_pShopBoardLayer->getContentSize().width * 0.95f, m_pShopBoardLayer->getContentSize().height * 0.95f);
+	_aCloseButton->setPosition(m_pShopBoardLayer->getContentSize().width * 0.95f, m_pShopBoardLayer->getContentSize().height * 0.85f);
+
 
 	Menu *_pShopMenu = Menu::create(_aGoldTabTabButton, _aDiamondTabButton, _aEnergyTabButton, _aCloseButton, NULL);
 	_pShopMenu->setContentSize(Size(m_pShopBoardLayer->getContentSize().width, m_pShopBoardLayer->getContentSize().height));
@@ -1667,6 +1674,7 @@ void MenuLayer::initShopBoard(int p_nOption) {
 			_pDiamondSprite->setAnchorPoint(Vec2(0.5f, 0.0f));
 			_pDiamondSprite->setPosition(Vec2(_pPackCostSprite->getContentSize().width * 0.2f, _pPackCostSprite->getContentSize().height * 0.2f));
 			_pPackCostSprite->addChild(_pDiamondSprite, 1);
+
 			Label *_pLabelDiamondCost = Label::createWithBMFont("fonts/font_diamond-export.fnt", StringUtils::format("%d", JSMENU->getCoinPackDiamondPrice()));
 			_pLabelDiamondCost->setBMFontSize(_pPackCostSprite->getContentSize().height * 0.6f);
 			_pLabelDiamondCost->setAnchorPoint(Vec2(0.5f, 0.0f));
@@ -1718,6 +1726,7 @@ void MenuLayer::initShopBoard(int p_nOption) {
 			_pDiamondSprite->setAnchorPoint(Vec2(0.0f, 0.0f));
 			_pDiamondSprite->setPosition(Vec2(_pPackCostSprite->getContentSize().width * 0.15f, _pPackCostSprite->getContentSize().height * 0.2f));
 			_pPackCostSprite->addChild(_pDiamondSprite, 1);
+
 			Label *_pLabelDiamondCost = Label::createWithBMFont("fonts/font_diamond-export.fnt", StringUtils::format("%d", JSMENU->getDiamondPackMoneyPrice()));
 			_pLabelDiamondCost->setBMFontSize(_pPackCostSprite->getContentSize().height * 0.6f);
 			_pLabelDiamondCost->setAnchorPoint(Vec2(0.5f, 0.0f));
@@ -1769,6 +1778,7 @@ void MenuLayer::initShopBoard(int p_nOption) {
 			_pDiamondSprite->setAnchorPoint(Vec2(0.0f, 0.0f));
 			_pDiamondSprite->setPosition(Vec2(_pPackCostSprite->getContentSize().width * 0.15f, _pPackCostSprite->getContentSize().height * 0.2f));
 			_pPackCostSprite->addChild(_pDiamondSprite, 1);
+
 			Label *_pLabelDiamondCost = Label::createWithBMFont("fonts/font_diamond-export.fnt", StringUtils::format("%d", JSMENU->getEnergyPackDiamondPrice()));
 			_pLabelDiamondCost->setBMFontSize(_pPackCostSprite->getContentSize().height * 0.6f);
 			_pLabelDiamondCost->setAnchorPoint(Vec2(0.5f, 0.0f));
@@ -1823,7 +1833,6 @@ void MenuLayer::buttonBuyLifeHandle(int p_nIndexEnergyPack) {
 	if (JSMENU->getEnergyPackDiamondPrice() <= m_nCurrentDiamond) {
 		m_nCurrentDiamond -= JSMENU->getEnergyPackDiamondPrice();
 		m_nLifeNumber += JSMENU->getEnergyPackNumberEnergy();
-		m_pLabelNumberDiamondOnBuy->setString((String::createWithFormat("%d", m_nCurrentDiamond))->getCString());
 		REF->setDownDiamond(JSMENU->getEnergyPackDiamondPrice());
 		REF->setUpLife(JSMENU->getEnergyPackNumberEnergy());
 		initTopMainMenu();
@@ -1841,8 +1850,6 @@ void MenuLayer::buttonBuyCoinHandle(int p_nIndexCoinPack) {
 	if (JSMENU->getCoinPackDiamondPrice() <= m_nCurrentDiamond) {
 		m_nCurrentDiamond -= JSMENU->getCoinPackDiamondPrice();
 		m_nCurrentGold += JSMENU->getCoinPackNumberGold();
-		m_pLabelNumberDiamondOnBuy->setString((String::createWithFormat("%d", m_nCurrentDiamond))->getCString());
-		m_pLabelNumberGoldOnBuy->setString((String::createWithFormat("%d", m_nCurrentGold))->getCString());
 		REF->setDownDiamond(JSMENU->getCoinPackDiamondPrice());
 		REF->setUpGoldExplored(JSMENU->getCoinPackNumberGold());
 		initTopMainMenu();
@@ -1861,7 +1868,6 @@ void MenuLayer::buttonBuyDiamondHandle(int p_nIndexDiamondPack) {
 		return;
 	}
 	m_nCurrentDiamond += JSMENU->getDiamondPackNumberDiamond();
-	m_pLabelNumberDiamondOnBuy->setString((String::createWithFormat("%d", m_nCurrentDiamond))->getCString());
 	REF->setUpDiamondBuy(JSMENU->getDiamondPackNumberDiamond());
 	initTopMainMenu();
 
@@ -1879,6 +1885,7 @@ void MenuLayer::buttonPickHeroHandle(int p_nIndexHero) {
 	if (!REF->getIsLockedHero()) {
 		m_nIndexHeroSelected = m_nIndexHeroPicked;
 		REF->setSelectedHero(m_nIndexHeroPicked);
+        REF->setLastPickHero(m_nIndexHeroSelected);
 	}
 	initSceneLayer();
 	initBottomHeroMenu();
@@ -1897,7 +1904,7 @@ void MenuLayer::buttonUnlockHeroHandle() {
 	AudioManager::playSound(SOUND_UNLOCK_HERO);
 	REF->pointToCurrentHero(m_nIndexHeroPicked - 1); // point to pre-hero
 	int _nPreHeroLevel = REF->getCurrentLevel(); // get level of pre-hero
-	if (_nPreHeroLevel < m_nIndexHeroPicked * 20) {
+	if (_nPreHeroLevel < m_nIndexHeroPicked * 0) {
 		REF->pointToCurrentHero(m_nIndexHeroPicked);
 		string _arTipToUnlockHero[5] = {
 			"This hero is unlocked!",

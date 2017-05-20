@@ -2,7 +2,6 @@
 #define __ENEMY_CHONG3_H__
 
 #include "EnemyChong2.h"
-#include "manager/SkeletonManager.h"
 
 USING_NS_CC;
 

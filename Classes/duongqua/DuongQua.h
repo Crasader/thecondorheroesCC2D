@@ -63,7 +63,6 @@ protected:
 	void addStuff();
 	void createPool();
 
-	void idle();
 	void run();
 	void normalJump();
 	void doubleJump();
@@ -73,10 +72,9 @@ protected:
 	void attackLanding();
 	void attackBySkill1();
 	void injured();
-	void revive();
-	void die(Point posOfCammera);
 	void listener();
 
+	void stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSkill3);
 	void doDestroyBodies(b2World *world);
 
 	void updateMe(float dt);

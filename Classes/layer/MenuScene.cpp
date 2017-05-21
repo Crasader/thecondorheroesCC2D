@@ -1,3 +1,4 @@
+
 #include "MenuScene.h"
 #include "LoadingLayer.h"
 #include "IntroScene.h"
@@ -8,7 +9,7 @@
 #include "manager/RefManager.h"
 #include "ui_custom/CustomSpriteToBuyPack.h"
 
-MenuLayer * MenuLayer::create(bool p_bOnlySelectStage) {
+	MenuLayer * MenuLayer::create(bool p_bOnlySelectStage) {
 	MenuLayer *pRet = new(std::nothrow) MenuLayer();
 	if (pRet && pRet->init(p_bOnlySelectStage)) {
 		pRet->autorelease();
@@ -25,6 +26,7 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 	if (!Layer::init()) {
 		return false;
 	}
+
 	AudioManager::stopSoundandMusic();
 	AudioManager::playMusic(MUSIC_MENU);
 	initInputData();
@@ -59,7 +61,7 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 		// shop
 		m_pShopBoardLayer = Layer::create();
 		m_pShopBoardLayer->setContentSize(Size(m_szVisibleSize.width, m_szVisibleSize.height)); // fill screen width, 25% screen height
-		m_pShopBoardLayer->setPosition(0.0f, m_pShopBoardLayer->getContentSize().height);
+		m_pShopBoardLayer->setPosition(0.0f, 0.0f);
 		this->addChild(m_pShopBoardLayer, 6);
 		this->scheduleUpdate();
 
@@ -101,7 +103,7 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 	m_pBlurScreen = Layer::create();
 	m_pBlurScreen->setScaleX(m_szVisibleSize.width / m_pBlurScreen->getContentSize().width); // full screen size width
 	m_pBlurScreen->setScaleY(m_szVisibleSize.height / m_pBlurScreen->getContentSize().height); // full screen size height
-	m_pBlurScreen->setPosition(Vec2(0.0f, m_szVisibleSize.height)); // center screen
+	m_pBlurScreen->setPosition(Vec2(0.0f, 0.0f)); // center screen
 	this->addChild(m_pBlurScreen, 5);
 	m_pBlurScreen->setVisible(false);
 
@@ -231,7 +233,7 @@ void MenuLayer::initControlLayer() {
 	// shop
 	m_pShopBoardLayer = Layer::create();
 	m_pShopBoardLayer->setContentSize(Size(m_szVisibleSize.width, m_szVisibleSize.height)); // fill screen width, 25% screen height
-	m_pShopBoardLayer->setPosition(0.0f, m_pShopBoardLayer->getContentSize().height);
+	m_pShopBoardLayer->setPosition(0.0f, 0.0f);
 	this->addChild(m_pShopBoardLayer, 6);
 
 	moveLayerViaDirection(m_pTopMainMenu, 2);
@@ -1178,26 +1180,33 @@ void MenuLayer::showBlurScreen() {
 
 	Sprite *_pBlurBlackLayer = Sprite::create("UI/toast.png");
 	_pBlurBlackLayer->setScale(m_pBlurScreen->getContentSize().width / _pBlurBlackLayer->getContentSize().width,
-		m_pBlurScreen->getContentSize().height / _pBlurBlackLayer->getContentSize().height * 2);
-	_pBlurBlackLayer->setAnchorPoint(Vec2(0.5f, 1.0f));
-	_pBlurBlackLayer->setPosition(m_pBlurScreen->getContentSize().width * 0.5f, m_pBlurScreen->getContentSize().height);
+		m_pBlurScreen->getContentSize().height / _pBlurBlackLayer->getContentSize().height);
+	_pBlurBlackLayer->setAnchorPoint(Vec2(0.5f, 0.5f));
+	_pBlurBlackLayer->setPosition(m_pBlurScreen->getContentSize().width * 0.5f, m_pBlurScreen->getContentSize().height * 0.5f);
 	_pBlurBlackLayer->setOpacity(150.0f);
 	m_pBlurScreen->addChild(_pBlurBlackLayer, 0);
-
-	moveLayerViaDirection(m_pBlurScreen, 2);
 }
 
 void MenuLayer::hideBlurScreen() {
-	moveLayerViaDirection(m_pBlurScreen, 8);
 	runAction(Sequence::create(DelayTime::create(0.2f), CallFunc::create([&]() {
 		m_pBlurScreen->removeAllChildrenWithCleanup(true);
 		m_pBlurScreen->setVisible(false);
 	}), nullptr));
 
+	runAction(Sequence::create(DelayTime::create(0.3f), CallFunc::create([&]() {
+		m_pTopMenu->setEnabled(true);
+		if (m_nMenuStatus != 4) {
+			m_pBottomMainMenu->setEnabled(true);
+			m_pItemBoardMenu->setEnabled(true);
+			m_pSkillBoardMenu->setEnabled(true);
+			m_pBottomHeroMenu->setEnabled(true);
+			m_pQuestBoardMenu->setEnabled(true);
+			m_pItemScrollView->setTouchEnabled(true);
+		}
+	}), nullptr));
 }
 
-void MenuLayer::buttonStartHandle()
-{
+void MenuLayer::buttonStartHandle() {
 	// select stage layer
 	m_pSelectStageLayer = SelectStageLayer::create(m_nIndexHeroSelected);
 	m_nMenuStatus = 3;
@@ -1267,21 +1276,18 @@ void MenuLayer::buttonAddLifeHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	showBlurScreen();
 	initShopBoard(2);
-	moveLayerViaDirection(m_pShopBoardLayer, 2);
 }
 
 void MenuLayer::buttonAddGoldHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	showBlurScreen();
 	initShopBoard(0);
-	moveLayerViaDirection(m_pShopBoardLayer, 2);
 }
 
 void MenuLayer::buttonAddDiamondHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	showBlurScreen();
 	initShopBoard(1);
-	moveLayerViaDirection(m_pShopBoardLayer, 2);
 }
 
 void MenuLayer::buttonQuestHandle() {
@@ -1324,7 +1330,6 @@ void MenuLayer::buttonShopHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	showBlurScreen();
 	initShopBoard(m_nShopOption);
-	moveLayerViaDirection(m_pShopBoardLayer, 2);
 }
 
 void MenuLayer::buttonFreeCoinHandle() {
@@ -1422,7 +1427,7 @@ void MenuLayer::buttonSettingHandle() {
 	_pButtonMusicControl->setPosition(Vec2(m_pBlurScreen->getContentSize().width * 0.65f, m_pBlurScreen->getContentSize().height * 0.31f));
 	bool checkMusic = ref->getBoolForKey(KEY_IS_MUSIC, true);
 	_pButtonMusicControl->setSelectedIndex(checkMusic == true ? 0 : 1);
-	
+
 	Menu *_pShopMenu = Menu::create(_pButtonSoundControl, _pButtonMusicControl, _aCloseButton, NULL);
 	_pShopMenu->setContentSize(Size(m_pBlurScreen->getContentSize().width, m_pBlurScreen->getContentSize().height));
 	_pShopMenu->setPosition(0.0f, 0.0f);
@@ -1831,14 +1836,16 @@ void MenuLayer::initShopBoard(int p_nOption) {
 			_pPackCostSprite->addChild(_pLabelDiamondCost, 1);
 		}
 	}
+
+	m_pShopBoardLayer->runAction(ScaleTo::create(0.2f, 1.0f));
 }
 
 void MenuLayer::buttonCloseShopHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
-	moveLayerViaDirection(m_pShopBoardLayer, 8);
-	hideBlurScreen();
+	m_pShopBoardLayer->runAction(ScaleTo::create(0.2f, 0.0f));
 	// TODO: fix custom sprite to buy pack, because if you dont remove children of shop board, they still get response clicks on screen
 	runAction(Sequence::create(DelayTime::create(0.2f), CallFunc::create([&]() {
+		hideBlurScreen();
 		m_pShopBoardLayer->removeAllChildrenWithCleanup(true);
 	}), nullptr));
 }
@@ -1925,7 +1932,7 @@ void MenuLayer::buttonBuyDiamondHandle(int p_nIndexDiamondPack) {
 	m_pTopMenu->setEnabled(false);
 
 	REF->setUpNumberQuest(7, JSMENU->getDiamondPackNumberDiamond());
-	initQuestBoard(0);
+	//initQuestBoard(0);
 }
 
 void MenuLayer::buttonPickHeroHandle(int p_nIndexHero) {
@@ -1948,8 +1955,8 @@ void MenuLayer::buttonPickHeroHandle(int p_nIndexHero) {
 
 void MenuLayer::buttonTryHeroHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
-		auto _scene = LoadingLayer::createScene(1, 1, m_nIndexHeroPicked);
-		Director::getInstance()->replaceScene(TransitionFade::create(0.2f, _scene));
+	auto _scene = LoadingLayer::createScene(1, 1, m_nIndexHeroPicked);
+	Director::getInstance()->replaceScene(TransitionFade::create(0.2f, _scene));
 }
 
 void MenuLayer::buttonUnlockHeroHandle() {
@@ -2071,7 +2078,7 @@ void MenuLayer::selectedItemEvent(Ref* sender, ListView::EventType type) {
 	if (type == ListView::EventType::ON_SELECTED_ITEM_END) {
 		_aTempObject->runAction(ScaleTo::create(0.05f, _fBigScale));
 		if (m_nShopOption == 1) {
-
+			buttonBuyDiamondHandle(_nSelectedIndex);
 		}
 		else {
 			m_pBuyPackConfirmBackground->setVisible(true);

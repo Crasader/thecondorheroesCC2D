@@ -11,6 +11,7 @@ public:
 
 	QuachTinh(string jsonFile, string atlasFile, float scale);
 	static QuachTinh* create(string jsonFile, string atlasFile, float scale);
+	void initSwordPhysic(b2World *world, Point position);
 
 protected:
 

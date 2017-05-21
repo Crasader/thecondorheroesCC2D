@@ -15,7 +15,7 @@ QT_CuuAmChanKinh * QT_CuuAmChanKinh::create()
 	ck->initWithFile("Animation/QuachTinh/skill1_firedown_1.png");
 	ck->setTag(TAG_QT_CUU_AM_CHAN_KINH);
 
-	ck->angle = -45.0;
+	ck->angle = -40.0;
 	ck->setRotation(ck->angle);
 
 	return ck;
@@ -36,6 +36,7 @@ void QT_CuuAmChanKinh::initCirclePhysic(b2World * world, Point pos)
 	fixtureDef.friction = 1.0f;
 	fixtureDef.restitution = 0.0f;
 	fixtureDef.shape = &shape;
+	fixtureDef.isSensor = true;
 
 	fixtureDef.filter.categoryBits = BITMASK_SWORD;
 	fixtureDef.filter.maskBits = BITMASK_WOODER | BITMASK_BOSS | BITMASK_COIN_BAG | BITMASK_ENEMY;

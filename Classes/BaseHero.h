@@ -91,7 +91,7 @@ public:
 	static BaseHero* create(string jsonFile, string atlasFile, float scale);
 
 	virtual void initCirclePhysic(b2World *world, Point pos);
-	virtual void initSwordPhysic(b2World *world, Point position, float width);
+	virtual void initSwordPhysic(b2World *world, Point position);
 	void changeSwordCategoryBitmask(uint16 bit);
 	virtual void addStuff();
 	virtual void createPool();

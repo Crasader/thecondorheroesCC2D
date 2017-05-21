@@ -21,7 +21,7 @@ Scene* GameScene::createScene(GameScene *layer, Hud* m_hud)
 	// 'layer' is an autorelease object
 
 	m_hud->setPosition(Director::getInstance()->getVisibleOrigin());
-	layer->onBegin();
+	
 	// add layer as a child to scene
 	scene->addChild(layer);
 	scene->addChild(m_hud);
@@ -30,6 +30,8 @@ Scene* GameScene::createScene(GameScene *layer, Hud* m_hud)
 	blur = LayerColor::create(Color4B(0, 0, 0, 170));
 	blur->setVisible(false);
 	scene->addChild(blur);
+
+	layer->onBegin();
 
 	// return the scene
 	return scene;

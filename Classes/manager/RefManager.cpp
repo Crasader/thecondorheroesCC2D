@@ -9,7 +9,7 @@ RefManager::RefManager()
 {
 	ref = UserDefault::sharedUserDefault();
 
-	isFirstPlay = ref->getBoolForKey(KEY_FIRST, true);
+	isFirstPlay = ref->getBoolForKey(KEY_FIRST, false);
 	lastMapIdPlay = ref->getIntegerForKey(KEY_LAST_MAP_ID, 1);
 	selectedHero = ref->getIntegerForKey(KEY_SELECTED_HERO, 0);
 	lastPickHero = ref->getIntegerForKey(KEY_LAST_PICK_HERO, 0);
@@ -37,6 +37,10 @@ RefManager::RefManager()
 
 	// need to fix
 	unLockHero(0);
+	unLockHero(1);
+	unLockHero(2);
+	unLockHero(3);
+	unLockHero(4);
 	pointToCurrentHero(selectedHero);
 }
 

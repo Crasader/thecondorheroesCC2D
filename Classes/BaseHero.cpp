@@ -91,16 +91,16 @@ void BaseHero::initCirclePhysic(b2World * world, Point pos)
 
 
 	// connect sword with body
-	initSwordPhysic(world, Point(pos.x + trueRadiusOfHero * 2.2f, pos.y), trueRadiusOfHero);
+	initSwordPhysic(world, Point(pos.x + trueRadiusOfHero * 2.2f, pos.y));
 }
 
-void BaseHero::initSwordPhysic(b2World *world, Point position, float width)
+void BaseHero::initSwordPhysic(b2World *world, Point position)
 {
 	b2BodyDef bodyDef;
 	b2PolygonShape shape;
 	b2FixtureDef fixtureDef;
 
-	shape.SetAsBox(width / PTM_RATIO, getTrueRadiusOfHero()* 0.85f / PTM_RATIO);
+	shape.SetAsBox(trueRadiusOfHero / PTM_RATIO, trueRadiusOfHero* 0.85f / PTM_RATIO);
 
 	fixtureDef.density = 0.0f;
 	fixtureDef.friction = 0.0f;

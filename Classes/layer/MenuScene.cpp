@@ -1295,6 +1295,7 @@ void MenuLayer::buttonAddDiamondHandle() {
 
 void MenuLayer::buttonQuestHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
+	GAHelper::getInstance()->logEvent("Quest", "click", "show quest", 1);
 	if (m_nMenuStatus != 1) {
 		m_nMenuStatus = 1;
 		hideMainMenu();
@@ -1309,6 +1310,7 @@ void MenuLayer::buttonQuestHandle() {
 
 void MenuLayer::buttonHeroesHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
+	GAHelper::getInstance()->logEvent("Hero", "click", "show list hero", 1);
 	if (m_nIndexHeroSelected != m_nIndexHeroPicked) {
 		m_nIndexHeroSelected = m_nIndexHeroPicked;
 	}
@@ -1331,6 +1333,7 @@ void MenuLayer::buttonHeroesHandle() {
 
 void MenuLayer::buttonShopHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
+	GAHelper::getInstance()->logEvent("Shop", "click", "show shop", 1);
 	showBlurScreen();
 	initShopBoard(m_nShopOption);
 	moveLayerViaDirection(m_pShopBoardLayer, 2);
@@ -1343,6 +1346,7 @@ void MenuLayer::buttonFreeCoinHandle() {
 		if (REF->getFreeCoin() <= 0) {
 			m_pSpriteFreeCoinAttention->setVisible(false);
 		}
+		GAHelper::getInstance()->logEvent("FreeCoin", "click", "can getFreecoin", 1);
 		// TODO : show ads and check view ads finish
 		// after that, increase gold
 	}
@@ -1350,15 +1354,18 @@ void MenuLayer::buttonFreeCoinHandle() {
 		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(6), TOAST_LONG);
 		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
 		this->addChild(_pToast, 10);
+		GAHelper::getInstance()->logEvent("FreeCoin", "click", "can not getFreecoin", 1);
 	}
 }
 
 void MenuLayer::buttonMoreGameHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) { // if running on iOS
+		GAHelper::getInstance()->logEvent("Moregame", "click", "go to moregame ios", 1);
 		Application::getInstance()->openURL("https://itunes.apple.com/us/developer/b-gate-jsc./id1037975709"); // open pipo iTunes
 	}
 	else { // running on another platform
+		GAHelper::getInstance()->logEvent("Moregame", "click", "go to moregame android", 1);
 		Application::getInstance()->openURL("https://play.google.com/store/apps/dev?id=8988959007894361415&hl=vi"); // open pipo CHPlay
 	}
 }
@@ -1831,6 +1838,7 @@ void MenuLayer::buttonBuyLifeHandle(int p_nIndexEnergyPack) {
 	AudioManager::playSound(SOUND_BTCLICK);
 	JSMENU->readEnergyPack(p_nIndexEnergyPack);
 	if (JSMENU->getEnergyPackDiamondPrice() <= m_nCurrentDiamond) {
+		GAHelper::getInstance()->logEvent("buylife", "click", "UpgradeQuachtinh", 1);
 		m_nCurrentDiamond -= JSMENU->getEnergyPackDiamondPrice();
 		m_nLifeNumber += JSMENU->getEnergyPackNumberEnergy();
 		REF->setDownDiamond(JSMENU->getEnergyPackDiamondPrice());
@@ -1950,6 +1958,8 @@ void MenuLayer::buttonUpgradeHeroHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	AudioManager::playSound(SOUND_UPGRADE_LEVEL);
 	float _nUpgradeCost = JSHERO->getGoldUpgradeLevelX(m_nIndexHeroPicked);
+	
+
 	for (int i = 0; i < REF->getCurrentLevel(); i++) {
 		_nUpgradeCost *= 1.05f;
 	}
@@ -1960,6 +1970,27 @@ void MenuLayer::buttonUpgradeHeroHandle() {
 		initTopMainMenu();
 		initBottomHeroMenu();
 		initHeroInfoBoard();
+		switch (m_nIndexHeroPicked)
+		{
+		case 0: {
+			GAHelper::getInstance()->logEvent("UpgradeDuongqua", "click", "UpgradeDuongqua", 1);
+			break;
+		}
+		case 1: {
+			GAHelper::getInstance()->logEvent("UpgradeCoLong", "click", "UpgradeCoLong", 1);
+			break; }
+		case 2: {
+			GAHelper::getInstance()->logEvent("UpgradeHoangDung", "click", "UpgradeHoangDung", 1);
+			break; }
+		case 3: {
+			GAHelper::getInstance()->logEvent("UpgradeHoangDuocSu", "click", "UpgradeHoangDuocSu", 1);
+			break; }
+		case 4: {
+			GAHelper::getInstance()->logEvent("UpgradeQuachtinh", "click", "UpgradeQuachtinh", 1);
+			break; }
+		default:
+			break;
+		}
 	}
 	else {
 		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(8), TOAST_LONG);

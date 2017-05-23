@@ -73,7 +73,7 @@ void EnemyHoacDo2::attack(Vec2 posHero)
 	auto thisToHero = posHero - (this->getPosition()+this->getParent()->getPosition());
 	auto angle = thisToHero.getAngle();
 	slash->initCirclePhysic(this->getB2Body()->GetWorld(), this->getBoneLocation("bone22") + this->getParent()->getPosition());
-	slash->setAngle(angle);
+	slash->setAngle(angle, 1);
 	slash->setRotation(-angle / PI * 180 + 180);
 }
 

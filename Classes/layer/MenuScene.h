@@ -11,6 +11,7 @@
 #include "ui_custom/CustomLayerToToast.h"
 #include "ui_custom/CustomSpriteToBuyPack.h"
 #include "SelectStageScene.h"
+#include "thirdsdkhelper\GoogleAnalysticHelper.h"
 
 USING_NS_CC;
 using namespace spine;

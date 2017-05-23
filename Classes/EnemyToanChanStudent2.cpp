@@ -113,7 +113,20 @@ void EnemyToanChanStudent2::listener()
 			this->addAnimation(0, "idle", true);
 			this->setToSetupPose();
 		}
-
+		if (strcmp(getCurrent()->animation->name, "attack1") == 0 && loopCount == 1) {
+			//getSlash()->setVisible(false);
+			//setIsAttacking(false);
+			this->clearTracks();
+			this->addAnimation(0, "idle", true);
+			this->setToSetupPose();
+		}
+		if (strcmp(getCurrent()->animation->name, "attack2") == 0 && loopCount == 1) {
+			//getSlash()->setVisible(false);
+			//setIsAttacking(false);
+			this->clearTracks();
+			this->addAnimation(0, "idle", true);
+			this->setToSetupPose();
+		}
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
 
 			this->setVisible(false);

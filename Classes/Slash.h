@@ -14,7 +14,7 @@ public:
 	static Slash* create(string jsonFile, string atlasFile, float scale);
 	void initCirclePhysic(b2World *world, Point pos);
 	void updateMe(BaseHero* hero);
-	void setAngle(float radian);
+	void setAngle(float radian, float scale);
 	//void runAnimation();
 	//void die();
 	

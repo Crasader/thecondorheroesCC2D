@@ -50,7 +50,7 @@ bool GameScene::init(int stage, int map, int charId)
 
 	isFirstPlay = REF->getIsFirstPlay();
 
-	isModeDebug = true;
+	isModeDebug = false;
 	changebg = 0;
 
 	indexOfNextMapBoss = -1;

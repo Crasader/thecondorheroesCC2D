@@ -12,7 +12,7 @@ QT_CuuAmChanKinh::~QT_CuuAmChanKinh()
 QT_CuuAmChanKinh * QT_CuuAmChanKinh::create()
 {
 	QT_CuuAmChanKinh* ck = new QT_CuuAmChanKinh();
-	ck->initWithFile("Animation/QuachTinh/skill1_firedown_1.png");
+	ck->initWithSpriteFrameName("skill1_firedown_1.png");
 	ck->setTag(TAG_QT_CUU_AM_CHAN_KINH);
 
 	ck->angle = -40.0;
@@ -53,17 +53,23 @@ void QT_CuuAmChanKinh::initCirclePhysic(b2World * world, Point pos)
 	body->SetFixedRotation(true);
 }
 
-void QT_CuuAmChanKinh::hitGround()
-{
-
-}
-
-
 void QT_CuuAmChanKinh::updateMe()
 {
 	if (body != nullptr) {
 		this->setPositionX(body->GetPosition().x * PTM_RATIO - this->getBoundingBox().size.width / 5);
 		this->setPositionY(body->GetPosition().y * PTM_RATIO + this->getBoundingBox().size.height / 5);	
 	}
+}
+
+void QT_CuuAmChanKinh::runAni()
+{
+	Vector<SpriteFrame* > aniFrames;
+	for (int i = 1; i <= 5; ++i) {
+		auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(StringUtils::format("skill1_firedown_%i.png", i));
+		aniFrames.pushBack(frame);
+	}
+
+	auto animate = Animate::create(Animation::createWithSpriteFrames(aniFrames, 0.1f));
+	this->runAction(RepeatForever::create(animate));
 }
 

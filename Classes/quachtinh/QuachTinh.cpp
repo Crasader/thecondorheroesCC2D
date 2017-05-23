@@ -36,7 +36,7 @@ void QuachTinh::initSwordPhysic(b2World * world, Point position)
 	b2PolygonShape shape;
 	b2FixtureDef fixtureDef;
 
-	shape.SetAsBox(trueRadiusOfHero * 0.8f / PTM_RATIO, trueRadiusOfHero * 0.75f / PTM_RATIO);
+	shape.SetAsBox(trueRadiusOfHero * 0.7f / PTM_RATIO, trueRadiusOfHero * 1.3f / PTM_RATIO);
 
 	fixtureDef.density = 0.0f;
 	fixtureDef.friction = 0.0f;
@@ -51,6 +51,8 @@ void QuachTinh::initSwordPhysic(b2World * world, Point position)
 
 	swordBody = world->CreateBody(&bodyDef);
 	swordBody->CreateFixture(&fixtureDef);
+
+	spSkeleton* skeleton = this->getSkeleton();
 }
 
 
@@ -58,10 +60,11 @@ void QuachTinh::createRock(float posX)
 {
 	auto rock = (ChanKinh*)poolSkill1->getObjectAtIndex(indexSkill1++);
 	rock->setVisible(true);
+	rock->runAni();
 
 	auto gameLayer = (GameScene*) this->getParent();
 
-	rock->setPosition(posX, this->getPositionY() + SCREEN_SIZE.height);
+	rock->setPosition(posX, gameLayer->getFollow()->getPositionY() + SCREEN_SIZE.height * 0.6f);
 	rock->initCirclePhysic(gameLayer->world, rock->getPosition());
 	rock->setAngle(rock->getmAngle() / 180 * PI);
 
@@ -80,7 +83,6 @@ void QuachTinh::landRocks()
 	this->schedule([&](float dt) {
 		if (checkDurationSkill1 % 8 == 0) {		// every 0.25 second
 			float width = this->getPositionX() + SCREEN_SIZE.width * random(0.0f, 0.3f);
-			log("AAAAAA");
 			createRock(width);
 		}
 
@@ -101,20 +103,61 @@ void QuachTinh::doCounterSkill1()
 	landRocks();
 }
 
-void QuachTinh::doCounterSkill2()
+void QuachTinh::createTL(float posX)
 {
+	auto tl = (ThanLong*)poolSkill2->getObjectAtIndex(indexSkill2++);
+	tl->setVisible(true);
+	tl->runAni();
+
+	auto gameLayer = (GameScene*) this->getParent();
+
+	tl->setPosition(posX, gameLayer->getFollow()->getPositionY());
+	tl->initBoxPhysic(gameLayer->world, Point(tl->getPositionX(), tl->getPositionY() + SCREEN_SIZE.height));
+
+	if (!tl->getIsAdded()) {
+		gameLayer->addChild(tl, ZORDER_ENEMY);
+		tl->setIsAdded(true);
+	}
+
+
+	listThanLong.push_back(tl);
+	if (indexSkill2 == 10) indexSkill2 = 0;
+}
+
+void QuachTinh::landTLs()
+{
+	originTL = this->getPositionX() - SCREEN_SIZE.width * 0.25f;
+
 	this->schedule([&](float dt) {
-		checkDurationSkill2++;
-		if (checkDurationSkill2 >= getDurationSkill2() * 10) {
+		float width = originTL + (numberOfCreateTL++) * widthTL / 2;
+		if (width >= this->getPositionX() + SCREEN_SIZE.width * 0.8f) {
+			numberOfCreateTL = 0;
 			setIsDoneDuration2(true);
 			checkDurationSkill2 = 0;
 			unschedule("KeySkill2");
+			return;
 		}
-	}, 0.1f, "KeySkill2");
+
+		createTL(width);
+
+	}, 0.05f, "KeySkill2");		//  run every 0.05 second
+}
+
+void QuachTinh::doCounterSkill2()
+{
+	getFSM()->changeState(MSKill2);
+	landTLs();
+}
+
+void QuachTinh::createSongLong()
+{
+
 }
 
 void QuachTinh::doCounterSkill3()
 {
+	//createSongLong();
+
 	this->schedule([&](float dt) {
 		checkDurationSkill3++;
 		if (checkDurationSkill3 >= getDurationSkill3() * 10) {
@@ -178,6 +221,19 @@ void QuachTinh::createPool()
 		rock->setScale(this->getTrueRadiusOfHero() * 1.5f / rock->getContentSize().width);
 		poolSkill1->addObject(rock);
 	}
+
+	poolSkill2 = CCArray::createWithCapacity(10);
+	poolSkill2->retain();
+
+	for (int i = 0; i < 10; ++i) {
+		auto tl = ThanLong::create();
+		tl->setAnchorPoint(Vec2(0, 0.5f));
+		tl->setScale(SCREEN_SIZE.height / tl->getContentSize().height);
+		if (widthTL < 0) widthTL = tl->getBoundingBox().size.width;
+		poolSkill2->addObject(tl);
+	}
+
+	//songLong = SongLong::create("Animation/QuachTinh/Dragon.json", "Animation/QuachTinh/Dragon.atlas", 1);
 }
 
 void QuachTinh::run()
@@ -288,6 +344,24 @@ void QuachTinh::attackBySkill1()
 	log("skill1");
 }
 
+void QuachTinh::attackBySkill2()
+{
+	clearTracks();
+	addAnimation(0, "skill2", false);
+	setToSetupPose();
+	setIsPriorSkill1(true);
+	log("skill2");
+}
+
+void QuachTinh::attackBySkill3()
+{
+	clearTracks();
+	addAnimation(0, "skill3", false);
+	setToSetupPose();
+	setIsPriorSkill1(true);
+	log("skill3");
+}
+
 void QuachTinh::injured()
 {
 	AudioManager::playSound(SOUND_DQHIT);
@@ -372,6 +446,21 @@ void QuachTinh::listener()
 			getFSM()->revertToGlobalState();
 		}
 
+		else if (strcmp(getCurrent()->animation->name, "skill2") == 0) {
+			setIsPriorSkill1(false);
+			if (getFSM()->globalState == MAttack) {
+				getFSM()->setPreviousState(MSKill2);
+				getFSM()->setGlobalState(MRun);
+			}
+
+			else if (getFSM()->globalState == MDoubleJump || getFSM()->globalState == MRevive) {
+				getFSM()->setPreviousState(MSKill2);
+				getFSM()->setGlobalState(MLand);
+			}
+
+
+			getFSM()->revertToGlobalState();
+		}
 
 		else if (strcmp(getCurrent()->animation->name, "die") == 0) {
 			this->pause();
@@ -379,39 +468,27 @@ void QuachTinh::listener()
 			gamelayer->dieGame();
 		}
 	});
-
-
-	/*this->setCompleteListener([&](int trackIndex, int loopCount) {
-		if (strcmp(getCurrent()->animation->name, "skill1") == 0 && loopCount == 1) {
-			setIsPriorSkill1(false);
-			if (getFSM()->globalState == MAttack) {
-				getFSM()->setPreviousState(MSKill1);
-				getFSM()->setGlobalState(MRun);
-			}
-
-			else if (getFSM()->globalState == MDoubleJump || getFSM()->globalState == MRevive) {
-				getFSM()->setPreviousState(MSKill1);
-				getFSM()->setGlobalState(MLand);
-			}
-
-
-			getFSM()->revertToGlobalState();
-		}
-	});*/
 }
 
 void QuachTinh::stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSkill3)
 {
 	if (stopSkill1 && !getIsDoneDuration1()) {
 		setIsDoneDuration1(true);
+		unschedule("KeySkill1");
+		checkDurationSkill1 = 0;
 	}
 
 	if (stopSkill2 && !getIsDoneDuration2()) {
 		setIsDoneDuration2(true);
+		unschedule("KeySkill2");
+		checkDurationSkill2 = 0;
+		numberOfCreateTL = 0;
 	}
 
 	if (stopSkill3 && !getIsDoneDuration3()) {
 		setIsDoneDuration3(true);
+		unschedule("KeySkill3");
+		checkDurationSkill3 = 0;
 	}
 }
 
@@ -438,19 +515,43 @@ void QuachTinh::updateMe(float dt)
 			if (!rock->getB2Body()) continue;
 
 			if (rock->getPositionY() + rock->getBoundingBox().size.height < 0) {
-				log("AA");
 				rock->setVisible(false);
 				auto gameLayer = (GameScene*) this->getParent();
 
 				gameLayer->world->DestroyBody(rock->getB2Body());
 				rock->setB2Body(nullptr);
-				
+
 				numberOfDeadRock++;
 			}
 			else
 				rock->updateMe();
 		}
 	}
+
+	if (!listThanLong.empty()) {
+		if (numberOfDeadThanLong == listThanLong.size()) {
+			//for (auto tl : listThanLong)	// for sure
+				//tl->setVisible(false);
+			numberOfDeadThanLong = 0;
+			listThanLong.clear();
+		}
+
+		for (auto tl : listThanLong) {
+			if (!tl->getB2Body()) continue;
+
+			if (tl->getB2Body()->GetPosition().y * PTM_RATIO < tl->getPositionY() - SCREEN_SIZE.height * 0.5f) {
+				auto gameLayer = (GameScene*) this->getParent();
+
+				gameLayer->world->DestroyBody(tl->getB2Body());
+				tl->setB2Body(nullptr);
+
+				numberOfDeadThanLong++;
+				//log("Dead dragon");
+			}
+		}
+	}
+
+	//log("Pos X: %f, pos Y: %f", getBoneLocation("bone9").x, getBoneLocation("bone9").y);
 
 	if (getB2Body() == nullptr)
 		return;
@@ -470,7 +571,7 @@ void QuachTinh::updateMe(float dt)
 		getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
 	}
 
-	if (!getIsPriorAttack() && !getIsPriorInjured() && !getIsPriorSkill1()) {
+	if (!getIsPriorAttack() && !getIsPriorInjured() && !getIsPriorSkill1() && !getIsPriorSkill2()) {
 
 		if (getB2Body()->GetLinearVelocity().y < 0) {
 			getFSM()->changeState(MLand);

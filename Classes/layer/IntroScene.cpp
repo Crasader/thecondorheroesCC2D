@@ -23,7 +23,9 @@ bool SceneIntro::init() {
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("item/coin.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Map/bg.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/skill.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/Select_Stage/boss_eff.plist");
+	//SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/Select_Stage/boss_eff.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/chidori_eff.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/rock_eff.plist");
 
 	auto _aIntroBackground = Sprite::create("UI/UI_intro/background.jpg");
 	_aIntroBackground->setScaleX(m_szVisibleSize.width / _aIntroBackground->getContentSize().width); // full screen size width

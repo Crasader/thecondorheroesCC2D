@@ -43,6 +43,7 @@ public:
 	static GameScene* create(int stage, int map, int charId);
 
 	BaseHero * getHero() { return hero; }
+	Node* getFollow() { return follow; }
 	void setLastScore(int lastScore) { m_lastScore = lastScore; }
 	CC_SYNTHESIZE(Hud*, hud, Hud);
 	void enableCalling();

@@ -3,6 +3,8 @@
 
 #include "BaseHero.h"
 #include "QT_CuuAmChanKinh.h"
+#include "QT_ThanLongBatVi.h"
+#include "QT_SongLongXuatThuy.h"
 #include "manager/AudioManager.h"
 
 class QuachTinh : public BaseHero
@@ -23,9 +25,22 @@ protected:
 	int indexRock = 0;
 	void createRock(float posX);
 	void landRocks();
-
 	void doCounterSkill1();
+
+	CCArray* poolSkill2;
+	int indexSkill2 = 0;
+	list<ThanLong*> listThanLong;
+	int numberOfCreateTL = 0;
+	int numberOfDeadThanLong;
+	float widthTL = -1;
+	float originTL = 0;
+	int indexThanLong = 0;
+	void createTL(float posX);
+	void landTLs();
 	void doCounterSkill2();
+
+
+	void createSongLong();
 	void doCounterSkill3();
 	
 
@@ -46,6 +61,8 @@ protected:
 	void attackNormal();
 	void attackLanding();
 	void attackBySkill1();
+	void attackBySkill2();
+	void attackBySkill3();
 	void injured();
 	void listener();
 
@@ -53,6 +70,9 @@ protected:
 	void doDestroyBodies(b2World *world);
 
 	void updateMe(float dt);
+
+private:
+	SongLong *songLong;
 
 };
 #endif // __QUACH_TINH_H__

@@ -76,7 +76,7 @@ void EnemyToanChanStudent::die()
 void EnemyToanChanStudent::initCirclePhysic(b2World * world, Point pos)
 {
 	b2CircleShape circle_shape;
-	circle_shape.m_radius = this->getBoundingBox().size.height / 2 / PTM_RATIO;
+	circle_shape.m_radius = this->getBoundingBox().size.height / 4 / PTM_RATIO;
 	//pos = Point(pos.x-circle_shape.m_radius/2, pos.y);
 
 	b2FixtureDef fixtureDef;

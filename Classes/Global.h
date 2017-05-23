@@ -42,6 +42,8 @@ using namespace std;
 #define TAG_DQ_TOAN_CHAN_KIEM_PHAP			56
 #define TAG_DQ_DOC_CO_KIEM_PHAP				57
 #define TAG_QT_CUU_AM_CHAN_KINH				58
+#define TAG_QT_THAN_LONG_BAT_VI				59
+#define TAG_QT_SONG_LONG_XUAT_THUY			60
 #define TAG_EAGLE							61
 #define TAG_DIALOG							62
 #define TAG_CL_RADA							63

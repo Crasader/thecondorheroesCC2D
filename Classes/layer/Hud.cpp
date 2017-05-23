@@ -271,7 +271,7 @@ void Hud::addAttack()
 	auto mObject = groupAttack->getObject("btn_attack");
 	Point origin = Point(mObject["x"].asFloat() * tmxMap->getScaleX(), mObject["y"].asFloat()* tmxMap->getScaleY());
 
-	btnAttack = MyButton::create("UI/btn_attack.png", "UI/btn_attack.png", origin);
+	btnAttack = MyButton::create("UI/Btn_skill/btn_attack.png", "UI/Btn_skill/btn_attack.png", origin);
 	
 	btnAttack->setTimeCoolDown(0.33f);
 	btnAttack->setScale(SCREEN_SIZE.height / 4.0f / btnAttack->getContentSize().height);
@@ -337,7 +337,7 @@ void Hud::addBird()
 	auto mObject_4 = groupBtnCalling->getObject("btn_special");
 	Point origin_4 = Point(mObject_4["x"].asFloat() * tmxMap->getScaleX(), mObject_4["y"].asFloat()* tmxMap->getScaleY());
 
-	btnCalling = MenuItemImage::create("UI/btn_callbird.png", "UI/btn_callbird_off.png", CC_CALLBACK_1(Hud::doCalling, this));
+	btnCalling = MenuItemImage::create("UI/Btn_skill/btn_callbird.png", "UI/Btn_skill/btn_callbird_off.png", CC_CALLBACK_1(Hud::doCalling, this));
 	btnCalling->setEnabled(false);
 	btnCalling->setDisabledImage(Sprite::create("UI/btn_callbird_off.png"));
 	btnCalling->setPosition(origin_4);

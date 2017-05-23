@@ -13,9 +13,8 @@ public:
 
 	static QT_CuuAmChanKinh* create();
 	void initCirclePhysic(b2World *world, Point pos);
-
-	void hitGround();
 	void updateMe();
+	void runAni();
 
 protected:
 	CC_SYNTHESIZE(bool, isAdded, IsAdded);

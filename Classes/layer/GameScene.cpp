@@ -49,6 +49,10 @@ bool GameScene::init(int stage, int map, int charId)
 	AudioManager::stopMusic();
 
 	isFirstPlay = REF->getIsFirstPlay();
+	if (isFirstPlay) {
+		if (REF->getLastPickHero() != charId)
+			isFirstPlay = false;
+	}
 
 	isModeDebug = false;
 	changebg = 0;
@@ -558,7 +562,7 @@ void GameScene::update(float dt)
 		else {
 			hero->getB2Body()->SetTransform(b2Vec2(
 				_aEagle->getB2Body()->GetPosition().x,
-				_aEagle->getB2Body()->GetPosition().y + 40.0f / PTM_RATIO), 0.0f);
+				_aEagle->getB2Body()->GetPosition().y + hero->getTrueRadiusOfHero() / PTM_RATIO), 0.0f);
 		}
 	}
 

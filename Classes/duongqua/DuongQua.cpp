@@ -12,23 +12,33 @@ DuongQua::DuongQua(string jsonFile, string atlasFile, float scale) : BaseHero(js
 DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 {
 	DuongQua* duongQua = new DuongQua(jsonFile, atlasFile, scale);
-	duongQua->setTag(TAG_HERO);
+	if (duongQua && duongQua->init())
+	{
+		duongQua->autorelease();
+		duongQua->setTag(TAG_HERO);
 
-	duongQua->update(0.0f);
+		duongQua->update(0.0f);
 
-	duongQua->stateMachine = new StateMachine(duongQua);
-	duongQua->stateMachine->setCurrentState(MLand);
+		duongQua->stateMachine = new StateMachine(duongQua);
+		duongQua->stateMachine->setCurrentState(MLand);
 
-	duongQua->setBoxHeight(duongQua->getBoundingBox().size.height / 6.7f);
+		duongQua->setBoxHeight(duongQua->getBoundingBox().size.height / 6.7f);
 
-	//
-	duongQua->blash = Sprite::create("Animation/DuongQua/blash.png");
-	duongQua->blash->setScale(scale / 2);
-	duongQua->blash->setPosition(duongQua->getContentSize() / 2);
-	duongQua->blash->setVisible(false);
-	duongQua->addChild(duongQua->blash);
+		//
+		duongQua->blash = Sprite::create("Animation/DuongQua/blash.png");
+		duongQua->blash->setScale(scale / 2);
+		duongQua->blash->setPosition(duongQua->getContentSize() / 2);
+		duongQua->blash->setVisible(false);
+		duongQua->addChild(duongQua->blash);
 
-	return duongQua;
+		return duongQua;
+	}
+	else
+	{
+		delete duongQua;
+		duongQua = nullptr;
+		return nullptr;
+	}
 }
 
 
@@ -399,7 +409,13 @@ void DuongQua::die()
 void DuongQua::attackNormal()
 {
 	if (!getIsDoneDuration1()) {
-		attackBySkill1();
+		AudioManager::playSound(SOUND_DQSKILL1);
+		clearTracks();
+		addAnimation(0, "attack4", false);
+		setToSetupPose();
+
+		createToanChanKiemPhap(getBoneLocation("bone52"));
+
 		setIsPriorSkill1(true);			// move to attack
 	}
 	else {
@@ -430,7 +446,13 @@ void DuongQua::attackNormal()
 void DuongQua::attackLanding()
 {
 	if (!getIsDoneDuration1()) {
-		attackBySkill1();
+		AudioManager::playSound(SOUND_DQSKILL1);
+		clearTracks();
+		addAnimation(0, "attack4", false);
+		setToSetupPose();
+
+		createToanChanKiemPhap(getBoneLocation("bone52"));
+
 		setIsPriorSkill1(true);			// move to attack
 	}
 	else {
@@ -446,16 +468,6 @@ void DuongQua::attackLanding()
 		//log("atttack");
 		getSlashBreak()->setVisible(false);
 	}
-}
-
-void DuongQua::attackBySkill1()
-{
-	AudioManager::playSound(SOUND_DQSKILL1);
-	clearTracks();
-	addAnimation(0, "attack4", false);
-	setToSetupPose();
-
-	createToanChanKiemPhap(getBoneLocation("bone52"));
 }
 
 void DuongQua::injured()

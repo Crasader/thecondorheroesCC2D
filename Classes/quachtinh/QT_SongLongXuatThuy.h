@@ -14,8 +14,12 @@ protected:
 public:
 	QT_SongLongXuatThuy(string jsonFile, string atlasFile, float scale);
 	static QT_SongLongXuatThuy* create(string jsonFile, string atlasFile, float scale);
-	void initPhysic(b2World *world, float radius, Point posHead1, Point posHead2);
-	void updateDragons(Point posHead1, Point posHead2);
+	void initPhysic(b2World *world, float radius);
+	void updateDragons();
+	void changeBodyCategoryBits(uint16 mask);
+
+private:
+	Point getBoneLocation(string name);
 };
 
 #define SongLong QT_SongLongXuatThuy

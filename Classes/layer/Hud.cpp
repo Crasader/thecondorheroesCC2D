@@ -52,8 +52,8 @@ void Hud::addProfile()
 
 	auto groupAvatar = tmxMap->getObjectGroup("avatar");
 	auto mObject_1 = groupAvatar->getObject("avatar");
-	Point origin_1 = Point(mObject_1["x"].asFloat() * tmxMap->getScaleX(), 
-							mObject_1["y"].asFloat()* tmxMap->getScaleY());
+	Point origin_1 = Point(mObject_1["x"].asFloat() * tmxMap->getScaleX(),
+		mObject_1["y"].asFloat()* tmxMap->getScaleY());
 
 
 	avatar = Sprite::create(JSHERO->getavatarPath());
@@ -272,7 +272,7 @@ void Hud::addAttack()
 	Point origin = Point(mObject["x"].asFloat() * tmxMap->getScaleX(), mObject["y"].asFloat()* tmxMap->getScaleY());
 
 	btnAttack = MyButton::create("UI/Btn_skill/btn_attack.png", "UI/Btn_skill/btn_attack.png", origin);
-	
+
 	btnAttack->setTimeCoolDown(0.33f);
 	btnAttack->setScale(SCREEN_SIZE.height / 4.0f / btnAttack->getContentSize().height);
 	addChild(btnAttack, 2);
@@ -328,7 +328,7 @@ void Hud::addSkills()
 	btnSkill_3->setTimeCoolDown(coolDownS3);
 	btnSkill_3->addNumberOfUse(JSHERO->getNumberOfUseSkill3());
 	btnSkill_3->setScale(SCREEN_SIZE.height / 6.0f / btnSkill_3->getContentSize().height);
-	addChild(btnSkill_3, 2); 
+	addChild(btnSkill_3, 2);
 }
 
 void Hud::addBird()
@@ -339,7 +339,7 @@ void Hud::addBird()
 
 	btnCalling = MenuItemImage::create("UI/Btn_skill/btn_callbird.png", "UI/Btn_skill/btn_callbird_off.png", CC_CALLBACK_1(Hud::doCalling, this));
 	btnCalling->setEnabled(false);
-	btnCalling->setDisabledImage(Sprite::create("UI/btn_callbird_off.png"));
+	btnCalling->setDisabledImage(Sprite::create("UI/Btn_skill/btn_callbird_off.png"));
 	btnCalling->setPosition(origin_4);
 	btnCalling->setScale(SCREEN_SIZE.height / 7 / btnCalling->getContentSize().height);
 }
@@ -360,7 +360,7 @@ void Hud::doCalling(Ref * pSender)
 
 	btnCalling->setVisible(false);
 	btnCalling->setEnabled(false);
-	if(btnSkill_1->isVisible())
+	if (btnSkill_1->isVisible())
 		hideButton();
 
 	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
@@ -374,7 +374,7 @@ void Hud::doPause(Ref* pSender)
 	gameLayer->pauseGame();
 }
 
-void Hud::showSpecialButton() 
+void Hud::showSpecialButton()
 {
 	vector<int> list = getListIndexOfTypeItemBuy();
 	if (!list.empty()) {
@@ -383,7 +383,7 @@ void Hud::showSpecialButton()
 		Point origin = Point(mObject["x"].asFloat() * tmxMap->getScaleX(), mObject["y"].asFloat()* tmxMap->getScaleY());
 
 		for (int i = 0; i < list.size(); ++i) {
-			createButtonX(list[i], Point(origin.x, origin.y - i * SCREEN_SIZE.height * 0.15f));		
+			createButtonX(list[i], Point(origin.x, origin.y - i * SCREEN_SIZE.height * 0.15f));
 		}
 	}
 }
@@ -528,19 +528,19 @@ void Hud::showButton()
 
 	btnSkill_1->setVisible(true);
 	btnSkill_1->getMain()->setVisible(true);
-	if (!btnSkill_1->getCanTouch()) {
+	if (btnSkill_1->getmTimer() > 0) {
 		btnSkill_1->getNumberCoolDown()->setVisible(true);
 	}
 
 	btnSkill_2->setVisible(true);
 	btnSkill_2->getMain()->setVisible(true);
-	if (!btnSkill_2->getCanTouch()) {
+	if (btnSkill_2->getmTimer() > 0) {
 		btnSkill_2->getNumberCoolDown()->setVisible(true);
 	}
 
 	btnSkill_3->setVisible(true);
 	btnSkill_3->getMain()->setVisible(true);
-	if (!btnSkill_3->getCanTouch()) {
+	if (btnSkill_3->getmTimer() > 0) {
 		btnSkill_3->getNumberCoolDown()->setVisible(true);
 	}
 }
@@ -559,7 +559,7 @@ void Hud::pauseIfVisible()
 		coverItemDC->pause();
 	}
 
-	if(btnAttack != nullptr && btnAttack->isVisible())
+	if (btnAttack != nullptr && btnAttack->isVisible())
 		btnAttack->pauseListener();
 
 	if (btnSkill_1 != nullptr && btnSkill_1->isVisible()) {
@@ -569,7 +569,7 @@ void Hud::pauseIfVisible()
 		btnSkill_3->pauseListener();
 
 		btnSkill_1->pause();
-		
+
 		btnSkill_2->pause();
 
 		btnSkill_3->pause();
@@ -594,7 +594,7 @@ void Hud::resumeIfVisible()
 		btnAttack->addEvents();
 
 	if (btnSkill_1 != nullptr && btnSkill_1->isVisible()) {
-		
+
 		btnSkill_1->addEvents();
 		btnSkill_1->getMain()->setVisible(true);
 		if (!btnSkill_1->getCanTouch()) {	// in scheule
@@ -645,7 +645,7 @@ void Hud::refreshControl()
 	}
 }
 
-void Hud::moveCallBirdToCenterScreen(Vec2 p_ptCenterScreen) 
+void Hud::moveCallBirdToCenterScreen(Vec2 p_ptCenterScreen)
 {
 
 	MoveTo *_pStageSpecialButton = MoveTo::create(0.3f, p_ptCenterScreen);
@@ -745,7 +745,7 @@ void Hud::runnerSkillDuration(int skillWhat, float duration)
 			coverSkill->unschedule("durationKey");
 		}
 	}, 0.1f, "durationKey");
-	
+
 }
 
 void Hud::runnerItemMagnet(int counter)
@@ -797,4 +797,15 @@ void Hud::runnerItemDC(int counter)
 			coverItemDC->unschedule("itemRunnerDC");
 		}
 	}, 0.1f, "itemRunnerDC");
+}
+
+void Hud::tryHud()
+{
+	addAttack();
+
+	addSkills();
+	if (REF->getNumberItemBird() > 0) {
+		addBird();
+		menu->addChild(btnCalling);
+	}
 }

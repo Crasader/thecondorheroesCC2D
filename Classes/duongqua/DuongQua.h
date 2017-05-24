@@ -66,7 +66,6 @@ protected:
 	void die();
 	void attackNormal();
 	void attackLanding();
-	void attackBySkill1();
 	void injured();
 	void listener();
 

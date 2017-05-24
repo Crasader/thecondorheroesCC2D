@@ -1955,7 +1955,7 @@ void MenuLayer::buttonPickHeroHandle(int p_nIndexHero) {
 
 void MenuLayer::buttonTryHeroHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
-	auto _scene = LoadingLayer::createScene(1, 1, m_nIndexHeroPicked);
+	auto _scene = LoadingLayer::createScene(1, 2, m_nIndexHeroPicked);
 	Director::getInstance()->replaceScene(TransitionFade::create(0.2f, _scene));
 }
 

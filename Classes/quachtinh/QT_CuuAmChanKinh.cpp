@@ -12,6 +12,7 @@ QT_CuuAmChanKinh::~QT_CuuAmChanKinh()
 QT_CuuAmChanKinh * QT_CuuAmChanKinh::create()
 {
 	QT_CuuAmChanKinh* ck = new QT_CuuAmChanKinh();
+
 	ck->initWithSpriteFrameName("skill1_firedown_1.png");
 	ck->setTag(TAG_QT_CUU_AM_CHAN_KINH);
 
@@ -57,7 +58,7 @@ void QT_CuuAmChanKinh::updateMe()
 {
 	if (body != nullptr) {
 		this->setPositionX(body->GetPosition().x * PTM_RATIO - this->getBoundingBox().size.width / 5);
-		this->setPositionY(body->GetPosition().y * PTM_RATIO + this->getBoundingBox().size.height / 5);	
+		this->setPositionY(body->GetPosition().y * PTM_RATIO + this->getBoundingBox().size.height / 5);
 	}
 }
 

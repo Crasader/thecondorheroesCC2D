@@ -36,6 +36,9 @@ public:
 	void runnerItemMagnet(int counter);
 	void runnerItemDC(int counter);
 
+	// only for try hero
+	void tryHud();
+
 protected:
 
 	CC_SYNTHESIZE(MenuItemImage*, pauseItem, PauseItem);

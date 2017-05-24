@@ -105,9 +105,6 @@ public:
 	virtual void die();
 	virtual void attackNormal();
 	virtual void attackLanding();
-	virtual void attackBySkill1();
-	virtual void attackBySkill2();
-	virtual void attackBySkill3();
 	virtual void injured();
 	virtual void revive();
 	virtual void listener();

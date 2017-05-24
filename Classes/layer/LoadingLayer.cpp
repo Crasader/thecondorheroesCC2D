@@ -157,6 +157,11 @@ void LoadingLayer::doProcess()
 	mainScene->retain();
 	hud = Hud::create();
 	hud->retain();
+	
+	if (REF->getIsFirstPlay() && charId != REF->getLastPickHero()) {	// try
+		hud->tryHud();
+	}
+
 	mainScene->setHud(hud);
 	
 

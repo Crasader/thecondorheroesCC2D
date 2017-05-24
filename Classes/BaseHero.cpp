@@ -57,7 +57,17 @@ BaseHero::BaseHero(string jsonFile, string atlasFile, float scale) : B2Skeleton(
 BaseHero * BaseHero::create(string jsonFile, string atlasFile, float scale)
 {
 	BaseHero* baseHero = new BaseHero(jsonFile, atlasFile, scale);
-	return baseHero;
+	if (baseHero && baseHero->init())
+	{
+		baseHero->autorelease();
+		return baseHero;
+	}
+	else
+	{
+		delete baseHero;
+		baseHero = nullptr;
+		return nullptr;
+	}
 }
 
 void BaseHero::initCirclePhysic(b2World * world, Point pos)
@@ -273,18 +283,6 @@ void BaseHero::attackNormal()
 void BaseHero::attackLanding()
 {
 	AudioManager::playSound(SOUND_MCAT);
-}
-
-void BaseHero::attackBySkill1()
-{
-}
-
-void BaseHero::attackBySkill2()
-{
-}
-
-void BaseHero::attackBySkill3()
-{
 }
 
 void BaseHero::injured()

@@ -1,5 +1,6 @@
 #include "LoadingLayer.h"
 #include "manager/RefManager.h"
+#include "manager/JSonHeroManager.h"
 
 Scene * LoadingLayer::createScene(int stage, int map, int charId)
 {
@@ -156,6 +157,11 @@ void LoadingLayer::doProcess()
 	mainScene->retain();
 	hud = Hud::create();
 	hud->retain();
+	
+	if (REF->getIsFirstPlay() && charId != REF->getLastPickHero()) {	// try
+		hud->tryHud();
+	}
+
 	mainScene->setHud(hud);
 	
 

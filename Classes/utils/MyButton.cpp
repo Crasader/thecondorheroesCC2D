@@ -22,16 +22,17 @@ MyButton * MyButton::create(string file_name_main, string file_name_CoolDown, Po
 	mNode->numberOfUseHasNotUsedYet = 1;
 
 	mNode->number = Label::createWithBMFont("fonts/font_life-export.fnt", "0");
-	mNode->number->setBMFontSize(mNode->getContentSize().height / 2.5f);
+	mNode->number->setBMFontSize(mNode->getContentSize().height / 2.2f);
 	mNode->number->setAnchorPoint(Vec2(0.5f, 0.15f));
 	mNode->number->setPosition(mNode->getContentSize() / 2);
 	mNode->addChild(mNode->number);
 	mNode->number->setVisible(false);
 
-	mNode->numberUseLb = Label::createWithTTF(StringUtils::format("%i", mNode->numberOfUseHasNotUsedYet), 
-												"fonts/arial.ttf", mNode->getContentSize().height / 4);
+	mNode->numberUseLb = Label::createWithBMFont("fonts/font_life-export.fnt", StringUtils::format("%i", mNode->numberOfUseHasNotUsedYet));
+	mNode->numberUseLb->setBMFontSize(mNode->getContentSize().height / 2.2f);
+	mNode->numberUseLb->setAnchorPoint(Vec2(0.5f, 0.15f));
 	mNode->numberUseLb->setVisible(false);
-	mNode->numberUseLb->setPosition(mNode->getContentSize().width, 0);
+	mNode->numberUseLb->setPosition(mNode->getContentSize().width * 0.75f, mNode->getContentSize().height * 0.75f);
 	mNode->addChild(mNode->numberUseLb);
 
 

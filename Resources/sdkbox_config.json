@@ -5,18 +5,18 @@
             "ads": {
                 "gameover": {
                     "type": "interstitial", 
-                    "id": "ca-app-pub-4291038556071828/6542706995"
-                }, 
-                "home": {
-                    "width": 0, 
-                    "type": "banner", 
-                    "id": "ca-app-pub-4291038556071828/5065973795", 
-                    "alignment": "bottom", 
-                    "height": 0
-                }, 
+                    "id": "ca-app-pub-4291038556071828/4273788997"
+                },
+              "home": {
+                "width": 0,
+                "type": "banner",
+                "id": "ca-app-pub-4291038556071828/2797055798",
+                "alignment": "top",
+                "height": 0
+              }, 
                 "rewarded": {
                     "type": "rewarded_video", 
-                    "id": "ca-app-pub-4291038556071828/5065973795"
+                    "id": "ca-app-pub-4291038556071828/5750522193"
                 }
             }
         }
@@ -25,20 +25,20 @@
         "AdMob": {
             "test": false, 
             "ads": {
-                "gameover": {
+               "gameover": {
                     "type": "interstitial", 
-                    "id": "ca-app-pub-4291038556071828/6542706995"
-                }, 
-                "home": {
-                    "width": 0, 
-                    "type": "banner", 
-                    "id": "ca-app-pub-4291038556071828/5065973795", 
-                    "alignment": "bottom", 
-                    "height": 0
-                }, 
+                    "id": "ca-app-pub-4291038556071828/1180721794"
+                },
+              "home": {
+                "width": 0,
+                "type": "banner",
+                "id": "ca-app-pub-4291038556071828/8703988590",
+                "alignment": "top",
+                "height": 0
+              }, 
                 "rewarded": {
                     "type": "rewarded_video", 
-                    "id": "ca-app-pub-4291038556071828/5065973795"
+                    "id": "ca-app-pub-4291038556071828/2657454997"
                 }
             }
         }

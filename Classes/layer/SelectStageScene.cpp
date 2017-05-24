@@ -2,7 +2,9 @@
 #include "LoadingLayer.h"
 #include "MenuScene.h"
 #include "manager/RefManager.h"
-#include "thirdsdkhelper\AdmobHelper.h"
+#include "manager/AudioManager.h"
+#include "manager/JSonHeroManager.h"
+#include "thirdsdkhelper/AdmobHelper.h"
 
 
 bool SelectStageLayer::init(int charId)

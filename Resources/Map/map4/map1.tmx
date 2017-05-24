@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="450" height="20" tilewidth="80" tileheight="80" nextobjectid="211">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="450" height="20" tilewidth="80" tileheight="80" nextobjectid="218">
  <tileset firstgid="1" name="street1" tilewidth="80" tileheight="80" tilecount="9" columns="9">
   <image source="street1_1.png" width="720" height="80"/>
  </tileset>
@@ -164,42 +164,15 @@
   <object id="115" x="896.97" y="842.424" width="451.515" height="9.09091"/>
   <object id="116" x="1909.09" y="1233.33" width="493.939" height="3.0303"/>
  </objectgroup>
- <objectgroup name="Enemy_1">
-  <object id="118" x="1090.91" y="715.152" width="63.6364" height="130.303"/>
-  <object id="119" x="2748.48" y="918.182" width="63.6364" height="148.485"/>
-  <object id="122" x="3996.97" y="896.97" width="66.6667" height="166.667"/>
-  <object id="123" x="5039.39" y="836.364" width="72.7273" height="157.576"/>
-  <object id="124" x="6963.64" y="612.121" width="72.7273" height="145.455"/>
-  <object id="125" x="8212.12" y="778.788" width="60.6061" height="127.273"/>
-  <object id="126" x="10642.4" y="269.697" width="78.7879" height="163.636"/>
-  <object id="127" x="12372.7" y="775.758" width="63.6364" height="133.333"/>
-  <object id="128" x="13921.2" y="1106.06" width="66.6667" height="118.182"/>
-  <object id="129" x="14718.2" y="1103.03" width="72.7273" height="112.121"/>
-  <object id="131" x="16218.2" y="881.818" width="66.6667" height="115.152"/>
-  <object id="133" x="18060.6" y="927.273" width="54.5455" height="142.424"/>
-  <object id="134" x="20109.1" y="1160.61" width="51.5152" height="145.455"/>
-  <object id="135" x="20824.2" y="1169.7" width="63.6364" height="136.364"/>
- </objectgroup>
- <objectgroup name="Enemy_2">
-  <object id="136" x="22451.5" y="645.455" width="54.5455" height="118.182"/>
-  <object id="137" x="22987.9" y="633.333" width="57.5758" height="127.273"/>
-  <object id="138" x="22618.2" y="960.606" width="54.5455" height="118.182"/>
-  <object id="139" x="24484.8" y="609.091" width="66.6667" height="142.424"/>
-  <object id="140" x="24766.7" y="854.545" width="69.697" height="136.364"/>
-  <object id="141" x="25178.8" y="618.182" width="57.5758" height="136.364"/>
-  <object id="142" x="27172.7" y="545.455" width="57.5758" height="127.273"/>
-  <object id="143" x="28136.4" y="651.515" width="51.5152" height="112.121"/>
-  <object id="146" x="29239.4" y="421.212" width="63.6364" height="100"/>
-  <object id="147" x="30706.1" y="936.364" width="63.6364" height="136.364"/>
-  <object id="148" x="31421.2" y="706.061" width="54.5455" height="124.242"/>
-  <object id="149" x="32103" y="709.091" width="48.4848" height="121.212"/>
-  <object id="150" x="34824.2" y="636.364" width="45.4545" height="118.182"/>
-  <object id="151" x="35581.8" y="636.364" width="36.3636" height="127.273"/>
-  <object id="152" x="32903" y="636.364" width="48.4848" height="127.273"/>
-  <object id="153" x="33593.9" y="663.636" width="48.4848" height="103.03"/>
-  <object id="154" x="34281.8" y="921.212" width="54.5455" height="151.515"/>
-  <object id="155" x="35260.6" y="942.424" width="45.4545" height="130.303"/>
-  <object id="156" x="33130.3" y="948.485" width="42.4242" height="124.242"/>
+ <objectgroup name="linhcamgiao2">
+  <object id="119" x="1768.48" y="1222.18" width="63.6364" height="148.485"/>
+  <object id="129" x="15202.2" y="1111.03" width="72.7273" height="112.121"/>
+  <object id="211" x="23200" y="568" width="84" height="172"/>
+  <object id="212" x="25664" y="784" width="84" height="196"/>
+  <object id="213" x="34020" y="592" width="92" height="152"/>
+  <object id="214" x="35164" y="168" width="72" height="248"/>
+  <object id="215" x="34916" y="912" width="68" height="156"/>
+  <object id="217" x="25420" y="544" width="68" height="192"/>
  </objectgroup>
  <objectgroup name="under_ground">
   <object id="157" x="84" y="1434" width="1748"/>
@@ -253,5 +226,16 @@
   <object id="207" x="31198" y="886" width="472" height="8"/>
   <object id="208" x="31846" y="882" width="468" height="12"/>
   <object id="209" x="32400" y="1120" width="3730" height="8"/>
+ </objectgroup>
+ <objectgroup name="linhcamgiao1">
+  <object id="122" x="3996.97" y="896.97" width="66.6667" height="166.667"/>
+  <object id="124" x="6963.64" y="612.121" width="72.7273" height="145.455"/>
+  <object id="125" x="8212.12" y="778.788" width="60.6061" height="127.273"/>
+  <object id="126" x="10826.4" y="257.697" width="78.7879" height="163.636"/>
+  <object id="127" x="12552.7" y="775.758" width="63.6364" height="133.333"/>
+  <object id="131" x="16422.2" y="309.818" width="66.6667" height="115.152"/>
+  <object id="133" x="18220.6" y="927.273" width="54.5455" height="142.424"/>
+  <object id="134" x="21021.1" y="596.61" width="51.5152" height="145.455"/>
+  <object id="216" x="27156" y="456" width="80" height="216"/>
  </objectgroup>
 </map>

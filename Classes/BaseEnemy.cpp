@@ -1,4 +1,5 @@
 #include "BaseEnemy.h"
+#include "BaseHero.h"
 #include "layer/GameScene.h"
 
 

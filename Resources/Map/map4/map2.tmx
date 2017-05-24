@@ -204,6 +204,16 @@
   <object id="124" x="32056" y="1308" width="64" height="112"/>
   <object id="125" x="24044" y="1308" width="60" height="124"/>
  </objectgroup>
+ <objectgroup name="chonggo2">
+  <object id="51" x="25272.7" y="1257.58" width="215.152" height="178.788"/>
+  <object id="53" x="27672.7" y="1257.58" width="215.152" height="172.727"/>
+  <object id="55" x="28139.4" y="1260.61" width="227.273" height="181.818"/>
+  <object id="54" x="27912.1" y="1266.67" width="212.121" height="172.727"/>
+  <object id="57" x="30157.6" y="1254.55" width="209.091" height="184.848"/>
+  <object id="56" x="29912.1" y="1248.49" width="221.212" height="190.909"/>
+  <object id="29" x="5215.15" y="1272.73" width="209.091" height="172.727"/>
+ </objectgroup>
+ <objectgroup name="chonggo3"/>
  <objectgroup name="under_ground">
   <object id="146" x="8" y="1532" width="35964"/>
  </objectgroup>

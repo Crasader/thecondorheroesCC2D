@@ -45,7 +45,7 @@ void DQ_DocCoKiemPhap::initBoxPhysic(b2World * world, Point pos)
 	fixtureDef.shape = &shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_SWORD;
-	fixtureDef.filter.maskBits = BITMASK_UNDER_GROUND |  BITMASK_BOSS | BITMASK_COIN_BAG | BITMASK_ENEMY;
+	fixtureDef.filter.maskBits = BITMASK_UNDER_GROUND |  BITMASK_BOSS | BITMASK_COIN_BAG | BITMASK_ENEMY | BITMASK_WOODER;
 
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.userData = this;		// pass sprite to bodyDef with argument: userData

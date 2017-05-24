@@ -44,6 +44,10 @@ BaseHero::BaseHero(string jsonFile, string atlasFile, float scale) : B2Skeleton(
 	isDoneDuration2 = true;
 	isDoneDuration3 = true;
 
+	checkDurationSkill1 = 0;
+	checkDurationSkill2 = 0;
+	checkDurationSkill3 = 0;
+
 	dieHard = 1;
 	coinRatio = 1;
 	scoreRatio = 1;
@@ -53,16 +57,60 @@ BaseHero::BaseHero(string jsonFile, string atlasFile, float scale) : B2Skeleton(
 BaseHero * BaseHero::create(string jsonFile, string atlasFile, float scale)
 {
 	BaseHero* baseHero = new BaseHero(jsonFile, atlasFile, scale);
-	return baseHero;
+	if (baseHero && baseHero->init())
+	{
+		baseHero->autorelease();
+		return baseHero;
+	}
+	else
+	{
+		delete baseHero;
+		baseHero = nullptr;
+		return nullptr;
+	}
 }
 
-void BaseHero::initSwordPhysic(b2World *world, Point position, float width)
+void BaseHero::initCirclePhysic(b2World * world, Point pos)
+{
+	b2CircleShape circle_shape;
+	circle_shape.m_radius = getBoxHeight() / PTM_RATIO;
+
+	// True radius of hero is here
+	setTrueRadiusOfHero(circle_shape.m_radius * PTM_RATIO);
+
+	b2FixtureDef fixtureDef;
+	fixtureDef.density = 0.0f;
+	fixtureDef.friction = 0.0f;
+	fixtureDef.restitution = 0.0f;
+	fixtureDef.shape = &circle_shape;
+
+	fixtureDef.filter.categoryBits = BITMASK_HERO;
+
+	fixtureDef.filter.maskBits = BITMASK_FLOOR |
+		BITMASK_ENEMY | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION;
+
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.userData = this;			// pass sprite to bodyDef with argument: userData
+
+	bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);
+
+	body = world->CreateBody(&bodyDef);
+	body->CreateFixture(&fixtureDef);
+
+
+	// connect sword with body
+	initSwordPhysic(world, Point(pos.x + trueRadiusOfHero * 2.2f, pos.y));
+}
+
+void BaseHero::initSwordPhysic(b2World *world, Point position)
 {
 	b2BodyDef bodyDef;
 	b2PolygonShape shape;
 	b2FixtureDef fixtureDef;
 
-	shape.SetAsBox(width / PTM_RATIO, getTrueRadiusOfHero()* 0.85f / PTM_RATIO);
+	shape.SetAsBox(trueRadiusOfHero / PTM_RATIO, trueRadiusOfHero* 0.85f / PTM_RATIO);
 
 	fixtureDef.density = 0.0f;
 	fixtureDef.friction = 0.0f;
@@ -237,18 +285,6 @@ void BaseHero::attackLanding()
 	AudioManager::playSound(SOUND_MCAT);
 }
 
-void BaseHero::attackBySkill1()
-{
-}
-
-void BaseHero::attackBySkill2()
-{
-}
-
-void BaseHero::attackBySkill3()
-{
-}
-
 void BaseHero::injured()
 {
 }
@@ -371,7 +407,7 @@ void BaseHero::killThemAll()
 	blash->setVisible(true);
 	//auto originScale = blash->getScale();
 	auto scaleFactor = Director::getInstance()->getContentScaleFactor();
-	auto scale = ScaleBy::create(1.0f, 175 * scaleFactor);
+	auto scale = ScaleBy::create(1.0f, 200 * scaleFactor);
 
 	auto hide = CallFunc::create([&]() {
 		blash->setVisible(false);

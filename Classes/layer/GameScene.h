@@ -2,8 +2,6 @@
 #define __GAME_SCENE_H__
 
 #include "Global.h"
-#include "colong/CoLong.h"
-#include "duongqua/DuongQua.h"
 #include "EnemyWooder.h"
 #include "EnemyToanChanStudent.h"
 #include "EnemyToanChanStudent2.h"
@@ -45,6 +43,7 @@ public:
 	static GameScene* create(int stage, int map, int charId);
 
 	BaseHero * getHero() { return hero; }
+	Node* getFollow() { return follow; }
 	void setLastScore(int lastScore) { m_lastScore = lastScore; }
 	CC_SYNTHESIZE(Hud*, hud, Hud);
 	void enableCalling();
@@ -58,6 +57,7 @@ private:
 	int map;
 	int haveboss;
 	float changebg;
+	Point heroStartPosition;
 
 
 	int charId;	//Thinhnv Edited for select character
@@ -119,11 +119,12 @@ private:
 	// listener
 	EventListenerTouchOneByOne* touch_listener;
 
-
+	void selectHero();
 
 	// Create For Hero
-	void createDuongQua(string path_Json, string path_Atlas, Point position);
-	void createCoLong(string path_Json, string path_Atlas, Point position);
+	void createDuongQua(string path_Json, string path_Atlas);
+	void createCoLong(string path_Json, string path_Atlas);
+	void createQuachTinh(string path_Json, string path_Atlas);
 	void createEagle(Point position);
 	void heroGetOffEagle();
 
@@ -147,6 +148,8 @@ private:
 	void createEnemyChong1(MyLayer * layer, Vec2 pos);
 	void createEnemyChong2(MyLayer * layer, Vec2 pos);
 	void createEnemyChong3(MyLayer * layer, Vec2 pos);
+	void createEnemyLinhCamGiao(MyLayer * layer, Vec2 pos);
+	void createEnemyLinhCamGiao2(MyLayer * layer, Vec2 pos);
 	void creatBoss();
 
 

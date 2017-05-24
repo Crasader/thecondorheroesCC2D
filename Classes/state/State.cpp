@@ -12,9 +12,6 @@ AttackNormal* AttackNormal::m_attack;
 Revive* Revive::m_revive;
 Injuring* Injuring::m_injured;
 Dead* Dead::m_dead;
-Skill1* Skill1::m_skill1;
-Skill2* Skill2::m_skill2;
-Skill3* Skill3::m_skill3;
 
 
 
@@ -249,72 +246,4 @@ Dead * Dead::getInstance()
 	if (m_dead == nullptr)
 		m_dead = new Dead();
 	return m_dead;
-}
-
-
-// SKILL 1
-Skill1::Skill1()
-{
-}
-
-Skill1::~Skill1()
-{
-}
-
-void Skill1::execute(BaseHero * hero)
-{
-	hero->attackBySkill1();
-}
-
-Skill1 * Skill1::getInstance()
-{
-	if (m_skill1 == nullptr)
-		m_skill1 = new Skill1();
-	return m_skill1;
-}
-
-
-
-// SKILL 2
-Skill2::Skill2()
-{
-}
-
-Skill2::~Skill2()
-{
-}
-
-void Skill2::execute(BaseHero * hero)
-{
-	hero->attackBySkill2();
-}
-
-Skill2 * Skill2::getInstance()
-{
-	if (m_skill2 == nullptr)
-		m_skill2 = new Skill2();
-	return m_skill2;
-}
-
-
-
-// SKILL 3
-Skill3::Skill3()
-{
-}
-
-Skill3::~Skill3()
-{
-}
-
-void Skill3::execute(BaseHero * hero)
-{
-	hero->attackBySkill3();
-}
-
-Skill3 * Skill3::getInstance()
-{
-	if (m_skill3 == nullptr)
-		m_skill3 = new Skill3();
-	return m_skill3;
 }

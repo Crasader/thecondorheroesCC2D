@@ -20,7 +20,6 @@ protected:
 	CCArray* poolSkill1;
 	int indexSkill1 = 0;
 	list<ToanChanKiemPhap*> listToanChanKiemPhap;
-	int checkDurationSkill1;
 	void createToanChanKiemPhap(Point posSword);
 	void slashToanChanKiemPhap();
 	void doCounterSkill1();
@@ -32,7 +31,6 @@ protected:
 	/*CCArray* poolSkill2;
 	int indexSkill2 = 0;*/
 	list<KiemPhap*> listKiemPhap;
-	int checkDurationSkill2;
 	int numberOfDeadSword;
 	int indexKiem = 0;
 	void createKiemPhap(float posX);
@@ -43,7 +41,6 @@ protected:
 	CCArray *poolSkill3;
 	int indexSkill3 = 0;
 	SkeletonAnimation* spiritHole;
-	int checkDurationSkill3;
 	int numberOfDeadTHC;
 	list<TieuHonChuong*> listTieuHonChuong;
 	void createSpiritHole();
@@ -59,7 +56,6 @@ protected:
 	void runSlashLand();
 	//////////////////////////////////////////////////////////////////////////
 
-	void initCirclePhysic(b2World *world, Point pos);
 	void addStuff();
 	void createPool();
 
@@ -70,7 +66,6 @@ protected:
 	void die();
 	void attackNormal();
 	void attackLanding();
-	void attackBySkill1();
 	void injured();
 	void listener();
 

@@ -1,3 +1,4 @@
+
 #include "MenuScene.h"
 #include "LoadingLayer.h"
 #include "IntroScene.h"
@@ -8,7 +9,7 @@
 #include "manager/RefManager.h"
 #include "ui_custom/CustomSpriteToBuyPack.h"
 
-MenuLayer * MenuLayer::create(bool p_bOnlySelectStage) {
+	MenuLayer * MenuLayer::create(bool p_bOnlySelectStage) {
 	MenuLayer *pRet = new(std::nothrow) MenuLayer();
 	if (pRet && pRet->init(p_bOnlySelectStage)) {
 		pRet->autorelease();
@@ -102,6 +103,7 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 	m_pBlurScreen = Layer::create();
 	m_pBlurScreen->setScaleX(m_szVisibleSize.width / m_pBlurScreen->getContentSize().width); // full screen size width
 	m_pBlurScreen->setScaleY(m_szVisibleSize.height / m_pBlurScreen->getContentSize().height); // full screen size height
+
 	m_pBlurScreen->setPosition(Vec2(0.0f, 0.0f));
 	this->addChild(m_pBlurScreen, 5);
 	m_pBlurScreen->setVisible(false);
@@ -1432,7 +1434,7 @@ void MenuLayer::buttonSettingHandle() {
 	_pButtonMusicControl->setPosition(Vec2(m_pBlurScreen->getContentSize().width * 0.65f, m_pBlurScreen->getContentSize().height * 0.31f));
 	bool checkMusic = ref->getBoolForKey(KEY_IS_MUSIC, true);
 	_pButtonMusicControl->setSelectedIndex(checkMusic == true ? 0 : 1);
-	
+
 	Menu *_pShopMenu = Menu::create(_pButtonSoundControl, _pButtonMusicControl, _aCloseButton, NULL);
 	_pShopMenu->setContentSize(Size(m_pBlurScreen->getContentSize().width, m_pBlurScreen->getContentSize().height));
 	_pShopMenu->setPosition(0.0f, 0.0f);
@@ -1851,7 +1853,7 @@ void MenuLayer::initShopBoard(int p_nOption) {
 			_pPackCostSprite->addChild(_pLabelDiamondCost, 1);
 		}
 	}
-	
+
 	m_pShopBoardLayer->runAction(ScaleTo::create(0.2f, 1.0f));
 }
 
@@ -1947,7 +1949,7 @@ void MenuLayer::buttonBuyDiamondHandle(int p_nIndexDiamondPack) {
 	m_pTopMenu->setEnabled(false);
 
 	REF->setUpNumberQuest(7, JSMENU->getDiamondPackNumberDiamond());
-	initQuestBoard(0);
+	//initQuestBoard(0);
 }
 
 void MenuLayer::buttonPickHeroHandle(int p_nIndexHero) {
@@ -1970,8 +1972,8 @@ void MenuLayer::buttonPickHeroHandle(int p_nIndexHero) {
 
 void MenuLayer::buttonTryHeroHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
-		auto _scene = LoadingLayer::createScene(1, 1, m_nIndexHeroPicked);
-		Director::getInstance()->replaceScene(TransitionFade::create(0.2f, _scene));
+	auto _scene = LoadingLayer::createScene(1, 2, m_nIndexHeroPicked);
+	Director::getInstance()->replaceScene(TransitionFade::create(0.2f, _scene));
 }
 
 void MenuLayer::buttonUnlockHeroHandle() {

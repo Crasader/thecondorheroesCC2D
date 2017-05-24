@@ -81,10 +81,10 @@ void EnemyChong2::updateMe(BaseHero* hero)
 	}
 
 	if (hero->getIsKillAll() && this->getB2Body() != nullptr) {
-		if (this->getPositionX() + this->getParent()->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width * 0.75f &&
+		if (this->getPositionX() + this->getParent()->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width * 0.45f &&
 			this->getPositionX() + this->getParent()->getPositionX() > hero->getPositionX() - SCREEN_SIZE.width * 0.26f &&
 			hero->getPositionY() + SCREEN_SIZE.height * 0.5f > this->getPositionY() &&
-			hero->getPositionY() - SCREEN_SIZE.height * 0.35f < this->getPositionY()
+			hero->getPositionY() - SCREEN_SIZE.height * 0.4f < this->getPositionY()
 
 			) {
 
@@ -101,17 +101,13 @@ void EnemyChong2::updateMe(BaseHero* hero)
 void EnemyChong2::listener()
 {
 	this->setCompleteListener([&](int trackIndex, int loopCount) {
-		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
-			//this->removeFromParentAndCleanup(false);
-			this->setVisible(false);
-			/*this->clearTracks();
-			this->setAnimation(0, "idle", true);
-			this->setToSetupPose();*/
-			this->pauseSchedulerAndActions();
-		}
 		if (strcmp(getCurrent()->animation->name, "appear") == 0 && loopCount == 1) {
 			//this->removeFromParentAndCleanup(false);
-			this->addAnimation(1, "idle", true);
+			this->addAnimation(0, "idle", true);
+		}
+		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
+			this->setVisible(false);
+			this->pauseSchedulerAndActions();
 		}
 	});
 }

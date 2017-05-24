@@ -45,7 +45,6 @@ protected:
 	CCArray *poolSkill1;
 	int indexSkill1 = 0;
 	list<TieuHonChuong *> m_lDocPhongCham;
-	int checkDurationSkill1;
 	void createDocPhongCham(Point p_ptStartPoint, Point p_ptEndPoint);
 	void doCounterSkill1();
 
@@ -53,12 +52,10 @@ protected:
 	CCArray *poolSkill2;
 	int indexSkill2 = 0;
 	bool isAddedAll = false;
-	int checkDurationSkill2;
 	void createNgocNuKiemPhap(Point p_ptPoint);
 	void doCounterSkill2();
 
 	// Skill 3
-	int checkDurationSkill3;
 	void doCounterSkill3();
 
 	//////////////////////////////////////////////////////////////////////////

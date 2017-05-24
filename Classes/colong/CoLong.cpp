@@ -3,29 +3,37 @@
 #include "manager/AudioManager.h"
 
 CoLong::CoLong(string p_sJsonFile, string p_sAtlasFile, float p_fScale) : BaseHero(p_sJsonFile, p_sAtlasFile, p_fScale) {
-	checkDurationSkill1 = 0;
-	checkDurationSkill2 = 0;
-	checkDurationSkill3 = 0;
+
 }
 
 CoLong * CoLong::create(string p_sJsonFile, string p_sAtlasFile, float p_fScale) {
 	CoLong *_pCoLong = new CoLong(p_sJsonFile, p_sAtlasFile, p_fScale);
-	_pCoLong->setTag(TAG_HERO);
+	if (_pCoLong && _pCoLong->init())
+	{
+		_pCoLong->autorelease();
+		_pCoLong->setTag(TAG_HERO);
 
-	_pCoLong->update(0.0f);
+		_pCoLong->update(0.0f);
 
-	_pCoLong->stateMachine = new StateMachine(_pCoLong);
-	_pCoLong->stateMachine->setCurrentState(MLand);
+		_pCoLong->stateMachine = new StateMachine(_pCoLong);
+		_pCoLong->stateMachine->setCurrentState(MLand);
 
-	_pCoLong->setBoxHeight(_pCoLong->getBoundingBox().size.height / 3.4f);
+		_pCoLong->setBoxHeight(_pCoLong->getBoundingBox().size.height / 3.4f);
 
-	_pCoLong->blash = Sprite::create("Animation/CoLong/blash.png");
-	_pCoLong->blash->setScale(p_fScale / 2);
-	_pCoLong->blash->setPosition(_pCoLong->getContentSize() / 2);
-	_pCoLong->blash->setVisible(false);
-	_pCoLong->addChild(_pCoLong->blash);
+		_pCoLong->blash = Sprite::create("Animation/CoLong/blash.png");
+		_pCoLong->blash->setScale(p_fScale / 2);
+		_pCoLong->blash->setPosition(_pCoLong->getContentSize() / 2);
+		_pCoLong->blash->setVisible(false);
+		_pCoLong->addChild(_pCoLong->blash);
 
-	return _pCoLong;
+		return _pCoLong;
+	}
+	else
+	{
+		delete _pCoLong;
+		_pCoLong = nullptr;
+		return nullptr;
+	}
 }
 
 // SKILL 1
@@ -185,9 +193,11 @@ void CoLong::updateMe(float p_fDelta) {
 	if (getB2Body() == nullptr)
 		return;
 
-	m_pRadaSkill1->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), 0.0f);
-	m_pRadaSkill2->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), 0.0f);
-	m_pRadaSkill3->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), 0.0f);
+	if (m_pRadaSkill1 != nullptr) {
+		m_pRadaSkill1->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), 0.0f);
+		m_pRadaSkill2->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), 0.0f);
+		m_pRadaSkill3->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), 0.0f);
+	}
 
 	auto currentVelY = getB2Body()->GetLinearVelocity().y;
 	if (getFSM()->currentState == MDie) {
@@ -298,37 +308,7 @@ void CoLong::createSlash() {
 }
 
 void CoLong::initCirclePhysic(b2World * world, Point pos) {
-	b2CircleShape circle_shape;
-	circle_shape.m_radius = getBoxHeight() / PTM_RATIO;
-
-	// True radius of hero is here
-	setTrueRadiusOfHero(circle_shape.m_radius * PTM_RATIO);
-	//
-
-	b2FixtureDef fixtureDef;
-	fixtureDef.density = 0.0f;
-	fixtureDef.friction = 0.0f;
-	fixtureDef.restitution = 0.0f;
-	fixtureDef.shape = &circle_shape;
-
-	fixtureDef.filter.categoryBits = BITMASK_HERO;
-
-	fixtureDef.filter.maskBits = BITMASK_FLOOR |
-		BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION | BITMASK_ENEMY;
-
-
-
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
-	bodyDef.userData = this;			// pass sprite to bodyDef with argument: userData
-
-	bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);
-
-	body = world->CreateBody(&bodyDef);
-	body->CreateFixture(&fixtureDef);
-
-	// connect sword with body
-	initSwordPhysic(world, Point(pos.x + trueRadiusOfHero * 2.2f, pos.y), trueRadiusOfHero);
+	BaseHero::initCirclePhysic(world, pos);
 
 	// rada
 	createRada(world);

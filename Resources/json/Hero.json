@@ -57,8 +57,8 @@
       "avatarLoadingPath": "UI/Loading/DQ.png",
       "isLocked": false,
       "coolDownSkill1": 37,
-      "durationSkill1": 0.3,
-      "numberOfUseSkill1": 5,
+      "durationSkill1": 6,
+      "numberOfUseSkill1": 1,
       "skill1Name": {
         "en": "Wind Blade",
         "vi": "Toan chan kiem phap"

@@ -804,8 +804,4 @@ void Hud::tryHud()
 	addAttack();
 
 	addSkills();
-	if (REF->getNumberItemBird() > 0) {
-		addBird();
-		menu->addChild(btnCalling);
-	}
 }

@@ -2403,6 +2403,8 @@ void GameScene::introSkills()
 
 void GameScene::introBird()
 {
+	createEagle(Point(hero->getB2Body()->GetPosition().x - SCREEN_SIZE.width, SCREEN_SIZE.height / 2));
+
 	tut = TutorialIntroBird::create();
 	this->getParent()->addChild(tut);
 

@@ -1,7 +1,7 @@
 {
     "android": {
         "GoogleAnalytics": {
-            "trackingCode": "UA-99692409-1"
+            "trackingCode": "UA-99018383-1"
         }, 
         "AdMob": {
             "test": false, 
@@ -27,7 +27,7 @@
     "ios": {
         "GoogleAnalytics": {
             "track_init_screen": false, 
-            "trackingCode": "UA-99692409-1"
+            "trackingCode": "UA-99018383-1"
         }, 
         "AdMob": {
             "test": false, 

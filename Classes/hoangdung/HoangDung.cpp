@@ -1,59 +1,59 @@
-#include "QuachTinh.h"
+#include "HoangDung.h"
 #include "manager/RefManager.h"
 #include "layer/GameScene.h"
 #include "AudioEngine.h"
 
 
-QuachTinh::QuachTinh(string jsonFile, string atlasFile, float scale) : BaseHero(jsonFile, atlasFile, scale)
+HoangDung::HoangDung(string jsonFile, string atlasFile, float scale) : BaseHero(jsonFile, atlasFile, scale)
 {
 }
 
-QuachTinh * QuachTinh::create(string jsonFile, string atlasFile, float scale)
+HoangDung * HoangDung::create(string jsonFile, string atlasFile, float scale)
 {
-	QuachTinh* quachTinh = new QuachTinh(jsonFile, atlasFile, scale);
-	quachTinh->setTag(TAG_HERO);
+	HoangDung* hoangDung = new HoangDung(jsonFile, atlasFile, scale);
+	hoangDung->setTag(TAG_HERO);
 
-	quachTinh->update(0.0f);
+	hoangDung->update(0.0f);
 
-	quachTinh->stateMachine = new StateMachine(quachTinh);
-	quachTinh->stateMachine->setCurrentState(MLand);
+	hoangDung->stateMachine = new StateMachine(hoangDung);
+	hoangDung->stateMachine->setCurrentState(MLand);
 
-	quachTinh->setBoxHeight(quachTinh->getBoundingBox().size.height / 6.7f);
+	hoangDung->setBoxHeight(hoangDung->getBoundingBox().size.height / 6.7f);
 
 	//
-	quachTinh->blash = Sprite::create("Animation/QuachTinh/blash.png");
-	quachTinh->blash->setScale(scale / 2);
-	quachTinh->blash->setPosition(quachTinh->getContentSize() / 2);
-	quachTinh->blash->setVisible(false);
-	quachTinh->addChild(quachTinh->blash);
+	hoangDung->blash = Sprite::create("Animation/HoangDung/blash.png");
+	hoangDung->blash->setScale(scale / 2);
+	hoangDung->blash->setPosition(hoangDung->getContentSize() / 2);
+	hoangDung->blash->setVisible(false);
+	hoangDung->addChild(hoangDung->blash);
 
-	return quachTinh;
+	return hoangDung;
 }
 
 
-void QuachTinh::doCounterSkill1()
+void HoangDung::doCounterSkill1()
 {
 }
 
-void QuachTinh::doCounterSkill2()
+void HoangDung::doCounterSkill2()
 {
 }
 
-void QuachTinh::doCounterSkill3()
+void HoangDung::doCounterSkill3()
 {
 }
 
 // SLASH
-void QuachTinh::createSlash()
+void HoangDung::createSlash()
 {
 	auto scale = this->getTrueRadiusOfHero() * 1.8f / 400;
-	slash = SkeletonAnimation::createWithFile("Animation/QuachTinh/slash2.json", "Animation/QuachTinh/slash2.atlas", scale);
+	slash = SkeletonAnimation::createWithFile("Animation/DuongQua/slash2.json", "Animation/DuongQua/slash2.atlas", scale);
 	slash->setPosition(this->getContentSize().width / 2 + this->getTrueRadiusOfHero(), this->getTrueRadiusOfHero() * 0.7f);
 	slash->update(0.0f);
 	slash->setVisible(false);
 	this->addChild(slash);
 
-	slashLand = SkeletonAnimation::createWithFile("Animation/QuachTinh/slash1.json", "Animation/QuachTinh/slash1.atlas", scale);
+	slashLand = SkeletonAnimation::createWithFile("Animation/DuongQua/slash1.json", "Animation/DuongQua/slash1.atlas", scale);
 	slashLand->setPosition(this->getContentSize().width / 2 + this->getTrueRadiusOfHero() * 0.3f, this->getTrueRadiusOfHero() * 0.7f);
 	slashLand->update(0.0f);
 	slashLand->setVisible(false);
@@ -61,7 +61,7 @@ void QuachTinh::createSlash()
 	this->addChild(slashLand);
 }
 
-void QuachTinh::runSlash()
+void HoangDung::runSlash()
 {
 	slash->setVisible(true);
 	slash->clearTracks();
@@ -69,7 +69,7 @@ void QuachTinh::runSlash()
 	slash->setToSetupPose();
 }
 
-void QuachTinh::runSlashLand()
+void HoangDung::runSlashLand()
 {
 	slashLand->setVisible(true);
 	slashLand->clearTracks();
@@ -77,7 +77,7 @@ void QuachTinh::runSlashLand()
 	slashLand->setToSetupPose();
 }
 
-void QuachTinh::initCirclePhysic(b2World * world, Point pos)
+void HoangDung::initCirclePhysic(b2World * world, Point pos)
 {
 	b2CircleShape circle_shape;
 	circle_shape.m_radius = getBoxHeight() / PTM_RATIO;
@@ -111,19 +111,19 @@ void QuachTinh::initCirclePhysic(b2World * world, Point pos)
 	initSwordPhysic(world, Point(pos.x + trueRadiusOfHero * 2.2f, pos.y), trueRadiusOfHero);
 }
 
-void QuachTinh::addStuff()
+void HoangDung::addStuff()
 {
 	// slash here
-	createSlash();
+	//createSlash();
 
 	BaseHero::addStuff();
 }
 
-void QuachTinh::createPool()
+void HoangDung::createPool()
 {
 }
 
-void QuachTinh::run()
+void HoangDung::run()
 {
 	clearTracks();
 	addAnimation(0, "run", true);
@@ -139,7 +139,7 @@ void QuachTinh::run()
 	//log("run");
 }
 
-void QuachTinh::normalJump()
+void HoangDung::normalJump()
 {
 	BaseHero::normalJump();
 	clearTracks();
@@ -151,7 +151,7 @@ void QuachTinh::normalJump()
 	//log("jump");
 }
 
-void QuachTinh::doubleJump()
+void HoangDung::doubleJump()
 {
 	BaseHero::doubleJump();
 	clearTracks();
@@ -164,7 +164,7 @@ void QuachTinh::doubleJump()
 	//log("jumpx2");
 }
 
-void QuachTinh::landing()
+void HoangDung::landing()
 {
 	clearTracks();
 	addAnimation(0, "landing", true);
@@ -175,13 +175,13 @@ void QuachTinh::landing()
 	//log("land");
 }
 
-void QuachTinh::die()
+void HoangDung::die()
 {
 	BaseHero::die();
 	AudioManager::playSound(SOUND_DQDIE);
 }
 
-void QuachTinh::attackNormal()
+void HoangDung::attackNormal()
 {
 	if (!getIsDoneDuration1()) {
 		attackBySkill1();
@@ -193,7 +193,7 @@ void QuachTinh::attackNormal()
 
 		setIsPriorAttack(true);
 
-		runSlash();
+		//runSlash();
 
 		clearTracks();
 		auto r = rand() % 2;
@@ -212,7 +212,7 @@ void QuachTinh::attackNormal()
 	}
 }
 
-void QuachTinh::attackLanding()
+void HoangDung::attackLanding()
 {
 	if (!getIsDoneDuration1()) {
 		attackBySkill1();
@@ -222,7 +222,7 @@ void QuachTinh::attackLanding()
 		BaseHero::attackLanding();
 		changeSwordCategoryBitmask(BITMASK_SWORD);
 		setIsPriorAttack(true);
-		runSlashLand();
+		//runSlashLand();
 
 		clearTracks();
 		addAnimation(0, "attack3", false);
@@ -233,7 +233,7 @@ void QuachTinh::attackLanding()
 	}
 }
 
-void QuachTinh::attackBySkill1()
+void HoangDung::attackBySkill1()
 {
 	AudioManager::playSound(SOUND_DQSKILL1);
 	clearTracks();
@@ -241,7 +241,7 @@ void QuachTinh::attackBySkill1()
 	setToSetupPose();
 }
 
-void QuachTinh::injured()
+void HoangDung::injured()
 {
 	AudioManager::playSound(SOUND_DQHIT);
 	clearTracks();
@@ -252,7 +252,7 @@ void QuachTinh::injured()
 
 }
 
-void QuachTinh::listener()
+void HoangDung::listener()
 {
 
 	this->setEndListener([&](int trackIndex) {
@@ -328,7 +328,7 @@ void QuachTinh::listener()
 	});*/
 }
 
-void QuachTinh::stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSkill3)
+void HoangDung::stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSkill3)
 {
 	if (stopSkill1 && !getIsDoneDuration1()) {
 		setIsDoneDuration1(true);
@@ -343,12 +343,12 @@ void QuachTinh::stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSkill
 	}
 }
 
-void QuachTinh::doDestroyBodies(b2World* world)
+void HoangDung::doDestroyBodies(b2World* world)
 {
 	BaseHero::doDestroyBodies(world);
 }
 
-void QuachTinh::updateMe(float dt)
+void HoangDung::updateMe(float dt)
 {
 	BaseHero::updateMe(dt);
 

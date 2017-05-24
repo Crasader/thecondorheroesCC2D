@@ -248,6 +248,7 @@ void GameScene::onBegin()
 		REF->decreaseNumberItemMagnet();
 	}
 
+
 	auto key_listener = EventListenerKeyboard::create();
 
 	key_listener->onKeyPressed = CC_CALLBACK_2(GameScene::onKeyPressed, this);
@@ -609,7 +610,6 @@ void GameScene::update(float dt)
 			}
 
 			if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
-
 				hud->hideButton();
 				hud->moveCallBirdToCenterScreen(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 				hero->setOnGround(false);
@@ -822,13 +822,10 @@ void GameScene::createInfiniteNode()
 	auto bg1_1 = Sprite::create(StringUtils::format("Map/map%d/bg%d_1.png", stage, map));
 	bg1_1->setScale(SCREEN_SIZE.width / (bg1_1->getContentSize().width));
 	bg1_1->setAnchorPoint(Point(0, 0.5f));
-	//bg1_1->setVisible(false);
 
 	auto bg1_2 = Sprite::create(StringUtils::format("Map/map%d/bg%d_1.png", stage, map));
 	bg1_2->setScale(SCREEN_SIZE.width / (bg1_2->getContentSize().width));
 	bg1_2->setAnchorPoint(Point(0, 0.5f));
-	//bg1_2->setVisible(false);
-
 	background->addChild(bg1_1, 1, Vec2(0.5f, 1), Vec2(0, 0));
 	background->addChild(bg1_2, 1, Vec2(0.5f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
 
@@ -857,7 +854,6 @@ void GameScene::createInfiniteNode()
 		bg2_1->setScale(SCREEN_SIZE.width / (bg2_1->getContentSize().width));
 		bg2_1->setAnchorPoint(Point(0, 0.5f));
 		bg2_1->setTag(21);
-		//bg2_1->setVisible(false);
 
 
 		auto bg2_2 = Sprite::create(StringUtils::format("Map/map%d/bg%d_2.png", stage, map));
@@ -865,7 +861,6 @@ void GameScene::createInfiniteNode()
 		bg2_2->setScale(SCREEN_SIZE.width / (bg2_2->getContentSize().width));
 		bg2_2->setAnchorPoint(Point(0, 0.5f));
 		bg2_2->setTag(22);
-		//bg2_2->setVisible(false);
 		background->addChild(bg2_1, 3, Vec2(0.7f, 1), Vec2(0, 0));
 		background->addChild(bg2_2, 3, Vec2(0.7f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
 
@@ -1546,8 +1541,6 @@ void GameScene::reachNewMap()
 	if (stageUnlocked == stage) {
 		int mapUnlocked = REF->getCurrentMapUnLocked();
 		if (mapUnlocked == map) {
-			REF->setReachNewMap(true);
-
 			switch (stageUnlocked)
 			{
 			case 1: case 2:
@@ -1701,7 +1694,7 @@ void GameScene::updateEnemy()
 				boss->updateMe(hero);
 			}
 
-			else if (tmp->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width * 0.65f) {
+			else if (tmp->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width * 0.75f) {
 				boss->updateMe(hero);
 
 			}
@@ -1776,7 +1769,7 @@ void GameScene::updateMultiKills() {
 	m_fMultiKillsCounterTime = 1.0f;
 	if (m_nMultiKills > 1) {
 		hud->updateMultiKills(m_nMultiKills);
-		if (m_nMultiKills >= 5) m_nMultiKills = 5;
+		// if (m_nMultiKills >= 5) m_nMultiKills = 5;
 		hero->setScore(hero->getScore() + (m_nMultiKills - 1) * m_lastScore);
 	}
 }
@@ -1941,6 +1934,7 @@ void GameScene::reviveHero()
 	AudioManager::playSound(SOUND_MCREVIVE);
 	hud->refreshControl();
 	resumeGame();
+	hero->resume();
 
 	if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
 		hud->getBtnCalling()->setEnabled(false);

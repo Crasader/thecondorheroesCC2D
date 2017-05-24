@@ -26,49 +26,64 @@
 
   "notification": [
     {
-      "noti_1": "Your cake for play is not enough", 
+      "noti_1": "Your cake for play is not enough",
       "noti_2": "Your gold is not enough",
       "noti_3": "Your diamond is not enough",
       "noti_4": "Get more diamond to buy",
       "noti_5": "Purchase to more fun",
       "noti_6": "Boss is coming",
-	    "noti_7": "Come to Pipo game to get more",
-	    "noti_8": "You dont have enough gold, get more to buy",
-	    "noti_9": "You dont have enough diamond, get more to buy",
-	    "noti_10": "Do you want to buy this pack?",
-	    "noti_11": "You've take free coin 3 times today, comeback on tomorrow to get more"
+      "noti_7": "Come to Pipo game to get more",
+      "noti_8": "You dont have enough gold, get more to buy",
+      "noti_9": "You dont have enough diamond, get more to buy",
+      "noti_10": "Do you want to buy this pack?",
+      "noti_11": "You've take free coin 3 times today, comeback on tomorrow to get more"
     }
   ],
 
   "hero": [
     {
       "key": "123456789abc",
-      "name": "Johan",
-      "inforHero": "Master of swords. Raise 15% speed of the condor",
+      "name": {
+        "en": "Johan",
+        "vi": "Duong Qua"
+      },
+      "inforHero": {
+        "en": "Master of swords. Raise 15% speed of the condor",
+        "vi": "Cao thu dung kiem, toc do bay cua chim dieu tang 15%"
+      },
       "avatarPath": "UI/UI_info_ingame/avatar_DuongQua.png",
       "characterPointPath": "UI/UI_info_ingame/character_point.png",
       "selectCharacterPoint": "UI/Select_Stage/character_point_DQ.png",
       "avatarLoadingPath": "UI/Loading/DQ.png",
       "isLocked": false,
       "coolDownSkill1": 37,
-      "durationSkill1": 6,
-      "numberOfUseSkill1": 1,
-      "skill1Name": "Wind Blade",
+      "durationSkill1": 0.3,
+      "numberOfUseSkill1": 5,
+      "skill1Name": {
+        "en": "Wind Blade",
+        "vi": "Toan chan kiem phap"
+      },
       "pathMainImageSkill1": "UI/Btn_skill/btnDQ_skill1_up.png",
       "pathSubImageSkill1": "UI/Btn_skill/btnDQ_skill1_down.png",
       "coolDownSkill2": 39,
       "durationSkill2": 5,
       "numberOfUseSkill2": 1,
-      "skill2Name": "Sword Storem",
+      "skill2Name": {
+        "en": "Sword Storem",
+        "vi": "Doc co kiem phap"
+      },
       "pathMainImageSkill2": "UI/Btn_skill/btnDQ_skill2_up.png",
       "pathSubImageSkill2": "UI/Btn_skill/btnDQ_skill2_down.png",
       "coolDownSkill3": 41,
       "durationSkill3": 5,
       "numberOfUseSkill3": 1,
-      "skill3Name": "Hold of fire",
+      "skill3Name": {
+        "en": "Hold of fire",
+        "vi": "Am nhien tieu hon chuong"
+      },
       "pathMainImageSkill3": "UI/Btn_skill/btnDQ_skill3_up.png",
       "pathSubImageSkill3": "UI/Btn_skill/btnDQ_skill3_down.png",
-      "baseHP": 10,
+      "baseHP": 4,
       "level": 1,
       "maxLevel": 20,
       "percentBonusScore": 0,
@@ -82,8 +97,14 @@
     },
     {
       "key": "132456789abc",
-      "name": "Hana",
-      "inforHero": "The Johan’s master. Excellent at using concealed weapon. Raise 15% magnet’s item",
+      "name": {
+        "en": "Hana",
+        "vi": "Tieu Long Nu"
+      },
+      "inforHero": {
+        "en": "The Johan’s master. Excellent at using concealed weapon. Raise 15% magnet’s item",
+        "vi": "Su phu cua Duon Qua. Gioi su dung am khi. Tang thoi gian su dung vat pham hut vang them 15%"
+      },
       "avatarPath": "UI/UI_info_ingame/avatar_CoCo.png",
       "characterPointPath": "UI/UI_info_ingame/CoCo_point.png",
       "selectCharacterPoint": "UI/Select_Stage/character_point_CL.png",
@@ -92,27 +113,36 @@
       "coolDownSkill1": 37,
       "durationSkill1": 6,
       "numberOfUseSkill1": 1,
-      "skill1Name": "Shuriken",
+      "skill1Name": {
+        "en": "Shuriken",
+        "vi": "Doc Phong Cham"
+      },
       "pathMainImageSkill1": "UI/Btn_skill/btnCC_skill1_up.png",
       "pathSubImageSkill1": "UI/Btn_skill/btnCC_skill1_down.png",
       "coolDownSkill2": 39,
       "durationSkill2": 5,
       "numberOfUseSkill2": 1,
-      "skill2Name": "Shadow",
+      "skill2Name": {
+        "en": "Shadow",
+        "vi": "Ngoc Nu Tam Kinh"
+      },
       "pathMainImageSkill2": "UI/Btn_skill/btnCC_skill2_up.png",
       "pathSubImageSkill2": "UI/Btn_skill/btnCC_skill2_down.png",
       "coolDownSkill3": 41,
       "durationSkill3": 5,
       "numberOfUseSkill3": 1,
-      "skill3Name": "Blade Fury",
+      "skill3Name": {
+        "en": "Blade Fury",
+        "vi": "Song kiem hop bich"
+      },
       "pathMainImageSkill3": "UI/Btn_skill/btnCC_skill3_up.png",
       "pathSubImageSkill3": "UI/Btn_skill/btnCC_skill3_down.png",
-      "baseHP": 10,
+      "baseHP": 4,
       "level": 1,
-      "maxLevel": 40,
+      "maxLevel": 20,
       "percentBonusScore": 2,
       "percentBonusCoin": 2,
-      "goldPrice": 10000,
+      "goldPrice": 2000,
       "diamondPrice": 0,
       "iconUnlocked": "UI/UI_main_menu/icon_hero_cc_2.png",
       "iconUnlockedSelected": "UI/UI_main_menu/icon_hero_cc_1.png",
@@ -121,8 +151,14 @@
     },
     {
       "key": "124356789abc",
-      "name": "Kim",
-      "inforHero": "Robin’s wife. Master of using stick. Revive with one time usage of Marvel Shield",
+      "name": {
+        "en": "Kim",
+        "vi": "Hoang Dung"
+      },
+      "inforHero": {
+        "en": "Robin’s wife. Master of using stick. Revive with one time usage of Marvel Shield",
+        "vi": "Vo cua Quach Tinh. Cao thu dung gay. Hoi sinh duoc su dung 1 lan chieu thuc Nhuyen Vi Giap"
+      },
       "avatarPath": "UI/UI_info_ingame/avatar_HoangDung.png",
       "characterPointPath": "UI/UI_info_ingame/HoangDung_point.png",
       "selectCharacterPoint": "UI/Select_Stage/character_point_HD.png",
@@ -131,27 +167,36 @@
       "coolDownSkill1": 37,
       "durationSkill1": 6,
       "numberOfUseSkill1": 1,
-      "skill1Name": "Immortal Shield",
+      "skill1Name": {
+        "en": "Immortal Shield",
+        "vi": "Nhuyen Vi Giap"
+      },
       "pathMainImageSkill1": "UI/Btn_skill/btnDQ_skill1_up.png",
       "pathSubImageSkill1": "UI/Btn_skill/btnDQ_skill1_up.png",
       "coolDownSkill2": 30,
       "durationSkill2": 2.5,
       "numberOfUseSkill2": 1,
-      "skill2Name": "Cherry Storm",
+      "skill2Name": {
+        "en": "Cherry Storm",
+        "vi": "Man Thien Hoa Vu"
+      },
       "pathMainImageSkill2": "UI/Btn_skill/btnDQ_skill1_up.png",
       "pathSubImageSkill2": "UI/Btn_skill/btnDQ_skill1_up.png",
       "coolDownSkill3": 60,
       "durationSkill3": 2.5,
       "numberOfUseSkill3": 1,
-      "skill3Name": "Jingu Mastery",
+      "skill3Name": {
+        "en": "Jingu Mastery",
+        "vi": "Da Cau Bong Phap"
+      },
       "pathMainImageSkill3": "UI/Btn_skill/btnDQ_skill1_up.png",
       "pathSubImageSkill3": "UI/Btn_skill/btnDQ_skill1_up.png",
-      "baseHP": 10,
+      "baseHP": 4,
       "level": 1,
-      "maxLevel": 40,
+      "maxLevel": 25,
       "percentBonusScore": 10,
       "percentBonusCoin": 10,
-      "goldPrice": 15000,
+      "goldPrice": 6000,
       "diamondPrice": 0,
       "iconUnlocked": "UI/UI_main_menu/icon_hero_hd_2.png",
       "iconUnlockedSelected": "UI/UI_main_menu/icon_hero_hd_1.png",
@@ -160,8 +205,14 @@
     },
     {
       "key": "123457689abc",
-      "name": "Athur",
-      "inforHero": "Master of Kungfu. Kim’s father. Double score when using skills",
+      "name": {
+        "en": "Athur",
+        "vi": "Hoang Duoc Su"
+      },
+      "inforHero": {
+        "en": "Master of Kungfu. Kim’s father. Double score when using skills",
+        "vi": "Cao thu vo lam. Cha cua Hoang Dung. Duoc nhan doi diem khi su dung ky nang"
+      },
       "avatarPath": "UI/UI_info_ingame/avatar_HoangDuocSu.png",
       "characterPointPath": "UI/UI_info_ingame/HoangDuocSu_point.png",
       "selectCharacterPoint": "UI/Select_Stage/character_point_HDS.png",
@@ -170,28 +221,37 @@
       "coolDownSkill1": 37,
       "durationSkill1": 6,
       "numberOfUseSkill1": 1,
-      "skill1Name": "God of wind",
+      "skill1Name": {
+        "en": "God of wind",
+        "vi": "Toan Phong Thoai Phap"
+      },
       "pathMainImageSkill1": "UI/Btn_skill/btnDQ_skill1_up.png",
       "pathSubImageSkill1": "UI/Btn_skill/btnDQ_skill1_up.png",
       "coolDownSkill2": 30,
       "durationSkill2": 2.5,
       "numberOfUseSkill2": 1,
-      "skill2Name": "One shot",
+      "skill2Name": {
+        "en": "One shot",
+        "vi": "Dai Chi Than Cong"
+      },
       "pathMainImageSkill2": "UI/Btn_skill/btnDQ_skill1_up.png",
       "pathSubImageSkill2": "UI/Btn_skill/btnDQ_skill1_up.png",
       "coolDownSkill3": 40,
       "durationSkill3": 2.5,
       "numberOfUseSkill3": 1,
-      "skill3Name": "Super Sonic wave",
+      "skill3Name": {
+        "en": "Super Sonic wave",
+        "vi": "Bich Hai Chieu Sinh Khuc"
+      },
       "pathMainImageSkill3": "UI/Btn_skill/btnDQ_skill1_up.png",
       "pathSubImageSkill3": "UI/Btn_skill/btnDQ_skill1_up.png",
-      "baseHP": 15,
+      "baseHP": 5,
       "level": 1,
-      "maxLevel": 80,
+      "maxLevel": 30,
       "percentBonusScore": 15,
       "percentBonusCoin": 15,
       "goldPrice": 0,
-      "diamondPrice": 1000,
+      "diamondPrice": 100,
       "iconUnlocked": "UI/UI_main_menu/icon_hero_hds_2.png",
       "iconUnlockedSelected": "UI/UI_main_menu/icon_hero_hds_1.png",
       "iconLocked": "UI/UI_main_menu/icon_hero_hds_3.png",
@@ -199,8 +259,14 @@
     },
     {
       "key": "123546789abc",
-      "name": "Robin",
-      "inforHero": "The best master of martial arts in the world. Having Wide-area damage skills. Auto recover health skill after each 30 seconds",
+      "name": {
+        "en": "Robin",
+        "vi": "Quach Tinh"
+      },
+      "inforHero": {
+        "en": "The best master of martial arts in the world. Having Wide-area damage skills. Auto recover health skill after each 30 seconds",
+        "vi": "De nhat vo cong thien ha. Ky nang gay sat thuong dien rong. Tu dong hoi 1 mau sau 30s"
+      },
       "avatarPath": "UI/UI_info_ingame/avatar_QuachTinh.png",
       "characterPointPath": "UI/UI_info_ingame/QuachTinh_point.png",
       "selectCharacterPoint": "UI/Select_Stage/character_point_QT.png",
@@ -209,28 +275,37 @@
       "coolDownSkill1": 37,
       "durationSkill1": 6,
       "numberOfUseSkill1": 1,
-      "skill1Name": "Age of Wushu",
+      "skill1Name": {
+        "en": "Age of Wushu",
+        "vi": "Cuu Am Chan Kinh"
+      },
       "pathMainImageSkill1": "UI/Btn_skill/btnQT_skill1_up.png",
       "pathSubImageSkill1": "UI/Btn_skill/btnQT_skill1_down.png",
       "coolDownSkill2": 30,
       "durationSkill2": 0.8,
       "numberOfUseSkill2": 5,
-      "skill2Name": "Amber of Dragon",
+      "skill2Name": {
+        "en": "Amber of Dragon",
+        "vi": "Than Long Bai Vi"
+      },
       "pathMainImageSkill2": "UI/Btn_skill/btnQT_skill2_up.png",
       "pathSubImageSkill2": "UI/Btn_skill/btnQT_skill2_down.png",
       "coolDownSkill3": 40,
       "durationSkill3": 6,
       "numberOfUseSkill3": 1,
-      "skill3Name": "Double Dragon",
+      "skill3Name": {
+        "en": "Double Dragon",
+        "vi": "Song Long Xuat Thuy"
+      },
       "pathMainImageSkill3": "UI/Btn_skill/btnQT_skill3_up.png",
       "pathSubImageSkill3": "UI/Btn_skill/btnQT_skill3_down.png",
-      "baseHP": 15,
+      "baseHP": 5,
       "level": 1,
-      "maxLevel": 100,
+      "maxLevel": 30,
       "percentBonusScore": 20,
       "percentBonusCoin": 20,
       "goldPrice": 0,
-      "diamondPrice": 5000,
+      "diamondPrice": 400,
       "iconUnlocked": "UI/UI_main_menu/icon_hero_qt_2.png",
       "iconUnlockedSelected": "UI/UI_main_menu/icon_hero_qt_1.png",
       "iconLocked": "UI/UI_main_menu/icon_hero_qt_3.png",

@@ -82,7 +82,7 @@ void RefManager::setReachNewMap(bool value)
 
 void RefManager::pointToCurrentHero(int index)
 {
-	JSHERO->readFile(index);
+	JSHERO->readFile(language, index);
 	auto m_index = StringUtils::format("%i", index);
 	selectedHero = index;
 

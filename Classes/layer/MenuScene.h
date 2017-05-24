@@ -40,6 +40,7 @@ private:
 	int m_arNumberItemOwning[5];							// number of item owning
 	int m_arItemPrice[5];									// cost of items
 	int m_nShopOption = 0;
+	int m_nLanguage = 0;
 
 	Label *m_pTimeCounter;									// time counter to increase life
 	MenuItemSprite *m_arHeroButton[5];						// hero mini icon
@@ -47,6 +48,8 @@ private:
 	Label *m_arLabelNumberItemOwning[5];					// 
 	MenuItemSprite *m_arBuyItemButton[5];
 	Sprite *m_arSpriteItemMax[5];
+	Sprite *m_arItemCoinSprite[5];
+	Label *m_arItemLabelCost[5];
 
 	SkeletonAnimation *m_pSpriteQuestAttention;						// 
 	SkeletonAnimation *m_pSpriteFreeCoinAttention;						// 

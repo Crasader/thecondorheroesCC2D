@@ -703,7 +703,7 @@ void Hud::updateMultiKills(int m_nCombo)
 		multiKills->setSkin("rampage");
 		break;
 	default:
-		multiKills->setSkin("default");
+		multiKills->setSkin("rampage");
 		break;
 	}
 	if (m_nCombo > 7) {

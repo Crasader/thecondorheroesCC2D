@@ -1588,7 +1588,7 @@ void GameScene::updateMultiKills() {
 	m_fMultiKillsCounterTime = 1.0f;
 	if (m_nMultiKills > 1) {
 		hud->updateMultiKills(m_nMultiKills);
-		if (m_nMultiKills >= 5) m_nMultiKills = 5;
+		// if (m_nMultiKills >= 5) m_nMultiKills = 5;
 		hero->setScore(hero->getScore() + (m_nMultiKills - 1) * m_lastScore);
 	}
 }

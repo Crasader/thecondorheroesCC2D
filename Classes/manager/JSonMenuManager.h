@@ -18,22 +18,19 @@ public:
 	~JSonMenuManager();
 
 protected:
-	CC_SYNTHESIZE_READONLY(string, m_sIconFilePath, IconFilePath);
-	CC_SYNTHESIZE_READONLY(int, m_nPrice, Price);
-	CC_SYNTHESIZE_READONLY(string, m_sName, Name);
-	CC_SYNTHESIZE_READONLY(string, m_sDescription, Description);
+	CC_SYNTHESIZE_READONLY(string, m_sItemIconFilePath, ItemIconFilePath);
+	CC_SYNTHESIZE_READONLY(int, m_nItemPrice, ItemPrice);
+	CC_SYNTHESIZE_READONLY(string, m_sItemName, ItemName);
+	CC_SYNTHESIZE_READONLY(string, m_sItemDescription, ItemDescription);
 
-	CC_SYNTHESIZE_READONLY(string, m_sGoldPackName, GoldPackName);
 	CC_SYNTHESIZE_READONLY(string, m_sIconGoldPackPath, IconGoldPackPath);
 	CC_SYNTHESIZE_READONLY(int, m_nCoinPackNumberGold, CoinPackNumberGold);
 	CC_SYNTHESIZE_READONLY(int, m_nCoinPackDiamondPrice, CoinPackDiamondPrice);
 
-	CC_SYNTHESIZE_READONLY(string, m_sDiamondPackName, DiamondPackName);
 	CC_SYNTHESIZE_READONLY(string, m_sIconDiamondPackPath, IconDiamondPackPath);
 	CC_SYNTHESIZE_READONLY(int, m_nDiamondPackNumberDiamond, DiamondPackNumberDiamond);
 	CC_SYNTHESIZE_READONLY(string, m_sDiamondPackMoneyPrice, DiamondPackMoneyPrice);
 
-	CC_SYNTHESIZE_READONLY(string, m_sEnergyPackName, EnergyPackName);
 	CC_SYNTHESIZE_READONLY(string, m_sIconEnergyPackPath, IconEnergyPackPath);
 	CC_SYNTHESIZE_READONLY(int, m_nEnergyPackNumberEnergy, EnergyPackNumberEnergy);
 	CC_SYNTHESIZE_READONLY(int, m_nEnergyPackDiamondPrice, EnergyPackDiamondPrice);
@@ -44,7 +41,7 @@ private:
 public:
 	static JSonMenuManager * getInstance();
 
-	void readItem(int p_nFirstIndex);
+	void readItem(int p_nLanguage, int p_nFirstIndex);
 	void readGoldPack(int p_nFirstIndex);
 	void readDiamondPack(int p_nFirstIndex);
 	void readEnergyPack(int p_nFirstIndex);

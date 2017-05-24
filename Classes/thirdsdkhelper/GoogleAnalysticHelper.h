@@ -19,19 +19,19 @@ public:
 
 	void stopSession(std::string adname) {
 #ifdef SDKBOX_ENABLED
-		return sdkbox::PluginGoogleAnalytics::stopSession;
+		 sdkbox::PluginGoogleAnalytics::stopSession();
 #endif
 	}
 
 	void startSession(std::string adname) {
 #ifdef SDKBOX_ENABLED
-		return sdkbox::PluginGoogleAnalytics::startSession();
+		sdkbox::PluginGoogleAnalytics::startSession();
 #endif
 	}
 
-	void logEvent(string eventName, string eventAction, string eventContent, int eventValue) {
+	void logEvent(string eventcategory, string eventAction, string eventContent, int eventValue) {
 #ifdef SDKBOX_ENABLED
-		sdkbox::PluginGoogleAnalytics::logEvent(eventName, eventAction, eventContent, eventValue);
+		sdkbox::PluginGoogleAnalytics::logEvent(eventcategory, eventAction, eventContent, eventValue);
 #endif
 	}
 
@@ -43,7 +43,7 @@ public:
 
 	void sendDataNow() {
 #ifdef SDKBOX_ENABLED
-		sdkbox::PluginGoogleAnalytics::dispatchHit();
+		sdkbox::PluginGoogleAnalytics::dispatchHits();
 #endif
 	}
 

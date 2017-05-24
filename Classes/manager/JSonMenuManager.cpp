@@ -17,7 +17,22 @@ JSonMenuManager * JSonMenuManager::getInstance() {
 	return jsonMenuManager;
 }
 
-void JSonMenuManager::readFile(int firstIndex) {
+int JSonMenuManager::getNumberGoldPack() {
+	SizeType _bResult = jsonDoc["gold_packs"].Size();
+	return (int)_bResult;
+}
+
+int JSonMenuManager::getNumberDiamondPack() {
+	SizeType _bResult = jsonDoc["diamond_packs"].Size();
+	return (int)_bResult;
+}
+
+int JSonMenuManager::getNumberEnergyPack() {
+	SizeType _bResult = jsonDoc["energy_packs"].Size();
+	return (int)_bResult;
+}
+
+void JSonMenuManager::readItem(int firstIndex) {
 	this->m_sIconFilePath = jsonDoc["items"][firstIndex]["iconFilePath"].GetString();
 	this->m_nPrice = jsonDoc["items"][firstIndex]["priceItem"].GetInt();
 	this->m_sName = jsonDoc["items"][firstIndex]["nameItem"].GetString();
@@ -35,7 +50,7 @@ void JSonMenuManager::readDiamondPack(int firstIndex) {
 	this->m_sDiamondPackName = jsonDoc["diamond_packs"][firstIndex]["diamondPackName"].GetString();
 	this->m_sIconDiamondPackPath = jsonDoc["diamond_packs"][firstIndex]["iconDiamondPackPath"].GetString();
 	this->m_nDiamondPackNumberDiamond = jsonDoc["diamond_packs"][firstIndex]["diamondNumber"].GetInt();
-	this->m_nDiamondPackMoneyPrice = jsonDoc["diamond_packs"][firstIndex]["moneyPrice"].GetInt();
+	this->m_sDiamondPackMoneyPrice = jsonDoc["diamond_packs"][firstIndex]["moneyPrice"].GetString();
 }
 
 void JSonMenuManager::readEnergyPack(int firstIndex) {

@@ -1,106 +1,362 @@
 {
-  "daily_reward" : [
-    {
-	  "type" : "gold",
-	  "number" : 300
-	},
-    {
-	  "type" : "play_turn",
-	  "number" : 5
-	},
-    {
-	  "type" : "item_bird",
-	  "number" : 1
-	},
-    {
-	  "type" : "gold",
-	  "number" : 1000
-	},
-    {
-	  "type" : "diamond",
-	  "number" : 5
-	},
-    {
-	  "type" : "play_turn",
-	  "number" : 10
-	},
-    {
-	  "type" : "diamond",
-	  "number" : 20
+	"daily_reward" : [
+		{
+			"type" : "gold",
+			"number" : 300
+		},
+		{
+			"type" : "play_turn",
+			"number" : 5
+		},
+		{
+			"type" : "item_bird",
+			"number" : 1
+		},
+		{
+			"type" : "gold",
+			"number" : 1000
+		},
+		{
+			"type" : "diamond",
+			"number" : 5
+		},
+		{
+			"type" : "play_turn",
+			"number" : 10
+		},
+		{
+			"type" : "diamond",
+			"number" : 20
+		}
+	],
+	"quests": {
+		"en": [
+			{
+				"questName": "Call bird",
+				"questDescription": "Use item call bird 20 times",
+				"completeRequest": 20,
+				"goldReward": 10000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Health",
+				"questDescription": "Use item health 100 times",
+				"completeRequest": 100,
+				"goldReward": 20000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Cooldown",
+				"questDescription": "Use item cooldown 100 times",
+				"completeRequest": 100,
+				"goldReward": 10000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Score DQ",
+				"questDescription": "Get 50000 scores by Duong Qua",
+				"completeRequest": 50000,
+				"goldReward": 10000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Score TLN",
+				"questDescription": "Get 80000 scores by Tieu Long Nu",
+				"completeRequest": 80000,
+				"goldReward": 16000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Score HD",
+				"questDescription": "Get 120000 scores by Hoang Dung",
+				"completeRequest": 120000,
+				"goldReward": 24000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Rampage!!!",
+				"questDescription": "Kill multiple enemy in a short time to get rampages",
+				"completeRequest": 1,
+				"goldReward": 100,
+				"diamondReward": 0,
+				"stepRequest": 5,
+				"limitRequest": 5
+			},
+			{
+				"questName": "Woodmans",
+				"questDescription": "Destroy 20 woodmans",
+				"completeRequest": 20,
+				"goldReward": 500,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Toan Chan Student 2",
+				"questDescription": "Kill 50 Toan Chan student 2",
+				"completeRequest": 50,
+				"goldReward": 1000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Boss 1!!!",
+				"questDescription": "Kill boss 1 10 times",
+				"completeRequest": 10,
+				"goldReward": 4000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Bee...",
+				"questDescription": "Destroy 50 bee hive",
+				"completeRequest": 50,
+				"goldReward": 1000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Ice tower...",
+				"questDescription": "Destroy 50 ice tower",
+				"completeRequest": 50,
+				"goldReward": 2000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Female Taoist 1...",
+				"questDescription": "Kill 20 Female Taoist 1",
+				"completeRequest": 20,
+				"goldReward": 2000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Female Taoist 2...",
+				"questDescription": "Kill 20 Female Taoist 2",
+				"completeRequest": 20,
+				"goldReward": 2000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Boss 2!!!",
+				"questDescription": "Kill boss 2 10 times",
+				"completeRequest": 10,
+				"goldReward": 12000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Hoac Do 1...",
+				"questDescription": "Kill 20 Hoac Do 1",
+				"completeRequest": 20,
+				"goldReward": 4000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Hoac Do 2...",
+				"questDescription": "Kill 20 Hoac Do 2",
+				"completeRequest": 20,
+				"goldReward": 4000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Dat Nhi Ba...",
+				"questDescription": "Kill 20 Dat Nhi Ba 2",
+				"completeRequest": 20,
+				"goldReward": 6000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			}
+		],
+		"vi": [
+			{
+				"questName": "Goi chim dieu",
+				"questDescription": "Su dung vat pham goi chim dieu 20 lan",
+				"completeRequest": 20,
+				"goldReward": 10000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Tang mau",
+				"questDescription": "Su dung vat pham tang mau 100 lan",
+				"completeRequest": 100,
+				"goldReward": 20000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Hoi chieu",
+				"questDescription": "Su dung vat pham hoi chieu 100 lan",
+				"completeRequest": 100,
+				"goldReward": 10000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Duong Qua kinh qua",
+				"questDescription": "Dat 50000 diem voi Duong Qua",
+				"completeRequest": 50000,
+				"goldReward": 10000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Tieu Long Nu kinh qua",
+				"questDescription": "Dat 80000 diem voi Tieu Long Nu",
+				"completeRequest": 80000,
+				"goldReward": 16000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Hoang Dung kinh qua",
+				"questDescription": "Dat 120000 diem voi Hoang Dung",
+				"completeRequest": 120000,
+				"goldReward": 24000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Giet nguoi nhu ngoe!!!",
+				"questDescription": "Giet doi phuong lien tuc trong thoi gian ngan",
+				"completeRequest": 1,
+				"goldReward": 100,
+				"diamondReward": 0,
+				"stepRequest": 5,
+				"limitRequest": 5
+			},
+			{
+				"questName": "Moc nhan",
+				"questDescription": "Pha huy 20 moc nhan",
+				"completeRequest": 20,
+				"goldReward": 500,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "De tu Toan Chan 2",
+				"questDescription": "Giet 50 de tu Toan Chan 2",
+				"completeRequest": 50,
+				"goldReward": 1000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Trieu Chi Kinh",
+				"questDescription": "Giet Trieu Chi Kinh 10 lan",
+				"completeRequest": 10,
+				"goldReward": 4000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Chi ong vang",
+				"questDescription": "Pha huy 50 to ong",
+				"completeRequest": 50,
+				"goldReward": 1000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Ky Bang Ha",
+				"questDescription": "Pha huy 50 cot bang",
+				"completeRequest": 50,
+				"goldReward": 2000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Nu dao si 1",
+				"questDescription": "Giet 20 nu dao si 1",
+				"completeRequest": 20,
+				"goldReward": 2000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Nu dao si 2",
+				"questDescription": "Giet 20 nu dao si 2",
+				"completeRequest": 20,
+				"goldReward": 2000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Ly Mac Sau",
+				"questDescription": "Giet Ly Mac Sau 10 lan",
+				"completeRequest": 10,
+				"goldReward": 12000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Hoac Do 1...",
+				"questDescription": "Giet 20 Hoac Do 1",
+				"completeRequest": 20,
+				"goldReward": 4000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Hoac Do 2...",
+				"questDescription": "Giet 20 Hoac Do 2",
+				"completeRequest": 20,
+				"goldReward": 4000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			},
+			{
+				"questName": "Dat Nhi Ba...",
+				"questDescription": "Giet 20 Dat Nhi Ba 2",
+				"completeRequest": 20,
+				"goldReward": 6000,
+				"diamondReward": 0,
+				"stepRequest": 1,
+				"limitRequest": 1
+			}
+		]
 	}
-  ],
-  "quests": [
-    {
-      "questName": "Call bird",
-      "questDescription": "Use item call bird 20 times",
-      "completeRequest": 20,
-      "goldReward": 10000,
-      "diamondReward": 0,
-      "stepRequest": 1,
-      "limitRequest": 1
-    },
-    {
-      "questName": "Health",
-      "questDescription": "Use item health 100 times",
-      "completeRequest": 100,
-      "goldReward": 20000,
-      "diamondReward": 0,
-      "stepRequest": 1,
-      "limitRequest": 1
-    },
-    {
-      "questName": "Cooldown",
-      "questDescription": "Use item cooldown 100 times",
-      "completeRequest": 100,
-      "goldReward": 10000,
-      "diamondReward": 0,
-      "stepRequest": 1,
-      "limitRequest": 1
-    },
-    {
-      "questName": "Score DQ",
-      "questDescription": "Get 50000 scores by Duong Qua",
-      "completeRequest": 50000,
-      "goldReward": 10000,
-      "diamondReward": 0,
-      "stepRequest": 1,
-      "limitRequest": 1
-    },
-    {
-      "questName": "Score TLN",
-      "questDescription": "Get 80000 scores by Tieu Long Nu",
-      "completeRequest": 80000,
-      "goldReward": 16000,
-      "diamondReward": 0,
-      "stepRequest": 1,
-      "limitRequest": 1
-    },
-    {
-      "questName": "Score HD",
-      "questDescription": "Get 120000 scores by Hoang Dung",
-      "completeRequest": 120000,
-      "goldReward": 24000,
-      "diamondReward": 0,
-      "stepRequest": 1,
-      "limitRequest": 1
-    },
-    {
-      "questName": "Rampage!!!",
-      "questDescription": "Kill multiple enemy in a short time to get rampages",
-      "completeRequest": 1,
-      "goldReward": 100,
-      "diamondReward": 0,
-      "stepRequest": 5,
-      "limitRequest": 5
-    },
-    {
-      "questName": "Diamondcian",
-      "questDescription": "Buy diamond as much as posible",
-      "completeRequest": 20,
-      "goldReward": 10000,
-      "diamondReward": 0,
-      "stepRequest": 5,
-      "limitRequest": 3
-    }
-  ]
 }

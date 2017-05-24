@@ -1,5 +1,6 @@
 #include "LoadingLayer.h"
 #include "manager/RefManager.h"
+#include "manager/JSonHeroManager.h"
 
 Scene * LoadingLayer::createScene(int stage, int map, int charId)
 {

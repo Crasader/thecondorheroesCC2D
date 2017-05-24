@@ -75,6 +75,10 @@ protected:
 	CC_SYNTHESIZE(bool, isDoneDuration2, IsDoneDuration2);
 	CC_SYNTHESIZE(bool, isDoneDuration3, IsDoneDuration3);
 
+	CC_SYNTHESIZE(int, checkDurationSkill1, CheckDurationSkill1);
+	CC_SYNTHESIZE(int, checkDurationSkill2, CheckDurationSkill2);
+	CC_SYNTHESIZE(int, checkDurationSkill3, CheckDurationSkill3);
+
 	CC_SYNTHESIZE(bool, isDriverEagle, IsDriverEagle);
 	CC_SYNTHESIZE(float, currentRunDis, CurrentRunDis);
 	CC_SYNTHESIZE(float, preRunDis, PreRunDis);
@@ -86,7 +90,8 @@ public:
 	BaseHero(string jsonFile, string atlasFile, float scale);
 	static BaseHero* create(string jsonFile, string atlasFile, float scale);
 
-	virtual void initSwordPhysic(b2World *world, Point position, float width);
+	virtual void initCirclePhysic(b2World *world, Point pos);
+	virtual void initSwordPhysic(b2World *world, Point position);
 	void changeSwordCategoryBitmask(uint16 bit);
 	virtual void addStuff();
 	virtual void createPool();

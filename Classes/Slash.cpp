@@ -18,6 +18,7 @@ Slash * Slash::create(string jsonFile, string atlasFile, float scale)
 	slash->update(0.0f);
 	slash->isDie = false;
 	slash->setB2Body(nullptr);
+	slash->autorelease();
 	return slash;
 }
 

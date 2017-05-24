@@ -15,6 +15,7 @@ EnemyBoss2 * EnemyBoss2::create(string jsonFile, string atlasFile, float scale)
 	boss->setTag(TAG_BOSS);
 	boss->scaleBoss = scale;
 	boss->setLevelBoss(2);
+	boss->autorelease();
 	return boss;
 }
 

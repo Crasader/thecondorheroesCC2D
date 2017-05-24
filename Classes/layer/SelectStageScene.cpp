@@ -2,7 +2,9 @@
 #include "LoadingLayer.h"
 #include "MenuScene.h"
 #include "manager/RefManager.h"
-#include "thirdsdkhelper\AdmobHelper.h"
+#include "manager/AudioManager.h"
+#include "manager/JSonHeroManager.h"
+#include "thirdsdkhelper/AdmobHelper.h"
 
 
 bool SelectStageLayer::init(int charId)
@@ -178,7 +180,7 @@ void SelectStageLayer::gotoPlay(int id, int stage, int map, int charId)
 		REF->setLastMapId(id);
 		m_nLifeNumber--;
 		REF->setDownLife(1);
-		REF->resetAnchorTime();
+		REF->setAnchorTime(time(0));
 		AudioManager::stopMusic();
 		auto _aScene = LoadingLayer::createScene(stage, map, charId);
 		Director::getInstance()->replaceScene(_aScene);

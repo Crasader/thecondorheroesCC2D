@@ -1,0 +1,250 @@
+
+QuachTinh.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Sword2
+  rotate: true
+  xy: 883, 12
+  size: 48, 243
+  orig: 111, 245
+  offset: 32, 2
+  index: -1
+arm1_L
+  rotate: true
+  xy: 1215, 10
+  size: 50, 80
+  orig: 84, 96
+  offset: 18, 9
+  index: -1
+arm1_R
+  rotate: false
+  xy: 1128, 2
+  size: 85, 58
+  orig: 85, 60
+  offset: 0, 0
+  index: -1
+arm2_L
+  rotate: true
+  xy: 1542, 3
+  size: 71, 60
+  orig: 72, 65
+  offset: 1, 5
+  index: -1
+arm2_R
+  rotate: false
+  xy: 1506, 539
+  size: 75, 75
+  orig: 81, 75
+  offset: 6, 0
+  index: -1
+blind_L
+  rotate: false
+  xy: 1426, 513
+  size: 78, 97
+  orig: 78, 98
+  offset: 0, 1
+  index: -1
+blind_R
+  rotate: true
+  xy: 1339, 511
+  size: 99, 85
+  orig: 99, 86
+  offset: 0, 0
+  index: -1
+body
+  rotate: true
+  xy: 1252, 509
+  size: 101, 85
+  orig: 101, 94
+  offset: 0, 5
+  index: -1
+cuuamchankinh
+  rotate: false
+  xy: 1741, 858
+  size: 304, 256
+  orig: 580, 267
+  offset: 155, 1
+  index: -1
+hand_L
+  rotate: false
+  xy: 1504, 21
+  size: 36, 39
+  orig: 36, 40
+  offset: 0, 1
+  index: -1
+hand_R
+  rotate: true
+  xy: 1453, 4
+  size: 56, 49
+  orig: 56, 49
+  offset: 0, 0
+  index: -1
+head
+  rotate: true
+  xy: 672, 505
+  size: 105, 167
+  orig: 105, 167
+  offset: 0, 0
+  index: -1
+head2
+  rotate: true
+  xy: 841, 505
+  size: 105, 167
+  orig: 105, 167
+  offset: 0, 0
+  index: -1
+lappet
+  rotate: false
+  xy: 1297, 36
+  size: 154, 24
+  orig: 154, 24
+  offset: 0, 0
+  index: -1
+leg_L
+  rotate: true
+  xy: 1652, 547
+  size: 67, 65
+  orig: 70, 67
+  offset: 1, 1
+  index: -1
+leg_R
+  rotate: false
+  xy: 1583, 543
+  size: 67, 71
+  orig: 67, 72
+  offset: 0, 0
+  index: -1
+shadow
+  rotate: false
+  xy: 1297, 16
+  size: 126, 18
+  orig: 126, 18
+  offset: 0, 0
+  index: -1
+slashs1
+  rotate: true
+  xy: 1264, 1676
+  size: 369, 201
+  orig: 1920, 1080
+  offset: 147, 420
+  index: -1
+slashs2
+  rotate: true
+  xy: 1541, 76
+  size: 461, 227
+  orig: 1920, 1080
+  offset: 305, 403
+  index: -1
+slashs3
+  rotate: false
+  xy: 746, 1282
+  size: 677, 252
+  orig: 1920, 1080
+  offset: 376, 387
+  index: -1
+slashs4
+  rotate: true
+  xy: 1741, 1116
+  size: 929, 273
+  orig: 1920, 1080
+  offset: 419, 374
+  index: -1
+slashs5
+  rotate: true
+  xy: 1469, 847
+  size: 1198, 270
+  orig: 1920, 1080
+  offset: 450, 384
+  index: -1
+slashs7
+  rotate: true
+  xy: 1770, 16
+  size: 598, 247
+  orig: 1920, 1080
+  offset: 928, 393
+  index: -1
+slashs8
+  rotate: false
+  xy: 1010, 542
+  size: 240, 68
+  orig: 1920, 1080
+  offset: 1214, 402
+  index: -1
+slashy1
+  rotate: false
+  xy: 1469, 616
+  size: 564, 229
+  orig: 791, 900
+  offset: 0, 657
+  index: -1
+slashy2
+  rotate: false
+  xy: 746, 1536
+  size: 516, 509
+  orig: 791, 900
+  offset: 141, 377
+  index: -1
+slashy3
+  rotate: true
+  xy: 672, 612
+  size: 547, 795
+  orig: 791, 900
+  offset: 154, 105
+  index: -1
+slashy4
+  rotate: false
+  xy: 2, 1161
+  size: 742, 884
+  orig: 791, 900
+  offset: 0, 16
+  index: -1
+slashy5
+  rotate: true
+  xy: 2, 4
+  size: 485, 879
+  orig: 791, 900
+  offset: 263, 19
+  index: -1
+slashy6
+  rotate: true
+  xy: 883, 62
+  size: 441, 656
+  orig: 791, 900
+  offset: 263, 21
+  index: -1
+star
+  rotate: false
+  xy: 2, 491
+  size: 668, 668
+  orig: 668, 668
+  offset: 0, 0
+  index: -1
+
+QuachTinh2.png
+size: 2048,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dragon
+  rotate: false
+  xy: 2, 256
+  size: 1447, 123
+  orig: 1448, 180
+  offset: 1, 57
+  index: -1
+slashs6
+  rotate: false
+  xy: 2, 2
+  size: 932, 252
+  orig: 1920, 1080
+  offset: 672, 391
+  index: -1
+slashy7
+  rotate: false
+  xy: 936, 9
+  size: 206, 245
+  orig: 791, 900
+  offset: 351, 212
+  index: -1

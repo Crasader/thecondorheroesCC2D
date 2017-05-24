@@ -29,6 +29,7 @@ EnemyChong2 * EnemyChong2::create(string jsonFile, string atlasFile, float scale
 	enemy->setTimeScale(1.4f);
 	enemy->health = 1;
 	enemy->exp = 5;
+	enemy->autorelease();
 	return enemy;
 
 }
@@ -48,6 +49,7 @@ EnemyChong2 * EnemyChong2::create(string filename, float scale)
 	//enemy->setTimeScale(1.4f);
 	enemy->health = 1;
 	enemy->exp = 5;
+	enemy->autorelease();
 	return enemy;
 
 
@@ -84,7 +86,7 @@ void EnemyChong2::updateMe(BaseHero* hero)
 		if (this->getPositionX() + this->getParent()->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width * 0.45f &&
 			this->getPositionX() + this->getParent()->getPositionX() > hero->getPositionX() - SCREEN_SIZE.width * 0.26f &&
 			hero->getPositionY() + SCREEN_SIZE.height * 0.5f > this->getPositionY() &&
-			hero->getPositionY() - SCREEN_SIZE.height * 0.35f < this->getPositionY()
+			hero->getPositionY() - SCREEN_SIZE.height * 0.4f < this->getPositionY()
 
 			) {
 

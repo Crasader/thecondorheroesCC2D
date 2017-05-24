@@ -3,9 +3,7 @@
 #include "manager/AudioManager.h"
 
 CoLong::CoLong(string p_sJsonFile, string p_sAtlasFile, float p_fScale) : BaseHero(p_sJsonFile, p_sAtlasFile, p_fScale) {
-	checkDurationSkill1 = 0;
-	checkDurationSkill2 = 0;
-	checkDurationSkill3 = 0;
+
 }
 
 CoLong * CoLong::create(string p_sJsonFile, string p_sAtlasFile, float p_fScale) {
@@ -298,37 +296,7 @@ void CoLong::createSlash() {
 }
 
 void CoLong::initCirclePhysic(b2World * world, Point pos) {
-	b2CircleShape circle_shape;
-	circle_shape.m_radius = getBoxHeight() / PTM_RATIO;
-
-	// True radius of hero is here
-	setTrueRadiusOfHero(circle_shape.m_radius * PTM_RATIO);
-	//
-
-	b2FixtureDef fixtureDef;
-	fixtureDef.density = 0.0f;
-	fixtureDef.friction = 0.0f;
-	fixtureDef.restitution = 0.0f;
-	fixtureDef.shape = &circle_shape;
-
-	fixtureDef.filter.categoryBits = BITMASK_HERO;
-
-	fixtureDef.filter.maskBits = BITMASK_FLOOR |
-		BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION | BITMASK_ENEMY;
-
-
-
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
-	bodyDef.userData = this;			// pass sprite to bodyDef with argument: userData
-
-	bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);
-
-	body = world->CreateBody(&bodyDef);
-	body->CreateFixture(&fixtureDef);
-
-	// connect sword with body
-	initSwordPhysic(world, Point(pos.x + trueRadiusOfHero * 2.2f, pos.y), trueRadiusOfHero);
+	BaseHero::initCirclePhysic(world, pos);
 
 	// rada
 	createRada(world);

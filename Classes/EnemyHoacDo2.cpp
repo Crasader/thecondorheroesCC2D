@@ -42,6 +42,7 @@ EnemyHoacDo2 * EnemyHoacDo2::create(string filename, float scale)
 	//enemy->setTimeScale(1.4f);
 	enemy->health = 1;
 	enemy->exp = 15;
+	enemy->autorelease();
 	return enemy;
 }
 

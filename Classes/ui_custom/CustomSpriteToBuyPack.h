@@ -14,6 +14,7 @@ private:
 	float m_fBigScale;
 	float m_fSmallScale;
 	ScrollView *m_pParent;
+	Button *m_pButton;
 	ccMenuCallback m_pCallBack;
 public:
 	CustomSpriteToBuyPack();
@@ -25,6 +26,7 @@ public:
 	bool touchBegan(Touch *p_pTouch, Event *p_pEvent);
 	void touchCancelled(Touch *p_pTouch, Event *p_pEvent);
 	void touchEnded(Touch *p_pTouch, Event *p_pEvent);
+	void receiveButtonPressEvent(Ref *pSender, ui::Widget::TouchEventType type);
 };
 
 #endif // __CUSTOM_SRPITE_TO_BUY_PACK_H__

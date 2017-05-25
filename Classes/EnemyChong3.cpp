@@ -29,6 +29,7 @@ EnemyChong3 * EnemyChong3::create(string jsonFile, string atlasFile, float scale
 	enemy->setTimeScale(1.4f);
 	enemy->health = 1;
 	enemy->exp = 5;
+	enemy->autorelease();
 	return enemy;
 
 }

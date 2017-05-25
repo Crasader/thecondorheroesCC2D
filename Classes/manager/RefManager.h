@@ -214,7 +214,7 @@ public:
 #define INDEX_QUEST_HEALTH		1
 #define INDEX_QUEST_COOLDOWN	2
 #define INDEX_QUEST_DQ			3
-#define INDEX_QUEST_TNL			4
+#define INDEX_QUEST_TLN			4
 #define INDEX_QUEST_HD			5
 #define INDEX_QUEST_RAMPAGE		6
 #define INDEX_QUEST_DIAMOND		7

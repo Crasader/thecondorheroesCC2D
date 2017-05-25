@@ -41,7 +41,7 @@ bool SelectStageLayer::init(int charId)
 
 	character_point = Sprite::create(JSHERO->getSelectCharacterPoint());
 	character_point->setAnchorPoint(Vec2(0.5f, 0));
-	character_point->setScale(screenSize.height / 8.5f / character_point->getContentSize().width);
+	character_point->setScale(screenSize.height / 8.0f / character_point->getContentSize().width);
 	auto moveUp = MoveBy::create(0.3f, Vec2(0, character_point->getBoundingBox().size.height * 0.04f));
 	auto scaleUp = ScaleBy::create(0.3f, 1.04f);
 	auto seq = Sequence::createWithTwoActions(Spawn::create(EaseInOut::create(moveUp, 2), scaleUp, nullptr), 
@@ -49,7 +49,7 @@ bool SelectStageLayer::init(int charId)
 	character_point->runAction(RepeatForever::create(seq));
 	scrollView->addChild(character_point, 2);
 
-	Menu* menu = Menu::create();
+	menu = Menu::create();
 	for (auto child : grMapBtn->getObjects()) {
 		auto mObject = child.asValueMap();
 		Point origin = Point(mObject["x"].asFloat() * scaleY, mObject["y"].asFloat() * scaleY);
@@ -232,15 +232,6 @@ Sprite* SelectStageLayer::bossSprite(int order)
 void SelectStageLayer::doNothing()
 {
 }
-
-void SelectStageLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
-{
-	if (keyCode == EventKeyboard::KeyCode::KEY_BACK) {
-		/*auto _aScene = MenuLayer::createScene();
-		Director::getInstance()->replaceScene(TransitionFade::create(0.3f, _aScene));*/
-	}
-}
-
 
 void SelectStageLayer::onExit()
 {

@@ -10,7 +10,7 @@ EnemyBoss1::EnemyBoss1(string jsonFile, string atlasFile, float scale) :BaseEnem
 	controlAttack = 2;
 	controlState = 0;
 
-	health = 10;
+	health = 15;
 	exp = 50;
 	baseVelocity = Vec2(SCREEN_SIZE.width / 2.3f, SCREEN_SIZE.height / 10);
 	moveVelocity = Vec2(SCREEN_SIZE.height / 2, SCREEN_SIZE.height / 2);
@@ -31,6 +31,7 @@ EnemyBoss1 * EnemyBoss1::create(string jsonFile, string atlasFile, float scale)
 	boss->setTag(TAG_BOSS);
 	boss->scaleBoss = scale;
 	boss->setLevelBoss(1);
+	boss->autorelease();
 	return boss;
 }
 

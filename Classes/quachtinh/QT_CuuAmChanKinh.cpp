@@ -70,7 +70,7 @@ void QT_CuuAmChanKinh::runAni()
 		aniFrames.pushBack(frame);
 	}
 
-	auto animate = Animate::create(Animation::createWithSpriteFrames(aniFrames, 0.1f));
+	auto animate = Animate::create(Animation::createWithSpriteFrames(aniFrames, 0.05f));
 	this->runAction(RepeatForever::create(animate));
 }
 

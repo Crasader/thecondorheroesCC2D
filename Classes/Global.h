@@ -71,6 +71,8 @@ using namespace std;
 #define TAG_ENEMY_TOANCHAN2					102
 #define TAG_ENEMY_HONGLANGBA2				103
 #define TAG_ENEMY_HOACDO2					104
+#define TAG_ENEMY_LINH_TEN_THANG			105
+#define TAG_ENEMY_LINH_TEN_XIEN				106
 
 // tag enemy body co hai
 

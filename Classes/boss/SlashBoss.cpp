@@ -16,6 +16,7 @@ SlashBoss * SlashBoss::create(string json, string atlas, float scale)
 	slash->setScaleX(1);
 	slash->setAnimation(0, "skill-boss", true);
 	slash->update(0.0f);
+	slash->autorelease();
 	return slash;
 }
 

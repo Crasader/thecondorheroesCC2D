@@ -47,14 +47,16 @@ bool GameScene::init(int stage, int map, int charId)
 		return false;
 	}
 	AudioManager::stopMusic();
-
+	GAHelper::getInstance()->logScreen(StringUtils::format("Stage: %d, Map: %d", stage, map));
 	isFirstPlay = REF->getIsFirstPlay();
 	if (isFirstPlay) {
 		if (REF->getLastPickHero() != charId)
 			isFirstPlay = false;
 	}
 
+
 	isModeDebug = false;
+
 	changebg = 0;
 
 	indexOfNextMapBoss = -1;
@@ -866,7 +868,6 @@ void GameScene::createInfiniteNode()
 
 	}
 
-
 	//background->setPosition(Point(-SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 	background->setPosition(Point(0, SCREEN_SIZE.height / 2));
 	background->setAnchorPoint(Point(0, 0.5f));
@@ -1306,17 +1307,17 @@ void GameScene::createEnemyLinhCamGiao(MyLayer * layer, Vec2 pos)
 		enemy->setIsEndOfScreen(false);
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
-		enemy->resumeSchedulerAndActions();
+		enemy->resume();
 		enemy->clearTracks();
 		enemy->setToSetupPose();
-		enemy->setAnimation(0, "idle", false);
+		enemy->setAnimation(0, "idle", true);
 		enemy->update(0.0f);
 		//layer->addChild(enemy, ZORDER_ENEMY);
 		if (enemy->getB2Body()) {
 			world->DestroyBody(enemy->getB2Body());
 		}
 
-		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
+		enemy->initBoxPhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
 		enemy->makeMask();
 
 		enemy->listener();
@@ -1334,7 +1335,7 @@ void GameScene::createEnemyLinhCamGiao2(MyLayer * layer, Vec2 pos)
 		enemy->resumeSchedulerAndActions();
 		enemy->clearTracks();
 		enemy->setToSetupPose();
-		enemy->setAnimation(0, "idle", false);
+		enemy->setAnimation(0, "idle", true);
 		enemy->update(0.0f);
 		//layer->addChild(enemy, ZORDER_ENEMY);
 		if (enemy->getB2Body()) {
@@ -1342,6 +1343,56 @@ void GameScene::createEnemyLinhCamGiao2(MyLayer * layer, Vec2 pos)
 		}
 
 		enemy->initBoxPhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
+		enemy->makeMask();
+
+		enemy->listener();
+	}
+}
+
+void GameScene::createEnemyLinhTenThang(MyLayer * layer, Vec2 pos)
+{
+	if (layer->linhtenthangPool) {
+		auto enemy = (EnemyLinhTenThang*)layer->linhtenthangPool->getObject();
+		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
+		enemy->setPosition(pos);
+		enemy->setVisible(true);
+		enemy->resumeSchedulerAndActions();
+		enemy->clearTracks();
+		enemy->setToSetupPose();
+		enemy->setAnimation(0, "idle", true);
+		enemy->update(0.0f);
+		//layer->addChild(enemy, ZORDER_ENEMY);
+		if (enemy->getB2Body()) {
+			world->DestroyBody(enemy->getB2Body());
+		}
+
+		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
+		enemy->makeMask();
+
+		enemy->listener();
+	}
+}
+
+void GameScene::createEnemyLinhTenXien(MyLayer * layer, Vec2 pos)
+{
+	if (layer->linhtenxienPool) {
+		auto enemy = (EnemyLinhTenXien*)layer->linhtenxienPool->getObject();
+		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
+		enemy->setPosition(pos);
+		enemy->setVisible(true);
+		enemy->resumeSchedulerAndActions();
+		enemy->clearTracks();
+		enemy->setToSetupPose();
+		enemy->setAnimation(0, "idle", true);
+		enemy->update(0.0f);
+		//layer->addChild(enemy, ZORDER_ENEMY);
+		if (enemy->getB2Body()) {
+			world->DestroyBody(enemy->getB2Body());
+		}
+
+		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
 		enemy->makeMask();
 
 		enemy->listener();
@@ -1526,11 +1577,11 @@ void GameScene::updateQuest()
 		break;
 
 	case 1:
-		REF->setUpNumberQuest(INDEX_QUEST_TNL, hero->getScore());
+		REF->setUpNumberQuest(INDEX_QUEST_TLN, hero->getScore());
 		break;
 
 	default:
-		REF->setUpNumberQuest(INDEX_QUEST_TNL, hero->getScore());
+		REF->setUpNumberQuest(INDEX_QUEST_TLN, hero->getScore());
 		break;
 	}
 }
@@ -1731,8 +1782,6 @@ void GameScene::updateEnemy()
 			auto agent = childLayer2.at(i);
 			if ((agent->getPosition() + posLayer->getPosition()).x < follow->getPositionX() + SCREEN_SIZE.width * 1 / 2
 				&& (agent->getPositionX() + posLayer->getPositionX())>follow->getPositionX() - SCREEN_SIZE.width * 1 / 2) {
-
-
 
 				if (childLayer2.at(i)->getTag() > 100) {
 					auto tmp = (BaseEnemy*)childLayer2.at(i);
@@ -2188,6 +2237,9 @@ void GameScene::loadPosAndTag()
 	loadPosOfObjectInGroup("chonggo3", TAG_ENEMY_CHONG3);
 	loadPosOfObjectInGroup("linhcamgiao1", TAG_ENEMY_LINHCAMGIAO1);
 	loadPosOfObjectInGroup("linhcamgiao2", TAG_ENEMY_LINHCAMGIAO2);
+	loadPosOfObjectInGroup("linhtenthang", TAG_ENEMY_LINH_TEN_THANG);
+	loadPosOfObjectInGroup("linhtenxien", TAG_ENEMY_LINH_TEN_XIEN);
+
 }
 
 void GameScene::loadPosOfObjectInGroup(string nameOfGroup, float tag)
@@ -2324,6 +2376,14 @@ void GameScene::creatAgentByMydata(MyLayer * layer, MyData data)
 
 	case TAG_ENEMY_LINHCAMGIAO2: {
 		createEnemyLinhCamGiao2(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
+		break;
+	}
+	case TAG_ENEMY_LINH_TEN_XIEN: {
+		createEnemyLinhTenXien(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
+		break;
+	}
+	case TAG_ENEMY_LINH_TEN_THANG: {
+		createEnemyLinhTenThang(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
 		break;
 	}
 

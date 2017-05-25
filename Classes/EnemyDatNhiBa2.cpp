@@ -44,6 +44,7 @@ EnemyDatNhiBa2 * EnemyDatNhiBa2::create(string filename, float scale)
 	enemy->health = 2;
 	enemy->setDamage(2);
 	enemy->exp = 12;
+	enemy->autorelease();
 	return enemy;
 }
 

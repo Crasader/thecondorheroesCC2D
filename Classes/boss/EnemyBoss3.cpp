@@ -3,7 +3,7 @@
 
 EnemyBoss3::EnemyBoss3(string jsonFile, string atlasFile, float scale) :EnemyBoss1(jsonFile, atlasFile, scale)
 {
-	health = 30;
+	health = 35;
 }
 
 EnemyBoss3 * EnemyBoss3::create(string jsonFile, string atlasFile, float scale)
@@ -15,6 +15,7 @@ EnemyBoss3 * EnemyBoss3::create(string jsonFile, string atlasFile, float scale)
 	boss->setTag(TAG_BOSS);
 	boss->scaleBoss = scale;
 	boss->setLevelBoss(3);
+	boss->autorelease();
 	return boss;
 }
 

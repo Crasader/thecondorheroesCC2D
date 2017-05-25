@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="450" height="20" tilewidth="80" tileheight="80" nextobjectid="147">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="450" height="20" tilewidth="80" tileheight="80" nextobjectid="165">
  <tileset firstgid="1" name="chonggo" tilewidth="80" tileheight="80" tilecount="9" columns="3">
   <image source="chonggo.png" width="240" height="240"/>
  </tileset>
@@ -216,5 +216,24 @@
  <objectgroup name="chonggo3"/>
  <objectgroup name="under_ground">
   <object id="146" x="8" y="1532" width="35964"/>
+ </objectgroup>
+ <objectgroup name="linhtenxien">
+  <object id="147" x="1442" y="960" width="80" height="170"/>
+  <object id="148" x="10760" y="1272" width="76" height="172"/>
+  <object id="149" x="11364" y="1280" width="78" height="168"/>
+  <object id="150" x="11680" y="1282" width="82" height="156"/>
+  <object id="151" x="11920" y="1282" width="84" height="164"/>
+  <object id="152" x="12802" y="1280" width="72" height="168"/>
+  <object id="153" x="15278" y="1290" width="90" height="160"/>
+  <object id="155" x="11164" y="1258" width="76" height="172"/>
+  <object id="156" x="12246" y="1292" width="76" height="172"/>
+  <object id="157" x="13532" y="1290" width="76" height="172"/>
+  <object id="158" x="14254" y="1248" width="76" height="172"/>
+  <object id="159" x="14974" y="1276" width="76" height="172"/>
+  <object id="160" x="17120" y="1288" width="76" height="172"/>
+  <object id="161" x="15730" y="1284" width="76" height="172"/>
+  <object id="162" x="19200" y="1284" width="76" height="172"/>
+  <object id="163" x="19766" y="1278" width="76" height="172"/>
+  <object id="164" x="18398" y="1272" width="76" height="172"/>
  </objectgroup>
 </map>

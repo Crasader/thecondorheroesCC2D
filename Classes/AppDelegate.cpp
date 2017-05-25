@@ -1,6 +1,8 @@
 #include "AppDelegate.h"
 #include "layer/IntroScene.h"
 #include "thirdsdkhelper/AdmobHelper.h"
+#include "thirdsdkhelper/GoogleAnalysticHelper.h"
+
 
 
 USING_NS_CC;
@@ -80,6 +82,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     //auto scene = GameScene::createScene();
 	auto scene = SceneIntro::createScene();
 	AdmobHelper::getInstance();
+	GAHelper::getInstance();
     // run
     director->runWithScene(scene);
 
@@ -90,6 +93,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 void AppDelegate::applicationDidEnterBackground() {
     Director::getInstance()->stopAnimation();
 	experimental::AudioEngine::pauseAll();
+	GAHelper::getInstance()->sendDataNow();
 
     // if you use SimpleAudioEngine, it must be paused
     // SimpleAudioEngine::getInstance()->pauseBackgroundMusic();

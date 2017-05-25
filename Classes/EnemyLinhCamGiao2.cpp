@@ -22,6 +22,7 @@ EnemyLinhCamGiao2 * EnemyLinhCamGiao2::create(string jsonFile, string atlasFile,
 	//enemy->setScaleEnemy(scale);
 	enemy->health = 1;
 	enemy->exp = 12;
+	enemy->autorelease();
 	return enemy;
 
 }
@@ -41,6 +42,7 @@ EnemyLinhCamGiao2 * EnemyLinhCamGiao2::create(string filename, float scale)
 	//enemy->setTimeScale(1.4f);
 	enemy->health = 1;
 	enemy->exp = 12;
+	enemy->autorelease();
 	return enemy;
 }
 

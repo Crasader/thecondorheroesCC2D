@@ -17,7 +17,7 @@ public:
 	EnemyLinhTenXien(spSkeletonData *data);
 	static EnemyLinhTenXien* create(string filename,float scale);
 	void attack(Vec2 posHero);
-	void updateMe(BaseHero *hero);
+	//void updateMe(BaseHero *hero);
 	//void removeFromParentAndCleanup(bool onExit);
 };
 

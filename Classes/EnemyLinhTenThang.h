@@ -18,6 +18,7 @@ public:
 	static EnemyLinhTenThang* create(string filename,float scale);
 	void genSlash();
 	void attack(Vec2 posHero);
+	virtual void updateMe(BaseHero *hero);
 	void playsoundAt();
 	void playsoundDie();
 

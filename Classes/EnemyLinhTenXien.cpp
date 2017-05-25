@@ -54,43 +54,43 @@ void EnemyLinhTenXien::attack(Vec2 posHero)
 	slash->setRotation(-angle / PI * 180 + 180);
 }
 
-void EnemyLinhTenXien::updateMe(BaseHero * hero)
-{
-	BaseEnemy::updateMe(hero);
-	slash->updateMe(hero);
-	if (slash->getIsDie()) {
-		slash->getB2Body()->GetWorld()->DestroyBody(slash->getB2Body());
-		slash->setB2Body(nullptr);
-		slash->setVisible(false);
-		slash->setIsDie(false);
-	}
-
-	if (slash->getPositionX() < this->getPositionX() - SCREEN_SIZE.width * 3 / 4 && slash->isVisible()) {
-		//slash->getB2Body()->SetTransform(b2Vec2(this->getBoneLocation("bone32").x / PTM_RATIO, this->getBoneLocation("bone32").y / PTM_RATIO), 0);
-		slash->getB2Body()->GetWorld()->DestroyBody(slash->getB2Body());
-		slash->setB2Body(nullptr);
-		//slash->getB2Body()->SetLinearVelocity(b2Vec2(0,0));
-		slash->setVisible(false);
-	}
-	auto thisToHero = hero->getPosition() - (this->getPosition() + this->getParent()->getPosition());
-	if (thisToHero.x < 0) {
-		if (-thisToHero.x < SCREEN_SIZE.width  && thisToHero.y < SCREEN_SIZE.height/2) {
-			if (controlAttack % 80 == 0) {
-				if (this->body != nullptr) {
-					if (!this->body->GetWorld()->IsLocked()) {
-						controlAttack = 1;	// 1 giay 1 nhat
-						this->attack(hero->getPosition());
-					}
-				}
-			}
-			controlAttack++;
-		}
-	}
-
-	if (getIsDie() && this->getB2Body() != nullptr) {
-		die();
-	}
-}
+//void EnemyLinhTenXien::updateMe(BaseHero * hero)
+//{
+//	BaseEnemy::updateMe(hero);
+//	slash->updateMe(hero);
+//	if (slash->getIsDie()) {
+//		slash->getB2Body()->GetWorld()->DestroyBody(slash->getB2Body());
+//		slash->setB2Body(nullptr);
+//		slash->setVisible(false);
+//		slash->setIsDie(false);
+//	}
+//
+//	if (slash->getPositionX() < this->getPositionX() - SCREEN_SIZE.width * 3 / 4 && slash->isVisible()) {
+//		//slash->getB2Body()->SetTransform(b2Vec2(this->getBoneLocation("bone32").x / PTM_RATIO, this->getBoneLocation("bone32").y / PTM_RATIO), 0);
+//		slash->getB2Body()->GetWorld()->DestroyBody(slash->getB2Body());
+//		slash->setB2Body(nullptr);
+//		//slash->getB2Body()->SetLinearVelocity(b2Vec2(0,0));
+//		slash->setVisible(false);
+//	}
+//	auto thisToHero = hero->getPosition() - (this->getPosition() + this->getParent()->getPosition());
+//	if (thisToHero.x < 0) {
+//		if (-thisToHero.x < SCREEN_SIZE.width  && thisToHero.y < SCREEN_SIZE.height/2) {
+//			if (controlAttack % 80 == 0) {
+//				if (this->body != nullptr) {
+//					if (!this->body->GetWorld()->IsLocked()) {
+//						controlAttack = 1;	// 1 giay 1 nhat
+//						this->attack(hero->getPosition());
+//					}
+//				}
+//			}
+//			controlAttack++;
+//		}
+//	}
+//
+//	if (getIsDie() && this->getB2Body() != nullptr) {
+//		die();
+//	}
+//}
 
 
 

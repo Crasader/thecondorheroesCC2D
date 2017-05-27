@@ -44,12 +44,15 @@ protected:
 
 	CC_SYNTHESIZE_READONLY(float, durationSkill_1, DurationSkill_1);
 	CC_SYNTHESIZE_READONLY(float, coolDownSkill_1, CoolDownSkill_1);
+	CC_SYNTHESIZE_READONLY(int, numberUseSkill_1, NumberUseSkill_1);
 
 	CC_SYNTHESIZE_READONLY(float, durationSkill_2, DurationSkill_2);
 	CC_SYNTHESIZE_READONLY(float, coolDownSkill_2, CoolDownSkill_2);
+	CC_SYNTHESIZE_READONLY(int, numberUseSkill_2, NumberUseSkill_2);
 
 	CC_SYNTHESIZE_READONLY(float, durationSkill_3, DurationSkill_3);
 	CC_SYNTHESIZE_READONLY(float, coolDownSkill_3, CoolDownSkill_3);
+	CC_SYNTHESIZE_READONLY(int, numberUseSkill_3, NumberUseSkill_3);
 
 	CC_SYNTHESIZE_READONLY(int, levelSkill_1, LevelSkill_1);
 	CC_SYNTHESIZE_READONLY(int, levelSkill_2, LevelSkill_2);
@@ -101,9 +104,14 @@ public:
 	// set increase score after done one game
 	void setUpScore(int score);
 	
-	// void decrease time duration and cooldown
-	void decreaseDurationSkill_X(int skill_What, int percent);
-	void decreaseCoolDownSkill_X(int skill_What, int percent);
+	// increase time duration
+	void increaseDurationSkill_X(int skill_What, int value);
+
+	// decrease time cooldown
+	void decreaseCoolDownSkill_X(int skill_What, int value);
+
+	// increase number of use of skillX
+	void increaseNumberUseSkill_X(int skill_What, int value);
 
 	void increaseBonusScore(int value);
 	void increaseBonusGold(int value);
@@ -186,12 +194,15 @@ public:
 // Define duration and cooldown time (if not define, get data from json)
 #define KEY_DURATION_SKILL_1_HERO_X						"DurationSkill1_Hero_"
 #define KEY_COOLDOWN_SKILL_1_HERO_X						"CoolDownSkill1_Hero_"
+#define KEY_NUMBER_USE_SKILL_1_HERO_X					"NumberUseSkill1_Hero_"
 
 #define KEY_DURATION_SKILL_2_HERO_X						"DurationSkill2_Hero_"
 #define KEY_COOLDOWN_SKILL_2_HERO_X						"CoolDownSkill2_Hero_"
+#define KEY_NUMBER_USE_SKILL_2_HERO_X					"NumberUseSkill2_Hero_"
 
 #define KEY_DURATION_SKILL_3_HERO_X						"DurationSkill3_Hero_"
 #define KEY_COOLDOWN_SKILL_3_HERO_X						"CoolDownSkill3_Hero_"
+#define KEY_NUMBER_USE_SKILL_3_HERO_X					"NumberUseSkill3_Hero_"
 
 // from level skill we can calculate duration and cooldown
 #define KEY_LEVEL_SKILL_1_HERO_X						"LevelSkill1_Hero_"

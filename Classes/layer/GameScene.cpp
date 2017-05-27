@@ -205,7 +205,27 @@ void GameScene::createEagle(Point position)
 		"Animation/ChimDieu/ChimDieu.atlas", SCREEN_SIZE.height / 2048);
 	_aEagle->initCirclePhysic(world, position);
 	this->addChild(_aEagle, ZORDER_HERO);
-	_aEagle->setStringHero(charId == 0 ? "DuongQua" : "CoLong");
+	switch (charId) {
+	case 0:
+		_aEagle->setStringHero("DuongQua");
+		break;
+	case 1:
+		_aEagle->setStringHero("CoLong");
+		break;
+	case 2:
+		_aEagle->setStringHero("HoangDung");
+		break;
+	case 3:
+		_aEagle->setStringHero("HoangDuocSu");
+		break;
+	case 4:
+		_aEagle->setStringHero("QuachTinh");
+		break;
+	default:
+		_aEagle->setStringHero("DuongQua");
+		break;
+	}
+	
 }
 
 void GameScene::onBegin()
@@ -1745,7 +1765,7 @@ void GameScene::updateEnemy()
 				boss->updateMe(hero);
 			}
 
-			else if (tmp->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width * 0.75f) {
+			else if (tmp->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width * 0.65f) {
 				boss->updateMe(hero);
 
 			}
@@ -2140,19 +2160,18 @@ void GameScene::overGame()
 	this->pause();
 }
 
-void GameScene::nextGame()
-{
-	this->removeAllChildrenWithCleanup(true);
-	Layer *_pMenuScene = MenuLayer::create(true);
-	auto _aMainMenuScene = Scene::create();
-	_aMainMenuScene->addChild(_pMenuScene);
-	Director::getInstance()->replaceScene(_aMainMenuScene);
-}
-
 void GameScene::winGame()
 {
 	AudioManager::stopSoundandMusic();
 	AudioManager::playSound(SOUND_WIN);
+
+	auto children = this->getChildren();
+	auto iter = children.begin();
+	for (iter; iter != children.end(); iter++) {
+		auto child = (Node*)(*iter);
+		if (child->getTag() == TAG_COIN)
+			this->removeChild(child, true);
+	}
 
 	//reachNewMap();
 

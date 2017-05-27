@@ -24,8 +24,6 @@ protected:
 	void slashToanChanKiemPhap();
 	void doCounterSkill1();
 
-	void fastAndFurious();
-
 
 	// Skill 2
 	/*CCArray* poolSkill2;

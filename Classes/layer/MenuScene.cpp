@@ -114,16 +114,16 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 }
 
 void MenuLayer::update(float p_fDelta) {
-	int _arCooldownLife[5] = { 60, 120, 180, 240, 300 };
-
 	time_t _nCurrentTime = time(0);
 	if (m_nLifeNumber < 5) {
+		int _arCooldownLife[5] = { 60, 120, 180, 240, 300 };
 		int _nCooldownLife = _arCooldownLife[m_nLifeNumber];
 		m_pTimeCounter->setVisible(true);
 		int _nDeltaTime = _nCurrentTime - REF->getAnchorTime();
 		if (_nDeltaTime >= _nCooldownLife) {
 			m_nLifeNumber++;
 			REF->setLife(m_nLifeNumber);
+			REF->setAnchorTime(time(0));
 			initTopMainMenu();
 		}
 		int _nMinute = (_nCooldownLife - _nDeltaTime) / 60;
@@ -652,6 +652,7 @@ void MenuLayer::initUpgradeBoard() {
 	MenuItemSprite *_arUpgrateSkill[3];
 	float _arDuration[3] = { REF->getDurationSkill_1(), REF->getDurationSkill_2(), REF->getDurationSkill_3() };
 	float _arCoolDown[3] = { REF->getCoolDownSkill_1(), REF->getCoolDownSkill_2(), REF->getCoolDownSkill_3() };
+	int _arNumberUse[3] = { REF->getNumberUseSkill_1(), REF->getNumberUseSkill_2(), REF->getNumberUseSkill_3() };
 
 	int _arSkillLevel[3] = { REF->getLevelSkill_1(), REF->getLevelSkill_2(), REF->getLevelSkill_3() };
 	for (int i = 0; i < 3; i++) {
@@ -680,12 +681,14 @@ void MenuLayer::initUpgradeBoard() {
 		_pSkillInfo->addChild(_pLevelLabel, 1);
 
 		Label *_pDurationLabel = Label::createWithBMFont("fonts/font_normal-export.fnt", StringUtils::format("Duration : "));
+		if (_arNumberUse[i] > 1) _pDurationLabel->setString("Number of use : ");
 		_pDurationLabel->setBMFontSize(_pSkillInfo->getContentSize().height * 0.2f);
 		_pDurationLabel->setAnchorPoint(Vec2(0.0f, 0.0f));
 		_pDurationLabel->setPosition(Vec2(_pSkillInfo->getContentSize().height, _pSkillInfo->getContentSize().height * 0.27f));
 		_pSkillInfo->addChild(_pDurationLabel, 1);
 
 		Label *_pDurationValueLabel = Label::createWithBMFont("fonts/font_coin-export.fnt", StringUtils::format("%i", (int)_arDuration[i]));
+		if (_arNumberUse[i] > 1) _pDurationValueLabel->setString(StringUtils::format("%i", _arNumberUse[i]));
 		_pDurationValueLabel->setBMFontSize(_pSkillInfo->getContentSize().height * 0.2f);
 		_pDurationValueLabel->setAnchorPoint(Vec2(0.0f, 0.0f));
 		_pDurationValueLabel->setPosition(Vec2(_pDurationLabel->getContentSize().width, 0.0f));
@@ -1467,19 +1470,53 @@ void MenuLayer::buttonMoreGameHandle() {
 
 void MenuLayer::buttonUpgradeSkillHandle(int p_nIndexSkill) {
 	AudioManager::playSound(SOUND_BTCLICK);
+
+	if (m_nCurrentGold < 5000) {
+		// TOAST
+		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(2), TOAST_SHORT);
+		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
+		this->addChild(_pToast, 10);
+		return;
+	}
+
+	m_nCurrentGold -= 5000;
+	REF->setDownGold(5000);
+
 	if (p_nIndexSkill == 0) {
 		REF->increaseLevelSkill_1();
+		REF->decreaseCoolDownSkill_X(1, 1);
+		if ((REF->getLevelSkill_1() % 3) == 0) {		// reach 3, 6, 9 increase
+			if (REF->getNumberUseSkill_1() > 1)
+				REF->increaseNumberUseSkill_X(1, 1);
+			else
+				REF->increaseDurationSkill_X(1, 1);
+		}
 		logUpgradeSkillEvent(m_nIndexHeroPicked, p_nIndexSkill, REF->getLevelSkill_1());
 	}
 	if (p_nIndexSkill == 1) {
 		REF->increaseLevelSkill_2();
+		REF->decreaseCoolDownSkill_X(2, 1);
+		if ((REF->getLevelSkill_2() % 3) == 0) {		// reach 3, 6, 9 increase
+			if (REF->getNumberUseSkill_2() > 1)
+				REF->increaseNumberUseSkill_X(2, 1);
+			else
+				REF->increaseDurationSkill_X(2, 1);
+		}
 		logUpgradeSkillEvent(m_nIndexHeroPicked, p_nIndexSkill, REF->getLevelSkill_2());
 	}
 	if (p_nIndexSkill == 2) {
 		REF->increaseLevelSkill_3();
+		REF->decreaseCoolDownSkill_X(3, 1);
+		if ((REF->getLevelSkill_3() % 3) == 0) {		// reach 3, 6, 9 increase
+			if (REF->getNumberUseSkill_3() > 1)
+				REF->increaseNumberUseSkill_X(3, 1);
+			else
+				REF->increaseDurationSkill_X(3, 1);
+		}
 		logUpgradeSkillEvent(m_nIndexHeroPicked, p_nIndexSkill, REF->getLevelSkill_3());
 	}
 	
+	initTopMainMenu();
 	initUpgradeBoard();
 }
 

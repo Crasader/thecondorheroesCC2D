@@ -228,7 +228,6 @@ public:
 	void pauseGame();
 	void dieGame();
 	void overGame();
-	void nextGame();
 	void winGame();
 	void resumeGame();
 	void restartGame();

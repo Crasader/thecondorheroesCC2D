@@ -10,6 +10,7 @@
 #include "colong/CoLong.h"
 #include "duongqua/DuongQua.h"
 #include "quachtinh/QuachTinh.h"
+#include "hoangdung/HoangDung.h"
 
 LayerColor *blur;
 
@@ -138,6 +139,10 @@ void GameScene::selectHero()
 		createCoLong("Animation/CoLong/CoLong.json", "Animation/CoLong/CoLong.atlas");
 		break;
 
+	case 2:
+		createHoangDung("Animation/HoangDung/HoangDung.json", "Animation/HoangDung/HoangDung.atlas");
+		break;
+
 	case 4:
 		createQuachTinh("Animation/QuachTinh/QuachTinh.json", "Animation/QuachTinh/QuachTinh.atlas");
 		break;
@@ -180,6 +185,22 @@ void GameScene::createCoLong(string path_Json, string path_Atlas)
 	addChild(hero->getBloodScreen(), ZORDER_SMT);
 }
 
+void GameScene::createHoangDung(string path_Json, string path_Atlas)
+{
+	hero = HoangDung::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 350);
+	hero->listener();
+	hero->setPosition(heroStartPosition);
+
+	addChild(hero, ZORDER_HERO);
+
+	hero->initCirclePhysic(world, hero->getPosition());
+	hero->addStuff();
+	hero->createPool();
+
+	hero->getBloodScreen()->setPosition(follow->getPosition());
+	addChild(hero->getBloodScreen(), ZORDER_SMT);
+}
+
 void GameScene::createQuachTinh(string path_Json, string path_Atlas)
 {
 	hero = QuachTinh::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 300);
@@ -195,7 +216,6 @@ void GameScene::createQuachTinh(string path_Json, string path_Atlas)
 	hero->getBloodScreen()->setPosition(follow->getPosition());
 	addChild(hero->getBloodScreen(), ZORDER_SMT);
 }
-
 
 void GameScene::createEagle(Point position)
 {

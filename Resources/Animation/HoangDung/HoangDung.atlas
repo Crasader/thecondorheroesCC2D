@@ -89,15 +89,15 @@ Untitled-1_0009_coco1
   offset: 8, 45
   index: -1
 arm1_L
-  rotate: false
-  xy: 1278, 4
+  rotate: true
+  xy: 1631, 358
   size: 76, 42
   orig: 84, 43
   offset: 4, 0
   index: -1
 arm1_R
   rotate: false
-  xy: 1987, 328
+  xy: 1631, 436
   size: 59, 66
   orig: 84, 96
   offset: 12, 16
@@ -116,30 +116,44 @@ arm2_R
   orig: 101, 81
   offset: 1, 1
   index: -1
+blind_L
+  rotate: false
+  xy: 1216, 183
+  size: 153, 134
+  orig: 153, 135
+  offset: 0, 1
+  index: -1
+blind_R
+  rotate: false
+  xy: 1231, 35
+  size: 127, 146
+  orig: 127, 146
+  offset: 0, 0
+  index: -1
 body
   rotate: false
-  xy: 1572, 401
+  xy: 1885, 1332
   size: 99, 101
   orig: 99, 101
   offset: 0, 0
   index: -1
 hand_L
   rotate: false
-  xy: 2010, 850
+  xy: 1412, 284
   size: 36, 39
   orig: 36, 40
   offset: 0, 1
   index: -1
 hand_R
-  rotate: false
-  xy: 1987, 287
+  rotate: true
+  xy: 1371, 271
   size: 46, 39
   orig: 47, 40
   offset: 1, 0
   index: -1
 handskill_L
-  rotate: true
-  xy: 1231, 2
+  rotate: false
+  xy: 1885, 1285
   size: 44, 45
   orig: 44, 45
   offset: 0, 0
@@ -149,6 +163,20 @@ handskill_R
   xy: 319, 2
   size: 57, 52
   orig: 57, 52
+  offset: 0, 0
+  index: -1
+head
+  rotate: false
+  xy: 1920, 1627
+  size: 115, 150
+  orig: 115, 150
+  offset: 0, 0
+  index: -1
+head2
+  rotate: false
+  xy: 1881, 1435
+  size: 115, 150
+  orig: 115, 150
   offset: 0, 0
   index: -1
 lappet
@@ -173,123 +201,11 @@ leg_R
   offset: 0, 0
   index: -1
 shadow
-  rotate: true
-  xy: 1108, 1645
+  rotate: false
+  xy: 1920, 1607
   size: 126, 18
   orig: 126, 18
   offset: 0, 0
-  index: -1
-skill1_1
-  rotate: false
-  xy: 1620, 137
-  size: 181, 127
-  orig: 189, 128
-  offset: 8, 0
-  index: -1
-skill1_10
-  rotate: false
-  xy: 1620, 266
-  size: 182, 128
-  orig: 189, 128
-  offset: 4, 0
-  index: -1
-skill1_11
-  rotate: true
-  xy: 1885, 1232
-  size: 174, 128
-  orig: 189, 128
-  offset: 0, 0
-  index: -1
-skill1_12
-  rotate: false
-  xy: 1803, 136
-  size: 181, 128
-  orig: 189, 128
-  offset: 0, 0
-  index: -1
-skill1_2
-  rotate: false
-  xy: 1804, 266
-  size: 181, 128
-  orig: 189, 128
-  offset: 8, 0
-  index: -1
-skill1_3
-  rotate: false
-  xy: 1402, 67
-  size: 185, 128
-  orig: 189, 128
-  offset: 2, 0
-  index: -1
-skill1_4
-  rotate: true
-  xy: 1885, 718
-  size: 171, 123
-  orig: 189, 128
-  offset: 0, 0
-  index: -1
-skill1_5
-  rotate: false
-  xy: 1226, 602
-  size: 189, 119
-  orig: 189, 128
-  offset: 0, 0
-  index: -1
-skill1_6
-  rotate: false
-  xy: 1769, 6
-  size: 179, 128
-  orig: 189, 128
-  offset: 7, 0
-  index: -1
-skill1_7
-  rotate: true
-  xy: 1885, 1061
-  size: 169, 128
-  orig: 189, 128
-  offset: 0, 0
-  index: -1
-skill1_8
-  rotate: true
-  xy: 1885, 891
-  size: 168, 128
-  orig: 189, 128
-  offset: 0, 0
-  index: -1
-skill1_9
-  rotate: true
-  xy: 1920, 1597
-  size: 180, 125
-  orig: 189, 128
-  offset: 0, 0
-  index: -1
-skill1_light
-  rotate: false
-  xy: 1231, 48
-  size: 169, 147
-  orig: 176, 161
-  offset: 1, 0
-  index: -1
-skill3_storm_1
-  rotate: false
-  xy: 1589, 2
-  size: 178, 132
-  orig: 194, 132
-  offset: 11, 0
-  index: -1
-skill3_storm_2
-  rotate: true
-  xy: 1881, 1408
-  size: 177, 129
-  orig: 194, 132
-  offset: 12, 2
-  index: -1
-skill3_storm_3
-  rotate: false
-  xy: 1384, 384
-  size: 186, 118
-  orig: 194, 132
-  offset: 0, 7
   index: -1
 slashfly_0005_coco5
   rotate: false
@@ -362,8 +278,8 @@ taycoco_0004_taychem4
   offset: 0, 0
   index: -1
 taycoco_0005_taychem3
-  rotate: false
-  xy: 1216, 197
+  rotate: true
+  xy: 1226, 319
   size: 402, 184
   orig: 592, 391
   offset: 62, 138
@@ -376,43 +292,9 @@ taycoco_0006_taychem2
   offset: 128, 131
   index: -1
 taycoco_0007_taychem1
-  rotate: false
-  xy: 1205, 383
+  rotate: true
+  xy: 1412, 325
   size: 177, 217
   orig: 592, 391
   offset: 156, 151
-  index: -1
-
-HoangDung2.png
-size: 512,256
-format: RGBA8888
-filter: Linear,Linear
-repeat: none
-blind_L
-  rotate: false
-  xy: 2, 119
-  size: 153, 134
-  orig: 153, 135
-  offset: 0, 1
-  index: -1
-blind_R
-  rotate: true
-  xy: 157, 126
-  size: 127, 146
-  orig: 127, 146
-  offset: 0, 0
-  index: -1
-head
-  rotate: true
-  xy: 2, 2
-  size: 115, 150
-  orig: 115, 150
-  offset: 0, 0
-  index: -1
-head2
-  rotate: true
-  xy: 305, 138
-  size: 115, 150
-  orig: 115, 150
-  offset: 0, 0
   index: -1

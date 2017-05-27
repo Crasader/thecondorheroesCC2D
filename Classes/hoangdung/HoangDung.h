@@ -3,6 +3,9 @@
 
 #include "BaseHero.h"
 #include "manager/AudioManager.h"
+#include "colong/Rada.h"
+#include "DaCauBongPhap.h"
+#include "duongqua/DQ_TieuHonChuong.h"
 
 class HoangDung : public BaseHero
 {
@@ -10,13 +13,39 @@ public:
 
 	HoangDung(string jsonFile, string atlasFile, float scale);
 	static HoangDung* create(string jsonFile, string atlasFile, float scale);
+	void initSwordPhysic(b2World *world, Point position);
+
+	void initCirclePhysic(b2World *world, Point pos);
 
 protected:
+
+	Rada *m_pRadaShield;
+	SkeletonAnimation* thunderShield;
+
+	SkeletonAnimation* Skill2Effect1;
+	SkeletonAnimation* Skill2Effect2;
+	SkeletonAnimation* Skill2Effect3;
+
+	void createThunderShield();
+	void createSkill2Effect();
+
+	CCArray* poolSkill2;
+	int indexSkill2 = 0;
+	int numberOfDeadMTHV;
+	void createManThienHoaVu(Point posHand, int Zoder, float angle);
+	void shootManThienHoaVu();
+	list<TieuHonChuong *> listManThienHoaVu;
+
+	CCArray* poolSkill3;
+	int indexSkill3 = 0;
+	int numberOfDeadDCBP;
+	list<DaCauBongPhap*> listDaCauBongPhap;
+	void createDaCauBongPhap(Point posSword);
+	void slashDaCauBongPhap();
 
 	void doCounterSkill1();
 	void doCounterSkill2();
 	void doCounterSkill3();
-	
 
 	//////////////////////////////////////////////////////////////////////////
 	void createSlash();
@@ -24,7 +53,6 @@ protected:
 	void runSlashLand();
 	//////////////////////////////////////////////////////////////////////////
 
-	void initCirclePhysic(b2World *world, Point pos);
 	void addStuff();
 	void createPool();
 
@@ -35,7 +63,6 @@ protected:
 	void die();
 	void attackNormal();
 	void attackLanding();
-	void attackBySkill1();
 	void injured();
 	void listener();
 
@@ -43,6 +70,8 @@ protected:
 	void doDestroyBodies(b2World *world);
 
 	void updateMe(float dt);
+
+private:
 
 };
 #endif // __HOANG_DUNG_H__

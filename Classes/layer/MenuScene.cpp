@@ -7,7 +7,6 @@
 #include "manager/JSonMenuManager.h"
 #include "manager/JSonQuestManager.h"
 #include "manager/RefManager.h"
-#include "ui_custom/CustomSpriteToBuyPack.h"
 
 	MenuLayer * MenuLayer::create(bool p_bOnlySelectStage) {
 	MenuLayer *pRet = new(std::nothrow) MenuLayer();
@@ -116,14 +115,18 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 void MenuLayer::update(float p_fDelta) {
 	time_t _nCurrentTime = time(0);
 	if (m_nLifeNumber < 5) {
+		int _arCooldownLife[5] = { 60, 120, 180, 240, 300 };
+		int _nCooldownLife = _arCooldownLife[m_nLifeNumber];
 		m_pTimeCounter->setVisible(true);
 		int _nDeltaTime = _nCurrentTime - REF->getAnchorTime();
-		if (_nDeltaTime >= 300) {
+		if (_nDeltaTime >= _nCooldownLife) {
 			m_nLifeNumber++;
 			REF->setLife(m_nLifeNumber);
+			REF->setAnchorTime(time(0));
+			initTopMainMenu();
 		}
-		int _nMinute = (300 - _nDeltaTime) / 60;
-		int _nSecond = (300 - _nDeltaTime) % 60;
+		int _nMinute = (_nCooldownLife - _nDeltaTime) / 60;
+		int _nSecond = (_nCooldownLife - _nDeltaTime) % 60;
 		m_pTimeCounter->setString(StringUtils::format(_nSecond < 10 ? "%i:0%i" : "%i:%i", _nMinute, _nSecond));
 	}
 	else {

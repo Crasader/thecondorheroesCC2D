@@ -9,7 +9,6 @@
 #include "network/HttpClient.h"
 
 #include "ui_custom/CustomLayerToToast.h"
-#include "ui_custom/CustomSpriteToBuyPack.h"
 #include "SelectStageScene.h"
 
 USING_NS_CC;
@@ -75,7 +74,7 @@ private:
 	Layer *m_pBottomHeroLayer;
 	Layer *m_pShopBoardLayer;
 
-	SelectStageLayer *m_pSelectStageLayer;
+	SelectStageLayer *m_pSelectStageLayer = nullptr;
 	Layer *m_pBlurScreen;
 	LayerColor *m_pBuyPackConfirmBackground;
 

@@ -1,0 +1,90 @@
+
+Skill_2_effect1.png
+size: 2048,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+skill1_1
+  rotate: false
+  xy: 739, 127
+  size: 181, 127
+  orig: 189, 128
+  offset: 8, 0
+  index: -1
+skill1_10
+  rotate: false
+  xy: 189, 126
+  size: 182, 128
+  orig: 189, 128
+  offset: 4, 0
+  index: -1
+skill1_11
+  rotate: false
+  xy: 1476, 126
+  size: 174, 128
+  orig: 189, 128
+  offset: 0, 0
+  index: -1
+skill1_12
+  rotate: false
+  xy: 556, 126
+  size: 181, 128
+  orig: 189, 128
+  offset: 0, 0
+  index: -1
+skill1_2
+  rotate: false
+  xy: 373, 126
+  size: 181, 128
+  orig: 189, 128
+  offset: 8, 0
+  index: -1
+skill1_3
+  rotate: false
+  xy: 2, 126
+  size: 185, 128
+  orig: 189, 128
+  offset: 2, 0
+  index: -1
+skill1_4
+  rotate: false
+  xy: 739, 2
+  size: 171, 123
+  orig: 189, 128
+  offset: 0, 0
+  index: -1
+skill1_5
+  rotate: false
+  xy: 922, 135
+  size: 189, 119
+  orig: 189, 128
+  offset: 0, 0
+  index: -1
+skill1_6
+  rotate: false
+  xy: 1295, 126
+  size: 179, 128
+  orig: 189, 128
+  offset: 7, 0
+  index: -1
+skill1_7
+  rotate: false
+  xy: 1652, 126
+  size: 169, 128
+  orig: 189, 128
+  offset: 0, 0
+  index: -1
+skill1_8
+  rotate: false
+  xy: 1823, 126
+  size: 168, 128
+  orig: 189, 128
+  offset: 0, 0
+  index: -1
+skill1_9
+  rotate: false
+  xy: 1113, 129
+  size: 180, 125
+  orig: 189, 128
+  offset: 0, 0
+  index: -1

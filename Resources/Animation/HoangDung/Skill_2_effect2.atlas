@@ -1,0 +1,13 @@
+
+Skill_2_effect2.png
+size: 256,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+skill1_light
+  rotate: false
+  xy: 2, 2
+  size: 169, 147
+  orig: 176, 161
+  offset: 1, 0
+  index: -1

@@ -398,7 +398,6 @@ void CoLong::listener() {
 
 		}
 
-
 		else if (strcmp(getCurrent()->animation->name, "skill3") == 0) {
 			changeBodyMaskBits(BITMASK_FLOOR | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION | BITMASK_ENEMY);
 			m_pRadaSkill3->changeBodyCategoryBits(BITMASK_WOODER);

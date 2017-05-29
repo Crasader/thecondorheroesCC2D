@@ -16,7 +16,7 @@ QT_CuuAmChanKinh * QT_CuuAmChanKinh::create()
 	ck->initWithSpriteFrameName("skill1_firedown_1.png");
 	ck->setTag(TAG_QT_CUU_AM_CHAN_KINH);
 
-	ck->angle = -40.0;
+	ck->angle = -45.0;
 	ck->setRotation(ck->angle);
 
 	return ck;

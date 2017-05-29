@@ -126,6 +126,7 @@ private:
 	// Create For Hero
 	void createDuongQua(string path_Json, string path_Atlas);
 	void createCoLong(string path_Json, string path_Atlas);
+	void createHoangDung(string path_Json, string path_Atlas);
 	void createQuachTinh(string path_Json, string path_Atlas);
 	void createEagle(Point position);
 	void heroGetOffEagle();

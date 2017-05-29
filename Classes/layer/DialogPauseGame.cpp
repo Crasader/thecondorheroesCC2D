@@ -321,6 +321,7 @@ int DialogRevive::calGoldRevive(int number)
 	return goldRevive;
 }
 
+
 DialogRevive * DialogRevive::create(int numberOfRevive)
 {
 	DialogRevive* dialog = new DialogRevive();
@@ -381,7 +382,16 @@ bool DialogStageClear::init(int score, int gold)
 	nextBtn->setAnchorPoint(Vec2(1, 1));
 	nextBtn->setPosition(background->getContentSize().width*0.9, 0);
 
-	menu = Menu::create(backBtn, nextBtn, nullptr);
+
+	auto fbShareBtnNormal = Sprite::create("UI/UI_Endgame/btn_facebook.png");
+	auto fbShareBtnActive = Sprite::create("UI/UI_Endgame/btn_facebook.png");
+	fbShareBtnActive->setColor(Color3B(128, 128, 128));
+	auto fbShareBtn = MenuItemSprite::create(fbShareBtnNormal, fbShareBtnActive, CC_CALLBACK_0(DialogStageClear::shareFB, this));
+	fbShareBtn->setAnchorPoint(Vec2::ZERO);
+	fbShareBtn->setPosition(background->getContentSize().width * 1.03f, background->getContentSize().height * 0.43f);
+
+
+	menu = Menu::create(backBtn, nextBtn, fbShareBtn, nullptr);
 	menu->setEnabled(false);
 	menu->setPosition(Vec2::ZERO);
 	background->addChild(menu);
@@ -421,6 +431,13 @@ bool DialogStageClear::init(int score, int gold)
 
 	return true;
 }
+
+
+void DialogStageClear::shareFB()
+{
+	log("Sharing");
+}
+
 
 DialogStageClear * DialogStageClear::create(int score, int gold)
 {

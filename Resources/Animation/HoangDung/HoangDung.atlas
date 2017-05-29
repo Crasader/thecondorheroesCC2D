@@ -1,0 +1,300 @@
+
+HoangDung.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Slash_blend_1
+  rotate: false
+  xy: 938, 13
+  size: 291, 143
+  orig: 1000, 247
+  offset: 0, 14
+  index: -1
+Slash_blend_2
+  rotate: false
+  xy: 1226, 1380
+  size: 653, 205
+  orig: 1000, 247
+  offset: 90, 8
+  index: -1
+Slash_blend_3
+  rotate: true
+  xy: 1025, 667
+  size: 823, 199
+  orig: 1000, 247
+  offset: 96, 20
+  index: -1
+Slash_blend_4
+  rotate: false
+  xy: 1138, 1587
+  size: 780, 204
+  orig: 1000, 247
+  offset: 150, 18
+  index: -1
+Slash_blend_5
+  rotate: true
+  xy: 1226, 723
+  size: 655, 203
+  orig: 1000, 247
+  offset: 309, 18
+  index: -1
+Slash_blend_6
+  rotate: false
+  xy: 729, 361
+  size: 474, 210
+  orig: 1000, 247
+  offset: 526, 14
+  index: -1
+Sword3
+  rotate: true
+  xy: 2, 20
+  size: 23, 283
+  orig: 23, 284
+  offset: 0, 1
+  index: -1
+Untitled-1_0005_coco5
+  rotate: false
+  xy: 519, 187
+  size: 474, 172
+  orig: 1134, 312
+  offset: 580, 137
+  index: -1
+Untitled-1_0006_coco4
+  rotate: false
+  xy: 1138, 1793
+  size: 853, 253
+  orig: 1134, 312
+  offset: 217, 58
+  index: -1
+Untitled-1_0007_coco3
+  rotate: true
+  xy: 264, 400
+  size: 1090, 266
+  orig: 1134, 312
+  offset: 44, 45
+  index: -1
+Untitled-1_0008_coco2
+  rotate: true
+  xy: 532, 456
+  size: 1034, 195
+  orig: 1134, 312
+  offset: 7, 35
+  index: -1
+Untitled-1_0009_coco1
+  rotate: true
+  xy: 1723, 715
+  size: 663, 160
+  orig: 1134, 312
+  offset: 8, 45
+  index: -1
+arm1_L
+  rotate: true
+  xy: 1631, 358
+  size: 76, 42
+  orig: 84, 43
+  offset: 4, 0
+  index: -1
+arm1_R
+  rotate: false
+  xy: 1631, 436
+  size: 59, 66
+  orig: 84, 96
+  offset: 12, 16
+  index: -1
+arm2_L
+  rotate: true
+  xy: 1025, 584
+  size: 81, 99
+  orig: 81, 99
+  offset: 0, 0
+  index: -1
+arm2_R
+  rotate: false
+  xy: 532, 374
+  size: 99, 80
+  orig: 101, 81
+  offset: 1, 1
+  index: -1
+blind_L
+  rotate: false
+  xy: 1216, 183
+  size: 153, 134
+  orig: 153, 135
+  offset: 0, 1
+  index: -1
+blind_R
+  rotate: false
+  xy: 1231, 35
+  size: 127, 146
+  orig: 127, 146
+  offset: 0, 0
+  index: -1
+body
+  rotate: false
+  xy: 1885, 1332
+  size: 99, 101
+  orig: 99, 101
+  offset: 0, 0
+  index: -1
+hand_L
+  rotate: false
+  xy: 1412, 284
+  size: 36, 39
+  orig: 36, 40
+  offset: 0, 1
+  index: -1
+hand_R
+  rotate: true
+  xy: 1371, 271
+  size: 46, 39
+  orig: 47, 40
+  offset: 1, 0
+  index: -1
+handskill_L
+  rotate: false
+  xy: 1885, 1285
+  size: 44, 45
+  orig: 44, 45
+  offset: 0, 0
+  index: -1
+handskill_R
+  rotate: false
+  xy: 319, 2
+  size: 57, 52
+  orig: 57, 52
+  offset: 0, 0
+  index: -1
+head
+  rotate: false
+  xy: 1920, 1627
+  size: 115, 150
+  orig: 115, 150
+  offset: 0, 0
+  index: -1
+head2
+  rotate: false
+  xy: 1881, 1435
+  size: 115, 150
+  orig: 115, 150
+  offset: 0, 0
+  index: -1
+lappet
+  rotate: true
+  xy: 1993, 1779
+  size: 267, 50
+  orig: 268, 61
+  offset: 0, 11
+  index: -1
+leg_L
+  rotate: false
+  xy: 633, 389
+  size: 70, 65
+  orig: 70, 67
+  offset: 0, 2
+  index: -1
+leg_R
+  rotate: false
+  xy: 1126, 593
+  size: 66, 72
+  orig: 67, 72
+  offset: 0, 0
+  index: -1
+shadow
+  rotate: false
+  xy: 1920, 1607
+  size: 126, 18
+  orig: 126, 18
+  offset: 0, 0
+  index: -1
+slashfly_0005_coco5
+  rotate: false
+  xy: 2, 1492
+  size: 1104, 279
+  orig: 1134, 312
+  offset: 0, 5
+  index: -1
+slashfly_0006_coco4
+  rotate: true
+  xy: 2, 368
+  size: 1122, 260
+  orig: 1134, 312
+  offset: 0, 1
+  index: -1
+slashfly_0007_coco3
+  rotate: false
+  xy: 2, 1773
+  size: 1134, 273
+  orig: 1134, 312
+  offset: 0, 1
+  index: -1
+slashfly_0008_coco2
+  rotate: true
+  xy: 729, 573
+  size: 917, 294
+  orig: 1134, 312
+  offset: 217, 0
+  index: -1
+slashfly_0009_coco1
+  rotate: true
+  xy: 1431, 823
+  size: 555, 290
+  orig: 1134, 312
+  offset: 579, 22
+  index: -1
+taycoco_0000_taychem8
+  rotate: false
+  xy: 995, 158
+  size: 219, 201
+  orig: 592, 391
+  offset: 153, 179
+  index: -1
+taycoco_0001_taychem7
+  rotate: false
+  xy: 519, 49
+  size: 417, 136
+  orig: 592, 391
+  offset: 155, 185
+  index: -1
+taycoco_0002_taychem6
+  rotate: false
+  xy: 1431, 504
+  size: 259, 317
+  orig: 592, 391
+  offset: 154, 5
+  index: -1
+taycoco_0003_taychem5
+  rotate: false
+  xy: 1692, 396
+  size: 306, 317
+  orig: 592, 391
+  offset: 0, 4
+  index: -1
+taycoco_0004_taychem4
+  rotate: false
+  xy: 2, 45
+  size: 315, 321
+  orig: 592, 391
+  offset: 0, 0
+  index: -1
+taycoco_0005_taychem3
+  rotate: true
+  xy: 1226, 319
+  size: 402, 184
+  orig: 592, 391
+  offset: 62, 138
+  index: -1
+taycoco_0006_taychem2
+  rotate: true
+  xy: 319, 56
+  size: 342, 198
+  orig: 592, 391
+  offset: 128, 131
+  index: -1
+taycoco_0007_taychem1
+  rotate: true
+  xy: 1412, 325
+  size: 177, 217
+  orig: 592, 391
+  offset: 156, 151
+  index: -1

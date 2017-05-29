@@ -7,7 +7,6 @@
 #include "manager/JSonMenuManager.h"
 #include "manager/JSonQuestManager.h"
 #include "manager/RefManager.h"
-#include "ui_custom/CustomSpriteToBuyPack.h"
 
 MenuLayer * MenuLayer::create(bool p_bOnlySelectStage) {
 	MenuLayer *pRet = new(std::nothrow) MenuLayer();

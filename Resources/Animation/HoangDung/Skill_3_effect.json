@@ -1,0 +1,329 @@
+{
+"skeleton": { "hash": "kRqwJyFaXLhtR2SlDSLkWqo/M3U", "spine": "3.5.51", "width": 0, "height": 0, "images": "" },
+"bones": [
+	{ "name": "root", "scaleX": 1.15, "scaleY": 1.15 },
+	{
+		"name": "bone",
+		"parent": "root",
+		"length": 131.12,
+		"rotation": -90.33,
+		"x": 2.07,
+		"y": 191.79,
+		"scaleX": 1.686,
+		"scaleY": 2.012
+	},
+	{ "name": "bone2", "parent": "root", "length": 158.7, "rotation": 0.81, "x": 3.56, "y": 190.33 },
+	{ "name": "bone3", "parent": "root", "length": 106.55, "rotation": 0.8, "x": 229.65, "y": 220.98, "scaleX": 1.5, "scaleY": 1.5 },
+	{
+		"name": "bone4",
+		"parent": "root",
+		"length": 106.55,
+		"rotation": 123.48,
+		"x": -141.26,
+		"y": 348.73,
+		"scaleX": 1.75,
+		"scaleY": 1.75
+	},
+	{ "name": "bone5", "parent": "root", "length": 106.55, "rotation": -72.55, "x": -78.28, "y": 4.87 }
+],
+"slots": [
+	{ "name": "Sword3", "bone": "bone", "attachment": "Sword3" },
+	{ "name": "oooo", "bone": "bone2", "attachment": "oooo" },
+	{ "name": "skill3_effect1", "bone": "bone3", "attachment": "skill3_effect1_01" },
+	{ "name": "skill3_effect2", "bone": "bone4", "attachment": "skill3_effect1_01" },
+	{ "name": "skill3_effect3", "bone": "bone5", "attachment": "skill3_effect1_01" }
+],
+"skins": {
+	"default": {
+		"Sword3": {
+			"Sword3": { "x": -1.65, "y": 4.12, "rotation": 90.33, "width": 23, "height": 284 }
+		},
+		"oooo": {
+			"oooo": { "x": 23.65, "y": -13.74, "width": 550, "height": 550 }
+		},
+		"skill3_effect1": {
+			"skill3_effect1_01": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_02": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_03": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_04": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_05": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_06": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_07": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_08": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_09": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_10": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_11": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_12": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_13": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_14": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_15": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_16": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_17": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_18": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_19": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_20": { "rotation": -0.8, "width": 192, "height": 192 }
+		},
+		"skill3_effect2": {
+			"skill3_effect1_01": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_02": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_03": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_04": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_05": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_06": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_07": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_08": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_09": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_10": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_11": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_12": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_13": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_14": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_15": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_16": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_17": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_18": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_19": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_20": { "rotation": -0.8, "width": 192, "height": 192 }
+		},
+		"skill3_effect3": {
+			"skill3_effect1_01": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_02": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_03": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_04": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_05": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_06": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_07": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_08": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_09": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_10": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_11": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_12": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_13": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_14": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_15": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_16": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_17": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_18": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_19": { "rotation": -0.8, "width": 192, "height": 192 },
+			"skill3_effect1_20": { "rotation": -0.8, "width": 192, "height": 192 }
+		}
+	}
+},
+"animations": {
+	"animation": {
+		"slots": {
+			"oooo": {
+				"color": [
+					{ "time": 0, "color": "ffffffbc" },
+					{ "time": 0.2667, "color": "ffffff37" },
+					{ "time": 0.6, "color": "ffffffbc" }
+				]
+			},
+			"skill3_effect1": {
+				"attachment": [
+					{ "time": 0.0333, "name": "skill3_effect1_02" },
+					{ "time": 0.0667, "name": "skill3_effect1_03" },
+					{ "time": 0.1, "name": "skill3_effect1_04" },
+					{ "time": 0.1333, "name": "skill3_effect1_05" },
+					{ "time": 0.1667, "name": "skill3_effect1_06" },
+					{ "time": 0.2, "name": "skill3_effect1_07" },
+					{ "time": 0.2333, "name": "skill3_effect1_08" },
+					{ "time": 0.2667, "name": "skill3_effect1_09" },
+					{ "time": 0.3, "name": "skill3_effect1_10" },
+					{ "time": 0.3333, "name": "skill3_effect1_11" },
+					{ "time": 0.3667, "name": "skill3_effect1_12" },
+					{ "time": 0.4, "name": "skill3_effect1_13" },
+					{ "time": 0.4333, "name": "skill3_effect1_14" },
+					{ "time": 0.4667, "name": "skill3_effect1_15" },
+					{ "time": 0.5, "name": "skill3_effect1_16" },
+					{ "time": 0.5333, "name": "skill3_effect1_17" },
+					{ "time": 0.5667, "name": "skill3_effect1_18" },
+					{ "time": 0.6, "name": "skill3_effect1_19" }
+				]
+			},
+			"skill3_effect2": {
+				"attachment": [
+					{ "time": 0.0333, "name": "skill3_effect1_02" },
+					{ "time": 0.0667, "name": "skill3_effect1_03" },
+					{ "time": 0.1, "name": "skill3_effect1_04" },
+					{ "time": 0.1333, "name": "skill3_effect1_05" },
+					{ "time": 0.1667, "name": "skill3_effect1_06" },
+					{ "time": 0.2, "name": "skill3_effect1_07" },
+					{ "time": 0.2333, "name": "skill3_effect1_08" },
+					{ "time": 0.2667, "name": "skill3_effect1_09" },
+					{ "time": 0.3, "name": "skill3_effect1_10" },
+					{ "time": 0.3333, "name": "skill3_effect1_11" },
+					{ "time": 0.3667, "name": "skill3_effect1_12" },
+					{ "time": 0.4, "name": "skill3_effect1_13" },
+					{ "time": 0.4333, "name": "skill3_effect1_14" },
+					{ "time": 0.4667, "name": "skill3_effect1_15" },
+					{ "time": 0.5, "name": "skill3_effect1_16" },
+					{ "time": 0.5333, "name": "skill3_effect1_17" },
+					{ "time": 0.5667, "name": "skill3_effect1_19" }
+				]
+			},
+			"skill3_effect3": {
+				"attachment": [
+					{ "time": 0, "name": "skill3_effect1_20" },
+					{ "time": 0.0333, "name": "skill3_effect1_19" },
+					{ "time": 0.0667, "name": "skill3_effect1_18" },
+					{ "time": 0.1, "name": "skill3_effect1_17" },
+					{ "time": 0.1333, "name": "skill3_effect1_16" },
+					{ "time": 0.1667, "name": "skill3_effect1_15" },
+					{ "time": 0.2, "name": "skill3_effect1_14" },
+					{ "time": 0.2333, "name": "skill3_effect1_13" },
+					{ "time": 0.2667, "name": "skill3_effect1_12" },
+					{ "time": 0.3, "name": "skill3_effect1_11" },
+					{ "time": 0.3333, "name": "skill3_effect1_10" },
+					{ "time": 0.3667, "name": "skill3_effect1_09" },
+					{ "time": 0.4, "name": "skill3_effect1_08" },
+					{ "time": 0.4333, "name": "skill3_effect1_07" },
+					{ "time": 0.4667, "name": "skill3_effect1_06" },
+					{ "time": 0.5, "name": "skill3_effect1_05" },
+					{ "time": 0.5333, "name": "skill3_effect1_04" },
+					{ "time": 0.5667, "name": "skill3_effect1_03" },
+					{ "time": 0.6, "name": "skill3_effect1_20" }
+				]
+			}
+		},
+		"bones": {
+			"bone": {
+				"rotate": [
+					{ "time": 0, "angle": 0 },
+					{ "time": 0.0667, "angle": 128.28 },
+					{ "time": 0.1333, "angle": 237.34 },
+					{ "time": 0.2, "angle": 0 },
+					{ "time": 0.2667, "angle": 128.28 },
+					{ "time": 0.3333, "angle": 237.34 },
+					{ "time": 0.4, "angle": 0 },
+					{ "time": 0.4667, "angle": 128.28 },
+					{ "time": 0.5333, "angle": 237.34 },
+					{ "time": 0.6, "angle": 0 }
+				],
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.2, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.4, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.6, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1, "curve": "stepped" },
+					{ "time": 0.2, "x": 1, "y": 1, "curve": "stepped" },
+					{ "time": 0.4, "x": 1, "y": 1, "curve": "stepped" },
+					{ "time": 0.6, "x": 1, "y": 1 }
+				],
+				"shear": [
+					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.2, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.4, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.6, "x": 0, "y": 0 }
+				]
+			},
+			"bone2": {
+				"rotate": [
+					{ "time": 0, "angle": 0 },
+					{ "time": 0.0333, "angle": 111.78 },
+					{ "time": 0.1, "angle": -110.29 },
+					{ "time": 0.1333, "angle": 0 },
+					{ "time": 0.1667, "angle": -110.29 },
+					{ "time": 0.2, "angle": 0 },
+					{ "time": 0.2333, "angle": 111.78 },
+					{ "time": 0.3, "angle": -110.29 },
+					{ "time": 0.3333, "angle": 0 },
+					{ "time": 0.3667, "angle": -110.29 },
+					{ "time": 0.4, "angle": 0 },
+					{ "time": 0.4333, "angle": 111.78 },
+					{ "time": 0.5, "angle": -110.29 },
+					{ "time": 0.5333, "angle": 0 },
+					{ "time": 0.5667, "angle": -110.29 },
+					{ "time": 0.6, "angle": 0 }
+				],
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.1333, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.2, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.3333, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.4, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.5333, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.6, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1 },
+					{ "time": 0.0667, "x": 0.75, "y": 0.75 },
+					{ "time": 0.1333, "x": 1, "y": 1, "curve": "stepped" },
+					{ "time": 0.2, "x": 1, "y": 1 },
+					{ "time": 0.2667, "x": 0.75, "y": 0.75 },
+					{ "time": 0.3333, "x": 1, "y": 1, "curve": "stepped" },
+					{ "time": 0.4, "x": 1, "y": 1 },
+					{ "time": 0.4667, "x": 0.75, "y": 0.75 },
+					{ "time": 0.5333, "x": 1, "y": 1, "curve": "stepped" },
+					{ "time": 0.6, "x": 1, "y": 1 }
+				],
+				"shear": [
+					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.1333, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.2, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.3333, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.4, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.5333, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.6, "x": 0, "y": 0 }
+				]
+			},
+			"bone3": {
+				"rotate": [
+					{ "time": 0, "angle": 0, "curve": "stepped" },
+					{ "time": 0.6, "angle": 0 }
+				],
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.6, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1, "curve": "stepped" },
+					{ "time": 0.6, "x": 1, "y": 1 }
+				],
+				"shear": [
+					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.6, "x": 0, "y": 0 }
+				]
+			},
+			"bone5": {
+				"rotate": [
+					{ "time": 0, "angle": 0, "curve": "stepped" },
+					{ "time": 0.6, "angle": 0 }
+				],
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.6, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1, "curve": "stepped" },
+					{ "time": 0.6, "x": 1, "y": 1 }
+				],
+				"shear": [
+					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.6, "x": 0, "y": 0 }
+				]
+			},
+			"bone4": {
+				"rotate": [
+					{ "time": 0, "angle": 0, "curve": "stepped" },
+					{ "time": 0.6, "angle": 0 }
+				],
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.6, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1, "curve": "stepped" },
+					{ "time": 0.6, "x": 1, "y": 1 }
+				],
+				"shear": [
+					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.6, "x": 0, "y": 0 }
+				]
+			}
+		}
+	}
+}
+}

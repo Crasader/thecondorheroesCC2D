@@ -79,6 +79,7 @@ void EnemyChong2::updateMe(BaseHero* hero)
 	if (this->getB2Body()) {
 		if (this->getPositionX() + this->getParent()->getPositionX() - hero->getPositionX() < SCREEN_SIZE.width / 2) {
 			this->resume();
+			this->makeMask();
 		}
 	}
 

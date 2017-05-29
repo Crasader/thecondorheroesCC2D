@@ -47,6 +47,7 @@ bool GameScene::init(int stage, int map, int charId)
 	{
 		return false;
 	}
+
 	AudioManager::stopMusic();
 	GAHelper::getInstance()->logScreen(StringUtils::format("Stage: %d, Map: %d", stage, map));
 	isFirstPlay = REF->getIsFirstPlay();
@@ -1311,7 +1312,7 @@ void GameScene::createEnemyChong2(MyLayer * layer, Vec2 pos)
 		}
 
 		enemy->initBoxPhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
-		enemy->makeMask();
+		//enemy->makeMask();
 
 		enemy->listener();
 	}
@@ -1437,6 +1438,31 @@ void GameScene::createEnemyLinhTenXien(MyLayer * layer, Vec2 pos)
 		}
 
 		enemy->initCirclePhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
+		enemy->makeMask();
+
+		enemy->listener();
+	}
+}
+
+void GameScene::createEnemyLinhCamRoi(MyLayer * layer, Vec2 pos)
+{
+	if (layer->linhcamroiPool) {
+		auto enemy = (EnemyLinhCamRoi*)layer->linhcamroiPool->getObject();
+		enemy->setIsDie(false);
+		enemy->setIsEndOfScreen(false);
+		enemy->setPosition(pos);
+		enemy->setVisible(true);
+		enemy->resume();
+		enemy->clearTracks();
+		enemy->setToSetupPose();
+		enemy->setAnimation(0, "idle", true);
+		enemy->update(0.0f);
+		//layer->addChild(enemy, ZORDER_ENEMY);
+		if (enemy->getB2Body()) {
+			world->DestroyBody(enemy->getB2Body());
+		}
+
+		enemy->initBoxPhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
 		enemy->makeMask();
 
 		enemy->listener();
@@ -2146,6 +2172,9 @@ void GameScene::dieGame()
 	if (hero->getIsDriverEagle())
 		_aEagle->pause();
 
+#ifdef SDKBOX_ENABLED
+	sdkbox::PluginVungle::setListener(this);
+#endif
 	dialogPause = DialogRevive::create(++numberRevive);
 	this->getParent()->addChild(dialogPause);
 
@@ -2284,6 +2313,7 @@ void GameScene::loadPosAndTag()
 	loadPosOfObjectInGroup("linhcamgiao2", TAG_ENEMY_LINHCAMGIAO2);
 	loadPosOfObjectInGroup("linhtenthang", TAG_ENEMY_LINH_TEN_THANG);
 	loadPosOfObjectInGroup("linhtenxien", TAG_ENEMY_LINH_TEN_XIEN);
+	loadPosOfObjectInGroup("linhcamroi", TAG_ENEMY_LINHCAMROI);
 
 }
 
@@ -2429,6 +2459,10 @@ void GameScene::creatAgentByMydata(MyLayer * layer, MyData data)
 	}
 	case TAG_ENEMY_LINH_TEN_THANG: {
 		createEnemyLinhTenThang(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
+		break;
+	}
+	case TAG_ENEMY_LINHCAMROI: {
+		createEnemyLinhCamRoi(layer, Vec2(data.x - layer->getPositionX(), data.y - layer->getPositionY()));
 		break;
 	}
 
@@ -2617,3 +2651,23 @@ void GameScene::resumeAfterTut(int caseTut)
 		break;
 	}
 }
+#ifdef SDKBOX_ENABLED
+
+void GameScene::onVungleAdViewed(bool isComplete)
+{
+	
+}
+void GameScene::onVungleCacheAvailable()
+{
+}
+void GameScene::onVungleStarted()
+{
+}
+void GameScene::onVungleFinished()
+{
+}
+void GameScene::onVungleAdReward(const std::string & name)
+{
+	this->reviveHero();
+}
+#endif 

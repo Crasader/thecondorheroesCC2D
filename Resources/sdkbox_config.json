@@ -3,6 +3,20 @@
         "GoogleAnalytics": {
             "trackingCode": "UA-99018383-1"
         }, 
+        "Vungle": {
+            "id": "59256bb2048cabca38000fb7", 
+            "ads": {
+                "reward": {
+                    "sound": true, 
+                    "backbutton": true, 
+                    "incentivized": true
+                }, 
+                "video": {
+                    "sound": true, 
+                    "backbutton": false
+                }
+            }
+        }, 
         "AdMob": {
             "test": false, 
             "ads": {
@@ -22,6 +36,9 @@
                     "id": "ca-app-pub-4291038556071828/5750522193"
                 }
             }
+        }, 
+        "Facebook": {
+            "debug": false
         }
     }, 
     "ios": {
@@ -48,6 +65,9 @@
                     "id": "ca-app-pub-4291038556071828/2657454997"
                 }
             }
+        }, 
+        "Facebook": {
+            "debug": true
         }
     }
 }

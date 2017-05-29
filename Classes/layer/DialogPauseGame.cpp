@@ -87,9 +87,9 @@ void DialogPauseGame::replayGame(Ref * pSender, int goldRevive, bool isWatchVide
 		}
 	}
 	else {
-		AdmobHelper::getInstance()->showRewardVideoToRevive();
-		auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
-		gameLayer->reviveHero();
+		VungleHelper::getInstance()->showReward();
+		//auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
+		
 	}
 }
 

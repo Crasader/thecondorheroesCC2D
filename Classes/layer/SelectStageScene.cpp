@@ -233,11 +233,6 @@ void SelectStageLayer::doNothing()
 {
 }
 
-void SelectStageLayer::onExit()
-{
-	Layer::onExit();
-}
-
 int SelectStageLayer::convertId()
 {
 	int currentStageUnlocked = REF->getCurrentStageUnlocked();

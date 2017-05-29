@@ -30,7 +30,6 @@ private:
 	Sprite *character_point;
 	Sprite* bossSprite(int order);
 	void doNothing();
-	void onExit();
 	int convertId();
 };
 

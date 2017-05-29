@@ -95,17 +95,17 @@ void DialogPauseGame::replayGame(Ref * pSender, int goldRevive, bool isWatchVide
 
 
 void DialogPauseGame::nextStage(Ref * pSender)
-{
-	auto gameScene = this->getParent()->getChildByName("gameLayer");
-	gameScene->removeAllChildrenWithCleanup(true);
-	
+{	
 	Layer *_pMenuScene;
 
+	auto gameScene = this->getParent();
+	gameScene->removeAllChildrenWithCleanup(true);
+
 	if (!REF->getIsLockedHero()) {
-		_pMenuScene = MenuLayer::create(true);
+		_pMenuScene = MenuLayer::create(true);// select stage
 	}
 	else {
-		_pMenuScene = MenuLayer::create(false);
+		_pMenuScene = MenuLayer::create(false);// menu
 	}
 
 	auto _aMainMenuScene = Scene::create();

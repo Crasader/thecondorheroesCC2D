@@ -2101,7 +2101,7 @@ void GameScene::pauseGame()
 
 void GameScene::dieGame()
 {
-	if (REF->getIsLockedHero()) {	// if hero is locked
+	if (REF->getIsLockedHero() || hero->getB2Body()->GetLinearVelocity().y < 0) {	// if hero is locked
 		overGame();
 		return;
 	}

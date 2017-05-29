@@ -2,6 +2,8 @@
 #include "layer/IntroScene.h"
 #include "thirdsdkhelper/AdmobHelper.h"
 #include "thirdsdkhelper/GoogleAnalysticHelper.h"
+#include "thirdsdkhelper/VungleHelper.h"
+#include "thirdsdkhelper\FacebookHelper.h"
 
 
 
@@ -83,6 +85,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	auto scene = SceneIntro::createScene();
 	AdmobHelper::getInstance();
 	GAHelper::getInstance();
+	VungleHelper::getInstance();
+	FacebookHelper::getInstance();
+
     // run
     director->runWithScene(scene);
 

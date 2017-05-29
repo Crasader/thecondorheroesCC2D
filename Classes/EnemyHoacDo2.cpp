@@ -42,6 +42,7 @@ EnemyHoacDo2 * EnemyHoacDo2::create(string filename, float scale)
 	//enemy->setTimeScale(1.4f);
 	enemy->health = 1;
 	enemy->exp = 15;
+	enemy->autorelease();
 	return enemy;
 }
 
@@ -73,7 +74,7 @@ void EnemyHoacDo2::attack(Vec2 posHero)
 	auto thisToHero = posHero - (this->getPosition()+this->getParent()->getPosition());
 	auto angle = thisToHero.getAngle();
 	slash->initCirclePhysic(this->getB2Body()->GetWorld(), this->getBoneLocation("bone22") + this->getParent()->getPosition());
-	slash->setAngle(angle);
+	slash->setAngle(angle, 1);
 	slash->setRotation(-angle / PI * 180 + 180);
 }
 

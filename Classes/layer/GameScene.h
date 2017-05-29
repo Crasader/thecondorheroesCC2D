@@ -31,6 +31,8 @@
 #include "MyLayer.h"
 #include "item/Item.h"
 #include "Hud.h"
+#include "EnemyLinhTenThang.h"
+#include "EnemyLinhTenXien.h"
 
 
 
@@ -151,6 +153,8 @@ private:
 	void createEnemyChong3(MyLayer * layer, Vec2 pos);
 	void createEnemyLinhCamGiao(MyLayer * layer, Vec2 pos);
 	void createEnemyLinhCamGiao2(MyLayer * layer, Vec2 pos);
+	void createEnemyLinhTenThang(MyLayer * layer, Vec2 pos);
+	void createEnemyLinhTenXien(MyLayer * layer, Vec2 pos);
 	void creatBoss();
 
 
@@ -225,7 +229,6 @@ public:
 	void pauseGame();
 	void dieGame();
 	void overGame();
-	void nextGame();
 	void winGame();
 	void resumeGame();
 	void restartGame();

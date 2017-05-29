@@ -26,6 +26,7 @@ EnemyHongLangBa2 * EnemyHongLangBa2::create(string jsonFile, string atlasFile, f
 	enemy->setScaleEnemy(scale);
 	enemy->health = 1;
 	enemy->exp = 15;
+	enemy->autorelease();
 	return enemy;
 
 }
@@ -45,6 +46,7 @@ EnemyHongLangBa2 * EnemyHongLangBa2::create(string filename, float scale)
 	//enemy->setTimeScale(1.4f);
 	enemy->health = 1;
 	enemy->exp = 15;
+	enemy->autorelease();
 	return enemy;
 }
 

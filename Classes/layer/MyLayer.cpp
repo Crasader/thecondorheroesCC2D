@@ -20,6 +20,8 @@ MyLayer::MyLayer()
 	chong3Pool = nullptr;
 	linhcamgiao1Pool = nullptr;
 	linhcamgiao2Pool = nullptr;
+	linhtenthangPool = nullptr;
+	linhtenxienPool = nullptr;
 }
 MyLayer::~MyLayer() {
 	delete wooderPool;
@@ -31,7 +33,9 @@ MyLayer::~MyLayer() {
 	delete datNhiBa1Pool;
 	delete datNhiBa2Pool;
 	delete linhcamgiao1Pool;
-		delete	linhcamgiao2Pool;
+	delete	linhcamgiao2Pool;
+	delete	linhtenthangPool;
+	delete	linhtenxienPool;
 }
 bool MyLayer::init(TMXTiledMap* tmx_map)
 {
@@ -209,6 +213,28 @@ bool MyLayer::init(TMXTiledMap* tmx_map)
 			tmp->setVisible(false);
 			tmp->pauseSchedulerAndActions();
 			this->addChild(tmp);
+		}
+	}
+	if (tmx_map->getObjectGroup("linhtenthang")) {
+		linhtenthangPool = MyPool::create(max, TAG_ENEMY_LINH_TEN_THANG);
+		for (int i = 0; i < linhtenthangPool->maxPool; i++) {
+			auto tmp = (EnemyLinhTenThang*)linhtenthangPool->getObject();
+			tmp->setPosition(0, -SCREEN_SIZE.height);
+			tmp->setVisible(false);
+			tmp->pauseSchedulerAndActions();
+			this->addChild(tmp);
+			tmp->genSlash();
+		}
+	}
+	if (tmx_map->getObjectGroup("linhtenxien")) {
+		linhtenxienPool = MyPool::create(max, TAG_ENEMY_LINH_TEN_XIEN);
+		for (int i = 0; i < linhtenxienPool->maxPool; i++) {
+			auto tmp = (EnemyLinhTenXien*)linhtenxienPool->getObject();
+			tmp->setPosition(0, -SCREEN_SIZE.height);
+			tmp->setVisible(false);
+			tmp->pauseSchedulerAndActions();
+			this->addChild(tmp);
+			tmp->genSlash();
 		}
 	}
 	return true;

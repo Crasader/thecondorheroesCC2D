@@ -157,6 +157,8 @@ void CollisionListener::BeginContact(b2Contact * contact)
 	if ((bitmaskA == BITMASK_WOODER && bitmaskB == BITMASK_SWORD) ||
 		(bitmaskB == BITMASK_WOODER && bitmaskA == BITMASK_SWORD)
 		) {
+		contact->SetEnabled(false);
+
 		auto bodySword = bitmaskA == BITMASK_SWORD ? bodyA : bodyB;
 		auto enemy = bitmaskA == BITMASK_WOODER ? (BaseEnemy*)bodyA->GetUserData() : (BaseEnemy*)bodyB->GetUserData();
 		if (enemy->getTag() == TAG_ENEMY_WOODER &&  bodySword->GetUserData() && 

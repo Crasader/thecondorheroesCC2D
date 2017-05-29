@@ -32,7 +32,7 @@ MyButton * MyButton::create(string file_name_main, string file_name_CoolDown, Po
 	mNode->numberUseLb->setBMFontSize(mNode->getContentSize().height / 2.2f);
 	mNode->numberUseLb->setAnchorPoint(Vec2(0.5f, 0.15f));
 	mNode->numberUseLb->setVisible(false);
-	mNode->numberUseLb->setPosition(mNode->getContentSize().width * 0.75f, mNode->getContentSize().height * 0.75f);
+	mNode->numberUseLb->setPosition(mNode->getContentSize().width * 0.7f, mNode->getContentSize().height * 0.3f);
 	mNode->addChild(mNode->numberUseLb);
 
 

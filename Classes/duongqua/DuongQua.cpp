@@ -100,37 +100,7 @@ void DuongQua::slashToanChanKiemPhap()
 void DuongQua::doCounterSkill1()
 {
 	slashToanChanKiemPhap();
-	//fastAndFurious();
 }
-
-void DuongQua::fastAndFurious()
-{
-	// create a rada to change bitmask instead
-	this->isNoDie = true;
-	this->getB2Body()->SetGravityScale(0);
-	this->changeBodyCategoryBits(BITMASK_SWORD);
-	this->changeBodyMaskBits(BITMASK_WOODER | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BAG | BITMASK_ENEMY);
-	
-	this->schedule([&](float dt) {
-		checkDurationSkill1++;
-
-		this->getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel() * 5, 0));
-
-		if (checkDurationSkill1 >= getDurationSkill1() * 60) {
-			this->setIsNoDie(false);
-			this->changeBodyCategoryBits(BITMASK_HERO);
-			this->changeBodyMaskBits(BITMASK_FLOOR | BITMASK_ENEMY | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION);
-			this->getB2Body()->SetGravityScale(1);
-			auto currentVelY = getB2Body()->GetLinearVelocity().y;
-			this->getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
-			setIsDoneDuration1(true);
-			checkDurationSkill1 = 0;
-			unschedule("KeySkill1");
-		}
-
-	}, 1.0f / 60, "KeySkill1");		//  run every delta second
-}
-
 
 // SKILL 2
 void DuongQua::createKiemPhap(float posX)

@@ -10,6 +10,7 @@
 
 #include "ui_custom/CustomLayerToToast.h"
 #include "SelectStageScene.h"
+#include "thirdsdkhelper\GoogleAnalysticHelper.h"
 
 USING_NS_CC;
 using namespace spine;
@@ -172,6 +173,17 @@ private:
 	void onChangedLanguage();
 	void buttonSoundControlHandle(Ref* p_pSender);
 	void buttonMusicControlHandle(Ref* p_pSender);
+	// for google analytic
+	void logButtonClickEvent(string button);
+	void logBuyItemEvent(string item);
+	void logUnlockHeroEvent(int indexhero);
+	void logClickHeroEvent(int indexhero);
+	void logTryHeroEvent(int indexhero);
+	void logUpgradeHeroEvent(int indexhero, int level);
+	void logUpgradeSkillEvent(int indexhero, int indexskill, int level);
+	//void logUpgradeSkillEvent(int indexhero, int indexskill, int level);
+private:
+		string indexHeroToName(int indexHero);
 };
 
 #endif // __MENUSCENE_H__

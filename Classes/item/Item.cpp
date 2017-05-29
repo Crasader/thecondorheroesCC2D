@@ -1,5 +1,6 @@
 #include "Item.h"
 #include "BaseHero.h"
+#include "quachtinh\QuachTinh.h"
 #include "layer\GameScene.h"
 #include "manager\AudioManager.h"
 #include "manager\RefManager.h"
@@ -63,6 +64,10 @@ void Item::updateMe(BaseHero *hero)
 					if (typeItem == Item_type::HEALTH && hero->getHealth() < hero->getMaxHealth()) {
 						hero->setHealth(hero->getHealth() + 1);
 						parentGameScene->updateBloodBar(hero->getHealth() - 1, true);
+						if (REF->getSelectedHero() == 4) {	// QT
+							auto qt = (QuachTinh*)hero;
+							qt->setCheckHealth(0);
+						}
 					}
 
 					if (typeItem == Item_type::MAGNET) {

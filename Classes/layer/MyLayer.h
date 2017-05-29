@@ -30,6 +30,8 @@ public:
 	MyPool* chong3Pool;
 	MyPool* linhcamgiao1Pool;
 	MyPool* linhcamgiao2Pool;
+	MyPool* linhtenthangPool;
+	MyPool* linhtenxienPool;
 
 	virtual bool init(TMXTiledMap * tmx_map);
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();	

@@ -11,6 +11,7 @@ Darts * Darts::create(string jsonFile, string atlasFile, float scale) {
 	darts->update(0.0f);
 	darts->isDie = false;
 	darts->setB2Body(nullptr);
+	darts->autorelease();
 	return darts;
 }
 

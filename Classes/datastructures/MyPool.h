@@ -17,6 +17,9 @@
 #include "EnemyChong3.h"
 #include "EnemyLinhCamGiao.h"
 #include "EnemyLinhCamGiao2.h"
+#include "EnemyLinhTenThang.h"
+#include "EnemyLinhTenXien.h"
+
 USING_NS_CC;
 
 class MyPool

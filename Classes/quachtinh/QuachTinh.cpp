@@ -7,6 +7,7 @@
 QuachTinh::QuachTinh(string jsonFile, string atlasFile, float scale) : BaseHero(jsonFile, atlasFile, scale)
 {
 	songLong = nullptr;
+	checkHealth = 0;
 }
 
 QuachTinh * QuachTinh::create(string jsonFile, string atlasFile, float scale)
@@ -64,6 +65,20 @@ void QuachTinh::initSwordPhysic(b2World * world, Point position)
 	swordBody->CreateFixture(&fixtureDef);
 
 	spSkeleton* skeleton = this->getSkeleton();
+}
+
+void QuachTinh::pause()
+{
+	Node::pause();
+	if (songLong->isVisible())
+		songLong->pause();
+}
+
+void QuachTinh::resume()
+{
+	Node::resume();
+	if (songLong->isVisible())
+		songLong->resume();
 }
 
 
@@ -160,35 +175,27 @@ void QuachTinh::landTLs()
 
 void QuachTinh::doCounterSkill2()
 {
-	clearTracks();
+	/*clearTracks();
 	addAnimation(0, "skill2", false);
 	setToSetupPose();
-	setIsPriorSkill2(true);
+	setIsPriorSkill2(true);*/
 
 	landTLs();
-}
-
-void QuachTinh::createSongLong()
-{
-	if (songLong == nullptr) {
-		songLong = SongLong::create("Animation/QuachTinh/Dragon.json", "Animation/QuachTinh/Dragon.atlas", SCREEN_SIZE.height / 2.0f / 800);
-		songLong->setPosition(0, this->getContentSize().height * 2);
-		this->addChild(songLong);
-
-		auto gameLayer = (GameScene*) this->getParent();
-		songLong->initPhysic(gameLayer->world, this->getTrueRadiusOfHero() / 2);
-	}
 }
 	
 
 void QuachTinh::doCounterSkill3()
 {
-	createSongLong();
 	songLong->setVisible(true);
 	songLong->clearTracks();
 	songLong->addAnimation(0, "skill3", true);
 	songLong->setToSetupPose();
 	songLong->changeBodyCategoryBits(BITMASK_SWORD);
+
+	clearTracks();
+	addAnimation(0, "skill3", false);
+	setToSetupPose();
+	setIsPriorSkill3(true);
 
 	this->schedule([&](float dt) {
 		checkDurationSkill3++;
@@ -265,6 +272,13 @@ void QuachTinh::createPool()
 		if (widthTL < 0) widthTL = tl->getBoundingBox().size.width;
 		poolSkill2->addObject(tl);
 	}
+
+	songLong = SongLong::create("Animation/QuachTinh/Dragon.json", "Animation/QuachTinh/Dragon.atlas", SCREEN_SIZE.height / 1.7f / 800);
+	songLong->setPosition(this->getPosition());
+
+	auto gameLayer = (GameScene*) this->getParent();
+	gameLayer->addChild(songLong, ZORDER_SMT);
+	songLong->initPhysic(gameLayer->world, this->getTrueRadiusOfHero() / 2);
 }
 
 void QuachTinh::run()
@@ -322,6 +336,7 @@ void QuachTinh::landing()
 void QuachTinh::die()
 {
 	BaseHero::die();
+	checkHealth = 0;
 	AudioManager::playSound(SOUND_DQDIE);
 }
 
@@ -439,10 +454,15 @@ void QuachTinh::listener()
 			setIsPriorSkill1(false);
 		}
 
-		// SKILL 2
-		else if (strcmp(getCurrent()->animation->name, "skill2") == 0) {
+		//// SKILL 2
+		//else if (strcmp(getCurrent()->animation->name, "skill2") == 0) {
+		//	getFSM()->revertToGlobalState();
+		//	setIsPriorSkill2(false);
+		//}
+
+		else if (strcmp(getCurrent()->animation->name, "skill3") == 0) {
 			getFSM()->revertToGlobalState();
-			setIsPriorSkill2(false);
+			setIsPriorSkill3(false);
 		}
 
 		else if (strcmp(getCurrent()->animation->name, "die") == 0) {
@@ -489,6 +509,9 @@ void QuachTinh::updateMe(float dt)
 	getFSM()->Update();
 
 	if (songLong != nullptr && songLong->isVisible()) {
+		auto gameLayer = (GameScene*) this->getParent();
+		auto pos = gameLayer->getFollow()->getPosition();
+		songLong->setPosition(pos.x - SCREEN_SIZE.width / 2, pos.y - SCREEN_SIZE.height / 6);
 		songLong->updateDragons();
 	}
 
@@ -545,6 +568,16 @@ void QuachTinh::updateMe(float dt)
 	if (getB2Body() == nullptr)
 		return;
 
+	if (health > 0 && health < maxHealth) {
+		checkHealth++;
+		if (checkHealth >= TIME_UP * 60) {
+			health++;
+			auto gameLayer = (GameScene*) this->getParent();
+			gameLayer->updateBloodBar(health - 1, true);
+			checkHealth = 0;
+		}
+	}
+
 	auto currentVelY = getB2Body()->GetLinearVelocity().y;
 
 	if (getFSM()->currentState == MDie) {
@@ -560,7 +593,7 @@ void QuachTinh::updateMe(float dt)
 		getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
 	}
 
-	if (!getIsPriorAttack() && !getIsPriorInjured() && !getIsPriorSkill1() && !getIsPriorSkill2()) {
+	if (!getIsPriorAttack() && !getIsPriorInjured() && !getIsPriorSkill1() /* && !getIsPriorSkill2()*/ && !getIsPriorSkill3()) {
 
 		if (getB2Body()->GetLinearVelocity().y < 0) {
 			getFSM()->changeState(MLand);

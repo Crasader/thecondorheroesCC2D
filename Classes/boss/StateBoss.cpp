@@ -57,7 +57,8 @@ void BossAttacking1::enter(EnemyBoss1 * boss)
 	StateBoss::enter(boss);
 	boss->setRealMoveVelocity(Vec2::ZERO);
 	srand(time(NULL));
-	boss->setControlAttack(rand() % 3 + 1);
+	//boss->setControlAttack(rand() % 3 + 1);
+	boss->setControlAttack(1);
 	log("attack1");
 	boss->doAttack1();
 }

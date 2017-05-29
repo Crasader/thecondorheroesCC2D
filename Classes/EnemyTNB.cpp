@@ -1,5 +1,6 @@
 #include "EnemyTNB.h"
 #include "BaseHero.h"
+#include "layer/GameScene.h"
 #include "manager/AudioManager.h"
 
 EnemyTNB::EnemyTNB() : BaseEnemy()
@@ -29,6 +30,7 @@ EnemyTNB * EnemyTNB::create(string jsonFile, string atlasFile, float scale)
 	enemy->setTimeScale(1.4f);
 	enemy->health = 1;
 	enemy->exp = 5;
+	enemy->autorelease();
 	return enemy;
 
 }
@@ -48,6 +50,7 @@ EnemyTNB * EnemyTNB::create(string filename, float scale)
 	//enemy->setTimeScale(1.4f);
 	enemy->health = 1;
 	enemy->exp = 5;
+	enemy->autorelease();
 	return enemy;
 
 
@@ -83,14 +86,13 @@ void EnemyTNB::updateMe(BaseHero* hero)
 	}
 
 	if (hero->getIsKillAll() && this->getB2Body() != nullptr) {
-		if (this->getPositionX() + this->getParent()->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width * 0.75f &&
-			this->getPositionX() + this->getParent()->getPositionX() > hero->getPositionX() - SCREEN_SIZE.width * 0.26f &&
-			hero->getPositionY() + SCREEN_SIZE.height * 0.5f > this->getPositionY() &&
-			hero->getPositionY() - SCREEN_SIZE.height * 0.4f < this->getPositionY()
+		if (this->getPositionX() + this->getParent()->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width * 0.76f &&
+			this->getPositionX() + this->getParent()->getPositionX() > hero->getPositionX() - SCREEN_SIZE.width * 0.27f) {
+			auto gameLayer = (GameScene *)hero->getParent();
+			if (gameLayer->getFollow()->getPositionY() + SCREEN_SIZE.height * 0.55f > this->getPositionY() &&
+				gameLayer->getFollow()->getPositionY() - SCREEN_SIZE.height * 0.55f < this->getPositionY())
 
-			) {
-
-			die();
+				die();
 		}
 	}
 

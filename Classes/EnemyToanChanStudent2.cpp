@@ -22,6 +22,7 @@ EnemyToanChanStudent2 * EnemyToanChanStudent2::create(string jsonFile, string at
 	enemy->setScaleEnemy(scale);
 	enemy->health = 1;
 	enemy->exp = 15;
+	enemy->autorelease();
 	return enemy;
 
 }
@@ -41,6 +42,7 @@ EnemyToanChanStudent2 * EnemyToanChanStudent2::create(string filename, float sca
 	//enemy->setTimeScale(1.4f);
 	enemy->health = 1;
 	enemy->exp = 15;
+	enemy->autorelease();
 	return enemy;
 }
 
@@ -113,7 +115,20 @@ void EnemyToanChanStudent2::listener()
 			this->addAnimation(0, "idle", true);
 			this->setToSetupPose();
 		}
-
+		if (strcmp(getCurrent()->animation->name, "attack1") == 0 && loopCount == 1) {
+			//getSlash()->setVisible(false);
+			//setIsAttacking(false);
+			this->clearTracks();
+			this->addAnimation(0, "idle", true);
+			this->setToSetupPose();
+		}
+		if (strcmp(getCurrent()->animation->name, "attack2") == 0 && loopCount == 1) {
+			//getSlash()->setVisible(false);
+			//setIsAttacking(false);
+			this->clearTracks();
+			this->addAnimation(0, "idle", true);
+			this->setToSetupPose();
+		}
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
 
 			this->setVisible(false);

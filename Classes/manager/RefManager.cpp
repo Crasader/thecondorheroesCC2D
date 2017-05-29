@@ -9,7 +9,7 @@ RefManager::RefManager()
 {
 	ref = UserDefault::sharedUserDefault();
 
-	isFirstPlay = ref->getBoolForKey(KEY_FIRST, true);
+	isFirstPlay = ref->getBoolForKey(KEY_FIRST, false);
 	lastMapIdPlay = ref->getIntegerForKey(KEY_LAST_MAP_ID, 1);
 	selectedHero = ref->getIntegerForKey(KEY_SELECTED_HERO, 0);
 	lastPickHero = ref->getIntegerForKey(KEY_LAST_PICK_HERO, 0);
@@ -96,12 +96,15 @@ void RefManager::pointToCurrentHero(int index)
 
 	durationSkill_1 = ref->getFloatForKey((KEY_DURATION_SKILL_1_HERO_X + m_index).c_str(), JSHERO->getDurationSkill1());
 	coolDownSkill_1 = ref->getFloatForKey((KEY_COOLDOWN_SKILL_1_HERO_X + m_index).c_str(), JSHERO->getCoolDownSkill1());
+	numberUseSkill_1 = ref->getIntegerForKey((KEY_NUMBER_USE_SKILL_1_HERO_X + m_index).c_str(), JSHERO->getNumberOfUseSkill1());
 
 	durationSkill_2 = ref->getFloatForKey((KEY_DURATION_SKILL_2_HERO_X + m_index).c_str(), JSHERO->getDurationSkill2());
 	coolDownSkill_2 = ref->getFloatForKey((KEY_COOLDOWN_SKILL_2_HERO_X + m_index).c_str(), JSHERO->getCoolDownSkill2());
+	numberUseSkill_2 = ref->getIntegerForKey((KEY_NUMBER_USE_SKILL_2_HERO_X + m_index).c_str(), JSHERO->getNumberOfUseSkill2());
 
 	durationSkill_3 = ref->getFloatForKey((KEY_DURATION_SKILL_3_HERO_X + m_index).c_str(), JSHERO->getDurationSkill3());
 	coolDownSkill_3 = ref->getFloatForKey((KEY_COOLDOWN_SKILL_3_HERO_X + m_index).c_str(), JSHERO->getCoolDownSkill3());
+	numberUseSkill_3 = ref->getIntegerForKey((KEY_NUMBER_USE_SKILL_3_HERO_X + m_index).c_str(), JSHERO->getNumberOfUseSkill3());
 
 	bonusScore = ref->getIntegerForKey((KEY_BONUS_SCORE_HERO_X + m_index).c_str(), JSHERO->getBonusScore());
 	bonusGold = ref->getIntegerForKey((KEY_BONUS_GOLD_HERO_X + m_index).c_str(), JSHERO->getBonusCoin());
@@ -187,25 +190,24 @@ void RefManager::setUpScore(int score)
 	ref->flush();
 }
 
-void RefManager::decreaseDurationSkill_X(int skill_What, int percent)
+void RefManager::increaseDurationSkill_X(int skill_What, int value)
 {
-	float value = percent / 100.0f;
-	assert(value < 0 || value > 1);
+	assert(value >= 1 && value <= 3);
 	switch (skill_What)
 	{
 	case 1:
-		this->durationSkill_1 *= 1 - value;
+		this->durationSkill_1 += value;
 		ref->setFloatForKey((KEY_DURATION_SKILL_1_HERO_X + StringUtils::format("%i", selectedHero)).c_str(), durationSkill_1);
 		ref->flush();
 		break;
 	case 2:
-		this->durationSkill_2 *= 1 - value;
+		this->durationSkill_2 += value;
 		ref->setFloatForKey((KEY_DURATION_SKILL_2_HERO_X + StringUtils::format("%i", selectedHero)).c_str(), durationSkill_2);
 		ref->flush();
 		break;
 
 	case 3:
-		this->durationSkill_3 *= 1 - value;
+		this->durationSkill_3 += value;
 		ref->setFloatForKey((KEY_DURATION_SKILL_3_HERO_X + StringUtils::format("%i", selectedHero)).c_str(), durationSkill_3);
 		ref->flush();
 		break;
@@ -216,26 +218,53 @@ void RefManager::decreaseDurationSkill_X(int skill_What, int percent)
 	}
 }
 
-void RefManager::decreaseCoolDownSkill_X(int skill_What, int percent)
+void RefManager::decreaseCoolDownSkill_X(int skill_What, int value)
 {
-	float value = percent / 100.0f;
-	assert(value < 0 || value > 1);
+	assert(value >= 1 && value <= 3);
 	switch (skill_What)
 	{
 	case 1:
-		this->coolDownSkill_1 *= 1 - value;
+		this->coolDownSkill_1 -= value;
 		ref->setFloatForKey((KEY_COOLDOWN_SKILL_1_HERO_X + StringUtils::format("%i", selectedHero)).c_str(), coolDownSkill_1);
 		ref->flush();
 		break;
 	case 2:
-		this->coolDownSkill_2 *= 1 - value;
+		this->coolDownSkill_2 -= value;
 		ref->setFloatForKey((KEY_COOLDOWN_SKILL_2_HERO_X + StringUtils::format("%i", selectedHero)).c_str(), coolDownSkill_2);
 		ref->flush();
 		break;
 
 	case 3:
-		this->coolDownSkill_3 *= 1 - value;
+		this->coolDownSkill_3 -= value;
 		ref->setFloatForKey((KEY_COOLDOWN_SKILL_3_HERO_X + StringUtils::format("%i", selectedHero)).c_str(), coolDownSkill_3);
+		ref->flush();
+		break;
+
+	default:
+		assert(skill_What > 0 && skill_What <= 3);
+		break;
+	}
+}
+
+void RefManager::increaseNumberUseSkill_X(int skill_What, int value)
+{
+	assert(value >= 0 && value <= 2);
+	switch (skill_What)
+	{
+	case 1:
+		this->numberUseSkill_1 += value;
+		ref->setIntegerForKey((KEY_NUMBER_USE_SKILL_1_HERO_X + StringUtils::format("%i", selectedHero)).c_str(), numberUseSkill_1);
+		ref->flush();
+		break;
+	case 2:
+		this->numberUseSkill_2 += value;
+		ref->setIntegerForKey((KEY_NUMBER_USE_SKILL_2_HERO_X + StringUtils::format("%i", selectedHero)).c_str(), numberUseSkill_2);
+		ref->flush();
+		break;
+
+	case 3:
+		this->numberUseSkill_3 += value;
+		ref->setIntegerForKey((KEY_NUMBER_USE_SKILL_3_HERO_X + StringUtils::format("%i", selectedHero)).c_str(), numberUseSkill_3);
 		ref->flush();
 		break;
 

@@ -19,8 +19,8 @@ public:
 	static EnemyHoacDo2* create(string jsonFile, string atlasFile, float scale);
 	static EnemyHoacDo2* create(string filename,float scale);
 	void genSlash();
-	void attack(Vec2 posHero);
-	void updateMe(BaseHero * hero);
+	virtual void attack(Vec2 posHero);
+	virtual void updateMe(BaseHero * hero);
 	void playsoundAt();
 	void playsoundDie();
 

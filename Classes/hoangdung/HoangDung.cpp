@@ -46,7 +46,7 @@ void HoangDung::initSwordPhysic(b2World * world, Point position)
 	b2PolygonShape shape;
 	b2FixtureDef fixtureDef;
 
-	shape.SetAsBox(trueRadiusOfHero * 0.75f / PTM_RATIO, trueRadiusOfHero * 1.3f / PTM_RATIO);
+	shape.SetAsBox(trueRadiusOfHero * 0.75f / PTM_RATIO, trueRadiusOfHero * 1.0f / PTM_RATIO);
 
 	fixtureDef.density = 0.0f;
 	fixtureDef.friction = 0.0f;
@@ -112,8 +112,6 @@ void HoangDung::createSkill2Effect()
 void HoangDung::doCounterSkill1()
 {
 	thunderShield->setVisible(true);
-	//auto scaleMe = ScaleBy::create(0.75f, 2.0f);
-	//thunderShield->runAction(scaleMe);
 
 	changeBodyMaskBits(BITMASK_FLOOR | BITMASK_COIN_BULLION | BITMASK_BOSS);
 	m_pRadaShield->changeBodyCategoryBits(BITMASK_SWORD);
@@ -145,11 +143,11 @@ void HoangDung::createManThienHoaVu(Point posHand, int Zoder, float angle)
 	mthv->setIsCollide(false);
 	auto gameLayer = (GameScene*) this->getParent();
 
-	mthv->setPosition(posHand.x + this->getTrueRadiusOfHero() / 2, posHand.y);
 	mthv->initCirclePhysic(gameLayer->world, mthv->getPosition());
 	angle = (M_PI * angle) / 180.0f;
 	mthv->setVel(b2Vec2(mthv->getVel().x, mthv->getVel().x * tanf(angle)));
-	mthv->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), angle);
+	mthv->getB2Body()->SetTransform(b2Vec2(this->getB2Body()->GetPosition().x + this->getTrueRadiusOfHero() * 2.0f / PTM_RATIO,
+		this->getB2Body()->GetPosition().y), angle);
 	mthv->changeBodyCategoryBits(BITMASK_SWORD);
 	mthv->changeBodyMaskBits(BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG | BITMASK_ENEMY);
 	if (!mthv->getIsAdded()) {
@@ -163,36 +161,28 @@ void HoangDung::createManThienHoaVu(Point posHand, int Zoder, float angle)
 
 void HoangDung::shootManThienHoaVu()
 {
-	/*spiritHole->setVisible(true);
-	auto scaleMe = ScaleBy::create(0.75f, 2.0f);
-	spiritHole->runAction(scaleMe);*/
-
 	this->schedule([&](float dt) {
+		Point _ptTempPoint = Skill2Effect3->getPosition();
+		_ptTempPoint.x += this->getTrueRadiusOfHero() * 2.0f;
 		if (checkDurationSkill2 % 5 == 0) {
-			createManThienHoaVu(getBoneLocation("bone6"), ZORDER_HERO, 30.0f);
+			createManThienHoaVu(_ptTempPoint, ZORDER_HERO, 30.0f);
 		}
 		else if (checkDurationSkill2 % 5 == 1) {
-			createManThienHoaVu(getBoneLocation("bone6"), ZORDER_HERO, 10.0f);
+			createManThienHoaVu(_ptTempPoint, ZORDER_HERO, 10.0f);
 		}
 		else if (checkDurationSkill2 % 5 == 2) {
-			createManThienHoaVu(getBoneLocation("bone6"), ZORDER_HERO, -10.0f);
+			createManThienHoaVu(_ptTempPoint, ZORDER_HERO, -10.0f);
 		}
 		else if (checkDurationSkill2 % 5 == 3) {
-			createManThienHoaVu(getBoneLocation("bone6"), ZORDER_HERO, 0.0f);
+			createManThienHoaVu(_ptTempPoint, ZORDER_HERO, 0.0f);
 		}
 		else if (checkDurationSkill2 % 5 == 4) {
-			createManThienHoaVu(getBoneLocation("bone6"), ZORDER_HERO, 20.0f);
+			createManThienHoaVu(_ptTempPoint, ZORDER_HERO, 20.0f);
 		}
 
 		checkDurationSkill2++;
 
 		if (checkDurationSkill2 >= getDurationSkill2() * 10) {
-			auto hide = CallFunc::create([&]() {
-				//spiritHole->setVisible(false);
-			});
-			auto scaleRe = ScaleBy::create(0.75f, 0.5f);
-
-			//spiritHole->runAction(Sequence::create(scaleRe, hide, nullptr));
 			Skill2Effect1->setVisible(false);
 			Skill2Effect2->setVisible(false);
 			Skill2Effect3->setVisible(false);
@@ -317,8 +307,8 @@ void HoangDung::createPool()
 	poolSkill2->retain();
 
 	for (int i = 0; i < 10; ++i) {
-		auto mthv = TieuHonChuong::create("cham.png");
-		mthv->setScale(this->getTrueRadiusOfHero() * 1.0f / mthv->getContentSize().height);
+		auto mthv = TieuHonChuong::create("mthv.png");
+		mthv->setScale(this->getTrueRadiusOfHero() * 1.3f / mthv->getContentSize().height);
 		poolSkill2->addObject(mthv);
 	}
 
@@ -326,9 +316,8 @@ void HoangDung::createPool()
 	poolSkill3->retain();
 
 	for (int i = 0; i < 4; ++i) {
-		auto scale = 0.2f;
+		auto scale = 0.25f;
 		auto dcbp = DaCauBongPhap::create("Animation/HoangDung/Skill_3_effect.json", "Animation/HoangDung/Skill_3_effect.atlas", scale);
-		//dcbp->setScale(this->getTrueRadiusOfHero() * 3 / dcbp->getContentSize().width);
 		poolSkill3->addObject(dcbp);
 	}
 }
@@ -554,7 +543,9 @@ void HoangDung::listener()
 void HoangDung::stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSkill3)
 {
 	if (stopSkill1 && !getIsDoneDuration1()) {
-		m_pRadaShield->setVisible(false);
+		thunderShield->setVisible(false);
+		changeBodyMaskBits(BITMASK_FLOOR | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION | BITMASK_ENEMY);
+		m_pRadaShield->changeBodyCategoryBits(BITMASK_WOODER);
 
 		setIsDoneDuration1(true);
 		unschedule("KeySkill1");
@@ -576,6 +567,10 @@ void HoangDung::stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSkill
 			}
 		}
 		listManThienHoaVu.clear();
+
+		Skill2Effect1->setVisible(false);
+		Skill2Effect2->setVisible(false);
+		Skill2Effect3->setVisible(false);
 
 		unschedule("KeySkill2");
 		checkDurationSkill2 = 0;

@@ -30,6 +30,7 @@ EnemyChong1 * EnemyChong1::create(string jsonFile, string atlasFile, float scale
 	enemy->setTimeScale(1.4f);
 	enemy->health = 1;
 	enemy->exp = 5;
+	enemy->autorelease();
 	return enemy;
 
 }
@@ -49,6 +50,7 @@ EnemyChong1 * EnemyChong1::create(string filename, float scale)
 	//enemy->setTimeScale(1.4f);
 	enemy->health = 1;
 	enemy->exp = 5;
+	enemy->autorelease();
 	return enemy;
 
 

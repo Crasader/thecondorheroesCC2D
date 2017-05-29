@@ -21,6 +21,7 @@ EnemyLinhCamGiao * EnemyLinhCamGiao::create(string jsonFile, string atlasFile, f
 	//enemy->setScaleEnemy(scale);
 	enemy->health = 1;
 	enemy->exp = 12;
+	enemy->autorelease();
 	return enemy;
 
 }
@@ -40,6 +41,7 @@ EnemyLinhCamGiao * EnemyLinhCamGiao::create(string filename, float scale)
 	//enemy->setTimeScale(1.4f);
 	enemy->health = 1;
 	enemy->exp = 12;
+	enemy->autorelease();
 	return enemy;
 }
 
@@ -50,11 +52,39 @@ void EnemyLinhCamGiao::run()
 
 void EnemyLinhCamGiao::updateMe(BaseHero * hero)
 {
-	log("linh cam giao %d", getTag());
+	//log("linh cam giao %d", getTag());
 	BaseEnemy::updateMe(hero);
 	if (getIsDie() && this->getB2Body() != nullptr) {
 		die();
 	}
+}
+
+void EnemyLinhCamGiao::initBoxPhysic(b2World * world, Point pos)
+{
+	b2PolygonShape shape;
+	auto size = this->getBoundingBox().size;
+
+	shape.SetAsBox(size.width / 8 / PTM_RATIO, size.height / 2 / PTM_RATIO);
+
+	b2FixtureDef fixtureDef;
+	fixtureDef.density = 1.0f;
+	fixtureDef.friction = 1.0f;
+	fixtureDef.restitution = 0.0f;
+	fixtureDef.shape = &shape;
+	fixtureDef.filter.categoryBits = BITMASK_WOODER;
+	fixtureDef.filter.maskBits = BITMASK_SWORD | BITMASK_FLOOR;
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_staticBody;
+	bodyDef.userData = this;		// pass sprite to bodyDef with argument: userData
+	bodyDef.fixedRotation = true;
+	bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);
+
+	body = world->CreateBody(&bodyDef);
+	body->CreateFixture(&fixtureDef);
+
+	this->addSquareFixture(Size(size.width / 4, size.height / 8 / PTM_RATIO),
+		Point(-size.width / 3, 0), BITMASK_ENEMY, BITMASK_HERO);
 }
 
 void EnemyLinhCamGiao::playsoundAt()
@@ -65,6 +95,21 @@ void EnemyLinhCamGiao::playsoundAt()
 void EnemyLinhCamGiao::playsoundDie()
 {
 	AudioManager::playSound(SOUND_TC1DIE);
+}
+
+void EnemyLinhCamGiao::addSquareFixture(Size size, Vec2 pos, unsigned int category, unsigned int mask)
+{
+	b2PolygonShape polygonShape;
+	b2FixtureDef  myFixtureDef;
+
+	//add foot sensor fixture
+	polygonShape.SetAsBox(size.width / PTM_RATIO, size.height / PTM_RATIO, b2Vec2(pos.x / PTM_RATIO, pos.y / PTM_RATIO), 0);
+	myFixtureDef.shape = &polygonShape;
+	myFixtureDef.isSensor = true;
+	myFixtureDef.filter.categoryBits = category;
+	myFixtureDef.filter.maskBits = mask;
+	b2Fixture* footSensorFixture = body->CreateFixture(&myFixtureDef);
+	footSensorFixture->SetUserData(this);
 }
 
 

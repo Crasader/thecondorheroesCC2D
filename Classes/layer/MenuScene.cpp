@@ -8,7 +8,7 @@
 #include "manager/JSonQuestManager.h"
 #include "manager/RefManager.h"
 
-	MenuLayer * MenuLayer::create(bool p_bOnlySelectStage) {
+MenuLayer * MenuLayer::create(bool p_bOnlySelectStage) {
 	MenuLayer *pRet = new(std::nothrow) MenuLayer();
 	if (pRet && pRet->init(p_bOnlySelectStage)) {
 		pRet->autorelease();
@@ -651,6 +651,7 @@ void MenuLayer::initUpgradeBoard() {
 	MenuItemSprite *_arUpgrateSkill[3];
 	float _arDuration[3] = { REF->getDurationSkill_1(), REF->getDurationSkill_2(), REF->getDurationSkill_3() };
 	float _arCoolDown[3] = { REF->getCoolDownSkill_1(), REF->getCoolDownSkill_2(), REF->getCoolDownSkill_3() };
+	int _arNumberUse[3] = { REF->getNumberUseSkill_1(), REF->getNumberUseSkill_2(), REF->getNumberUseSkill_3() };
 
 	int _arSkillLevel[3] = { REF->getLevelSkill_1(), REF->getLevelSkill_2(), REF->getLevelSkill_3() };
 	for (int i = 0; i < 3; i++) {
@@ -679,12 +680,14 @@ void MenuLayer::initUpgradeBoard() {
 		_pSkillInfo->addChild(_pLevelLabel, 1);
 
 		Label *_pDurationLabel = Label::createWithBMFont("fonts/font_normal-export.fnt", StringUtils::format("Duration : "));
+		if (_arNumberUse[i] > 1) _pDurationLabel->setString("Number of use : ");
 		_pDurationLabel->setBMFontSize(_pSkillInfo->getContentSize().height * 0.2f);
 		_pDurationLabel->setAnchorPoint(Vec2(0.0f, 0.0f));
 		_pDurationLabel->setPosition(Vec2(_pSkillInfo->getContentSize().height, _pSkillInfo->getContentSize().height * 0.27f));
 		_pSkillInfo->addChild(_pDurationLabel, 1);
 
 		Label *_pDurationValueLabel = Label::createWithBMFont("fonts/font_coin-export.fnt", StringUtils::format("%i", (int)_arDuration[i]));
+		if (_arNumberUse[i] > 1) _pDurationValueLabel->setString(StringUtils::format("%i", _arNumberUse[i]));
 		_pDurationValueLabel->setBMFontSize(_pSkillInfo->getContentSize().height * 0.2f);
 		_pDurationValueLabel->setAnchorPoint(Vec2(0.0f, 0.0f));
 		_pDurationValueLabel->setPosition(Vec2(_pDurationLabel->getContentSize().width, 0.0f));
@@ -1302,6 +1305,7 @@ void MenuLayer::buttonAddDiamondHandle() {
 
 void MenuLayer::buttonQuestHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
+	logButtonClickEvent("Quest");
 	if (m_nMenuStatus != 1) {
 		m_nMenuStatus = 1;
 		hideMainMenu();
@@ -1316,6 +1320,7 @@ void MenuLayer::buttonQuestHandle() {
 
 void MenuLayer::buttonHeroesHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
+	logButtonClickEvent("Hero");
 	if (m_nIndexHeroSelected != m_nIndexHeroPicked) {
 		m_nIndexHeroSelected = m_nIndexHeroPicked;
 	}
@@ -1338,17 +1343,20 @@ void MenuLayer::buttonHeroesHandle() {
 
 void MenuLayer::buttonShopHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
+	logButtonClickEvent("Shop");
 	showBlurScreen();
 	initShopBoard(m_nShopOption);
 }
 
 void MenuLayer::buttonFreeCoinHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
+	logButtonClickEvent("Free coin");
 	if (REF->getFreeCoin() > 0) {
 		REF->decreaseFreeCoin();
 		if (REF->getFreeCoin() <= 0) {
 			m_pSpriteFreeCoinAttention->setVisible(false);
 		}
+		//GAHelper::getInstance()->logEvent("FreeCoin", "click", "can getFreecoin", 1);
 		// TODO : show ads and check view ads finish
 		// after that, increase gold
 	}
@@ -1356,11 +1364,13 @@ void MenuLayer::buttonFreeCoinHandle() {
 		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(11), TOAST_LONG);
 		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
 		this->addChild(_pToast, 10);
+		//GAHelper::getInstance()->logEvent("FreeCoin", "click", "can not getFreecoin", 1);
 	}
 }
 
 void MenuLayer::buttonSettingHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
+	//logButtonClickEvent("Setting");
 	showBlurScreen();
 
 	Sprite *_pSettingBackground = Sprite::create("UI/UI_main_menu/UI_setting/setting_bg.png");
@@ -1446,25 +1456,66 @@ void MenuLayer::buttonSettingHandle() {
 
 void MenuLayer::buttonMoreGameHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
+	logButtonClickEvent("MoreGame");
 	if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) { // if running on iOS
+		//GAHelper::getInstance()->logEvent("Moregame", "click", "go to moregame ios", 1);
 		Application::getInstance()->openURL("https://itunes.apple.com/us/developer/b-gate-jsc./id1037975709"); // open pipo iTunes
 	}
 	else { // running on another platform
+		//GAHelper::getInstance()->logEvent("Moregame", "click", "go to moregame android", 1);
 		Application::getInstance()->openURL("https://play.google.com/store/apps/dev?id=8988959007894361415&hl=vi"); // open pipo CHPlay
 	}
 }
 
 void MenuLayer::buttonUpgradeSkillHandle(int p_nIndexSkill) {
 	AudioManager::playSound(SOUND_BTCLICK);
+
+	if (m_nCurrentGold < 5000) {
+		// TOAST
+		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(2), TOAST_SHORT);
+		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
+		this->addChild(_pToast, 10);
+		return;
+	}
+
+	m_nCurrentGold -= 5000;
+	REF->setDownGold(5000);
+
 	if (p_nIndexSkill == 0) {
 		REF->increaseLevelSkill_1();
+		REF->decreaseCoolDownSkill_X(1, 1);
+		if ((REF->getLevelSkill_1() % 3) == 0) {		// reach 3, 6, 9 increase
+			if (REF->getNumberUseSkill_1() > 1)
+				REF->increaseNumberUseSkill_X(1, 1);
+			else
+				REF->increaseDurationSkill_X(1, 1);
+		}
+		logUpgradeSkillEvent(m_nIndexHeroPicked, p_nIndexSkill, REF->getLevelSkill_1());
 	}
 	if (p_nIndexSkill == 1) {
 		REF->increaseLevelSkill_2();
+		REF->decreaseCoolDownSkill_X(2, 1);
+		if ((REF->getLevelSkill_2() % 3) == 0) {		// reach 3, 6, 9 increase
+			if (REF->getNumberUseSkill_2() > 1)
+				REF->increaseNumberUseSkill_X(2, 1);
+			else
+				REF->increaseDurationSkill_X(2, 1);
+		}
+		logUpgradeSkillEvent(m_nIndexHeroPicked, p_nIndexSkill, REF->getLevelSkill_2());
 	}
 	if (p_nIndexSkill == 2) {
 		REF->increaseLevelSkill_3();
+		REF->decreaseCoolDownSkill_X(3, 1);
+		if ((REF->getLevelSkill_3() % 3) == 0) {		// reach 3, 6, 9 increase
+			if (REF->getNumberUseSkill_3() > 1)
+				REF->increaseNumberUseSkill_X(3, 1);
+			else
+				REF->increaseDurationSkill_X(3, 1);
+		}
+		logUpgradeSkillEvent(m_nIndexHeroPicked, p_nIndexSkill, REF->getLevelSkill_3());
 	}
+	
+	initTopMainMenu();
 	initUpgradeBoard();
 }
 
@@ -1481,6 +1532,7 @@ void MenuLayer::buttonBuyItemHandle(int p_nIndexItem) {
 		REF->setDownGold(m_arItemPrice[p_nIndexItem]);
 		switch (p_nIndexItem) {
 		case 0: {
+			logBuyItemEvent("health");
 			REF->increaseNumberItemHealth();
 			m_arBuyItemButton[0]->setVisible(false);
 			m_arSpriteItemMax[0]->setVisible(true);
@@ -1489,6 +1541,7 @@ void MenuLayer::buttonBuyItemHandle(int p_nIndexItem) {
 			break;
 		}
 		case 1: {
+			logBuyItemEvent("bird");
 			REF->increaseNumberItemBird();
 			m_arBuyItemButton[1]->setVisible(false);
 			m_arSpriteItemMax[1]->setVisible(true);
@@ -1497,6 +1550,7 @@ void MenuLayer::buttonBuyItemHandle(int p_nIndexItem) {
 			break;
 		}
 		case 2: {
+			logBuyItemEvent("magnet");
 			REF->increaseNumberItemMagnet();
 			m_arBuyItemButton[2]->setVisible(false);
 			m_arSpriteItemMax[2]->setVisible(true);
@@ -1505,6 +1559,7 @@ void MenuLayer::buttonBuyItemHandle(int p_nIndexItem) {
 			break;
 		}
 		case 3: {
+			logBuyItemEvent("X2Gold");
 			REF->increaseNumberItemDoubleGold();
 			m_arBuyItemButton[3]->setVisible(false);
 			m_arSpriteItemMax[3]->setVisible(true);
@@ -1513,6 +1568,7 @@ void MenuLayer::buttonBuyItemHandle(int p_nIndexItem) {
 			break;
 		}
 		case 4: {
+			logBuyItemEvent("CoolDown");
 			REF->increaseNumberItemCoolDown();
 			m_arBuyItemButton[4]->setVisible(false);
 			m_arSpriteItemMax[4]->setVisible(true);
@@ -1545,6 +1601,7 @@ void MenuLayer::buttonRewardQuest(int p_nQuestIndex) {
 	REF->setUpGoldExplored(_nGoldReward);
 	initQuestBoard(p_nQuestIndex);
 	initTopMainMenu();
+	//log
 }
 
 bool MenuLayer::createRequestToGoogle() {
@@ -1639,6 +1696,11 @@ void MenuLayer::initDailyRewardBoard() {
 }
 
 void MenuLayer::initShopBoard(int p_nOption) {
+	if (m_nMenuStatus == 3 || m_nMenuStatus == 4) {
+		m_pSelectStageLayer->getmScrollView()->setEnabled(false);
+		m_pSelectStageLayer->getmMenu()->setEnabled(false);
+	}
+
 	m_nShopOption = p_nOption;
 	m_pShopBoardLayer->removeAllChildrenWithCleanup(true);
 
@@ -1861,6 +1923,11 @@ void MenuLayer::initShopBoard(int p_nOption) {
 }
 
 void MenuLayer::buttonCloseShopHandle() {
+	if (m_nMenuStatus == 3 || m_nMenuStatus == 4) {
+		m_pSelectStageLayer->getmScrollView()->setEnabled(true);
+		m_pSelectStageLayer->getmMenu()->setEnabled(true);
+	}
+
 	AudioManager::playSound(SOUND_BTCLICK);
 	m_pShopBoardLayer->runAction(ScaleTo::create(0.2f, 0.0f));
 	// TODO: fix custom sprite to buy pack, because if you dont remove children of shop board, they still get response clicks on screen
@@ -1908,6 +1975,7 @@ void MenuLayer::buttonBuyLifeHandle(int p_nIndexEnergyPack) {
 	AudioManager::playSound(SOUND_BTCLICK);
 	JSMENU->readEnergyPack(p_nIndexEnergyPack);
 	if (JSMENU->getEnergyPackDiamondPrice() <= m_nCurrentDiamond) {
+		//GAHelper::getInstance()->logEvent("buylife", "click", "UpgradeQuachtinh", 1);
 		m_nCurrentDiamond -= JSMENU->getEnergyPackDiamondPrice();
 		m_nLifeNumber += JSMENU->getEnergyPackNumberEnergy();
 		REF->setDownDiamond(JSMENU->getEnergyPackDiamondPrice());
@@ -1961,6 +2029,7 @@ void MenuLayer::buttonPickHeroHandle(int p_nIndexHero) {
 		return;
 	}
 	m_nIndexHeroPicked = p_nIndexHero;
+	logClickHeroEvent(m_nIndexHeroPicked);
 	REF->pointToCurrentHero(m_nIndexHeroPicked);
 	if (!REF->getIsLockedHero()) {
 		m_nIndexHeroSelected = m_nIndexHeroPicked;
@@ -1976,11 +2045,13 @@ void MenuLayer::buttonPickHeroHandle(int p_nIndexHero) {
 void MenuLayer::buttonTryHeroHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	auto _scene = LoadingLayer::createScene(1, 2, m_nIndexHeroPicked);
+	logTryHeroEvent(m_nIndexHeroPicked);
 	Director::getInstance()->replaceScene(TransitionFade::create(0.2f, _scene));
 }
 
 void MenuLayer::buttonUnlockHeroHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
+
 	REF->pointToCurrentHero(m_nIndexHeroPicked - 1); // point to pre-hero
 	int _nPreHeroLevel = REF->getCurrentLevel(); // get level of pre-hero
 	REF->pointToCurrentHero(m_nIndexHeroPicked);
@@ -2000,7 +2071,9 @@ void MenuLayer::buttonUnlockHeroHandle() {
 		return;
 	}
 	if (m_nCurrentGold >= JSHERO->getGoldPrice() && m_nCurrentDiamond >= JSHERO->getDiamondPrice()) {
-		AudioManager::playSound(SOUND_UNLOCK_HERO);
+
+		//AudioManager::playSound(SOUND_UNLOCK_HERO);
+		logUnlockHeroEvent(m_nIndexHeroPicked);
 		auto _aAnimSprite = Sprite::create("UI/UI_main_menu/effect_unlock_2.png");
 		auto _aCache = AnimationCache::getInstance();
 		Vector<SpriteFrame*> _arFrames(2);
@@ -2031,10 +2104,13 @@ void MenuLayer::buttonUpgradeHeroHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	AudioManager::playSound(SOUND_UPGRADE_LEVEL);
 	float _nUpgradeCost = JSHERO->getGoldUpgradeLevelX(m_nIndexHeroPicked);
-	for (int i = 0; i < REF->getCurrentLevel(); i++) {
+
+	int level = REF->getCurrentLevel();
+	for (int i = 0; i < level ; i++) {
 		_nUpgradeCost *= 1.05f;
 	}
 	if (m_nCurrentGold >= _nUpgradeCost) {
+		logUpgradeHeroEvent(m_nIndexHeroPicked,level+1);
 		m_nCurrentGold -= _nUpgradeCost;
 		REF->setDownGold(_nUpgradeCost);
 		REF->increaseLevel();
@@ -2225,6 +2301,72 @@ void MenuLayer::buttonMusicControlHandle(Ref* p_pSender) {
 		AudioManager::stopMusic();
 	}
 	AudioManager::playSound(SOUND_BTCLICK);
+}
+
+void MenuLayer::logButtonClickEvent(string button)
+{
+	GAHelper::getInstance()->logEvent("Button","Click",button,1);
+}
+
+void MenuLayer::logBuyItemEvent(string item)
+{
+	GAHelper::getInstance()->logEvent("Item", "buy", item, 1);
+}
+
+void MenuLayer::logUnlockHeroEvent(int indexhero)
+{
+	GAHelper::getInstance()->logEvent("Hero","Unlock",indexHeroToName(indexhero),1);
+}
+
+void MenuLayer::logClickHeroEvent(int index)
+{
+	
+	GAHelper::getInstance()->logEvent("Hero", "Click", indexHeroToName(index), 1);
+}
+
+void MenuLayer::logTryHeroEvent(int indexhero)
+{
+	GAHelper::getInstance()->logEvent("Hero", "Try", indexHeroToName(indexhero), 1);
+}
+
+void MenuLayer::logUpgradeHeroEvent(int  indexhero, int level)
+{
+	GAHelper::getInstance()->logEvent("Hero", StringUtils::format("Upgrade level: %d" , level), indexHeroToName(indexhero), 1);
+}
+
+void MenuLayer::logUpgradeSkillEvent(int indexhero, int indexskill, int level)
+{
+	GAHelper::getInstance()->logEvent("UpgradeSkill", indexHeroToName(indexhero)+StringUtils::format(" skill %d", indexskill), StringUtils::format("level %d", level), 1);
+}
+
+string MenuLayer::indexHeroToName(int indexHero)
+{
+	//string namehero;
+	switch (indexHero)
+	{
+	case 0: {
+		return "DuongQua";
+		break;
+	}
+	case 1: {
+		return "CoLong";
+		break;
+	}
+	case 2: {
+		return "HoangDung";
+		break;
+	}
+	case 3: {
+		return "HoangDuocSu";
+		break;
+	}
+	case 4: {
+		return "QuachTinh";
+		break;
+	}
+	default:
+		break;
+	}
 }
 
 void MenuLayer::moveLayerViaDirection(Layer *p_pLayer, int p_nDirection) {

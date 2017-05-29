@@ -300,7 +300,7 @@ void Hud::addSkills()
 	}
 
 	btnSkill_1->setTimeCoolDown(coolDownS1);
-	btnSkill_1->addNumberOfUse(JSHERO->getNumberOfUseSkill1());
+	btnSkill_1->addNumberOfUse(REF->getNumberUseSkill_1());
 	btnSkill_1->setScale(SCREEN_SIZE.height / 6.0f / btnSkill_1->getContentSize().height);
 	addChild(btnSkill_1, 2);
 
@@ -313,7 +313,7 @@ void Hud::addSkills()
 	btnSkill_2 = MyButton::create(JSHERO->getPathMainImageSkill2(), JSHERO->getPathSubImageSkill2(), origin_2);
 
 	btnSkill_2->setTimeCoolDown(coolDownS2);
-	btnSkill_2->addNumberOfUse(JSHERO->getNumberOfUseSkill2());
+	btnSkill_2->addNumberOfUse(REF->getNumberUseSkill_2());
 	btnSkill_2->setScale(SCREEN_SIZE.height / 6.0f / btnSkill_2->getContentSize().height);
 	addChild(btnSkill_2, 2);
 
@@ -326,7 +326,7 @@ void Hud::addSkills()
 	btnSkill_3 = MyButton::create(JSHERO->getPathMainImageSkill3(), JSHERO->getPathSubImageSkill3(), origin_3);
 
 	btnSkill_3->setTimeCoolDown(coolDownS3);
-	btnSkill_3->addNumberOfUse(JSHERO->getNumberOfUseSkill3());
+	btnSkill_3->addNumberOfUse(REF->getNumberUseSkill_3());
 	btnSkill_3->setScale(SCREEN_SIZE.height / 6.0f / btnSkill_3->getContentSize().height);
 	addChild(btnSkill_3, 2);
 }
@@ -528,19 +528,19 @@ void Hud::showButton()
 
 	btnSkill_1->setVisible(true);
 	btnSkill_1->getMain()->setVisible(true);
-	if (btnSkill_1->getmTimer() > 0) {
+	if (btnSkill_1->getmTimer() >= 0.5f) {
 		btnSkill_1->getNumberCoolDown()->setVisible(true);
 	}
 
 	btnSkill_2->setVisible(true);
 	btnSkill_2->getMain()->setVisible(true);
-	if (btnSkill_2->getmTimer() > 0) {
+	if (btnSkill_2->getmTimer() >= 0.5f) {
 		btnSkill_2->getNumberCoolDown()->setVisible(true);
 	}
 
 	btnSkill_3->setVisible(true);
 	btnSkill_3->getMain()->setVisible(true);
-	if (btnSkill_3->getmTimer() > 0) {
+	if (btnSkill_3->getmTimer() >= 0.5f) {
 		btnSkill_3->getNumberCoolDown()->setVisible(true);
 	}
 }
@@ -804,8 +804,4 @@ void Hud::tryHud()
 	addAttack();
 
 	addSkills();
-	if (REF->getNumberItemBird() > 0) {
-		addBird();
-		menu->addChild(btnCalling);
-	}
 }

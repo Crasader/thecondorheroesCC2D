@@ -77,7 +77,7 @@ void QT_SongLongXuatThuy::changeBodyCategoryBits(uint16 mask)
 Point QT_SongLongXuatThuy::getBoneLocation(string name)
 {
 	auto gun = findBone(name);
-	auto pos = this->getParent()->getPosition() + Vec2(this->getScaleX()*gun->worldX, gun->worldY);
+	auto pos = Vec2(this->getScaleX()*gun->worldX, gun->worldY);
 	pos = pos + this->getPosition();
 	return pos;
 }

@@ -57,8 +57,8 @@
       "avatarLoadingPath": "UI/Loading/DQ.png",
       "isLocked": false,
       "coolDownSkill1": 37,
-      "durationSkill1": 0.3,
-      "numberOfUseSkill1": 5,
+      "durationSkill1": 6,
+      "numberOfUseSkill1": 1,
       "skill1Name": {
         "en": "Wind Blade",
         "vi": "Toan chan kiem phap"
@@ -102,7 +102,7 @@
         "vi": "Tieu Long Nu"
       },
       "inforHero": {
-        "en": "The Johan’s master. Excellent at using concealed weapon. Raise 15% magnet’s item",
+        "en": "The Johan's master. Excellent at using concealed weapon. Raise 15% magnet's item",
         "vi": "Su phu cua Duon Qua. Gioi su dung am khi. Tang thoi gian su dung vat pham hut vang them 15%"
       },
       "avatarPath": "UI/UI_info_ingame/avatar_CoCo.png",
@@ -156,7 +156,7 @@
         "vi": "Hoang Dung"
       },
       "inforHero": {
-        "en": "Robin’s wife. Master of using stick. Revive with one time usage of Marvel Shield",
+        "en": "Robin's wife. Master of using stick. Revive with one time usage of Marvel Shield",
         "vi": "Vo cua Quach Tinh. Cao thu dung gay. Hoi sinh duoc su dung 1 lan chieu thuc Nhuyen Vi Giap"
       },
       "avatarPath": "UI/UI_info_ingame/avatar_HoangDung.png",
@@ -172,7 +172,7 @@
         "vi": "Nhuyen Vi Giap"
       },
       "pathMainImageSkill1": "UI/Btn_skill/btnHD_skill1_up.png",
-      "pathSubImageSkill1": "UI/Btn_skill/btnHD_skill1_up.png",
+      "pathSubImageSkill1": "UI/Btn_skill/btnHD_skill1_down.png",
       "coolDownSkill2": 30,
       "durationSkill2": 2.5,
       "numberOfUseSkill2": 1,
@@ -180,8 +180,8 @@
         "en": "Cherry Storm",
         "vi": "Man Thien Hoa Vu"
       },
-      "pathMainImageSkill2": "UI/Btn_skill/btnHD_skill1_up.png",
-      "pathSubImageSkill2": "UI/Btn_skill/btnHD_skill1_up.png",
+      "pathMainImageSkill2": "UI/Btn_skill/btnHD_skill2_up.png",
+      "pathSubImageSkill2": "UI/Btn_skill/btnHD_skill2_down.png",
       "coolDownSkill3": 60,
       "durationSkill3": 2.5,
       "numberOfUseSkill3": 1,
@@ -189,8 +189,8 @@
         "en": "Jingu Mastery",
         "vi": "Da Cau Bong Phap"
       },
-      "pathMainImageSkill3": "UI/Btn_skill/btnHD_skill1_up.png",
-      "pathSubImageSkill3": "UI/Btn_skill/btnHD_skill1_up.png",
+      "pathMainImageSkill3": "UI/Btn_skill/btnHD_skill3_up.png",
+      "pathSubImageSkill3": "UI/Btn_skill/btnHD_skill3_down.png",
       "baseHP": 4,
       "level": 1,
       "maxLevel": 25,
@@ -210,7 +210,7 @@
         "vi": "Hoang Duoc Su"
       },
       "inforHero": {
-        "en": "Master of Kungfu. Kim’s father. Double score when using skills",
+        "en": "Master of Kungfu. Kim's father. Double score when using skills",
         "vi": "Cao thu vo lam. Cha cua Hoang Dung. Duoc nhan doi diem khi su dung ky nang"
       },
       "avatarPath": "UI/UI_info_ingame/avatar_HoangDuocSu.png",
@@ -281,7 +281,7 @@
       },
       "pathMainImageSkill1": "UI/Btn_skill/btnQT_skill1_up.png",
       "pathSubImageSkill1": "UI/Btn_skill/btnQT_skill1_down.png",
-      "coolDownSkill2": 30,
+      "coolDownSkill2": 39,
       "durationSkill2": 0.8,
       "numberOfUseSkill2": 5,
       "skill2Name": {
@@ -290,8 +290,8 @@
       },
       "pathMainImageSkill2": "UI/Btn_skill/btnQT_skill2_up.png",
       "pathSubImageSkill2": "UI/Btn_skill/btnQT_skill2_down.png",
-      "coolDownSkill3": 40,
-      "durationSkill3": 6,
+      "coolDownSkill3": 41,
+      "durationSkill3": 5,
       "numberOfUseSkill3": 1,
       "skill3Name": {
         "en": "Double Dragon",

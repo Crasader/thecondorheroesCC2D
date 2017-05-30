@@ -1,6 +1,7 @@
 #include "Coin.h"
 #include "SkeletonManager.h"
 #include "BaseHero.h"
+
 #include "AudioManager.h"
 
 Coin::Coin()
@@ -98,39 +99,6 @@ void Coin::listener()
 
 void Coin::updateMe(BaseHero *hero)
 {
-	//if (!this->isVisible() && this->getB2Body()->GetType() == b2_staticBody) {
-	//	this->resumeSchedulerAndActions();
-	//	this->setVisible(true);
-	//}
-	//if (this->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width / 2){
-	//	if (hero->getItemValue(KEY_ITEM_MAGNET) > 0) {
-	//		// neu hero co magnet
-	//		B2Sprite::updateMe(hero);
-	//		if (this->getB2Body()->GetType() == b2_dynamicBody) {
-	//			Vec2 coinToHero;
-
-	//			coinToHero = Vec2(hero->getB2Body()->GetPosition().x*PTM_RATIO, hero->getB2Body()->GetPosition().y*PTM_RATIO) - this->getPosition();
-
-	//			coinToHero = coinToHero*(SCREEN_SIZE.width / coinToHero.length());
-	//			if (coinToHero.x < 0) {
-	//				this->getB2Body()->SetType(b2_dynamicBody);
-	//				this->getB2Body()->SetLinearVelocity(b2Vec2(coinToHero.x / PTM_RATIO - hero->getB2Body()->GetLinearVelocity().x, coinToHero.y / PTM_RATIO));
-	//			}
-	//			else if (coinToHero.x >= 0) {
-	//				this->getB2Body()->SetType(b2_dynamicBody);
-	//				this->getB2Body()->SetLinearVelocity(b2Vec2(coinToHero.x / PTM_RATIO + hero->getB2Body()->GetLinearVelocity().x, coinToHero.y / PTM_RATIO));
-
-	//			}
-	//		}
-
-	//		else {
-	//			if (hero->getItemValue(KEY_ITEM_MAGNET) > 30 && this->getB2Body()->GetType() == b2_staticBody) {
-	//				this->getB2Body()->SetType(b2_dynamicBody);
-	//			}
-	//		}
-	//	}
-
-	//}
 	if (this->getB2Body()) {
 		if (!this->isVisible() && this->getB2Body()->GetType() == b2_staticBody) {
 			this->resumeSchedulerAndActions();
@@ -139,8 +107,8 @@ void Coin::updateMe(BaseHero *hero)
 		}
 		if (this->isVisible() && hero->getB2Body()) {
 			if (((this->getPosition() -
-				(hero->getPosition() + Vec2(0, hero->getB2Body()->GetFixtureList()->GetShape()->m_radius*PTM_RATIO))).length()
-				< SCREEN_SIZE.height / 12)) {
+				(hero->getPosition() + Vec2(0, hero->getTrueRadiusOfHero()))).length()
+				< hero->getTrueRadiusOfHero())) {
 				this->picked();
 				hero->setCoinExplored(hero->getCoinExplored() + hero->getCoinRatio());
 			}

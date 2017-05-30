@@ -20,8 +20,8 @@ public:
 	StateParalax state;
 	static InfiniteParallaxNode* create();
 	void updatePosition();
-	void up();
-	void down();
+	void up(Vec2 posHero);
+	void down(Vec2 posHero);
 	void free();
 };
 

@@ -17,7 +17,8 @@ CoinBag * CoinBag::create(string jsonFile, string atlasFile, float scale)
 	auto coin = new CoinBag(jsonFile, atlasFile, scale);
 	coin->update(0.0f);
 	coin->setTag(TAG_COINBAG);
-	coin->setAnimation(0,"Gold_bag",true);
+	coin->setAnimation(0, "Gold_bag", true);
+	coin->effect = nullptr;
 	return coin;
 }
 
@@ -32,13 +33,13 @@ CoinBag * CoinBag::create(string filename, float scale)
 	bag->update(0.0f);
 	bag->setTag(TAG_COINBAG);
 	bag->setAnimation(0, "Gold_bag", true);
+	bag->effect = nullptr;
 	return bag;
 }
 
 void CoinBag::updateMe(BaseHero* hero)
 {
-	
-	if (!this->isVisible() && this->getB2Body()->GetType() == b2_staticBody) {
+	if (!this->isVisible() && this->getB2Body()->GetType() == b2_staticBody && this->effect == nullptr) {
 		this->resume();
 		this->setVisible(true);
 		B2Skeleton::updateMe(hero);

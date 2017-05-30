@@ -2,7 +2,7 @@
 #define __ENEMY_TNB_H__
 
 #include "BaseEnemy.h"
-#include "SkeletonManager.h"
+#include "manager/SkeletonManager.h"
 
 USING_NS_CC;
 
@@ -22,6 +22,7 @@ public:
 	void die();
 	void updateMe(BaseHero* hero);
 	void listener();
+	void initBoxPhysic(b2World *world, Point pos);
 
 };
 

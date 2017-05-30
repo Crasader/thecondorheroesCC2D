@@ -3,54 +3,37 @@
 #include "AudioManager.h"
 
 CoLong::CoLong(string p_sJsonFile, string p_sAtlasFile, float p_fScale) : BaseHero(p_sJsonFile, p_sAtlasFile, p_fScale) {
-	checkDurationSkill1 = 0;
-	checkDurationSkill2 = 0;
-	checkDurationSkill3 = 0;
+
 }
 
 CoLong * CoLong::create(string p_sJsonFile, string p_sAtlasFile, float p_fScale) {
 	CoLong *_pCoLong = new CoLong(p_sJsonFile, p_sAtlasFile, p_fScale);
-	_pCoLong->setTag(TAG_HERO);
+	if (_pCoLong && _pCoLong->init())
+	{
+		_pCoLong->autorelease();
+		_pCoLong->setTag(TAG_HERO);
 
-	_pCoLong->update(0.0f);
+		_pCoLong->update(0.0f);
 
-	_pCoLong->stateMachine = new StateMachine(_pCoLong);
-	_pCoLong->stateMachine->setCurrentState(MLand);
+		_pCoLong->stateMachine = new StateMachine(_pCoLong);
+		_pCoLong->stateMachine->setCurrentState(MLand);
 
-	_pCoLong->setMoveVel(_pCoLong->SCREEN_SIZE.width / PTM_RATIO / 2.3f);
-	_pCoLong->setJumpVel(_pCoLong->SCREEN_SIZE.height * 1.4f / PTM_RATIO);
+		_pCoLong->setBoxHeight(_pCoLong->getBoundingBox().size.height / 3.4f);
 
-	_pCoLong->health = REF->getCurrentHealth();
+		_pCoLong->blash = Sprite::create("Animation/CoLong/blash.png");
+		_pCoLong->blash->setScale(p_fScale / 2);
+		_pCoLong->blash->setPosition(_pCoLong->getContentSize() / 2);
+		_pCoLong->blash->setVisible(false);
+		_pCoLong->addChild(_pCoLong->blash);
 
-	// set Duration here
-	_pCoLong->setDurationSkill1(REF->getDurationSkill_1());
-	_pCoLong->setDurationSkill2(REF->getDurationSkill_2());
-	_pCoLong->setDurationSkill3(REF->getDurationSkill_3());
-
-	_pCoLong->numberOfJump = 2;
-	_pCoLong->coinExplored = 0;
-	_pCoLong->score = 0;
-
-	_pCoLong->setBoxHeight(_pCoLong->getBoundingBox().size.height / 3.4f);
-
-	_pCoLong->setOnGround(false);
-	_pCoLong->setIsPriorInjured(false);		// future, we need to add props into base class
-	_pCoLong->setIsPriorAttack(false);
-	_pCoLong->setIsPriorSkill1(false);
-	_pCoLong->setIsPriorSkill2(false);
-	_pCoLong->setIsPriorSkill3(false);
-
-	_pCoLong->setIsDoneDuration1(true);
-	_pCoLong->setIsDoneDuration2(true);
-	_pCoLong->setIsDoneDuration3(true);
-
-	_pCoLong->blash = Sprite::create("Animation/CoLong/blash.png");
-	_pCoLong->blash->setScale(p_fScale / 2);
-	_pCoLong->blash->setPosition(_pCoLong->getContentSize() / 2);
-	_pCoLong->blash->setVisible(false);
-	_pCoLong->addChild(_pCoLong->blash);
-
-	return _pCoLong;
+		return _pCoLong;
+	}
+	else
+	{
+		delete _pCoLong;
+		_pCoLong = nullptr;
+		return nullptr;
+	}
 }
 
 // SKILL 1
@@ -69,7 +52,7 @@ void CoLong::createDocPhongCham(Point p_ptStartPoint, Point p_ptEndPoint) {
 	cham->initCirclePhysic(gameLayer->world, cham->getPosition());
 	cham->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), angle);
 	cham->changeBodyCategoryBits(BITMASK_SWORD);
-	cham->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS);
+	cham->changeBodyMaskBits(BITMASK_SLASH | BITMASK_BOSS | BITMASK_ENEMY);
 
 	if (!cham->getIsAdded()) {
 		this->getParent()->addChild(cham, ZORDER_ENEMY);
@@ -99,8 +82,12 @@ void CoLong::doCounterSkill1() {
 // SKILL 2
 void CoLong::createNgocNuKiemPhap(Point p_ptPoint) {
 	AudioManager::playSound(SOUND_CLSKILL2);
-	auto scale = this->getTrueRadiusOfHero() * 1.4f / 250;
-	SkeletonAnimation * clone = new SkeletonAnimation("Animation/CoLong/skill2.json", "Animation/CoLong/skill2.atlas", scale);
+	auto * clone = (SkeletonAnimation*) poolSkill2->getObjectAtIndex(indexSkill2++);
+
+	clone->clearTracks();
+	clone->addAnimation(0, "skill2", false);
+	clone->setToSetupPose();
+
 	auto parentGameScene = (GameScene*)this->getParent();
 
 	if (!m_lEnemiesSelectedBySkill2.empty()) {
@@ -110,15 +97,26 @@ void CoLong::createNgocNuKiemPhap(Point p_ptPoint) {
 		m_lEnemiesSelectedBySkill2.pop_front();
 		enemy->die();
 
-		auto hero = parentGameScene->getHero();
-		hero->setScore(hero->getScore() + 15);
+		this->setScore(this->getScore() + 15);
 	}
 	else {
 		clone->setPosition(p_ptPoint);
 	}
 
-	parentGameScene->addChild(clone, ZORDER_SMT);
-	clone->addAnimation(0, "skill2", false);
+	if (!isAddedAll) {
+		/*clone->setEndListener([&](int trackIndex) {
+			if ((strcmp(clone->getCurrent()->animation->name, "skill2") == 0)) {
+
+			}
+		});*/
+
+		parentGameScene->addChild(clone, ZORDER_SMT);
+	}
+
+	if (indexSkill2 == 3) {
+		indexSkill2 = 0;
+		if (!isAddedAll) isAddedAll = true;
+	}
 }
 
 void CoLong::doCounterSkill2() {
@@ -135,7 +133,8 @@ void CoLong::doCounterSkill2() {
 // SKILL 3
 void CoLong::doCounterSkill3() {
 	keysoundSKill3 = AudioManager::playSoundForever(SOUND_CLSKILL3);
-	changeBodyMaskBits(BITMASK_FLOOR | BITMASK_COIN | BITMASK_COIN_BULLION | BITMASK_ITEM);
+
+	changeBodyMaskBits(BITMASK_FLOOR | BITMASK_COIN_BULLION | BITMASK_BOSS);
 	
 	m_pRadaSkill3->changeBodyCategoryBits(BITMASK_SWORD);
 	
@@ -149,9 +148,11 @@ void CoLong::doCounterSkill3() {
 		checkDurationSkill3++;
 
 		if (checkDurationSkill3 >= getDurationSkill3() * 10) {
-			changeBodyMaskBits(BITMASK_FLOOR | BITMASK_COIN | BITMASK_SLASH | BITMASK_BOSS | BITMASK_TOANCHAN1 | BITMASK_COIN_BULLION | BITMASK_ITEM);
-			m_pRadaSkill3->changeBodyCategoryBits(BITMASK_WOODER);
 			setIsDoneDuration3(true);
+			if (getOnGround()) {
+				getFSM()->changeState(MRun);
+				run();
+			}
 			checkDurationSkill3 = 0;
 			AudioManager::stopSoundForever(keysoundSKill3);
 			unschedule("KeySkill3");
@@ -167,10 +168,11 @@ void CoLong::updateMe(float p_fDelta) {
 		TieuHonChuong *_pTempDPC = m_lDocPhongCham.front();
 		if (_pTempDPC->getIsCollide() || _pTempDPC->getPositionX() - (this->getPositionX() + SCREEN_SIZE.width * 0.25f) > SCREEN_SIZE.width / 2) {
 			auto gameLayer = (GameScene*) this->getParent();
-
-			gameLayer->world->DestroyBody(_pTempDPC->getB2Body());
-			_pTempDPC->setB2Body(nullptr);
-			_pTempDPC->setVisible(false);
+			if (_pTempDPC->getB2Body() != nullptr) {
+				gameLayer->world->DestroyBody(_pTempDPC->getB2Body());
+				_pTempDPC->setB2Body(nullptr);
+				_pTempDPC->setVisible(false);
+			}		
 		}
 		else {
 			_pTempDPC->updateMe();
@@ -191,9 +193,11 @@ void CoLong::updateMe(float p_fDelta) {
 	if (getB2Body() == nullptr)
 		return;
 
-	m_pRadaSkill1->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), 0.0f);
-	m_pRadaSkill2->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), 0.0f);
-	m_pRadaSkill3->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), 0.0f);
+	if (m_pRadaSkill1 != nullptr) {
+		m_pRadaSkill1->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), 0.0f);
+		m_pRadaSkill2->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), 0.0f);
+		m_pRadaSkill3->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), 0.0f);
+	}
 
 	auto currentVelY = getB2Body()->GetLinearVelocity().y;
 	if (getFSM()->currentState == MDie) {
@@ -268,7 +272,7 @@ void CoLong::createRada(b2World *p_pWorld) {
 	m_pRadaSkill1->setVisible(false);
 	m_pRadaSkill1->initCirclePhysic(p_pWorld, Vec2(this->getB2Body()->GetPosition().x, this->getB2Body()->GetPosition().y));
 	m_pRadaSkill1->changeBodyCategoryBits(BITMASK_RADA_SKILL_1);
-	m_pRadaSkill1->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2);
+	m_pRadaSkill1->changeBodyMaskBits(BITMASK_ENEMY);
 
 
 	m_pRadaSkill2 = Rada::create("Animation/CoLong/blash.png");
@@ -276,7 +280,7 @@ void CoLong::createRada(b2World *p_pWorld) {
 	m_pRadaSkill2->setVisible(false);
 	m_pRadaSkill2->initCirclePhysic(p_pWorld, Vec2(this->getB2Body()->GetPosition().x, this->getB2Body()->GetPosition().y));
 	m_pRadaSkill2->changeBodyCategoryBits(BITMASK_RADA_SKILL_2);
-	m_pRadaSkill2->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2);
+	m_pRadaSkill2->changeBodyMaskBits(BITMASK_ENEMY);
 
 
 	m_pRadaSkill3 = Rada::create("Animation/CoLong/blash.png");
@@ -284,7 +288,7 @@ void CoLong::createRada(b2World *p_pWorld) {
 	m_pRadaSkill3->setVisible(false);
 	m_pRadaSkill3->initCirclePhysic(p_pWorld, Vec2(this->getB2Body()->GetPosition().x, this->getB2Body()->GetPosition().y));
 	m_pRadaSkill3->changeBodyCategoryBits(BITMASK_WOODER);
-	m_pRadaSkill3->changeBodyMaskBits(BITMASK_TOANCHAN1 | BITMASK_TOANCHAN2 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG);
+	m_pRadaSkill3->changeBodyMaskBits(BITMASK_ENEMY | BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG);
 
 }
 
@@ -296,7 +300,6 @@ void CoLong::createSlash() {
 	slash->update(0.0f);
 	slash->setVisible(false);
 	this->addChild(slash);
-
 	slashLand = SkeletonAnimation::createWithFile("Animation/CoLong/slash3.json", "Animation/CoLong/slash3.atlas", scale);
 	slashLand->setPosition(this->getContentSize().width / 2 + this->getTrueRadiusOfHero() * 0.3f, this->getTrueRadiusOfHero() * 0.7f);
 	slashLand->update(0.0f);
@@ -305,35 +308,7 @@ void CoLong::createSlash() {
 }
 
 void CoLong::initCirclePhysic(b2World * world, Point pos) {
-	b2CircleShape circle_shape;
-	circle_shape.m_radius = getBoxHeight() / PTM_RATIO;
-
-	// True radius of hero is here
-	setTrueRadiusOfHero(circle_shape.m_radius * PTM_RATIO);
-	//
-
-	b2FixtureDef fixtureDef;
-	fixtureDef.density = 0.0f;
-	fixtureDef.friction = 0.0f;
-	fixtureDef.restitution = 0.0f;
-	fixtureDef.shape = &circle_shape;
-
-	fixtureDef.filter.categoryBits = BITMASK_HERO;
-	fixtureDef.filter.maskBits = BITMASK_FLOOR | BITMASK_COIN | BITMASK_ITEM |
-		BITMASK_TOANCHAN1 | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION;
-
-
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
-	bodyDef.userData = this;			// pass sprite to bodyDef with argument: userData
-
-	bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);
-
-	body = world->CreateBody(&bodyDef);
-	body->CreateFixture(&fixtureDef);
-
-	// connect sword with body
-	initSwordPhysic(world, Point(pos.x + trueRadiusOfHero * 2.2f, pos.y), trueRadiusOfHero);
+	BaseHero::initCirclePhysic(world, pos);
 
 	// rada
 	createRada(world);
@@ -355,6 +330,15 @@ void CoLong::createPool()
 		auto cham = TieuHonChuong::create("cham.png");
 		cham->setScale(this->getTrueRadiusOfHero() * 1.5f / cham->getContentSize().width);
 		poolSkill1->addObject(cham);
+	}
+
+	poolSkill2 = CCArray::createWithCapacity(3);
+	poolSkill2->retain();
+
+	auto scale = this->getTrueRadiusOfHero() * 1.4f / 250;
+	for (int i = 0; i < 3; ++i) {
+		SkeletonAnimation * clone = new SkeletonAnimation("Animation/CoLong/skill2.json", "Animation/CoLong/skill2.atlas", scale);
+		poolSkill2->addObject(clone);
 	}
 }
 
@@ -388,6 +372,9 @@ void CoLong::listener() {
 			getFSM()->changeState(MLand);
 			auto gameLayer = (GameScene*) this->getParent();
 			initCirclePhysic(gameLayer->world, this->getPosition());
+			gameLayer->getHud()->resumeIfVisible();
+			gameLayer->enableCalling();
+			noActive = false;
 		}
 
 		else if ((strcmp(getCurrent()->animation->name, "attack1") == 0) ||
@@ -411,14 +398,40 @@ void CoLong::listener() {
 
 		}
 
+		else if (strcmp(getCurrent()->animation->name, "skill3") == 0) {
+			changeBodyMaskBits(BITMASK_FLOOR | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION | BITMASK_ENEMY);
+			m_pRadaSkill3->changeBodyCategoryBits(BITMASK_WOODER);
+		}
+
 		else if (strcmp(getCurrent()->animation->name, "die") == 0) {
 			this->pause();
 			auto gamelayer = (GameScene*)this->getParent();
 			gamelayer->dieGame();
-		}
-
+		} 
 
 	});
+}
+
+void CoLong::stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSkill3)
+{
+	if (stopSkill1 && !getIsDoneDuration1()) {
+		setIsDoneDuration1(true);
+		checkDurationSkill1 = 0;
+		unschedule("KeySkill1");
+	}
+
+	if (stopSkill2 && !getIsDoneDuration2()) {
+		setIsDoneDuration2(true);
+		unschedule("KeySkill2");
+		checkDurationSkill2 = 0;
+	}
+
+	if (stopSkill3 && !getIsDoneDuration3()) {
+		AudioManager::stopSoundForever(keysoundSKill3);
+		setIsDoneDuration3(true);
+		unschedule("KeySkill3");
+		checkDurationSkill3 = 0;
+	}
 }
 
 void CoLong::doDestroyBodies(b2World *world)
@@ -442,9 +455,6 @@ void CoLong::run() {
 		clearTracks();
 		addAnimation(0, "run", true);
 		setToSetupPose();
-
-		if (getBloodScreen()->isVisible() && health > 1)
-			getBloodScreen()->setVisible(false);
 
 		if (!getSmokeRun()->isVisible()) {
 			getSmokeRun()->setVisible(true);
@@ -506,54 +516,15 @@ void CoLong::landing() {
 	}
 }
 
-void CoLong::idle() {
-	clearTracks();
-	addAnimation(0, "idle", false);
-	setToSetupPose();
-	getB2Body()->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
-	getSmokeRun()->setVisible(false);
-}
-
 void CoLong::die() {
-	--dieHard;
-	if (dieHard < 0) {
-		//log("Die Hard");
-		return;
-	}
-
-	if (!getIsDoneDuration1()) {
-		setIsDoneDuration1(true);
-		checkDurationSkill1 = 0;
-		unschedule("KeySkill1");
-	}
-
-	if (!getIsDoneDuration2()) {
-		setIsDoneDuration2(true);
-		unschedule("KeySkill2");
-		checkDurationSkill2 = 0;
-	}
-
-	if (!getIsDoneDuration3()) {
-		setIsDoneDuration3(true);
-		unschedule("KeySkill3");
-		checkDurationSkill3 = 0;
-	}
-
-
+	BaseHero::die();
 	AudioManager::playSound(SOUND_CLDIE);
-	clearTracks();
-	addAnimation(0, "die", false);
-	setToSetupPose();
-	getB2Body()->SetLinearDamping(10);
-
-	getSmokeRun()->setVisible(false);
-
 	//log("die");
 }
 
 void CoLong::attackNormal() {
 	if (!getIsDoneDuration3()) {		// is in Skill 3
-
+		getFSM()->revertToGlobalState();
 	}
 	else {
 		BaseHero::attackNormal();
@@ -583,7 +554,7 @@ void CoLong::attackNormal() {
 
 void CoLong::attackLanding() {
 	if (!getIsDoneDuration3()) {		// is in Skill 3
-
+		getFSM()->revertToGlobalState();
 	}
 	else {
 		BaseHero::attackLanding();
@@ -608,25 +579,7 @@ void CoLong::injured() {
 		clearTracks();
 		addAnimation(0, "injured", false);
 		setToSetupPose();
-		log("Injured");
+		//log("Injured");
 	}
 }
 
-void CoLong::revive()
-{
-	clearTracks();
-	addAnimation(0, "revive", false);
-	setToSetupPose();
-
-	getSmokeRun()->setVisible(false);
-	getReviveMe()->setPosition(this->getPositionX() + getTrueRadiusOfHero() / 2, this->getPositionY());
-	getReviveMe()->setVisible(true);
-	reviveAni();
-
-	//log("revive");
-}
-
-void CoLong::die(Point p_ptPositionOfCammera)
-{
-
-}

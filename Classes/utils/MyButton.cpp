@@ -22,16 +22,17 @@ MyButton * MyButton::create(string file_name_main, string file_name_CoolDown, Po
 	mNode->numberOfUseHasNotUsedYet = 1;
 
 	mNode->number = Label::createWithBMFont("fonts/font_life-export.fnt", "0");
-	mNode->number->setBMFontSize(mNode->getContentSize().height / 2.5f);
+	mNode->number->setBMFontSize(mNode->getContentSize().height / 2.2f);
 	mNode->number->setAnchorPoint(Vec2(0.5f, 0.15f));
 	mNode->number->setPosition(mNode->getContentSize() / 2);
 	mNode->addChild(mNode->number);
 	mNode->number->setVisible(false);
 
-	mNode->numberUseLb = Label::createWithTTF(StringUtils::format("%i", mNode->numberOfUseHasNotUsedYet), 
-												"fonts/arial.ttf", mNode->getContentSize().height / 4);
+	mNode->numberUseLb = Label::createWithBMFont("fonts/font_life-export.fnt", StringUtils::format("%i", mNode->numberOfUseHasNotUsedYet));
+	mNode->numberUseLb->setBMFontSize(mNode->getContentSize().height / 2.2f);
+	mNode->numberUseLb->setAnchorPoint(Vec2(0.5f, 0.15f));
 	mNode->numberUseLb->setVisible(false);
-	mNode->numberUseLb->setPosition(mNode->getContentSize().width, 0);
+	mNode->numberUseLb->setPosition(mNode->getContentSize().width * 0.7f, mNode->getContentSize().height * 0.3f);
 	mNode->addChild(mNode->numberUseLb);
 
 
@@ -47,17 +48,23 @@ void MyButton::addNumberOfUse(int number)
 {
 	setNumberOfUse(number);
 	setNumberOfUseHasNotUsedYet(number);
+	if (number > 1) {
+		numberUseLb->setString(StringUtils::format("%i", number));
+		numberUseLb->setVisible(true);
+	}
 }
 
 // add listener to sprite
 void MyButton::addEvents()
 {
+	//auto originX = Director::getInstance()->getVisibleOrigin().x;
 	listener = cocos2d::EventListenerTouchOneByOne::create();
 	listener->setSwallowTouches(true);								// preventing other listener from using it
 
 	listener->onTouchBegan = [&](Touch *mTouch, Event *mEvent)
 	{
-		auto p = mTouch->getLocation();
+		auto location = mTouch->getLocation();
+		auto p = Vec2(location);
 		//convertToNodeSpace(p);
 		Rect rect = this->getBoundingBox();
 		
@@ -66,22 +73,18 @@ void MyButton::addEvents()
 			if (canTouch) {
 				--numberOfUseHasNotUsedYet;
 				
-				if (numberOfUseHasNotUsedYet == 0) {
+				if (numberOfUseHasNotUsedYet <= 0) {
 					if(numberOfUse > 1)
 						numberUseLb->setVisible(false);
 					runTimer();
 					this->schedule(schedule_selector(MyButton::checkInterval), timeCoolDown, 1, 0);
 				}
 
-				if(numberOfUseHasNotUsedYet > 1)
+				if(numberOfUseHasNotUsedYet >= 1)
 					numberUseLb->setString(StringUtils::format("%i", numberOfUseHasNotUsedYet));
 							
 				canTouch = false;
 				isActive = true;
-			}
-			else {
-				//log("Cool Down, B*tch");
-				
 			}
 		}
 
@@ -93,6 +96,8 @@ void MyButton::addEvents()
 
 void MyButton::pauseListener()
 {
+	main->setVisible(false);
+	number->setVisible(false);
 	Director::getInstance()->getEventDispatcher()->removeEventListener(listener);
 	listener = nullptr;
 }
@@ -103,7 +108,7 @@ void MyButton::refresh()
 	isActive = false;
 	isBlocked = false;
 	number->setVisible(false);
-	main->setVisible(true);
+	main->setVisible(false);
 	main->setPercentage(100.0f);
 	numberOfUseHasNotUsedYet = numberOfUse;
 	if (numberOfUse > 1) {
@@ -132,8 +137,9 @@ void MyButton::runTimer()
 	if (timeCoolDown < 1)
 		return;
 	timer = timeCoolDown;
-	number->setString(StringUtils::format("%i", timer));
+	number->setString(StringUtils::format("%i", (int)timer));
 	number->setVisible(true);
+	
 	this->schedule([&](float dt) {
 		timer -= 0.01f;
 		main->setPercentage((timeCoolDown - timer) / timeCoolDown * 100.0f);
@@ -147,5 +153,13 @@ void MyButton::runTimer()
 		}
 	}, 0.01f, "Key_timer");
 
+}
+
+void MyButton::runSpecialTimer(float dt)
+{
+	this->unschedule(schedule_selector(MyButton::runSpecialTimer));
+	numberOfUseHasNotUsedYet++;		// increase 
+
+	numberUseLb->setString(StringUtils::format("%i", numberOfUseHasNotUsedYet));
 }
 

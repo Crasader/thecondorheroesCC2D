@@ -6,7 +6,6 @@
 
 USING_NS_CC;
 
-
 class RefManager
 {
 public:
@@ -15,7 +14,13 @@ public:
 	~RefManager();
 
 protected:
+	CC_SYNTHESIZE_READONLY(int, language, Language);
+	CC_SYNTHESIZE_READONLY(bool, isFirstPlay, IsFirstPlay);
+	CC_SYNTHESIZE_READONLY(int, lastMapIdPlay, LastMapIdPlay);
+	CC_SYNTHESIZE_READONLY(bool, isGetNewMap, IsGetNewMap);
+
 	CC_SYNTHESIZE_READONLY(int, selectedHero, SelectedHero);
+	CC_SYNTHESIZE_READONLY(int, lastPickHero, LastPickHero);
 	CC_SYNTHESIZE_READONLY(bool, isLockedHero, IsLockedHero);	// to try or smt
 
 	CC_SYNTHESIZE_READONLY(int, currentStageUnlocked, CurrentStageUnlocked);
@@ -26,6 +31,10 @@ protected:
 	CC_SYNTHESIZE_READONLY(int, currentHealth, CurrentHealth);
 
 	CC_SYNTHESIZE_READONLY(int, anchorTime, AnchorTime);   //
+	CC_SYNTHESIZE_READONLY(int, lastDailyRewardTime, LastDailyRewardTime);   //
+	CC_SYNTHESIZE_READONLY(int, dailyRewardCounter, DailyRewardCounter);   //
+	CC_SYNTHESIZE_READONLY(bool, dailyRewardAvailable, DailyRewardAvailable);	// to try or smt
+	CC_SYNTHESIZE_READONLY(int, freeCoin, FreeCoin);	// to try or smt
 
 	// life of game
 	CC_SYNTHESIZE_READONLY(int, numberOfLife, NumberOfLife);   //
@@ -35,12 +44,15 @@ protected:
 
 	CC_SYNTHESIZE_READONLY(float, durationSkill_1, DurationSkill_1);
 	CC_SYNTHESIZE_READONLY(float, coolDownSkill_1, CoolDownSkill_1);
+	CC_SYNTHESIZE_READONLY(int, numberUseSkill_1, NumberUseSkill_1);
 
 	CC_SYNTHESIZE_READONLY(float, durationSkill_2, DurationSkill_2);
 	CC_SYNTHESIZE_READONLY(float, coolDownSkill_2, CoolDownSkill_2);
+	CC_SYNTHESIZE_READONLY(int, numberUseSkill_2, NumberUseSkill_2);
 
 	CC_SYNTHESIZE_READONLY(float, durationSkill_3, DurationSkill_3);
 	CC_SYNTHESIZE_READONLY(float, coolDownSkill_3, CoolDownSkill_3);
+	CC_SYNTHESIZE_READONLY(int, numberUseSkill_3, NumberUseSkill_3);
 
 	CC_SYNTHESIZE_READONLY(int, levelSkill_1, LevelSkill_1);
 	CC_SYNTHESIZE_READONLY(int, levelSkill_2, LevelSkill_2);
@@ -55,19 +67,31 @@ protected:
 	CC_SYNTHESIZE_READONLY(int, numberItemDoubleGold, NumberItemDoubleGold);
 	CC_SYNTHESIZE_READONLY(int, numberItemCoolDown, NumberItemCoolDown);
 
+	CC_SYNTHESIZE_READONLY(int, m_nNumberQuest, NumberQuest);
+	CC_SYNTHESIZE_READONLY(int, m_nRewardedQuestTimes, RewardedQuestTimes);
+
 private:
 	UserDefault* ref;
-	bool isFirstTime = true;
 	static RefManager *refManager;
 
 public:
 	static RefManager* getInstance();
 
+	void setLanguage(int p_nLanguage);
+
 	void pointToCurrentHero(int index);		// set props to get
+
+	void setSelectedHero(int index);
+	void setLastPickHero(int lastPickIndex);
+	void setReachNewMap(bool value);
+
+	void setDoneFirstPlay();
+	void setLastMapId(int id);
+
 	void unLockHero(int index);
 	void increaseLevel();
 
-	void increaseStateUnlocked();
+	void increaseStageUnlocked();
 	void setMapUnlocked(int index);
 	
 	// baseHP
@@ -80,20 +104,31 @@ public:
 	// set increase score after done one game
 	void setUpScore(int score);
 	
-	// void decrease time duration and cooldown
-	void decreaseDurationSkill_X(int skill_What, int percent);
-	void decreaseCoolDownSkill_X(int skill_What, int percent);
+	// increase time duration
+	void increaseDurationSkill_X(int skill_What, int value);
+
+	// decrease time cooldown
+	void decreaseCoolDownSkill_X(int skill_What, int value);
+
+	// increase number of use of skillX
+	void increaseNumberUseSkill_X(int skill_What, int value);
 
 	void increaseBonusScore(int value);
 	void increaseBonusGold(int value);
 
-	void resetAnchorTime();
+	void setAnchorTime(int value);
+	void updateTimeFromGoogle(int p_nTime);
+	void increaseDailyRewardCounter();
+	void updateDailyRewardAvailable(bool p_bData);
+	void resetFreeCoin();
+	void decreaseFreeCoin();
 
 	// up and down
 
 	// eat to play
 	void setUpLife(int life);   
 	bool setDownLife(int life);
+	void setLife(int life);
 	
 	void setUpGoldExplored(int gold);
 	bool setDownGold(int gold);
@@ -112,16 +147,28 @@ public:
 	void increaseNumberItemDoubleGold();			void decreaseNumberItemDoubleGold();
 	void increaseNumberItemCoolDown();				void decreaseNumberItemCoolDown();
 
+	void setUpNumberQuest(int p_nQuestIndex, int p_nData);
+	void updateRewardedQuestTimes(int p_nQuestIndex);
+	void readDataQuest(int p_nQuestIndex);
 };
 
 #define REF RefManager::getInstance()
 // Ref
+#define KEY_LANGUAGE						"Language"
+#define KEY_FIRST							"FirstPlay"
+#define KEY_LAST_MAP_ID						"LastMapID"
+#define KEY_UNLOCK_MAP						"GetNewMap"
 #define KEY_SELECTED_HERO					"SelectedHero"		// integer
+#define KEY_LAST_PICK_HERO					"LastPick"
 
 #define KEY_CUR_STAGE_UNLOCKED				"CurrentStageUnlocked"
 #define KEY_CUR_MAP_UNLOCKED				"CurrentMapUnlocked"
 
 #define KEY_ANCHORTIME						"AnchorTime"
+#define KEY_LAST_DAILY_REWARD_TIME			"LastDailyRewardTime"
+#define KEY_DAILY_REWARD_COUNTER			"DailyRewardCounter"
+#define KEY_DAILY_REWARD_AVAILABLE			"DailyRewardAvailable"
+#define KEY_FREE_COIN						"FreeCoin"
 
 #define KEY_LIFE							"MyLife"
 #define KEY_GOLD							"MyGold"
@@ -147,12 +194,15 @@ public:
 // Define duration and cooldown time (if not define, get data from json)
 #define KEY_DURATION_SKILL_1_HERO_X						"DurationSkill1_Hero_"
 #define KEY_COOLDOWN_SKILL_1_HERO_X						"CoolDownSkill1_Hero_"
+#define KEY_NUMBER_USE_SKILL_1_HERO_X					"NumberUseSkill1_Hero_"
 
 #define KEY_DURATION_SKILL_2_HERO_X						"DurationSkill2_Hero_"
 #define KEY_COOLDOWN_SKILL_2_HERO_X						"CoolDownSkill2_Hero_"
+#define KEY_NUMBER_USE_SKILL_2_HERO_X					"NumberUseSkill2_Hero_"
 
 #define KEY_DURATION_SKILL_3_HERO_X						"DurationSkill3_Hero_"
 #define KEY_COOLDOWN_SKILL_3_HERO_X						"CoolDownSkill3_Hero_"
+#define KEY_NUMBER_USE_SKILL_3_HERO_X					"NumberUseSkill3_Hero_"
 
 // from level skill we can calculate duration and cooldown
 #define KEY_LEVEL_SKILL_1_HERO_X						"LevelSkill1_Hero_"
@@ -166,5 +216,18 @@ public:
 #define NUMBER_OF_ITEM_MAGNET							"NumberOfItemMagnet"
 #define NUMBER_OF_ITEM_DOUBLE_COIN						"NumberOfItemDoubleCoin"
 #define NUMBER_OF_ITEM_COOL_DOWN						"NumberOfItemCoolDown"
+
+#define NUMBER_QUEST_X									"NumberQuest_"
+#define REWARDED_QUEST_X								"RewardedQuest_"
+
+
+#define INDEX_QUEST_CALL_BIRD	0
+#define INDEX_QUEST_HEALTH		1
+#define INDEX_QUEST_COOLDOWN	2
+#define INDEX_QUEST_DQ			3
+#define INDEX_QUEST_TLN			4
+#define INDEX_QUEST_HD			5
+#define INDEX_QUEST_RAMPAGE		6
+#define INDEX_QUEST_DIAMOND		7
 
 #endif // __REF_MANAGER_H__

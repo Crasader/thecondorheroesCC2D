@@ -5,6 +5,7 @@ ChimDieu::ChimDieu(spSkeletonData * data) :B2Skeleton(data) {
 
 ChimDieu::ChimDieu(string jsonFile, string atlasFile, float scale) : B2Skeleton(jsonFile, atlasFile, scale) {
 	isCarry = false;
+	isAbleToDropHero = false;
 }
 
 ChimDieu * ChimDieu::create(string jsonFile, string atlasFile, float scale) {
@@ -27,18 +28,16 @@ ChimDieu * ChimDieu::create(spSkeletonData * data) {
 
 void ChimDieu::updateMe(float dt) {
 	if (body != nullptr) {
-		this->setPositionX(body->GetPosition().x * PTM_RATIO);
+		this->setPositionX(body->GetPosition().x * PTM_RATIO + this->getPositionZ());
 		this->setPositionY(body->GetPosition().y * PTM_RATIO);
-		this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
 	}
 	else
 		return;
 
-
-	if (isCarry && isUp && body->GetPosition().y > SCREEN_SIZE.height * 2.0f / PTM_RATIO) {
+	if (isCarry && isUp && body->GetPosition().y > SCREEN_SIZE.height * 1.5f / PTM_RATIO) {
 		this->getB2Body()->SetLinearVelocity(b2Vec2(this->getB2Body()->GetLinearVelocity().x, 0.0f));
 	}
-	if (isCarry && isDown && body->GetPosition().y < SCREEN_SIZE.height * 0.3f / PTM_RATIO) {
+	if (isCarry && isDown && body->GetPosition().y < SCREEN_SIZE.height * 0.25f / PTM_RATIO) {
 		this->getB2Body()->SetLinearVelocity(b2Vec2(this->getB2Body()->GetLinearVelocity().x, 0.0f));
 	}
 	if (isCarry) {
@@ -79,7 +78,7 @@ void ChimDieu::updateMe(float dt) {
 		}
 	}
 	else {
-		if (body->GetPosition().y > SCREEN_SIZE.height * 3.0f / PTM_RATIO) {
+		if (body->GetPosition().y > SCREEN_SIZE.height * 2.0f / PTM_RATIO) {
 			// this->getB2Body()->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
 			this->getB2Body()->GetWorld()->DestroyBody(this->getB2Body());
 			this->setB2Body(nullptr);
@@ -89,30 +88,30 @@ void ChimDieu::updateMe(float dt) {
 }
 
 void ChimDieu::initCirclePhysic(b2World * world, Point pos) {
-    b2CircleShape circle_shape;
-    //circle_shape.m_radius = this->getBoundingBox().size.height / 2 / PTM_RATIO;
-    this->getBoundingBox().size.height > this->getBoundingBox().size.width ? circle_shape.m_radius = this->getBoundingBox().size.width / 6 / PTM_RATIO :
-    circle_shape.m_radius = this->getBoundingBox().size.height / 6 / PTM_RATIO;
-    b2FixtureDef fixtureDef;
-    fixtureDef.density = 0.0f;
-    fixtureDef.friction = 0.5f;
-    fixtureDef.restitution = 0.0f;
-    fixtureDef.shape = &circle_shape;
-    
-    b2BodyDef bodyDef;
-    bodyDef.type = b2_dynamicBody;
-    bodyDef.userData = this;			// pass sprite to bodyDef with argument: userData
-    
-    bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);
-    
-    body = world->CreateBody(&bodyDef);
-    body->CreateFixture(&fixtureDef);
-    
-	this->getB2Body()->SetType(b2_dynamicBody);
-	this->getB2Body()->GetFixtureList()->SetSensor(true);
-	this->getB2Body()->SetGravityScale(0);
-	this->changeBodyCategoryBits(BITMASK_BIRD);
-	this->changeBodyMaskBits(0);
+	b2CircleShape circle_shape;
+	//circle_shape.m_radius = this->getBoundingBox().size.height / 2 / PTM_RATIO;
+	this->getBoundingBox().size.height > this->getBoundingBox().size.width ? circle_shape.m_radius = this->getBoundingBox().size.width / 64 / PTM_RATIO :
+		circle_shape.m_radius = this->getBoundingBox().size.height / 64 / PTM_RATIO;
+	b2FixtureDef fixtureDef;
+	fixtureDef.density = 0.0f;
+	fixtureDef.friction = 0.5f;
+	fixtureDef.restitution = 0.0f;
+	fixtureDef.shape = &circle_shape;
+
+	fixtureDef.filter.categoryBits = BITMASK_BIRD;
+	fixtureDef.filter.maskBits = 0;
+	fixtureDef.isSensor = true;
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.userData = this;			// pass sprite to bodyDef with argument: userData
+
+	bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);
+
+	body = world->CreateBody(&bodyDef);
+	body->CreateFixture(&fixtureDef);
+
+	body->SetGravityScale(0);
 }
 
 void ChimDieu::flyUp(b2Vec2 p_b2v2Velocity) {
@@ -129,6 +128,7 @@ void ChimDieu::flyDown(b2Vec2 p_b2v2Velocity) {
 	this->isUp = false;
 	this->isDown = true;
 	this->isAbleToDropHero = false;
+	this->changeBodyMaskBits(BITMASK_FLOOR);
 }
 
 void ChimDieu::flyAway() {

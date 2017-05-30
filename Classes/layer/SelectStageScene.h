@@ -2,39 +2,35 @@
 #define __SELECT_STAGE_SCENE_H__
 
 #include "cocos2d.h"
+#include "ui/CocosGUI.h"
 
 USING_NS_CC;
 
 class SelectStageLayer : public Layer
 {
 public:
-
-	static Scene* createScene(int charId);
-	virtual bool init(int charId);	
+	virtual bool init(int charId);
 	static SelectStageLayer* create(int charId);
+	void moveAva();
+
+protected:
+	CC_SYNTHESIZE(ui::ScrollView*, scrollView, mScrollView);
+	CC_SYNTHESIZE(Menu*, menu, mMenu);
 
 private:
 	const Size m_szVisibleSize = Director::getInstance()->getVisibleSize();
 	int m_nLifeNumber;
 	int m_nTimeAnchor;
-	Label *m_pTimeCounter;
-	Layer *m_pTopMainMenu;
 
-	void initData();
-	void initTopMainMenu();
+	TMXTiledMap *tmxMap;
+	Point nextMapPos;
 
-	
+	void gotoPlay(int id, int stage, int map, int charId);
 
-	void gotoPlay(int stage, int map, int haveBoss, int charId);
-
-	void goBack();
+	Sprite *character_point;
+	Sprite* bossSprite(int order);
 	void doNothing();
-	void buttonAddLifeHandle();
-	void buttonAddGoldHandle();
-	void buttonAddDiamondHandle();
-	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
-
-	void update(float dt);
+	int convertId();
 };
 
 #endif // __SELECT_STAGE_SCENE_H__

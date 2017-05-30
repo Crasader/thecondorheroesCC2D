@@ -50,10 +50,6 @@ void EnemyToOng::run()
 void EnemyToOng::attack()
 {
 	if (!this->getIsDie()) {
-		this->clearTracks();
-		this->addAnimation(0, "bee-attack", false);
-		//this->splash->setVisible(true);
-		this->setToSetupPose();
 	}
 }
 
@@ -73,7 +69,8 @@ void EnemyToOng::die()
 void EnemyToOng::initCirclePhysic(b2World * world, Point pos)
 {
 	b2CircleShape circle_shape;
-	circle_shape.m_radius = this->getBoundingBox().size.height / 4 / PTM_RATIO;
+	circle_shape.m_radius = this->getBoundingBox().size.height / 3.4f / PTM_RATIO;
+
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 0.0f;
@@ -95,6 +92,7 @@ void EnemyToOng::initCirclePhysic(b2World * world, Point pos)
 void EnemyToOng::updateMe(BaseHero * hero)
 {
 	BaseEnemy::updateMe(hero);
+
 	if (getIsDie() && this->getB2Body() != nullptr) {
 		die();
 	}
@@ -123,11 +121,12 @@ void EnemyToOng::listener()
 			this->setToSetupPose();
 		}
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
-            //this->removeFromParentAndCleanup(true);
-            this->setVisible(false);
-            this->clearTracks();
-            this->setAnimation(0, "idle", true);
-            this->setToSetupPose();
+			//this->removeFromParentAndCleanup(true);
+			this->setVisible(false);
+			this->pauseSchedulerAndActions();
+			/*this->clearTracks();
+			this->setAnimation(0, "idle", true);
+			this->setToSetupPose();*/
 		}
 
 	});

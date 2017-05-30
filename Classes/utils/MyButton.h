@@ -17,19 +17,21 @@ public:
 
 private:
 	EventListenerTouchOneByOne* listener;
-	float timer;
 	void checkInterval(float dt);
 	void runTimer();
+	void runSpecialTimer(float dt);
 
 protected:
 	CC_SYNTHESIZE(Label*, number, NumberCoolDown);
 	CC_SYNTHESIZE(Label*, numberUseLb, NumberUseLb);
 	CC_SYNTHESIZE(float, timeCoolDown, TimeCoolDown);
+	CC_SYNTHESIZE_READONLY(float, timer, mTimer);
 	CC_SYNTHESIZE(bool, isActive, IsActive);
 	CC_SYNTHESIZE(bool, canTouch, CanTouch);
 	CC_SYNTHESIZE(int, numberOfUse, NumberOfUse);
 	CC_SYNTHESIZE(int, numberOfUseHasNotUsedYet, NumberOfUseHasNotUsedYet);
 	CC_SYNTHESIZE(ProgressTimer*, main, Main);
+	CC_SYNTHESIZE(Sprite*, blocked, BlockedImg);
 	CC_SYNTHESIZE(bool, isBlocked, IsBlocked);
 
 	void addNumberOfUse(int number);

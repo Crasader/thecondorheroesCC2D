@@ -28,6 +28,5 @@ void Darts::updateMe(BaseHero * hero) {
 		this->setPositionX(body->GetPosition().x * PTM_RATIO - this->getParent()->getPositionX());
 		this->setPositionY(body->GetPosition().y * PTM_RATIO - this->body->GetFixtureList()->GetShape()->m_radius*PTM_RATIO
 			- this->getParent()->getPositionY()+this->getBoundingBox().size.height / 4.0f);
-		this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
 	}
 }

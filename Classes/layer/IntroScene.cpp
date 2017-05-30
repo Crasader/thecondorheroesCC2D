@@ -1,6 +1,8 @@
 #include "IntroScene.h"
 #include "AudioManager.h"
 #include "Global.h"
+#include "AdmobHelper.h"
+#include "FacebookHelper.h"
 
 Scene* SceneIntro::createScene() {
     auto scene = Scene::create();
@@ -14,14 +16,19 @@ bool SceneIntro::init() {
     if ( !Layer::init() ) {
         return false;
 	}
-    AudioManager::cacheAudio();
+	FacebookHelper::getInstance()->logout();
+	
+	AdmobHelper::getInstance()->showBanner();
 	AudioManager::playMusic(MUSIC_MENU);
+
 	auto origin = Director::getInstance()->getVisibleOrigin();
 
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("item/coin.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Map/bg.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/skill.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Effect/magnet_eff.plist");
+	//SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/Select_Stage/boss_eff.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/chidori_eff.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/rock_eff.plist");
 
 	auto _aIntroBackground = Sprite::create("UI/UI_intro/background.jpg");
 	_aIntroBackground->setScaleX(m_szVisibleSize.width / _aIntroBackground->getContentSize().width); // full screen size width
@@ -49,7 +56,6 @@ bool SceneIntro::init() {
 	_aStartButton->setPosition(origin.x + m_szVisibleSize.width * 3 / 4, origin.y + m_szVisibleSize.height / 4);
 	ScaleBy *_pZoomOut = ScaleBy::create(1.5f, 1.1f);
 	Sequence *_pZoomSequence = Sequence::create(_pZoomOut, _pZoomOut->reverse(), NULL);
-
 	RepeatForever* _pZoomRepeat = RepeatForever::create(_pZoomSequence);
 	_aStartButton->runAction(_pZoomRepeat);
 
@@ -69,11 +75,19 @@ bool SceneIntro::init() {
 	_aParticleFeather2->setScale(0.5f);
 	_aParticleFeather2->setPosition(origin + Vec2(m_szVisibleSize.width * 0.5f, m_szVisibleSize.height));
 	this->addChild(_aParticleFeather2, 2);
-	
+	/*FacebookHelper::getInstance()->login();
+	FacebookHelper::getInstance()->captureScreen();*/
 	return true;
 }
 
 void SceneIntro::goToMainMenuScene(Ref* p_pSender) {
-	auto _aMainMenuScene = MenuLayer::createScene(); // create main menu scene
-	Director::getInstance()->replaceScene(TransitionFade::create(0.5f, _aMainMenuScene)); // replace current scene by main menu scene, replacing duration is 500ms
+	//FacebookHelper::getInstance()->requestPostPermission();
+	////FacebookHelper::getInstance()->scrShotAndDialog("SwordmanLegend");
+	//FacebookHelper::getInstance()->dialogPhoto("SwordManLegend");
+	AdmobHelper::getInstance()->hideBanner();
+	AudioManager::playSound(SOUND_BTCLICK);
+	Layer *_pMenuScene = MenuLayer::create(false);
+	auto _aMainMenuScene = Scene::create();
+	_aMainMenuScene->addChild(_pMenuScene);
+	Director::getInstance()->replaceScene(TransitionFade::create(0.5f, _aMainMenuScene));
 }

@@ -3,7 +3,7 @@
 
 EnemyWooder::EnemyWooder() : BaseEnemy()
 {
-	
+
 }
 
 EnemyWooder::~EnemyWooder()
@@ -14,7 +14,6 @@ EnemyWooder::EnemyWooder(spSkeletonData * data) : BaseEnemy(data)
 {
 	//BaseEnemy:BaseEnemy(data);
 }
-
 EnemyWooder::EnemyWooder(string jsonFile, string atlasFile, float scale) : BaseEnemy(jsonFile, atlasFile, scale)
 {
 }
@@ -62,9 +61,9 @@ void EnemyWooder::attack()
 
 void EnemyWooder::die()
 {
-    AudioManager::playSound(SOUND_ENEMY_TRUNGDON);
-	BaseEnemy::die();
 
+	BaseEnemy::die();
+	AudioManager::playSound(SOUND_ENEMYHIT);
 	auto world = this->body->GetWorld();
 	world->DestroyBody(this->body);
 	this->body = nullptr;
@@ -78,7 +77,8 @@ void EnemyWooder::die()
 void EnemyWooder::updateMe(BaseHero* hero)
 {
 	BaseEnemy::updateMe(hero);
-	if (this->getIsDie()&& this->getB2Body()!= nullptr) {
+
+	if (this->getIsDie() && this->getB2Body() != nullptr) {
 		this->die();
 	}
 
@@ -94,4 +94,11 @@ void EnemyWooder::listener()
 		}
 
 	});
+}
+
+void EnemyWooder::makeMask()
+{
+	this->changeBodyCategoryBits(BITMASK_WOODER);
+	this->changeBodyMaskBits(BITMASK_SWORD);
+
 }

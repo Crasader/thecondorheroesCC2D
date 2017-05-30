@@ -1,12 +1,14 @@
 #include "AppDelegate.h"
-#include "IntroScene.h"
+#include "layer/IntroScene.h"
+#include "thirdsdkhelper/AdmobHelper.h"
 
 
 USING_NS_CC;
 
+
 static cocos2d::Size designResolutionSize = cocos2d::Size(711, 400);
-static cocos2d::Size smallResolutionSize = cocos2d::Size(480, 320);
-static cocos2d::Size mediumResolutionSize = cocos2d::Size(1024, 768);
+static cocos2d::Size smallResolutionSize = cocos2d::Size(1280, 720);
+static cocos2d::Size mediumResolutionSize = cocos2d::Size(1920, 1080);
 static cocos2d::Size largeResolutionSize = cocos2d::Size(2048, 1536);
 
 AppDelegate::AppDelegate()
@@ -48,7 +50,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     }
 
     // turn on display FPS
-    director->setDisplayStats(true);
+    director->setDisplayStats(false);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0f / 60);
@@ -77,7 +79,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // create a scene. it's an autorelease object
     //auto scene = GameScene::createScene();
 	auto scene = SceneIntro::createScene();
-
+	AdmobHelper::getInstance();
     // run
     director->runWithScene(scene);
 
@@ -87,6 +89,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 // This function will be called when the app is inactive. Note, when receiving a phone call it is invoked.
 void AppDelegate::applicationDidEnterBackground() {
     Director::getInstance()->stopAnimation();
+	experimental::AudioEngine::pauseAll();
 
     // if you use SimpleAudioEngine, it must be paused
     // SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
@@ -95,7 +98,7 @@ void AppDelegate::applicationDidEnterBackground() {
 // this function will be called when the app is active again
 void AppDelegate::applicationWillEnterForeground() {
     Director::getInstance()->startAnimation();
-
+	experimental::AudioEngine::resumeAll();
     // if you use SimpleAudioEngine, it must resume here
     // SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
 }

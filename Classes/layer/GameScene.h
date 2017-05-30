@@ -2,8 +2,6 @@
 #define __GAME_SCENE_H__
 
 #include "Global.h"
-#include "CoLong.h"
-#include "DuongQua.h"
 #include "EnemyWooder.h"
 #include "EnemyToanChanStudent.h"
 #include "EnemyToanChanStudent2.h"
@@ -12,8 +10,13 @@
 #include "EnemyToOng.h"
 #include "EnemyHongLangBa.h"
 #include "EnemyHongLangBa2.h"
-
+#include "EnemyHoacDo.h"
+#include "EnemyHoacDo2.h"
+#include "EnemyDatNhiBa.h"
+#include "EnemyDatNhiBa2.h"
 #include "EnemyBoss1.h"
+#include "EnemyBoss2.h"
+#include "EnemyBoss3.h"
 #include "ChimDieu.h"
 #include "Coin.h"
 #include "CoinBag.h"
@@ -22,72 +25,60 @@
 #include "InfiniteParallaxNode.h"
 #include "GLES-Render.h"
 #include "DialogPauseGame.h"
+#include "TutorialLayer.h"
 #include "MyData.h"
 #include "MyPool.h"
 #include "MyLayer.h"
 #include "Item.h"
+#include "Hud.h"
+#include "EnemyLinhTenThang.h"
+#include "EnemyLinhTenXien.h"
+#include "VungleHelper.h"
 
 
-
-
+#ifdef SDKBOX_ENABLED
+class GameScene : public cocos2d::Layer, public sdkbox::VungleListener
+#else
 class GameScene : public cocos2d::Layer
+#endif
 {
 public:
 	
-	static Scene* createScene(int stage, int map, int haveboss, int charId);
-	virtual bool init(int stage, int map, int haveboss, int charId);
-	static GameScene* create(int stage, int map, int haveboss, int charId);
+	static Scene* createScene(GameScene* gameLayer, Hud *m_hud);
+	virtual bool init(int stage, int map, int charId);
+	static GameScene* create(int stage, int map, int charId);
 
 	BaseHero * getHero() { return hero; }
+	Node* getFollow() { return follow; }
 	void setLastScore(int lastScore) { m_lastScore = lastScore; }
+	CC_SYNTHESIZE(Hud*, hud, Hud);
+	void enableCalling();
 
 private:
+
+	bool isModeDebug;
+	
 	// props
 	int stage;
 	int map;
 	int haveboss;
+	float changebg;
+	Point heroStartPosition;
 
 
-	int charId;//Thinhnv Edited for select character
+	int charId;	//Thinhnv Edited for select character
 	int numberRevive = 0;
 
 	bool isWinGame;
 
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
 	float scaleOfMap;
-	vector<MyData> listPosAndTag;
 
 	int numberDeadItem = 0;
-	list<Item*> listItem;
-
-	MyLayer * preLayer;
-	MyLayer * posLayer;
-
-	TMXTiledMap* tmx_map;
-	TMXTiledMap *tmx_mapboss[2];
 
 	int indexOfNextMapBoss;// chi so cua map boss cuoi, khoi dau la -1, khi danh boss chuyen 1 va 0(0101010101)
 	int currentButton = 0;
-
-	
-public:
-	b2World *world;
-	GLESDebugDraw *debugDraw;
-	Mat4 _modelViewMV;
-	CustomCommand _customCommand;
-
-private:
-	Follow *camera;
-	Node* follow;
-	CCRect left_corner;
-	LayerColor *blur;
-	SpriteBatchNode* batchNode;
-
-	list<BaseEnemy*> listEnemyOccurInScreen;
-
-
-	BaseHero *hero;
-	ChimDieu* _aEagle;
+	float posXComingBoss = -1;
 
 	int m_lastScore = 0;
 	int m_nMultiKills = 0;
@@ -97,28 +88,79 @@ private:
 	int previousGold = 0;
 	int previousScore = 0;
 
+	float previousPercentPosition = 0.0f;
+	
+public:
+	b2World *world;
+
+
+private:
+	GLESDebugDraw *debugDraw;
+	Mat4 _modelViewMV;
+	CustomCommand _customCommand;
+
+	Follow *camera;
+	Node* follow;
+	CCRect left_corner;
+	SpriteBatchNode* batchNode;
+
+	BaseHero *hero;
+	ChimDieu* _aEagle;
+
 	InfiniteParallaxNode *background;
 	InfiniteParallaxNode *background2;
 
-	// skeleton cache
-	spSkeletonData *sr_toanchan1;
-	spSkeletonData *sr_wooder;
-	//end skeleton cache
+	list<Item*> listItem;
 
+	MyLayer * preLayer;
+	MyLayer * posLayer;
+
+	TMXTiledMap* tmx_map;
+	TMXTiledMap *tmx_mapboss[2];
+	vector<MyData> listPosAndTag;
 
 	// dialog here
 	DialogPauseGame* dialogPause;
 
 	// listener
 	EventListenerTouchOneByOne* touch_listener;
-	EventListenerKeyboard* key_listener;
 
-	// Create Function
-	void createDuongQua(string path_Json, string path_Atlas, Point position);
-	void createCoLong(string path_Json, string path_Atlas, Point position);
+	void selectHero();
 
+	// Create For Hero
+	void createDuongQua(string path_Json, string path_Atlas);
+	void createCoLong(string path_Json, string path_Atlas);
+	void createHoangDung(string path_Json, string path_Atlas);
+	void createQuachTinh(string path_Json, string path_Atlas);
 	void createEagle(Point position);
 	void heroGetOffEagle();
+
+
+	// Create Fro Enemies
+	
+	void createAgentOnLayer(MyLayer* layer);
+	void creatAgentByMydata(MyLayer* layer, MyData data);
+
+	void creatEnemyWooder(MyLayer* layer, Vec2 pos);
+	void createEnemyToanChanStudent(MyLayer* layer, Vec2 pos);
+	void createEnemyToanChanStudent2(MyLayer* layer, Vec2 pos);
+	void createEnemyTNB(MyLayer* layer, Vec2 pos);
+	void createEnemyHongLangBa(MyLayer* layer, Vec2 pos);
+	void createEnemyHongLangBa2(MyLayer* layer, Vec2 pos);
+	void createEnemyToOng(MyLayer* layer, Vec2 pos);
+	void createEnemyHoacDo(MyLayer* layer, Vec2 pos);
+	void createEnemyHoacDo2(MyLayer* layer, Vec2 pos);
+	void createEnemyDatNhiBa(MyLayer* layer, Vec2 pos);
+	void createEnemyDatNhiBa2(MyLayer* layer, Vec2 pos);
+	void createEnemyChong1(MyLayer * layer, Vec2 pos);
+	void createEnemyChong2(MyLayer * layer, Vec2 pos);
+	void createEnemyChong3(MyLayer * layer, Vec2 pos);
+	void createEnemyLinhCamGiao(MyLayer * layer, Vec2 pos);
+	void createEnemyLinhCamGiao2(MyLayer * layer, Vec2 pos);
+	void createEnemyLinhTenThang(MyLayer * layer, Vec2 pos);
+	void createEnemyLinhTenXien(MyLayer * layer, Vec2 pos);
+	void createEnemyLinhCamRoi(MyLayer * layer, Vec2 pos);
+	void creatBoss();
 
 
 	// function for process box2d
@@ -138,64 +180,50 @@ private:
 	void createInfiniteNode();
 	void createGroundBody();
 	void createGroundForMapBoss();
-	void creatEnemyWooder(MyLayer* layer, Vec2 pos);
-	void createEnemyToanChanStudent(MyLayer* layer, Vec2 pos);
-	void createEnemyToanChanStudent2(MyLayer* layer, Vec2 pos);
-	//void createEnemyTNB(Layer* layer, Vec2 pos);
-	void createEnemyHongLangBa(MyLayer* layer, Vec2 pos);
-	void createEnemyHongLangBa2(MyLayer* layer, Vec2 pos);
-	void createEnemyToOng(MyLayer* layer, Vec2 pos);
-	void creatBoss();
 
+	// toi uu cho game
+	void loadPosAndTag();	// luu tru cac vi tri sinh agent
+	void loadPosOfObjectInGroup(string nameOfGroup, float tag);// 
+	void initLayerToAddAgent();
+	
+
+	// Coin and item
 	void createCoin();
 	void createCointBag();
 	void createCoinBullion();
-	//void createFormCoin( MyLayer *layer,Vec2 pos, string objectMap, string objectInform, SpriteBatchNode* batchnode);
 	void createFormCoin(string objectName, string objectMap, string objectInform);
-
-
 	void createItem();
+	
 
-	//skeleton data
-	//spSkeletonData* createSkeletonData(string atlasFile, string jsonFile);
-	// sau va cham body cua cac quai khong con static nua
-	// do do se bi roi xuong
-	// bat su kien roi xuong qua man hinh de don dep map
-
-
-	void danceWithCamera();
-	float previousPercentPosition = 0.0f;
+	// update private
+	void updateQuest();
+	void checkActiveButton();
+	void listener();
+	void update(float dt);
+	void updateEnemy();
+	void updateHUD(float dt);
+	void updateCamera();
+	void updateChangeBg();
+	void updateCoin();
 	void updateCharacterPoint();
+	void updateLayer();
+
+	// Utils
+	void reachNewMap();
+	void danceWithCamera();
+
 
 	// touch listener
 	bool onTouchBegan(Touch *touch, Event *unused_event);
 	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
 
 public:
-	bool isModeDebug;
 	void onBegin();
-    
-	// update functions
-	void checkActiveButton();
-	void listener();		// attack button listener | see update function
-	void update(float dt);
-	void updateEnemy();
-	void updateBoss();
-
-	void updateHUD(float dt);
-	void updateMultiKills(); //DuongPM edited for multi kills
+	
+	// update public
+	void updateMultiKills();		//DuongPM edited for multi kills
 	void runnerItem(Item_type type, int counter);
 	void updateBloodBar(int numberOfHealth, bool isVisible);
-	void updateCamera();
-
-	void updateCoin();
-
-	//void cleanMap();
-
-	// cache function
-	void cachePlist();
-	void cacheSkeleton();
-
 
 	// shaking
 	void shakeTheScreen();
@@ -206,36 +234,43 @@ public:
 	void pauseGame();
 	void dieGame();
 	void overGame();
-	void nextGame();
 	void winGame();
 	void resumeGame();
 	void restartGame();
-
-	// toi uu cho game
-	void loadPosAndTag();// luu tru cac vi tri sinh agent
-	void loadPosOfObjectInGroup(string nameOfGroup, float tag);// 
-	void initLayerToAddAgent();
-	void updateLayer();
-
-	void createAgentOnLayer(MyLayer* layer);
-	void creatAgentByMydata(MyLayer* layer, MyData data);
-
-	// quan ly item
-	//void createMapItem();// tao du lieu cho map item.
-
-	// tutorial
-	bool isFirstPlay;
-	bool isDoneAttackTut = false;
-	bool isDoneSkillTut = false;
-
-	// handle tuts
-	void jump();
 	
+
+
+	// TUTORIAL
+private:
+	TutorialLayer *tut;
+	bool isFirstPlay = false;
+
+	float posXJump1Tut = -1;
+	float posXJump2Tut = -1;
+	float posXAttackTut = -1;
+	float posXSkillTut = -1;
+	float posXIntroBird = -1;
+
+	void introJump(int type);
 	void introAttack();
 	void introSkills();
 	void introBird();
 
 	void tutorial();
+
+public:
+
+	void jump();
+	void resumeAfterTut(int caseTut);
+
+#ifdef SDKBOX_ENABLED
+
+	 void onVungleAdViewed(bool isComplete);
+	 void onVungleCacheAvailable();
+	 void onVungleStarted();
+	 void onVungleFinished();
+	 void onVungleAdReward(const std::string& name);
+#endif 
 };
 
 #endif // __GAME_SCENE_H__

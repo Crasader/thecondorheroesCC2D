@@ -18,17 +18,16 @@ public:
 
 	JSonHeroManager();
 	~JSonHeroManager();
-
 protected:
-	
 	CC_SYNTHESIZE_READONLY(string, key, Key);
 	CC_SYNTHESIZE_READONLY(string, name, Name);
 	CC_SYNTHESIZE_READONLY(string, infor, Infor);
 	CC_SYNTHESIZE_READONLY(string, avatarPath, avatarPath);
 	CC_SYNTHESIZE_READONLY(string, characterPointPath, CharacterPointPath);
+	CC_SYNTHESIZE_READONLY(string, selectCharacterPoint, SelectCharacterPoint);
 	CC_SYNTHESIZE_READONLY(string, avatarLoadingPath, AvatarLoadingPath);
 	CC_SYNTHESIZE_READONLY(bool, isLocked, IsLocked);
-	
+
 	CC_SYNTHESIZE_READONLY(string, skill_1Name, NameOfSkill_1);
 	CC_SYNTHESIZE_READONLY(float, coolDownSkill1, CoolDownSkill1);
 	CC_SYNTHESIZE_READONLY(float, durationSkill1, DurationSkill1);
@@ -59,6 +58,10 @@ protected:
 	CC_SYNTHESIZE_READONLY(int, goldPrice, GoldPrice);
 	CC_SYNTHESIZE_READONLY(int, diamondPrice, DiamondPrice);
 
+	CC_SYNTHESIZE_READONLY(string, m_sIconUnlocked, IconUnlocked);
+	CC_SYNTHESIZE_READONLY(string, m_sIconUnlockedSelected, IconUnlockedSelected);
+	CC_SYNTHESIZE_READONLY(string, m_sIconLocked, IconLocked);
+	CC_SYNTHESIZE_READONLY(string, m_sIconLockedSelected, IconLockedSelected);
 
 private:
 	Document jsonDoc;
@@ -67,11 +70,14 @@ private:
 public:
 	static JSonHeroManager* getInstance();
 
-	int getSelectedHero();
-	void readFile(int indexHero);
-	int getMaxScoreLevelX(int level);
+	void readFile(int p_nLanguage, int indexHero);
+	int getGoldUpgradeLevelX(int indexHero);
 
+	// index must be around 1-10
+	string getTipAtX(int index);
 	
+	// index must be around 1-x
+	string getNotifyAtX(int index);
 };
 
 #define JSHERO JSonHeroManager::getInstance()

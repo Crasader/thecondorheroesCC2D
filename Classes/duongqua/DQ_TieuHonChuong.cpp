@@ -23,10 +23,10 @@ DQ_TieuHonChuong * DQ_TieuHonChuong::create(string frameName)
 void DQ_TieuHonChuong::initCirclePhysic(b2World * world, Point pos)
 {
 	B2Sprite::initBoxPhysic(world, pos);
-	this->getB2Body()->SetType(b2_dynamicBody);
 	this->getB2Body()->GetFixtureList()->SetSensor(true);
 	this->getB2Body()->SetGravityScale(0);
-	this->getB2Body()->SetUserData(this);
+	this->changeBodyCategoryBits(BITMASK_SWORD);
+	this->changeBodyMaskBits(BITMASK_SLASH | BITMASK_BOSS | BITMASK_WOODER | BITMASK_COIN_BAG | BITMASK_ENEMY);
 }
 
 void DQ_TieuHonChuong::updateMe()

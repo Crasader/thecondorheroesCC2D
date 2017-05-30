@@ -1,6 +1,6 @@
 #include "EnemyToanChanStudent2.h"
-#include "SkeletonManager.h"
-#include "AudioManager.h"
+#include "manager/SkeletonManager.h"
+#include "manager/AudioManager.h"
 
 EnemyToanChanStudent2::EnemyToanChanStudent2(string jsonFile, string atlasFile, float scale):EnemyToanChanStudent(jsonFile, atlasFile,scale)
 {
@@ -46,23 +46,41 @@ EnemyToanChanStudent2 * EnemyToanChanStudent2::create(string filename, float sca
 
 void EnemyToanChanStudent2::attack()
 {
-	AudioManager::playSound(SOUND_TC2AT);
-	EnemyToanChanStudent::attack();
+	//EnemyToanChanStudent::attack();
+	playsoundAt();
+	if (!this->getIsDie()) {
+		this->clearTracks();
+		this->addAnimation(0, "attack", false);
+		//this->splash->setVisible(true);
+		this->setToSetupPose();
+	}
 	/*slash->getB2Body()->SetTransform(b2Vec2((this->getBoneLocation("bone32").x+this->getParent()->getPosition().x)/PTM_RATIO,
 		(this->getBoneLocation("bone32").y+this->getParent()->getPosition().y)/PTM_RATIO),0);*/
 	slash->setVisible(true);
 	if (slash->getB2Body() != nullptr) {
 		slash->getB2Body()->GetWorld()->DestroyBody(slash->getB2Body());
 	}
+	slash->setAnimation(0, "animation", true);
+	slash->resume();
 	slash->initCirclePhysic(this->getB2Body()->GetWorld(), this->getBoneLocation("bone32") + this->getParent()->getPosition());
 	slash->getB2Body()->SetLinearVelocity(b2Vec2(-SCREEN_SIZE.width/3/PTM_RATIO,0));
 }
 
 void EnemyToanChanStudent2::die()
 {
-	AudioManager::playSound(SOUND_TC2DIE);
-	EnemyToanChanStudent::die();
-	if (slash->getB2Body()!=nullptr) {
+	playsoundDie();
+	//EnemyToanChanStudent::die();
+	BaseEnemy::die();
+
+	auto world = this->body->GetWorld();
+	world->DestroyBody(this->body);
+	this->body = nullptr;
+	this->setIsDie(false);
+	this->clearTracks();
+	this->setAnimation(0, "die", false);
+	this->setToSetupPose();
+
+	if (slash->getB2Body() != nullptr) {
 		auto world = slash->getB2Body()->GetWorld();
 		world->DestroyBody(slash->getB2Body());
 		slash->setB2Body(nullptr);
@@ -95,14 +113,27 @@ void EnemyToanChanStudent2::listener()
 			this->addAnimation(0, "idle", true);
 			this->setToSetupPose();
 		}
-
+		if (strcmp(getCurrent()->animation->name, "attack1") == 0 && loopCount == 1) {
+			//getSlash()->setVisible(false);
+			//setIsAttacking(false);
+			this->clearTracks();
+			this->addAnimation(0, "idle", true);
+			this->setToSetupPose();
+		}
+		if (strcmp(getCurrent()->animation->name, "attack2") == 0 && loopCount == 1) {
+			//getSlash()->setVisible(false);
+			//setIsAttacking(false);
+			this->clearTracks();
+			this->addAnimation(0, "idle", true);
+			this->setToSetupPose();
+		}
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
 
 			this->setVisible(false);
-			this->clearTracks();
+			/*this->clearTracks();
 			this->setAnimation(0, "idle", true);
-			this->setToSetupPose();
-
+			this->setToSetupPose();*/
+			this->pauseSchedulerAndActions();
 		}
 
 	});
@@ -118,6 +149,7 @@ void EnemyToanChanStudent2::updateMe(BaseHero* hero)
 		slash->setVisible(false);
 		slash->setIsDie(false);
 	}
+
 	if (slash->getPositionX() < this->getPositionX() - SCREEN_SIZE.width*3/4 && slash->isVisible()) {
 		//slash->getB2Body()->SetTransform(b2Vec2(this->getBoneLocation("bone32").x / PTM_RATIO, this->getBoneLocation("bone32").y / PTM_RATIO), 0);
 		slash->getB2Body()->GetWorld()->DestroyBody(slash->getB2Body());
@@ -162,6 +194,16 @@ void EnemyToanChanStudent2::initCirclePhysic(b2World * world, Point pos)
 	body->CreateFixture(&fixtureDef);
 }
 
+void EnemyToanChanStudent2::playsoundAt()
+{
+	AudioManager::playSound(SOUND_TC2AT);
+}
+
+void EnemyToanChanStudent2::playsoundDie()
+{
+	AudioManager::playSound(SOUND_TC2DIE);
+}
+
 
 
 //void EnemyToanChanStudent2::removeFromParentAndCleanup(bool cleanup)
@@ -181,6 +223,11 @@ void EnemyToanChanStudent2::initCirclePhysic(b2World * world, Point pos)
 //	slash->removeFromParentAndCleanup(cleanup);
 //	log("delete slash");
 //}
+
+void EnemyToanChanStudent2::updatePos()
+{
+	BaseEnemy::updatePos();
+}
 
 void EnemyToanChanStudent2::onExit()
 {

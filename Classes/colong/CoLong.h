@@ -18,8 +18,6 @@ public:
 	void addStuff();
 	void createPool();
 
-
-	void idle();
 	void run();
 	void normalJump();
 	void doubleJump();
@@ -28,10 +26,9 @@ public:
 	void attackNormal();
 	void attackLanding();
 	void injured();
-	void revive();
-	void die(Point p_ptPositionOfCammera);
 	void listener();
 
+	void stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSkill3);
 	void doDestroyBodies(b2World *world);
 
 	void updateMe(float p_fDelta);
@@ -48,17 +45,17 @@ protected:
 	CCArray *poolSkill1;
 	int indexSkill1 = 0;
 	list<TieuHonChuong *> m_lDocPhongCham;
-	int checkDurationSkill1;
 	void createDocPhongCham(Point p_ptStartPoint, Point p_ptEndPoint);
 	void doCounterSkill1();
 
 	// Skill 2
-	int checkDurationSkill2;
+	CCArray *poolSkill2;
+	int indexSkill2 = 0;
+	bool isAddedAll = false;
 	void createNgocNuKiemPhap(Point p_ptPoint);
 	void doCounterSkill2();
 
 	// Skill 3
-	int checkDurationSkill3;
 	void doCounterSkill3();
 
 	//////////////////////////////////////////////////////////////////////////

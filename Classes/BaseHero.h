@@ -25,9 +25,16 @@ protected:
 	CC_SYNTHESIZE(float, boxHeight, BoxHeight);
 	CC_SYNTHESIZE(float, trueRadiusOfHero, TrueRadiusOfHero);
 
+	CC_SYNTHESIZE(int, maxHealth, MaxHealth);
+	// you can not be injured when no die 
+	CC_SYNTHESIZE(bool, isNoDie, IsNoDie);
+
 	CC_SYNTHESIZE(bool, onGround, OnGround);
 	CC_SYNTHESIZE(int, numberOfJump, NumberOfJump);
 	CC_SYNTHESIZE(float, jump_vel, JumpVel);
+	CC_SYNTHESIZE(bool, noActive, NoActive);
+	CC_SYNTHESIZE(bool, isKillAll, IsKillAll);
+
 
 	CC_SYNTHESIZE(Sprite*, bloodScreen, BloodScreen);
 	CC_SYNTHESIZE(Sprite*, blash, Blash);
@@ -43,12 +50,13 @@ protected:
 	CC_SYNTHESIZE(SkeletonAnimation*, smokeRun, SmokeRun);
 	CC_SYNTHESIZE(SkeletonAnimation*, reviveMe, ReviveMe);
 
-	CC_SYNTHESIZE(Sprite*, suctionCoinAni, SuctionCoinAni);
+	CC_SYNTHESIZE(SkeletonAnimation*, suctionCoin, SuctionCoin);
 
 	// stuff here
 	CC_SYNTHESIZE(int, score, Score);
 	CC_SYNTHESIZE(int, coinExplored, CoinExplored);
 	CC_SYNTHESIZE(int, coinRatio, CoinRatio);
+	CC_SYNTHESIZE(int, scoreRatio, ScoreRatio);
 
 	// bool to make separate animation
 	CC_SYNTHESIZE(bool, isPriorInjured, IsPriorInjured);
@@ -67,6 +75,10 @@ protected:
 	CC_SYNTHESIZE(bool, isDoneDuration2, IsDoneDuration2);
 	CC_SYNTHESIZE(bool, isDoneDuration3, IsDoneDuration3);
 
+	CC_SYNTHESIZE(int, checkDurationSkill1, CheckDurationSkill1);
+	CC_SYNTHESIZE(int, checkDurationSkill2, CheckDurationSkill2);
+	CC_SYNTHESIZE(int, checkDurationSkill3, CheckDurationSkill3);
+
 	CC_SYNTHESIZE(bool, isDriverEagle, IsDriverEagle);
 	CC_SYNTHESIZE(float, currentRunDis, CurrentRunDis);
 	CC_SYNTHESIZE(float, preRunDis, PreRunDis);
@@ -78,7 +90,8 @@ public:
 	BaseHero(string jsonFile, string atlasFile, float scale);
 	static BaseHero* create(string jsonFile, string atlasFile, float scale);
 
-	virtual void initSwordPhysic(b2World *world, Point position, float width);
+	virtual void initCirclePhysic(b2World *world, Point pos);
+	virtual void initSwordPhysic(b2World *world, Point position);
 	void changeSwordCategoryBitmask(uint16 bit);
 	virtual void addStuff();
 	virtual void createPool();
@@ -92,12 +105,8 @@ public:
 	virtual void die();
 	virtual void attackNormal();
 	virtual void attackLanding();
-	virtual void attackBySkill1();
-	virtual void attackBySkill2();
-	virtual void attackBySkill3();
 	virtual void injured();
 	virtual void revive();
-	virtual void die(Point posOfCammera);
 	virtual void listener();
 	virtual void updateMe(float dt);
 
@@ -105,6 +114,7 @@ public:
 	virtual void doCounterSkill2();
 	virtual void doCounterSkill3();
 
+	virtual void stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSkill3);
 	virtual void doDestroyBodies(b2World* world);
 	virtual void updateAttackBossAsTarget(BaseEnemy *p_pBoss);
 
@@ -116,7 +126,7 @@ public:
 	void selectEnemyBySkill3(BaseEnemy *p_pEnemySelected); //DuongPM edited
 	void deSelectEnemyBySkill3();							//DuongPM edited
 
-	void killThemAll(list<BaseEnemy*> listToKill);
+	void killThemAll();
 
 	
 	void createMapItem();
@@ -132,6 +142,7 @@ public:
 	void smokeLandingAni();
 	void smokeRunAni();
 	void reviveAni();
+	void suctionAni();
 
 	StateMachine* getFSM();
 };

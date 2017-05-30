@@ -1,21 +1,58 @@
 #include "LoadingLayer.h"
-#include "GameScene.h"
 #include "RefManager.h"
+#include "JSonHeroManager.h"
 
-
-bool LoadingLayer::init()
+Scene * LoadingLayer::createScene(int stage, int map, int charId)
 {
+	// 'scene' is an autorelease object
+	auto scene = Scene::create();
+
+	// 'layer' is an autorelease object
+
+	auto loadingLayer = LoadingLayer::create(stage, map, charId);
+	loadingLayer->setName("loading");
+
+	// add layer as a child to scene
+	scene->addChild(loadingLayer);
+
+	// return the scene
+	return scene;
+}
+
+bool LoadingLayer::init(int stage, int map, int charId)
+{
+
 	//////////////////////////////
 	// 1. super init first
 	if (!Layer::init())
 	{
 		return false;
 	}
+	AdmobHelper::getInstance()->showBanner();
+	AdmobHelper::getInstance()->showRewardVideoToRevive();
+	this->stage = stage;
+	this->map = map;
+	this->charId = charId;
 
-	
 	addStuff();
 
 	return true;
+}
+
+LoadingLayer * LoadingLayer::create(int stage, int map, int charId)
+{
+	LoadingLayer *pRet = new(std::nothrow) LoadingLayer();
+	if (pRet && pRet->init(stage, map, charId))
+	{
+		pRet->autorelease();
+		return pRet;
+	}
+	else
+	{
+		delete pRet;
+		pRet = NULL;
+		return NULL;
+	}
 }
 
 
@@ -38,6 +75,13 @@ void LoadingLayer::addStuff()
 	addChild(rightDoor);
 
 
+	avatarHero = Sprite::create(JSHERO->getAvatarLoadingPath());
+	avatarHero->setAnchorPoint(Vec2(1, 0));
+	avatarHero->setScale(SCREEN_SIZE.height * 0.98f / avatarHero->getContentSize().height);
+	avatarHero->setPosition(origin.x + SCREEN_SIZE.width, 0);
+
+	addChild(avatarHero);
+
 	boardTime = Sprite::create("UI/Loading/board_time.png");
 	boardTime->setAnchorPoint(Vec2::ZERO);
 	boardTime->setScale(SCREEN_SIZE.width * 0.55f / boardTime->getContentSize().width);
@@ -54,24 +98,19 @@ void LoadingLayer::addStuff()
 	loading->setAnchorPoint(Vec2::ZERO);
 	loading->setScaleX(boardTime->getBoundingBox().size.width * 0.96f / loading->getContentSize().width);
 	loading->setScaleY(boardTime->getBoundingBox().size.height * 0.6f / loading->getContentSize().height);
-	loading->setPosition(Vec2(boardTime->getPositionX() + boardTime->getBoundingBox().size.width * 0.02f, 
-								boardTime->getPositionY() + boardTime->getBoundingBox().size.height * 0.2f));
+	loading->setPosition(Vec2(boardTime->getPositionX() + boardTime->getBoundingBox().size.width * 0.02f,
+		boardTime->getPositionY() + boardTime->getBoundingBox().size.height * 0.2f));
 	addChild(loading);
 
-
-	avatarHero = Sprite::create(JSHERO->getAvatarLoadingPath());
-	avatarHero->setAnchorPoint(Vec2(1, 0));
-	avatarHero->setScale(SCREEN_SIZE.width * 0.4f / avatarHero->getContentSize().width);
-	avatarHero->setPosition(origin.x + SCREEN_SIZE.width, 0);
-
-	addChild(avatarHero);
-
-	lbGuide = Label::create("Guide here", "fonts/Marker Felt.ttf", 32);
+	lbGuide = Label::createWithTTF("Guide here", "fonts/Marker Felt.ttf", 32);
 	lbGuide->setAnchorPoint(Vec2::ZERO);
-	lbGuide->setScale(boardTime->getBoundingBox().size.height / lbGuide->getContentSize().height);
+	lbGuide->setScale(boardTime->getBoundingBox().size.height * 0.6f / lbGuide->getContentSize().height);
 	lbGuide->setPosition(boardTime->getPositionX(), boardTime->getPositionY() - boardTime->getBoundingBox().size.height * 1.3f);
 	addChild(lbGuide);
 
+	int index_tip = rand() % 10 + 1;
+	addGuide(JSHERO->getTipAtX(index_tip));
+	
 
 	doLoading();
 
@@ -83,40 +122,74 @@ void LoadingLayer::doLoading()
 		++percent;
 		loading->setPercent(percent);
 
-		if (percent > 100.0f) {
-			boardTime->setVisible(false);
-			loading->setVisible(false);
-			lbGuide->setVisible(false);
-			avatarHero->setVisible(false);
-			doOpen();
+		timer += 5;
+
+		if (timer >= 200) {
+			start = chrono::system_clock::now();
+			timer = 0;
+			doProcess();
 			unschedule("Key_loading");
 		}
 
-	}, 0.025f, "Key_loading");
+	}, 0.01f, "Key_loading");
 }
 
 void LoadingLayer::doOpen()
 {
-	auto actionLeftOpen = MoveBy::create(0.5f, Vec2(-leftDoor->getBoundingBox().size.width, 0));
+	/*auto actionLeftOpen = MoveBy::create(0.5f, Vec2(-leftDoor->getBoundingBox().size.width, 0));
 	leftDoor->runAction(actionLeftOpen);
 	auto actionRightOpen = MoveBy::create(0.5f, Vec2(rightDoor->getBoundingBox().size.width, 0));
 	rightDoor->runAction(actionRightOpen);
 
 	auto removeAndPlay = CallFunc::create([&]() {
 		
-		auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
-		this->removeFromParentAndCleanup(true);
-		gameLayer->onBegin();
-		
 	});
 
 
-	auto action = Sequence::create(DelayTime::create(0.5f), removeAndPlay, nullptr);
-	this->runAction(action);
+	auto action = Sequence::createWithTwoActions(DelayTime::create(0.5f), removeAndPlay);
+	this->runAction(action);*/
+}
+
+void LoadingLayer::doProcess()
+{
+	mainScene = GameScene::create(stage, map, charId);
+	mainScene->setName("gameLayer");
+	mainScene->retain();
+	hud = Hud::create();
+	hud->retain();
+	
+	if (REF->getIsFirstPlay() && charId != REF->getLastPickHero()) {	// try
+		hud->tryHud();
+	}
+
+	mainScene->setHud(hud);
+	
+
+	end = chrono::system_clock::now();
+	
+	chrono::duration<double> elapsed_seconds = end - start;
+	log("%f", elapsed_seconds.count());
+
+	this->schedule([&](float dt) {
+		++percent;
+		loading->setPercent(percent);
+
+		if (percent >= 100.0f) {
+			percent = 0.0f;
+			boardTime->setVisible(false);
+			loading->setVisible(false);
+			lbGuide->setVisible(false);
+			avatarHero->setVisible(false);
+
+			unschedule("key");
+			AdmobHelper::getInstance()->hideBanner();
+			Director::getInstance()->replaceScene(GameScene::createScene(mainScene, hud));
+		}
+
+	}, 1.0f / (100.0f - percent), "key");
 }
 
 void LoadingLayer::addGuide(string guideWhat)
 {
 	lbGuide->setString(guideWhat);
 }
-

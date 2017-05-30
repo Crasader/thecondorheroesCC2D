@@ -22,16 +22,17 @@ public:
 	static EnemyToanChanStudent2* create(string jsonFile, string atlasFile, float scale);
 	static EnemyToanChanStudent2* create(string filename,float scale);
 
-	void attack();
-	void die();
-	void genSlash();
-	void listener();
-	void updateMe(BaseHero* hero);
-	void initCirclePhysic(b2World * world, Point pos);
-
+	virtual void attack();
+	virtual void die();
+	virtual void genSlash();
+	virtual void listener();
+	virtual void updateMe(BaseHero* hero);
+	virtual void initCirclePhysic(b2World * world, Point pos);
+	virtual void playsoundAt();
+	virtual void playsoundDie();
 	//void removeFromParentAndCleanup(bool onExit);
-
-	void onExit();
+	virtual void updatePos();
+	virtual void onExit();
 };
 
 #endif // __ENEMY_H__

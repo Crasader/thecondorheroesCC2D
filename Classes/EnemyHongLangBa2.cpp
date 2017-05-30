@@ -1,6 +1,6 @@
 #include "EnemyHongLangBa2.h"
-#include "SkeletonManager.h"
-#include "AudioManager.h"
+#include "manager/SkeletonManager.h"
+#include "manager/AudioManager.h"
 #include "BaseHero.h"
 
 
@@ -58,11 +58,11 @@ void EnemyHongLangBa2::attack()
 	if (enemyDarts->getB2Body() != nullptr) {
 		enemyDarts->getB2Body()->GetWorld()->DestroyBody(enemyDarts->getB2Body());
 	}
-	enemyDarts->setRotation(angle / PI * 180);
+	enemyDarts->setRotation(180 - angle / PI * 180);
 	enemyDarts->initCirclePhysic(this->getB2Body()->GetWorld(), this->getBoneLocation("bone32") + this->getParent()->getPosition());
 
-	float vx = SCREEN_SIZE.width / 3 / PTM_RATIO * cosf(angle);
-	float vy = SCREEN_SIZE.width / 3 / PTM_RATIO * sinf(angle);
+	float vx = SCREEN_SIZE.width / 1.9f / PTM_RATIO * cosf(angle);
+	float vy = SCREEN_SIZE.width / 1.9f / PTM_RATIO * sinf(angle);
 
 	enemyDarts->getB2Body()->SetLinearVelocity(b2Vec2(vx, vy));
 }
@@ -75,7 +75,9 @@ void EnemyHongLangBa2::die()
 		auto world = enemyDarts->getB2Body()->GetWorld();
 		world->DestroyBody(enemyDarts->getB2Body());
 		enemyDarts->setB2Body(nullptr);
-		enemyDarts->removeFromParentAndCleanup(true);
+		//enemyDarts->removeFromParentAndCleanup(true);
+		enemyDarts->setVisible(false);
+		enemyDarts->setIsDie(false);
 	}
 
 }
@@ -101,11 +103,12 @@ void EnemyHongLangBa2::listener()
 		}
 
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
-            //this->removeFromParentAndCleanup(true);
-            this->setVisible(false);
-            this->clearTracks();
-            this->setAnimation(0, "idle", true);
-            this->setToSetupPose();
+			//this->removeFromParentAndCleanup(true);
+			this->setVisible(false);
+			/*this->clearTracks();
+			this->setAnimation(0, "idle", true);
+			this->setToSetupPose();*/
+			this->pauseSchedulerAndActions();
 		}
 
 	});
@@ -121,6 +124,7 @@ void EnemyHongLangBa2::updateMe(BaseHero* hero)
 		enemyDarts->setVisible(false);
 		enemyDarts->setIsDie(false);
 	}
+
 	if (enemyDarts->getPositionX() < this->getPositionX() - SCREEN_SIZE.width*3/4 && enemyDarts->isVisible()) {
 		//slash->getB2Body()->SetTransform(b2Vec2(this->getBoneLocation("bone32").x / PTM_RATIO, this->getBoneLocation("bone32").y / PTM_RATIO), 0);
 		enemyDarts->getB2Body()->GetWorld()->DestroyBody(enemyDarts->getB2Body());
@@ -129,16 +133,18 @@ void EnemyHongLangBa2::updateMe(BaseHero* hero)
 		enemyDarts->setVisible(false);
 	}
 
+	
 	controlAttack++;
-
 	if (hero->getPositionX() < this->getPositionX() + this->getParent()->getPositionX() && 
-		hero->getPositionY() + SCREEN_SIZE.height * 0.7f > this->getPositionY() &&
-		hero->getPositionY() - SCREEN_SIZE.height * 0.7f < this->getPositionY()) {
+		hero->getPositionX() > this->getPositionX() + this->getParent()->getPositionX() - SCREEN_SIZE.width * 0.6f &&
+		hero->getPositionY() + SCREEN_SIZE.height * 0.33f > this->getPositionY() &&
+		hero->getPositionY() - SCREEN_SIZE.height * 0.33f < this->getPositionY()) {
 
 		Vec2 vector = Vec2(hero->getPosition() - (this->getPosition() + this->getParent()->getPosition()));
 		angle = vector.getAngle();
 		
-		if (controlAttack > 120) {
+
+		if (controlAttack > 120 && !hero->getIsDriverEagle()) {
 			if (this->body != nullptr) {
 				if (!this->body->GetWorld()->IsLocked()) {
 					controlAttack = 0;	// 2 giay 1 nhat
@@ -147,9 +153,6 @@ void EnemyHongLangBa2::updateMe(BaseHero* hero)
 			}
 		}
 	}
-
-	
-
 	if (getIsDie() && this->getB2Body() != nullptr) {
 		die();
 	}
@@ -159,6 +162,7 @@ void EnemyHongLangBa2::initCirclePhysic(b2World * world, Point pos)
 {
 	b2CircleShape circle_shape;
 	circle_shape.m_radius = this->getBoundingBox().size.height / 2 / PTM_RATIO;
+//	log("hlb2: boundingbox height: %f", this->getBoundingBox().size.height);
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 0.0f;
@@ -177,6 +181,10 @@ void EnemyHongLangBa2::initCirclePhysic(b2World * world, Point pos)
 	body->CreateFixture(&fixtureDef);
 }
 
+void EnemyHongLangBa2::updatePos()
+{
+	BaseEnemy::updatePos();
+}
 
 void EnemyHongLangBa2::onExit()
 {

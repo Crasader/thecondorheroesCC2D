@@ -5,6 +5,8 @@
 #include <string>
 #include "ui/CocosGUI.h"
 #include <spine/spine-cocos2dx.h>
+#include "AdmobHelper.h"
+#include "VungleHelper.h"
 
 USING_NS_CC;
 using namespace std;
@@ -15,11 +17,12 @@ class DialogPauseGame : public Layer
 {
 protected:
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
-
+	Menu* menu;
 
 public:
 	virtual bool init();
 	static DialogPauseGame* create();
+	void onExit();
 
 public:
 
@@ -27,7 +30,7 @@ public:
 	void backHome(Ref* pSender);
 	void overGame();
 	void replayGame(Ref* pSender, int goldRevive, bool isWatchVideo);
-	void nextState(Ref* pSender);
+	void nextStage(Ref* pSender);
 	void restartGame(Ref* pSender);
 	void upgrade(Ref* pSender);
 
@@ -37,6 +40,9 @@ public:
 
 class DialogPause : public DialogPauseGame
 {
+private:
+	void selectedEventMusic(Ref* pSender, ui::CheckBox::EventType type);
+	void selectedEventSound(Ref* pSender, ui::CheckBox::EventType type);
 
 public:
 	bool init();
@@ -72,6 +78,9 @@ public:
 	bool init(int score, int gold);
 	static DialogStageClear* create(int score, int gold);
 	void effect();
+
+private:
+	void shareFB();
 };
 
 class DialogOverGame : public DialogStageClear

@@ -2,6 +2,8 @@
 #define __BATCHNODE_MANAGER_H__
 
 #include "cocos2d.h"
+#include <spine/spine-cocos2dx.h>
+#include "SkeletonManager.h"
 
 using namespace std;
 USING_NS_CC;

@@ -19,9 +19,14 @@ public:
 	void updateMe();
 
 protected:
+	//CC_SYNTHESIZE(Sprite*, subImage, SubImage);
 	CC_SYNTHESIZE(bool, isCollide, IsCollide);
+	//CC_SYNTHESIZE(bool, isAdded, IsAdded);
 	CC_SYNTHESIZE(Sprite*, effectLand, EffectLand);
 	CC_SYNTHESIZE(ParticleSystemQuad*, particle, Particle);
+
+
+	void setKPOpacity(int value) { opacity = value; }
 
 private:
 	int opacity = 255;

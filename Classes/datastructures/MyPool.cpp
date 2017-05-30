@@ -3,13 +3,7 @@
 #include "Coin.h"
 #include "CoinBag.h"
 #include "CoinBullion.h"
-#include "EnemyToanChanStudent.h"
-#include "EnemyToanChanStudent2.h"
-#include "EnemyWooder.h"
-#include "EnemyTNB.h"
-#include "EnemyToOng.h"
-#include "EnemyHongLangBa.h"
-#include "EnemyHongLangBa2.h"
+
 
 
 MyPool::MyPool()
@@ -19,10 +13,7 @@ MyPool::MyPool()
 
 MyPool::~MyPool()
 {
-	for (int i = 0; i < maxPool; i++) {
-		delete pool[i];
-	}
-	delete pool;
+	delete[] pool;
 
 }
 
@@ -32,20 +23,6 @@ MyPool::MyPool(int maxPool, int tag) : MyPool()
 	this->tag = tag;
 	switch (tag)
 	{
-//	case TAG_COIN:
-//	{
-//		pool = new Ref*[maxPool];
-//
-//		for (int i = 0; i < maxPool; i++) {
-//			auto coin = Coin::create();
-//			auto scale = Director::getInstance()->getVisibleSize().height * 0.075 / coin->getContentSize().height;
-//			coin->setScale(scale);
-//			coin->setTag(tag);
-//			pool[i] = coin;
-//		}
-//		//log("%d", pool->count());
-//		break;
-//	}
 
 	case TAG_ENEMY_WOODER: {
 
@@ -54,8 +31,6 @@ MyPool::MyPool(int maxPool, int tag) : MyPool()
 
 		for (int i = 0; i < maxPool; i++) {
 			auto scaleOfWooder = (SCREEN_SIZE.height / 3.5) / 490; // 490 la height cua spine
-																   //auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json",
-																   //	"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
 			auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan", scaleOfWooder);
 			//coin->runAnimation();
 
@@ -70,8 +45,6 @@ MyPool::MyPool(int maxPool, int tag) : MyPool()
 
 		for (int i = 0; i < maxPool; i++) {
 			auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401; // 401 la height cua spine
-																 /*auto enemy = EnemyToanChanStudent::create("Animation/Enemy_DeTuToanChan1/ToanChan1.json",
-																 "Animation/Enemy_DeTuToanChan1/ToanChan1.atlas", scaleOfEnemy);*/
 			auto enemy = EnemyToanChanStudent::create("Animation/Enemy_DeTuToanChan1/ToanChan1", scaleOfEnemy);
 			//auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan", scaleOfEnemy);
 			//coin->runAnimation();
@@ -87,8 +60,6 @@ MyPool::MyPool(int maxPool, int tag) : MyPool()
 
 		for (int i = 0; i < maxPool; i++) {
 			auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401; // 401 la height cua spine
-																 /*auto enemy = EnemyToanChanStudent2::create("Animation/Enemy_DeTuToanChan2/ToanChan2.json",
-																 "Animation/Enemy_DeTuToanChan2/ToanChan2.atlas", scaleOfEnemy);*/
 			auto enemy = EnemyToanChanStudent2::create("Animation/Enemy_DeTuToanChan2/ToanChan2", scaleOfEnemy);
 			//coin->runAnimation();
 
@@ -113,58 +84,233 @@ MyPool::MyPool(int maxPool, int tag) : MyPool()
 		}
 		break;
 	}
-            
-        case TAG_ENEMY_TOONG: {
-            
-            Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
-            pool = new Ref*[maxPool];
-            
-            for (int i = 0; i < maxPool; i++) {
-                auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401; // 490 la height cua spine
-                //auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json",
-                //	"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
-                auto enemy = EnemyToOng::create("Animation/Enemy_ToOng/toong", scaleOfEnemy);
-                //coin->runAnimation();
-                
-                enemy->setTag(tag);
-                pool[i] = enemy;
-            }
-            break;
-        }
-        case TAG_ENEMY_HONGLANGBA1: {
-            
-            Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
-            pool = new Ref*[maxPool];
-            
-            for (int i = 0; i < maxPool; i++) {
-                auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401;// 490 la height cua spine
-                //auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json",
-                //	"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
-                auto enemy = EnemyHongLangBa::create("Animation/Enemy_HongLangBa/HLBa1", scaleOfEnemy);
-                //coin->runAnimation();
-                
-                enemy->setTag(tag);
-                pool[i] = enemy;
-            }
-            break;
-        }
-        case TAG_ENEMY_HONGLANGBA2: {
-            
-            Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
-            pool = new Ref*[maxPool];
-            
-            for (int i = 0; i < maxPool; i++) {
-                auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401; // 490 la height cua spine
-                //auto enemy = EnemyWooder::create("Animation/Enemy_MocNhan/MocNhan.json",
-                //	"Animation/Enemy_MocNhan/MocNhan.atlas", scaleOfWooder);
-                auto enemy = EnemyHongLangBa2::create("Animation/Enemy_HongLangBa2/HLBa2", scaleOfEnemy);
-                //coin->runAnimation();
-                
-                enemy->setTag(tag);
-                pool[i] = enemy;
-            }
-            break;
-        }
+	case TAG_ENEMY_TOONG: {
+
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401; // 490 la height cua spine
+			auto enemy = EnemyToOng::create("Animation/Enemy_ToOng/toong", scaleOfEnemy);
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
+	case TAG_ENEMY_HONGLANGBA1: {
+
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401;// 490 la height cua spine
+			auto enemy = EnemyHongLangBa::create("Animation/Enemy_HongLangBa/HLBa1", scaleOfEnemy);
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
+	case TAG_ENEMY_HONGLANGBA2: {
+
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 401; // 490 la height cua spine
+			auto enemy = EnemyHongLangBa2::create("Animation/Enemy_HongLangBa2/HLBa2", scaleOfEnemy);
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
+
+	case TAG_ENEMY_HOACDO1: {
+
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 406; 
+			auto enemy = EnemyHoacDo::create("Animation/Enemy_HoacDo1/HoacDo1", scaleOfEnemy);
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
+
+	case TAG_ENEMY_HOACDO2: {
+
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfEnemy = SCREEN_SIZE.height / 4.5f / 406;
+			auto enemy = EnemyHoacDo2::create("Animation/Enemy_HoacDo2/HoacDo2", scaleOfEnemy);
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
+	case TAG_ENEMY_DATNHIBA1: {
+
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfEnemy = SCREEN_SIZE.height / 4.0f / 406;
+			auto enemy = EnemyDatNhiBa::create("Animation/Enemy_DatNhiBa/DatNhiBa1", scaleOfEnemy);
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
+	case TAG_ENEMY_DATNHIBA2: {
+
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfEnemy = SCREEN_SIZE.height / 4.0f / 406;
+			auto enemy = EnemyDatNhiBa2::create("Animation/Enemy_DatNhiBa/DatNhiBa2", scaleOfEnemy);
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
+	case TAG_ENEMY_CHONG1: {
+
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfEnemy = SCREEN_SIZE.height / 5.0f / 200;
+			auto enemy = EnemyChong1::create("Animation/EnemyChong1/BayChong1", scaleOfEnemy);
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
+	case TAG_ENEMY_CHONG2: {
+
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfEnemy = SCREEN_SIZE.height / 4.0f / (205*1.5f);
+			auto enemy = EnemyChong2::create("Animation/EnemyChong2/BayChong2", scaleOfEnemy);
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
+	case TAG_ENEMY_CHONG3: {
+
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfEnemy = SCREEN_SIZE.height / 3.0f / (205*2);
+			auto enemy = EnemyChong3::create("Animation/EnemyChong3/BayChong3", scaleOfEnemy);
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
+	case TAG_ENEMY_LINHCAMGIAO1: {
+
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfEnemy = SCREEN_SIZE.height / 4.0f / (406);
+			auto enemy = EnemyLinhCamGiao::create("Animation/Enemy_LinhCamGiao/LinhCamGiao", scaleOfEnemy);
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
+	case TAG_ENEMY_LINHCAMGIAO2: {
+
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfEnemy = SCREEN_SIZE.height / 4.0f / (406);
+			auto enemy = EnemyLinhCamGiao2::create("Animation/Enemy_LinhCamGiao/LinhCamGiao", scaleOfEnemy);
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
+	case TAG_ENEMY_LINH_TEN_THANG: {
+
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfEnemy = SCREEN_SIZE.height / 4.0f / (406);
+			auto enemy = EnemyLinhTenThang::create("Animation/Enemy_LinhBanTen/LinhBanCung", scaleOfEnemy);
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
+	case TAG_ENEMY_LINH_TEN_XIEN: {
+
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfEnemy = SCREEN_SIZE.height / 4.0f / (406);
+			auto enemy = EnemyLinhTenXien::create("Animation/Enemy_LinhBanTen/LinhBanCung", scaleOfEnemy);
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
+	case TAG_ENEMY_LINHCAMROI: {
+
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfEnemy = SCREEN_SIZE.height / 4.0f / (406);
+			auto enemy = EnemyLinhCamRoi::create("Animation/Enemy_LinhCamRoi/DoanKhacTay", scaleOfEnemy);
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
 	default:
 		break;
 	}

@@ -20,15 +20,17 @@ protected:
 	CCArray* poolSkill1;
 	int indexSkill1 = 0;
 	list<ToanChanKiemPhap*> listToanChanKiemPhap;
-	int checkDurationSkill1;
 	void createToanChanKiemPhap(Point posSword);
 	void slashToanChanKiemPhap();
 	void doCounterSkill1();
 
+	void fastAndFurious();
+
 
 	// Skill 2
+	/*CCArray* poolSkill2;
+	int indexSkill2 = 0;*/
 	list<KiemPhap*> listKiemPhap;
-	int checkDurationSkill2;
 	int numberOfDeadSword;
 	int indexKiem = 0;
 	void createKiemPhap(float posX);
@@ -39,11 +41,9 @@ protected:
 	CCArray *poolSkill3;
 	int indexSkill3 = 0;
 	SkeletonAnimation* spiritHole;
-	int checkDurationSkill3;
 	int numberOfDeadTHC;
 	list<TieuHonChuong*> listTieuHonChuong;
 	void createSpiritHole();
-	void runSpiritHole();
 	Point getLocalSpiritBonePos(string boneName);
 	void createTieuHonChuong(Point posHand, int Zoder);
 	void shootTieuHonChuong();
@@ -56,11 +56,9 @@ protected:
 	void runSlashLand();
 	//////////////////////////////////////////////////////////////////////////
 
-	void initCirclePhysic(b2World *world, Point pos);
 	void addStuff();
 	void createPool();
 
-	void idle();
 	void run();
 	void normalJump();
 	void doubleJump();
@@ -69,13 +67,10 @@ protected:
 	void attackNormal();
 	void attackLanding();
 	void attackBySkill1();
-	void attackBySkill2();
-	void attackBySkill3();
 	void injured();
-	void revive();
-	void die(Point posOfCammera);
 	void listener();
 
+	void stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSkill3);
 	void doDestroyBodies(b2World *world);
 
 	void updateMe(float dt);

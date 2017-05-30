@@ -7,28 +7,40 @@ RefManager* RefManager::refManager;
 
 RefManager::RefManager()
 {
-	ref = UserDefault::getInstance()->sharedUserDefault();
+	ref = UserDefault::sharedUserDefault();
 
+	isFirstPlay = ref->getBoolForKey(KEY_FIRST, false);
+	lastMapIdPlay = ref->getIntegerForKey(KEY_LAST_MAP_ID, 1);
 	selectedHero = ref->getIntegerForKey(KEY_SELECTED_HERO, 0);
+	lastPickHero = ref->getIntegerForKey(KEY_LAST_PICK_HERO, 0);
+	isGetNewMap = ref->getBoolForKey(KEY_UNLOCK_MAP, false);
 
-	currentStageUnlocked = ref->getIntegerForKey(KEY_CUR_STAGE_UNLOCKED, 3);
-	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 1);
+	currentStageUnlocked = ref->getIntegerForKey(KEY_CUR_STAGE_UNLOCKED, 4);
+	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 3);
 
 	anchorTime = ref->getIntegerForKey(KEY_ANCHORTIME, time(0));
+	lastDailyRewardTime = ref->getIntegerForKey(KEY_LAST_DAILY_REWARD_TIME, 0);
+	dailyRewardCounter = ref->getIntegerForKey(KEY_DAILY_REWARD_COUNTER, 0);
+	dailyRewardAvailable = ref->getBoolForKey(KEY_DAILY_REWARD_AVAILABLE, false);
+	freeCoin = ref->getIntegerForKey(KEY_FREE_COIN, 3);
 
-	numberOfLife = ref->getIntegerForKey(KEY_LIFE, 3);
+	numberOfLife = ref->getIntegerForKey(KEY_LIFE, 5);
 	goldExplored = ref->getIntegerForKey(KEY_GOLD, 0);
 	diamondBuy = ref->getIntegerForKey(KEY_DIAMOND, 0);
 
 	numberItemHealth = ref->getIntegerForKey(NUMBER_OF_ITEM_HEALTH, 0);
-	numberItemBird = ref->getIntegerForKey(NUMBER_OF_ITEM_BIRD, 0);
+	numberItemBird = ref->getIntegerForKey(NUMBER_OF_ITEM_BIRD, 1);
 	numberItemMagnet = ref->getIntegerForKey(NUMBER_OF_ITEM_MAGNET, 0);
 	numberItemDoubleGold = ref->getIntegerForKey(NUMBER_OF_ITEM_DOUBLE_COIN, 0);
 	numberItemCoolDown = ref->getIntegerForKey(NUMBER_OF_ITEM_COOL_DOWN, 0);
+	language = ref->getIntegerForKey(KEY_LANGUAGE, 0);
 
 	// need to fix
 	unLockHero(0);
 	unLockHero(1);
+	unLockHero(2);
+	unLockHero(3);
+	unLockHero(4);
 	pointToCurrentHero(selectedHero);
 }
 
@@ -47,12 +59,34 @@ RefManager * RefManager::getInstance()
 	return refManager;
 }
 
+// DuongPM : create function to set selected hero
+void RefManager::setSelectedHero(int index) {
+	selectedHero = index;
+	ref->setIntegerForKey(KEY_SELECTED_HERO, selectedHero);
+	ref->flush();
+}
+
+void RefManager::setLastPickHero(int lastPickIndex)
+{
+	lastPickHero = lastPickIndex;
+	ref->setIntegerForKey(KEY_LAST_PICK_HERO, lastPickHero);
+	ref->flush();
+}
+
+void RefManager::setReachNewMap(bool value)
+{
+	isGetNewMap = value;
+	ref->setBoolForKey(KEY_UNLOCK_MAP, isGetNewMap);
+	ref->flush();
+}
+
 void RefManager::pointToCurrentHero(int index)
 {
-	JSHERO->readFile(index);
+	JSHERO->readFile(language, index);
 	auto m_index = StringUtils::format("%i", index);
 	selectedHero = index;
-	ref->setIntegerForKey(KEY_SELECTED_HERO, selectedHero); ref->flush();
+
+	// ref->setIntegerForKey(KEY_SELECTED_HERO, selectedHero); ref->flush(); // DuongPM commented
 
 	isLockedHero = ref->getBoolForKey((KEY_LOCKED_HERO_X + m_index).c_str(), true);
 	currentLevel = ref->getIntegerForKey((KEY_LEVEL_HERO_X + m_index).c_str(), 1);
@@ -62,12 +96,15 @@ void RefManager::pointToCurrentHero(int index)
 
 	durationSkill_1 = ref->getFloatForKey((KEY_DURATION_SKILL_1_HERO_X + m_index).c_str(), JSHERO->getDurationSkill1());
 	coolDownSkill_1 = ref->getFloatForKey((KEY_COOLDOWN_SKILL_1_HERO_X + m_index).c_str(), JSHERO->getCoolDownSkill1());
+	numberUseSkill_1 = ref->getIntegerForKey((KEY_NUMBER_USE_SKILL_1_HERO_X + m_index).c_str(), JSHERO->getNumberOfUseSkill1());
 
 	durationSkill_2 = ref->getFloatForKey((KEY_DURATION_SKILL_2_HERO_X + m_index).c_str(), JSHERO->getDurationSkill2());
 	coolDownSkill_2 = ref->getFloatForKey((KEY_COOLDOWN_SKILL_2_HERO_X + m_index).c_str(), JSHERO->getCoolDownSkill2());
+	numberUseSkill_2 = ref->getIntegerForKey((KEY_NUMBER_USE_SKILL_2_HERO_X + m_index).c_str(), JSHERO->getNumberOfUseSkill2());
 
 	durationSkill_3 = ref->getFloatForKey((KEY_DURATION_SKILL_3_HERO_X + m_index).c_str(), JSHERO->getDurationSkill3());
 	coolDownSkill_3 = ref->getFloatForKey((KEY_COOLDOWN_SKILL_3_HERO_X + m_index).c_str(), JSHERO->getCoolDownSkill3());
+	numberUseSkill_3 = ref->getIntegerForKey((KEY_NUMBER_USE_SKILL_3_HERO_X + m_index).c_str(), JSHERO->getNumberOfUseSkill3());
 
 	bonusScore = ref->getIntegerForKey((KEY_BONUS_SCORE_HERO_X + m_index).c_str(), JSHERO->getBonusScore());
 	bonusGold = ref->getIntegerForKey((KEY_BONUS_GOLD_HERO_X + m_index).c_str(), JSHERO->getBonusCoin());
@@ -76,6 +113,20 @@ void RefManager::pointToCurrentHero(int index)
 	levelSkill_2 = ref->getIntegerForKey((KEY_LEVEL_SKILL_2_HERO_X + m_index).c_str(), 1);
 	levelSkill_3 = ref->getIntegerForKey((KEY_LEVEL_SKILL_3_HERO_X + m_index).c_str(), 1);
 
+}
+
+void RefManager::setDoneFirstPlay()
+{
+	isFirstPlay = false;
+	ref->setBoolForKey(KEY_FIRST, isFirstPlay);
+	ref->flush();
+}
+
+void RefManager::setLastMapId(int id)
+{
+	lastMapIdPlay = id;
+	ref->setIntegerForKey(KEY_LAST_MAP_ID, lastMapIdPlay);
+	ref->flush();
 }
 
 void RefManager::unLockHero(int index)
@@ -88,9 +139,15 @@ void RefManager::increaseLevel()
 {
 	ref->setIntegerForKey((KEY_LEVEL_HERO_X + StringUtils::format("%i", selectedHero)).c_str(), ++currentLevel);
 	ref->flush();
+
+	if ((currentLevel % 10) == 0) {
+		setUpHealth(1);
+	}
+	increaseBonusScore(1);
+	increaseBonusGold(1);
 }
 
-void RefManager::increaseStateUnlocked()
+void RefManager::increaseStageUnlocked()
 {
 	ref->setIntegerForKey(KEY_CUR_STAGE_UNLOCKED, ++this->currentStageUnlocked);
 	ref->flush();
@@ -133,25 +190,24 @@ void RefManager::setUpScore(int score)
 	ref->flush();
 }
 
-void RefManager::decreaseDurationSkill_X(int skill_What, int percent)
+void RefManager::increaseDurationSkill_X(int skill_What, int value)
 {
-	float value = percent / 100.0f;
-	assert(value < 0 || value > 1);
+	assert(value >= 1 && value <= 3);
 	switch (skill_What)
 	{
 	case 1:
-		this->durationSkill_1 *= 1 - value;
+		this->durationSkill_1 += value;
 		ref->setFloatForKey((KEY_DURATION_SKILL_1_HERO_X + StringUtils::format("%i", selectedHero)).c_str(), durationSkill_1);
 		ref->flush();
 		break;
 	case 2:
-		this->durationSkill_2 *= 1 - value;
+		this->durationSkill_2 += value;
 		ref->setFloatForKey((KEY_DURATION_SKILL_2_HERO_X + StringUtils::format("%i", selectedHero)).c_str(), durationSkill_2);
 		ref->flush();
 		break;
 
 	case 3:
-		this->durationSkill_3 *= 1 - value;
+		this->durationSkill_3 += value;
 		ref->setFloatForKey((KEY_DURATION_SKILL_3_HERO_X + StringUtils::format("%i", selectedHero)).c_str(), durationSkill_3);
 		ref->flush();
 		break;
@@ -162,26 +218,53 @@ void RefManager::decreaseDurationSkill_X(int skill_What, int percent)
 	}
 }
 
-void RefManager::decreaseCoolDownSkill_X(int skill_What, int percent)
+void RefManager::decreaseCoolDownSkill_X(int skill_What, int value)
 {
-	float value = percent / 100.0f;
-	assert(value < 0 || value > 1);
+	assert(value >= 1 && value <= 3);
 	switch (skill_What)
 	{
 	case 1:
-		this->coolDownSkill_1 *= 1 - value;
+		this->coolDownSkill_1 -= value;
 		ref->setFloatForKey((KEY_COOLDOWN_SKILL_1_HERO_X + StringUtils::format("%i", selectedHero)).c_str(), coolDownSkill_1);
 		ref->flush();
 		break;
 	case 2:
-		this->coolDownSkill_2 *= 1 - value;
+		this->coolDownSkill_2 -= value;
 		ref->setFloatForKey((KEY_COOLDOWN_SKILL_2_HERO_X + StringUtils::format("%i", selectedHero)).c_str(), coolDownSkill_2);
 		ref->flush();
 		break;
 
 	case 3:
-		this->coolDownSkill_3 *= 1 - value;
+		this->coolDownSkill_3 -= value;
 		ref->setFloatForKey((KEY_COOLDOWN_SKILL_3_HERO_X + StringUtils::format("%i", selectedHero)).c_str(), coolDownSkill_3);
+		ref->flush();
+		break;
+
+	default:
+		assert(skill_What > 0 && skill_What <= 3);
+		break;
+	}
+}
+
+void RefManager::increaseNumberUseSkill_X(int skill_What, int value)
+{
+	assert(value >= 0 && value <= 2);
+	switch (skill_What)
+	{
+	case 1:
+		this->numberUseSkill_1 += value;
+		ref->setIntegerForKey((KEY_NUMBER_USE_SKILL_1_HERO_X + StringUtils::format("%i", selectedHero)).c_str(), numberUseSkill_1);
+		ref->flush();
+		break;
+	case 2:
+		this->numberUseSkill_2 += value;
+		ref->setIntegerForKey((KEY_NUMBER_USE_SKILL_2_HERO_X + StringUtils::format("%i", selectedHero)).c_str(), numberUseSkill_2);
+		ref->flush();
+		break;
+
+	case 3:
+		this->numberUseSkill_3 += value;
+		ref->setIntegerForKey((KEY_NUMBER_USE_SKILL_3_HERO_X + StringUtils::format("%i", selectedHero)).c_str(), numberUseSkill_3);
 		ref->flush();
 		break;
 
@@ -205,16 +288,60 @@ void RefManager::increaseBonusGold(int value)
 	ref->flush();
 }
 
-void RefManager::resetAnchorTime()
+void RefManager::setAnchorTime(int value)
 {
-	anchorTime = time(0);
+	anchorTime = value;
 	ref->setIntegerForKey(KEY_ANCHORTIME, anchorTime);
+	ref->flush();
+}
+
+void RefManager::setLanguage(int p_nLanguage)
+{
+	language = p_nLanguage;
+	ref->setIntegerForKey(KEY_LANGUAGE, language);
+	ref->flush();
+}
+
+void RefManager::updateTimeFromGoogle(int p_nTime) {
+	lastDailyRewardTime = p_nTime;
+	ref->setIntegerForKey(KEY_LAST_DAILY_REWARD_TIME, lastDailyRewardTime);
+	ref->flush();
+}
+
+void RefManager::increaseDailyRewardCounter() {
+	dailyRewardCounter++;
+	ref->setIntegerForKey(KEY_DAILY_REWARD_COUNTER, dailyRewardCounter);
+	ref->flush();
+}
+
+void RefManager::updateDailyRewardAvailable(bool p_bData) {
+	dailyRewardAvailable = p_bData;
+	ref->setBoolForKey(KEY_DAILY_REWARD_AVAILABLE, dailyRewardAvailable);
+	ref->flush();
+}
+
+void RefManager::resetFreeCoin() {
+	freeCoin = 3;
+	ref->setIntegerForKey(KEY_FREE_COIN, freeCoin);
+	ref->flush();
+}
+
+void RefManager::decreaseFreeCoin() {
+	freeCoin--;
+	ref->setIntegerForKey(KEY_FREE_COIN, freeCoin);
 	ref->flush();
 }
 
 void RefManager::setUpLife(int life)
 {
 	this->numberOfLife += life;
+	ref->setIntegerForKey(KEY_LIFE, this->numberOfLife);
+	ref->flush();
+}
+
+void RefManager::setLife(int life)
+{
+	this->numberOfLife = life;
 	ref->setIntegerForKey(KEY_LIFE, this->numberOfLife);
 	ref->flush();
 }
@@ -356,4 +483,22 @@ void RefManager::decreaseNumberItemCoolDown()
 		ref->setIntegerForKey(NUMBER_OF_ITEM_COOL_DOWN, --this->numberItemCoolDown);
 		ref->flush();
 	}
+}
+
+void RefManager::readDataQuest(int p_nQuestIndex) {
+	m_nRewardedQuestTimes = ref->getIntegerForKey((REWARDED_QUEST_X + StringUtils::format("%i", p_nQuestIndex)).c_str(), 0);
+	m_nNumberQuest = ref->getIntegerForKey((NUMBER_QUEST_X + StringUtils::format("%i", p_nQuestIndex)).c_str(), 0);
+}
+
+void RefManager::updateRewardedQuestTimes(int p_nQuestIndex) {
+	readDataQuest(p_nQuestIndex);
+	ref->setIntegerForKey((REWARDED_QUEST_X + StringUtils::format("%i", p_nQuestIndex)).c_str(), ++this->m_nRewardedQuestTimes);
+	ref->flush();
+}
+
+void RefManager::setUpNumberQuest(int p_nQuestIndex, int p_nData) {
+	readDataQuest(p_nQuestIndex);
+	this->m_nNumberQuest += p_nData;
+	ref->setIntegerForKey((NUMBER_QUEST_X + StringUtils::format("%i", p_nQuestIndex)).c_str(), this->m_nNumberQuest);
+	ref->flush();
 }

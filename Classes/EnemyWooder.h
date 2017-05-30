@@ -23,6 +23,7 @@ public:
 	void die();
 	void updateMe(BaseHero* hero);
 	void listener();
+	void makeMask();
 
 };
 

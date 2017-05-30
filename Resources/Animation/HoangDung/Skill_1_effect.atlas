@@ -1,0 +1,48 @@
+
+Skill_1_effect.png
+size: 2048,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+skill1_circle
+  rotate: false
+  xy: 678, 157
+  size: 339, 339
+  orig: 339, 339
+  offset: 0, 0
+  index: -1
+skill1_lightning_1
+  rotate: true
+  xy: 2, 2
+  size: 386, 570
+  orig: 679, 679
+  offset: 288, 52
+  index: -1
+skill1_lightning_2
+  rotate: false
+  xy: 1324, 647
+  size: 441, 363
+  orig: 679, 679
+  offset: 147, 11
+  index: -1
+skill1_lightning_3
+  rotate: true
+  xy: 1324, 345
+  size: 300, 369
+  orig: 679, 679
+  offset: 147, 5
+  index: -1
+skill1_lightning_4
+  rotate: true
+  xy: 678, 498
+  size: 512, 644
+  orig: 679, 679
+  offset: 2, 10
+  index: -1
+skill1_lightning_5
+  rotate: false
+  xy: 2, 390
+  size: 674, 620
+  orig: 679, 679
+  offset: 5, 58
+  index: -1

@@ -8,7 +8,7 @@ BaseHero::BaseHero(string jsonFile, string atlasFile, float scale) : B2Skeleton(
 {
 	bloodScreen = Sprite::create("red-screen.png");
 	bloodScreen->setScaleX(SCREEN_SIZE.width * 1.1f / bloodScreen->getContentSize().width);
-	bloodScreen->setScaleY(SCREEN_SIZE.height / bloodScreen->getContentSize().height);
+	bloodScreen->setScaleY(SCREEN_SIZE.height * 1.1f / bloodScreen->getContentSize().height);
 	bloodScreen->setVisible(false);
 
 	move_vel = SCREEN_SIZE.width / PTM_RATIO / 2.3f;
@@ -57,7 +57,17 @@ BaseHero::BaseHero(string jsonFile, string atlasFile, float scale) : B2Skeleton(
 BaseHero * BaseHero::create(string jsonFile, string atlasFile, float scale)
 {
 	BaseHero* baseHero = new BaseHero(jsonFile, atlasFile, scale);
-	return baseHero;
+	if (baseHero && baseHero->init())
+	{
+		baseHero->autorelease();
+		return baseHero;
+	}
+	else
+	{
+		delete baseHero;
+		baseHero = nullptr;
+		return nullptr;
+	}
 }
 
 void BaseHero::initCirclePhysic(b2World * world, Point pos)
@@ -275,18 +285,6 @@ void BaseHero::attackLanding()
 	AudioManager::playSound(SOUND_MCAT);
 }
 
-void BaseHero::attackBySkill1()
-{
-}
-
-void BaseHero::attackBySkill2()
-{
-}
-
-void BaseHero::attackBySkill3()
-{
-}
-
 void BaseHero::injured()
 {
 }
@@ -409,7 +407,7 @@ void BaseHero::killThemAll()
 	blash->setVisible(true);
 	//auto originScale = blash->getScale();
 	auto scaleFactor = Director::getInstance()->getContentScaleFactor();
-	auto scale = ScaleBy::create(1.0f, 200 * scaleFactor);
+	auto scale = ScaleBy::create(0.75f, 200 * scaleFactor);
 
 	auto hide = CallFunc::create([&]() {
 		blash->setVisible(false);

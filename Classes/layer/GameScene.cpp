@@ -10,6 +10,7 @@
 #include "colong/CoLong.h"
 #include "duongqua/DuongQua.h"
 #include "quachtinh/QuachTinh.h"
+#include "hoangdung/HoangDung.h"
 
 LayerColor *blur;
 
@@ -50,6 +51,10 @@ bool GameScene::init(int stage, int map, int charId)
 	AudioManager::stopMusic();
 	GAHelper::getInstance()->logScreen(StringUtils::format("Stage: %d, Map: %d", stage, map));
 	isFirstPlay = REF->getIsFirstPlay();
+	if (isFirstPlay) {
+		if (REF->getLastPickHero() != charId)
+			isFirstPlay = false;
+	}
 
 
 	isModeDebug = false;
@@ -137,6 +142,10 @@ void GameScene::selectHero()
 		createCoLong("Animation/CoLong/CoLong.json", "Animation/CoLong/CoLong.atlas");
 		break;
 
+	case 2:
+		createHoangDung("Animation/HoangDung/HoangDung.json", "Animation/HoangDung/HoangDung.atlas");
+		break;
+
 	case 4:
 		createQuachTinh("Animation/QuachTinh/QuachTinh.json", "Animation/QuachTinh/QuachTinh.atlas");
 		break;
@@ -179,6 +188,22 @@ void GameScene::createCoLong(string path_Json, string path_Atlas)
 	addChild(hero->getBloodScreen(), ZORDER_SMT);
 }
 
+void GameScene::createHoangDung(string path_Json, string path_Atlas)
+{
+	hero = HoangDung::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 350);
+	hero->listener();
+	hero->setPosition(heroStartPosition);
+
+	addChild(hero, ZORDER_HERO);
+
+	hero->initCirclePhysic(world, hero->getPosition());
+	hero->addStuff();
+	hero->createPool();
+
+	hero->getBloodScreen()->setPosition(follow->getPosition());
+	addChild(hero->getBloodScreen(), ZORDER_SMT);
+}
+
 void GameScene::createQuachTinh(string path_Json, string path_Atlas)
 {
 	hero = QuachTinh::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 300);
@@ -195,14 +220,33 @@ void GameScene::createQuachTinh(string path_Json, string path_Atlas)
 	addChild(hero->getBloodScreen(), ZORDER_SMT);
 }
 
-
 void GameScene::createEagle(Point position)
 {
 	_aEagle = ChimDieu::create("Animation/ChimDieu/ChimDieu.json",
 		"Animation/ChimDieu/ChimDieu.atlas", SCREEN_SIZE.height / 2048);
 	_aEagle->initCirclePhysic(world, position);
 	this->addChild(_aEagle, ZORDER_HERO);
-	_aEagle->setStringHero(charId == 0 ? "DuongQua" : "CoLong");
+	switch (charId) {
+	case 0:
+		_aEagle->setStringHero("DuongQua");
+		break;
+	case 1:
+		_aEagle->setStringHero("CoLong");
+		break;
+	case 2:
+		_aEagle->setStringHero("HoangDung");
+		break;
+	case 3:
+		_aEagle->setStringHero("HoangDuocSu");
+		break;
+	case 4:
+		_aEagle->setStringHero("QuachTinh");
+		break;
+	default:
+		_aEagle->setStringHero("DuongQua");
+		break;
+	}
+	
 }
 
 void GameScene::onBegin()
@@ -246,6 +290,7 @@ void GameScene::onBegin()
 			runnerItem(Item_type::MAGNET, DURATION_MAGNET);
 		REF->decreaseNumberItemMagnet();
 	}
+
 
 	auto key_listener = EventListenerKeyboard::create();
 
@@ -561,7 +606,7 @@ void GameScene::update(float dt)
 		else {
 			hero->getB2Body()->SetTransform(b2Vec2(
 				_aEagle->getB2Body()->GetPosition().x,
-				_aEagle->getB2Body()->GetPosition().y + 40.0f / PTM_RATIO), 0.0f);
+				_aEagle->getB2Body()->GetPosition().y + hero->getTrueRadiusOfHero() / PTM_RATIO), 0.0f);
 		}
 	}
 
@@ -602,13 +647,16 @@ void GameScene::update(float dt)
 				hero->stopSkillAction(false, false, true);
 				break;
 
-			default:
+			case 2:
+				hero->stopSkillAction(true, true, false);
+				break;
+
+			default:	// 1 and 4
 				hero->stopSkillAction(true, false, true);
 				break;
 			}
 
 			if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
-
 				hud->hideButton();
 				hud->moveCallBirdToCenterScreen(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 				hero->setOnGround(false);
@@ -821,13 +869,10 @@ void GameScene::createInfiniteNode()
 	auto bg1_1 = Sprite::create(StringUtils::format("Map/map%d/bg%d_1.png", stage, map));
 	bg1_1->setScale(SCREEN_SIZE.width / (bg1_1->getContentSize().width));
 	bg1_1->setAnchorPoint(Point(0, 0.5f));
-	//bg1_1->setVisible(false);
 
 	auto bg1_2 = Sprite::create(StringUtils::format("Map/map%d/bg%d_1.png", stage, map));
 	bg1_2->setScale(SCREEN_SIZE.width / (bg1_2->getContentSize().width));
 	bg1_2->setAnchorPoint(Point(0, 0.5f));
-	//bg1_2->setVisible(false);
-
 	background->addChild(bg1_1, 1, Vec2(0.5f, 1), Vec2(0, 0));
 	background->addChild(bg1_2, 1, Vec2(0.5f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
 
@@ -856,7 +901,6 @@ void GameScene::createInfiniteNode()
 		bg2_1->setScale(SCREEN_SIZE.width / (bg2_1->getContentSize().width));
 		bg2_1->setAnchorPoint(Point(0, 0.5f));
 		bg2_1->setTag(21);
-		//bg2_1->setVisible(false);
 
 
 		auto bg2_2 = Sprite::create(StringUtils::format("Map/map%d/bg%d_2.png", stage, map));
@@ -864,12 +908,10 @@ void GameScene::createInfiniteNode()
 		bg2_2->setScale(SCREEN_SIZE.width / (bg2_2->getContentSize().width));
 		bg2_2->setAnchorPoint(Point(0, 0.5f));
 		bg2_2->setTag(22);
-		//bg2_2->setVisible(false);
 		background->addChild(bg2_1, 3, Vec2(0.7f, 1), Vec2(0, 0));
 		background->addChild(bg2_2, 3, Vec2(0.7f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
 
 	}
-
 
 	//background->setPosition(Point(-SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 	background->setPosition(Point(0, SCREEN_SIZE.height / 2));
@@ -1597,6 +1639,8 @@ void GameScene::createItem()
 
 void GameScene::updateQuest()
 {
+	if (charId != REF->getLastPickHero())
+		return;
 
 	switch (charId)
 	{
@@ -1605,11 +1649,11 @@ void GameScene::updateQuest()
 		break;
 
 	case 1:
-		REF->setUpNumberQuest(INDEX_QUEST_TNL, hero->getScore());
+		REF->setUpNumberQuest(INDEX_QUEST_TLN, hero->getScore());
 		break;
 
-	default:
-		REF->setUpNumberQuest(INDEX_QUEST_TNL, hero->getScore());
+	case 2:
+		REF->setUpNumberQuest(INDEX_QUEST_HD, hero->getScore());
 		break;
 	}
 }
@@ -1620,8 +1664,6 @@ void GameScene::reachNewMap()
 	if (stageUnlocked == stage) {
 		int mapUnlocked = REF->getCurrentMapUnLocked();
 		if (mapUnlocked == map) {
-			REF->setReachNewMap(true);
-
 			switch (stageUnlocked)
 			{
 			case 1: case 2:
@@ -1813,8 +1855,6 @@ void GameScene::updateEnemy()
 			if ((agent->getPosition() + posLayer->getPosition()).x < follow->getPositionX() + SCREEN_SIZE.width * 1 / 2
 				&& (agent->getPositionX() + posLayer->getPositionX())>follow->getPositionX() - SCREEN_SIZE.width * 1 / 2) {
 
-
-
 				if (childLayer2.at(i)->getTag() > 100) {
 					auto tmp = (BaseEnemy*)childLayer2.at(i);
 					if (tmp->getB2Body() != nullptr) {
@@ -1850,7 +1890,7 @@ void GameScene::updateMultiKills() {
 	m_fMultiKillsCounterTime = 1.0f;
 	if (m_nMultiKills > 1) {
 		hud->updateMultiKills(m_nMultiKills);
-		if (m_nMultiKills >= 5) m_nMultiKills = 5;
+		// if (m_nMultiKills >= 5) m_nMultiKills = 5;
 		hero->setScore(hero->getScore() + (m_nMultiKills - 1) * m_lastScore);
 	}
 }
@@ -2015,6 +2055,7 @@ void GameScene::reviveHero()
 	AudioManager::playSound(SOUND_MCREVIVE);
 	hud->refreshControl();
 	resumeGame();
+	hero->resume();
 
 	if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
 		hud->getBtnCalling()->setEnabled(false);
@@ -2112,7 +2153,7 @@ void GameScene::pauseGame()
 
 void GameScene::dieGame()
 {
-	if (REF->getIsLockedHero()) {	// if hero is locked
+	if (REF->getIsLockedHero() || hero->getB2Body()->GetLinearVelocity().y < 0) {	// if hero is locked
 		overGame();
 		return;
 	}
@@ -2174,19 +2215,18 @@ void GameScene::overGame()
 	this->pause();
 }
 
-void GameScene::nextGame()
-{
-	this->removeAllChildrenWithCleanup(true);
-	Layer *_pMenuScene = MenuLayer::create(true);
-	auto _aMainMenuScene = Scene::create();
-	_aMainMenuScene->addChild(_pMenuScene);
-	Director::getInstance()->replaceScene(_aMainMenuScene);
-}
-
 void GameScene::winGame()
 {
 	AudioManager::stopSoundandMusic();
 	AudioManager::playSound(SOUND_WIN);
+
+	auto children = this->getChildren();
+	auto iter = children.begin();
+	for (iter; iter != children.end(); iter++) {
+		auto child = (Node*)(*iter);
+		if (child->getTag() == TAG_COIN)
+			this->removeChild(child, true);
+	}
 
 	//reachNewMap();
 
@@ -2502,6 +2542,8 @@ void GameScene::introSkills()
 
 void GameScene::introBird()
 {
+	createEagle(Point(hero->getB2Body()->GetPosition().x - SCREEN_SIZE.width, SCREEN_SIZE.height / 2));
+
 	tut = TutorialIntroBird::create();
 	this->getParent()->addChild(tut);
 

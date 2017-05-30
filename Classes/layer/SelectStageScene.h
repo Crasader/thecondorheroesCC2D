@@ -13,13 +13,16 @@ public:
 	static SelectStageLayer* create(int charId);
 	void moveAva();
 
+protected:
+	CC_SYNTHESIZE(ui::ScrollView*, scrollView, mScrollView);
+	CC_SYNTHESIZE(Menu*, menu, mMenu);
+
 private:
 	const Size m_szVisibleSize = Director::getInstance()->getVisibleSize();
 	int m_nLifeNumber;
 	int m_nTimeAnchor;
 
 	TMXTiledMap *tmxMap;
-	ui::ScrollView* scrollView;
 	Point nextMapPos;
 
 	void gotoPlay(int id, int stage, int map, int charId);
@@ -27,8 +30,6 @@ private:
 	Sprite *character_point;
 	Sprite* bossSprite(int order);
 	void doNothing();
-	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
-	void onExit();
 	int convertId();
 };
 

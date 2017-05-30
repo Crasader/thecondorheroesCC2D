@@ -15,6 +15,9 @@ public:
 	static QuachTinh* create(string jsonFile, string atlasFile, float scale);
 	void initSwordPhysic(b2World *world, Point position);
 
+	void pause();
+	void resume();
+
 protected:
 
 	// Skill 1
@@ -39,10 +42,10 @@ protected:
 	void landTLs();
 	void doCounterSkill2();
 
-
-	void createSongLong();
 	void doCounterSkill3();
 	
+
+	CC_SYNTHESIZE(int, checkHealth, CheckHealth);
 
 	//////////////////////////////////////////////////////////////////////////
 	void createSlash();
@@ -60,9 +63,6 @@ protected:
 	void die();
 	void attackNormal();
 	void attackLanding();
-	void attackBySkill1();
-	void attackBySkill2();
-	void attackBySkill3();
 	void injured();
 	void listener();
 
@@ -75,4 +75,7 @@ private:
 	SongLong *songLong;
 
 };
+
+#define TIME_UP		15
+
 #endif // __QUACH_TINH_H__

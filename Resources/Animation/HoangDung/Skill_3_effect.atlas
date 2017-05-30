@@ -1,0 +1,153 @@
+
+Skill_3_effect.png
+size: 2048,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Sword3
+  rotate: true
+  xy: 665, 487
+  size: 23, 283
+  orig: 23, 284
+  offset: 0, 1
+  index: -1
+oooo
+  rotate: false
+  xy: 2, 16
+  size: 510, 494
+  orig: 550, 550
+  offset: 0, 56
+  index: -1
+skill3_effect1_01
+  rotate: false
+  xy: 620, 102
+  size: 24, 48
+  orig: 192, 192
+  offset: 117, 91
+  index: -1
+skill3_effect1_02
+  rotate: false
+  xy: 1595, 364
+  size: 34, 50
+  orig: 192, 192
+  offset: 108, 89
+  index: -1
+skill3_effect1_03
+  rotate: false
+  xy: 1525, 336
+  size: 68, 78
+  orig: 192, 192
+  offset: 92, 79
+  index: -1
+skill3_effect1_04
+  rotate: false
+  xy: 1340, 305
+  size: 97, 100
+  orig: 192, 192
+  offset: 73, 79
+  index: -1
+skill3_effect1_05
+  rotate: false
+  xy: 1439, 307
+  size: 84, 98
+  orig: 192, 192
+  offset: 73, 75
+  index: -1
+skill3_effect1_06
+  rotate: false
+  xy: 1944, 386
+  size: 85, 124
+  orig: 192, 192
+  offset: 69, 45
+  index: -1
+skill3_effect1_07
+  rotate: false
+  xy: 514, 338
+  size: 149, 172
+  orig: 192, 192
+  offset: 42, 1
+  index: -1
+skill3_effect1_08
+  rotate: true
+  xy: 1474, 416
+  size: 94, 184
+  orig: 192, 192
+  offset: 60, 1
+  index: -1
+skill3_effect1_09
+  rotate: true
+  xy: 1290, 407
+  size: 103, 182
+  orig: 192, 192
+  offset: 63, 1
+  index: -1
+skill3_effect1_10
+  rotate: true
+  xy: 1106, 403
+  size: 107, 182
+  orig: 192, 192
+  offset: 60, 1
+  index: -1
+skill3_effect1_11
+  rotate: false
+  xy: 514, 152
+  size: 130, 184
+  orig: 192, 192
+  offset: 38, 1
+  index: -1
+skill3_effect1_12
+  rotate: true
+  xy: 665, 351
+  size: 134, 170
+  orig: 192, 192
+  offset: 38, 1
+  index: -1
+skill3_effect1_13
+  rotate: false
+  xy: 837, 315
+  size: 132, 170
+  orig: 192, 192
+  offset: 38, 1
+  index: -1
+skill3_effect1_14
+  rotate: false
+  xy: 971, 342
+  size: 133, 168
+  orig: 192, 192
+  offset: 38, 1
+  index: -1
+skill3_effect1_15
+  rotate: false
+  xy: 1808, 388
+  size: 134, 122
+  orig: 192, 192
+  offset: 38, 1
+  index: -1
+skill3_effect1_16
+  rotate: false
+  xy: 1234, 279
+  size: 104, 122
+  orig: 192, 192
+  offset: 69, 1
+  index: -1
+skill3_effect1_17
+  rotate: true
+  xy: 1660, 405
+  size: 105, 146
+  orig: 192, 192
+  offset: 67, 1
+  index: -1
+skill3_effect1_18
+  rotate: false
+  xy: 514, 2
+  size: 104, 148
+  orig: 192, 192
+  offset: 66, 1
+  index: -1
+skill3_effect1_19
+  rotate: true
+  xy: 1106, 295
+  size: 106, 126
+  orig: 192, 192
+  offset: 65, 23
+  index: -1

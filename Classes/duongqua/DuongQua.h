@@ -24,8 +24,6 @@ protected:
 	void slashToanChanKiemPhap();
 	void doCounterSkill1();
 
-	void fastAndFurious();
-
 
 	// Skill 2
 	/*CCArray* poolSkill2;
@@ -66,7 +64,6 @@ protected:
 	void die();
 	void attackNormal();
 	void attackLanding();
-	void attackBySkill1();
 	void injured();
 	void listener();
 

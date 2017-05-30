@@ -151,50 +151,6 @@ public:
 	static Revive* getInstance();
 };
 
-/**
-* Class Skill1
-*/
-class Skill1 : public State
-{
-public:
-	Skill1();
-	~Skill1();
-
-	void execute(BaseHero *hero);
-	static Skill1 * m_skill1;
-	static Skill1* getInstance();
-};
-
-/**
-* Class Skill2
-*/
-class Skill2 : public State
-{
-public:
-	Skill2();
-	~Skill2();
-
-	void execute(BaseHero *hero);
-	static Skill2 * m_skill2;
-	static Skill2* getInstance();
-};
-
-
-/**
-* Class Skill3
-*/
-class Skill3 : public State
-{
-public:
-	Skill3();
-	~Skill3();
-
-	void execute(BaseHero *hero);
-	static Skill3 * m_skill3;
-	static Skill3* getInstance();
-};
-
-
 
 // make life easier
 #define MIdle Idling::getInstance()
@@ -206,8 +162,5 @@ public:
 #define MInjured Injuring::getInstance()
 #define MDoubleJump DoubleJumping::getInstance()
 #define MDie Dead::getInstance()
-#define MSKill1 Skill1::getInstance()
-#define MSKill2 Skill2::getInstance()
-#define MSKill3 Skill3::getInstance()
 
 #endif

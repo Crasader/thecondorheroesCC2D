@@ -70,7 +70,7 @@ private:
 public:
 	static JSonHeroManager* getInstance();
 
-	void readFile(int indexHero);
+	void readFile(int p_nLanguage, int indexHero);
 	int getGoldUpgradeLevelX(int indexHero);
 
 	// index must be around 1-10

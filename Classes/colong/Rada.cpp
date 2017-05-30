@@ -11,6 +11,7 @@ Rada * Rada::create(string p_sFileName) {
 	_pRada->initWithFile(p_sFileName);
 	_pRada->setTag(TAG_CL_RADA);
 	return _pRada;
+
 }
 
 void Rada::initCirclePhysic(b2World * world, Point pos) {

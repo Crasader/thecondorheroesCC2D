@@ -78,6 +78,9 @@ public:
 	bool init(int score, int gold);
 	static DialogStageClear* create(int score, int gold);
 	void effect();
+
+private:
+	void shareFB();
 };
 
 class DialogOverGame : public DialogStageClear

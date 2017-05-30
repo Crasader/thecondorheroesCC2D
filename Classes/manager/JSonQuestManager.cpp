@@ -18,19 +18,19 @@ JSonQuestManager * JSonQuestManager::getInstance() {
 }
 
 int JSonQuestManager::getNumberQuest() {
-	SizeType _bResult = jsonDoc["quests"]["en"].Size();
+	SizeType _bResult = jsonDoc["quests"].Size();
 	return (int)_bResult;
 }
 
 void JSonQuestManager::readQuest(int p_nLanguage, int p_nIndexQuest) {
-	string _arLanguage[2] = { "en", "vi" };
-	this->m_sQuestName = jsonDoc["quests"][_arLanguage[p_nLanguage].c_str()][p_nIndexQuest]["questName"].GetString();
-	this->m_sQuestDescription = jsonDoc["quests"][_arLanguage[p_nLanguage].c_str()][p_nIndexQuest]["questDescription"].GetString();
-	this->m_nCompleteRequest = jsonDoc["quests"][_arLanguage[p_nLanguage].c_str()][p_nIndexQuest]["completeRequest"].GetInt();
-	this->m_nGoldReward = jsonDoc["quests"][_arLanguage[p_nLanguage].c_str()][p_nIndexQuest]["goldReward"].GetInt();
-	this->m_nDiamondReward = jsonDoc["quests"][_arLanguage[p_nLanguage].c_str()][p_nIndexQuest]["diamondReward"].GetInt();
-	this->m_nStepRequest = jsonDoc["quests"][_arLanguage[p_nLanguage].c_str()][p_nIndexQuest]["stepRequest"].GetInt();
-	this->m_nLimitRequest = jsonDoc["quests"][_arLanguage[p_nLanguage].c_str()][p_nIndexQuest]["limitRequest"].GetInt();
+	string _arLanguages[2] = { "en", "vi" };
+	this->m_sQuestName = jsonDoc["quests"][p_nIndexQuest]["questName"][_arLanguages[p_nLanguage].c_str()].GetString();
+	this->m_sQuestDescription = jsonDoc["quests"][p_nIndexQuest]["questDescription"][_arLanguages[p_nLanguage].c_str()].GetString();
+	this->m_nCompleteRequest = jsonDoc["quests"][p_nIndexQuest]["completeRequest"].GetInt();
+	this->m_nGoldReward = jsonDoc["quests"][p_nIndexQuest]["goldReward"].GetInt();
+	this->m_nDiamondReward = jsonDoc["quests"][p_nIndexQuest]["diamondReward"].GetInt();
+	this->m_nStepRequest = jsonDoc["quests"][p_nIndexQuest]["stepRequest"].GetInt();
+	this->m_nLimitRequest = jsonDoc["quests"][p_nIndexQuest]["limitRequest"].GetInt();
 }
 
 void JSonQuestManager::readDailyReward(int p_nIndexDailyReward) {

@@ -12,23 +12,33 @@ DuongQua::DuongQua(string jsonFile, string atlasFile, float scale) : BaseHero(js
 DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 {
 	DuongQua* duongQua = new DuongQua(jsonFile, atlasFile, scale);
-	duongQua->setTag(TAG_HERO);
+	if (duongQua && duongQua->init())
+	{
+		duongQua->autorelease();
+		duongQua->setTag(TAG_HERO);
 
-	duongQua->update(0.0f);
+		duongQua->update(0.0f);
 
-	duongQua->stateMachine = new StateMachine(duongQua);
-	duongQua->stateMachine->setCurrentState(MLand);
+		duongQua->stateMachine = new StateMachine(duongQua);
+		duongQua->stateMachine->setCurrentState(MLand);
 
-	duongQua->setBoxHeight(duongQua->getBoundingBox().size.height / 6.7f);
+		duongQua->setBoxHeight(duongQua->getBoundingBox().size.height / 6.7f);
 
-	//
-	duongQua->blash = Sprite::create("Animation/DuongQua/blash.png");
-	duongQua->blash->setScale(scale / 2);
-	duongQua->blash->setPosition(duongQua->getContentSize() / 2);
-	duongQua->blash->setVisible(false);
-	duongQua->addChild(duongQua->blash);
+		//
+		duongQua->blash = Sprite::create("Animation/DuongQua/blash.png");
+		duongQua->blash->setScale(scale / 2);
+		duongQua->blash->setPosition(duongQua->getContentSize() / 2);
+		duongQua->blash->setVisible(false);
+		duongQua->addChild(duongQua->blash);
 
-	return duongQua;
+		return duongQua;
+	}
+	else
+	{
+		delete duongQua;
+		duongQua = nullptr;
+		return nullptr;
+	}
 }
 
 
@@ -90,37 +100,7 @@ void DuongQua::slashToanChanKiemPhap()
 void DuongQua::doCounterSkill1()
 {
 	slashToanChanKiemPhap();
-	//fastAndFurious();
 }
-
-void DuongQua::fastAndFurious()
-{
-	// create a rada to change bitmask instead
-	this->isNoDie = true;
-	this->getB2Body()->SetGravityScale(0);
-	this->changeBodyCategoryBits(BITMASK_SWORD);
-	this->changeBodyMaskBits(BITMASK_WOODER | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BAG | BITMASK_ENEMY);
-	
-	this->schedule([&](float dt) {
-		checkDurationSkill1++;
-
-		this->getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel() * 5, 0));
-
-		if (checkDurationSkill1 >= getDurationSkill1() * 60) {
-			this->setIsNoDie(false);
-			this->changeBodyCategoryBits(BITMASK_HERO);
-			this->changeBodyMaskBits(BITMASK_FLOOR | BITMASK_ENEMY | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION);
-			this->getB2Body()->SetGravityScale(1);
-			auto currentVelY = getB2Body()->GetLinearVelocity().y;
-			this->getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel(), currentVelY));
-			setIsDoneDuration1(true);
-			checkDurationSkill1 = 0;
-			unschedule("KeySkill1");
-		}
-
-	}, 1.0f / 60, "KeySkill1");		//  run every delta second
-}
-
 
 // SKILL 2
 void DuongQua::createKiemPhap(float posX)
@@ -344,9 +324,6 @@ void DuongQua::run()
 	addAnimation(0, "run", true);
 	setToSetupPose();
 
-	if (getBloodScreen()->isVisible() && health > 1)
-		getBloodScreen()->setVisible(false);
-
 	if (!getSmokeRun()->isVisible()) {
 		getSmokeRun()->setVisible(true);
 	}
@@ -399,7 +376,13 @@ void DuongQua::die()
 void DuongQua::attackNormal()
 {
 	if (!getIsDoneDuration1()) {
-		attackBySkill1();
+		AudioManager::playSound(SOUND_DQSKILL1);
+		clearTracks();
+		addAnimation(0, "attack4", false);
+		setToSetupPose();
+
+		createToanChanKiemPhap(getBoneLocation("bone52"));
+
 		setIsPriorSkill1(true);			// move to attack
 	}
 	else {
@@ -430,7 +413,13 @@ void DuongQua::attackNormal()
 void DuongQua::attackLanding()
 {
 	if (!getIsDoneDuration1()) {
-		attackBySkill1();
+		AudioManager::playSound(SOUND_DQSKILL1);
+		clearTracks();
+		addAnimation(0, "attack4", false);
+		setToSetupPose();
+
+		createToanChanKiemPhap(getBoneLocation("bone52"));
+
 		setIsPriorSkill1(true);			// move to attack
 	}
 	else {
@@ -446,16 +435,6 @@ void DuongQua::attackLanding()
 		//log("atttack");
 		getSlashBreak()->setVisible(false);
 	}
-}
-
-void DuongQua::attackBySkill1()
-{
-	AudioManager::playSound(SOUND_DQSKILL1);
-	clearTracks();
-	addAnimation(0, "attack4", false);
-	setToSetupPose();
-
-	createToanChanKiemPhap(getBoneLocation("bone52"));
 }
 
 void DuongQua::injured()

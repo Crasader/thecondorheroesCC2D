@@ -106,12 +106,12 @@ void EnemyLinhTenThang::updateMe(BaseHero * hero)
 
 void EnemyLinhTenThang::playsoundAt()
 {
-	AudioManager::playSound(SOUND_HD2AT);
+	AudioManager::playSound(SOUND_CUNGAT);
 }
 
 void EnemyLinhTenThang::playsoundDie()
 {
-	AudioManager::playSound(SOUND_HD2DIE);
+	AudioManager::playSound(SOUND_CUNGDIE);
 }
 
 

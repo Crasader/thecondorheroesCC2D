@@ -1296,7 +1296,7 @@ void GameScene::createEnemyChong3(MyLayer * layer, Vec2 pos)
 		}
 
 		enemy->initBoxPhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
-		enemy->makeMask();
+		//enemy->makeMask();
 
 		enemy->listener();
 	}

@@ -7,7 +7,8 @@
 USING_NS_CC;
 
 using namespace spine;
-
+#define SOUND_CUNGAT		"sound/cungat.mp3"
+#define SOUND_CUNGDIE		"sound/cungdie.mp3"
 class EnemyLinhTenThang : public EnemyHoacDo2
 {
 private:

@@ -93,16 +93,6 @@ void EnemyLinhCamGiao2::initBoxPhysic(b2World * world, Point pos)
 
 
 
-void EnemyLinhCamGiao2::playsoundAt()
-{
-	AudioManager::playSound(SOUND_TC1AT);
-}
-
-void EnemyLinhCamGiao2::playsoundDie()
-{
-	AudioManager::playSound(SOUND_TC1DIE);
-}
-
 void EnemyLinhCamGiao2::updatePos()
 {
 	if (body != nullptr ) {

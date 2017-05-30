@@ -1,0 +1,195 @@
+
+LinhBanCung.png
+size: 512,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+caidau
+  rotate: false
+  xy: 273, 136
+  size: 117, 147
+  orig: 117, 147
+  offset: 0, 0
+  index: -1
+caidau2
+  rotate: false
+  xy: 362, 398
+  size: 117, 147
+  orig: 117, 147
+  offset: 0, 0
+  index: -1
+caidau3
+  rotate: false
+  xy: 392, 142
+  size: 117, 147
+  orig: 117, 147
+  offset: 0, 0
+  index: -1
+canhtay1
+  rotate: false
+  xy: 188, 110
+  size: 56, 72
+  orig: 56, 72
+  offset: 0, 0
+  index: -1
+canhtay2
+  rotate: false
+  xy: 342, 734
+  size: 79, 86
+  orig: 79, 86
+  offset: 0, 0
+  index: -1
+chansau1
+  rotate: false
+  xy: 362, 547
+  size: 88, 185
+  orig: 88, 185
+  offset: 0, 0
+  index: -1
+chantruoc1
+  rotate: true
+  xy: 2, 82
+  size: 100, 184
+  orig: 100, 184
+  offset: 0, 0
+  index: -1
+day1
+  rotate: true
+  xy: 483, 914
+  size: 108, 8
+  orig: 108, 8
+  offset: 0, 0
+  index: -1
+day2
+  rotate: false
+  xy: 110, 2
+  size: 108, 7
+  orig: 108, 7
+  offset: 0, 0
+  index: -1
+light
+  rotate: true
+  xy: 342, 822
+  size: 200, 90
+  orig: 200, 90
+  offset: 0, 0
+  index: -1
+mau1
+  rotate: false
+  xy: 2, 684
+  size: 338, 338
+  orig: 338, 338
+  offset: 0, 0
+  index: -1
+muiten
+  rotate: false
+  xy: 434, 817
+  size: 27, 205
+  orig: 27, 205
+  offset: 0, 0
+  index: -1
+shadow
+  rotate: true
+  xy: 463, 896
+  size: 126, 18
+  orig: 126, 18
+  offset: 0, 0
+  index: -1
+slash1
+  rotate: true
+  xy: 2, 285
+  size: 397, 118
+  orig: 397, 118
+  offset: 0, 0
+  index: -1
+slash2
+  rotate: true
+  xy: 122, 285
+  size: 397, 118
+  orig: 397, 118
+  offset: 0, 0
+  index: -1
+slash3
+  rotate: true
+  xy: 242, 285
+  size: 397, 118
+  orig: 397, 118
+  offset: 0, 0
+  index: -1
+taysau1-1
+  rotate: false
+  xy: 463, 820
+  size: 35, 35
+  orig: 35, 35
+  offset: 0, 0
+  index: -1
+taysau1-2
+  rotate: false
+  xy: 463, 857
+  size: 34, 37
+  orig: 34, 37
+  offset: 0, 0
+  index: -1
+taytruoc
+  rotate: false
+  xy: 188, 72
+  size: 45, 36
+  orig: 45, 36
+  offset: 0, 0
+  index: -1
+than
+  rotate: false
+  xy: 392, 9
+  size: 91, 131
+  orig: 91, 131
+  offset: 0, 0
+  index: -1
+tuidung1
+  rotate: true
+  xy: 2, 8
+  size: 72, 106
+  orig: 72, 106
+  offset: 0, 0
+  index: -1
+tuidung2
+  rotate: true
+  xy: 485, 82
+  size: 58, 20
+  orig: 58, 20
+  offset: 0, 0
+  index: -1
+vataoduoi
+  rotate: false
+  xy: 246, 9
+  size: 144, 125
+  orig: 144, 125
+  offset: 0, 0
+  index: -1
+vataogiua
+  rotate: false
+  xy: 110, 11
+  size: 52, 69
+  orig: 52, 69
+  offset: 0, 0
+  index: -1
+vataosau
+  rotate: false
+  xy: 423, 762
+  size: 38, 53
+  orig: 38, 53
+  offset: 0, 0
+  index: -1
+vataotruoc
+  rotate: true
+  xy: 362, 291
+  size: 105, 129
+  orig: 105, 129
+  offset: 0, 0
+  index: -1
+vukhi
+  rotate: false
+  xy: 2, 184
+  size: 269, 99
+  orig: 269, 99
+  offset: 0, 0
+  index: -1

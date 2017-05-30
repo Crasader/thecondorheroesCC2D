@@ -1,0 +1,27 @@
+
+Skill_3_effect2.png
+size: 512,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+skill3_storm_1
+  rotate: false
+  xy: 2, 122
+  size: 178, 132
+  orig: 194, 132
+  offset: 11, 0
+  index: -1
+skill3_storm_2
+  rotate: false
+  xy: 182, 125
+  size: 177, 129
+  orig: 194, 132
+  offset: 12, 2
+  index: -1
+skill3_storm_3
+  rotate: false
+  xy: 2, 2
+  size: 186, 118
+  orig: 194, 132
+  offset: 0, 7
+  index: -1

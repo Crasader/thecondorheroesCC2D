@@ -1,0 +1,41 @@
+
+slash3.png
+size: 1572,1138
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+slashfly_0005_coco5
+  rotate: true
+  xy: 2, 2
+  size: 1134, 312
+  orig: 1134, 312
+  offset: 0, 0
+  index: -1
+slashfly_0006_coco4
+  rotate: true
+  xy: 316, 2
+  size: 1134, 312
+  orig: 1134, 312
+  offset: 0, 0
+  index: -1
+slashfly_0007_coco3
+  rotate: true
+  xy: 630, 2
+  size: 1134, 312
+  orig: 1134, 312
+  offset: 0, 0
+  index: -1
+slashfly_0008_coco2
+  rotate: true
+  xy: 944, 2
+  size: 1134, 312
+  orig: 1134, 312
+  offset: 0, 0
+  index: -1
+slashfly_0009_coco1
+  rotate: true
+  xy: 1258, 2
+  size: 1134, 312
+  orig: 1134, 312
+  offset: 0, 0
+  index: -1

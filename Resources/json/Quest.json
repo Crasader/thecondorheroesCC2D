@@ -1,0 +1,304 @@
+{
+	"daily_reward" : [
+		{
+			"type" : "gold",
+			"number" : 300
+		},
+		{
+			"type" : "play_turn",
+			"number" : 5
+		},
+		{
+			"type" : "item_bird",
+			"number" : 1
+		},
+		{
+			"type" : "gold",
+			"number" : 1000
+		},
+		{
+			"type" : "diamond",
+			"number" : 5
+		},
+		{
+			"type" : "play_turn",
+			"number" : 10
+		},
+		{
+			"type" : "diamond",
+			"number" : 20
+		}
+	],
+	"quests": [
+		{
+			"questName": {
+				"en" : "Call bird",
+				"vi" : "Goi chim dieu"
+			},
+			"questDescription": {
+				"en" : "Use item call bird 20 times",
+				"vi" : "Dung vat pham goi chim dieu 20 lan"
+			},
+			"completeRequest": 20,
+			"goldReward": 10000,
+			"diamondReward": 0,
+			"stepRequest": 1,
+			"limitRequest": 1
+		},
+		{
+			"questName": {
+				"en" : "Health",
+				"vi" : "Them mau"
+			},
+			"questDescription": {
+				"en" : "Use item health 100 times",
+				"vi" : "Dung vat pham them mau 100 lan"
+			},
+			"completeRequest": 100,
+			"goldReward": 20000,
+			"diamondReward": 0,
+			"stepRequest": 1,
+			"limitRequest": 1
+		},
+		{
+			"questName": {
+				"en" : "Cooldown",
+				"vi" : "Hoi chieu"
+			},
+			"questDescription": {
+				"en" : "Use item cooldown 100 times",
+				"vi" : "Dung vat pham hoi chieu 100 lan"
+			},
+			"completeRequest": 100,
+			"goldReward": 10000,
+			"diamondReward": 0,
+			"stepRequest": 1,
+			"limitRequest": 1
+		},
+		{
+			"questName": {
+				"en" : "Score Johan",
+				"vi" : "Thong thao Duong Qua"
+			},
+			"questDescription": {
+				"en" : "Get 50000 scores by Johan",
+				"vi" : "Dat 50000 diem voi nhan vat Duong Qua"
+			},
+			"completeRequest": 50000,
+			"goldReward": 10000,
+			"diamondReward": 0,
+			"stepRequest": 1,
+			"limitRequest": 1
+		},
+		{
+			"questName": {
+				"en" : "Score Hana",
+				"vi" : "Thong thao Tieu Long Nu"
+			},
+			"questDescription": {
+				"en" : "Get 80000 scores by Hana",
+				"vi" : "Dat 80000 diem voi nhan vat Tieu Long Nu"
+			},
+			"completeRequest": 80000,
+			"goldReward": 16000,
+			"diamondReward": 0,
+			"stepRequest": 1,
+			"limitRequest": 1
+		},
+		{
+			"questName": {
+				"en" : "Score Kim",
+				"vi" : "Thong thao Hoang Dung"
+			},
+			"questDescription": {
+				"en" : "Get 120000 scores by Kim",
+				"vi" : "Dat 80000 diem voi nhan vat Hoang Dung"
+			},
+			"completeRequest": 120000,
+			"goldReward": 24000,
+			"diamondReward": 0,
+			"stepRequest": 1,
+			"limitRequest": 1
+		},
+		{
+			"questName": {
+				"en" : "Rampage",
+				"vi" : "Giet nguoi nhu ngoe"
+			},
+			"questDescription": {
+				"en" : "Kill multiple enemy in a short time to get rampages",
+				"vi" : "Giet doi phuong lien tiep trong thoi gian ngan"
+			},
+			"completeRequest": 1,
+			"goldReward": 100,
+			"diamondReward": 0,
+			"stepRequest": 5,
+			"limitRequest": 5
+		},
+		{
+			"questName": {
+				"en" : "Woodmans",
+				"vi" : "Pha nguoi go"
+			},
+			"questDescription": {
+				"en" : "Destroy 20 woodmans",
+				"vi" : "Pha huy 20 nguoi go"
+			},
+			"completeRequest": 20,
+			"goldReward": 500,
+			"diamondReward": 0,
+			"stepRequest": 1,
+			"limitRequest": 1
+		},
+		{
+			"questName": {
+				"en" : "Toan Chan Student 2",
+				"vi" : "De tu toan chan 2"
+			},
+			"questDescription": {
+				"en" : "Kill 50 Toan Chan students 2",
+				"vi" : "Giet 50 de tu Toan Chan 2"
+			},
+			"completeRequest": 50,
+			"goldReward": 1000,
+			"diamondReward": 0,
+			"stepRequest": 1,
+			"limitRequest": 1
+		},
+		{
+			"questName": {
+				"en" : "Boss 1",
+				"vi" : "Trieu Tri Kinh"
+			},
+			"questDescription": {
+				"en" : "Kill boss 1 10 times",
+				"vi" : "Giet Trieu Tri Kinh 50 lan"
+			},
+			"completeRequest": 10,
+			"goldReward": 4000,
+			"diamondReward": 0,
+			"stepRequest": 1,
+			"limitRequest": 1
+		},
+		{
+			"questName": {
+				"en" : "Bee",
+				"vi" : "Ong vang"
+			},
+			"questDescription": {
+				"en" : "Destroy 50 bee hive",
+				"vi" : "Pha huy 50 to ong"
+			},
+			"completeRequest": 50,
+			"goldReward": 1000,
+			"diamondReward": 0,
+			"stepRequest": 1,
+			"limitRequest": 1
+		},
+		{
+			"questName": {
+				"en" : "Ice Thorny",
+				"vi" : "Cot bang"
+			},
+			"questDescription": {
+				"en" : "Destroy 50 ice Thorny",
+				"vi" : "Pha huy 50 cot bang"
+			},
+			"completeRequest": 50,
+			"goldReward": 2000,
+			"diamondReward": 0,
+			"stepRequest": 1,
+			"limitRequest": 1
+		},
+		{
+			"questName": {
+				"en" : "Female Taoist 1",
+				"vi" : "Nu Tu Si 1"
+			},
+			"questDescription": {
+				"en" : "Kill 20 Female Taoists 1",
+				"vi" : "Giet 20 Nu Tu Si 1"
+			},
+			"completeRequest": 20,
+			"goldReward": 2000,
+			"diamondReward": 0,
+			"stepRequest": 1,
+			"limitRequest": 1
+		},
+		{
+			"questName": {
+				"en" : "Female Taoist 2",
+				"vi" : "Nu Tu Si 2"
+			},
+			"questDescription": {
+				"en" : "Kill 20 Female Taoists 2",
+				"vi" : "Giet 20 Nu Tu Si 2"
+			},
+			"completeRequest": 20,
+			"goldReward": 2000,
+			"diamondReward": 0,
+			"stepRequest": 1,
+			"limitRequest": 1
+		},
+		{
+			"questName": {
+				"en" : "Boss 2",
+				"vi" : "Ly Mac Sau"
+			},
+			"questDescription": {
+				"en" : "Kill boss 2 10 times",
+				"vi" : "Giet Ly Mac Sau 10 lan"
+			},
+			"completeRequest": 10,
+			"goldReward": 12000,
+			"diamondReward": 0,
+			"stepRequest": 1,
+			"limitRequest": 1
+		},
+		{
+			"questName": {
+				"en" : "Hoac Do 1",
+				"vi" : "Hoac Do 1"
+			},
+			"questDescription": {
+				"en" : "Kill 20 Hoac Do 1",
+				"vi" : "Giet 20 Hoac Do 1"
+			},
+			"completeRequest": 20,
+			"goldReward": 4000,
+			"diamondReward": 0,
+			"stepRequest": 1,
+			"limitRequest": 1
+		},
+		{
+			"questName": {
+				"en" : "Hoac Do 2",
+				"vi" : "Hoac Do 2"
+			},
+			"questDescription": {
+				"en" : "Kill 20 Hoac Do 2",
+				"vi" : "Giet 20 Hoac Do 2"
+			},
+			"completeRequest": 20,
+			"goldReward": 4000,
+			"diamondReward": 0,
+			"stepRequest": 1,
+			"limitRequest": 1
+		},
+		{
+			"questName": {
+				"en" : "Dat Nhi Ba",
+				"vi" : "Dat Nhi Ba"
+			},
+			"questDescription": {
+				"en" : "Kill 20 Dat Nhi Ba",
+				"vi" : "Giet 20 Dat Nhi Ba"
+			},
+			"completeRequest": 20,
+			"goldReward": 6000,
+			"diamondReward": 0,
+			"stepRequest": 1,
+			"limitRequest": 1
+		}
+	]
+}

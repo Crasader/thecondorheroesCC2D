@@ -1,0 +1,90 @@
+
+BayChong2.png
+size: 1024,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bc2
+  rotate: true
+  xy: 281, 99
+  size: 150, 281
+  orig: 150, 281
+  offset: 0, 0
+  index: -1
+blink
+  rotate: false
+  xy: 798, 82
+  size: 94, 93
+  orig: 94, 93
+  offset: 0, 0
+  index: -1
+break1
+  rotate: false
+  xy: 564, 34
+  size: 232, 215
+  orig: 232, 215
+  offset: 0, 0
+  index: -1
+break2
+  rotate: false
+  xy: 2, 64
+  size: 277, 185
+  orig: 277, 185
+  offset: 0, 0
+  index: -1
+ice-cold
+  rotate: false
+  xy: 215, 5
+  size: 57, 57
+  orig: 57, 57
+  offset: 0, 0
+  index: -1
+mieng1
+  rotate: false
+  xy: 798, 177
+  size: 143, 72
+  orig: 143, 72
+  offset: 0, 0
+  index: -1
+mieng2
+  rotate: false
+  xy: 2, 2
+  size: 110, 60
+  orig: 110, 60
+  offset: 0, 0
+  index: -1
+mieng3
+  rotate: false
+  xy: 114, 5
+  size: 99, 57
+  orig: 99, 57
+  offset: 0, 0
+  index: -1
+mieng4
+  rotate: false
+  xy: 943, 183
+  size: 70, 66
+  orig: 70, 66
+  offset: 0, 0
+  index: -1
+mieng5
+  rotate: false
+  xy: 798, 43
+  size: 53, 37
+  orig: 53, 37
+  offset: 0, 0
+  index: -1
+mieng6
+  rotate: false
+  xy: 281, 66
+  size: 51, 31
+  orig: 51, 31
+  offset: 0, 0
+  index: -1
+mieng7
+  rotate: false
+  xy: 894, 148
+  size: 41, 27
+  orig: 41, 27
+  offset: 0, 0
+  index: -1

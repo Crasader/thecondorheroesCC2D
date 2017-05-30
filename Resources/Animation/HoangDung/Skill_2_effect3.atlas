@@ -1,0 +1,13 @@
+
+Skill_2_effect3.png
+size: 32,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Sword3
+  rotate: false
+  xy: 2, 2
+  size: 23, 283
+  orig: 23, 284
+  offset: 0, 1
+  index: -1

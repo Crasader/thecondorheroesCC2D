@@ -1,0 +1,237 @@
+
+DuongQua.png
+size: 1553,684
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Sword2
+  rotate: true
+  xy: 1050, 202
+  size: 111, 245
+  orig: 111, 245
+  offset: 0, 0
+  index: -1
+Sword3
+  rotate: false
+  xy: 672, 476
+  size: 242, 206
+  orig: 404, 330
+  offset: 81, 62
+  index: -1
+arm1_L
+  rotate: false
+  xy: 1459, 20
+  size: 65, 99
+  orig: 65, 99
+  offset: 0, 0
+  index: -1
+arm1_R
+  rotate: true
+  xy: 890, 43
+  size: 84, 43
+  orig: 84, 43
+  offset: 0, 0
+  index: -1
+arm2_R
+  rotate: true
+  xy: 1290, 77
+  size: 81, 75
+  orig: 81, 75
+  offset: 0, 0
+  index: -1
+black_hair
+  rotate: true
+  xy: 1297, 160
+  size: 153, 68
+  orig: 153, 68
+  offset: 0, 0
+  index: -1
+black_hair_line
+  rotate: true
+  xy: 1247, 69
+  size: 131, 41
+  orig: 131, 41
+  offset: 0, 0
+  index: -1
+blind_L
+  rotate: true
+  xy: 1134, 3
+  size: 73, 94
+  orig: 73, 94
+  offset: 0, 0
+  index: -1
+blind_R
+  rotate: true
+  xy: 1367, 208
+  size: 99, 86
+  orig: 99, 86
+  offset: 0, 0
+  index: -1
+body
+  rotate: true
+  xy: 1454, 585
+  size: 97, 96
+  orig: 97, 96
+  offset: 0, 0
+  index: -1
+ear
+  rotate: true
+  xy: 890, 23
+  size: 18, 24
+  orig: 18, 24
+  offset: 0, 0
+  index: -1
+hand_R
+  rotate: true
+  xy: 890, 129
+  size: 56, 49
+  orig: 56, 49
+  offset: 0, 0
+  index: -1
+head
+  rotate: false
+  xy: 945, 222
+  size: 103, 120
+  orig: 103, 120
+  offset: 0, 0
+  index: -1
+head2
+  rotate: false
+  xy: 945, 100
+  size: 103, 120
+  orig: 103, 120
+  offset: 0, 0
+  index: -1
+head_1
+  rotate: false
+  xy: 1367, 81
+  size: 57, 38
+  orig: 103, 120
+  offset: 0, 45
+  index: -1
+lappet
+  rotate: false
+  xy: 1230, 38
+  size: 227, 29
+  orig: 227, 29
+  offset: 0, 0
+  index: -1
+leg_L
+  rotate: true
+  xy: 1475, 163
+  size: 70, 67
+  orig: 70, 67
+  offset: 0, 0
+  index: -1
+leg_R
+  rotate: false
+  xy: 1455, 235
+  size: 67, 72
+  orig: 67, 72
+  offset: 0, 0
+  index: -1
+scarf
+  rotate: false
+  xy: 1047, 2
+  size: 85, 74
+  orig: 85, 74
+  offset: 0, 0
+  index: -1
+shadow
+  rotate: false
+  xy: 916, 476
+  size: 126, 18
+  orig: 126, 18
+  offset: 0, 0
+  index: -1
+star
+  rotate: false
+  xy: 2, 14
+  size: 668, 668
+  orig: 668, 668
+  offset: 0, 0
+  index: -1
+tayslash1
+  rotate: true
+  xy: 1387, 309
+  size: 190, 147
+  orig: 475, 360
+  offset: 142, 154
+  index: -1
+tayslash2
+  rotate: false
+  xy: 672, 187
+  size: 271, 155
+  orig: 475, 360
+  offset: 138, 130
+  index: -1
+tayslash3
+  rotate: false
+  xy: 1052, 315
+  size: 333, 179
+  orig: 475, 360
+  offset: 94, 105
+  index: -1
+tayslash4
+  rotate: true
+  xy: 1204, 501
+  size: 181, 248
+  orig: 475, 360
+  offset: 44, 36
+  index: -1
+tayslash5
+  rotate: true
+  xy: 916, 496
+  size: 186, 286
+  orig: 488, 345
+  offset: 1, 0
+  index: -1
+tayslash6
+  rotate: true
+  xy: 672, 5
+  size: 180, 216
+  orig: 488, 345
+  offset: 110, 70
+  index: -1
+tayslash7
+  rotate: false
+  xy: 672, 344
+  size: 378, 130
+  orig: 488, 345
+  offset: 110, 156
+  index: -1
+tayslash8
+  rotate: false
+  xy: 1050, 78
+  size: 195, 122
+  orig: 488, 345
+  offset: 110, 208
+  index: -1
+white_hair1_L
+  rotate: true
+  xy: 935, 33
+  size: 30, 103
+  orig: 30, 103
+  offset: 0, 0
+  index: -1
+white_hair1_R
+  rotate: false
+  xy: 1367, 121
+  size: 106, 85
+  orig: 106, 85
+  offset: 0, 0
+  index: -1
+white_hair2_L
+  rotate: true
+  xy: 935, 65
+  size: 33, 110
+  orig: 33, 110
+  offset: 0, 0
+  index: -1
+white_hair2_R
+  rotate: false
+  xy: 1454, 501
+  size: 97, 82
+  orig: 97, 82
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,38 @@
+{
+"skeleton": { "hash": "wvR7eE0ZTI9LA9I5Ai+RYze0nZU", "spine": "3.5.51", "width": 0, "height": 0, "images": "" },
+"bones": [
+	{ "name": "root" },
+	{ "name": "bone", "parent": "root", "length": 164.84, "x": 131.48, "y": 101.39 }
+],
+"slots": [
+	{ "name": "slashy1", "bone": "bone" }
+],
+"skins": {
+	"default": {
+		"slashy1": {
+			"slashy1": { "x": -40.1, "y": 39.16, "width": 1134, "height": 312 },
+			"slashy2": { "x": -40.1, "y": 39.16, "width": 1134, "height": 312 },
+			"slashy3": { "x": -40.1, "y": 39.16, "width": 1134, "height": 312 },
+			"slashy4": { "x": -40.1, "y": 39.16, "width": 1134, "height": 312 },
+			"slashy5": { "x": -40.1, "y": 39.16, "width": 1134, "height": 312 }
+		}
+	}
+},
+"animations": {
+	"slash1": {
+		"slots": {
+			"slashy1": {
+				"attachment": [
+					{ "time": 0, "name": "slashy1" },
+					{ "time": 0.0333, "name": "slashy2" },
+					{ "time": 0.0667, "name": "slashy3" },
+					{ "time": 0.1, "name": "slashy4" },
+					{ "time": 0.1333, "name": "slashy5" },
+					{ "time": 0.1667, "name": "slashy5" },
+					{ "time": 0.2, "name": null }
+				]
+			}
+		}
+	}
+}
+}

@@ -1,0 +1,34 @@
+{
+"skeleton": { "hash": "xVPKJCGpMgZvKZnJi5FYPKeDFXs", "spine": "3.5.51", "width": 205, "height": 27, "images": "" },
+"bones": [
+	{ "name": "root" },
+	{ "name": "bone", "parent": "root", "length": 178.8, "x": -90.97, "y": 15.28 }
+],
+"slots": [
+	{ "name": "muiten", "bone": "bone", "attachment": "muiten" }
+],
+"skins": {
+	"default": {
+		"muiten": {
+			"muiten": { "x": 87.97, "y": -0.28, "width": 205, "height": 27 }
+		}
+	}
+},
+"animations": {
+	"animation": {
+		"bones": {
+			"bone": {
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
+					{ "time": 0.3333, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1 },
+					{ "time": 0.1667, "x": 1, "y": 0.691 },
+					{ "time": 0.3333, "x": 1, "y": 1 }
+				]
+			}
+		}
+	}
+}
+}

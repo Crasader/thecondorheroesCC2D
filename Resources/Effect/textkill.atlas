@@ -1,0 +1,48 @@
+
+textkill.png
+size: 1499,219
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+kill_0000_RAMPAGE
+  rotate: false
+  xy: 1052, 114
+  size: 420, 103
+  orig: 420, 103
+  offset: 0, 0
+  index: -1
+kill_0001_ULTRA-KILL
+  rotate: false
+  xy: 1034, 3
+  size: 463, 106
+  orig: 463, 106
+  offset: 0, 0
+  index: -1
+kill_0002_TRIPLE-KILL
+  rotate: false
+  xy: 556, 111
+  size: 494, 106
+  orig: 494, 106
+  offset: 0, 0
+  index: -1
+kill_0003_DOUBLE-KILL
+  rotate: false
+  xy: 2, 112
+  size: 552, 105
+  orig: 552, 105
+  offset: 0, 0
+  index: -1
+kill_0004_QUADRA-KILL
+  rotate: false
+  xy: 2, 4
+  size: 536, 106
+  orig: 536, 106
+  offset: 0, 0
+  index: -1
+kill_0005_PENTA-KILL
+  rotate: false
+  xy: 540, 2
+  size: 492, 107
+  orig: 492, 107
+  offset: 0, 0
+  index: -1

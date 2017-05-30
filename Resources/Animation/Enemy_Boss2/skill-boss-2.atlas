@@ -1,0 +1,27 @@
+
+skill-boss-2.png
+size: 512,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+light-neddle
+  rotate: false
+  xy: 406, 2
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+light-neddle-2
+  rotate: false
+  xy: 2, 8
+  size: 200, 90
+  orig: 200, 90
+  offset: 0, 0
+  index: -1
+neddle
+  rotate: false
+  xy: 204, 63
+  size: 200, 35
+  orig: 200, 35
+  offset: 0, 0
+  index: -1

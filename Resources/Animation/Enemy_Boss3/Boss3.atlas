@@ -1,0 +1,272 @@
+
+Boss3.png
+size: 4096,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+caidau
+  rotate: true
+  xy: 1944, 1059
+  size: 123, 172
+  orig: 123, 172
+  offset: 0, 0
+  index: -1
+caidau2
+  rotate: false
+  xy: 3417, 1874
+  size: 123, 172
+  orig: 123, 172
+  offset: 0, 0
+  index: -1
+caidau3
+  rotate: true
+  xy: 2, 22
+  size: 123, 172
+  orig: 123, 172
+  offset: 0, 0
+  index: -1
+caidau4
+  rotate: false
+  xy: 693, 578
+  size: 123, 172
+  orig: 123, 172
+  offset: 0, 0
+  index: -1
+canhtayphai1a
+  rotate: false
+  xy: 1843, 913
+  size: 85, 130
+  orig: 85, 130
+  offset: 0, 0
+  index: -1
+canhtayphai2
+  rotate: false
+  xy: 3542, 1915
+  size: 124, 131
+  orig: 124, 131
+  offset: 0, 0
+  index: -1
+canhtaytrai1a
+  rotate: true
+  xy: 2239, 1098
+  size: 84, 129
+  orig: 84, 129
+  offset: 0, 0
+  index: -1
+canhtaytrai2
+  rotate: false
+  xy: 176, 30
+  size: 110, 115
+  orig: 110, 115
+  offset: 0, 0
+  index: -1
+chanphai1
+  rotate: false
+  xy: 2874, 1191
+  size: 119, 207
+  orig: 119, 207
+  offset: 0, 0
+  index: -1
+chanphai2
+  rotate: false
+  xy: 1708, 905
+  size: 133, 138
+  orig: 133, 138
+  offset: 0, 0
+  index: -1
+chantrai1
+  rotate: false
+  xy: 2995, 1258
+  size: 127, 140
+  orig: 127, 140
+  offset: 0, 0
+  index: -1
+chantrai2
+  rotate: false
+  xy: 488, 439
+  size: 117, 107
+  orig: 117, 107
+  offset: 0, 0
+  index: -1
+chuoihat
+  rotate: false
+  xy: 2118, 1067
+  size: 119, 115
+  orig: 119, 115
+  offset: 0, 0
+  index: -1
+circle-power
+  rotate: true
+  xy: 1438, 1045
+  size: 137, 504
+  orig: 137, 504
+  offset: 0, 0
+  index: -1
+giayphai
+  rotate: true
+  xy: 342, 427
+  size: 119, 144
+  orig: 119, 144
+  offset: 0, 0
+  index: -1
+giaytrai
+  rotate: false
+  xy: 818, 615
+  size: 98, 135
+  orig: 98, 135
+  offset: 0, 0
+  index: -1
+luan
+  rotate: false
+  xy: 3128, 1770
+  size: 287, 276
+  orig: 287, 276
+  offset: 0, 0
+  index: -1
+luan-eff
+  rotate: false
+  xy: 2, 425
+  size: 338, 325
+  orig: 338, 325
+  offset: 0, 0
+  index: -1
+luan2
+  rotate: false
+  xy: 2, 147
+  size: 287, 276
+  orig: 287, 276
+  offset: 0, 0
+  index: -1
+manhphai
+  rotate: false
+  xy: 1438, 822
+  size: 268, 221
+  orig: 268, 221
+  offset: 0, 0
+  index: -1
+manhsau
+  rotate: false
+  xy: 342, 548
+  size: 349, 202
+  orig: 349, 202
+  offset: 0, 0
+  index: -1
+mat-eff
+  rotate: true
+  xy: 291, 344
+  size: 79, 29
+  orig: 79, 29
+  offset: 0, 0
+  index: -1
+power1
+  rotate: false
+  xy: 2, 1616
+  size: 1434, 430
+  orig: 1434, 430
+  offset: 0, 0
+  index: -1
+power2
+  rotate: false
+  xy: 2, 1184
+  size: 1434, 430
+  orig: 1434, 430
+  offset: 0, 0
+  index: -1
+power3
+  rotate: false
+  xy: 1438, 1616
+  size: 1434, 430
+  orig: 1434, 430
+  offset: 0, 0
+  index: -1
+power4
+  rotate: false
+  xy: 2, 752
+  size: 1434, 430
+  orig: 1434, 430
+  offset: 0, 0
+  index: -1
+power5
+  rotate: false
+  xy: 1438, 1184
+  size: 1434, 430
+  orig: 1434, 430
+  offset: 0, 0
+  index: -1
+slash
+  rotate: false
+  xy: 2874, 1400
+  size: 252, 646
+  orig: 252, 646
+  offset: 0, 0
+  index: -1
+tayphai1
+  rotate: false
+  xy: 1708, 825
+  size: 80, 78
+  orig: 80, 78
+  offset: 0, 0
+  index: -1
+tayphai1-eff
+  rotate: false
+  xy: 3668, 1940
+  size: 108, 106
+  orig: 108, 106
+  offset: 0, 0
+  index: -1
+taytrai
+  rotate: true
+  xy: 1438, 756
+  size: 64, 78
+  orig: 64, 78
+  offset: 0, 0
+  index: -1
+taytrai-eff
+  rotate: true
+  xy: 3417, 1779
+  size: 93, 105
+  orig: 93, 105
+  offset: 0, 0
+  index: -1
+thantren
+  rotate: false
+  xy: 3128, 1510
+  size: 188, 258
+  orig: 188, 258
+  offset: 0, 0
+  index: -1
+thatlung
+  rotate: false
+  xy: 2, 2
+  size: 12, 18
+  orig: 12, 18
+  offset: 0, 0
+  index: -1
+thatlung2
+  rotate: true
+  xy: 693, 554
+  size: 22, 38
+  orig: 22, 38
+  offset: 0, 0
+  index: -1
+thatlung3
+  rotate: false
+  xy: 2995, 1225
+  size: 27, 31
+  orig: 27, 31
+  offset: 0, 0
+  index: -1
+thatlung4
+  rotate: false
+  xy: 3318, 1609
+  size: 85, 159
+  orig: 85, 159
+  offset: 0, 0
+  index: -1
+thatlung5
+  rotate: true
+  xy: 3128, 1415
+  size: 93, 156
+  orig: 93, 156
+  offset: 0, 0
+  index: -1

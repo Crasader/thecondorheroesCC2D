@@ -7,43 +7,57 @@
 			<key>Sword.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{618,434},{106,467}}</string>
+				<string>{{618,433},{106,467}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{56,14},{106,467}}</string>
+				<string>{{0,0},{106,467}}</string>
 				<key>sourceSize</key>
-				<string>{222,490}</string>
+				<string>{106,467}</string>
 			</dict>
 
 			<key>cham.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,613},{389,143}}</string>
+				<string>{{0,613},{387,143}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{9,8},{389,143}}</string>
+				<string>{{0,0},{387,143}}</string>
 				<key>sourceSize</key>
-				<string>{405,158}</string>
+				<string>{387,143}</string>
+			</dict>
+
+			<key>mthv.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,757},{342,194}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{4,0},{342,194}}</string>
+				<key>sourceSize</key>
+				<string>{350,194}</string>
 			</dict>
 
 			<key>skill1.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{618,0},{345,433}}</string>
+				<string>{{618,0},{345,432}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{90,17},{345,433}}</string>
+				<string>{{0,0},{345,432}}</string>
 				<key>sourceSize</key>
-				<string>{500,500}</string>
+				<string>{345,432}</string>
 			</dict>
 
 			<key>star2.png</key>
@@ -55,23 +69,23 @@
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,3},{617,612}}</string>
+				<string>{{0,0},{617,612}}</string>
 				<key>sourceSize</key>
-				<string>{617,616}</string>
+				<string>{617,612}</string>
 			</dict>
 
 			<key>tieuhonchuong.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,757},{210,138}}</string>
+				<string>{{343,757},{210,132}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{210,138}}</string>
+				<string>{{0,0},{210,132}}</string>
 				<key>sourceSize</key>
-				<string>{210,138}</string>
+				<string>{210,132}</string>
 			</dict>
 
 		</dict>
@@ -81,7 +95,7 @@
 			<key>format</key>
 			<integer>2</integer>
 			<key>size</key>
-			<string>{964,902}</string>
+			<string>{1024,1024}</string>
 			<key>textureFileName</key>
 			<string>skill.png</string>
 			</dict>

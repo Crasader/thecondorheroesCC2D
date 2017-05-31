@@ -173,7 +173,7 @@
       },
       "pathMainImageSkill1": "UI/Btn_skill/btnHD_skill1_up.png",
       "pathSubImageSkill1": "UI/Btn_skill/btnHD_skill1_down.png",
-      "coolDownSkill2": 39,
+      "coolDownSkill2": 10,
       "durationSkill2": 6,
       "numberOfUseSkill2": 1,
       "skill2Name": {

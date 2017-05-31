@@ -2,7 +2,7 @@
 
 DaCauBongPhap::DaCauBongPhap(string jsonFile, string atlasFile, float scale) :B2Skeleton(jsonFile, atlasFile, scale) {
 	isAdded = false;
-	vel = b2Vec2(SCREEN_SIZE.width * 1.3f / PTM_RATIO, 0);
+	vel = b2Vec2(SCREEN_SIZE.width * 1.5f / PTM_RATIO, 0);
 }
 
 DaCauBongPhap * DaCauBongPhap::create(string jsonFile, string atlasFile, float scale) {

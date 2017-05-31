@@ -19,6 +19,7 @@ bool SelectStageLayer::init(int charId)
 	auto scaleY = screenSize.height / tmxMap->getContentSize().height;
 	tmxMap->setScale(scaleY);
 
+	createCloud();
 
 	scrollView = ui::ScrollView::create();
 	scrollView->setContentSize(Size(screenSize.width, screenSize.height));
@@ -251,4 +252,22 @@ int SelectStageLayer::convertId()
 		break;
 	}
 	return convertValue;
+}
+
+void SelectStageLayer::createCloud() {
+	auto screenSize = Director::getInstance()->getVisibleSize();
+	for (int i = 0; i < 5; i++) {
+		auto _aClound = Sprite::create("cloud.png");
+		_aClound->setScale(screenSize.height / _aClound->getContentSize().height * (0.1f + CCRANDOM_0_1() * 0.05f));
+		_aClound->setAnchorPoint(Vec2(0.0f, 0.0f));
+		_aClound->setPosition(screenSize.width * (1.0f + CCRANDOM_0_1() * 0.5f), screenSize.height * (0.6f + i * 0.04f + CCRANDOM_0_1() * 0.04f));
+		_aClound->setOpacity(220.0f);
+		this->addChild(_aClound, 9);
+
+		MoveBy *_pMove1 = MoveBy::create((15.0f + CCRANDOM_0_1() * 15.0f), Vec2(-screenSize.width * 2.0f, 0.0f));
+		MoveBy *_pMove2 = MoveBy::create(0.0f, Vec2(screenSize.width * 2.0f, 0.0f));
+		Sequence *_pMoveSequence = Sequence::create(_pMove1, _pMove2, NULL);
+		RepeatForever* _pMoveRepeat = RepeatForever::create(_pMoveSequence);
+		_aClound->runAction(_pMoveRepeat);
+	}
 }

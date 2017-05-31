@@ -2,6 +2,8 @@
 #define __HOANG_DUOC_SU_H__
 
 #include "BaseHero.h"
+#include "colong/Rada.h"
+#include "hoangdung/DaCauBongPhap.h"
 #include "manager/AudioManager.h"
 
 class HoangDuocSu : public BaseHero
@@ -15,19 +17,31 @@ public:
 
 protected:
 
+	SkeletonAnimation* effectSkill1;
+	Rada *shield;
 	void fastAndFurious();
 	void doCounterSkill1();
 
+	CCArray* poolSkill2;
+	int indexSkill2 = 0;
+	int numberOfDeadDCTC;
+	list<DaCauBongPhap*> listDCTC;
+	void createDCTC(Point pos, float angle);
+	void slashDCTC();
 	void doCounterSkill2();
 
+	/*Node* follow;
+	float offset;
+	bool isDoneMoving = false;*/
 	void doCounterSkill3();
 	
 	//////////////////////////////////////////////////////////////////////////
 	void createSlash();
-	void runSlash();
+	void runEffectSkill1();
 	void runSlashLand();
 	//////////////////////////////////////////////////////////////////////////
 
+	void createEffect();
 	void addStuff();
 	void createPool();
 

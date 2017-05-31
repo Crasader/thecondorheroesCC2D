@@ -1,0 +1,27 @@
+
+Skill_1_effect.png
+size: 2048,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+CC
+  rotate: false
+  xy: 2, 2
+  size: 366, 318
+  orig: 366, 318
+  offset: 0, 0
+  index: -1
+CC2
+  rotate: false
+  xy: 2, 440
+  size: 2011, 289
+  orig: 2048, 289
+  offset: 37, 0
+  index: -1
+effect_skill1
+  rotate: false
+  xy: 2, 322
+  size: 1247, 116
+  orig: 1247, 116
+  offset: 0, 0
+  index: -1

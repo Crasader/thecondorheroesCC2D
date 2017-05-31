@@ -21,7 +21,7 @@ HoangDung * HoangDung::create(string jsonFile, string atlasFile, float scale)
 		hoangDung->stateMachine = new StateMachine(hoangDung);
 		hoangDung->stateMachine->setCurrentState(MLand);
 
-		hoangDung->setBoxHeight(hoangDung->getBoundingBox().size.height / 2.3f);
+		hoangDung->setBoxHeight(hoangDung->getBoundingBox().size.height / 2.8f);
 
 		//
 		hoangDung->blash = Sprite::create("Animation/CoLong/blash.png");
@@ -82,6 +82,7 @@ void HoangDung::createSkill2Effect()
 {
 	auto scale = this->getTrueRadiusOfHero() * 1.4f / 250.0f;
 	Skill2Effect1 = new SkeletonAnimation("Animation/HoangDung/Skill_2_effect1.json", "Animation/HoangDung/Skill_2_effect1.atlas", scale);
+	Skill2Effect1->autorelease();
 	Skill2Effect1->setPosition(this->getContentSize().width / 2, this->getContentSize().height / 2);
 	Skill2Effect1->update(0.0f);
 	Skill2Effect1->setVisible(false);
@@ -91,6 +92,7 @@ void HoangDung::createSkill2Effect()
 	this->addChild(Skill2Effect1, -1);
 
 	Skill2Effect2 = new SkeletonAnimation("Animation/HoangDung/Skill_2_effect2.json", "Animation/HoangDung/Skill_2_effect2.atlas", scale);
+	Skill2Effect2->autorelease();
 	Skill2Effect2->setPosition(this->getContentSize().width / 2, this->getContentSize().height / 2);
 	Skill2Effect2->update(0.0f);
 	Skill2Effect2->setVisible(false);
@@ -100,6 +102,7 @@ void HoangDung::createSkill2Effect()
 	this->addChild(Skill2Effect2, 1);
 
 	Skill2Effect3 = new SkeletonAnimation("Animation/HoangDung/Skill_2_effect3.json", "Animation/HoangDung/Skill_2_effect3.atlas", scale);
+	Skill2Effect3->autorelease();
 	Skill2Effect3->setPosition(this->getContentSize().width, this->getContentSize().height);
 	Skill2Effect3->update(0.0f);
 	Skill2Effect3->setVisible(false);
@@ -247,7 +250,7 @@ void HoangDung::slashDaCauBongPhap()
 	this->schedule([&](float dt) {
 		checkDurationSkill3++;
 
-		if (checkDurationSkill3 >= getDurationSkill3() * 60) {
+		if (!isDoneDuration3 && checkDurationSkill3 >= getDurationSkill3() * 60) {
 			setIsDoneDuration3(true);
 		}
 
@@ -353,6 +356,12 @@ void HoangDung::run()
 		getSmokeRun()->setVisible(true);
 	}
 
+	if (!isUseSpecial) {
+		setIsDoneDuration1(false);
+		doCounterSkill1();
+		isUseSpecial = true;
+	}
+		
 	//log("run");
 }
 
@@ -505,6 +514,7 @@ void HoangDung::listener()
 
 		else if (strcmp(getCurrent()->animation->name, "revive") == 0) {
 			isReviveAfterDead = true;
+			isUseSpecial = false;
 			getReviveMe()->setVisible(false);
 			getFSM()->changeState(MLand);
 			auto gameLayer = (GameScene*) this->getParent();
@@ -516,9 +526,6 @@ void HoangDung::listener()
 			hud->getBtnSkill_1()->getMain()->setVisible(false);
 
 			noActive = false;
-
-			setIsDoneDuration1(false);
-			doCounterSkill1();
 		}
 
 

@@ -30,6 +30,7 @@ protected:
 	void createSkill2Effect();
 
 	bool isReviveAfterDead = false;
+	bool isUseSpecial = true;
 
 	CCArray* poolSkill2;
 	int indexSkill2 = 0;

@@ -67,7 +67,7 @@ void DuongQua::slashToanChanKiemPhap()
 	this->schedule([&](float dt) {
 		checkDurationSkill1++;
 
-		if (checkDurationSkill1 >= getDurationSkill1() * 60) {
+		if (!isDoneDuration1 && checkDurationSkill1 >= getDurationSkill1() * 60) {
 			setIsDoneDuration1(true);
 		}
 
@@ -164,6 +164,7 @@ void DuongQua::createSpiritHole()
 {
 	auto scale = this->getTrueRadiusOfHero() * 1.4f / 400;  // 400: height of spine
 	spiritHole = new SkeletonAnimation("Effect/skill3.json", "Effect/skill3.atlas", scale);
+	spiritHole->autorelease();
 	spiritHole->setPosition(this->getContentSize().width / 2 - 1.5f * this->getTrueRadiusOfHero(), 1.5f * this->getTrueRadiusOfHero());
 	spiritHole->update(0.0f);
 	spiritHole->setVisible(false);
@@ -248,12 +249,14 @@ void DuongQua::createSlash()
 {
 	auto scale = this->getTrueRadiusOfHero() * 1.8f / 400;
 	slash = SkeletonAnimation::createWithFile("Animation/DuongQua/slash2.json", "Animation/DuongQua/slash2.atlas", scale);
+	slash->autorelease();
 	slash->setPosition(this->getContentSize().width / 2 + this->getTrueRadiusOfHero(), this->getTrueRadiusOfHero() * 0.7f);
 	slash->update(0.0f);
 	slash->setVisible(false);
 	this->addChild(slash);
 
 	slashLand = SkeletonAnimation::createWithFile("Animation/DuongQua/slash1.json", "Animation/DuongQua/slash1.atlas", scale);
+	slashLand->autorelease();
 	slashLand->setPosition(this->getContentSize().width / 2 + this->getTrueRadiusOfHero() * 0.3f, this->getTrueRadiusOfHero() * 0.7f);
 	slashLand->update(0.0f);
 	slashLand->setVisible(false);

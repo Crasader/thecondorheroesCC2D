@@ -219,16 +219,16 @@
       "avatarLoadingPath": "UI/Loading/HDS.png",
       "isLocked": true,
       "coolDownSkill1": 37,
-      "durationSkill1": 6,
-      "numberOfUseSkill1": 1,
+      "durationSkill1": 0.27,
+      "numberOfUseSkill1": 5,
       "skill1Name": {
         "en": "God of wind",
         "vi": "Toan Phong Thoai Phap"
       },
       "pathMainImageSkill1": "UI/Btn_skill/btnHD_skill1_up.png",
       "pathSubImageSkill1": "UI/Btn_skill/btnHD_skill1_down.png",
-      "coolDownSkill2": 30,
-      "durationSkill2": 2.5,
+      "coolDownSkill2": 39,
+      "durationSkill2": 6,
       "numberOfUseSkill2": 1,
       "skill2Name": {
         "en": "One shot",
@@ -237,7 +237,7 @@
       "pathMainImageSkill2": "UI/Btn_skill/btnHD_skill2_up.png",
       "pathSubImageSkill2": "UI/Btn_skill/btnHD_skill2_down.png",
       "coolDownSkill3": 40,
-      "durationSkill3": 2.5,
+      "durationSkill3": 6,
       "numberOfUseSkill3": 1,
       "skill3Name": {
         "en": "Super Sonic wave",

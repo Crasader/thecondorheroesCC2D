@@ -131,6 +131,7 @@ private:
 	void createDuongQua(string path_Json, string path_Atlas);
 	void createCoLong(string path_Json, string path_Atlas);
 	void createHoangDung(string path_Json, string path_Atlas);
+	void createHoangDuocSu(string path_Json, string path_Atlas);
 	void createQuachTinh(string path_Json, string path_Atlas);
 	void createEagle(Point position);
 	void heroGetOffEagle();
@@ -215,6 +216,7 @@ private:
 
 	// touch listener
 	bool onTouchBegan(Touch *touch, Event *unused_event);
+	//void onTouchMoved(Touch *touch, Event *unused_event);
 	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
 
 public:

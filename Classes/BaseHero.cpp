@@ -139,12 +139,19 @@ void BaseHero::addStuff()
 {
 	auto scale = this->getScale() / 3;
 	activeSkill = new SkeletonAnimation("Effect/active_skill_eff.json", "Effect/active_skill_eff.atlas", scale * 0.75f);
+	activeSkill->autorelease();
 	slashBreak = new SkeletonAnimation("Effect/slash-break.json", "Effect/slash-break.atlas", scale / 2);
+	slashBreak->autorelease();
 	smokeJumpX2 = new SkeletonAnimation("Effect/smoke-jumpx2.json", "Effect/smoke-jumpx2.atlas", scale / 2);
+	smokeJumpX2->autorelease();
 	smokeLand = new SkeletonAnimation("Effect/smoke-landing.json", "Effect/smoke-landing.atlas", scale / 2);
+	smokeLand->autorelease();
 	smokeRun = new SkeletonAnimation("Effect/smoke-run.json", "Effect/smoke-run.atlas", scale);
+	smokeRun->autorelease();
 	reviveMe = new SkeletonAnimation("Effect/revive.json", "Effect/revive.atlas", scale / 2);
+	reviveMe->autorelease();
 	suctionCoin = new SkeletonAnimation("Effect/effect_magnet.json", "Effect/effect_magnet.atlas", scale * 1.43f);
+	suctionCoin->autorelease();
 
 	activeSkill->setVisible(false);		activeSkill->update(0.0f);
 	slashBreak->setVisible(false);		slashBreak->update(0.0f);

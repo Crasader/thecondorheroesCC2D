@@ -296,11 +296,14 @@ void CoLong::createRada(b2World *p_pWorld) {
 void CoLong::createSlash() {
 	auto scale = this->getTrueRadiusOfHero() * 1.8f / 400;  // 400: hieght of spine
 	slash = SkeletonAnimation::createWithFile("Animation/CoLong/slash4.json", "Animation/CoLong/slash4.atlas", scale);
+	slash->autorelease();
 	slash->setPosition(this->getContentSize().width / 2 + this->getTrueRadiusOfHero(), this->getTrueRadiusOfHero() * 0.7f);
 	slash->update(0.0f);
 	slash->setVisible(false);
 	this->addChild(slash);
+
 	slashLand = SkeletonAnimation::createWithFile("Animation/CoLong/slash3.json", "Animation/CoLong/slash3.atlas", scale);
+	slashLand->autorelease();
 	slashLand->setPosition(this->getContentSize().width / 2 + this->getTrueRadiusOfHero() * 0.3f, this->getTrueRadiusOfHero() * 0.7f);
 	slashLand->update(0.0f);
 	slashLand->setVisible(false);

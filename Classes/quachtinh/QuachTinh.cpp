@@ -273,6 +273,7 @@ void QuachTinh::createPool()
 	}
 
 	songLong = SongLong::create("Animation/QuachTinh/Dragon.json", "Animation/QuachTinh/Dragon.atlas", SCREEN_SIZE.height / 1.7f / 800);
+	songLong->autorelease();
 	songLong->setPosition(this->getPosition());
 
 	auto gameLayer = (GameScene*) this->getParent();

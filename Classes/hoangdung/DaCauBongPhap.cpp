@@ -7,10 +7,9 @@ DaCauBongPhap::DaCauBongPhap(string jsonFile, string atlasFile, float scale) :B2
 
 DaCauBongPhap * DaCauBongPhap::create(string jsonFile, string atlasFile, float scale) {
 	DaCauBongPhap *dcbp = new DaCauBongPhap(jsonFile, atlasFile, scale);
-	dcbp->setTag(TAG_SLASH);
+	dcbp->setTag(TAG_DA_CAU_BONG_PHAT);
 	dcbp->setAnimation(0, "animation", true);
 	dcbp->update(0.0f);
-	dcbp->isDie = false;
 	dcbp->setB2Body(nullptr);
 	return dcbp;
 }

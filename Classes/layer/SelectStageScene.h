@@ -30,8 +30,9 @@ private:
 	Sprite *character_point;
 	Sprite* bossSprite(int order);
 	void doNothing();
-	void onExit();
 	int convertId();
+
+	void createCloud();
 };
 
 #endif // __SELECT_STAGE_SCENE_H__

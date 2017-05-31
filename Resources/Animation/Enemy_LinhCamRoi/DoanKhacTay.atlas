@@ -1,0 +1,181 @@
+
+DoanKhacTay.png
+size: 2048,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+caidau
+  rotate: true
+  xy: 803, 209
+  size: 122, 172
+  orig: 122, 172
+  offset: 0, 0
+  index: -1
+caidau2
+  rotate: false
+  xy: 1649, 338
+  size: 122, 172
+  orig: 122, 172
+  offset: 0, 0
+  index: -1
+canhtay1
+  rotate: false
+  xy: 1349, 259
+  size: 56, 72
+  orig: 56, 72
+  offset: 0, 0
+  index: -1
+canhtay2
+  rotate: false
+  xy: 217, 58
+  size: 79, 86
+  orig: 79, 86
+  offset: 0, 0
+  index: -1
+chansau1
+  rotate: true
+  xy: 1162, 243
+  size: 88, 185
+  orig: 88, 185
+  offset: 0, 0
+  index: -1
+chantruoc1
+  rotate: true
+  xy: 977, 231
+  size: 100, 183
+  orig: 100, 183
+  offset: 0, 0
+  index: -1
+chuoihat
+  rotate: true
+  xy: 217, 2
+  size: 54, 50
+  orig: 54, 50
+  offset: 0, 0
+  index: -1
+daylung
+  rotate: true
+  xy: 688, 489
+  size: 21, 86
+  orig: 21, 86
+  offset: 0, 0
+  index: -1
+khuyentai
+  rotate: true
+  xy: 1773, 339
+  size: 15, 26
+  orig: 15, 26
+  offset: 0, 0
+  index: -1
+mau1
+  rotate: false
+  xy: 2, 146
+  size: 338, 338
+  orig: 338, 338
+  offset: 0, 0
+  index: -1
+shadow
+  rotate: false
+  xy: 624, 184
+  size: 126, 18
+  orig: 126, 18
+  offset: 0, 0
+  index: -1
+slash1
+  rotate: false
+  xy: 342, 307
+  size: 280, 177
+  orig: 280, 177
+  offset: 0, 0
+  index: -1
+slash2
+  rotate: false
+  xy: 342, 128
+  size: 280, 177
+  orig: 280, 177
+  offset: 0, 0
+  index: -1
+slash3
+  rotate: true
+  xy: 624, 204
+  size: 280, 177
+  orig: 280, 177
+  offset: 0, 0
+  index: -1
+slash4
+  rotate: false
+  xy: 803, 333
+  size: 280, 177
+  orig: 280, 177
+  offset: 0, 0
+  index: -1
+slash5
+  rotate: false
+  xy: 1085, 333
+  size: 280, 177
+  orig: 280, 177
+  offset: 0, 0
+  index: -1
+slash6
+  rotate: false
+  xy: 1367, 333
+  size: 280, 177
+  orig: 280, 177
+  offset: 0, 0
+  index: -1
+taysau2-1
+  rotate: false
+  xy: 2005, 470
+  size: 41, 40
+  orig: 41, 40
+  offset: 0, 0
+  index: -1
+taysau2-2
+  rotate: false
+  xy: 298, 108
+  size: 37, 36
+  orig: 37, 36
+  offset: 0, 0
+  index: -1
+taytruoc
+  rotate: false
+  xy: 624, 136
+  size: 52, 46
+  orig: 52, 46
+  offset: 0, 0
+  index: -1
+than
+  rotate: false
+  xy: 1913, 381
+  size: 90, 129
+  orig: 90, 129
+  offset: 0, 0
+  index: -1
+vataoduoi
+  rotate: false
+  xy: 1773, 356
+  size: 138, 154
+  orig: 138, 154
+  offset: 0, 0
+  index: -1
+vataosau
+  rotate: true
+  xy: 2, 18
+  size: 29, 91
+  orig: 29, 91
+  offset: 0, 0
+  index: -1
+vataotruoc
+  rotate: true
+  xy: 2, 49
+  size: 95, 213
+  orig: 95, 213
+  offset: 0, 0
+  index: -1
+vukhi
+  rotate: true
+  xy: 2, 486
+  size: 24, 684
+  orig: 24, 684
+  offset: 0, 0
+  index: -1

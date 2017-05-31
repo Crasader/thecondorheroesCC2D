@@ -296,6 +296,21 @@ MyPool::MyPool(int maxPool, int tag) : MyPool()
 		}
 		break;
 	}
+	case TAG_ENEMY_LINHCAMROI: {
+
+		Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+		pool = new Ref*[maxPool];
+
+		for (int i = 0; i < maxPool; i++) {
+			auto scaleOfEnemy = SCREEN_SIZE.height / 4.0f / (406);
+			auto enemy = EnemyLinhCamRoi::create("Animation/Enemy_LinhCamRoi/DoanKhacTay", scaleOfEnemy);
+			//coin->runAnimation();
+
+			enemy->setTag(tag);
+			pool[i] = enemy;
+		}
+		break;
+	}
 	default:
 		break;
 	}

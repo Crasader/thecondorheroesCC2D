@@ -15,7 +15,6 @@ QuachTinh * QuachTinh::create(string jsonFile, string atlasFile, float scale)
 	QuachTinh* quachTinh = new QuachTinh(jsonFile, atlasFile, scale);
 	if (quachTinh && quachTinh->init())
 	{
-		quachTinh->autorelease();
 		quachTinh->setTag(TAG_HERO);
 
 		quachTinh->update(0.0f);
@@ -31,7 +30,7 @@ QuachTinh * QuachTinh::create(string jsonFile, string atlasFile, float scale)
 		quachTinh->blash->setPosition(quachTinh->getContentSize() / 2);
 		quachTinh->blash->setVisible(false);
 		quachTinh->addChild(quachTinh->blash);
-
+		quachTinh->autorelease();
 		return quachTinh;
 	}
 	else
@@ -107,8 +106,8 @@ void QuachTinh::createRock(float posX)
 void QuachTinh::landRocks()
 {
 	this->schedule([&](float dt) {
-		if (checkDurationSkill1 % 8 == 0) {		// every 0.25 second
-			float width = this->getPositionX() + SCREEN_SIZE.width * random(0.0f, 0.3f);
+		if (checkDurationSkill1 % 5 == 0) {		// every 0.25 second
+			float width = this->getPositionX() + SCREEN_SIZE.width * random(0.0f, 0.4f);
 			createRock(width);
 		}
 
@@ -191,7 +190,7 @@ void QuachTinh::doCounterSkill3()
 	songLong->addAnimation(0, "skill3", true);
 	songLong->setToSetupPose();
 	songLong->changeBodyCategoryBits(BITMASK_SWORD);
-
+	
 	clearTracks();
 	addAnimation(0, "skill3", false);
 	setToSetupPose();
@@ -286,9 +285,6 @@ void QuachTinh::run()
 	clearTracks();
 	addAnimation(0, "run", true);
 	setToSetupPose();
-
-	if (getBloodScreen()->isVisible() && health > 1)
-		getBloodScreen()->setVisible(false);
 
 	if (!getSmokeRun()->isVisible()) {
 		getSmokeRun()->setVisible(true);

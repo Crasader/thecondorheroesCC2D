@@ -6,6 +6,7 @@
 #include "ui/CocosGUI.h"
 #include <spine/spine-cocos2dx.h>
 #include "thirdsdkhelper\AdmobHelper.h"
+#include "thirdsdkhelper\VungleHelper.h"
 
 USING_NS_CC;
 using namespace std;
@@ -77,6 +78,9 @@ public:
 	bool init(int score, int gold);
 	static DialogStageClear* create(int score, int gold);
 	void effect();
+
+private:
+	void shareFB();
 };
 
 class DialogOverGame : public DialogStageClear

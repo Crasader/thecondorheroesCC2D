@@ -125,6 +125,8 @@ void EnemyChong1::initBoxPhysic(b2World * world, Point pos)
 	fixtureDef.restitution = 0.0f;
 	fixtureDef.shape = &shape;
 	fixtureDef.isSensor = true;
+	fixtureDef.filter.categoryBits = 0;
+	
 
 
 

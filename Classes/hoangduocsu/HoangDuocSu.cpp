@@ -43,6 +43,8 @@ HoangDuocSu * HoangDuocSu::create(string jsonFile, string atlasFile, float scale
 void HoangDuocSu::initCirclePhysic(b2World * world, Point pos)
 {
 	BaseHero::initCirclePhysic(world, pos);
+
+	// rada here
 }
 
 void HoangDuocSu::initSwordPhysic(b2World * world, Point position)

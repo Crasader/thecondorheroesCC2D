@@ -8,7 +8,7 @@ BaseHero::BaseHero(string jsonFile, string atlasFile, float scale) : B2Skeleton(
 {
 	bloodScreen = Sprite::create("red-screen.png");
 	bloodScreen->setScaleX(SCREEN_SIZE.width * 1.1f / bloodScreen->getContentSize().width);
-	bloodScreen->setScaleY(SCREEN_SIZE.height / bloodScreen->getContentSize().height);
+	bloodScreen->setScaleY(SCREEN_SIZE.height * 1.1f / bloodScreen->getContentSize().height);
 	bloodScreen->setVisible(false);
 
 	move_vel = SCREEN_SIZE.width / PTM_RATIO / 2.3f;

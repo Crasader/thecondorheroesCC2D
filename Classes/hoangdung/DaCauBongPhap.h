@@ -13,7 +13,6 @@ public:
 	void initCirclePhysic(b2World *world, Point pos);
 	void updateMe();
 protected:
-	CC_SYNTHESIZE(bool, isCollide, IsCollide);
 	CC_SYNTHESIZE(bool, isAdded, IsAdded);
 	CC_SYNTHESIZE(b2Vec2, vel, Vel);
 	

@@ -33,10 +33,14 @@
 #include "Hud.h"
 #include "EnemyLinhTenThang.h"
 #include "EnemyLinhTenXien.h"
+#include "thirdsdkhelper\VungleHelper.h"
 
 
-
+#ifdef SDKBOX_ENABLED
+class GameScene : public cocos2d::Layer, public sdkbox::VungleListener
+#else
 class GameScene : public cocos2d::Layer
+#endif
 {
 public:
 	
@@ -155,6 +159,7 @@ private:
 	void createEnemyLinhCamGiao2(MyLayer * layer, Vec2 pos);
 	void createEnemyLinhTenThang(MyLayer * layer, Vec2 pos);
 	void createEnemyLinhTenXien(MyLayer * layer, Vec2 pos);
+	void createEnemyLinhCamRoi(MyLayer * layer, Vec2 pos);
 	void creatBoss();
 
 
@@ -257,6 +262,15 @@ public:
 
 	void jump();
 	void resumeAfterTut(int caseTut);
+
+#ifdef SDKBOX_ENABLED
+
+	 void onVungleAdViewed(bool isComplete);
+	 void onVungleCacheAvailable();
+	 void onVungleStarted();
+	 void onVungleFinished();
+	 void onVungleAdReward(const std::string& name);
+#endif 
 };
 
 #endif // __GAME_SCENE_H__

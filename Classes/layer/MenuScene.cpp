@@ -32,7 +32,7 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 	Vec2 _v2Origin = Director::getInstance()->getVisibleOrigin();
 	this->setPosition(_v2Origin);
 
-	m_pBuyPackConfirmBackground = LayerColor::create(Color4B(0, 0, 0, 170));
+	m_pBuyPackConfirmBackground = LayerColor::create(Color4B(0, 0, 0, 220));
 	m_pBuyPackConfirmBackground->setVisible(false);
 	this->addChild(m_pBuyPackConfirmBackground, 10);
 
@@ -1191,12 +1191,7 @@ void MenuLayer::showBlurScreen() {
 	}
 	m_pBlurScreen->setVisible(true);
 
-	Sprite *_pBlurBlackLayer = Sprite::create("UI/toast.png");
-	_pBlurBlackLayer->setScale(m_pBlurScreen->getContentSize().width / _pBlurBlackLayer->getContentSize().width,
-		m_pBlurScreen->getContentSize().height / _pBlurBlackLayer->getContentSize().height);
-	_pBlurBlackLayer->setAnchorPoint(Vec2(0.5f, 0.5f));
-	_pBlurBlackLayer->setPosition(m_pBlurScreen->getContentSize().width * 0.5f, m_pBlurScreen->getContentSize().height * 0.5f);
-	_pBlurBlackLayer->setOpacity(150.0f);
+	LayerColor *_pBlurBlackLayer = LayerColor::create(Color4B(0, 0, 0, 220));
 	m_pBlurScreen->addChild(_pBlurBlackLayer, 0);
 }
 

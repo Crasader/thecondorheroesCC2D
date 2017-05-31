@@ -20,6 +20,7 @@ Item * Item::create(string frameName, Item_type type, Point pos)
 	item->initWithFile(frameName);
 	item->typeItem = type;
 	item->bubble = Sprite::create("item/bubble_item.png");
+	item->bubble->setScale(item->getContentSize().height * 1.3f / item->bubble->getContentSize().height);
 	item->bubble->setPosition(item->getContentSize() / 2);
 	item->addChild(item->bubble);
 	item->setPosition(pos);
@@ -62,6 +63,8 @@ void Item::updateMe(BaseHero *hero)
 					auto parentGameScene = (GameScene*) this->getParent();
 
 					if (typeItem == Item_type::HEALTH && hero->getHealth() < hero->getMaxHealth()) {
+						if (hero->getHealth() == 1)
+							hero->getBloodScreen()->setVisible(false);
 						hero->setHealth(hero->getHealth() + 1);
 						parentGameScene->updateBloodBar(hero->getHealth() - 1, true);
 						if (REF->getSelectedHero() == 4) {	// QT

@@ -20,7 +20,6 @@ using namespace network;
 
 class MenuLayer : public Layer {
 public:
-	static Scene * createScene();
 	virtual bool init(bool p_bOnlySelectStage);
 	void update(float p_fDelta);
 	static MenuLayer* create(bool p_bOnlySelectStage);

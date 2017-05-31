@@ -19,6 +19,7 @@
 #include "EnemyLinhCamGiao2.h"
 #include "EnemyLinhTenThang.h"
 #include "EnemyLinhTenXien.h"
+#include "EnemyLinhCamRoi.h"
 
 USING_NS_CC;
 

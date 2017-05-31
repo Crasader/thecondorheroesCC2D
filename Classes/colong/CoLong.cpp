@@ -456,9 +456,6 @@ void CoLong::run() {
 		addAnimation(0, "run", true);
 		setToSetupPose();
 
-		if (getBloodScreen()->isVisible() && health > 1)
-			getBloodScreen()->setVisible(false);
-
 		if (!getSmokeRun()->isVisible()) {
 			getSmokeRun()->setVisible(true);
 		}

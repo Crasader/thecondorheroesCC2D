@@ -153,7 +153,7 @@ void EnemyBoss3::doAttack2()
 			//if (boss->getLevelBoss() == 1) {
 
 
-			if (this->getControlState() >= 50) {
+			if (this->getControlState() >= 30) {
 				this->changeState(new BossStupiding());
 				this->unschedule("bossattack2");
 			}
@@ -211,6 +211,10 @@ void EnemyBoss3::listener()
 	this->setCompleteListener([&](int trackIndex, int loopCount) {
 		if (getCurrent()) {
 			if ((strcmp(getCurrent()->animation->name, "attack2") == 0 && loopCount == 1)) {
+				this->idle();
+				setIsNodie(false);
+			}
+			if ((strcmp(getCurrent()->animation->name, "attack3") == 0 && loopCount == 1)) {
 				this->idle();
 				setIsNodie(false);
 			}

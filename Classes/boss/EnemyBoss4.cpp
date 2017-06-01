@@ -1,5 +1,7 @@
 #include "EnemyBoss4.h"
 #include "manager\AudioManager.h"
+#include "layer\GameScene.h"
+#include "BaseHero.h"
 
 EnemyBoss4::EnemyBoss4(string jsonFile, string atlasFile, float scale) :EnemyBoss3(jsonFile, atlasFile, scale)
 {
@@ -25,6 +27,10 @@ void EnemyBoss4::attack4()
 	this->clearTracks();
 	this->setAnimation(0,"attack4",false);
 	this->setToSetupPose();
+	this->scheduleOnce([&](float dt) {
+		auto hero = ((GameScene*)this->getParent())->getHero();
+		hero->silence();
+	}, 0.1f,"bossattack4");
 }
 
 void EnemyBoss4::die()
@@ -32,7 +38,7 @@ void EnemyBoss4::die()
 	float  magicNumber = CCRANDOM_0_1();
 	
 	if (!isDie && !isNodie) {
-		if (magicNumber < 0.4f) {
+		if (magicNumber < 0.6f) {
 			health--;
 			if (health > 0) {
 				this->playSoundHit();
@@ -77,7 +83,7 @@ void EnemyBoss4::doDefend()
 {
 	this->clearTracks();
 	this->setAnimation(0, "defend", false);
-	this->isNodie = true;
+	//this->isNodie = true;
 }
 
 void EnemyBoss4::doAttack2()
@@ -201,10 +207,6 @@ void EnemyBoss4::listener()
 					this->idle();
 				}
 
-			}
-			else if ((strcmp(getCurrent()->animation->name, "defend") == 0 && loopCount == 1)) {
-				setIsNodie(false);
-				this->idle();
 			}
 		}
 	});

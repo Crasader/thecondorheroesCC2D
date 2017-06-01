@@ -60,7 +60,6 @@ void BossAttacking1::enter(EnemyBoss1 * boss)
 	//boss->setControlAttack(rand() % 3 + 1);
 	boss->setControlAttack(0);
 	log("attack1");
-	boss->setIsNodie(true);
 	boss->doAttack1();
 }
 

@@ -2345,7 +2345,7 @@ void GameScene::resumeGame()
 
 void GameScene::restartGame()
 {
-	this->removeAllChildrenWithCleanup(true);
+	//this->removeAllChildrenWithCleanup(true);
 	Director::getInstance()->replaceScene(LoadingLayer::createScene(stage, map, charId));
 }
 

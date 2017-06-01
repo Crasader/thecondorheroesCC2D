@@ -127,7 +127,7 @@ public:
 	void deSelectEnemyBySkill3();							//DuongPM edited
 
 	void killThemAll();
-
+	void silence();
 	
 	void createMapItem();
 	void updateMapItem();

@@ -1655,6 +1655,9 @@ int MenuLayer::calTimeFromString(string p_sInputString) {
 }
 
 void MenuLayer::initDailyRewardBoard() {
+	if (REF->getDailyRewardCounter() > 6) {
+		return;
+	}
 	time_t _nLastDailyRewardTime = REF->getLastDailyRewardTime();
 	time_t _nCurrentTimeFromGoogle = m_nCurrentTimeFromGoogle;
 	tm *_pCurrentTimeFromGoogle = localtime(&_nCurrentTimeFromGoogle);
@@ -1935,9 +1938,6 @@ void MenuLayer::buttonCloseShopHandle() {
 void MenuLayer::buttonDailyRewardHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	int _nDailyRewardCounter = REF->getDailyRewardCounter();
-	if (_nDailyRewardCounter > 6) {
-		return;
-	}
 
 	JSQUEST->readDailyReward(_nDailyRewardCounter);
 	string a = JSQUEST->getDailyRewardType();

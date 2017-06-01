@@ -1,4 +1,5 @@
 #include "BaseHero.h"
+#include "layer\GameScene.h"
 #include "manager\RefManager.h"
 #include "manager\AudioManager.h"
 
@@ -422,6 +423,13 @@ void BaseHero::killThemAll()
 	});
 
 	blash->runAction(Sequence::create(scale, hide, scale->reverse(), nullptr));
+}
+
+void BaseHero::silence()
+{
+	health--;
+	auto gameLayer = (GameScene*) this->getParent();
+	gameLayer->silence();
 }
 
 void BaseHero::createMapItem()

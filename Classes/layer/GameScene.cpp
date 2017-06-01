@@ -676,7 +676,7 @@ void GameScene::update(float dt)
 				break;
 
 			case 3:
-				hero->stopSkillAction(false, true, false);
+				hero->stopSkillAction(true, false, true);
 				break;
 
 			default:	// 1 and 4
@@ -685,6 +685,12 @@ void GameScene::update(float dt)
 			}
 
 			if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
+
+				if (haveboss && posXComingBoss < 0) {	// means: hero pass over posXComingBoss
+					overGame();
+					return;
+				}
+
 				hud->hideButton();
 				hud->moveCallBirdToCenterScreen(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 				hero->setOnGround(false);
@@ -1916,7 +1922,7 @@ void GameScene::updateHUD(float dt)
 {
 
 	if (hero->getCurrentRunDis() - hero->getPreRunDis() > 10.0f) {
-		hero->setScore(hero->getScore() + 15);
+		hero->setScore(hero->getScore() + 15 * hero->getScoreRatio());
 		hero->setPreRunDis(hero->getCurrentRunDis());
 	}
 
@@ -2336,6 +2342,25 @@ void GameScene::restartGame()
 {
 	this->removeAllChildrenWithCleanup(true);
 	Director::getInstance()->replaceScene(LoadingLayer::createScene(stage, map, charId));
+}
+
+void GameScene::silence()
+{
+	hud->silence();
+
+	if (!hero->getIsDoneDuration1()) {
+		hero->stopSkillAction(true, false, false);
+	}
+
+	if (!hero->getIsDoneDuration2()) {
+		hero->stopSkillAction(false, true, false);
+	}
+
+	if (!hero->getIsDoneDuration3()) {
+		hero->stopSkillAction(false, false, true);
+	}
+
+	updateBloodBar(hero->getHealth(), false);
 }
 
 void GameScene::loadPosAndTag()

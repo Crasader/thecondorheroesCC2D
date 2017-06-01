@@ -13,6 +13,7 @@ public:
 
 protected:
 	CC_SYNTHESIZE(bool, isAdded, IsAdded);
+	CC_SYNTHESIZE(float, radius, Radius);
 	CC_SYNTHESIZE(b2Vec2, vel, Vel);
 	
 };

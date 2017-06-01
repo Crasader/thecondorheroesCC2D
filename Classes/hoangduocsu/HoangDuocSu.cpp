@@ -29,6 +29,8 @@ HoangDuocSu * HoangDuocSu::create(string jsonFile, string atlasFile, float scale
 		hds->blash->setVisible(false);
 		hds->addChild(hds->blash);
 
+		hds->scoreRatio = 2;
+
 		hds->autorelease();
 		return hds;
 	}
@@ -90,7 +92,7 @@ void HoangDuocSu::fastAndFurious()
 	this->schedule([&](float dt) {
 		checkDurationSkill1++;
 
-		this->getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel() * 6.5f, 0.0f));
+		this->getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel() * 5.0f, 0.0f));
 
 		if (checkDurationSkill1 >= getDurationSkill1() * 35) {
 			effectSkill1->setVisible(false);
@@ -138,7 +140,7 @@ void HoangDuocSu::createDCTC(Point pos, float angle)
 
 	listDCTC.push_back(dctc);
 
-	if (indexSkill2 == 6) indexSkill2 = 0;
+	if (indexSkill2 == 12) indexSkill2 = 0;
 }
 
 void HoangDuocSu::slashDCTC()
@@ -278,11 +280,11 @@ void HoangDuocSu::createPool()
 	follow = gameLayer->getFollow();
 	offset = SCREEN_SIZE.height / 32;*/
 
-	poolSkill2 = CCArray::createWithCapacity(6);
+	poolSkill2 = CCArray::createWithCapacity(12);
 	poolSkill2->retain();
 
 	auto scale = getTrueRadiusOfHero() / 1.5f / 128;
-	for (int i = 0; i < 6; ++i) {
+	for (int i = 0; i < 12; ++i) {
 		auto dctc = DaCauBongPhap::create("Animation/HoangDuocSu/Skill_2_effect2.json", 
 			"Animation/HoangDuocSu/Skill_2_effect2.atlas", scale);
 		poolSkill2->addObject(dctc);
@@ -347,9 +349,10 @@ void HoangDuocSu::die()
 void HoangDuocSu::attackNormal()
 {
 	if (!isDoneDuration2) {
-		createDCTC(getBoneLocation("bone58"), 20);
-		createDCTC(getBoneLocation("bone58"), 0);
-		createDCTC(getBoneLocation("bone58"), -20);
+		createDCTC(getBoneLocation("bone58"), 15);
+		createDCTC(getBoneLocation("bone58"), 5);
+		createDCTC(getBoneLocation("bone58"), -5);
+		createDCTC(getBoneLocation("bone58"), -15);
 	}
 
 	BaseHero::attackNormal();
@@ -383,9 +386,10 @@ void HoangDuocSu::attackNormal()
 void HoangDuocSu::attackLanding()
 {
 	if (!isDoneDuration2) {
-		createDCTC(getBoneLocation("bone58"), 20);
-		createDCTC(getBoneLocation("bone58"), 0);
-		createDCTC(getBoneLocation("bone58"), -20);
+		createDCTC(getBoneLocation("bone58"), 15);
+		createDCTC(getBoneLocation("bone58"), 5);
+		createDCTC(getBoneLocation("bone58"), -5);
+		createDCTC(getBoneLocation("bone58"), -15);
 	}
 	BaseHero::attackLanding();
 	changeSwordCategoryBitmask(BITMASK_SWORD);

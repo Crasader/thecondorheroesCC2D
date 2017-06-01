@@ -187,7 +187,7 @@ void QuachTinh::doCounterSkill3()
 {
 	songLong->setVisible(true);
 	songLong->clearTracks();
-	songLong->addAnimation(0, "skill3", true);
+	songLong->addAnimation(0, "animation", true);
 	songLong->setToSetupPose();
 	songLong->changeBodyCategoryBits(BITMASK_SWORD);
 	
@@ -272,7 +272,7 @@ void QuachTinh::createPool()
 		poolSkill2->addObject(tl);
 	}
 
-	songLong = SongLong::create("Animation/QuachTinh/Dragon.json", "Animation/QuachTinh/Dragon.atlas", SCREEN_SIZE.height / 1.7f / 800);
+	songLong = SongLong::create("Animation/QuachTinh/Dragon.json", "Animation/QuachTinh/Dragon.atlas", SCREEN_SIZE.height / 2.3f / 800);
 	songLong->autorelease();
 	songLong->setPosition(this->getPosition());
 

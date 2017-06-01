@@ -1,73 +1,98 @@
 {
-    "android": {
-        "GoogleAnalytics": {
-            "trackingCode": "UA-99018383-1"
-        }, 
-        "Vungle": {
-            "id": "59256bb2048cabca38000fb7", 
-            "ads": {
-                "reward": {
-                    "sound": true, 
-                    "backbutton": true, 
-                    "incentivized": true
-                }, 
-                "video": {
-                    "sound": true, 
-                    "backbutton": false
-                }
-            }
-        }, 
-        "AdMob": {
-            "test": false, 
-            "ads": {
-                "gameover": {
-                    "type": "interstitial", 
-                    "id": "ca-app-pub-4291038556071828/4273788997"
-                }, 
-                "home": {
-                    "width": 0, 
-                    "type": "banner", 
-                    "id": "ca-app-pub-4291038556071828/2797055798", 
-                    "alignment": "top", 
-                    "height": 0
-                }, 
-                "rewarded": {
-                    "type": "rewarded_video", 
-                    "id": "ca-app-pub-4291038556071828/5750522193"
-                }
-            }
-        }, 
-        "Facebook": {
-            "debug": false
+  "android": {
+    "GoogleAnalytics": {
+      "trackingCode": "UA-99018383-1"
+    },
+    "Vungle": {
+      "id": "59256bb2048cabca38000fb7",
+      "ads": {
+        "reward": {
+          "sound": true,
+          "backbutton": true,
+          "incentivized": true
+        },
+        "video": {
+          "sound": true,
+          "backbutton": false
         }
-    }, 
-    "ios": {
-        "GoogleAnalytics": {
-            "track_init_screen": false, 
-            "trackingCode": "UA-99018383-1"
-        }, 
-        "AdMob": {
-            "test": false, 
-            "ads": {
-                "gameover": {
-                    "type": "interstitial", 
-                    "id": "ca-app-pub-4291038556071828/1180721794"
-                }, 
-                "home": {
-                    "width": 0, 
-                    "type": "banner", 
-                    "id": "ca-app-pub-4291038556071828/8703988590", 
-                    "alignment": "top", 
-                    "height": 0
-                }, 
-                "rewarded": {
-                    "type": "rewarded_video", 
-                    "id": "ca-app-pub-4291038556071828/2657454997"
-                }
-            }
-        }, 
-        "Facebook": {
-            "debug": true
+      }
+    },
+    "AdMob": {
+      "test": false,
+      "ads": {
+        "gameover": {
+          "type": "interstitial",
+          "id": "ca-app-pub-4291038556071828/4273788997"
+        },
+        "home": {
+          "width": 0,
+          "type": "banner",
+          "id": "ca-app-pub-4291038556071828/2797055798",
+          "alignment": "top",
+          "height": 0
+        },
+        "rewarded": {
+          "type": "rewarded_video",
+          "id": "ca-app-pub-4291038556071828/5750522193"
         }
+      }
+    },
+    "Facebook": {
+      "debug": false
+    },
+    "iap": {
+      "items": {
+        "diamond_1": {
+          "id": "swordsman_legend_diamond_1"
+        },
+        "diamond_2": {
+          "id": "swordsman_legend_diamond_1"
+        },
+        "diamond_3": {
+          "id": "swordsman_legend_diamond_1"
+        },
+        "diamond_4": {
+          "id": "swordsman_legend_diamond_1"
+        },
+        "diamond_5": {
+          "id": "swordsman_legend_diamond_1"
+        }
+      },
+      "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu7K3TgvP3xrq4fpnoBkyYRhpmqO8X1E6lzNbAbsvZ6bD5nB4ZVlvHluih3aGsqM0DMdvg1h9x4EMVFKOBp4JYFL1gzJV0wdLnfNBjJU16hw1GCO1zPWiXwzk0nSmZ5b8jaRa68tWjWrrigYD9AlEVV1hNizYkiU/+F6lgCP4ppnD1uU6HXGQJvP/uABetYhG/zbbLMxzJUQLPvp8s8Yds46c3FMH8EYeonfvVn1IKDWdiGlJNd+2qNK97dRo5wJG0/CyuCMNQd/nciIwTSh/IdMv5WG9b76CJ/iEK6uGGYwFTIcLYmnB+AVKbOIa2Fq16If0N/rLW5quzW0Dl2EbaQIDAQAB"
     }
+  },
+  "ios": {
+    "GoogleAnalytics": {
+      "track_init_screen": false,
+      "trackingCode": "UA-99018383-1"
+    },
+    "AdMob": {
+      "test": false,
+      "ads": {
+        "gameover": {
+          "type": "interstitial",
+          "id": "ca-app-pub-4291038556071828/1180721794"
+        },
+        "home": {
+          "width": 0,
+          "type": "banner",
+          "id": "ca-app-pub-4291038556071828/8703988590",
+          "alignment": "top",
+          "height": 0
+        },
+        "rewarded": {
+          "type": "rewarded_video",
+          "id": "ca-app-pub-4291038556071828/2657454997"
+        }
+      }
+    },
+    "Facebook": {
+      "debug": true
+    },
+    "iap": {
+      "items": {
+        
+      }
+    }
+  }
 }

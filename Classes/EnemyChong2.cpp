@@ -77,21 +77,23 @@ void EnemyChong2::updateMe(BaseHero* hero)
 	}
 
 	if (this->getB2Body()) {
-		if (this->getPositionX() + this->getParent()->getPositionX() - hero->getPositionX() < SCREEN_SIZE.width / 2) {
+		if (this->getPositionX() + this->getParent()->getPositionX() - hero->getPositionX() < SCREEN_SIZE.width / 4) {
 			this->resume();
 			this->makeMask();
 		}
 	}
-
+	
 	if (hero->getIsKillAll() && this->getB2Body() != nullptr) {
-		if (this->getPositionX() + this->getParent()->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width * 0.45f &&
-			this->getPositionX() + this->getParent()->getPositionX() > hero->getPositionX() - SCREEN_SIZE.width * 0.26f &&
-			hero->getPositionY() + SCREEN_SIZE.height * 0.5f > this->getPositionY() &&
-			hero->getPositionY() - SCREEN_SIZE.height * 0.4f < this->getPositionY()
+		if (this->getB2Body()->GetFixtureList()->GetFilterData().categoryBits != 0) {
+			if (this->getPositionX() + this->getParent()->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width * 0.5f &&
+				this->getPositionX() + this->getParent()->getPositionX() > hero->getPositionX() - SCREEN_SIZE.width * 0.26f &&
+				hero->getPositionY() + SCREEN_SIZE.height * 0.5f > this->getPositionY() &&
+				hero->getPositionY() - SCREEN_SIZE.height * 0.4f < this->getPositionY()
 
-			) {
+				) {
 
-			die();
+				die();
+			}
 		}
 	}
 

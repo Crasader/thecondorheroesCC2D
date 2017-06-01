@@ -255,7 +255,7 @@ int EnemyBoss1::createGold()
 
 void EnemyBoss1::createCoinPool()
 {
-	int count = int(levelBoss * 100);
+	int count = int(levelBoss * 50);
 	coinPool = CCArray::createWithCapacity(count);
 	coinPool->retain();
 	for (int i = 0; i < count; i++) {
@@ -433,7 +433,7 @@ void EnemyBoss1::doAttack2()
 		}
 		//if (boss->getLevelBoss() == 1) {
 
-		if (this->getControlState() >= 50) {
+		if (this->getControlState() >= 30) {
 			this->changeState(new BossStupiding());
 			this->unschedule("bossattack2");
 		}

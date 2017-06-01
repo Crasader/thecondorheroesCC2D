@@ -3,7 +3,7 @@
 
 EnemyBoss3::EnemyBoss3(string jsonFile, string atlasFile, float scale) :EnemyBoss1(jsonFile, atlasFile, scale)
 {
-	health = 35;
+	health = 45;
 }
 
 EnemyBoss3 * EnemyBoss3::create(string jsonFile, string atlasFile, float scale)
@@ -180,7 +180,7 @@ void EnemyBoss3::doAttack2()
 				this->setIsNodie(false);
 			}
 
-			if (this->getControlState() >= 50) {
+			if (this->getControlState() >= 30) {
 				this->changeState(new BossStupiding());
 				this->unschedule("bossattack2");
 			}

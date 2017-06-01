@@ -1497,6 +1497,11 @@ void GameScene::creatBoss()
 				"Animation/Enemy_Boss3/Boss3.atlas", scaleOfEnemy);
 			break;
 		}
+		case 4: {
+			enemy = EnemyBoss4::create("Animation/Enemy_Boss3/Boss3.json",
+				"Animation/Enemy_Boss3/Boss3.atlas", scaleOfEnemy);
+			break;
+		}
 		default:
 			break;
 		}

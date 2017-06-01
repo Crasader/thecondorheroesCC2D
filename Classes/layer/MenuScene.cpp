@@ -2008,9 +2008,34 @@ void MenuLayer::buttonBuyCoinHandle(int p_nIndexCoinPack) {
 	}
 }
 
-void MenuLayer::buttonBuyDiamondHandle(int p_nIndexDiamondPack) {
+void MenuLayer::buttonBuyDiamondHandle(int p_nIndexDiamondPack) {// index 0-4
 	AudioManager::playSound(SOUND_BTCLICK);
-	JSMENU->readDiamondPack(p_nIndexDiamondPack);
+	switch (p_nIndexDiamondPack)
+	{
+	case 0: {
+		IAPHelper::getInstance()->purchase("diamond_1");
+		break;
+	}
+	case 1: {
+		IAPHelper::getInstance()->purchase("diamond_2");
+		break;
+	}
+	case 2: {
+		IAPHelper::getInstance()->purchase("diamond_3");
+		break;
+	}
+	case 3: {
+		IAPHelper::getInstance()->purchase("diamond_4");
+		break;
+	}
+	case 4: {
+		IAPHelper::getInstance()->purchase("diamond_5");
+		break;
+	}
+	default:
+		break;
+	}
+	/*JSMENU->readDiamondPack(p_nIndexDiamondPack);
 	if (false) {
 		return;
 	}
@@ -2019,7 +2044,7 @@ void MenuLayer::buttonBuyDiamondHandle(int p_nIndexDiamondPack) {
 	initTopMainMenu();
 	m_pTopMenu->setEnabled(false);
 
-	REF->setUpNumberQuest(7, JSMENU->getDiamondPackNumberDiamond());
+	REF->setUpNumberQuest(7, JSMENU->getDiamondPackNumberDiamond());*/
 	//initQuestBoard(0);
 }
 
@@ -2338,6 +2363,72 @@ void MenuLayer::logUpgradeSkillEvent(int indexhero, int indexskill, int level)
 {
 	GAHelper::getInstance()->logEvent("UpgradeSkill", indexHeroToName(indexhero)+StringUtils::format(" skill %d", indexskill), StringUtils::format("level %d", level), 1);
 }
+
+#ifdef SDKBOX_ENABLED
+
+
+void MenuLayer::onInitialized(bool ok)
+{
+}
+
+void MenuLayer::onSuccess(sdkbox::Product const & p)
+{
+	int p_nIndexDiamondPack;
+	if (p.name == "diamond_1") {
+		p_nIndexDiamondPack = 0;
+	}
+	else if (p.name == "diamond_2") {
+		p_nIndexDiamondPack = 1;
+		
+	}
+	else if (p.name == "diamond_3") {
+		p_nIndexDiamondPack = 2;
+		
+	}
+	else if (p.name == "diamond_4") {
+		p_nIndexDiamondPack = 3;
+
+	}
+	else if (p.name == "diamond_5") {
+		p_nIndexDiamondPack = 4;
+	}
+	JSMENU->readDiamondPack(p_nIndexDiamondPack);
+	if (false) {
+		return;
+	}
+	m_nCurrentDiamond += JSMENU->getDiamondPackNumberDiamond();
+	REF->setUpDiamondBuy(JSMENU->getDiamondPackNumberDiamond());
+	initTopMainMenu();
+	m_pTopMenu->setEnabled(false);
+
+	REF->setUpNumberQuest(7, JSMENU->getDiamondPackNumberDiamond());
+}
+
+void MenuLayer::onFailure(sdkbox::Product const & p, const std::string & msg)
+{
+}
+
+void MenuLayer::onCanceled(sdkbox::Product const & p)
+{
+}
+
+void MenuLayer::onRestored(sdkbox::Product const & p)
+{
+}
+
+void MenuLayer::onProductRequestSuccess(std::vector<sdkbox::Product> const & products)
+{
+}
+
+void MenuLayer::onProductRequestFailure(const std::string & msg)
+{
+}
+
+void MenuLayer::onRestoreComplete(bool ok, const std::string & msg)
+{
+}
+
+#endif 
 
 string MenuLayer::indexHeroToName(int indexHero)
 {

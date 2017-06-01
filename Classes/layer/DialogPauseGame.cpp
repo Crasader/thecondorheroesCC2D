@@ -6,8 +6,9 @@
 #include "manager/RefManager.h"
 #include "manager/JSonHeroManager.h"
 #include "ui_custom/CustomLayerToToast.h"
+#include "thirdsdkhelper\FacebookHelper.h"
 
-
+#define FACE_SHARE_TITLE  "SwordsMan"
 
 bool DialogPauseGame::init()
 {
@@ -136,6 +137,7 @@ void DialogPauseGame::restartGame(Ref * pSender)
 
 void DialogPauseGame::upgrade(Ref * pSender)
 {
+
 }
 
 void DialogPauseGame::effect()
@@ -435,6 +437,8 @@ bool DialogStageClear::init(int score, int gold)
 
 void DialogStageClear::shareFB()
 {
+	//FacebookHelper::getInstance()->dialogPhoto(FACE_SHARE_TITLE);
+	FacebookHelper::getInstance()->dialogPhoto(FACE_SHARE_TITLE);
 	log("Sharing");
 }
 

@@ -42,7 +42,7 @@ public:
 	void attack();
 	void attack2();
 	virtual void fixStupid();
-	void die();
+	virtual void die();
 	virtual void createPool();
 	virtual void creatSlash(float angel);
 	virtual void creatHidenSlash(float angel); // tao check chem

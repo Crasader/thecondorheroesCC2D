@@ -1,0 +1,85 @@
+{
+"skeleton": { "hash": "mGkij1Jy8mrZL+IZTsG+dNfe7/g", "spine": "3.5.51", "width": 2311.77, "height": 322.3, "images": "" },
+"bones": [
+	{ "name": "root" },
+	{
+		"name": "bone",
+		"parent": "root",
+		"length": 313.98,
+		"rotation": -179.8,
+		"x": -270.47,
+		"y": 185.38,
+		"scaleX": 1.129,
+		"scaleY": 1.115
+	},
+	{ "name": "bone2", "parent": "root", "length": 365.06, "rotation": 179.47, "x": -777.47, "y": 129.21, "scaleX": 1.511 }
+],
+"slots": [
+	{ "name": "CC", "bone": "root", "attachment": "CC" },
+	{ "name": "CC2", "bone": "bone", "attachment": "CC2" },
+	{ "name": "effect_skill1", "bone": "bone2", "attachment": "effect_skill1" }
+],
+"skins": {
+	"default": {
+		"CC": {
+			"CC": { "x": -70.96, "y": 150.94, "width": 366, "height": 318 }
+		},
+		"CC2": {
+			"CC2": { "x": 1055.28, "y": 11.57, "rotation": 179.8, "width": 2048, "height": 289 }
+		},
+		"effect_skill1": {
+			"effect_skill1": { "x": 414.82, "y": 3.45, "rotation": -179.47, "width": 1247, "height": 116 }
+		}
+	}
+},
+"animations": {
+	"animation": {
+		"slots": {
+			"CC2": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" },
+					{ "time": 0.0667, "color": "ffffffff" },
+					{ "time": 0.1333, "color": "ffffff00" }
+				]
+			}
+		},
+		"bones": {
+			"bone2": {
+				"rotate": [
+					{ "time": 0, "angle": 0 }
+				],
+				"translate": [
+					{ "time": 0, "x": 1771.26, "y": 0 },
+					{ "time": 0.1667, "x": 1612.51, "y": 0 },
+					{ "time": 0.2333, "x": 1771.26, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 0, "y": 0 },
+					{ "time": 0.1667, "x": 1.398, "y": 1 },
+					{ "time": 0.2333, "x": 0, "y": 0 }
+				],
+				"shear": [
+					{ "time": 0, "x": 0, "y": 0 }
+				]
+			},
+			"bone": {
+				"rotate": [
+					{ "time": 0, "angle": 0 }
+				],
+				"translate": [
+					{ "time": 0, "x": 302.55, "y": 0 },
+					{ "time": 0.0667, "x": 1680.24, "y": 0 },
+					{ "time": 0.1333, "x": 302.55, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1, "curve": "stepped" },
+					{ "time": 0.0667, "x": 1, "y": 1 }
+				],
+				"shear": [
+					{ "time": 0, "x": 0, "y": 0 }
+				]
+			}
+		}
+	}
+}
+}

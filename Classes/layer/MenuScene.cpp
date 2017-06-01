@@ -32,7 +32,7 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 	Vec2 _v2Origin = Director::getInstance()->getVisibleOrigin();
 	this->setPosition(_v2Origin);
 
-	m_pBuyPackConfirmBackground = LayerColor::create(Color4B(0, 0, 0, 170));
+	m_pBuyPackConfirmBackground = LayerColor::create(Color4B(0, 0, 0, 220));
 	m_pBuyPackConfirmBackground->setVisible(false);
 	this->addChild(m_pBuyPackConfirmBackground, 10);
 
@@ -84,8 +84,8 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 		"UI/UI_main_menu/PreviewDuongQua/s_DuongQua.atlas", m_pGameScene->getContentSize().height / 650);
 	m_arPreviewHero[3] = new SkeletonAnimation("UI/UI_main_menu/PreviewDuongQua/s_DuongQua.json",
 		"UI/UI_main_menu/PreviewDuongQua/s_DuongQua.atlas", m_pGameScene->getContentSize().height / 650);
-	m_arPreviewHero[4] = new SkeletonAnimation("UI/UI_main_menu/PreviewDuongQua/s_DuongQua.json",
-		"UI/UI_main_menu/PreviewDuongQua/s_DuongQua.atlas", m_pGameScene->getContentSize().height / 650);
+	m_arPreviewHero[4] = new SkeletonAnimation("UI/UI_main_menu/PreviewQuachTinh/s_QuachTinh.json",
+		"UI/UI_main_menu/PreviewQuachTinh/s_QuachTinh.atlas", m_pGameScene->getContentSize().height / 650);
 
 	m_arPreviewHero[0]->setPosition(Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
 	m_arPreviewHero[1]->setPosition(Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
@@ -1191,12 +1191,7 @@ void MenuLayer::showBlurScreen() {
 	}
 	m_pBlurScreen->setVisible(true);
 
-	Sprite *_pBlurBlackLayer = Sprite::create("UI/toast.png");
-	_pBlurBlackLayer->setScale(m_pBlurScreen->getContentSize().width / _pBlurBlackLayer->getContentSize().width,
-		m_pBlurScreen->getContentSize().height / _pBlurBlackLayer->getContentSize().height);
-	_pBlurBlackLayer->setAnchorPoint(Vec2(0.5f, 0.5f));
-	_pBlurBlackLayer->setPosition(m_pBlurScreen->getContentSize().width * 0.5f, m_pBlurScreen->getContentSize().height * 0.5f);
-	_pBlurBlackLayer->setOpacity(150.0f);
+	LayerColor *_pBlurBlackLayer = LayerColor::create(Color4B(0, 0, 0, 220));
 	m_pBlurScreen->addChild(_pBlurBlackLayer, 0);
 }
 
@@ -1660,6 +1655,9 @@ int MenuLayer::calTimeFromString(string p_sInputString) {
 }
 
 void MenuLayer::initDailyRewardBoard() {
+	if (REF->getDailyRewardCounter() > 6) {
+		return;
+	}
 	time_t _nLastDailyRewardTime = REF->getLastDailyRewardTime();
 	time_t _nCurrentTimeFromGoogle = m_nCurrentTimeFromGoogle;
 	tm *_pCurrentTimeFromGoogle = localtime(&_nCurrentTimeFromGoogle);
@@ -1940,9 +1938,6 @@ void MenuLayer::buttonCloseShopHandle() {
 void MenuLayer::buttonDailyRewardHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	int _nDailyRewardCounter = REF->getDailyRewardCounter();
-	if (_nDailyRewardCounter > 6) {
-		return;
-	}
 
 	JSQUEST->readDailyReward(_nDailyRewardCounter);
 	string a = JSQUEST->getDailyRewardType();

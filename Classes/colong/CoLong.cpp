@@ -10,7 +10,6 @@ CoLong * CoLong::create(string p_sJsonFile, string p_sAtlasFile, float p_fScale)
 	CoLong *_pCoLong = new CoLong(p_sJsonFile, p_sAtlasFile, p_fScale);
 	if (_pCoLong && _pCoLong->init())
 	{
-		_pCoLong->autorelease();
 		_pCoLong->setTag(TAG_HERO);
 
 		_pCoLong->update(0.0f);
@@ -25,7 +24,7 @@ CoLong * CoLong::create(string p_sJsonFile, string p_sAtlasFile, float p_fScale)
 		_pCoLong->blash->setPosition(_pCoLong->getContentSize() / 2);
 		_pCoLong->blash->setVisible(false);
 		_pCoLong->addChild(_pCoLong->blash);
-
+		_pCoLong->autorelease();
 		return _pCoLong;
 	}
 	else
@@ -296,11 +295,14 @@ void CoLong::createRada(b2World *p_pWorld) {
 void CoLong::createSlash() {
 	auto scale = this->getTrueRadiusOfHero() * 1.8f / 400;  // 400: hieght of spine
 	slash = SkeletonAnimation::createWithFile("Animation/CoLong/slash4.json", "Animation/CoLong/slash4.atlas", scale);
+	//slash->autorelease();
 	slash->setPosition(this->getContentSize().width / 2 + this->getTrueRadiusOfHero(), this->getTrueRadiusOfHero() * 0.7f);
 	slash->update(0.0f);
 	slash->setVisible(false);
 	this->addChild(slash);
+
 	slashLand = SkeletonAnimation::createWithFile("Animation/CoLong/slash3.json", "Animation/CoLong/slash3.atlas", scale);
+	//slashLand->autorelease();
 	slashLand->setPosition(this->getContentSize().width / 2 + this->getTrueRadiusOfHero() * 0.3f, this->getTrueRadiusOfHero() * 0.7f);
 	slashLand->update(0.0f);
 	slashLand->setVisible(false);
@@ -431,6 +433,15 @@ void CoLong::stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSkill3)
 		setIsDoneDuration3(true);
 		unschedule("KeySkill3");
 		checkDurationSkill3 = 0;
+
+		if (onGround) {
+			getFSM()->changeState(MRun);
+			run();
+		}
+		else {
+			getFSM()->changeState(MLand);
+			landing();
+		}
 	}
 }
 

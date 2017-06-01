@@ -11,6 +11,7 @@
 #include "duongqua/DuongQua.h"
 #include "quachtinh/QuachTinh.h"
 #include "hoangdung/HoangDung.h"
+#include "hoangduocsu/HoangDuocSu.h"
 
 LayerColor *blur;
 
@@ -146,6 +147,10 @@ void GameScene::selectHero()
 		createHoangDung("Animation/HoangDung/HoangDung.json", "Animation/HoangDung/HoangDung.atlas");
 		break;
 
+	case 3:
+		createHoangDuocSu("Animation/HoangDuocSu/HoangDuocSu.json", "Animation/HoangDuocSu/HoangDuocSu.atlas");
+		break;
+
 	case 4:
 		createQuachTinh("Animation/QuachTinh/QuachTinh.json", "Animation/QuachTinh/QuachTinh.atlas");
 		break;
@@ -190,7 +195,23 @@ void GameScene::createCoLong(string path_Json, string path_Atlas)
 
 void GameScene::createHoangDung(string path_Json, string path_Atlas)
 {
-	hero = HoangDung::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 350);
+	hero = HoangDung::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 340);
+	hero->listener();
+	hero->setPosition(heroStartPosition);
+
+	addChild(hero, ZORDER_HERO);
+
+	hero->initCirclePhysic(world, hero->getPosition());
+	hero->addStuff();
+	hero->createPool();
+
+	hero->getBloodScreen()->setPosition(follow->getPosition());
+	addChild(hero->getBloodScreen(), ZORDER_SMT);
+}
+
+void GameScene::createHoangDuocSu(string path_Json, string path_Atlas)
+{
+	hero = HoangDuocSu::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 300);
 	hero->listener();
 	hero->setPosition(heroStartPosition);
 
@@ -300,6 +321,9 @@ void GameScene::onBegin()
 		hud->addEvents();
 		touch_listener = EventListenerTouchOneByOne::create();
 		touch_listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
+		/*if (charId == 3) {
+			touch_listener->onTouchMoved = CC_CALLBACK_2(GameScene::onTouchMoved, this);
+		}*/
 		_eventDispatcher->addEventListenerWithSceneGraphPriority(touch_listener, this);
 	}
 
@@ -651,12 +675,22 @@ void GameScene::update(float dt)
 				hero->stopSkillAction(true, true, false);
 				break;
 
+			case 3:
+				hero->stopSkillAction(true, false, true);
+				break;
+
 			default:	// 1 and 4
 				hero->stopSkillAction(true, false, true);
 				break;
 			}
 
 			if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
+
+				if (haveboss && posXComingBoss < 0) {	// means: hero pass over posXComingBoss
+					overGame();
+					return;
+				}
+
 				hud->hideButton();
 				hud->moveCallBirdToCenterScreen(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 				hero->setOnGround(false);
@@ -1782,6 +1816,15 @@ void GameScene::initUnderGroundPhysic(b2World * world, Point pos, Size size)
 
 bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 {
+	/*if (charId == 3 && !hero->getIsDoneDuration3()) {
+		auto location = convertToNodeSpace(touch->getLocation());
+
+		if (hero->getBoundingBox().containsPoint(location)) {
+			log("Moving your hand");
+			return true;
+		}
+	}*/
+
 	if (left_corner.containsPoint(touch->getLocation())) {
 
 		// cannot jump while attacking or being injured
@@ -1799,6 +1842,15 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 	return false;
 
 }
+
+//void GameScene::onTouchMoved(Touch * touch, Event * unused_event)
+//{
+//	if (hero->getIsDoneDuration3()) {
+//		return;
+//	}
+//
+//	log("Do counter");
+//}
 
 void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 {
@@ -1875,7 +1927,7 @@ void GameScene::updateHUD(float dt)
 {
 
 	if (hero->getCurrentRunDis() - hero->getPreRunDis() > 10.0f) {
-		hero->setScore(hero->getScore() + 15);
+		hero->setScore(hero->getScore() + 15 * hero->getScoreRatio());
 		hero->setPreRunDis(hero->getCurrentRunDis());
 	}
 
@@ -1921,6 +1973,8 @@ void GameScene::updateBloodBar(int numberOfHealth, bool isVisible)
 {
 	if (numberOfHealth >= 0) {
 		if (isVisible) {
+			if (hero->getHealth() == 2)	// previous is 1
+				hero->getBloodScreen()->setVisible(false);
 			auto blood = (Sprite*)hud->getListBlood()->getObjectAtIndex(numberOfHealth);
 			blood->setVisible(true);
 		}
@@ -2081,7 +2135,7 @@ void GameScene::reviveHero()
 		hero->killThemAll();
 	});
 
-	auto reviveUp = MoveBy::create(1.43f, Vec2(0, hero->getTrueRadiusOfHero() * 2.7f));
+	auto reviveUp = MoveBy::create(1.43f, Vec2(0, hero->getTrueRadiusOfHero() * 3));
 	hero->runAction(Sequence::create(reviveUp, killAll, nullptr));
 	hero->getFSM()->changeState(MRevive);
 }
@@ -2158,7 +2212,8 @@ void GameScene::pauseGame()
 
 void GameScene::dieGame()
 {
-	if (REF->getIsLockedHero() || hero->getB2Body()->GetLinearVelocity().y < 0) {	// if hero is locked
+	if (REF->getIsLockedHero() || hero->getB2Body()->GetLinearVelocity().y < 0
+		|| numberRevive >= 5) {	// if hero is locked
 		overGame();
 		return;
 	}
@@ -2292,6 +2347,25 @@ void GameScene::restartGame()
 {
 	this->removeAllChildrenWithCleanup(true);
 	Director::getInstance()->replaceScene(LoadingLayer::createScene(stage, map, charId));
+}
+
+void GameScene::silence()
+{
+	hud->silence();
+
+	if (!hero->getIsDoneDuration1()) {
+		hero->stopSkillAction(true, false, false);
+	}
+
+	if (!hero->getIsDoneDuration2()) {
+		hero->stopSkillAction(false, true, false);
+	}
+
+	if (!hero->getIsDoneDuration3()) {
+		hero->stopSkillAction(false, false, true);
+	}
+
+	updateBloodBar(hero->getHealth(), false);
 }
 
 void GameScene::loadPosAndTag()

@@ -118,6 +118,36 @@ void MyButton::refresh()
 	this->unscheduleAllCallbacks();
 }
 
+void MyButton::silence()
+{
+	if (!canTouch) {		// schedule
+		this->unschedule("Key_timer");
+		this->unschedule(schedule_selector(MyButton::checkInterval));
+		isActive = false;
+	}
+
+	if (isBlocked) {		// another is using
+		if (!main->isVisible())
+			main->setVisible(true);
+
+		isBlocked = false;
+	}
+
+	numberOfUseHasNotUsedYet = 0;
+
+	if (numberOfUseHasNotUsedYet <= 0) {
+		if (numberOfUse > 1)
+			numberUseLb->setVisible(false);
+		runTimer();
+		this->schedule(schedule_selector(MyButton::checkInterval), timeCoolDown, 1, 0);
+	}
+
+	if (numberOfUseHasNotUsedYet >= 1)
+		numberUseLb->setString(StringUtils::format("%i", numberOfUseHasNotUsedYet));
+
+	canTouch = false;
+}
+
 void MyButton::checkInterval(float dt)
 {
 	this->unschedule(schedule_selector(MyButton::checkInterval));

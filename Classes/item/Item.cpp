@@ -63,8 +63,6 @@ void Item::updateMe(BaseHero *hero)
 					auto parentGameScene = (GameScene*) this->getParent();
 
 					if (typeItem == Item_type::HEALTH && hero->getHealth() < hero->getMaxHealth()) {
-						if (hero->getHealth() == 1)
-							hero->getBloodScreen()->setVisible(false);
 						hero->setHealth(hero->getHealth() + 1);
 						parentGameScene->updateBloodBar(hero->getHealth() - 1, true);
 						if (REF->getSelectedHero() == 4) {	// QT

@@ -108,7 +108,7 @@ void Coin::updateMe(BaseHero *hero)
 		if (this->isVisible() && hero->getB2Body()) {
 			if (((this->getPosition() -
 				(hero->getPosition() + Vec2(0, hero->getTrueRadiusOfHero()))).length()
-				< hero->getTrueRadiusOfHero())) {
+				<= hero->getTrueRadiusOfHero())) {
 				this->picked();
 				hero->setCoinExplored(hero->getCoinExplored() + hero->getCoinRatio());
 			}

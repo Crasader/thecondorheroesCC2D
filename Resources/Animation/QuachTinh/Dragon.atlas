@@ -1,13 +1,13 @@
 
 Dragon.png
-size: 2048,128
+size: 1024,512
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-dragon
+dragon2
   rotate: false
   xy: 2, 2
-  size: 1447, 123
-  orig: 1448, 180
-  offset: 1, 57
+  size: 980, 331
+  orig: 980, 331
+  offset: 0, 0
   index: -1

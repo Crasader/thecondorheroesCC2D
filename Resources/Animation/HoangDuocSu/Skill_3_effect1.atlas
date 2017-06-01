@@ -1,0 +1,20 @@
+
+Skill_3_effect1.png
+size: 512,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+effect_sao
+  rotate: false
+  xy: 2, 77
+  size: 436, 134
+  orig: 436, 134
+  offset: 0, 0
+  index: -1
+star_skill
+  rotate: false
+  xy: 2, 2
+  size: 73, 73
+  orig: 73, 73
+  offset: 0, 0
+  index: -1

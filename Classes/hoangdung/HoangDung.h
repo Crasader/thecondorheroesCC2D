@@ -5,7 +5,7 @@
 #include "manager/AudioManager.h"
 #include "colong/Rada.h"
 #include "DaCauBongPhap.h"
-#include "duongqua/DQ_TieuHonChuong.h"
+#include "ManThienHoaVu.h"
 
 class HoangDung : public BaseHero
 {
@@ -30,13 +30,14 @@ protected:
 	void createSkill2Effect();
 
 	bool isReviveAfterDead = false;
+	bool isUseSpecial = true;
 
 	CCArray* poolSkill2;
 	int indexSkill2 = 0;
 	int numberOfDeadMTHV;
 	void createManThienHoaVu(Point posHand, int Zoder, float angle);
 	void shootManThienHoaVu();
-	list<TieuHonChuong *> listManThienHoaVu;
+	list<ManThienHoaVu *> listManThienHoaVu;
 
 	CCArray* poolSkill3;
 	int indexSkill3 = 0;

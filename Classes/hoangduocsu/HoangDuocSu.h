@@ -30,9 +30,9 @@ protected:
 	void slashDCTC();
 	void doCounterSkill2();
 
-	/*Node* follow;
-	float offset;
-	bool isDoneMoving = false;*/
+	
+	Sprite* wave;
+	void killAll();
 	void doCounterSkill3();
 	
 	//////////////////////////////////////////////////////////////////////////

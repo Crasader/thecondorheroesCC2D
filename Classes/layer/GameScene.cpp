@@ -1922,7 +1922,7 @@ void GameScene::updateHUD(float dt)
 {
 
 	if (hero->getCurrentRunDis() - hero->getPreRunDis() > 10.0f) {
-		hero->setScore(hero->getScore() + 15 * hero->getScoreRatio());
+		hero->setScore(hero->getScore() + 15);
 		hero->setPreRunDis(hero->getCurrentRunDis());
 	}
 
@@ -2340,7 +2340,7 @@ void GameScene::resumeGame()
 
 void GameScene::restartGame()
 {
-	this->removeAllChildrenWithCleanup(true);
+	//this->removeAllChildrenWithCleanup(true);
 	Director::getInstance()->replaceScene(LoadingLayer::createScene(stage, map, charId));
 }
 

@@ -23,11 +23,17 @@ HoangDuocSu * HoangDuocSu::create(string jsonFile, string atlasFile, float scale
 		hds->setBoxHeight(hds->getBoundingBox().size.height / 4.0f);
 
 		//
-		hds->blash = Sprite::create("Animation/CoLong/blash.png");
+		hds->blash = Sprite::create("Animation/DuongQua/blash.png");
 		hds->blash->setScale(scale / 2);
 		hds->blash->setPosition(hds->getContentSize() / 2);
 		hds->blash->setVisible(false);
 		hds->addChild(hds->blash);
+
+		hds->wave = Sprite::create("Animation/CoLong/blash.png");
+		hds->wave->setScale(scale / 2);
+		hds->wave->setPosition(hds->getContentSize() / 2);
+		hds->wave->setVisible(false);
+		hds->addChild(hds->wave);
 
 		hds->scoreRatio = 2;
 
@@ -100,6 +106,7 @@ void HoangDuocSu::fastAndFurious()
 		}
 
 		if (checkDurationSkill1 >= getDurationSkill1() * 60) {
+			setScoreRatio(1);
 			this->setIsNoDie(false);
 			shield->changeBodyCategoryBits(BITMASK_WOODER);
 			this->getB2Body()->SetGravityScale(1);
@@ -116,6 +123,7 @@ void HoangDuocSu::fastAndFurious()
 
 void HoangDuocSu::doCounterSkill1()
 {
+	setScoreRatio(2);
 	fastAndFurious();
 }
 
@@ -169,6 +177,7 @@ void HoangDuocSu::slashDCTC()
 		}
 
 		if (checkDurationSkill2 >= getDurationSkill2() * 85) {
+			setScoreRatio(1);
 			checkDurationSkill2 = 0;
 			unschedule("KeySkill2");
 		}
@@ -178,9 +187,32 @@ void HoangDuocSu::slashDCTC()
 
 void HoangDuocSu::doCounterSkill2()
 {
+	setScoreRatio(2);
 	slashDCTC();
 }
 
+
+void HoangDuocSu::killAll()
+{
+	auto boss = (BaseEnemy*) this->getParent()->getChildByTag(TAG_BOSS);
+	if (boss != nullptr && boss->getPositionX() < this->getPositionX() + SCREEN_SIZE.width * 0.75f) {
+		boss->die();
+		log("%i", boss->getHealth());
+	}
+
+	isKillAll = true;
+	wave->setVisible(true);
+	//auto originScale = blash->getScale();
+	auto scaleFactor = Director::getInstance()->getContentScaleFactor();
+	auto scale = ScaleBy::create(0.5f, 170 * scaleFactor);
+
+	auto hide = CallFunc::create([&]() {
+		wave->setVisible(false);
+		isKillAll = false;
+	});
+
+	wave->runAction(Sequence::create(scale, hide, scale->reverse(), nullptr));
+}
 
 void HoangDuocSu::doCounterSkill3()
 {
@@ -188,9 +220,8 @@ void HoangDuocSu::doCounterSkill3()
 	this->getB2Body()->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
 
 	isDoneMoving = false;*/
-
+	setScoreRatio(2);
 	this->schedule([&](float dt) {
-		checkDurationSkill3++;
 		/*if (!isDoneMoving) {
 			if (fabs(this->getPositionY() - follow->getPositionY()) < offset)
 				isDoneMoving = true;
@@ -205,14 +236,22 @@ void HoangDuocSu::doCounterSkill3()
 
 		}*/
 
-		if ((checkDurationSkill3 >= getDurationSkill3() * 60)) {
+		if ((checkDurationSkill3 % 11 == 0 && checkDurationSkill3 <= (getDurationSkill3() * 10) - 5)) {
+			killAll();
+			log("AA");
+		}
+
+		checkDurationSkill3++;
+
+		if (checkDurationSkill3 >= getDurationSkill3() * 10) {
 			//this->getB2Body()->SetGravityScale(1);
+			setScoreRatio(1);
 			setIsDoneDuration3(true);
 			checkDurationSkill3 = 0;
 			unschedule("KeySkill3");
 		}
 
-	}, 1.0f / 60, "KeySkill3");		//  run every delta time
+	}, 0.1f, "KeySkill3");		//  run every delta time
 }
 
 
@@ -500,6 +539,7 @@ void HoangDuocSu::listener()
 
 void HoangDuocSu::stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSkill3)
 {
+	setScoreRatio(1);
 	if (stopSkill1 && !getIsDoneDuration1()) {
 		this->setIsNoDie(false);
 		shield->changeBodyCategoryBits(BITMASK_WOODER);
@@ -529,6 +569,7 @@ void HoangDuocSu::stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSki
 	}
 
 	if (stopSkill3 && !getIsDoneDuration3()) {
+		isKillAll = false;
 		setIsDoneDuration3(true);
 		unschedule("KeySkill3");
 		checkDurationSkill3 = 0;

@@ -428,6 +428,9 @@ void BaseHero::killThemAll()
 void BaseHero::silence()
 {
 	health--;
+	isPriorInjured = true;
+	bloodScreen->setVisible(true);
+	stateMachine->changeState(MInjured);
 	auto gameLayer = (GameScene*) this->getParent();
 	gameLayer->silence();
 }

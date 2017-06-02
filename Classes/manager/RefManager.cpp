@@ -302,7 +302,7 @@ void RefManager::setLanguage(int p_nLanguage)
 	ref->flush();
 }
 
-void RefManager::updateTimeFromGoogle(int p_nTime) {
+void RefManager::updateTimeFromGoogle(long p_nTime) {
 	lastDailyRewardTime = p_nTime;
 	ref->setIntegerForKey(KEY_LAST_DAILY_REWARD_TIME, lastDailyRewardTime);
 	ref->flush();

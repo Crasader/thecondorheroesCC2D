@@ -29,7 +29,7 @@ private:
 	int m_nMenuStatus = 0;
 
 	// input value
-	int m_nCurrentTimeFromGoogle = 0;						// time from google.com.vn (-7 hours from Viet Nam)
+	long m_nCurrentTimeFromGoogle = 0;						// time from google.com.vn (-7 hours from Viet Nam)
 
 	int m_nIndexHeroSelected = 0;
 	int m_nIndexHeroPicked = 0;
@@ -77,6 +77,7 @@ private:
 	SelectStageLayer *m_pSelectStageLayer = nullptr;
 	Layer *m_pBlurScreen;
 	LayerColor *m_pBuyPackConfirmBackground;
+	LayerColor *m_pShopBlurBackground;
 
 	// menus
 	Menu *m_pTopMenu;
@@ -125,6 +126,7 @@ private:
 	void buttonStartHandle();
 
 	void buttonDailyRewardHandle();
+	void buttonConfirmDailyRewardHandle();
 
 	// upgrade skill handle
 	void buttonUpgradeSkillHandle(int p_nIndexSkill);
@@ -165,7 +167,7 @@ private:
 	void moveLayerViaDirection(Layer *p_pLayer, int p_nDirection);
 
 	// supporter
-	int calTimeFromString(string p_sInputString);
+	long calTimeFromString(string p_sInputString);
 	void scrollSlideHandle(Ref* sender, ScrollView::EventType type);
 	void scrollShopHandle(Ref* sender, ScrollView::EventType type);
 	void selectedItemEvent(Ref* sender, ListView::EventType type);

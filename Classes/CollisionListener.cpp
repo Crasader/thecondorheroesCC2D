@@ -128,7 +128,12 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		|| (bitmaskB == BITMASK_RADA_SKILL_2 && bitmaskA == BITMASK_ENEMY)) {
 		auto enemy = bitmaskA == BITMASK_ENEMY ? (BaseEnemy*)bodyA->GetUserData() : (BaseEnemy*)bodyB->GetUserData();
 		auto parentGameScene = (GameScene*)enemy->getParent()->getParent();
+
+		if (enemy->getTag() == TAG_ENEMY_CHONG1 || enemy->getTag() == TAG_ENEMY_CHONG2 || enemy->getTag() == TAG_ENEMY_CHONG3)
+			return;
 		if (bitmaskA == BITMASK_RADA_SKILL_1 || bitmaskB == BITMASK_RADA_SKILL_1) {
+			if (enemy->getTag() == TAG_ENEMY_CHONG1 || enemy->getTag() == TAG_ENEMY_CHONG2 || enemy->getTag() == TAG_ENEMY_CHONG3)
+				return;
 			parentGameScene->getHero()->selectEnemyBySkill1(enemy);
 		}
 		if (bitmaskA == BITMASK_RADA_SKILL_2 || bitmaskB == BITMASK_RADA_SKILL_2) {
@@ -331,6 +336,8 @@ void CollisionListener::EndContact(b2Contact * contact)
 
 		auto parentGameScene = (GameScene*)enemy->getParent()->getParent();
 		if (bitmaskA == BITMASK_RADA_SKILL_1 || bitmaskB == BITMASK_RADA_SKILL_1) {
+			if (enemy->getTag() == TAG_ENEMY_CHONG1 || enemy->getTag() == TAG_ENEMY_CHONG2 || enemy->getTag() == TAG_ENEMY_CHONG3)
+				return;
 			parentGameScene->getHero()->deSelectEnemyBySkill1();
 		}
 		if (bitmaskA == BITMASK_RADA_SKILL_2 || bitmaskB == BITMASK_RADA_SKILL_2) {

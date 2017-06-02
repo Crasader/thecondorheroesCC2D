@@ -703,12 +703,12 @@ void Hud::updateMultiKills(int m_nCombo)
 		multiKills->setSkin("rampage");
 		break;
 	default:
-		multiKills->setSkin("rampage");
 		break;
 	}
-	if (m_nCombo > 7) {
+	if (m_nCombo >= 7) {
 		REF->setUpNumberQuest(INDEX_QUEST_RAMPAGE, 1);
 		multiKills->setSkin("rampage");
+		m_nCombo = 0;
 	}
 	multiKills->setSlotsToSetupPose();
 	multiKills->setAnimation(0, "textkill", false);

@@ -53,7 +53,7 @@ void EnemyBoss1::attack()
 		this->creatHidenSlash((heroLocation - this->getPosition()).getAngle());
 		this->setIsNodie(false);
 	});
-	this->runAction(Sequence::createWithTwoActions(DelayTime::create(0.3f),callfun));
+	this->runAction(Sequence::createWithTwoActions(DelayTime::create(0.5f),callfun));
 }
 
 void EnemyBoss1::attack2()
@@ -345,16 +345,6 @@ void EnemyBoss1::listener()
 			else if ((strcmp(getCurrent()->animation->name, "attack") == 0 && loopCount == 1)) {
 				this->idle();
 				setIsNodie(false);
-			}
-			else if ((strcmp(getCurrent()->animation->name, "injured") == 0 && loopCount == 1)) {
-
-			}
-			else if ((strcmp(getCurrent()->animation->name, "injured-red") == 0 && loopCount == 1)) {
-				if (this->getHealth() > 0) {
-					setIsNodie(false);
-					this->idle();
-				}
-
 			}
 		}
 	});

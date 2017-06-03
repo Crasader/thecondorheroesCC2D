@@ -222,14 +222,6 @@ void EnemyBoss3::listener()
 				this->idle();
 				setIsNodie(false);
 			}
-			
-			else if ((strcmp(getCurrent()->animation->name, "injured-red") == 0 && loopCount == 1)) {
-				if (this->getHealth() > 0) {
-					setIsNodie(false);
-					this->idle();
-				}
-
-			}
 		}
 	});
 }

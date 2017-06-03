@@ -12,6 +12,7 @@
 #include "SelectStageScene.h"
 #include "thirdsdkhelper\GoogleAnalysticHelper.h"
 #include "thirdsdkhelper\IAPHelper.h"
+#include "thirdsdkhelper\VungleHelper.h"
 
 USING_NS_CC;
 using namespace spine;
@@ -20,7 +21,7 @@ using namespace ui;
 using namespace network;
 
 #ifdef SDKBOX_ENABLED
-class MenuLayer : public cocos2d::Layer, public sdkbox::IAPListener
+class MenuLayer : public cocos2d::Layer, public sdkbox::IAPListener, public sdkbox::VungleListener
 #else
 class MenuLayer : public cocos2d::Layer
 #endif
@@ -197,7 +198,18 @@ private:
 	virtual void onProductRequestFailure(const std::string &msg) override;
 	void onRestoreComplete(bool ok, const std::string &msg) override;
 
+	void onVungleAdViewed(bool isComplete);
+	void onVungleCacheAvailable();
+	void onVungleStarted();
+	void onVungleFinished();
+	void onVungleAdReward(const std::string& name);
+
 #endif // DEBUG
+#ifdef SDKBOX_ENABLED
+	// vungle
+	
+	// ia
+#endif 
 private:
 		string indexHeroToName(int indexHero);
 };

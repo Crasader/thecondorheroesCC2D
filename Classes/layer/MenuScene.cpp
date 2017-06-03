@@ -108,7 +108,9 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 	m_pBlurScreen->setVisible(false);
 
 	this->scheduleUpdate();
-
+#ifdef SDKBOX_ENABLED
+	sdkbox::PluginVungle::setListener(this);
+#endif
 	return true;
 }
 
@@ -1354,6 +1356,9 @@ void MenuLayer::buttonFreeCoinHandle() {
 		//GAHelper::getInstance()->logEvent("FreeCoin", "click", "can getFreecoin", 1);
 		// TODO : show ads and check view ads finish
 		// after that, increase gold
+		VungleHelper::getInstance()->showReward();
+
+
 	}
 	else {
 		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(11), TOAST_LONG);
@@ -2421,6 +2426,77 @@ void MenuLayer::onProductRequestFailure(const std::string & msg)
 
 void MenuLayer::onRestoreComplete(bool ok, const std::string & msg)
 {
+}
+
+void MenuLayer::onVungleAdViewed(bool isComplete)
+{
+}
+
+void MenuLayer::onVungleCacheAvailable()
+{
+}
+
+void MenuLayer::onVungleStarted()
+{
+}
+
+void MenuLayer::onVungleFinished()
+{
+}
+
+void MenuLayer::onVungleAdReward(const std::string & name)
+{
+	if (REF->getNumberOfLife() == 0) {
+		m_nLifeNumber += 5;
+		REF->setUpLife(5);
+		initTopMainMenu();
+		m_pTopMenu->setEnabled(false);
+	}
+	else {
+		float type = CCRANDOM_0_1();
+		float percent = CCRANDOM_0_1();
+		if (type >= 0.5f) {
+			if (percent < 0.5f) {
+				m_nCurrentGold += 300;
+				REF->setUpGoldExplored(300);
+				initTopMainMenu();
+				m_pTopMenu->setEnabled(false);
+			}
+			else if (percent < 0.85f) {
+				m_nCurrentGold += 400;
+				REF->setUpGoldExplored(400);
+				initTopMainMenu();
+				m_pTopMenu->setEnabled(false);
+			}
+			else {
+				m_nCurrentGold += 500;
+				REF->setUpGoldExplored(500);
+				initTopMainMenu();
+				m_pTopMenu->setEnabled(false);
+			}
+		}
+		else {
+			if (percent < 0.5f) {
+				m_nLifeNumber += 3;
+				REF->setUpLife(3);
+				initTopMainMenu();
+				m_pTopMenu->setEnabled(false);
+			}
+			else if (percent < 0.85f) {
+				m_nLifeNumber += 4;
+				REF->setUpLife(4);
+				initTopMainMenu();
+				m_pTopMenu->setEnabled(false);
+			}
+			else {
+				m_nLifeNumber += 5;
+				REF->setUpLife(5);
+				initTopMainMenu();
+				m_pTopMenu->setEnabled(false);
+			}
+		}
+	}
+
 }
 
 #endif 

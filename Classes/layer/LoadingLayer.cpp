@@ -29,7 +29,7 @@ bool LoadingLayer::init(int stage, int map, int charId)
 		return false;
 	}
 	AdmobHelper::getInstance()->showBanner();
-	AdmobHelper::getInstance()->showRewardVideoToRevive();
+	//AdmobHelper::getInstance()->showRewardVideoToRevive();
 	this->stage = stage;
 	this->map = map;
 	this->charId = charId;

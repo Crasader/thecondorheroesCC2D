@@ -3,6 +3,14 @@
  <tileset firstgid="1" name="bg" tilewidth="80" tileheight="80" tilecount="9" columns="3">
   <image source="river.png" width="240" height="240"/>
  </tileset>
+ <layer name="Tile Layer 1" width="8" height="4">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0
+</data>
+ </layer>
  <objectgroup name="square">
   <object id="1" x="0" y="319"/>
   <object id="2" x="1" y="240"/>

@@ -75,13 +75,15 @@ bool SceneIntro::init() {
 	_aParticleFeather2->setScale(0.5f);
 	_aParticleFeather2->setPosition(origin + Vec2(m_szVisibleSize.width * 0.5f, m_szVisibleSize.height));
 	this->addChild(_aParticleFeather2, 2);
-	FacebookHelper::getInstance()->login();
+	/*FacebookHelper::getInstance()->login();
+	FacebookHelper::getInstance()->captureScreen();*/
 	return true;
 }
 
 void SceneIntro::goToMainMenuScene(Ref* p_pSender) {
-	FacebookHelper::getInstance()->requestPostPermission();
-	FacebookHelper::getInstance()->scrShotAndShare("SwordmanLegend");
+	//FacebookHelper::getInstance()->requestPostPermission();
+	////FacebookHelper::getInstance()->scrShotAndDialog("SwordmanLegend");
+	//FacebookHelper::getInstance()->dialogPhoto("SwordManLegend");
 	AdmobHelper::getInstance()->hideBanner();
 	AudioManager::playSound(SOUND_BTCLICK);
 	Layer *_pMenuScene = MenuLayer::create(false);

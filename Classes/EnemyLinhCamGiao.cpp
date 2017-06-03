@@ -89,12 +89,12 @@ void EnemyLinhCamGiao::initBoxPhysic(b2World * world, Point pos)
 
 void EnemyLinhCamGiao::playsoundAt()
 {
-	AudioManager::playSound(SOUND_TC1AT);
+	AudioManager::playSound(SOUND_GIAOAT);
 }
 
 void EnemyLinhCamGiao::playsoundDie()
 {
-	AudioManager::playSound(SOUND_TC1DIE);
+	AudioManager::playSound(SOUND_GIAODIE);
 }
 
 void EnemyLinhCamGiao::addSquareFixture(Size size, Vec2 pos, unsigned int category, unsigned int mask)

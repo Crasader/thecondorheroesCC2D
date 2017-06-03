@@ -17,6 +17,7 @@
 #include "boss/EnemyBoss1.h"
 #include "boss/EnemyBoss2.h"
 #include "boss/EnemyBoss3.h"
+#include "boss/EnemyBoss4.h"
 #include "chimdieu/ChimDieu.h"
 #include "coin/Coin.h"
 #include "coin/CoinBag.h"
@@ -34,7 +35,6 @@
 #include "EnemyLinhTenThang.h"
 #include "EnemyLinhTenXien.h"
 #include "thirdsdkhelper\VungleHelper.h"
-
 
 #ifdef SDKBOX_ENABLED
 class GameScene : public cocos2d::Layer, public sdkbox::VungleListener
@@ -268,12 +268,13 @@ public:
 	void resumeAfterTut(int caseTut);
 
 #ifdef SDKBOX_ENABLED
-
+	// vungle
 	 void onVungleAdViewed(bool isComplete);
 	 void onVungleCacheAvailable();
 	 void onVungleStarted();
 	 void onVungleFinished();
 	 void onVungleAdReward(const std::string& name);
+	 // ia
 #endif 
 };
 

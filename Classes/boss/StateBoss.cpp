@@ -16,7 +16,7 @@ void StateBoss::enter(EnemyBoss1 * boss)
 	boss->clearTracks();
 	boss->setAnimation(0, "idle", true);
 	boss->setToSetupPose();
-	boss->setControlState(0);
+	//boss->setControlState(0);
 }
 
 
@@ -58,7 +58,7 @@ void BossAttacking1::enter(EnemyBoss1 * boss)
 	boss->setRealMoveVelocity(Vec2::ZERO);
 	srand(time(NULL));
 	//boss->setControlAttack(rand() % 3 + 1);
-	boss->setControlAttack(1);
+	boss->setControlAttack(0);
 	log("attack1");
 	boss->doAttack1();
 }

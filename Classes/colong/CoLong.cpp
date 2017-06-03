@@ -130,7 +130,13 @@ void CoLong::doCounterSkill2() {
 }
 
 // SKILL 3
-void CoLong::doCounterSkill3() {
+void CoLong::doCounterSkill3() 
+{
+	auto gameLayer = (GameScene*) this->getParent();
+	auto hud = gameLayer->getHud();
+	hud->getBtnAttack()->setCanTouch(false);
+	hud->getBtnAttack()->getMain()->setVisible(false);
+
 	keysoundSKill3 = AudioManager::playSoundForever(SOUND_CLSKILL3);
 
 	changeBodyMaskBits(BITMASK_FLOOR | BITMASK_COIN_BULLION | BITMASK_BOSS);
@@ -147,6 +153,12 @@ void CoLong::doCounterSkill3() {
 		checkDurationSkill3++;
 
 		if (checkDurationSkill3 >= getDurationSkill3() * 10) {
+			
+			auto gameLayer = (GameScene*) this->getParent();
+			auto hud = gameLayer->getHud();
+			hud->getBtnAttack()->setCanTouch(true);
+			hud->getBtnAttack()->getMain()->setVisible(true);
+
 			setIsDoneDuration3(true);
 			if (getOnGround()) {
 				getFSM()->changeState(MRun);
@@ -430,6 +442,12 @@ void CoLong::stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSkill3)
 
 	if (stopSkill3 && !getIsDoneDuration3()) {
 		AudioManager::stopSoundForever(keysoundSKill3);
+		
+		auto gameLayer = (GameScene*) this->getParent();
+		auto hud = gameLayer->getHud();
+		hud->getBtnAttack()->setCanTouch(true);
+		hud->getBtnAttack()->getMain()->setVisible(true);
+
 		setIsDoneDuration3(true);
 		unschedule("KeySkill3");
 		checkDurationSkill3 = 0;

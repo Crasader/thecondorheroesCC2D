@@ -33,6 +33,8 @@ void JSonHeroManager::readFile(int p_nLanguage, int indexHero)
 
 	this->isLocked = jsonDoc["hero"][indexHero]["isLocked"].GetBool();
 
+	this->pathButtonAttack = jsonDoc["hero"][indexHero]["pathButtonAttack"].GetString();
+
 	this->skill_1Name = jsonDoc["hero"][indexHero]["skill1Name"][_arLanguages[p_nLanguage].c_str()].GetString();
 	this->coolDownSkill1 = jsonDoc["hero"][indexHero]["coolDownSkill1"].GetDouble();
 	this->durationSkill1 = jsonDoc["hero"][indexHero]["durationSkill1"].GetDouble();

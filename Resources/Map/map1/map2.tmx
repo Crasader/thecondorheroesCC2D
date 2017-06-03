@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="504" height="10" tilewidth="80" tileheight="80" nextobjectid="139">
+<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="504" height="10" tilewidth="80" tileheight="80" nextobjectid="139">
  <tileset firstgid="1" name="street" tilewidth="80" tileheight="80" tilecount="18" columns="6">
   <image source="street.png" trans="ff00ff" width="480" height="240"/>
  </tileset>
@@ -132,23 +132,22 @@
 </data>
  </layer>
  <objectgroup name="ground">
-  <object id="2" x="-15" y="600" width="5224" height="8"/>
-  <object id="6" x="5504" y="598.333" width="10334.7" height="8"/>
-  <object id="9" x="9192" y="456" width="328" height="4"/>
-  <object id="12" x="11524" y="388" width="300" height="8"/>
-  <object id="13" x="11988" y="464" width="804" height="8"/>
-  <object id="14" x="12792" y="304" width="332" height="4"/>
-  <object id="17" x="13124" y="460" width="880" height="8"/>
-  <object id="19" x="16084" y="599" width="468" height="8"/>
-  <object id="20" x="16798" y="604" width="314" height="8"/>
-  <object id="23" x="18072" y="464" width="2584" height="8"/>
-  <object id="24" x="17358" y="601" width="6968" height="7"/>
-  <object id="30" x="24312" y="456" width="1924" height="8"/>
-  <object id="31" x="26232" y="600" width="3526" height="8"/>
-  <object id="33" x="29920" y="604" width="1272" height="8"/>
-  <object id="34" x="31356" y="608" width="1116"/>
-  <object id="35" x="32636" y="608" width="2468"/>
-  <object id="36" x="35068" y="607" width="5248.12"/>
+  <object id="2" x="0" y="600" width="5200" height="10"/>
+  <object id="6" x="5520" y="600" width="10320" height="10"/>
+  <object id="9" x="9200" y="470" width="320" height="10"/>
+  <object id="12" x="11520" y="390" width="320" height="10"/>
+  <object id="13" x="12000" y="470" width="800" height="10"/>
+  <object id="14" x="12800" y="310" width="320" height="10"/>
+  <object id="17" x="13120" y="470" width="880" height="10"/>
+  <object id="19" x="16084" y="600" width="470" height="10"/>
+  <object id="20" x="16800" y="600" width="320" height="10"/>
+  <object id="23" x="18080" y="470" width="2560" height="10"/>
+  <object id="24" x="17360" y="600" width="6960" height="10"/>
+  <object id="30" x="24320" y="470" width="1920" height="10"/>
+  <object id="31" x="26240" y="600" width="3520" height="10"/>
+  <object id="33" x="29920" y="600" width="1280" height="10"/>
+  <object id="34" x="31360" y="600" width="1120" height="10"/>
+  <object id="36" x="32640" y="600" width="7680" height="10"/>
  </objectgroup>
  <objectgroup name="coin_square">
   <object id="121" name="coin_square" x="27360.6" y="315.152" width="636.364" height="66.6667"/>

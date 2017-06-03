@@ -23,7 +23,7 @@ MyButton * MyButton::create(string file_name_main, string file_name_CoolDown, Po
 
 	mNode->number = Label::createWithBMFont("fonts/font_life-export.fnt", "0");
 	mNode->number->setBMFontSize(mNode->getContentSize().height / 2.2f);
-	mNode->number->setAnchorPoint(Vec2(0.5f, 0.15f));
+	mNode->number->setAnchorPoint(Vec2(0.5f, 0.15f)); // magic number (cause: resource)
 	mNode->number->setPosition(mNode->getContentSize() / 2);
 	mNode->addChild(mNode->number);
 	mNode->number->setVisible(false);
@@ -39,6 +39,7 @@ MyButton * MyButton::create(string file_name_main, string file_name_CoolDown, Po
 	mNode->isBlocked = false;
 	mNode->canTouch = true;
 	mNode->setIsActive(false);
+	mNode->autorelease();
 	//mNode->addEvents();
 	return mNode;
 }
@@ -164,18 +165,21 @@ void MyButton::checkInterval(float dt)
 
 void MyButton::runTimer()
 {
-	if (timeCoolDown < 1)
-		return;
 	timer = timeCoolDown;
-	number->setString(StringUtils::format("%i", (int)timer));
-	number->setVisible(true);
+	if (timeCoolDown < 1) {
+		number->setVisible(false);
+	} else {
+		number->setVisible(true);
+		number->setString(StringUtils::format("%i", (int)timer));
+	}
 	
 	this->schedule([&](float dt) {
 		timer -= 0.01f;
 		main->setPercentage((timeCoolDown - timer) / timeCoolDown * 100.0f);
-		number->setString(StringUtils::format("%i", (int)timer));
+		if(timer > 1)
+			number->setString(StringUtils::format("%i", (int)timer));
 
-		if ((int)timer == 0) {
+		if ((int)timer <= 0) {
 			number->setVisible(false);
 		}
 		if (timer <= 0.0f) {

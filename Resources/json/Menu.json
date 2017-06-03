@@ -69,17 +69,17 @@
 		},
 		{
 		"iconGoldPackPath": "UI/UI_main_menu/UI_shop/gold_board2.png",
-		"goldNumber": 20000,
+		"goldNumber": 21000,
 		"diamondPrice": 200
 		},
 		{
 		"iconGoldPackPath": "UI/UI_main_menu/UI_shop/gold_board3.png",
-		"goldNumber": 50000,
+		"goldNumber": 42000,
 		"diamondPrice": 400
 		},
 		{
 		"iconGoldPackPath": "UI/UI_main_menu/UI_shop/gold_board4.png",
-		"goldNumber": 100000,
+		"goldNumber": 110000,
 		"diamondPrice": 600
 		},
 		{
@@ -91,28 +91,28 @@
 	"diamond_packs": [
 		{
 		"iconDiamondPackPath": "UI/UI_main_menu/UI_shop/diamond_board1.png",
-		"diamondNumber": 1000,
+		"diamondNumber": 100,
 		"moneyPrice": "0.99$"
 		},
 		{
 		"iconDiamondPackPath": "UI/UI_main_menu/UI_shop/diamond_board2.png",
-		"diamondNumber": 2000,
+		"diamondNumber": 200,
 		"moneyPrice": "1.99$"
 		},
 		{
 		"iconDiamondPackPath": "UI/UI_main_menu/UI_shop/diamond_board3.png",
-		"diamondNumber": 3000,
+		"diamondNumber": 400,
 		"moneyPrice": "2.99$"
 		},
 		{
 		"iconDiamondPackPath": "UI/UI_main_menu/UI_shop/diamond_board4.png",
-		"diamondNumber": 4000,
-		"moneyPrice": "3.99$"
+		"diamondNumber": 800,
+		"moneyPrice": "4.99$"
 		},
 		{
 		"iconDiamondPackPath": "UI/UI_main_menu/UI_shop/diamond_board5.png",
-		"diamondNumber": 5000,
-		"moneyPrice": "4.99$"
+		"diamondNumber": 1600,
+		"moneyPrice": "9.99$"
 		}
 	],
 	"energy_packs": [

@@ -22,7 +22,9 @@ protected:
 	void fastAndFurious();
 	void doCounterSkill1();
 
+	SkeletonAnimation *effectSkill2;
 	CCArray* poolSkill2;
+	int counterSkill2 = 0;
 	int indexSkill2 = 0;
 	int numberOfDeadDCTC;
 	list<DaCauBongPhap*> listDCTC;
@@ -30,16 +32,12 @@ protected:
 	void slashDCTC();
 	void doCounterSkill2();
 
-	
+	//SkeletonAnimation *effectSkill3;
 	Sprite* wave;
 	void killAll();
 	void doCounterSkill3();
-	
-	//////////////////////////////////////////////////////////////////////////
-	void createSlash();
+
 	void runEffectSkill1();
-	void runSlashLand();
-	//////////////////////////////////////////////////////////////////////////
 
 	void createEffect();
 	void addStuff();

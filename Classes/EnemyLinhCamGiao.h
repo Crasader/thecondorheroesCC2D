@@ -3,7 +3,8 @@
 
 #include "EnemyToanChanStudent.h"
 
-
+#define SOUND_GIAOAT		"sound/giaoat.mp3"
+#define SOUND_GIAODIE		"sound/giaodie.mp3"
 class EnemyLinhCamGiao : public EnemyToanChanStudent
 {
 public:

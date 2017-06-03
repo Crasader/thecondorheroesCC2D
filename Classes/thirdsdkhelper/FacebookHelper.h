@@ -9,6 +9,8 @@ using namespace std;
 USING_NS_CC;
 
 class FacebookHelper {
+private :
+	std::string _captureFilename;
 public:
 	//static GAHelper *INSTANCE;
 	FacebookHelper() {
@@ -17,12 +19,6 @@ public:
 #endif
 	}
 
-private:
-	void onCaptured(bool succeed, const std::string& outputFile) {};
-	std::string takeScreenShot() {
-		utils::captureScreen(CC_CALLBACK_2(FacebookHelper::onCaptured, this), "scrcap.png");
-		return FileUtils::getInstance()->fullPathForFilename("scrcap.png");
-	};
 public:
 	
 	void login() {
@@ -51,23 +47,37 @@ public:
 		sdkbox::PluginFacebook::requestReadPermissions({ sdkbox::FB_PERM_READ_PUBLIC_PROFILE, sdkbox::FB_PERM_READ_USER_FRIENDS });
 #endif
 	};
-	void scrShotAndShare(std::string title) {
+	void dialogPhoto(string title)
+	{
 #ifdef SDKBOX_ENABLED
-		sdkbox::FBShareInfo info;
-		info.type = sdkbox::FB_PHOTO;
-		info.title = title;
-		info.image = takeScreenShot();
-		sdkbox::PluginFacebook::share(info);
+
+		if (!_captureFilename.empty() && FileUtils::getInstance()->isFileExist(_captureFilename))
+		{
+			//CCLOG("dialog photo: %s", _captureFilename.c_str());
+			sdkbox::FBShareInfo info;
+			info.type = sdkbox::FB_PHOTO;
+			info.title = title;
+			info.image = _captureFilename;
+			sdkbox::PluginFacebook::dialog(info);
+		}
+		else
+		{
+			//CCLOG("##FB capture screen first");
+		}
 #endif
-	};
-	void scrShotAndDialog(std::string title) {
-#ifdef SDKBOX_ENABLED
-		sdkbox::FBShareInfo info;
-		info.type = sdkbox::FB_PHOTO;
-		info.title = title;
-		info.image = takeScreenShot();
-		sdkbox::PluginFacebook::dialog(info);
-#endif
+	}
+	void captureScreen()
+	{
+		utils::captureScreen(CC_CALLBACK_2(FacebookHelper::afterCaptureScreen, this), "screen.png");
+	}
+
+	void afterCaptureScreen(bool yes, const std::string &outputFilename)
+	{
+		
+		if (yes)
+		{
+			_captureFilename = outputFilename;
+		}
 	}
 
 	static FacebookHelper* getInstance() {

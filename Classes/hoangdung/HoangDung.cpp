@@ -23,7 +23,7 @@ HoangDung * HoangDung::create(string jsonFile, string atlasFile, float scale)
 		hoangDung->setBoxHeight(hoangDung->getBoundingBox().size.height / 2.2f);
 
 		//
-		hoangDung->blash = Sprite::create("Animation/CoLong/blash.png");
+		hoangDung->blash = Sprite::create("Animation/HoangDung/blash.png");
 		hoangDung->blash->setScale(scale / 2);
 		hoangDung->blash->setPosition(hoangDung->getContentSize() / 2);
 		hoangDung->blash->setVisible(false);

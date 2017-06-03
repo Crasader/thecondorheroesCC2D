@@ -62,6 +62,11 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 		m_pShopBoardLayer->setContentSize(Size(m_szVisibleSize.width, m_szVisibleSize.height)); // fill screen width, 25% screen height
 		m_pShopBoardLayer->setPosition(0.0f, 0.0f);
 		this->addChild(m_pShopBoardLayer, 6);
+
+		auto key_listener = EventListenerKeyboard::create();
+		key_listener->onKeyPressed = CC_CALLBACK_2(MenuLayer::onKeyPressed, this);
+		_eventDispatcher->addEventListenerWithSceneGraphPriority(key_listener, this);
+
 		this->scheduleUpdate();
 
 		return true;
@@ -107,9 +112,76 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 	this->addChild(m_pBlurScreen, 5);
 	m_pBlurScreen->setVisible(false);
 
+	auto key_listener = EventListenerKeyboard::create();
+	key_listener->onKeyPressed = CC_CALLBACK_2(MenuLayer::onKeyPressed, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(key_listener, this);
+
 	this->scheduleUpdate();
 
 	return true;
+}
+
+void MenuLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
+{	
+	if (m_nMenuStatus == 0) {
+		if (backNumber == 0) {
+			backNumber++;
+			CustomLayerToToast *_pToast = CustomLayerToToast::create("Press back again to exit", TOAST_LONG);
+			_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
+			this->addChild(_pToast, 10);
+		}
+		else {
+			Director::getInstance()->end();
+		}
+	}
+	if (m_nMenuStatus == 1) {
+		backNumber = 0;
+		m_nMenuStatus = 0;
+		moveLayerViaDirection(m_pQuestBoard, 4);
+		runAction(Sequence::create(DelayTime::create(0.2f), CallFunc::create([&]() {
+			m_pGameScene->runAction(MoveTo::create(0.2f, Vec2(0.0f, m_szVisibleSize.height * 0.2f)));
+		}), nullptr));
+		runAction(Sequence::create(DelayTime::create(0.6f), CallFunc::create([&]() {
+			showMainMenu();
+		}), nullptr));
+	}
+	if (m_nMenuStatus == 2) {
+		backNumber = 0;
+		m_nMenuStatus = 0;
+		if (m_nIndexHeroSelected != m_nIndexHeroPicked) {
+			m_nIndexHeroPicked = m_nIndexHeroSelected;
+			REF->pointToCurrentHero(m_nIndexHeroPicked);
+			initSceneLayer();
+			initBottomHeroMenu();
+			initHeroInfoBoard();
+			initUpgradeBoard();
+		}
+		moveLayerViaDirection(m_pUpgradeBoard, 6);
+		moveLayerViaDirection(m_pHeroInfoBoard, 4);
+		moveLayerViaDirection(m_pBottomHeroLayer, 2);
+		runAction(Sequence::create(DelayTime::create(0.2f), CallFunc::create([&]() {
+			m_pGameScene->runAction(MoveTo::create(0.2f, Vec2(0.0f, m_szVisibleSize.height * 0.2f)));
+		}), nullptr));
+		runAction(Sequence::create(DelayTime::create(0.6f), CallFunc::create([&]() {
+			showMainMenu();
+		}), nullptr));
+	}
+	if (m_nMenuStatus == 3) {
+		backNumber = 0;
+		m_nMenuStatus = 0;
+		m_pSelectStageLayer->removeFromParentAndCleanup(true);
+		m_pBottomMainMenu->setEnabled(true);
+		m_pItemBoardMenu->setEnabled(true);
+		m_pSkillBoardMenu->setEnabled(true);
+		m_pBottomHeroMenu->setEnabled(true);
+		m_pQuestBoardMenu->setEnabled(true);
+	}
+	if (m_nMenuStatus == 4) {
+		Layer *_pMenuScene = MenuLayer::create(false);
+		auto scene = Scene::create();
+		scene->addChild(_pMenuScene);
+		Director::getInstance()->replaceScene(scene);
+	}
 }
 
 void MenuLayer::update(float p_fDelta) {
@@ -2003,9 +2075,34 @@ void MenuLayer::buttonBuyCoinHandle(int p_nIndexCoinPack) {
 	}
 }
 
-void MenuLayer::buttonBuyDiamondHandle(int p_nIndexDiamondPack) {
+void MenuLayer::buttonBuyDiamondHandle(int p_nIndexDiamondPack) {// index 0-4
 	AudioManager::playSound(SOUND_BTCLICK);
-	JSMENU->readDiamondPack(p_nIndexDiamondPack);
+	switch (p_nIndexDiamondPack)
+	{
+	case 0: {
+		IAPHelper::getInstance()->purchase("diamond_1");
+		break;
+	}
+	case 1: {
+		IAPHelper::getInstance()->purchase("diamond_2");
+		break;
+	}
+	case 2: {
+		IAPHelper::getInstance()->purchase("diamond_3");
+		break;
+	}
+	case 3: {
+		IAPHelper::getInstance()->purchase("diamond_4");
+		break;
+	}
+	case 4: {
+		IAPHelper::getInstance()->purchase("diamond_5");
+		break;
+	}
+	default:
+		break;
+	}
+	/*JSMENU->readDiamondPack(p_nIndexDiamondPack);
 	if (false) {
 		return;
 	}
@@ -2014,7 +2111,7 @@ void MenuLayer::buttonBuyDiamondHandle(int p_nIndexDiamondPack) {
 	initTopMainMenu();
 	m_pTopMenu->setEnabled(false);
 
-	REF->setUpNumberQuest(7, JSMENU->getDiamondPackNumberDiamond());
+	REF->setUpNumberQuest(7, JSMENU->getDiamondPackNumberDiamond());*/
 	//initQuestBoard(0);
 }
 
@@ -2333,6 +2430,72 @@ void MenuLayer::logUpgradeSkillEvent(int indexhero, int indexskill, int level)
 {
 	GAHelper::getInstance()->logEvent("UpgradeSkill", indexHeroToName(indexhero)+StringUtils::format(" skill %d", indexskill), StringUtils::format("level %d", level), 1);
 }
+
+#ifdef SDKBOX_ENABLED
+
+
+void MenuLayer::onInitialized(bool ok)
+{
+}
+
+void MenuLayer::onSuccess(sdkbox::Product const & p)
+{
+	int p_nIndexDiamondPack;
+	if (p.name == "diamond_1") {
+		p_nIndexDiamondPack = 0;
+	}
+	else if (p.name == "diamond_2") {
+		p_nIndexDiamondPack = 1;
+		
+	}
+	else if (p.name == "diamond_3") {
+		p_nIndexDiamondPack = 2;
+		
+	}
+	else if (p.name == "diamond_4") {
+		p_nIndexDiamondPack = 3;
+
+	}
+	else if (p.name == "diamond_5") {
+		p_nIndexDiamondPack = 4;
+	}
+	JSMENU->readDiamondPack(p_nIndexDiamondPack);
+	if (false) {
+		return;
+	}
+	m_nCurrentDiamond += JSMENU->getDiamondPackNumberDiamond();
+	REF->setUpDiamondBuy(JSMENU->getDiamondPackNumberDiamond());
+	initTopMainMenu();
+	m_pTopMenu->setEnabled(false);
+
+	REF->setUpNumberQuest(7, JSMENU->getDiamondPackNumberDiamond());
+}
+
+void MenuLayer::onFailure(sdkbox::Product const & p, const std::string & msg)
+{
+}
+
+void MenuLayer::onCanceled(sdkbox::Product const & p)
+{
+}
+
+void MenuLayer::onRestored(sdkbox::Product const & p)
+{
+}
+
+void MenuLayer::onProductRequestSuccess(std::vector<sdkbox::Product> const & products)
+{
+}
+
+void MenuLayer::onProductRequestFailure(const std::string & msg)
+{
+}
+
+void MenuLayer::onRestoreComplete(bool ok, const std::string & msg)
+{
+}
+
+#endif 
 
 string MenuLayer::indexHeroToName(int indexHero)
 {

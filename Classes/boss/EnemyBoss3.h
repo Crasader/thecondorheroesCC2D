@@ -18,9 +18,9 @@ public:
 	void playSoundAttack1();
 	void playSoundAttack2();
 	void playSoundDie();
-	void doAttack2();
+	virtual void doAttack2();
 	bool checkStop();
-	void listener();
+	virtual void listener();
 };
 
 #endif // __ENEMY_H__

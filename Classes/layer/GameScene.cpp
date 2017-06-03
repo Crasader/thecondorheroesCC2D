@@ -995,7 +995,7 @@ void GameScene::createGroundBody()
 		initGroundPhysic(world, pos, sizeOfBound);
 	}
 
-	if (charId == 0) {
+	if (charId == 0 || charId == 4) {
 		auto groupUnderGround = tmx_map->getObjectGroup("under_ground");
 		if (!groupUnderGround) return;
 		for (auto child : groupUnderGround->getObjects()) {
@@ -1020,7 +1020,7 @@ void GameScene::createGroundForMapBoss()
 		initGroundPhysic(world, origin, Size(INT_MAX / 4, sizeOfBound.height));
 	}
 
-	if (charId == 0) {
+	if (charId == 0 || charId == 4) {
 		auto groupUnderGround = tmx_mapboss[0]->getObjectGroup("under_ground");
 		if (!groupUnderGround) return;
 		for (auto child : groupUnderGround->getObjects()) {
@@ -1372,7 +1372,7 @@ void GameScene::createEnemyChong3(MyLayer * layer, Vec2 pos)
 		}
 
 		enemy->initBoxPhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
-		enemy->makeMask();
+		//enemy->makeMask();
 
 		enemy->listener();
 	}
@@ -1528,6 +1528,11 @@ void GameScene::creatBoss()
 		}
 		case 3: {
 			enemy = EnemyBoss3::create("Animation/Enemy_Boss3/Boss3.json",
+				"Animation/Enemy_Boss3/Boss3.atlas", scaleOfEnemy);
+			break;
+		}
+		case 4: {
+			enemy = EnemyBoss4::create("Animation/Enemy_Boss3/Boss3.json",
 				"Animation/Enemy_Boss3/Boss3.atlas", scaleOfEnemy);
 			break;
 		}
@@ -1802,7 +1807,10 @@ void GameScene::initUnderGroundPhysic(b2World * world, Point pos, Size size)
 
 	bodyDef.type = b2_staticBody;
 
-	bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);
+	if (charId == 4) {
+		bodyDef.position.Set(pos.x / PTM_RATIO, (pos.y + SCREEN_SIZE.height / 20) / PTM_RATIO);
+	} else
+		bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);
 
 	body = world->CreateBody(&bodyDef);
 	body->CreateFixture(&fixtureDef);
@@ -1943,6 +1951,7 @@ void GameScene::updateMultiKills() {
 	if (m_nMultiKills > 1) {
 		hud->updateMultiKills(m_nMultiKills);
 		// if (m_nMultiKills >= 5) m_nMultiKills = 5;
+		if (m_nMultiKills >= 7) m_nMultiKills = 0;
 		hero->setScore(hero->getScore() + (m_nMultiKills - 1) * m_lastScore);
 	}
 }

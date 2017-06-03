@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="470" height="20" tilewidth="80" tileheight="80" nextobjectid="260">
+<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="470" height="20" tilewidth="80" tileheight="80" nextobjectid="260">
  <tileset firstgid="1" name="chonggo" tilewidth="80" tileheight="80" tilecount="9" columns="3">
   <image source="chonggo.png" width="240" height="240"/>
  </tileset>
@@ -58,30 +58,30 @@
 </data>
  </layer>
  <objectgroup name="ground">
-  <object id="66" x="-4" y="1445" width="37640"/>
-  <object id="81" x="1084" y="1111" width="556"/>
-  <object id="82" x="3484" y="1273" width="792"/>
-  <object id="83" x="5884" y="1196" width="644"/>
-  <object id="85" x="7164" y="1040" width="2472"/>
-  <object id="86" x="10604" y="1115" width="1280"/>
-  <object id="87" x="14841" y="1112" width="464"/>
-  <object id="88" x="17320" y="1116" width="488"/>
-  <object id="92" x="24192" y="1132" width="572"/>
-  <object id="93" x="25643" y="1037" width="556"/>
-  <object id="94" x="26513" y="1033" width="412"/>
-  <object id="95" x="27160" y="1034" width="408"/>
-  <object id="96" x="27880" y="1035" width="476"/>
-  <object id="97" x="28928" y="1132" width="632"/>
-  <object id="98" x="31244" y="1116" width="480"/>
-  <object id="99" x="31884" y="1115" width="396"/>
-  <object id="100" x="32444" y="1114" width="476"/>
-  <object id="103" x="33727" y="1111" width="1508"/>
-  <object id="126" x="13020" y="1116" width="452" height="4"/>
-  <object id="127" x="13957" y="1115" width="476"/>
-  <object id="129" x="18036" y="1111" width="488"/>
-  <object id="142" x="16451" y="1118" width="532"/>
-  <object id="145" x="4692" y="1110" width="788" height="4"/>
-  <object id="171" x="19888" y="1032" width="1904" height="4"/>
+  <object id="66" x="0" y="1450" width="37600" height="10"/>
+  <object id="81" x="1080" y="1120" width="560" height="10"/>
+  <object id="82" x="3480" y="1280" width="800" height="10"/>
+  <object id="83" x="5880" y="1200" width="640" height="10"/>
+  <object id="85" x="7160" y="1040" width="2480" height="10"/>
+  <object id="86" x="10600" y="1120" width="1280" height="10"/>
+  <object id="87" x="14840" y="1120" width="480" height="10"/>
+  <object id="88" x="17320" y="1120" width="480" height="10"/>
+  <object id="92" x="24200" y="1120" width="560" height="10"/>
+  <object id="93" x="25640" y="1040" width="560" height="10"/>
+  <object id="94" x="26520" y="1040" width="400" height="10"/>
+  <object id="95" x="27160" y="1040" width="400" height="10"/>
+  <object id="96" x="27880" y="1040" width="480" height="10"/>
+  <object id="97" x="28920" y="1120" width="640" height="10"/>
+  <object id="98" x="31240" y="1120" width="480" height="10"/>
+  <object id="99" x="31880" y="1120" width="400" height="10"/>
+  <object id="100" x="32440" y="1120" width="480" height="10"/>
+  <object id="103" x="33720" y="1120" width="1520" height="10"/>
+  <object id="126" x="13000" y="1120" width="480" height="10"/>
+  <object id="127" x="13960" y="1120" width="480" height="10"/>
+  <object id="129" x="18040" y="1120" width="480" height="10"/>
+  <object id="142" x="16440" y="1120" width="560" height="10"/>
+  <object id="145" x="4680" y="1120" width="800" height="10"/>
+  <object id="171" x="19880" y="1040" width="1920" height="10"/>
  </objectgroup>
  <objectgroup name="coin_straight">
   <object id="1" name="coin_straight" x="320.97" y="1329.09" width="632" height="21.2121"/>

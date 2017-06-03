@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="450" height="15" tilewidth="80" tileheight="80" nextobjectid="126">
- <tileset firstgid="1" name="bg2" tilewidth="80" tileheight="80" tilecount="112" columns="16">
-  <image source="bg3_2.png" width="1280" height="560"/>
- </tileset>
- <tileset firstgid="113" name="street" tilewidth="80" tileheight="80" tilecount="48" columns="16">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="460" height="15" tilewidth="80" tileheight="80" nextobjectid="284">
+ <tileset firstgid="1" name="street3_1" tilewidth="80" tileheight="80" tilecount="48" columns="16">
   <image source="street3_1.png" width="1280" height="240"/>
  </tileset>
- <layer name="bg2" width="450" height="15">
+ <layer name="street" width="460" height="15">
   <data encoding="base64" compression="zlib">
-   eJztzsNyBFAABdGJbdu2nYlt2/b/r9J/kbykb9VZdtWNRJxzzjnnnHPOOeecc84555xzzjnnnPv7i0Es4hCPBCQiCclIQSrSkI4MZCIL2fb29vb29oH3OchFHvJRgEIUoRglKEUZylGBSlSh2t7e3t7ePvC+BrWoQz0a0IgmNKMFrWhDOzrQiS5029vb29vbB973oBd96McABjGEYYxgFGMYxwQmEcWUvb29vb194P00ZjCLOcxjAYtYwjJWsIo1rGMDm9iyt7e3t7cPvN/GDnaxh30c4BBHOMYJTnGGc1zgElf29vb29vaB99e4wS3ucI8HPOIJz3jBK97wjg984sve3t7e3j7w/rf8sLe3t7e3/4neOeecc84559z/3DfGV26m
-  </data>
- </layer>
- <layer name="st" width="450" height="15">
-  <data encoding="base64" compression="zlib">
-   eJzt2NdNQwEQRUG3TDQZg8k52JgMpXKqQDw0I53PW8DuaAQAAAAAAAAAAAAAAAAAAAAAwH9wUIc1raM6rpM6rbM6r4u6rKu6rpu6rTt7e3t7e/uB7+/roR5rVvN6qkU910u91lu910d91ld929vb29vbD3y/VMu1Uqu1Vus1ro3arK3arp3arb3ar4m9vb29vf3A93/lLrW3t7e3t/cXtbe3t7e3/939D1/3y8w=
+   eJztzEdOAwEABEGTscnB5JxN/v/r6CfskZWqpD7OTCYAAAAAAAAAAAAAAAAAAAAAAAAAAAD8R0u1XCu1Wmu1Xhu1WdOa1VZt107t1l7t29vb29vbj3w/9OegDuuojmteJ3VaZ3VeF3VZV3VdN3Vbd/b29vb29iPfD/25r4d6rKd6rpd6rbda1Ht91Gd91Xf91K+9vb29vf3I90N//gDCyoOP
   </data>
  </layer>
  <objectgroup name="ground">

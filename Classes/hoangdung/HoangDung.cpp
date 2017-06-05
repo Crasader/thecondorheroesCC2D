@@ -45,7 +45,7 @@ void HoangDung::initSwordPhysic(b2World * world, Point position)
 	b2PolygonShape shape;
 	b2FixtureDef fixtureDef;
 
-	shape.SetAsBox(trueRadiusOfHero * 0.75f / PTM_RATIO, trueRadiusOfHero * 1.0f / PTM_RATIO);
+	shape.SetAsBox(trueRadiusOfHero * 0.85f / PTM_RATIO, trueRadiusOfHero * 1.25f / PTM_RATIO);
 
 	fixtureDef.density = 0.0f;
 	fixtureDef.friction = 0.0f;
@@ -450,6 +450,7 @@ void HoangDung::attackNormal()
 		}
 		else {
 			addAnimation(0, "attack3", false);
+			this->getSwordBody()->SetTransform(getSwordBody()->GetPosition(), PI / 2);
 		}
 
 		//log("atttack*");
@@ -539,7 +540,8 @@ void HoangDung::listener()
 		else if ((strcmp(getCurrent()->animation->name, "attack1") == 0) ||
 			(strcmp(getCurrent()->animation->name, "attack2") == 0) ||
 			(strcmp(getCurrent()->animation->name, "attack3") == 0)) {
-
+			if (strcmp(getCurrent()->animation->name, "attack3") == 0)
+				this->getSwordBody()->SetTransform(getSwordBody()->GetPosition(), 0);
 			changeSwordCategoryBitmask(BITMASK_ENEMY);
 
 			setIsPriorAttack(false);

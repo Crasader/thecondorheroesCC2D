@@ -10,8 +10,7 @@
 
 #include "ui_custom/CustomLayerToToast.h"
 #include "SelectStageScene.h"
-#include "thirdsdkhelper\GoogleAnalysticHelper.h"
-#include "thirdsdkhelper\IAPHelper.h"
+#include "thirdsdkhelper/GoogleAnalysticHelper.h"
 
 USING_NS_CC;
 using namespace spine;
@@ -19,23 +18,16 @@ using namespace std;
 using namespace ui;
 using namespace network;
 
-#ifdef SDKBOX_ENABLED
-class MenuLayer : public cocos2d::Layer, public sdkbox::IAPListener
-#else
-class MenuLayer : public cocos2d::Layer
-#endif
-{
+class MenuLayer : public Layer {
 public:
 	virtual bool init(bool p_bOnlySelectStage);
 	void update(float p_fDelta);
 	static MenuLayer* create(bool p_bOnlySelectStage);
-	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
-
+    void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
 private:
 	const Size m_szVisibleSize = Director::getInstance()->getVisibleSize();
 	float m_fButtonStartPosition;							// make start and unlock button at same position
 	int m_nMenuStatus = 0;
-	int backNumber = 0;
 
 	// input value
 	int m_nCurrentTimeFromGoogle = 0;						// time from google.com.vn (-7 hours from Viet Nam)
@@ -49,6 +41,7 @@ private:
 	int m_arItemPrice[5];									// cost of items
 	int m_nShopOption = 0;
 	int m_nLanguage = 0;
+    int backNumber = 0;
 
 	Label *m_pTimeCounter;									// time counter to increase life
 	MenuItemSprite *m_arHeroButton[5];						// hero mini icon
@@ -86,6 +79,7 @@ private:
 	SelectStageLayer *m_pSelectStageLayer = nullptr;
 	Layer *m_pBlurScreen;
 	LayerColor *m_pBuyPackConfirmBackground;
+	LayerColor *m_pShopBlurBackground;
 
 	// menus
 	Menu *m_pTopMenu;
@@ -134,6 +128,7 @@ private:
 	void buttonStartHandle();
 
 	void buttonDailyRewardHandle();
+	void buttonConfirmDailyRewardHandle();
 
 	// upgrade skill handle
 	void buttonUpgradeSkillHandle(int p_nIndexSkill);
@@ -190,17 +185,6 @@ private:
 	void logUpgradeHeroEvent(int indexhero, int level);
 	void logUpgradeSkillEvent(int indexhero, int indexskill, int level);
 	//void logUpgradeSkillEvent(int indexhero, int indexskill, int level);
-#ifdef SDKBOX_ENABLED
-	virtual void onInitialized(bool ok) override;
-	virtual void onSuccess(sdkbox::Product const& p) override;
-	virtual void onFailure(sdkbox::Product const& p, const std::string &msg) override;
-	virtual void onCanceled(sdkbox::Product const& p) override;
-	virtual void onRestored(sdkbox::Product const& p) override;
-	virtual void onProductRequestSuccess(std::vector<sdkbox::Product> const &products) override;
-	virtual void onProductRequestFailure(const std::string &msg) override;
-	void onRestoreComplete(bool ok, const std::string &msg) override;
-
-#endif // DEBUG
 private:
 		string indexHeroToName(int indexHero);
 };

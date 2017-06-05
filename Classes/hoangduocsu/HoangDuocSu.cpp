@@ -29,8 +29,8 @@ HoangDuocSu * HoangDuocSu::create(string jsonFile, string atlasFile, float scale
 		hds->blash->setVisible(false);
 		hds->addChild(hds->blash);
 
-		hds->wave = Sprite::create("Animation/CoLong/blash.png");
-		hds->wave->setScale(scale / 2);
+		hds->wave = Sprite::create("Animation/HoangDuocSu/skill3.png");
+		hds->wave->setScale(scale / 3);
 		hds->wave->setPosition(hds->getContentSize() / 2);
 		hds->wave->setVisible(false);
 		hds->addChild(hds->wave);
@@ -445,10 +445,13 @@ void HoangDuocSu::attackLanding()
 	//runSlashLand();
 
 	clearTracks();
-	if (isDoneDuration2) {
+	if (!isDoneDuration2) {
 		addAnimation(0, "attack1", false);
-	} else
+	}
+	else {
 		addAnimation(0, "attack3", false);
+		this->getSwordBody()->SetTransform(getSwordBody()->GetPosition(), PI / 2);
+	}
 
 	setToSetupPose();
 
@@ -507,7 +510,8 @@ void HoangDuocSu::listener()
 		else if ((strcmp(getCurrent()->animation->name, "attack1") == 0) ||
 			(strcmp(getCurrent()->animation->name, "attack2") == 0) ||
 			(strcmp(getCurrent()->animation->name, "attack3") == 0)) {
-
+			if(strcmp(getCurrent()->animation->name, "attack3") == 0)
+				this->getSwordBody()->SetTransform(getSwordBody()->GetPosition(), 0);
 			changeSwordCategoryBitmask(BITMASK_ENEMY);
 
 			setIsPriorAttack(false);

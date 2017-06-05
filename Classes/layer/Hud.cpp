@@ -113,9 +113,10 @@ void Hud::addProfile()
 	// DISTANCE BAR + CHARACTER POINT
 	auto groupDistanceBar = tmxMap->getObjectGroup("distance_bar");
 	auto mObject_4 = groupDistanceBar->getObject("distance_bar");
-	Point origin_4 = Point(mObject_4["x"].asFloat() * tmxMap->getScaleX(), mObject_4["y"].asFloat()* tmxMap->getScaleY());
+	Point origin_4 = Point(SCREEN_SIZE.width * 0.04f, mObject_4["y"].asFloat()* tmxMap->getScaleY());
 
 	distanceBar = Sprite::create("UI/UI_info_ingame/distance.png");
+	distanceBar->setAnchorPoint(Vec2(0, 0.5f));
 	distanceBar->setScale(SCREEN_SIZE.width * 0.5f / distanceBar->getContentSize().width);
 	distanceBar->setPosition(origin_4);
 

@@ -121,6 +121,29 @@ void EnemyLinhCamGiao2::addSquareFixture(Size size, Vec2 pos, unsigned int categ
 	footSensorFixture->SetUserData(this);
 }
 
+void EnemyLinhCamGiao2::listener()
+{
+	this->setCompleteListener([&](int trackIndex, int loopCount) {
+		if (strcmp(getCurrent()->animation->name, "attack") == 0 && loopCount == 1) {
+			//getSplash()->setVisible(false);
+			//setIsAttacking(false);
+			this->clearTracks();
+			this->addAnimation(0, "run", true);
+			this->setToSetupPose();
+		}
+		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
+
+			this->setVisible(false);
+			/*	this->clearTracks();
+			this->setAnimation(0, "idle", true);
+			this->setToSetupPose();*/
+			this->pauseSchedulerAndActions();
+
+		}
+
+	});
+}
+
 
 
 //void EnemyLinhCamGiao2::genSplash()

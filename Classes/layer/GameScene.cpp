@@ -21,7 +21,7 @@ Scene* GameScene::createScene(GameScene *layer, Hud* m_hud)
 	auto scene = Scene::create();
 
 	// 'layer' is an autorelease object
-
+	layer->onBegin();
 	m_hud->setPosition(Director::getInstance()->getVisibleOrigin());
 	
 	// add layer as a child to scene
@@ -32,8 +32,6 @@ Scene* GameScene::createScene(GameScene *layer, Hud* m_hud)
 	blur = LayerColor::create(Color4B(0, 0, 0, 170));
 	blur->setVisible(false);
 	scene->addChild(blur);
-
-	layer->onBegin();
 
 	// return the scene
 	return scene;
@@ -928,7 +926,7 @@ void GameScene::createInfiniteNode()
 		//background->addChild(moon, 2, Vec2(0, 1), Vec2(pos.x, pos.y - SCREEN_SIZE.height / 2));
 		changebg = pos.x;
 	}
-	if ((stage == 3 && map == 2) || (stage == 4 && map == 2)) {}
+	if ((stage == 3 && map == 2) || (stage == 4 && map == 2)|| (stage == 4 && map == 4)) {}
 	else {
 		auto bg2_1 = Sprite::create(StringUtils::format("Map/map%d/bg%d_2.png", stage, map));
 		//auto bg2_1 = Sprite::create("moon.png");

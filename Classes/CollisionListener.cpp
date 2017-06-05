@@ -168,10 +168,11 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		}
 		enemy->hit();
 		if (bodySword->GetUserData()) {
-
-			auto thc = (B2Sprite*)(bodySword->GetUserData());
-			if (thc->getTag() == TAG_DQ_TIEU_HON_CHUONG)
-				((DQ_TieuHonChuong*)thc)->setIsCollide(true);
+			auto not_wooder = (B2Sprite*)(bodySword->GetUserData());
+			if (not_wooder->getTag() == TAG_DQ_TIEU_HON_CHUONG) {
+				auto thc = (TieuHonChuong*)not_wooder;
+				thc->setIsCollide(true);
+			}
 		}
 
 	}

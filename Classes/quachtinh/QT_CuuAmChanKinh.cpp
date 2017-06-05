@@ -39,7 +39,7 @@ void QT_CuuAmChanKinh::initCirclePhysic(b2World * world, Point pos)
 	fixtureDef.friction = 1.0f;
 	fixtureDef.restitution = 0.0f;
 	fixtureDef.shape = &shape;
-	//fixtureDef.isSensor = true;
+	fixtureDef.isSensor = true;
 
 	fixtureDef.filter.categoryBits = BITMASK_SWORD;
 	fixtureDef.filter.maskBits = BITMASK_UNDER_GROUND | BITMASK_WOODER | BITMASK_BOSS | BITMASK_COIN_BAG | BITMASK_ENEMY;

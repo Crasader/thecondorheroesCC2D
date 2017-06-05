@@ -355,6 +355,7 @@ void QuachTinh::attackNormal()
 	}
 	else {
 		addAnimation(0, "attack2", false);
+		this->getSwordBody()->SetTransform(getSwordBody()->GetPosition(), PI / 2);
 	}
 
 	//log("atttack*");
@@ -428,7 +429,8 @@ void QuachTinh::listener()
 		else if ((strcmp(getCurrent()->animation->name, "attack1") == 0) ||
 			(strcmp(getCurrent()->animation->name, "attack2") == 0) ||
 			(strcmp(getCurrent()->animation->name, "attack3") == 0)) {
-
+			if (strcmp(getCurrent()->animation->name, "attack2") == 0)
+				this->getSwordBody()->SetTransform(getSwordBody()->GetPosition(), 0);
 			changeSwordCategoryBitmask(BITMASK_ENEMY);
 
 			setIsPriorAttack(false);

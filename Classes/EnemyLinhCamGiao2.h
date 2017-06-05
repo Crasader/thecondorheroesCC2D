@@ -17,6 +17,7 @@ public:
 	virtual void updatePos();
 	void makeMask();
 	virtual void addSquareFixture(Size size, Vec2 pos, unsigned int category, unsigned int mask);
+	virtual void listener();
 };
 
 #endif // __ENEMY_H__

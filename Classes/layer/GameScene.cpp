@@ -56,7 +56,7 @@ bool GameScene::init(int stage, int map, int charId)
 	}
 
 
-	isModeDebug = false;
+	//isModeDebug = false;
 
 	changebg = 0;
 
@@ -90,7 +90,7 @@ bool GameScene::init(int stage, int map, int charId)
 	initLayerToAddAgent();
 
 	if (this->haveboss)
-		creatBoss();
+		createBoss();
 
 	createCoin();
 	return true;
@@ -129,39 +129,41 @@ void GameScene::selectHero()
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	heroStartPosition = Point(origin.x, visibleSize.height * 0.75f);
+	heroStartPosition = Point(origin.x, visibleSize.height * 0.7f);
 
 	switch (charId)
 	{
 	case 0:
-		createDuongQua("Animation/DuongQua/DuongQua.json", "Animation/DuongQua/DuongQua.atlas");
+		hero = DuongQua::create("Animation/DuongQua/DuongQua.json", 
+								"Animation/DuongQua/DuongQua.atlas", SCREEN_SIZE.height / 5 / 340);
 		break;
 
 	case 1:
-		createCoLong("Animation/CoLong/CoLong.json", "Animation/CoLong/CoLong.atlas");
+		hero = CoLong::create("Animation/CoLong/CoLong.json", 
+								"Animation/CoLong/CoLong.atlas", SCREEN_SIZE.height / 5 / 340);
 		break;
 
 	case 2:
-		createHoangDung("Animation/HoangDung/HoangDung.json", "Animation/HoangDung/HoangDung.atlas");
+		hero = HoangDung::create("Animation/HoangDung/HoangDung.json", 
+									"Animation/HoangDung/HoangDung.atlas", SCREEN_SIZE.height / 5 / 340);
 		break;
 
 	case 3:
-		createHoangDuocSu("Animation/HoangDuocSu/HoangDuocSu.json", "Animation/HoangDuocSu/HoangDuocSu.atlas");
+		hero = HoangDuocSu::create("Animation/HoangDuocSu/HoangDuocSu.json", 
+								"Animation/HoangDuocSu/HoangDuocSu.atlas", SCREEN_SIZE.height / 5 / 300);
 		break;
 
 	case 4:
-		createQuachTinh("Animation/QuachTinh/QuachTinh.json", "Animation/QuachTinh/QuachTinh.atlas");
+		hero = QuachTinh::create("Animation/QuachTinh/QuachTinh.json", 
+								"Animation/QuachTinh/QuachTinh.atlas", SCREEN_SIZE.height / 5 / 300);
 		break;
 
 	default:
-		createCoLong("Animation/CoLong/CoLong.json", "Animation/CoLong/CoLong.atlas");
+		hero = DuongQua::create("Animation/DuongQua/DuongQua.json",
+			"Animation/DuongQua/DuongQua.atlas", SCREEN_SIZE.height / 5 / 340);
 		break;
 	}
-}
 
-void GameScene::createDuongQua(string path_Json, string path_Atlas)
-{
-	hero = DuongQua::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 340);
 	hero->listener();
 	hero->setPosition(heroStartPosition);
 
@@ -173,70 +175,7 @@ void GameScene::createDuongQua(string path_Json, string path_Atlas)
 
 	hero->getBloodScreen()->setPosition(follow->getPosition());
 	addChild(hero->getBloodScreen(), ZORDER_SMT);
-}
 
-void GameScene::createCoLong(string path_Json, string path_Atlas)
-{
-	hero = CoLong::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 340);
-	hero->listener();
-	hero->setPosition(heroStartPosition);
-
-	addChild(hero, ZORDER_HERO);
-
-	hero->initCirclePhysic(world, hero->getPosition());
-	hero->addStuff();
-	hero->createPool();
-
-	hero->getBloodScreen()->setPosition(follow->getPosition());
-	addChild(hero->getBloodScreen(), ZORDER_SMT);
-}
-
-void GameScene::createHoangDung(string path_Json, string path_Atlas)
-{
-	hero = HoangDung::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 340);
-	hero->listener();
-	hero->setPosition(heroStartPosition);
-
-	addChild(hero, ZORDER_HERO);
-
-	hero->initCirclePhysic(world, hero->getPosition());
-	hero->addStuff();
-	hero->createPool();
-
-	hero->getBloodScreen()->setPosition(follow->getPosition());
-	addChild(hero->getBloodScreen(), ZORDER_SMT);
-}
-
-void GameScene::createHoangDuocSu(string path_Json, string path_Atlas)
-{
-	hero = HoangDuocSu::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 300);
-	hero->listener();
-	hero->setPosition(heroStartPosition);
-
-	addChild(hero, ZORDER_HERO);
-
-	hero->initCirclePhysic(world, hero->getPosition());
-	hero->addStuff();
-	hero->createPool();
-
-	hero->getBloodScreen()->setPosition(follow->getPosition());
-	addChild(hero->getBloodScreen(), ZORDER_SMT);
-}
-
-void GameScene::createQuachTinh(string path_Json, string path_Atlas)
-{
-	hero = QuachTinh::create(path_Json, path_Atlas, SCREEN_SIZE.height / 5 / 300);
-	hero->listener();
-	hero->setPosition(heroStartPosition);
-
-	addChild(hero, ZORDER_HERO);
-
-	hero->initCirclePhysic(world, hero->getPosition());
-	hero->addStuff();
-	hero->createPool();
-
-	hero->getBloodScreen()->setPosition(follow->getPosition());
-	addChild(hero->getBloodScreen(), ZORDER_SMT);
 }
 
 void GameScene::createEagle(Point position)
@@ -273,7 +212,6 @@ void GameScene::onBegin()
 	switch (stage)
 	{
 	case 1: {
-
 		AudioManager::playMusic(MUSIC_STAGE1);
 		break;
 	}
@@ -296,7 +234,7 @@ void GameScene::onBegin()
 		hud->getBtnCalling()->setEnabled(true);
 	}
 
-	hud->getPauseItem()->setEnabled(true);
+	//hud->getPauseItem()->setEnabled(true);
 
 	if (REF->getNumberItemDoubleGold() > 0) {
 		runnerItem(Item_type::DOUBLE_COIN, DURATION_DOUBLE_COIN);
@@ -314,6 +252,7 @@ void GameScene::onBegin()
 	auto key_listener = EventListenerKeyboard::create();
 
 	key_listener->onKeyPressed = CC_CALLBACK_2(GameScene::onKeyPressed, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(key_listener, this);
 
 	if (!isFirstPlay) {
 		hud->addEvents();
@@ -325,7 +264,6 @@ void GameScene::onBegin()
 		_eventDispatcher->addEventListenerWithSceneGraphPriority(touch_listener, this);
 	}
 
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(key_listener, this);
 	this->scheduleUpdate();
 }
 
@@ -595,7 +533,6 @@ void GameScene::heroGetOffEagle() {
 
 void GameScene::update(float dt)
 {
-
 	updateB2World(dt);
 	listener();
 	updateLayer();
@@ -760,7 +697,7 @@ void GameScene::initB2World()
 	world = new b2World(b2Vec2(0, -SCREEN_SIZE.height * 10.0f / 3.0f / PTM_RATIO));
 
 	// draw debug
-	if (isModeDebug) {
+	/*if (isModeDebug) {
 		auto debugDraw = new (std::nothrow) GLESDebugDraw(PTM_RATIO);
 		world->SetDebugDraw(debugDraw);
 		uint32 flags = 0;
@@ -768,7 +705,7 @@ void GameScene::initB2World()
 		flags += b2Draw::e_jointBit;
 
 		debugDraw->SetFlags(flags);
-	}
+	}*/
 
 	world->SetAllowSleeping(true);
 	world->SetContinuousPhysics(true);
@@ -785,39 +722,39 @@ void GameScene::updateB2World(float dt)
 	world->Step(dt, velocityIterations, positionIterations);
 }
 
-void GameScene::draw(Renderer * renderer, const Mat4 & transform, uint32_t flags)
-{
-	//
-	// IMPORTANT:
-	// This is only for debug purposes
-	// It is recommend to disable it
-	//
-	Layer::draw(renderer, transform, flags);
-
-	GL::enableVertexAttribs(cocos2d::GL::VERTEX_ATTRIB_FLAG_POSITION);
-	Director* director = Director::getInstance();
-	CCASSERT(nullptr != director, "Director is null when seting matrix stack");
-	director->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
-
-	_modelViewMV = director->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
-
-	_customCommand.init(_globalZOrder);
-	_customCommand.func = CC_CALLBACK_0(GameScene::onDraw, this);
-	renderer->addCommand(&_customCommand);
-
-	director->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
-}
-
-void GameScene::onDraw()
-{
-	Director* director = Director::getInstance();
-	CCASSERT(nullptr != director, "Director is null when seting matrix stack");
-
-	auto oldMV = director->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
-	director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, _modelViewMV);
-	world->DrawDebugData();
-	director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, oldMV);
-}
+//void GameScene::draw(Renderer * renderer, const Mat4 & transform, uint32_t flags)
+//{
+//	//
+//	// IMPORTANT:
+//	// This is only for debug purposes
+//	// It is recommend to disable it
+//	//
+//	Layer::draw(renderer, transform, flags);
+//
+//	GL::enableVertexAttribs(cocos2d::GL::VERTEX_ATTRIB_FLAG_POSITION);
+//	Director* director = Director::getInstance();
+//	CCASSERT(nullptr != director, "Director is null when seting matrix stack");
+//	director->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+//
+//	_modelViewMV = director->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+//
+//	_customCommand.init(_globalZOrder);
+//	_customCommand.func = CC_CALLBACK_0(GameScene::onDraw, this);
+//	renderer->addCommand(&_customCommand);
+//
+//	director->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+//}
+//
+//void GameScene::onDraw()
+//{
+//	Director* director = Director::getInstance();
+//	CCASSERT(nullptr != director, "Director is null when seting matrix stack");
+//
+//	auto oldMV = director->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+//	director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, _modelViewMV);
+//	world->DrawDebugData();
+//	director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, oldMV);
+//}
 
 
 void GameScene::loadBackground()
@@ -832,8 +769,8 @@ void GameScene::loadBackground()
 
 	tmx_map->setPosition(Point::ZERO);
 
-	if (isModeDebug)
-		tmx_map->setVisible(false);
+	//if (isModeDebug)
+		//tmx_map->setVisible(false);
 
 	this->haveboss = tmx_map->getObjectGroup("boss") != nullptr ? 1 : 0;
 
@@ -849,8 +786,8 @@ void GameScene::loadBackground()
 			tmx_mapboss[i] = TMXTiledMap::create(StringUtils::format("Map/map%d/mapboss.tmx", stage));
 			tmx_mapboss[i]->setAnchorPoint(Point::ZERO);
 			tmx_mapboss[i]->setScale(scaleOfMap);
-			if (isModeDebug)
-				tmx_mapboss[i]->setVisible(false);
+			//if (isModeDebug)
+				//tmx_mapboss[i]->setVisible(false);
 		}
 
 		tmx_mapboss[0]->setPosition(tmx_map->getPosition() + Vec2(tmx_map->getBoundingBox().size.width, 0));
@@ -948,8 +885,8 @@ void GameScene::createInfiniteNode()
 	//background->setPosition(Point(-SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 	background->setPosition(Point(0, SCREEN_SIZE.height / 2));
 	background->setAnchorPoint(Point(0, 0.5f));
-	if (isModeDebug)
-		background->setVisible(false);
+	//if (isModeDebug)
+		//background->setVisible(false);
 	this->addChild(background, ZORDER_BG);
 
 	background2 = InfiniteParallaxNode::create();
@@ -1501,7 +1438,7 @@ void GameScene::createEnemyLinhCamRoi(MyLayer * layer, Vec2 pos)
 	}
 }
 
-void GameScene::creatBoss()
+void GameScene::createBoss()
 {
 	auto groupBoss = tmx_map->getObjectGroup("boss");
 	if (!groupBoss) return;
@@ -1806,7 +1743,7 @@ void GameScene::initUnderGroundPhysic(b2World * world, Point pos, Size size)
 	bodyDef.type = b2_staticBody;
 
 	if (charId == 4) {
-		bodyDef.position.Set(pos.x / PTM_RATIO, (pos.y + SCREEN_SIZE.height / 20) / PTM_RATIO);
+		bodyDef.position.Set(pos.x / PTM_RATIO, (pos.y + SCREEN_SIZE.height / 18) / PTM_RATIO);
 	} else
 		bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);
 
@@ -2547,6 +2484,8 @@ void GameScene::creatAgentByMydata(MyLayer * layer, MyData data)
 		break;
 	}
 
+	default:
+		break;
 	}
 }
 

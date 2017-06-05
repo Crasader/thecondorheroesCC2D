@@ -46,13 +46,13 @@ void DialogPauseGame::onExit()
 }
 
 
-void DialogPauseGame::resumeGame(Ref * pSender)
+void DialogPauseGame::resumeGame()
 {
 	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
 	gameLayer->resumeGame();
 }
 
-void DialogPauseGame::backHome(Ref * pSender)
+void DialogPauseGame::backHome()
 {
 	AdmobHelper::getInstance()->showFullAd();
 	auto gameScene = this->getParent();
@@ -72,7 +72,7 @@ void DialogPauseGame::overGame()
 	parentLayer->overGame();
 }
 
-void DialogPauseGame::replayGame(Ref * pSender, int goldRevive, bool isWatchVideo)
+void DialogPauseGame::replayGame(int goldRevive, bool isWatchVideo)
 {
 	//AdmobHelper::getInstance()->showFullAd();
 	//log("%i", goldRevive);
@@ -95,7 +95,7 @@ void DialogPauseGame::replayGame(Ref * pSender, int goldRevive, bool isWatchVide
 }
 
 
-void DialogPauseGame::nextStage(Ref * pSender)
+void DialogPauseGame::nextStage()
 {	
 	Layer *_pMenuScene;
 
@@ -114,7 +114,7 @@ void DialogPauseGame::nextStage(Ref * pSender)
 	Director::getInstance()->replaceScene(_aMainMenuScene);
 }
 
-void DialogPauseGame::restartGame(Ref * pSender)
+void DialogPauseGame::restartGame()
 {
 	AdmobHelper::getInstance()->showFullAd();
 	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
@@ -135,7 +135,7 @@ void DialogPauseGame::restartGame(Ref * pSender)
 	}
 }
 
-void DialogPauseGame::upgrade(Ref * pSender)
+void DialogPauseGame::upgrade()
 {
 
 }
@@ -152,16 +152,19 @@ void DialogPauseGame::effect()
 }
 
 
-void DialogPause::selectedEventMusic(Ref * pSender, ui::CheckBox::EventType type)
+void DialogPause::selectedEventMusic(Ref* pSender, ui::CheckBox::EventType type)
 {
+	auto ref = UserDefault::getInstance()->sharedUserDefault();
 	switch (type)
 	{
 	case ui::CheckBox::EventType::SELECTED:
 		log("Music enable");
+		ref->setBoolForKey(KEY_IS_MUSIC, true);
 		break;
 
 	case ui::CheckBox::EventType::UNSELECTED:
 		log("Music disable");
+		ref->setBoolForKey(KEY_IS_MUSIC, false);
 		break;
 
 	default:
@@ -169,16 +172,19 @@ void DialogPause::selectedEventMusic(Ref * pSender, ui::CheckBox::EventType type
 	}
 }
 
-void DialogPause::selectedEventSound(Ref * pSender, ui::CheckBox::EventType type)
+void DialogPause::selectedEventSound(Ref* pSender, ui::CheckBox::EventType type)
 {
+	auto ref = UserDefault::getInstance()->sharedUserDefault();
 	switch (type)
 	{
 	case ui::CheckBox::EventType::SELECTED:
 		log("Sound enable");
+		ref->setBoolForKey(KEY_IS_SOUND, true);
 		break;
 
 	case ui::CheckBox::EventType::UNSELECTED:
 		log("Sound disable");
+		ref->setBoolForKey(KEY_IS_SOUND, false);
 		break;
 
 	default:
@@ -210,14 +216,14 @@ bool DialogPause::init()
 	auto homeBtnNormal = Sprite::create("UI/UI_Endgame/btn_home.png");
 	auto homeBtnActive = Sprite::create("UI/UI_Endgame/btn_home.png");
 	homeBtnActive->setColor(Color3B(128, 128, 128));
-	auto homeBtn = MenuItemSprite::create(homeBtnNormal, homeBtnActive, CC_CALLBACK_1(DialogPauseGame::backHome, this));
+	auto homeBtn = MenuItemSprite::create(homeBtnNormal, homeBtnActive, CC_CALLBACK_0(DialogPauseGame::backHome, this));
 	homeBtn->setAnchorPoint(Vec2(0.7, 0.5));
 	homeBtn->setPosition(background->getContentSize() / 3);
 
 	auto resumeBtnNormal = Sprite::create("UI/UI_Endgame/btn_resume.png");
 	auto resumeBtnActive = Sprite::create("UI/UI_Endgame/btn_resume.png");
 	resumeBtnActive->setColor(Color3B(128, 128, 128));
-	auto resumeBtn = MenuItemSprite::create(resumeBtnNormal, resumeBtnActive, CC_CALLBACK_1(DialogPauseGame::resumeGame, this));
+	auto resumeBtn = MenuItemSprite::create(resumeBtnNormal, resumeBtnActive, CC_CALLBACK_0(DialogPauseGame::resumeGame, this));
 	resumeBtn->setAnchorPoint(Vec2(0.4, 0.5));
 	resumeBtn->setPosition(background->getContentSize().width * 2 / 3, background->getContentSize().height * 1 / 3);
 
@@ -265,7 +271,7 @@ bool DialogRevive::init(int numberOfRevive)
 	auto reviveBtnNormal = Sprite::create("UI/UI_Endgame/btn_revive.png");
 	auto reviveBtnActive = Sprite::create("UI/UI_Endgame/btn_revive.png");
 	reviveBtnActive->setColor(Color3B(128, 128, 128));
-	auto reviveBtn = MenuItemSprite::create(reviveBtnNormal, reviveBtnActive, CC_CALLBACK_1(DialogPauseGame::replayGame, this, gold, false));
+	auto reviveBtn = MenuItemSprite::create(reviveBtnNormal, reviveBtnActive, CC_CALLBACK_0(DialogPauseGame::replayGame, this, gold, false));
 	reviveBtn->setAnchorPoint(Vec2(0, 0.5f));
 	reviveBtn->setPosition(0, 0);
 
@@ -286,7 +292,7 @@ bool DialogRevive::init(int numberOfRevive)
 	auto videoBtnNormal = Sprite::create("UI/UI_Endgame/btn_video.png");
 	auto videoBtnActive = Sprite::create("UI/UI_Endgame/btn_video.png");
 	videoBtnActive->setColor(Color3B(128, 128, 128));
-	auto videoBtn = MenuItemSprite::create(videoBtnNormal, videoBtnActive, CC_CALLBACK_1(DialogPauseGame::replayGame, this, gold, true));
+	auto videoBtn = MenuItemSprite::create(videoBtnNormal, videoBtnActive, CC_CALLBACK_0(DialogPauseGame::replayGame, this, gold, true));
 	videoBtn->setAnchorPoint(Vec2(1, 0.5f));
 	videoBtn->setPosition(background->getContentSize().width, 0);
 
@@ -298,7 +304,7 @@ bool DialogRevive::init(int numberOfRevive)
 	exitBtn->setPosition(background->getContentSize().width, background->getContentSize().height * 0.8f);
 
 	// show gold revive
-	goldReviveLb = Label::createWithBMFont("fonts/font_coin-export.fnt", StringUtils::format("%i", gold));
+	auto goldReviveLb = Label::createWithBMFont("fonts/font_coin-export.fnt", StringUtils::format("%i", gold));
 	goldReviveLb->setBMFontSize(exitBtnNormal->getBoundingBox().size.height * 0.75f);
 	goldReviveLb->setAnchorPoint(Vec2::ZERO);
 	goldReviveLb->setPosition(reviveBtn->getContentSize().width * 0.43f, reviveBtn->getContentSize().height * 0.43f);
@@ -373,14 +379,14 @@ bool DialogStageClear::init(int score, int gold)
 	auto backBtnNormal = Sprite::create("UI/UI_Endgame/btn_back.png");
 	auto backBtnActive = Sprite::create("UI/UI_Endgame/btn_back.png");
 	backBtnActive->setColor(Color3B(128, 128, 128));
-	auto backBtn = MenuItemSprite::create(backBtnNormal, backBtnActive, CC_CALLBACK_1(DialogPauseGame::backHome, this));
+	auto backBtn = MenuItemSprite::create(backBtnNormal, backBtnActive, CC_CALLBACK_0(DialogPauseGame::backHome, this));
 	backBtn->setAnchorPoint(Vec2(0, 1));
 	backBtn->setPosition(background->getContentSize().width*0.1, 0);
 
 	auto nextBtnNormal = Sprite::create("UI/UI_Endgame/btn_next.png");
 	auto nextBtnActive = Sprite::create("UI/UI_Endgame/btn_next.png");
 	nextBtnActive->setColor(Color3B(128, 128, 128));
-	auto nextBtn = MenuItemSprite::create(nextBtnNormal, nextBtnActive, CC_CALLBACK_1(DialogPauseGame::nextStage, this));
+	auto nextBtn = MenuItemSprite::create(nextBtnNormal, nextBtnActive, CC_CALLBACK_0(DialogPauseGame::nextStage, this));
 	nextBtn->setAnchorPoint(Vec2(1, 1));
 	nextBtn->setPosition(background->getContentSize().width*0.9, 0);
 
@@ -399,13 +405,13 @@ bool DialogStageClear::init(int score, int gold)
 	background->addChild(menu);
 
 	// LABEL
-	goldLb = Label::createWithBMFont("fonts/font_coin-export.fnt", StringUtils::format("%i", gold));
+	auto goldLb = Label::createWithBMFont("fonts/font_coin-export.fnt", StringUtils::format("%i", gold));
 	goldLb->setBMFontSize(backBtn->getBoundingBox().size.height * 0.55f);
 	goldLb->setAnchorPoint(Vec2::ZERO);
 	goldLb->setPosition(background->getContentSize().width / 2, background->getContentSize().height * 0.52f);
 	background->addChild(goldLb);
 
-	scoreLb = Label::createWithBMFont("fonts/font_diamond-export.fnt", StringUtils::format("%i", score));
+	auto scoreLb = Label::createWithBMFont("fonts/font_diamond-export.fnt", StringUtils::format("%i", score));
 	scoreLb->setBMFontSize(goldLb->getBMFontSize());
 	scoreLb->setAnchorPoint(Vec2::ZERO);
 	scoreLb->setPosition(background->getContentSize().width / 2, background->getContentSize().height * 0.67f);
@@ -419,7 +425,7 @@ bool DialogStageClear::init(int score, int gold)
 	background->addChild(bonusGoldLb);
 
 	int bonusScore = REF->getBonusScore() / 100.0f * score;
-	bonusScoreLb = Label::createWithBMFont("fonts/font_diamond-export.fnt", StringUtils::format("%i", bonusScore));
+	auto bonusScoreLb = Label::createWithBMFont("fonts/font_diamond-export.fnt", StringUtils::format("%i", bonusScore));
 	bonusScoreLb->setBMFontSize(bonusGoldLb->getBMFontSize());
 	bonusScoreLb->setAnchorPoint(Vec2::ZERO);
 	bonusScoreLb->setPosition(background->getContentSize().width * 0.55f, background->getContentSize().height * 0.33f);
@@ -535,21 +541,21 @@ bool DialogOverGame::init(int score, int gold)
 	auto backBtnNormal = Sprite::create("UI/UI_Endgame/btn_back.png");
 	auto backBtnActive = Sprite::create("UI/UI_Endgame/btn_back.png");
 	backBtnActive->setColor(Color3B(128, 128, 128));
-	auto backBtn = MenuItemSprite::create(backBtnNormal, backBtnActive, CC_CALLBACK_1(DialogPauseGame::backHome, this));
+	auto backBtn = MenuItemSprite::create(backBtnNormal, backBtnActive, CC_CALLBACK_0(DialogPauseGame::backHome, this));
 	backBtn->setAnchorPoint(Vec2(1, 1));
 	backBtn->setPosition(background->getContentSize().width*0.1f, 0);
 
 	auto upgradeBtnNormal = Sprite::create("UI/UI_Endgame/btn_upgrade.png");
 	auto upgradeBtnActive = Sprite::create("UI/UI_Endgame/btn_upgrade.png");
 	upgradeBtnActive->setColor(Color3B(128, 128, 128));
-	auto upgradeBtn = MenuItemSprite::create(upgradeBtnNormal, upgradeBtnActive, CC_CALLBACK_1(DialogPauseGame::upgrade, this));
+	auto upgradeBtn = MenuItemSprite::create(upgradeBtnNormal, upgradeBtnActive, CC_CALLBACK_0(DialogPauseGame::upgrade, this));
 	upgradeBtn->setAnchorPoint(Vec2(0.5f, 1));
 	upgradeBtn->setPosition(background->getContentSize().width*0.5f, 0);
 
 	auto restartBtnNormal = Sprite::create("UI/UI_Endgame/btn_restart.png");
 	auto restartBtnActive = Sprite::create("UI/UI_Endgame/btn_restart.png");
 	restartBtnActive->setColor(Color3B(128, 128, 128));
-	auto restartBtn = MenuItemSprite::create(restartBtnNormal, restartBtnActive, CC_CALLBACK_1(DialogPauseGame::restartGame, this));
+	auto restartBtn = MenuItemSprite::create(restartBtnNormal, restartBtnActive, CC_CALLBACK_0(DialogPauseGame::restartGame, this));
 	restartBtn->setAnchorPoint(Vec2(0, 1));
 	restartBtn->setPosition(background->getContentSize().width*0.9f, 0);
 
@@ -559,27 +565,27 @@ bool DialogOverGame::init(int score, int gold)
 	background->addChild(menu);
 
 	// LABEL
-	goldLb = Label::createWithBMFont("fonts/font_coin-export.fnt", StringUtils::format("%i", gold));
+	auto goldLb = Label::createWithBMFont("fonts/font_coin-export.fnt", StringUtils::format("%i", gold));
 	goldLb->setBMFontSize(backBtn->getBoundingBox().size.height * 0.55f);
 	goldLb->setAnchorPoint(Vec2::ZERO);
 	goldLb->setPosition(background->getContentSize().width / 2, background->getContentSize().height * 0.52f);
 	background->addChild(goldLb);
 
-	scoreLb = Label::createWithBMFont("fonts/font_diamond-export.fnt", StringUtils::format("%i", score));
+	auto scoreLb = Label::createWithBMFont("fonts/font_diamond-export.fnt", StringUtils::format("%i", score));
 	scoreLb->setBMFontSize(goldLb->getBMFontSize());
 	scoreLb->setAnchorPoint(Vec2::ZERO);
 	scoreLb->setPosition(background->getContentSize().width / 2, background->getContentSize().height * 0.67f);
 	background->addChild(scoreLb);
 
 	int bonusGold = REF->getBonusGold() / 100.0f * gold;
-	bonusGoldLb = Label::createWithBMFont("fonts/font_diamond-export.fnt", StringUtils::format("%i", bonusGold));
+	auto bonusGoldLb = Label::createWithBMFont("fonts/font_diamond-export.fnt", StringUtils::format("%i", bonusGold));
 	bonusGoldLb->setBMFontSize(goldLb->getBMFontSize() * 0.75f);
 	bonusGoldLb->setAnchorPoint(Vec2::ZERO);
 	bonusGoldLb->setPosition(background->getContentSize().width * 0.55f, background->getContentSize().height * 0.22f);
 	background->addChild(bonusGoldLb);
 
 	int bonusScore = REF->getBonusScore() / 100.0f * score;
-	bonusScoreLb = Label::createWithBMFont("fonts/font_diamond-export.fnt", StringUtils::format("%i", bonusScore));
+	auto bonusScoreLb = Label::createWithBMFont("fonts/font_diamond-export.fnt", StringUtils::format("%i", bonusScore));
 	bonusScoreLb->setBMFontSize(bonusGoldLb->getBMFontSize());
 	bonusScoreLb->setAnchorPoint(Vec2::ZERO);
 	bonusScoreLb->setPosition(background->getContentSize().width * 0.55f, background->getContentSize().height * 0.33f);

@@ -27,6 +27,7 @@ bool SceneIntro::init() {
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Map/bg.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/skill.plist");
 	//SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/Select_Stage/boss_eff.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/fire_eff.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/chidori_eff.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/rock_eff.plist");
 

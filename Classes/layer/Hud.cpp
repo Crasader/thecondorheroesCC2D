@@ -113,10 +113,9 @@ void Hud::addProfile()
 	// DISTANCE BAR + CHARACTER POINT
 	auto groupDistanceBar = tmxMap->getObjectGroup("distance_bar");
 	auto mObject_4 = groupDistanceBar->getObject("distance_bar");
-	Point origin_4 = Point(SCREEN_SIZE.width * 0.04f, mObject_4["y"].asFloat()* tmxMap->getScaleY());
+	Point origin_4 = Point(SCREEN_SIZE.width * 0.29f, mObject_4["y"].asFloat()* tmxMap->getScaleY());
 
 	distanceBar = Sprite::create("UI/UI_info_ingame/distance.png");
-	distanceBar->setAnchorPoint(Vec2(0, 0.5f));
 	distanceBar->setScale(SCREEN_SIZE.width * 0.5f / distanceBar->getContentSize().width);
 	distanceBar->setPosition(origin_4);
 
@@ -153,7 +152,6 @@ void Hud::addButton()
 	pauseItemDisable->setColor(Color3B(128, 128, 128));
 	pauseItem = MenuItemImage::create("UI/btn_pause.png", "UI/btn_pause.png", CC_CALLBACK_1(Hud::doPause, this));
 	pauseItem->setDisabledImage(pauseItemDisable);
-	pauseItem->setEnabled(false);
 	pauseItem->setAnchorPoint(Vec2::ZERO);
 	pauseItem->setScale(scoreBoard->getBoundingBox().size.height * 0.75f / pauseItem->getContentSize().height);
 	pauseItem->setPosition(origin_5);
@@ -212,7 +210,7 @@ void Hud::addButton()
 			coverItemMagnet->setOpacity(50);
 			coverItemMagnet->setPosition(origin_X);
 			coverItemMagnet->setVisible(false);
-			coverItemMagnet->setScale(SCREEN_SIZE.height / 11 / coverItemMagnet->getContentSize().height);
+			coverItemMagnet->setScale(SCREEN_SIZE.height / 11.5f / coverItemMagnet->getContentSize().height);
 
 			addChild(coverItemMagnet);
 
@@ -229,7 +227,7 @@ void Hud::addButton()
 			coverItemDC->setOpacity(50);
 			coverItemDC->setPosition(origin_X);
 			coverItemDC->setVisible(false);
-			coverItemDC->setScale(SCREEN_SIZE.height / 11 / coverItemDC->getContentSize().height);
+			coverItemDC->setScale(SCREEN_SIZE.height / 11.5f / coverItemDC->getContentSize().height);
 
 			addChild(coverItemDC);
 			break;
@@ -336,15 +334,15 @@ void Hud::addBird()
 	btnCalling->setScale(SCREEN_SIZE.height / 7 / btnCalling->getContentSize().height);
 }
 
-void Hud::doSuctionCoin(Ref * pSender)
-{
-	log("Suction");
-}
-
-void Hud::doDoublingCoin(Ref * pSender)
-{
-	log("Doubling");
-}
+//void Hud::doSuctionCoin(Ref * pSender)
+//{
+//	log("Suction");
+//}
+//
+//void Hud::doDoublingCoin(Ref * pSender)
+//{
+//	log("Doubling");
+//}
 
 void Hud::doCalling(Ref * pSender)
 {
@@ -366,67 +364,67 @@ void Hud::doPause(Ref* pSender)
 	gameLayer->pauseGame();
 }
 
-void Hud::showSpecialButton()
-{
-	vector<int> list = getListIndexOfTypeItemBuy();
-	if (!list.empty()) {
-		auto groupBtnSpecial = tmxMap->getObjectGroup("btn_special");
-		auto mObject = groupBtnSpecial->getObject("btn_special");
-		Point origin = Point(mObject["x"].asFloat() * tmxMap->getScaleX(), mObject["y"].asFloat()* tmxMap->getScaleY());
-
-		for (int i = 0; i < list.size(); ++i) {
-			createButtonX(list[i], Point(origin.x, origin.y - i * SCREEN_SIZE.height * 0.15f));
-		}
-	}
-}
-
-void Hud::createButtonX(int index, Point position)
-{
-	switch (index)
-	{
-	case 0:
-		btnCalling = MenuItemImage::create("UI/btn_callbird.png", "UI/btn_callbird_off.png", CC_CALLBACK_1(Hud::doCalling, this));
-		btnCalling->setEnabled(false);
-		btnCalling->setPosition(position);
-		btnCalling->setScale(SCREEN_SIZE.height / 7 / btnCalling->getContentSize().height);
-		menu->addChild(btnCalling);
-		break;
-
-		/*case 1:
-			btnMagnet = MenuItemImage::create("UI/btn_callbird.png", "UI/btn_callbird_off.png", CC_CALLBACK_1(Hud::doSuctionCoin, this));
-			btnMagnet->setEnabled(false);
-			btnMagnet->setPosition(position);
-			btnMagnet->setScale(SCREEN_SIZE.height / 7 / btnMagnet->getContentSize().height);
-			menu->addChild(btnMagnet);
-			break;
-
-		case 2:
-			btnDouleGold = MenuItemImage::create("UI/btn_callbird.png", "UI/btn_callbird_off.png", CC_CALLBACK_1(Hud::doDoublingCoin, this));
-			btnDouleGold->setEnabled(false);
-			btnDouleGold->setPosition(position);
-			btnDouleGold->setScale(SCREEN_SIZE.height / 7 / btnDouleGold->getContentSize().height);
-			menu->addChild(btnDouleGold);
-			break;*/
-	}
-}
-
-vector<int> Hud::getListIndexOfTypeItemBuy()
-{
-	vector<int> list;
-	if (REF->getNumberItemBird() > 0) {
-		list.push_back(0);
-	}
-
-	if (REF->getNumberItemMagnet() > 0) {
-		list.push_back(1);
-	}
-
-	if (REF->getNumberItemDoubleGold() > 0) {
-		list.push_back(2);
-	}
-
-	return list;
-}
+//void Hud::showSpecialButton()
+//{
+//	vector<int> list = getListIndexOfTypeItemBuy();
+//	if (!list.empty()) {
+//		auto groupBtnSpecial = tmxMap->getObjectGroup("btn_special");
+//		auto mObject = groupBtnSpecial->getObject("btn_special");
+//		Point origin = Point(mObject["x"].asFloat() * tmxMap->getScaleX(), mObject["y"].asFloat()* tmxMap->getScaleY());
+//
+//		for (int i = 0; i < list.size(); ++i) {
+//			createButtonX(list[i], Point(origin.x, origin.y - i * SCREEN_SIZE.height * 0.15f));
+//		}
+//	}
+//}
+//
+//void Hud::createButtonX(int index, Point position)
+//{
+//	switch (index)
+//	{
+//	case 0:
+//		btnCalling = MenuItemImage::create("UI/btn_callbird.png", "UI/btn_callbird_off.png", CC_CALLBACK_1(Hud::doCalling, this));
+//		btnCalling->setEnabled(false);
+//		btnCalling->setPosition(position);
+//		btnCalling->setScale(SCREEN_SIZE.height / 7 / btnCalling->getContentSize().height);
+//		menu->addChild(btnCalling);
+//		break;
+//
+//		/*case 1:
+//			btnMagnet = MenuItemImage::create("UI/btn_callbird.png", "UI/btn_callbird_off.png", CC_CALLBACK_1(Hud::doSuctionCoin, this));
+//			btnMagnet->setEnabled(false);
+//			btnMagnet->setPosition(position);
+//			btnMagnet->setScale(SCREEN_SIZE.height / 7 / btnMagnet->getContentSize().height);
+//			menu->addChild(btnMagnet);
+//			break;
+//
+//		case 2:
+//			btnDouleGold = MenuItemImage::create("UI/btn_callbird.png", "UI/btn_callbird_off.png", CC_CALLBACK_1(Hud::doDoublingCoin, this));
+//			btnDouleGold->setEnabled(false);
+//			btnDouleGold->setPosition(position);
+//			btnDouleGold->setScale(SCREEN_SIZE.height / 7 / btnDouleGold->getContentSize().height);
+//			menu->addChild(btnDouleGold);
+//			break;*/
+//	}
+//}
+//
+//vector<int> Hud::getListIndexOfTypeItemBuy()
+//{
+//	vector<int> list;
+//	if (REF->getNumberItemBird() > 0) {
+//		list.push_back(0);
+//	}
+//
+//	if (REF->getNumberItemMagnet() > 0) {
+//		list.push_back(1);
+//	}
+//
+//	if (REF->getNumberItemDoubleGold() > 0) {
+//		list.push_back(2);
+//	}
+//
+//	return list;
+//}
 
 void Hud::disableBlur()
 {

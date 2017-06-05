@@ -72,23 +72,36 @@ void QT_CuuAmChanKinh::runAni()
 		aniFrames.pushBack(frame);
 	}
 
-	auto animate = Animate::create(Animation::createWithSpriteFrames(aniFrames, 0.05f));
+	auto animate = Animate::create(Animation::createWithSpriteFrames(aniFrames, 0.07f));
 	this->runAction(RepeatForever::create(animate));
 }
 
 void QT_CuuAmChanKinh::explosion()
 {
+	fireEffect = Sprite::createWithSpriteFrameName("skill1_broken_1.png");
+	fireEffect->setFlippedX(-1);
+	fireEffect->setAnchorPoint(Vec2(0, 0));
+	fireEffect->setScale(getScale() * 0.47f);
+	
+
+	fireEffect->setPosition(this->getPositionX(), 
+							this->getPositionY() - this->getBoundingBox().size.height * 0.4f);
 	auto gameLayer = this->getParent();
+	gameLayer->addChild(fireEffect, ZORDER_ENEMY);
 
-	particle = ParticleSystemQuad::create("Effect/breakearth.plist");
-	particle->setScale(this->getScale() * 0.7f);
-	particle->setPosition(this->getPositionX(), this->getPositionY() - this->getBoundingBox().size.height * 0.5f);
-	gameLayer->addChild(particle, ZORDER_ENEMY);
+	Vector<SpriteFrame* > aniFrames;
+	for (int i = 1; i <= 8; ++i) {
+		auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(StringUtils::format("skill1_broken_%i.png", i));
+		aniFrames.pushBack(frame);
+	}
 
-	auto hideParticle = CallFunc::create([&]() {
-		particle->removeFromParentAndCleanup(true);
+	auto animate = Animate::create(Animation::createWithSpriteFrames(aniFrames, 0.08f));
+
+	auto hideEffect = CallFunc::create([&]() {
+		fireEffect->removeFromParentAndCleanup(true);
 	});
 
-	auto seq2 = Sequence::create(DelayTime::create(0.5f), hideParticle, nullptr);
+	auto seq = Sequence::createWithTwoActions(animate, hideEffect);
+	fireEffect->runAction(seq);
 }
 

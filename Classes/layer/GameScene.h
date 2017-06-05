@@ -56,7 +56,7 @@ public:
 
 private:
 
-	bool isModeDebug;
+	//bool isModeDebug;
 	
 	// props
 	int stage;
@@ -95,9 +95,9 @@ public:
 
 
 private:
-	GLESDebugDraw *debugDraw;
-	Mat4 _modelViewMV;
-	CustomCommand _customCommand;
+	//GLESDebugDraw *debugDraw;
+	//Mat4 _modelViewMV;
+	//CustomCommand _customCommand;
 
 	Follow *camera;
 	Node* follow;
@@ -126,13 +126,6 @@ private:
 	EventListenerTouchOneByOne* touch_listener;
 
 	void selectHero();
-
-	// Create For Hero
-	void createDuongQua(string path_Json, string path_Atlas);
-	void createCoLong(string path_Json, string path_Atlas);
-	void createHoangDung(string path_Json, string path_Atlas);
-	void createHoangDuocSu(string path_Json, string path_Atlas);
-	void createQuachTinh(string path_Json, string path_Atlas);
 	void createEagle(Point position);
 	void heroGetOffEagle();
 
@@ -161,12 +154,12 @@ private:
 	void createEnemyLinhTenThang(MyLayer * layer, Vec2 pos);
 	void createEnemyLinhTenXien(MyLayer * layer, Vec2 pos);
 	void createEnemyLinhCamRoi(MyLayer * layer, Vec2 pos);
-	void creatBoss();
+	void createBoss();
 
 
 	// function for process box2d
-	void draw(Renderer * renderer, const Mat4 & transform, uint32_t flags);
-	void onDraw();
+	//void draw(Renderer * renderer, const Mat4 & transform, uint32_t flags);
+	//void onDraw();
 	void initB2World();
 	void updateB2World(float dt);
 

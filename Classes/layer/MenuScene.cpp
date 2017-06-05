@@ -93,6 +93,7 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 	m_arPreviewHero[4] = new SkeletonAnimation("UI/UI_main_menu/PreviewQuachTinh/s_QuachTinh.json",
 		"UI/UI_main_menu/PreviewQuachTinh/s_QuachTinh.atlas");
 
+
 	float _arScaleHero[5] = { 0.65f, 0.55f, 0.65f, 0.65f, 0.75f };
 	for (int i = 0; i < 5; i++) {
 		m_arPreviewHero[i]->update(0.0f);

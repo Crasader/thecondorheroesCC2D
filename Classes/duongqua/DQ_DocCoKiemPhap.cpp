@@ -86,7 +86,7 @@ void DQ_DocCoKiemPhap::hitGround()
 		particle->removeFromParentAndCleanup(true);
 	});
 
-	auto seq2 = Sequence::create(DelayTime::create(0.5f), hideParticle, nullptr);
+	auto seq2 = Sequence::createWithTwoActions(DelayTime::create(0.5f), hideParticle);
 	particle->runAction(seq2);
 
 	this->schedule([&](float dt) {

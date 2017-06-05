@@ -138,7 +138,6 @@ void QuachTinh::createTL(float posX)
 	auto tl = (ThanLong*)poolSkill2->getObjectAtIndex(indexSkill2++);
 	tl->setVisible(true);
 	tl->runAni();
-
 	auto gameLayer = (GameScene*) this->getParent();
 
 	tl->setPosition(posX, gameLayer->getFollow()->getPositionY());

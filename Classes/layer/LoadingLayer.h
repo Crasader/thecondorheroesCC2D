@@ -26,16 +26,8 @@ public:
 protected:
 	CC_SYNTHESIZE(GameScene*, mainScene, MainScene);
 	CC_SYNTHESIZE(Hud*, hud, HUD);
-	CC_SYNTHESIZE(Sprite*, boardTime, BoardTime);
-
-	CC_SYNTHESIZE(Sprite*, leftDoor, LeftDoor);
-	CC_SYNTHESIZE(Sprite*, rightDoor, RightDoor);
 
 	CC_SYNTHESIZE(LoadingBar*, loading, Loading);
-	CC_SYNTHESIZE(Sprite*, lbLoading, LbLoading);
-
-	CC_SYNTHESIZE(Sprite*, avatarHero, AvatarHero);
-	CC_SYNTHESIZE(Label*, lbGuide, LbGuide);
 
 private:
 
@@ -48,11 +40,9 @@ private:
 	int timer = 0;
 	void addStuff();
 	void doLoading();
-	void doOpen();
 
 public:
 	void doProcess();
-	void addGuide(string guideWhat);
 };
 
 #endif // __LOADING_LAYER_H__

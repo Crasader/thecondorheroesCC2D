@@ -241,7 +241,7 @@
       "pathMainImageSkill2": "UI/Btn_skill/btnHDS_skill2_up.png",
       "pathSubImageSkill2": "UI/Btn_skill/btnHDS_skill2_down.png",
       "coolDownSkill3": 41,
-      "durationSkill3": 5,
+      "durationSkill3": 6,
       "numberOfUseSkill3": 1,
       "skill3Name": {
         "en": "Super Sonic wave",

@@ -342,7 +342,7 @@ void CoLong::createPool()
 
 	for (int i = 0; i < 5; ++i) {
 		auto cham = TieuHonChuong::create("cham.png");
-		cham->setScale(this->getTrueRadiusOfHero() * 1.5f / cham->getContentSize().width);
+		cham->setScale(this->getTrueRadiusOfHero() * 2.0f / cham->getContentSize().width);
 		poolSkill1->addObject(cham);
 	}
 

@@ -148,7 +148,7 @@ void HoangDung::doCounterSkill1()
 
 void HoangDung::createManThienHoaVu(Point posHand, int Zoder, float angle)
 {
-	AudioManager::playSound(SOUND_DQSKILL2);
+	AudioManager::playSound(SOUND_CLSKILL2);
 	auto mthv = (ManThienHoaVu*)poolSkill2->getObjectAtIndex(indexSkill2++);
 	mthv->setVisible(true);
 	auto gameLayer = (GameScene*) this->getParent();
@@ -420,7 +420,7 @@ void HoangDung::landing()
 void HoangDung::die()
 {
 	BaseHero::die();
-	AudioManager::playSound(SOUND_DQDIE);
+	AudioManager::playSound(SOUND_CLDIE);
 }
 
 void HoangDung::attackNormal()
@@ -488,7 +488,7 @@ void HoangDung::attackLanding()
 
 void HoangDung::injured()
 {
-	AudioManager::playSound(SOUND_DQHIT);
+	AudioManager::playSound(SOUND_CLHIT);
 	clearTracks();
 	addAnimation(0, "injured", false);
 	setToSetupPose();

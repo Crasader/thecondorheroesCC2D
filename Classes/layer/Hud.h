@@ -103,14 +103,14 @@ private:
 	void addSkills();
 	void addBird();
 
-	void doSuctionCoin(Ref *pSender);
-	void doDoublingCoin(Ref *pSender);
+	//void doSuctionCoin(Ref *pSender);
+	//void doDoublingCoin(Ref *pSender);
 	void doCalling(Ref* pSender);
 	void doPause(Ref* pSender);
 
-	void showSpecialButton();
-	void createButtonX(int index, Point position);
-	vector<int> getListIndexOfTypeItemBuy();
+	//void showSpecialButton();
+	//void createButtonX(int index, Point position);
+	//vector<int> getListIndexOfTypeItemBuy();
 
 public:
 	// tuts

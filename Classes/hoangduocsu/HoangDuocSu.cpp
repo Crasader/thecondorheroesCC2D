@@ -207,7 +207,7 @@ void HoangDuocSu::killAll()
 	wave->setVisible(true);
 	//auto originScale = blash->getScale();
 	auto scaleFactor = Director::getInstance()->getContentScaleFactor();
-	auto scale = ScaleBy::create(0.5f, 170 * scaleFactor);
+	auto scale = ScaleBy::create(0.64f, 150 * scaleFactor);
 
 	auto hide = CallFunc::create([&]() {
 		wave->setVisible(false);
@@ -240,7 +240,7 @@ void HoangDuocSu::doCounterSkill3()
 
 		}*/
 
-		if ((checkDurationSkill3 % 11 == 0 && checkDurationSkill3 <= (getDurationSkill3() * 10) - 5)) {
+		if ((checkDurationSkill3 % 13 == 0 && checkDurationSkill3 <= (getDurationSkill3() * 10) - 7)) {
 			killAll();
 			//log("AA");
 		}
@@ -319,8 +319,9 @@ void HoangDuocSu::createPool()
 	poolSkill2 = CCArray::createWithCapacity(12);
 	poolSkill2->retain();
 
-	auto scale = getTrueRadiusOfHero() / 1.4f / 128;
 	for (int i = 0; i < 12; ++i) {
+		auto value = random(0.8f, 1.5f);
+		auto scale = getTrueRadiusOfHero() / value / 128;
 		auto dctc = DaCauBongPhap::create("Animation/HoangDuocSu/Skill_2_effect2.json", 
 			"Animation/HoangDuocSu/Skill_2_effect2.atlas", scale);
 		poolSkill2->addObject(dctc);

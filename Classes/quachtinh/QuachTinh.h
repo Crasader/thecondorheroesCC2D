@@ -76,6 +76,6 @@ private:
 
 };
 
-#define TIME_UP		15
+#define TIME_UP		30
 
 #endif // __QUACH_TINH_H__

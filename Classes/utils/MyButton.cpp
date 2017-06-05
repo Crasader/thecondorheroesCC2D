@@ -64,7 +64,7 @@ void MyButton::addEvents()
 
 	listener->onTouchBegan = [&](Touch *mTouch, Event *mEvent)
 	{
-		auto location = mTouch->getLocation();
+		auto location = mTouch->getLocation() + Director::getInstance()->getVisibleOrigin();
 		auto p = Vec2(location);
 		//convertToNodeSpace(p);
 		Rect rect = this->getBoundingBox();

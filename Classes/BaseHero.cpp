@@ -391,18 +391,6 @@ void BaseHero::deSelectEnemyBySkill2()
 	}
 }
 
-void BaseHero::selectEnemyBySkill3(BaseEnemy * p_pEnemySelected)
-{
-	m_lEnemiesSelectedBySkill3.push_back(p_pEnemySelected);
-}
-
-void BaseHero::deSelectEnemyBySkill3()
-{
-	if (!m_lEnemiesSelectedBySkill3.empty()) {
-		m_lEnemiesSelectedBySkill3.pop_front();
-	}
-}
-
 void BaseHero::killThemAll()
 {
 	auto boss = (BaseEnemy*) this->getParent()->getChildByTag(TAG_BOSS);

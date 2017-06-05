@@ -23,13 +23,15 @@ public:
 	virtual bool init(bool p_bOnlySelectStage);
 	void update(float p_fDelta);
 	static MenuLayer* create(bool p_bOnlySelectStage);
+	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
 private:
 	const Size m_szVisibleSize = Director::getInstance()->getVisibleSize();
 	float m_fButtonStartPosition;							// make start and unlock button at same position
 	int m_nMenuStatus = 0;
+	int backNumber = 0;
 
 	// input value
-	long m_nCurrentTimeFromGoogle = 0;						// time from google.com.vn (-7 hours from Viet Nam)
+	int m_nCurrentTimeFromGoogle = 0;						// time from google.com.vn (-7 hours from Viet Nam)
 
 	int m_nIndexHeroSelected = 0;
 	int m_nIndexHeroPicked = 0;
@@ -167,7 +169,7 @@ private:
 	void moveLayerViaDirection(Layer *p_pLayer, int p_nDirection);
 
 	// supporter
-	long calTimeFromString(string p_sInputString);
+	int calTimeFromString(string p_sInputString);
 	void scrollSlideHandle(Ref* sender, ScrollView::EventType type);
 	void scrollShopHandle(Ref* sender, ScrollView::EventType type);
 	void selectedItemEvent(Ref* sender, ListView::EventType type);

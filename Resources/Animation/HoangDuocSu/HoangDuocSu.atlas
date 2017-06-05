@@ -1,0 +1,306 @@
+
+HoangDuocSu.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Sword2
+  rotate: true
+  xy: 1422, 107
+  size: 26, 192
+  orig: 26, 192
+  offset: 0, 0
+  index: -1
+arm1_L
+  rotate: true
+  xy: 1434, 1090
+  size: 37, 74
+  orig: 84, 96
+  offset: 26, 12
+  index: -1
+arm1_R
+  rotate: true
+  xy: 1945, 666
+  size: 84, 43
+  orig: 84, 43
+  offset: 0, 0
+  index: -1
+arm2_L
+  rotate: false
+  xy: 1616, 74
+  size: 62, 59
+  orig: 72, 65
+  offset: 1, 6
+  index: -1
+arm2_R
+  rotate: false
+  xy: 1958, 1093
+  size: 73, 71
+  orig: 81, 75
+  offset: 8, 4
+  index: -1
+black_hair
+  rotate: false
+  xy: 1797, 1087
+  size: 159, 77
+  orig: 159, 77
+  offset: 0, 0
+  index: -1
+black_hair_line
+  rotate: true
+  xy: 687, 87
+  size: 132, 41
+  orig: 132, 41
+  offset: 0, 0
+  index: -1
+blind_L
+  rotate: false
+  xy: 1945, 892
+  size: 78, 97
+  orig: 78, 98
+  offset: 0, 1
+  index: -1
+blind_R
+  rotate: false
+  xy: 1434, 1129
+  size: 99, 86
+  orig: 99, 86
+  offset: 0, 0
+  index: -1
+body
+  rotate: false
+  xy: 1945, 991
+  size: 101, 94
+  orig: 101, 94
+  offset: 0, 0
+  index: -1
+ear
+  rotate: false
+  xy: 1946, 1770
+  size: 18, 24
+  orig: 18, 24
+  offset: 0, 0
+  index: -1
+hand_L
+  rotate: false
+  xy: 1988, 625
+  size: 36, 39
+  orig: 36, 40
+  offset: 0, 1
+  index: -1
+hand_R
+  rotate: false
+  xy: 1990, 701
+  size: 56, 49
+  orig: 56, 49
+  offset: 0, 0
+  index: -1
+head
+  rotate: false
+  xy: 465, 83
+  size: 109, 136
+  orig: 110, 136
+  offset: 0, 0
+  index: -1
+head2
+  rotate: false
+  xy: 576, 83
+  size: 109, 136
+  orig: 110, 136
+  offset: 1, 0
+  index: -1
+head_1
+  rotate: false
+  xy: 306, 2
+  size: 57, 38
+  orig: 103, 120
+  offset: 0, 45
+  index: -1
+lappet
+  rotate: false
+  xy: 2, 4
+  size: 190, 36
+  orig: 190, 36
+  offset: 0, 0
+  index: -1
+leg_L
+  rotate: false
+  xy: 1945, 752
+  size: 67, 64
+  orig: 70, 67
+  offset: 1, 2
+  index: -1
+leg_R
+  rotate: false
+  xy: 1945, 818
+  size: 67, 72
+  orig: 67, 72
+  offset: 0, 0
+  index: -1
+shadow
+  rotate: true
+  xy: 2016, 1805
+  size: 126, 18
+  orig: 126, 18
+  offset: 0, 0
+  index: -1
+slashs1
+  rotate: false
+  xy: 1422, 135
+  size: 369, 201
+  orig: 1920, 1080
+  offset: 147, 420
+  index: -1
+slashs2
+  rotate: false
+  xy: 2, 42
+  size: 461, 227
+  orig: 1920, 1080
+  offset: 305, 403
+  index: -1
+slashs3
+  rotate: true
+  xy: 1543, 1087
+  size: 677, 252
+  orig: 1920, 1080
+  offset: 376, 387
+  index: -1
+slashs4
+  rotate: true
+  xy: 489, 221
+  size: 929, 273
+  orig: 1920, 1080
+  offset: 419, 374
+  index: -1
+slashs5
+  rotate: false
+  xy: 746, 1766
+  size: 1198, 270
+  orig: 1920, 1080
+  offset: 450, 384
+  index: -1
+slashs7
+  rotate: true
+  xy: 1797, 1166
+  size: 598, 247
+  orig: 1920, 1080
+  offset: 928, 393
+  index: -1
+slashs8
+  rotate: true
+  xy: 1946, 1796
+  size: 240, 68
+  orig: 1920, 1080
+  offset: 1214, 402
+  index: -1
+slashy1
+  rotate: false
+  xy: 1434, 338
+  size: 564, 229
+  orig: 791, 900
+  offset: 0, 657
+  index: -1
+slashy2
+  rotate: true
+  xy: 1434, 569
+  size: 516, 509
+  orig: 791, 900
+  offset: 141, 377
+  index: -1
+slashy3
+  rotate: true
+  xy: 746, 1217
+  size: 547, 795
+  orig: 791, 900
+  offset: 154, 105
+  index: -1
+slashy4
+  rotate: false
+  xy: 2, 1152
+  size: 742, 884
+  orig: 791, 900
+  offset: 0, 16
+  index: -1
+slashy5
+  rotate: false
+  xy: 2, 271
+  size: 485, 879
+  orig: 791, 900
+  offset: 263, 19
+  index: -1
+slashy6
+  rotate: true
+  xy: 764, 104
+  size: 441, 656
+  orig: 791, 900
+  offset: 263, 21
+  index: -1
+slashy7
+  rotate: false
+  xy: 1793, 91
+  size: 206, 245
+  orig: 791, 900
+  offset: 351, 212
+  index: -1
+star
+  rotate: false
+  xy: 764, 547
+  size: 668, 668
+  orig: 668, 668
+  offset: 0, 0
+  index: -1
+string_sword
+  rotate: false
+  xy: 465, 66
+  size: 103, 15
+  orig: 103, 15
+  offset: 0, 0
+  index: -1
+white_hair1_L
+  rotate: false
+  xy: 2016, 1933
+  size: 30, 103
+  orig: 30, 103
+  offset: 0, 0
+  index: -1
+white_hair1_R
+  rotate: true
+  xy: 365, 7
+  size: 33, 39
+  orig: 33, 39
+  offset: 0, 0
+  index: -1
+white_hair2_L
+  rotate: true
+  xy: 194, 7
+  size: 33, 110
+  orig: 33, 110
+  offset: 0, 0
+  index: -1
+white_hair2_R
+  rotate: true
+  xy: 1945, 594
+  size: 70, 41
+  orig: 70, 41
+  offset: 0, 0
+  index: -1
+wispy
+  rotate: true
+  xy: 1990, 666
+  size: 33, 43
+  orig: 33, 43
+  offset: 0, 0
+  index: -1
+
+HoangDuocSu2.png
+size: 1024,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+slashs6
+  rotate: false
+  xy: 2, 2
+  size: 932, 252
+  orig: 1920, 1080
+  offset: 672, 391
+  index: -1

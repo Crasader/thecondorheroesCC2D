@@ -38,6 +38,7 @@ protected:
 	void addEvents();
 	void pauseListener();
 	void refresh();
+	void silence();
 	EventListenerTouchOneByOne* getListener() { return listener; }
 };
 

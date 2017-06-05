@@ -13,7 +13,6 @@ HoangDung * HoangDung::create(string jsonFile, string atlasFile, float scale)
 	HoangDung* hoangDung = new HoangDung(jsonFile, atlasFile, scale);
 	if (hoangDung && hoangDung->init())
 	{
-		hoangDung->autorelease();
 		hoangDung->setTag(TAG_HERO);
 
 		hoangDung->update(0.0f);
@@ -21,7 +20,7 @@ HoangDung * HoangDung::create(string jsonFile, string atlasFile, float scale)
 		hoangDung->stateMachine = new StateMachine(hoangDung);
 		hoangDung->stateMachine->setCurrentState(MLand);
 
-		hoangDung->setBoxHeight(hoangDung->getBoundingBox().size.height / 2.3f);
+		hoangDung->setBoxHeight(hoangDung->getBoundingBox().size.height / 2.2f);
 
 		//
 		hoangDung->blash = Sprite::create("Animation/CoLong/blash.png");
@@ -29,7 +28,7 @@ HoangDung * HoangDung::create(string jsonFile, string atlasFile, float scale)
 		hoangDung->blash->setPosition(hoangDung->getContentSize() / 2);
 		hoangDung->blash->setVisible(false);
 		hoangDung->addChild(hoangDung->blash);
-
+		hoangDung->autorelease();
 		return hoangDung;
 	}
 	else
@@ -82,6 +81,7 @@ void HoangDung::createSkill2Effect()
 {
 	auto scale = this->getTrueRadiusOfHero() * 1.4f / 250.0f;
 	Skill2Effect1 = new SkeletonAnimation("Animation/HoangDung/Skill_2_effect1.json", "Animation/HoangDung/Skill_2_effect1.atlas", scale);
+	Skill2Effect1->autorelease();
 	Skill2Effect1->setPosition(this->getContentSize().width / 2, this->getContentSize().height / 2);
 	Skill2Effect1->update(0.0f);
 	Skill2Effect1->setVisible(false);
@@ -91,6 +91,7 @@ void HoangDung::createSkill2Effect()
 	this->addChild(Skill2Effect1, -1);
 
 	Skill2Effect2 = new SkeletonAnimation("Animation/HoangDung/Skill_2_effect2.json", "Animation/HoangDung/Skill_2_effect2.atlas", scale);
+	Skill2Effect2->autorelease();
 	Skill2Effect2->setPosition(this->getContentSize().width / 2, this->getContentSize().height / 2);
 	Skill2Effect2->update(0.0f);
 	Skill2Effect2->setVisible(false);
@@ -100,6 +101,7 @@ void HoangDung::createSkill2Effect()
 	this->addChild(Skill2Effect2, 1);
 
 	Skill2Effect3 = new SkeletonAnimation("Animation/HoangDung/Skill_2_effect3.json", "Animation/HoangDung/Skill_2_effect3.atlas", scale);
+	Skill2Effect3->autorelease();
 	Skill2Effect3->setPosition(this->getContentSize().width, this->getContentSize().height);
 	Skill2Effect3->update(0.0f);
 	Skill2Effect3->setVisible(false);
@@ -128,13 +130,12 @@ void HoangDung::doCounterSkill1()
 				hud->getBtnSkill_1()->setCanTouch(true);
 				hud->getBtnSkill_1()->getMain()->setVisible(true);
 				isReviveAfterDead = false;
-			}
-
-			setIsDoneDuration1(true);
-			if (getOnGround()) {
+			} else
+				setIsDoneDuration1(true);
+			/*if (getOnGround()) {
 				getFSM()->changeState(MRun);
 				run();
-			}
+			}*/
 			checkDurationSkill1 = 0;
 			thunderShield->setVisible(false);
 			changeBodyMaskBits(BITMASK_FLOOR | BITMASK_SLASH | BITMASK_BOSS | BITMASK_COIN_BULLION | BITMASK_ENEMY);
@@ -226,6 +227,7 @@ void HoangDung::doCounterSkill2() {
 void HoangDung::createDaCauBongPhap(Point posSword)
 {
 	auto dcbp = (DaCauBongPhap*)poolSkill3->getObjectAtIndex(indexSkill3++);
+	dcbp->setVel(b2Vec2(SCREEN_SIZE.width * 1.5f / PTM_RATIO, 0));
 	dcbp->setVisible(true);
 	auto gameLayer = (GameScene*) this->getParent();
 
@@ -233,7 +235,7 @@ void HoangDung::createDaCauBongPhap(Point posSword)
 	dcbp->initCirclePhysic(gameLayer->world, dcbp->getPosition());
 
 	if (!dcbp->getIsAdded()) {
-		this->getParent()->addChild(dcbp, ZORDER_SMT);
+		gameLayer->addChild(dcbp, ZORDER_SMT);
 		dcbp->setIsAdded(true);
 	}
 
@@ -247,7 +249,7 @@ void HoangDung::slashDaCauBongPhap()
 	this->schedule([&](float dt) {
 		checkDurationSkill3++;
 
-		if (checkDurationSkill3 >= getDurationSkill3() * 60) {
+		if (!isDoneDuration3 && checkDurationSkill3 >= getDurationSkill3() * 60) {
 			setIsDoneDuration3(true);
 		}
 
@@ -345,7 +347,7 @@ void HoangDung::createPool()
 	poolSkill3->retain();
 
 	for (int i = 0; i < 4; ++i) {
-		auto scale = 0.25f;
+		auto scale = 0.2f;
 		auto dcbp = DaCauBongPhap::create("Animation/HoangDung/Skill_3_effect.json", "Animation/HoangDung/Skill_3_effect.atlas", scale);
 		poolSkill3->addObject(dcbp);
 	}
@@ -361,6 +363,12 @@ void HoangDung::run()
 		getSmokeRun()->setVisible(true);
 	}
 
+	if (!isUseSpecial) {
+		//setIsDoneDuration1(false);
+		doCounterSkill1();
+		isUseSpecial = true;
+	}
+		
 	//log("run");
 }
 
@@ -421,7 +429,7 @@ void HoangDung::attackNormal()
 		clearTracks();
 		addAnimation(0, "skill3", false);
 		setToSetupPose();
-
+		log("AAA");
 		createDaCauBongPhap(getBoneLocation("bone6"));
 
 		setIsPriorSkill3(true);			// move to attack
@@ -513,6 +521,7 @@ void HoangDung::listener()
 
 		else if (strcmp(getCurrent()->animation->name, "revive") == 0) {
 			isReviveAfterDead = true;
+			isUseSpecial = false;
 			getReviveMe()->setVisible(false);
 			getFSM()->changeState(MLand);
 			auto gameLayer = (GameScene*) this->getParent();
@@ -524,9 +533,6 @@ void HoangDung::listener()
 			hud->getBtnSkill_1()->getMain()->setVisible(false);
 
 			noActive = false;
-
-			setIsDoneDuration1(false);
-			doCounterSkill1();
 		}
 
 

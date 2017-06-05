@@ -21,7 +21,7 @@ CustomLayerToToast * CustomLayerToToast::create(string p_sMessage, float p_fTime
 }
 
 void CustomLayerToToast::setMessage(string p_sMessage, float p_fTimeOption) {
-	m_pLabelMessage = Label::create(p_sMessage.c_str(), "fonts/BAUHS93.TTF", 16);
+	m_pLabelMessage = Label::createWithTTF(p_sMessage.c_str(), "fonts/arial.ttf", 16);
 	m_pLabelMessage->setTextColor(Color4B::WHITE);
 	m_pLabelMessage->setAnchorPoint(Vec2(0.5f, 0.5f));
 	m_pLabelMessage->setPosition(this->getContentSize().width / 2, this->getContentSize().height / 2);

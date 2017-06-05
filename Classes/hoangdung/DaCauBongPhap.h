@@ -5,17 +5,19 @@
 
 class DaCauBongPhap : public B2Skeleton
 {
-private:
-	CC_SYNTHESIZE(bool, isDie, IsDie);
 public:
 	DaCauBongPhap(string jsonFile, string atlasFile, float scale);
 	static DaCauBongPhap* create(string jsonFile, string atlasFile, float scale);
 	void initCirclePhysic(b2World *world, Point pos);
 	void updateMe();
+
 protected:
 	CC_SYNTHESIZE(bool, isAdded, IsAdded);
+	CC_SYNTHESIZE(float, radius, Radius);
 	CC_SYNTHESIZE(b2Vec2, vel, Vel);
 	
 };
+
+#define TAG_DA_CAU_BONG_PHAT	64
 
 #endif // __DARTS_H__

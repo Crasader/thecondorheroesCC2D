@@ -32,7 +32,7 @@ void QT_SongLongXuatThuy::initPhysic(b2World * world, float radius)
 
 	b2BodyDef bodyDef1;
 	bodyDef1.type = b2_dynamicBody;
-	auto posHead1 = getBoneLocation("bone32");
+	auto posHead1 = getBoneLocation("bone");
 	bodyDef1.position.Set(posHead1.x / PTM_RATIO, posHead1.y / PTM_RATIO);
 
 	head_1 = world->CreateBody(&bodyDef1);
@@ -42,7 +42,7 @@ void QT_SongLongXuatThuy::initPhysic(b2World * world, float radius)
 
 	b2BodyDef bodyDef2;
 	bodyDef2.type = b2_dynamicBody;
-	auto posHead2 = getBoneLocation("bone13");
+	auto posHead2 = getBoneLocation("bone37");
 	bodyDef2.position.Set(posHead2.x / PTM_RATIO, posHead2.y / PTM_RATIO);
 
 	head_2 = world->CreateBody(&bodyDef2);
@@ -54,9 +54,9 @@ void QT_SongLongXuatThuy::initPhysic(b2World * world, float radius)
 void QT_SongLongXuatThuy::updateDragons()
 {
 	//if (this->isVisible()) {
-	auto posHead1 = getBoneLocation("bone32");
+	auto posHead1 = getBoneLocation("bone");
 	head_1->SetTransform(b2Vec2(posHead1.x / PTM_RATIO, posHead1.y / PTM_RATIO), head_1->GetAngle());
-	auto posHead2 = getBoneLocation("bone13");
+	auto posHead2 = getBoneLocation("bone37");
 	head_2->SetTransform(b2Vec2(posHead2.x / PTM_RATIO, posHead2.y / PTM_RATIO), head_2->GetAngle());
 	//}
 }

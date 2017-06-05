@@ -528,19 +528,19 @@ void Hud::showButton()
 
 	btnSkill_1->setVisible(true);
 	btnSkill_1->getMain()->setVisible(true);
-	if (btnSkill_1->getmTimer() >= 0.5f) {
+	if (btnSkill_1->getmTimer() >= 0.2f) {
 		btnSkill_1->getNumberCoolDown()->setVisible(true);
 	}
 
 	btnSkill_2->setVisible(true);
 	btnSkill_2->getMain()->setVisible(true);
-	if (btnSkill_2->getmTimer() >= 0.5f) {
+	if (btnSkill_2->getmTimer() >= 0.2f) {
 		btnSkill_2->getNumberCoolDown()->setVisible(true);
 	}
 
 	btnSkill_3->setVisible(true);
 	btnSkill_3->getMain()->setVisible(true);
-	if (btnSkill_3->getmTimer() >= 0.5f) {
+	if (btnSkill_3->getmTimer() >= 0.2f) {
 		btnSkill_3->getNumberCoolDown()->setVisible(true);
 	}
 }
@@ -804,4 +804,11 @@ void Hud::tryHud()
 	addAttack();
 
 	addSkills();
+}
+
+void Hud::silence()
+{
+	btnSkill_1->silence();
+	btnSkill_2->silence();
+	btnSkill_3->silence();
 }

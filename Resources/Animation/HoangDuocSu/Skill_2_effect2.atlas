@@ -1,0 +1,62 @@
+
+Skill_2_effect2.png
+size: 1024,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+skill2_effect2_13
+  rotate: true
+  xy: 566, 25
+  size: 71, 76
+  orig: 192, 192
+  offset: 57, 56
+  index: -1
+skill2_effect2_14
+  rotate: false
+  xy: 412, 22
+  size: 75, 74
+  orig: 192, 192
+  offset: 57, 55
+  index: -1
+skill2_effect2_15
+  rotate: false
+  xy: 489, 22
+  size: 75, 74
+  orig: 192, 192
+  offset: 59, 54
+  index: -1
+skill2_effect2_16
+  rotate: false
+  xy: 260, 20
+  size: 74, 76
+  orig: 192, 192
+  offset: 62, 55
+  index: -1
+skill2_effect2_17
+  rotate: false
+  xy: 336, 20
+  size: 74, 76
+  orig: 192, 192
+  offset: 61, 58
+  index: -1
+skill2_effect2_18
+  rotate: false
+  xy: 182, 18
+  size: 76, 78
+  orig: 192, 192
+  offset: 59, 56
+  index: -1
+skill2_effect2_19
+  rotate: false
+  xy: 94, 4
+  size: 86, 92
+  orig: 192, 192
+  offset: 49, 48
+  index: -1
+skill2_effect2_20
+  rotate: false
+  xy: 2, 2
+  size: 90, 94
+  orig: 192, 192
+  offset: 48, 46
+  index: -1

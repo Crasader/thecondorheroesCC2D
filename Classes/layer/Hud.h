@@ -39,6 +39,8 @@ public:
 	// only for try hero
 	void tryHud();
 
+	void silence();
+
 protected:
 
 	CC_SYNTHESIZE(MenuItemImage*, pauseItem, PauseItem);

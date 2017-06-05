@@ -31,7 +31,7 @@ protected:
 	CC_SYNTHESIZE_READONLY(int, currentHealth, CurrentHealth);
 
 	CC_SYNTHESIZE_READONLY(int, anchorTime, AnchorTime);   //
-	CC_SYNTHESIZE_READONLY(long, lastDailyRewardTime, LastDailyRewardTime);   //
+	CC_SYNTHESIZE_READONLY(int, lastDailyRewardTime, LastDailyRewardTime);   //
 	CC_SYNTHESIZE_READONLY(int, dailyRewardCounter, DailyRewardCounter);   //
 	CC_SYNTHESIZE_READONLY(bool, dailyRewardAvailable, DailyRewardAvailable);	// to try or smt
 	CC_SYNTHESIZE_READONLY(int, freeCoin, FreeCoin);	// to try or smt
@@ -117,7 +117,7 @@ public:
 	void increaseBonusGold(int value);
 
 	void setAnchorTime(int value);
-	void updateTimeFromGoogle(long p_nTime);
+	void updateTimeFromGoogle(int p_nTime);
 	void increaseDailyRewardCounter();
 	void updateDailyRewardAvailable(bool p_bData);
 	void resetFreeCoin();

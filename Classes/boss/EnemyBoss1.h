@@ -14,7 +14,7 @@ class EnemyBoss1 : public BaseEnemy
 private:
 	CC_SYNTHESIZE(int, levelBoss, LevelBoss);
 	CC_SYNTHESIZE(int, randAt2, RandAt2);
-	CC_SYNTHESIZE(bool, isNodie, IsNodie);
+	//CC_SYNTHESIZE(bool, isNodie, IsNodie);
 	CC_SYNTHESIZE_READONLY(Vec2, baseVelocity, BaseVelocity);
 	CC_SYNTHESIZE_READONLY(Vec2, moveVelocity, moveVelocity);
 	CC_SYNTHESIZE(Vec2, realtimeVec, RealtimeVec);
@@ -28,6 +28,7 @@ private:
 	int control;
 public:
 	//bool lockState;
+	b2Vec2 dsBoss_Follow;
 	Vec2 heroLocation;
 	StateBoss *state;
 	CCArray *slashPool;
@@ -62,6 +63,10 @@ public:
 	virtual void playSoundAttack2();
 	virtual void playSoundHit();
 	virtual void playSoundDie();
+	void immortal();
+	void unImmortal();
+
+
 	// void initCirclePhysic(b2World *world, Point pos);
 };
 

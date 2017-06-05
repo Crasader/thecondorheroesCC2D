@@ -1165,6 +1165,8 @@ void MenuLayer::initBottomHeroMenu() {
 
 void MenuLayer::backFunction() {
 	int a = 0;
+	if(SPHelper::getInstance()->isSigned())
+	SPHelper::getInstance()->showBoard("score");
 }
 
 void MenuLayer::showMainMenu() {
@@ -1349,10 +1351,6 @@ void MenuLayer::buttonFreeCoinHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	logButtonClickEvent("Free coin");
 	if (REF->getFreeCoin() > 0) {
-		REF->decreaseFreeCoin();
-		if (REF->getFreeCoin() <= 0) {
-			m_pSpriteFreeCoinAttention->setVisible(false);
-		}
 		//GAHelper::getInstance()->logEvent("FreeCoin", "click", "can getFreecoin", 1);
 		// TODO : show ads and check view ads finish
 		// after that, increase gold
@@ -2446,6 +2444,10 @@ void MenuLayer::onVungleFinished()
 
 void MenuLayer::onVungleAdReward(const std::string & name)
 {
+	REF->decreaseFreeCoin();
+	if (REF->getFreeCoin() <= 0) {
+		m_pSpriteFreeCoinAttention->setVisible(false);
+	}
 	if (REF->getNumberOfLife() == 0) {
 		m_nLifeNumber += 5;
 		REF->setUpLife(5);

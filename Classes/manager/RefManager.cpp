@@ -1,6 +1,7 @@
 #include "RefManager.h"
 #include "Global.h"
 #include "manager/JSonHeroManager.h"
+#include "thirdsdkhelper\SdkboxPlay.h"
 
 
 RefManager* RefManager::refManager;
@@ -16,7 +17,7 @@ RefManager::RefManager()
 	isGetNewMap = ref->getBoolForKey(KEY_UNLOCK_MAP, false);
 
 	currentStageUnlocked = ref->getIntegerForKey(KEY_CUR_STAGE_UNLOCKED, 4);
-	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 3);
+	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 4);
 
 	anchorTime = ref->getIntegerForKey(KEY_ANCHORTIME, time(0));
 	lastDailyRewardTime = ref->getIntegerForKey(KEY_LAST_DAILY_REWARD_TIME, 0);
@@ -186,8 +187,11 @@ void RefManager::setCurrentScoreAfterIncrease(int score)
 void RefManager::setUpScore(int score)
 {
 	this->currentScore += score;
+	if (SPHelper::getInstance()->isSigned())
+		SPHelper::getInstance()->submitScore("score",this->getCurrentScore());
 	ref->setIntegerForKey((KEY_SCORE_X + StringUtils::format("%i", selectedHero)).c_str(), this->currentScore);
 	ref->flush();
+
 }
 
 void RefManager::increaseDurationSkill_X(int skill_What, int value)

@@ -109,12 +109,18 @@ void BossStupiding::enter(EnemyBoss1 * boss)
 
 void BossStupiding::execute(EnemyBoss1 * boss)
 {
-	//log("stupiding ex");
+	////log("stupiding ex");
 	if (boss->getPositionY() < SCREEN_SIZE.height/5) {
 		boss->setRealMoveVelocity(Vec2(boss->getRealMoveVelocity().x, 0));
 	}
+	else {
+		boss->setRealMoveVelocity(Vec2(boss->getRealMoveVelocity().x, -boss->getmoveVelocity().y));
+	}
 	if (boss->getPositionX() < boss->heroLocation.x + boss->getB2Body()->GetFixtureList()->GetShape()->m_radius*PTM_RATIO) {
-		boss->setRealMoveVelocity(Vec2(0, -boss->getRealMoveVelocity().y));
+		boss->setRealMoveVelocity(Vec2(0, boss->getRealMoveVelocity().y));
+	}
+	else {
+		boss->setRealMoveVelocity(Vec2(-boss->getmoveVelocity().x, boss->getRealMoveVelocity().y));
 	}
 }
 
@@ -175,5 +181,4 @@ void BossDie::execute(EnemyBoss1 * boss)
 	if (boss->getPositionY() > SCREEN_SIZE.height *2.0f / 4 && boss->getRealMoveVelocity().y > 0) {
 		boss->setRealMoveVelocity(Vec2(boss->getRealMoveVelocity().x, 0));
 	}
-
 }

@@ -41,6 +41,12 @@ public:
 #endif
 	}
 
+	void setIsDebugMode(bool mode) {
+#ifdef SDKBOX_ENABLED
+		sdkbox::IAP::setDebug(mode);
+#endif
+	}
+
 
 	static IAPHelper* getInstance() {
 		static  IAPHelper *iapInstance;

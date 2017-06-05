@@ -13,6 +13,7 @@
 #include "thirdsdkhelper\GoogleAnalysticHelper.h"
 #include "thirdsdkhelper\IAPHelper.h"
 #include "thirdsdkhelper\VungleHelper.h"
+#include "thirdsdkhelper\SdkboxPlay.h"
 
 USING_NS_CC;
 using namespace spine;

@@ -29,7 +29,7 @@ bool LoadingLayer::init(int stage, int map, int charId)
 		return false;
 	}
 	AdmobHelper::getInstance()->showBanner();
-	AdmobHelper::getInstance()->showRewardVideoToRevive();
+	//AdmobHelper::getInstance()->showRewardVideoToRevive();
 	this->stage = stage;
 	this->map = map;
 	this->charId = charId;
@@ -186,7 +186,7 @@ void LoadingLayer::doProcess()
 			Director::getInstance()->replaceScene(GameScene::createScene(mainScene, hud));
 		}
 
-	}, 1.0f / (100.0f - percent), "key");
+	}, 1.0f / 100.0f, "key");
 }
 
 void LoadingLayer::addGuide(string guideWhat)

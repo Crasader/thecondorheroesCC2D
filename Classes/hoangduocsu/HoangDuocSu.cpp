@@ -23,11 +23,17 @@ HoangDuocSu * HoangDuocSu::create(string jsonFile, string atlasFile, float scale
 		hds->setBoxHeight(hds->getBoundingBox().size.height / 4.0f);
 
 		//
-		hds->blash = Sprite::create("Animation/CoLong/blash.png");
+		hds->blash = Sprite::create("Animation/HoangDuocSu/blash.png");
 		hds->blash->setScale(scale / 2);
 		hds->blash->setPosition(hds->getContentSize() / 2);
 		hds->blash->setVisible(false);
 		hds->addChild(hds->blash);
+
+		hds->wave = Sprite::create("Animation/HoangDuocSu/skill3.png");
+		hds->wave->setScale(scale / 3);
+		hds->wave->setPosition(hds->getContentSize() / 2);
+		hds->wave->setVisible(false);
+		hds->addChild(hds->wave);
 
 		hds->scoreRatio = 2;
 
@@ -100,6 +106,7 @@ void HoangDuocSu::fastAndFurious()
 		}
 
 		if (checkDurationSkill1 >= getDurationSkill1() * 60) {
+			setScoreRatio(1);
 			this->setIsNoDie(false);
 			shield->changeBodyCategoryBits(BITMASK_WOODER);
 			this->getB2Body()->SetGravityScale(1);
@@ -116,6 +123,7 @@ void HoangDuocSu::fastAndFurious()
 
 void HoangDuocSu::doCounterSkill1()
 {
+	setScoreRatio(2);
 	fastAndFurious();
 }
 
@@ -149,6 +157,8 @@ void HoangDuocSu::slashDCTC()
 		checkDurationSkill2++;
 
 		if (!isDoneDuration2 && checkDurationSkill2 >= getDurationSkill2() * 60) {
+			counterSkill2 = 0;
+			effectSkill2->setVisible(false);
 			setIsDoneDuration2(true);
 		}
 
@@ -169,6 +179,7 @@ void HoangDuocSu::slashDCTC()
 		}
 
 		if (checkDurationSkill2 >= getDurationSkill2() * 85) {
+			setScoreRatio(1);
 			checkDurationSkill2 = 0;
 			unschedule("KeySkill2");
 		}
@@ -178,19 +189,43 @@ void HoangDuocSu::slashDCTC()
 
 void HoangDuocSu::doCounterSkill2()
 {
+	effectSkill2->setVisible(true);
+	setScoreRatio(2);
 	slashDCTC();
 }
 
 
+void HoangDuocSu::killAll()
+{
+	auto boss = (BaseEnemy*) this->getParent()->getChildByTag(TAG_BOSS);
+	if (boss != nullptr && boss->getPositionX() < this->getPositionX() + SCREEN_SIZE.width * 0.75f) {
+		boss->die();
+		log("%i", boss->getHealth());
+	}
+
+	isKillAll = true;
+	wave->setVisible(true);
+	//auto originScale = blash->getScale();
+	auto scaleFactor = Director::getInstance()->getContentScaleFactor();
+	auto scale = ScaleBy::create(0.5f, 170 * scaleFactor);
+
+	auto hide = CallFunc::create([&]() {
+		wave->setVisible(false);
+		isKillAll = false;
+	});
+
+	wave->runAction(Sequence::create(scale, hide, scale->reverse(), nullptr));
+}
+
 void HoangDuocSu::doCounterSkill3()
 {
+	//effectSkill3->setVisible(true);
 	/*this->getB2Body()->SetGravityScale(0);
 	this->getB2Body()->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
 
 	isDoneMoving = false;*/
-
+	setScoreRatio(2);
 	this->schedule([&](float dt) {
-		checkDurationSkill3++;
 		/*if (!isDoneMoving) {
 			if (fabs(this->getPositionY() - follow->getPositionY()) < offset)
 				isDoneMoving = true;
@@ -205,33 +240,23 @@ void HoangDuocSu::doCounterSkill3()
 
 		}*/
 
-		if ((checkDurationSkill3 >= getDurationSkill3() * 60)) {
+		if ((checkDurationSkill3 % 11 == 0 && checkDurationSkill3 <= (getDurationSkill3() * 10) - 5)) {
+			killAll();
+			//log("AA");
+		}
+
+		checkDurationSkill3++;
+
+		if (checkDurationSkill3 >= getDurationSkill3() * 10) {
 			//this->getB2Body()->SetGravityScale(1);
+			//effectSkill3->setVisible(false);
+			setScoreRatio(1);
 			setIsDoneDuration3(true);
 			checkDurationSkill3 = 0;
 			unschedule("KeySkill3");
 		}
 
-	}, 1.0f / 60, "KeySkill3");		//  run every delta time
-}
-
-
-// SLASH
-void HoangDuocSu::createSlash()
-{
-	auto scale = this->getTrueRadiusOfHero() * 1.8f / 400;
-	slash = SkeletonAnimation::createWithFile("Animation/HoangDuocSu/slash2.json", "Animation/HoangDuocSu/slash2.atlas", scale);
-	slash->setPosition(this->getContentSize().width / 2 + this->getTrueRadiusOfHero(), this->getTrueRadiusOfHero() * 0.7f);
-	slash->update(0.0f);
-	slash->setVisible(false);
-	this->addChild(slash);
-
-	slashLand = SkeletonAnimation::createWithFile("Animation/HoangDuocSu/slash1.json", "Animation/HoangDuocSu/slash1.atlas", scale);
-	slashLand->setPosition(this->getContentSize().width / 2 + this->getTrueRadiusOfHero() * 0.3f, this->getTrueRadiusOfHero() * 0.7f);
-	slashLand->update(0.0f);
-	slashLand->setVisible(false);
-
-	this->addChild(slashLand);
+	}, 0.1f, "KeySkill3");		//  run every delta time
 }
 
 void HoangDuocSu::runEffectSkill1()
@@ -248,21 +273,32 @@ void HoangDuocSu::runEffectSkill1()
 	this->setToSetupPose();*/
 }
 
-void HoangDuocSu::runSlashLand()
-{
-	slashLand->setVisible(true);
-	slashLand->clearTracks();
-	slashLand->addAnimation(0, "slash1", false);
-	slashLand->setToSetupPose();
-}
-
 void HoangDuocSu::createEffect()
 {
-	auto scale = getBoxHeight() / 170;
-	effectSkill1 = new SkeletonAnimation("Animation/HoangDuocSu/Skill_1_effect.json", "Animation/HoangDuocSu/Skill_1_effect.atlas", scale);
+	auto scale_1 = getBoxHeight() / 170;
+	effectSkill1 = new SkeletonAnimation("Animation/HoangDuocSu/Skill_1_effect.json", "Animation/HoangDuocSu/Skill_1_effect.atlas", scale_1);
 	effectSkill1->autorelease();
 	effectSkill1->setVisible(false);
 	this->getParent()->addChild(effectSkill1, ZORDER_ENEMY);
+
+	auto scale_2 = getBoxHeight() / 140;
+	effectSkill2 = new SkeletonAnimation("Animation/HoangDuocSu/Skill_2_effect1.json", "Animation/HoangDuocSu/Skill_2_effect1.atlas", scale_2);
+	effectSkill2->autorelease();
+	effectSkill2->setOpacity(100);
+	effectSkill2->setVisible(false);
+	effectSkill2->clearTracks();
+	effectSkill2->addAnimation(0, "animation", true);
+	effectSkill2->setToSetupPose();
+	this->addChild(effectSkill2);
+
+	/*auto scale_3 = getBoxHeight() / 175;
+	effectSkill3 = new SkeletonAnimation("Animation/HoangDuocSu/Skill_3_effect1.json", "Animation/HoangDuocSu/Skill_3_effect1.atlas", scale_3);
+	effectSkill3->autorelease();
+	effectSkill3->setVisible(false);
+	effectSkill3->clearTracks();
+	effectSkill3->addAnimation(0, "animation", true);
+	effectSkill3->setToSetupPose();
+	this->addChild(effectSkill3);*/
 }
 
 void HoangDuocSu::addStuff()
@@ -283,7 +319,7 @@ void HoangDuocSu::createPool()
 	poolSkill2 = CCArray::createWithCapacity(12);
 	poolSkill2->retain();
 
-	auto scale = getTrueRadiusOfHero() / 1.5f / 128;
+	auto scale = getTrueRadiusOfHero() / 1.4f / 128;
 	for (int i = 0; i < 12; ++i) {
 		auto dctc = DaCauBongPhap::create("Animation/HoangDuocSu/Skill_2_effect2.json", 
 			"Animation/HoangDuocSu/Skill_2_effect2.atlas", scale);
@@ -349,6 +385,12 @@ void HoangDuocSu::die()
 void HoangDuocSu::attackNormal()
 {
 	if (!isDoneDuration2) {
+		counterSkill2++;
+		if ((counterSkill2 % 3) == 0) {
+			createDCTC(getBoneLocation("bone58"), 25);
+			createDCTC(getBoneLocation("bone58"), -25);
+		}
+
 		createDCTC(getBoneLocation("bone58"), 15);
 		createDCTC(getBoneLocation("bone58"), 5);
 		createDCTC(getBoneLocation("bone58"), -5);
@@ -373,7 +415,7 @@ void HoangDuocSu::attackNormal()
 			addAnimation(0, "attack2", false);
 		}
 	} else 
-		addAnimation(0, "attack3", false);
+		addAnimation(0, "attack1", false);
 	
 
 	//log("atttack*");
@@ -386,6 +428,12 @@ void HoangDuocSu::attackNormal()
 void HoangDuocSu::attackLanding()
 {
 	if (!isDoneDuration2) {
+		counterSkill2++;
+		if ((counterSkill2 % 3) == 0) {
+			createDCTC(getBoneLocation("bone58"), 25);
+			createDCTC(getBoneLocation("bone58"), -25);
+		}
+
 		createDCTC(getBoneLocation("bone58"), 15);
 		createDCTC(getBoneLocation("bone58"), 5);
 		createDCTC(getBoneLocation("bone58"), -5);
@@ -397,7 +445,14 @@ void HoangDuocSu::attackLanding()
 	//runSlashLand();
 
 	clearTracks();
-	addAnimation(0, "attack3", false);
+	if (!isDoneDuration2) {
+		addAnimation(0, "attack1", false);
+	}
+	else {
+		addAnimation(0, "attack3", false);
+		this->getSwordBody()->SetTransform(getSwordBody()->GetPosition(), PI / 2);
+	}
+
 	setToSetupPose();
 
 	//log("atttack");
@@ -455,7 +510,8 @@ void HoangDuocSu::listener()
 		else if ((strcmp(getCurrent()->animation->name, "attack1") == 0) ||
 			(strcmp(getCurrent()->animation->name, "attack2") == 0) ||
 			(strcmp(getCurrent()->animation->name, "attack3") == 0)) {
-
+			if(strcmp(getCurrent()->animation->name, "attack3") == 0)
+				this->getSwordBody()->SetTransform(getSwordBody()->GetPosition(), 0);
 			changeSwordCategoryBitmask(BITMASK_ENEMY);
 
 			setIsPriorAttack(false);
@@ -500,6 +556,7 @@ void HoangDuocSu::listener()
 
 void HoangDuocSu::stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSkill3)
 {
+	setScoreRatio(1);
 	if (stopSkill1 && !getIsDoneDuration1()) {
 		this->setIsNoDie(false);
 		shield->changeBodyCategoryBits(BITMASK_WOODER);
@@ -511,6 +568,7 @@ void HoangDuocSu::stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSki
 	}
 
 	if (stopSkill2 && !getIsDoneDuration2()) {
+		effectSkill2->setVisible(false);
 		setIsDoneDuration2(true);
 		if (!listDCTC.empty()) {
 			for (auto dctc : listDCTC) {
@@ -529,6 +587,8 @@ void HoangDuocSu::stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSki
 	}
 
 	if (stopSkill3 && !getIsDoneDuration3()) {
+		//effectSkill3->setVisible(false);
+		isKillAll = false;
 		setIsDoneDuration3(true);
 		unschedule("KeySkill3");
 		checkDurationSkill3 = 0;
@@ -552,7 +612,8 @@ void HoangDuocSu::updateMe(float dt)
 		return;
 
 	if (shield != nullptr) {
-		shield->getB2Body()->SetTransform(this->getB2Body()->GetPosition(), 0.0f);
+		auto mainPos = this->getB2Body()->GetPosition();
+		shield->getB2Body()->SetTransform(b2Vec2(mainPos.x + trueRadiusOfHero / PTM_RATIO, mainPos.y), 0.0f);
 	}
 
 	auto currentVelY = getB2Body()->GetLinearVelocity().y;

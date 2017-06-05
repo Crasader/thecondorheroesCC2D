@@ -14,9 +14,9 @@ CC
 CC2
   rotate: false
   xy: 2, 440
-  size: 2011, 284
+  size: 2011, 289
   orig: 2048, 289
-  offset: 37, 5
+  offset: 37, 0
   index: -1
 effect_skill1
   rotate: false

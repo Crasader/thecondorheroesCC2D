@@ -24,7 +24,7 @@ bool SelectStageLayer::init(int charId)
 	scrollView = ui::ScrollView::create();
 	scrollView->setContentSize(Size(screenSize.width, screenSize.height));
 	scrollView->setInnerContainerSize(Size(tmxMap->getBoundingBox().size.width, screenSize.height));
-	scrollView->setPosition(originXY);
+	scrollView->setPosition(Vec2::ZERO);
 	scrollView->setDirection(ScrollView::Direction::HORIZONTAL);
 	scrollView->setTouchEnabled(true);
 	scrollView->setBounceEnabled(false);

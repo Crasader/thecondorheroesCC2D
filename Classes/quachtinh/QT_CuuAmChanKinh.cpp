@@ -3,10 +3,12 @@
 QT_CuuAmChanKinh::QT_CuuAmChanKinh()
 {
 	isAdded = false;
+	isCollide = false;
 }
 
 QT_CuuAmChanKinh::~QT_CuuAmChanKinh()
 {
+
 }
 
 QT_CuuAmChanKinh * QT_CuuAmChanKinh::create()
@@ -40,7 +42,7 @@ void QT_CuuAmChanKinh::initCirclePhysic(b2World * world, Point pos)
 	fixtureDef.isSensor = true;
 
 	fixtureDef.filter.categoryBits = BITMASK_SWORD;
-	fixtureDef.filter.maskBits = BITMASK_WOODER | BITMASK_BOSS | BITMASK_COIN_BAG | BITMASK_ENEMY;
+	fixtureDef.filter.maskBits = BITMASK_UNDER_GROUND | BITMASK_WOODER | BITMASK_BOSS | BITMASK_COIN_BAG | BITMASK_ENEMY;
 
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.userData = this;		// pass sprite to bodyDef with argument: userData
@@ -72,5 +74,21 @@ void QT_CuuAmChanKinh::runAni()
 
 	auto animate = Animate::create(Animation::createWithSpriteFrames(aniFrames, 0.05f));
 	this->runAction(RepeatForever::create(animate));
+}
+
+void QT_CuuAmChanKinh::explosion()
+{
+	auto gameLayer = this->getParent();
+
+	particle = ParticleSystemQuad::create("Effect/breakearth.plist");
+	particle->setScale(this->getScale() * 0.7f);
+	particle->setPosition(this->getPositionX(), this->getPositionY() - this->getBoundingBox().size.height * 0.5f);
+	gameLayer->addChild(particle, ZORDER_ENEMY);
+
+	auto hideParticle = CallFunc::create([&]() {
+		particle->removeFromParentAndCleanup(true);
+	});
+
+	auto seq2 = Sequence::create(DelayTime::create(0.5f), hideParticle, nullptr);
 }
 

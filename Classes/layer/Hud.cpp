@@ -113,9 +113,10 @@ void Hud::addProfile()
 	// DISTANCE BAR + CHARACTER POINT
 	auto groupDistanceBar = tmxMap->getObjectGroup("distance_bar");
 	auto mObject_4 = groupDistanceBar->getObject("distance_bar");
-	Point origin_4 = Point(mObject_4["x"].asFloat() * tmxMap->getScaleX(), mObject_4["y"].asFloat()* tmxMap->getScaleY());
+	Point origin_4 = Point(SCREEN_SIZE.width * 0.04f, mObject_4["y"].asFloat()* tmxMap->getScaleY());
 
 	distanceBar = Sprite::create("UI/UI_info_ingame/distance.png");
+	distanceBar->setAnchorPoint(Vec2(0, 0.5f));
 	distanceBar->setScale(SCREEN_SIZE.width * 0.5f / distanceBar->getContentSize().width);
 	distanceBar->setPosition(origin_4);
 
@@ -146,9 +147,7 @@ void Hud::addButton()
 		}
 	}
 
-	auto groupPause = tmxMap->getObjectGroup("btn_pause");
-	auto mObject_5 = groupPause->getObject("btn_pause");
-	Point origin_5 = Point(mObject_5["x"].asFloat() * tmxMap->getScaleX(), mObject_5["y"].asFloat()* tmxMap->getScaleY());
+	Point origin_5 = Point(SCREEN_SIZE.width - (SCREEN_SIZE.height - scoreBoard->getPositionY()) * 0.8f, scoreBoard->getPositionY());
 
 	auto pauseItemDisable = Sprite::create("UI/btn_pause.png");
 	pauseItemDisable->setColor(Color3B(128, 128, 128));
@@ -156,8 +155,8 @@ void Hud::addButton()
 	pauseItem->setDisabledImage(pauseItemDisable);
 	pauseItem->setEnabled(false);
 	pauseItem->setAnchorPoint(Vec2::ZERO);
-	pauseItem->setScale(scoreBoard->getBoundingBox().size.height / pauseItem->getContentSize().height);
-	pauseItem->setPosition(origin_5.x, scoreBoard->getPositionY());
+	pauseItem->setScale(scoreBoard->getBoundingBox().size.height * 0.75f / pauseItem->getContentSize().height);
+	pauseItem->setPosition(origin_5);
 
 	//showSpecialButton();
 
@@ -267,12 +266,11 @@ void Hud::createBloodBar()
 
 void Hud::addAttack()
 {
-	auto groupAttack = tmxMap->getObjectGroup("btn_attack");
-	auto mObject = groupAttack->getObject("btn_attack");
-	Point origin = Point(mObject["x"].asFloat() * tmxMap->getScaleX(), mObject["y"].asFloat()* tmxMap->getScaleY());
+	float posY = SCREEN_SIZE.height * 0.165f;
+	Point origin = Point(SCREEN_SIZE.width - posY, posY);
 
-	btnAttack = MyButton::create("UI/Btn_skill/btn_attack.png", "UI/Btn_skill/btn_attack.png", origin);
-
+	btnAttack = MyButton::create(JSHERO->getPathButtonAttack(), "UI/Btn_attack/attack_1b.png", origin);
+	btnAttack->getMain()->setScale(btnAttack->getContentSize().height * 0.925f / btnAttack->getMain()->getContentSize().height);
 	btnAttack->setTimeCoolDown(0.33f);
 	btnAttack->setScale(SCREEN_SIZE.height / 4.0f / btnAttack->getContentSize().height);
 	addChild(btnAttack, 2);
@@ -280,9 +278,9 @@ void Hud::addAttack()
 
 void Hud::addSkills()
 {
-	auto groupBtnSkill1 = tmxMap->getObjectGroup("btn_skill1");
-	auto mObject_1 = groupBtnSkill1->getObject("btn_skill1");
-	Point origin_1 = Point(mObject_1["x"].asFloat() * tmxMap->getScaleX(), mObject_1["y"].asFloat()* tmxMap->getScaleY());
+	auto btnAttackPos = btnAttack->getPosition();
+	auto mainPosY = SCREEN_SIZE.height * 0.35f;
+	Point origin_1 = Point(btnAttackPos.x - SCREEN_SIZE.height / 4, SCREEN_SIZE.height * 0.135f);
 
 	btnSkill_1 = MyButton::create(JSHERO->getPathMainImageSkill1(), JSHERO->getPathSubImageSkill1(), origin_1);
 
@@ -305,11 +303,7 @@ void Hud::addSkills()
 	addChild(btnSkill_1, 2);
 
 	//////////////////////////////////////////////////////////////////////////
-
-	auto groupBtnSkill2 = tmxMap->getObjectGroup("btn_skill2");
-	auto mObject_2 = groupBtnSkill2->getObject("btn_skill2");
-	Point origin_2 = Point(mObject_2["x"].asFloat() * tmxMap->getScaleX(), mObject_2["y"].asFloat()* tmxMap->getScaleY());
-
+	Point origin_2 = Point(SCREEN_SIZE.width - mainPosY, mainPosY);
 	btnSkill_2 = MyButton::create(JSHERO->getPathMainImageSkill2(), JSHERO->getPathSubImageSkill2(), origin_2);
 
 	btnSkill_2->setTimeCoolDown(coolDownS2);
@@ -319,9 +313,7 @@ void Hud::addSkills()
 
 	//////////////////////////////////////////////////////////////////////////
 
-	auto groupBtnSkill3 = tmxMap->getObjectGroup("btn_skill3");
-	auto mObject_3 = groupBtnSkill3->getObject("btn_skill3");
-	Point origin_3 = Point(mObject_3["x"].asFloat() * tmxMap->getScaleX(), mObject_3["y"].asFloat()* tmxMap->getScaleY());
+	Point origin_3 = Point(SCREEN_SIZE.width - SCREEN_SIZE.height * 0.135f, btnAttackPos.y + SCREEN_SIZE.height / 4);
 
 	btnSkill_3 = MyButton::create(JSHERO->getPathMainImageSkill3(), JSHERO->getPathSubImageSkill3(), origin_3);
 
@@ -524,23 +516,24 @@ void Hud::showButton()
 	addEvents();
 
 	btnAttack->setVisible(true);
+	btnAttack->getMain()->setVisible(true);
 	btnAttack->setIsBlocked(false);
 
 	btnSkill_1->setVisible(true);
 	btnSkill_1->getMain()->setVisible(true);
-	if (btnSkill_1->getmTimer() >= 0.2f) {
+	if (btnSkill_1->getmTimer() > 0.1f) {
 		btnSkill_1->getNumberCoolDown()->setVisible(true);
 	}
 
 	btnSkill_2->setVisible(true);
 	btnSkill_2->getMain()->setVisible(true);
-	if (btnSkill_2->getmTimer() >= 0.2f) {
+	if (btnSkill_2->getmTimer() > 0.1f) {
 		btnSkill_2->getNumberCoolDown()->setVisible(true);
 	}
-
+	
 	btnSkill_3->setVisible(true);
 	btnSkill_3->getMain()->setVisible(true);
-	if (btnSkill_3->getmTimer() >= 0.2f) {
+	if (btnSkill_3->getmTimer() > 0.1f) {
 		btnSkill_3->getNumberCoolDown()->setVisible(true);
 	}
 }
@@ -590,28 +583,30 @@ void Hud::resumeIfVisible()
 		coverItemDC->resume();
 	}
 
-	if (btnAttack != nullptr && btnAttack->isVisible())
+	if (btnAttack != nullptr && btnAttack->isVisible()) {
 		btnAttack->addEvents();
+		btnAttack->getMain()->setVisible(true);
+	}
 
 	if (btnSkill_1 != nullptr && btnSkill_1->isVisible()) {
 
 		btnSkill_1->addEvents();
 		btnSkill_1->getMain()->setVisible(true);
-		if (!btnSkill_1->getCanTouch()) {	// in scheule
+		if (!btnSkill_1->getCanTouch() && btnSkill_1->getNumberOfUseHasNotUsedYet() == 0) {	// in scheule
 			btnSkill_1->getNumberCoolDown()->setVisible(true);
 			btnSkill_1->resume();
 		}
 
 		btnSkill_2->addEvents();
 		btnSkill_2->getMain()->setVisible(true);
-		if (!btnSkill_2->getCanTouch()) {
+		if (!btnSkill_2->getCanTouch() && btnSkill_2->getNumberOfUseHasNotUsedYet() == 0) {
 			btnSkill_2->getNumberCoolDown()->setVisible(true);
 			btnSkill_2->resume();
 		}
 
 		btnSkill_3->addEvents();
 		btnSkill_3->getMain()->setVisible(true);
-		if (!btnSkill_3->getCanTouch()) {
+		if (!btnSkill_3->getCanTouch() && btnSkill_3->getNumberOfUseHasNotUsedYet() == 0) {
 			btnSkill_3->getNumberCoolDown()->setVisible(true);
 			btnSkill_3->resume();
 		}

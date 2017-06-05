@@ -21,7 +21,7 @@ Scene* GameScene::createScene(GameScene *layer, Hud* m_hud)
 	auto scene = Scene::create();
 
 	// 'layer' is an autorelease object
-
+	layer->onBegin();
 	m_hud->setPosition(Director::getInstance()->getVisibleOrigin());
 	
 	// add layer as a child to scene
@@ -32,8 +32,6 @@ Scene* GameScene::createScene(GameScene *layer, Hud* m_hud)
 	blur = LayerColor::create(Color4B(0, 0, 0, 170));
 	blur->setVisible(false);
 	scene->addChild(blur);
-
-	layer->onBegin();
 
 	// return the scene
 	return scene;
@@ -928,7 +926,7 @@ void GameScene::createInfiniteNode()
 		//background->addChild(moon, 2, Vec2(0, 1), Vec2(pos.x, pos.y - SCREEN_SIZE.height / 2));
 		changebg = pos.x;
 	}
-	if ((stage == 3 && map == 2) || (stage == 4 && map == 2)) {}
+	if ((stage == 3 && map == 2) || (stage == 4 && map == 2)|| (stage == 4 && map == 4)) {}
 	else {
 		auto bg2_1 = Sprite::create(StringUtils::format("Map/map%d/bg%d_2.png", stage, map));
 		//auto bg2_1 = Sprite::create("moon.png");
@@ -995,7 +993,7 @@ void GameScene::createGroundBody()
 		initGroundPhysic(world, pos, sizeOfBound);
 	}
 
-	if (charId == 0) {
+	if (charId == 0 || charId == 4) {
 		auto groupUnderGround = tmx_map->getObjectGroup("under_ground");
 		if (!groupUnderGround) return;
 		for (auto child : groupUnderGround->getObjects()) {
@@ -1020,7 +1018,7 @@ void GameScene::createGroundForMapBoss()
 		initGroundPhysic(world, origin, Size(INT_MAX / 4, sizeOfBound.height));
 	}
 
-	if (charId == 0) {
+	if (charId == 0 || charId == 4) {
 		auto groupUnderGround = tmx_mapboss[0]->getObjectGroup("under_ground");
 		if (!groupUnderGround) return;
 		for (auto child : groupUnderGround->getObjects()) {
@@ -1372,7 +1370,7 @@ void GameScene::createEnemyChong3(MyLayer * layer, Vec2 pos)
 		}
 
 		enemy->initBoxPhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
-		enemy->makeMask();
+		//enemy->makeMask();
 
 		enemy->listener();
 	}
@@ -1528,6 +1526,11 @@ void GameScene::creatBoss()
 		}
 		case 3: {
 			enemy = EnemyBoss3::create("Animation/Enemy_Boss3/Boss3.json",
+				"Animation/Enemy_Boss3/Boss3.atlas", scaleOfEnemy);
+			break;
+		}
+		case 4: {
+			enemy = EnemyBoss4::create("Animation/Enemy_Boss3/Boss3.json",
 				"Animation/Enemy_Boss3/Boss3.atlas", scaleOfEnemy);
 			break;
 		}
@@ -1802,7 +1805,10 @@ void GameScene::initUnderGroundPhysic(b2World * world, Point pos, Size size)
 
 	bodyDef.type = b2_staticBody;
 
-	bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);
+	if (charId == 4) {
+		bodyDef.position.Set(pos.x / PTM_RATIO, (pos.y + SCREEN_SIZE.height / 20) / PTM_RATIO);
+	} else
+		bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);
 
 	body = world->CreateBody(&bodyDef);
 	body->CreateFixture(&fixtureDef);
@@ -1922,7 +1928,7 @@ void GameScene::updateHUD(float dt)
 {
 
 	if (hero->getCurrentRunDis() - hero->getPreRunDis() > 10.0f) {
-		hero->setScore(hero->getScore() + 15 * hero->getScoreRatio());
+		hero->setScore(hero->getScore() + 15);
 		hero->setPreRunDis(hero->getCurrentRunDis());
 	}
 
@@ -1943,6 +1949,7 @@ void GameScene::updateMultiKills() {
 	if (m_nMultiKills > 1) {
 		hud->updateMultiKills(m_nMultiKills);
 		// if (m_nMultiKills >= 5) m_nMultiKills = 5;
+		if (m_nMultiKills >= 7) m_nMultiKills = 0;
 		hero->setScore(hero->getScore() + (m_nMultiKills - 1) * m_lastScore);
 	}
 }
@@ -2340,7 +2347,7 @@ void GameScene::resumeGame()
 
 void GameScene::restartGame()
 {
-	this->removeAllChildrenWithCleanup(true);
+	//this->removeAllChildrenWithCleanup(true);
 	Director::getInstance()->replaceScene(LoadingLayer::createScene(stage, map, charId));
 }
 

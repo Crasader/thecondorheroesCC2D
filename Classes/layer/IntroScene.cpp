@@ -45,7 +45,7 @@ bool SceneIntro::init() {
 	auto _aCharacter = Sprite::create("UI/UI_intro/character_startmenu.png");
 	_fTemp = _aCharacter->getContentSize().height * m_szVisibleSize.width / _aCharacter->getContentSize().width * 0.45f;
 	if (_fTemp > m_szVisibleSize.height * 0.8f) {
-		_aCharacter->setScale(m_szVisibleSize.height / _aCharacter->getContentSize().height * 0.8f);
+		_aCharacter->setScale(m_szVisibleSize.height / _aCharacter->getContentSize().height * 0.9f);
 	}
 	else {
 		_aCharacter->setScale(m_szVisibleSize.width / _aCharacter->getContentSize().width * 0.45f);
@@ -83,23 +83,25 @@ bool SceneIntro::init() {
 
 	auto _aParticleFeather1 = ParticleSystemQuad::create("UI/UI_intro/feather1.plist");
 	_aParticleFeather1->setDuration(-1);
-	_aParticleFeather1->setScale(0.5f);
+	_aParticleFeather1->setScale(1.0f);
 	_aParticleFeather1->setPosition(Vec2(m_szVisibleSize.width * 0.5f, m_szVisibleSize.height));
 
 	this->addChild(_aParticleFeather1, 2);
 
 	auto _aParticleFeather2 = ParticleSystemQuad::create("UI/UI_intro/feather2.plist");
 	_aParticleFeather2->setDuration(-1);
-	_aParticleFeather2->setScale(0.5f);
+	_aParticleFeather2->setScale(1.0f);
 	_aParticleFeather2->setPosition(Vec2(m_szVisibleSize.width * 0.5f, m_szVisibleSize.height));
 	this->addChild(_aParticleFeather2, 2);
-	FacebookHelper::getInstance()->login();
+	/*FacebookHelper::getInstance()->login();
+	FacebookHelper::getInstance()->captureScreen();*/
 	return true;
 }
 
 void SceneIntro::goToMainMenuScene(Ref* p_pSender) {
-	FacebookHelper::getInstance()->requestPostPermission();
-	FacebookHelper::getInstance()->scrShotAndShare("SwordmanLegend");
+	//FacebookHelper::getInstance()->requestPostPermission();
+	////FacebookHelper::getInstance()->scrShotAndDialog("SwordmanLegend");
+	//FacebookHelper::getInstance()->dialogPhoto("SwordManLegend");
 	AdmobHelper::getInstance()->hideBanner();
 	AudioManager::playSound(SOUND_BTCLICK);
 	Layer *_pMenuScene = MenuLayer::create(false);

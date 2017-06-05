@@ -3,6 +3,7 @@
 #include "BaseEnemy.h"
 #include "duongqua/DQ_DocCoKiemPhap.h"
 #include "duongqua/DQ_TieuHonChuong.h"
+#include "quachtinh/QT_CuuAmChanKinh.h"
 #include "layer/GameScene.h"
 #include "coin/Coin.h"
 #include "Slash.h"
@@ -172,10 +173,11 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		}
 		enemy->hit();
 		if (bodySword->GetUserData()) {
-
-			auto thc = (B2Sprite*)(bodySword->GetUserData());
-			if (thc->getTag() == TAG_DQ_TIEU_HON_CHUONG)
-				((DQ_TieuHonChuong*)thc)->setIsCollide(true);
+			auto not_wooder = (B2Sprite*)(bodySword->GetUserData());
+			if (not_wooder->getTag() == TAG_DQ_TIEU_HON_CHUONG) {
+				auto thc = (TieuHonChuong*)not_wooder;
+				thc->setIsCollide(true);
+			}
 		}
 
 	}
@@ -314,6 +316,11 @@ void CollisionListener::BeginContact(b2Contact * contact)
 			kp->setIsCollide(true);
 			kp->setTextureRect(Rect(Vec2::ZERO,
 				Size(kp->getContentSize().width, kp->getContentSize().height * random(0.61f, 0.63f))));
+		}
+		else if (not_ground->getTag() == TAG_QT_CUU_AM_CHAN_KINH) {
+			auto ck = (ChanKinh*)not_ground;
+			ck->setIsCollide(true);
+			ck->explosion();
 		}
 
 	}

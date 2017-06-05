@@ -4,6 +4,7 @@
 #include "thirdsdkhelper/GoogleAnalysticHelper.h"
 #include "thirdsdkhelper/VungleHelper.h"
 #include "thirdsdkhelper\FacebookHelper.h"
+#include "thirdsdkhelper\IAPHelper.h"
 
 USING_NS_CC;
 
@@ -84,6 +85,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	GAHelper::getInstance();
 	VungleHelper::getInstance();
 	FacebookHelper::getInstance();
+	IAPHelper::getInstance();
+
 
     // run
     director->runWithScene(scene);

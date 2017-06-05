@@ -8,7 +8,7 @@
 #include <time.h>
 #include "network/HttpClient.h"
 
-#include "ui_custom/CustomLayerToToast.h"
+#include "ui_custom\CustomLayerToToast.h"
 #include "SelectStageScene.h"
 #include "thirdsdkhelper\GoogleAnalysticHelper.h"
 
@@ -23,12 +23,11 @@ public:
 	virtual bool init(bool p_bOnlySelectStage);
 	void update(float p_fDelta);
 	static MenuLayer* create(bool p_bOnlySelectStage);
-	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
+    void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
 private:
 	const Size m_szVisibleSize = Director::getInstance()->getVisibleSize();
 	float m_fButtonStartPosition;							// make start and unlock button at same position
 	int m_nMenuStatus = 0;
-	int backNumber = 0;
 
 	// input value
 	int m_nCurrentTimeFromGoogle = 0;						// time from google.com.vn (-7 hours from Viet Nam)
@@ -42,6 +41,7 @@ private:
 	int m_arItemPrice[5];									// cost of items
 	int m_nShopOption = 0;
 	int m_nLanguage = 0;
+    int backNumber = 0;
 
 	Label *m_pTimeCounter;									// time counter to increase life
 	MenuItemSprite *m_arHeroButton[5];						// hero mini icon
@@ -51,6 +51,7 @@ private:
 	Sprite *m_arSpriteItemMax[5];
 	Sprite *m_arItemCoinSprite[5];
 	Label *m_arItemLabelCost[5];
+	Sprite *m_pReceviveDailyRewardSprite;
 
 	SkeletonAnimation *m_pSpriteQuestAttention;						// 
 	SkeletonAnimation *m_pSpriteFreeCoinAttention;						// 

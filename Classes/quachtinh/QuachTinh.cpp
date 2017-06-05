@@ -84,6 +84,7 @@ void QuachTinh::resume()
 void QuachTinh::createRock(float posX)
 {
 	auto rock = (ChanKinh*)poolSkill1->getObjectAtIndex(indexSkill1++);
+	rock->setIsCollide(false);
 	rock->setVisible(true);
 	rock->runAni();
 
@@ -106,7 +107,7 @@ void QuachTinh::createRock(float posX)
 void QuachTinh::landRocks()
 {
 	this->schedule([&](float dt) {
-		if (checkDurationSkill1 % 5 == 0) {		// every 0.25 second
+		if (checkDurationSkill1 % 6 == 0) {		// every 0.3 second
 			float width = this->getPositionX() + SCREEN_SIZE.width * random(0.0f, 0.4f);
 			createRock(width);
 		}
@@ -354,6 +355,7 @@ void QuachTinh::attackNormal()
 	}
 	else {
 		addAnimation(0, "attack2", false);
+		this->getSwordBody()->SetTransform(getSwordBody()->GetPosition(), PI / 2);
 	}
 
 	//log("atttack*");
@@ -427,7 +429,8 @@ void QuachTinh::listener()
 		else if ((strcmp(getCurrent()->animation->name, "attack1") == 0) ||
 			(strcmp(getCurrent()->animation->name, "attack2") == 0) ||
 			(strcmp(getCurrent()->animation->name, "attack3") == 0)) {
-
+			if (strcmp(getCurrent()->animation->name, "attack2") == 0)
+				this->getSwordBody()->SetTransform(getSwordBody()->GetPosition(), 0);
 			changeSwordCategoryBitmask(BITMASK_ENEMY);
 
 			setIsPriorAttack(false);
@@ -523,7 +526,7 @@ void QuachTinh::updateMe(float dt)
 		for (auto rock : listRock) {
 			if (!rock->getB2Body()) continue;
 
-			if (rock->getPositionY() + rock->getBoundingBox().size.height < 0) {
+			if (rock->getIsCollide() || rock->getPositionY() + rock->getBoundingBox().size.height < 0) {
 				rock->setVisible(false);
 				auto gameLayer = (GameScene*) this->getParent();
 

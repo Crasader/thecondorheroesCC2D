@@ -53,7 +53,7 @@ void EnemyBoss1::attack()
 		this->creatHidenSlash((heroLocation - this->getPosition()).getAngle());
 		this->setIsNodie(false);
 	});
-	this->runAction(Sequence::createWithTwoActions(DelayTime::create(0.3f),callfun));
+	this->runAction(Sequence::createWithTwoActions(DelayTime::create(0.5f),callfun));
 }
 
 void EnemyBoss1::attack2()
@@ -255,7 +255,7 @@ int EnemyBoss1::createGold()
 
 void EnemyBoss1::createCoinPool()
 {
-	int count = int(levelBoss * 100);
+	int count = int(levelBoss * 50);
 	coinPool = CCArray::createWithCapacity(count);
 	coinPool->retain();
 	for (int i = 0; i < count; i++) {
@@ -346,16 +346,6 @@ void EnemyBoss1::listener()
 				this->idle();
 				setIsNodie(false);
 			}
-			else if ((strcmp(getCurrent()->animation->name, "injured") == 0 && loopCount == 1)) {
-
-			}
-			else if ((strcmp(getCurrent()->animation->name, "injured-red") == 0 && loopCount == 1)) {
-				if (this->getHealth() > 0) {
-					setIsNodie(false);
-					this->idle();
-				}
-
-			}
 		}
 	});
 }
@@ -433,7 +423,7 @@ void EnemyBoss1::doAttack2()
 		}
 		//if (boss->getLevelBoss() == 1) {
 
-		if (this->getControlState() >= 50) {
+		if (this->getControlState() >= 30) {
 			this->changeState(new BossStupiding());
 			this->unschedule("bossattack2");
 		}

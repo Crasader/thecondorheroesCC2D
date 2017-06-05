@@ -1288,6 +1288,8 @@ void MenuLayer::initBottomHeroMenu() {
 
 void MenuLayer::backFunction() {
 	int a = 0;
+	if(SPHelper::getInstance()->isSigned())
+	SPHelper::getInstance()->showBoard("score");
 }
 
 void MenuLayer::showMainMenu() {
@@ -1472,10 +1474,6 @@ void MenuLayer::buttonFreeCoinHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	logButtonClickEvent("Free coin");
 	if (REF->getFreeCoin() > 0) {
-		REF->decreaseFreeCoin();
-		if (REF->getFreeCoin() <= 0) {
-			m_pSpriteFreeCoinAttention->setVisible(false);
-		}
 		//GAHelper::getInstance()->logEvent("FreeCoin", "click", "can getFreecoin", 1);
 		// TODO : show ads and check view ads finish
 		// after that, increase gold
@@ -2586,6 +2584,144 @@ void MenuLayer::logUpgradeSkillEvent(int indexhero, int indexskill, int level)
 {
 	GAHelper::getInstance()->logEvent("UpgradeSkill", indexHeroToName(indexhero)+StringUtils::format(" skill %d", indexskill), StringUtils::format("level %d", level), 1);
 }
+
+//void MenuLayer::onInitialized(bool ok)
+//{
+//}
+//
+//void MenuLayer::onSuccess(sdkbox::Product const & p)
+//{
+//	int p_nIndexDiamondPack;
+//	if (p.name == "diamond_1") {
+//		p_nIndexDiamondPack = 0;
+//	}
+//	else if (p.name == "diamond_2") {
+//		p_nIndexDiamondPack = 1;
+//		
+//	}
+//	else if (p.name == "diamond_3") {
+//		p_nIndexDiamondPack = 2;
+//		
+//	}
+//	else if (p.name == "diamond_4") {
+//		p_nIndexDiamondPack = 3;
+//
+//	}
+//	else if (p.name == "diamond_5") {
+//		p_nIndexDiamondPack = 4;
+//	}
+//	JSMENU->readDiamondPack(p_nIndexDiamondPack);
+//	if (false) {
+//		return;
+//	}
+//	m_nCurrentDiamond += JSMENU->getDiamondPackNumberDiamond();
+//	REF->setUpDiamondBuy(JSMENU->getDiamondPackNumberDiamond());
+//	initTopMainMenu();
+//	m_pTopMenu->setEnabled(false);
+//
+//	REF->setUpNumberQuest(7, JSMENU->getDiamondPackNumberDiamond());
+//}
+//
+//void MenuLayer::onFailure(sdkbox::Product const & p, const std::string & msg)
+//{
+//}
+//
+//void MenuLayer::onCanceled(sdkbox::Product const & p)
+//{
+//}
+//
+//void MenuLayer::onRestored(sdkbox::Product const & p)
+//{
+//}
+//
+//void MenuLayer::onProductRequestSuccess(std::vector<sdkbox::Product> const & products)
+//{
+//}
+//
+//void MenuLayer::onProductRequestFailure(const std::string & msg)
+//{
+//}
+//
+//void MenuLayer::onRestoreComplete(bool ok, const std::string & msg)
+//{
+//}
+//
+//void MenuLayer::onVungleAdViewed(bool isComplete)
+//{
+//}
+//
+//void MenuLayer::onVungleCacheAvailable()
+//{
+//}
+//
+//void MenuLayer::onVungleStarted()
+//{
+//}
+//
+//void MenuLayer::onVungleFinished()
+//{
+//}
+//
+//void MenuLayer::onVungleAdReward(const std::string & name)
+//{
+//	REF->decreaseFreeCoin();
+//	if (REF->getFreeCoin() <= 0) {
+//		m_pSpriteFreeCoinAttention->setVisible(false);
+//	}
+//	if (REF->getNumberOfLife() == 0) {
+//		m_nLifeNumber += 5;
+//		REF->setUpLife(5);
+//		initTopMainMenu();
+//		m_pTopMenu->setEnabled(false);
+//	}
+//	else {
+//		float type = CCRANDOM_0_1();
+//		float percent = CCRANDOM_0_1();
+//		if (type >= 0.5f) {
+//			if (percent < 0.5f) {
+//				m_nCurrentGold += 300;
+//				REF->setUpGoldExplored(300);
+//				initTopMainMenu();
+//				m_pTopMenu->setEnabled(false);
+//			}
+//			else if (percent < 0.85f) {
+//				m_nCurrentGold += 400;
+//				REF->setUpGoldExplored(400);
+//				initTopMainMenu();
+//				m_pTopMenu->setEnabled(false);
+//			}
+//			else {
+//				m_nCurrentGold += 500;
+//				REF->setUpGoldExplored(500);
+//				initTopMainMenu();
+//				m_pTopMenu->setEnabled(false);
+//			}
+//		}
+//		else {
+//			if (percent < 0.5f) {
+//				m_nLifeNumber += 3;
+//				REF->setUpLife(3);
+//				initTopMainMenu();
+//				m_pTopMenu->setEnabled(false);
+//			}
+//			else if (percent < 0.85f) {
+//				m_nLifeNumber += 4;
+//				REF->setUpLife(4);
+//				initTopMainMenu();
+//				m_pTopMenu->setEnabled(false);
+//			}
+//			else {
+//				m_nLifeNumber += 5;
+//				REF->setUpLife(5);
+//				initTopMainMenu();
+//				m_pTopMenu->setEnabled(false);
+//			}
+//		}
+//	}
+//
+//}
+//
+//#endif 
 
 string MenuLayer::indexHeroToName(int indexHero)
 {

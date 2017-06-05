@@ -5,6 +5,7 @@
 #include "thirdsdkhelper/VungleHelper.h"
 #include "thirdsdkhelper\FacebookHelper.h"
 #include "thirdsdkhelper\IAPHelper.h"
+#include "thirdsdkhelper\SdkboxPlay.h"
 
 
 
@@ -89,6 +90,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	VungleHelper::getInstance();
 	FacebookHelper::getInstance();
 	IAPHelper::getInstance();
+	SPHelper::getInstance();
 
 
     // run

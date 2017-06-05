@@ -81,7 +81,7 @@ void QT_CuuAmChanKinh::explosion()
 	fireEffect = Sprite::createWithSpriteFrameName("skill1_broken_1.png");
 	fireEffect->setFlippedX(-1);
 	fireEffect->setAnchorPoint(Vec2(0, 0));
-	fireEffect->setScale(getScale() * 0.47f);
+	fireEffect->setScale(getScale() * 0.45f);
 	
 
 	fireEffect->setPosition(this->getPositionX(), 
@@ -95,7 +95,7 @@ void QT_CuuAmChanKinh::explosion()
 		aniFrames.pushBack(frame);
 	}
 
-	auto animate = Animate::create(Animation::createWithSpriteFrames(aniFrames, 0.08f));
+	auto animate = Animate::create(Animation::createWithSpriteFrames(aniFrames, 0.06f));
 
 	auto hideEffect = CallFunc::create([&]() {
 		fireEffect->removeFromParentAndCleanup(true);

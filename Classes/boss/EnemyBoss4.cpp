@@ -23,7 +23,7 @@ EnemyBoss4 * EnemyBoss4::create(string jsonFile, string atlasFile, float scale)
 
 void EnemyBoss4::attack4()
 {
-	this->isNodie = true;
+	this->immortal();
 	this->clearTracks();
 	this->setAnimation(0,"attack4",false);
 	this->setToSetupPose();
@@ -37,17 +37,17 @@ void EnemyBoss4::die()
 {
 	float  magicNumber = CCRANDOM_0_1();
 	
-	if (!isDie && !isNodie) {
+	if (!isDie) {
 		if (magicNumber < 0.6f) {
 			health--;
 			if (health > 0) {
 				this->playSoundHit();
-				this->isNodie = true;
+				this->immortal();
 				this->clearTracks();
 				this->setAnimation(0, "injured-red", false);
 				this->setToSetupPose();
 				this->scheduleOnce([&](float dt) {
-					this->isNodie = false;
+					this->unImmortal();
 					this->clearTracks();
 					this->setAnimation(0, "idle", false);
 					this->setToSetupPose();
@@ -55,7 +55,7 @@ void EnemyBoss4::die()
 			}
 			else {
 				this->playSoundDie();
-				this->isNodie = true;
+				this->immortal();
 				this->clearTracks();
 				this->setAnimation(0, "injured-red", false);
 				this->setToSetupPose();
@@ -81,16 +81,16 @@ void EnemyBoss4::die()
 
 void EnemyBoss4::doDefend()
 {
-	this->clearTracks();
-	this->setAnimation(0, "defend", false);
+	this->addAnimation(1, "defend", false);
 	//this->isNodie = true;
 }
 
 void EnemyBoss4::doAttack2()
 {
+	this->unschedule("bossinjured");
 	if (this->getPositionY() > SCREEN_SIZE.height / 5) {
 		this->schedule([&](float dt) {
-			//log("do attack2");
+			////log("do attack2");
 			this->setControlState(this->getControlState() + 1);
 			if (this->getControlState() == 1) {
 				this->attack2();
@@ -146,11 +146,12 @@ void EnemyBoss4::doAttack2()
 		float magicnumber = CCRANDOM_0_1();
 		if (magicnumber < 0.5f) {
 			this->schedule([&](float dt) {
-				//log("do attack2");
+				////log("do attack2");
 
 				this->setControlState(this->getControlState() + 1);
 				if (this->getControlState() == 1) {
 					this->attack3();
+					////log("at3");
 
 				}
 				if (this->getControlState() == 7 || this->getControlState() == 12 || this->getControlState() == 17) {
@@ -162,7 +163,7 @@ void EnemyBoss4::doAttack2()
 					this->setAnimation(0, "idle", true);
 					this->setTimeScale(1);
 					this->setToSetupPose();
-					this->setIsNodie(false);
+					this->unImmortal();
 				}
 
 				if (this->getControlState() >= 30) {
@@ -174,6 +175,7 @@ void EnemyBoss4::doAttack2()
 		}
 		else {
 			this->attack4();
+			////log("at4");
 		}
 	}
 }
@@ -184,26 +186,26 @@ void EnemyBoss4::listener()
 		if (getCurrent()) {
 			if ((strcmp(getCurrent()->animation->name, "attack2") == 0 && loopCount == 1)) {
 				this->idle();
-				setIsNodie(false);
+				this->unImmortal();
 			}
 			else if ((strcmp(getCurrent()->animation->name, "attack") == 0 && loopCount == 1)) {
 				this->idle();
-				setIsNodie(false);
+				this->unImmortal();
 			}
 			else if ((strcmp(getCurrent()->animation->name, "attack3") == 0 && loopCount == 1)) {
 				this->idle();
-				setIsNodie(false);
+				this->unImmortal();
 			}
 			else if ((strcmp(getCurrent()->animation->name, "attack4") == 0 && loopCount == 1)) {
 				this->idle();
-				setIsNodie(false);
+				this->unImmortal();
 				this->changeState(new BossStupiding());
 				this->unschedule("bossattack2");
 			}
 
 			else if ((strcmp(getCurrent()->animation->name, "injured-red") == 0 && loopCount == 1)) {
 				if (this->getHealth() > 0) {
-					setIsNodie(false);
+					this->unImmortal();
 					this->idle();
 				}
 

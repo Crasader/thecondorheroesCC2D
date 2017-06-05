@@ -114,6 +114,7 @@ void HoangDuocSu::fastAndFurious()
 			this->getB2Body()->SetLinearVelocity(b2Vec2(getMoveVel() / 4, currentVelY));
 			setIsDoneDuration1(true);
 			checkDurationSkill1 = 0;
+			setIsInSpecialMode(false);
 			unschedule("KeySkill1");
 		}
 
@@ -124,6 +125,7 @@ void HoangDuocSu::fastAndFurious()
 void HoangDuocSu::doCounterSkill1()
 {
 	setScoreRatio(2);
+	isInSpecialMode = true;
 	fastAndFurious();
 }
 
@@ -563,6 +565,7 @@ void HoangDuocSu::stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSki
 		shield->changeBodyCategoryBits(BITMASK_WOODER);
 		this->getB2Body()->SetGravityScale(1);
 
+		setIsInSpecialMode(false);
 		setIsDoneDuration1(true);
 		unschedule("KeySkill1");
 		checkDurationSkill1 = 0;

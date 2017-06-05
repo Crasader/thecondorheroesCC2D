@@ -3,6 +3,7 @@
 #include "Global.h"
 #include "thirdsdkhelper\AdmobHelper.h"
 #include "thirdsdkhelper\FacebookHelper.h"
+#include "thirdsdkhelper\SdkboxPlay.h"
 
 Scene* SceneIntro::createScene() {
     auto scene = Scene::create();
@@ -17,6 +18,7 @@ bool SceneIntro::init() {
         return false;
 	}
 	FacebookHelper::getInstance()->logout();
+	SPHelper::getInstance()->signIn();
 	
 	AdmobHelper::getInstance()->showBanner();
 	AudioManager::playMusic(MUSIC_MENU);

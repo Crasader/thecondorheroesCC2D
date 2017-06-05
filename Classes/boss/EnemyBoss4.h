@@ -9,7 +9,6 @@ class EnemyBoss4 : public EnemyBoss3
 public:
 	EnemyBoss4(string jsonFile, string atlasFile, float scale);
 	static EnemyBoss4* create(string jsonFile, string atlasFile, float scale);
-
 	void attack4();
 	void die();
 	void doDefend();

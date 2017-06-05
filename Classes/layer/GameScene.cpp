@@ -863,7 +863,8 @@ void GameScene::createInfiniteNode()
 		//background->addChild(moon, 2, Vec2(0, 1), Vec2(pos.x, pos.y - SCREEN_SIZE.height / 2));
 		changebg = pos.x;
 	}
-	if ((stage == 3 && map == 2) || (stage == 4 && map == 2)|| (stage == 4 && map == 4)) {}
+
+	if ((stage == 3 && map == 2) || (stage == 4 && map == 2)|| (stage == 4 && map == 3)|| (stage == 4 && map == 4)) {}
 	else {
 		auto bg2_1 = Sprite::create(StringUtils::format("Map/map%d/bg%d_2.png", stage, map));
 		//auto bg2_1 = Sprite::create("moon.png");
@@ -908,9 +909,27 @@ void GameScene::createInfiniteNode()
 		background2->addChild(bg3_2, 0, Vec2(0.8f, 1), Vec2(bg3_1->getBoundingBox().size.width, 0));
 	}
 
+	if ((stage == 4 && (map == 3 || map == 4))) {
+
+		auto bg3_1 = Sprite::create(StringUtils::format("Map/map%d/bg%d_3.png", stage, map));
+		bg3_1->setScaleX(SCREEN_SIZE.width / (bg3_1->getContentSize().width));
+		bg3_1->setScaleY(bg3_1->getScaleX()*0.7f);
+		//bg2_1->setScaleY(SCREEN_SIZE.height / bg2_1->getContentSize().height);
+		bg3_1->setAnchorPoint(Point(0, 0));
+
+		auto bg3_2 = Sprite::create(StringUtils::format("Map/map%d/bg%d_3.png", stage, map));
+		bg3_2->setScale(SCREEN_SIZE.width / (bg3_1->getContentSize().width));
+		bg3_2->setScaleY(bg3_2->getScaleX()*0.7f);
+		//bg2_1->setScaleY(SCREEN_SIZE.height / bg2_1->getContentSize().height);
+		bg3_2->setAnchorPoint(Point(0, 0));
+
+		background2->addChild(bg3_1, 0, Vec2(0.8f, 1), Vec2(0, 0));
+		background2->addChild(bg3_2, 0, Vec2(0.8f, 1), Vec2(bg3_1->getBoundingBox().size.width, 0));
+	}
+
 	background2->setPosition(Point(0, 0));
 	background2->setAnchorPoint(Point(0, 0.0f));
-	if (stage == 3) {
+	if (stage >= 3) {
 		this->addChild(background2, ZORDER_TMX + 1);
 	}
 	else {
@@ -1758,7 +1777,7 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 		auto location = convertToNodeSpace(touch->getLocation());
 
 		if (hero->getBoundingBox().containsPoint(location)) {
-			log("Moving your hand");
+			//log("Moving your hand");
 			return true;
 		}
 	}*/
@@ -1787,7 +1806,7 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 //		return;
 //	}
 //
-//	log("Do counter");
+//	//log("Do counter");
 //}
 
 void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
@@ -1998,7 +2017,7 @@ void GameScene::updateChangeBg()
 {
 	if (changebg > 0) {
 		if (hero->getPositionX() > changebg) {
-			//log("changbgggg");
+			////log("changbgggg");
 			changebg = 0;
 			auto call1 = CallFunc::create([&]() {
 				background->removeChildByTag(21);
@@ -2020,7 +2039,7 @@ void GameScene::updateCoin()
 	for (auto child : children) {
 
 		if (child->getTag() == TAG_COIN) {
-			//log("vi tri cua vang: %f, %f", child->getPositionX(), child->getPositionY());
+			////log("vi tri cua vang: %f, %f", child->getPositionX(), child->getPositionY());
 			if (child->getPositionX() < follow->getPositionX() + SCREEN_SIZE.width / 2 && child->getPositionX() > follow->getPositionX() - SCREEN_SIZE.width / 2) {
 
 				((Coin*)child)->updateMe(hero);
@@ -2094,7 +2113,7 @@ void GameScene::callingBird()
 	hud->setBtnCallingHintDone(false);
 	_aEagle->setVisible(true);
 	if (_aEagle->getB2Body() == nullptr || hero->getB2Body() == nullptr) {
-		log("Crazy fox");
+		//log("Crazy fox");
 	}
 
 	// DQ increase 30% move

@@ -53,7 +53,7 @@ private:
 	MenuItemSprite *m_arHeroButton[5];						// hero mini icon
 	SkeletonAnimation *m_arPreviewHero[5];					// hero preview
 	Label *m_arLabelNumberItemOwning[5];					// 
-	MenuItemSprite *m_arBuyItemButton[5];
+	Button *m_arBuyItemButton[5];
 	Sprite *m_arSpriteItemMax[5];
 	Sprite *m_arItemCoinSprite[5];
 	Label *m_arItemLabelCost[5];
@@ -91,7 +91,6 @@ private:
 	// menus
 	Menu *m_pTopMenu;
 	Menu *m_pBottomMainMenu;
-	Menu *m_pItemBoardMenu;
 	Menu *m_pQuestBoardMenu;
 	Menu *m_pSkillBoardMenu;
 	Menu *m_pBottomHeroMenu;
@@ -148,6 +147,7 @@ private:
 
 	// buy items
 	void buttonBuyItemHandle(int p_nIndexItem);
+	void receiveButtonPressEvent(Ref *pSender, Widget::TouchEventType type, int p_nIndexItem);
 
 	// reward quest
 	void buttonRewardQuest(int p_nQuestIndex);

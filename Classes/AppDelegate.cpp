@@ -7,10 +7,7 @@
 #include "thirdsdkhelper\IAPHelper.h"
 #include "thirdsdkhelper\SdkboxPlay.h"
 
-
-
 USING_NS_CC;
-
 
 static cocos2d::Size designResolutionSize = cocos2d::Size(711, 400);
 static cocos2d::Size smallResolutionSize = cocos2d::Size(1280, 720);
@@ -62,7 +59,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0f / 60);
 
     // Set the design resolution
-    glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
+    glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::EXACT_FIT);
     auto frameSize = glview->getFrameSize();
     // if the frame's height is larger than the height of medium size.
     if (frameSize.height > mediumResolutionSize.height)

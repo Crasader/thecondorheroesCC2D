@@ -234,7 +234,7 @@ void GameScene::onBegin()
 		hud->getBtnCalling()->setEnabled(true);
 	}
 
-	//hud->getPauseItem()->setEnabled(true);
+	this->scheduleUpdate();
 
 	if (REF->getNumberItemDoubleGold() > 0) {
 		runnerItem(Item_type::DOUBLE_COIN, DURATION_DOUBLE_COIN);
@@ -263,8 +263,12 @@ void GameScene::onBegin()
 		}*/
 		_eventDispatcher->addEventListenerWithSceneGraphPriority(touch_listener, this);
 	}
+}
 
-	this->scheduleUpdate();
+void GameScene::onExit()
+{
+	Layer::onExit();
+	delete world;
 }
 
 void GameScene::checkActiveButton()

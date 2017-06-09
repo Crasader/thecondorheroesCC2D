@@ -23,7 +23,8 @@ bool SceneIntro::init() {
 	AdmobHelper::getInstance()->showBanner();
 	AudioManager::playMusic(MUSIC_MENU);
 
-	auto origin = Director::getInstance()->getVisibleOrigin();
+	auto _aOrigin = Director::getInstance()->getVisibleOrigin();
+	this->setPosition(_aOrigin);
 
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("item/coin.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Map/bg.plist");
@@ -34,20 +35,38 @@ bool SceneIntro::init() {
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/rock_eff.plist");
 
 	auto _aIntroBackground = Sprite::create("UI/UI_intro/background.jpg");
-	_aIntroBackground->setScaleX(m_szVisibleSize.width / _aIntroBackground->getContentSize().width); // full screen size width
-	_aIntroBackground->setScaleY(m_szVisibleSize.height / _aIntroBackground->getContentSize().height); // full screen size height
-	_aIntroBackground->setPosition(origin + Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 2)); // center screen
-
+	float _fTemp = _aIntroBackground->getContentSize().height * m_szVisibleSize.width / _aIntroBackground->getContentSize().width;
+	if (_fTemp > m_szVisibleSize.height) {
+		_aIntroBackground->setScale(m_szVisibleSize.width / _aIntroBackground->getContentSize().width);
+	}
+	else {
+		_aIntroBackground->setScale(m_szVisibleSize.height / _aIntroBackground->getContentSize().height);
+	}
+	_aIntroBackground->setPosition(Vec2(m_szVisibleSize.width * 0.5f, m_szVisibleSize.height * 0.5f));
 	this->addChild(_aIntroBackground, 0);
 
 	auto _aCharacter = Sprite::create("UI/UI_intro/character_startmenu.png");
-	_aCharacter->setScale(m_szVisibleSize.height / _aCharacter->getContentSize().height * 0.8f);
-	_aCharacter->setPosition(origin + Vec2(m_szVisibleSize.width / 4, m_szVisibleSize.height / 2)); // center screen
+	_fTemp = _aCharacter->getContentSize().height * m_szVisibleSize.width / _aCharacter->getContentSize().width * 0.45f;
+	if (_fTemp > m_szVisibleSize.height * 0.8f) {
+		_aCharacter->setScale(m_szVisibleSize.height / _aCharacter->getContentSize().height * 0.9f);
+	}
+	else {
+		_aCharacter->setScale(m_szVisibleSize.width / _aCharacter->getContentSize().width * 0.45f);
+	}
+	_aCharacter->setAnchorPoint(Vec2(1.0f, 0.5f));
+	_aCharacter->setPosition(Vec2(m_szVisibleSize.width * 0.5f, m_szVisibleSize.height * 0.5f));
 	this->addChild(_aCharacter, 1);
 
 	auto _aGameName = Sprite::create("UI/UI_intro/namegame.png");
-	_aGameName->setScale(m_szVisibleSize.height / _aGameName->getContentSize().height * 0.3f);
-	_aGameName->setPosition(origin + Vec2(m_szVisibleSize.width * 3 / 4, m_szVisibleSize.height * 3 / 4)); // center screen
+	_fTemp = _aGameName->getContentSize().height * m_szVisibleSize.width / _aGameName->getContentSize().width * 0.45f;
+	if (_fTemp > m_szVisibleSize.height * 0.45f) {
+		_aGameName->setScale(m_szVisibleSize.height / _aGameName->getContentSize().height * 0.45f);
+	}
+	else {
+		_aGameName->setScale(m_szVisibleSize.width / _aGameName->getContentSize().width * 0.45f);
+	}
+	_aGameName->setAnchorPoint(Vec2(0.5f, 0.0f));
+	_aGameName->setPosition(Vec2(m_szVisibleSize.width * 0.75f, m_szVisibleSize.height * 0.5f));
 	this->addChild(_aGameName, 1);
 
 	auto _pStartNormal = Sprite::create("UI/UI_intro/btn_play.png");
@@ -55,8 +74,7 @@ bool SceneIntro::init() {
 	_pStartSelected->setColor(Color3B(128, 128, 128));
 	auto _aStartButton = MenuItemSprite::create(_pStartNormal, _pStartSelected, CC_CALLBACK_1(SceneIntro::goToMainMenuScene, this));
 	_aStartButton->setScale(m_szVisibleSize.width / _aStartButton->getContentSize().width * 0.3f);
-
-	_aStartButton->setPosition(origin.x + m_szVisibleSize.width * 3 / 4, origin.y + m_szVisibleSize.height / 4);
+	_aStartButton->setPosition(Vec2(m_szVisibleSize.width * 0.75f, m_szVisibleSize.height * 0.25f));
 	ScaleBy *_pZoomOut = ScaleBy::create(1.5f, 1.1f);
 	Sequence *_pZoomSequence = Sequence::create(_pZoomOut, _pZoomOut->reverse(), NULL);
 	RepeatForever* _pZoomRepeat = RepeatForever::create(_pZoomSequence);
@@ -68,15 +86,15 @@ bool SceneIntro::init() {
 
 	auto _aParticleFeather1 = ParticleSystemQuad::create("UI/UI_intro/feather1.plist");
 	_aParticleFeather1->setDuration(-1);
-	_aParticleFeather1->setScale(0.5f);
-	_aParticleFeather1->setPosition(origin + Vec2(m_szVisibleSize.width * 0.5f, m_szVisibleSize.height));
+	_aParticleFeather1->setScale(1.0f);
+	_aParticleFeather1->setPosition(Vec2(m_szVisibleSize.width * 0.5f, m_szVisibleSize.height));
 
 	this->addChild(_aParticleFeather1, 2);
 
 	auto _aParticleFeather2 = ParticleSystemQuad::create("UI/UI_intro/feather2.plist");
 	_aParticleFeather2->setDuration(-1);
-	_aParticleFeather2->setScale(0.5f);
-	_aParticleFeather2->setPosition(origin + Vec2(m_szVisibleSize.width * 0.5f, m_szVisibleSize.height));
+	_aParticleFeather2->setScale(1.0f);
+	_aParticleFeather2->setPosition(Vec2(m_szVisibleSize.width * 0.5f, m_szVisibleSize.height));
 	this->addChild(_aParticleFeather2, 2);
 	/*FacebookHelper::getInstance()->login();
 	FacebookHelper::getInstance()->captureScreen();*/

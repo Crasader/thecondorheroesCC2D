@@ -8,13 +8,15 @@
 #include <time.h>
 #include "network/HttpClient.h"
 
-#include "ui_custom/CustomLayerToToast.h"
+#include "ui_custom\CustomLayerToToast.h"
 #include "SelectStageScene.h"
-#include "thirdsdkhelper/GoogleAnalysticHelper.h"
+
+#include "thirdsdkhelper\GoogleAnalysticHelper.h"
 #include "thirdsdkhelper\GoogleAnalysticHelper.h"
 #include "thirdsdkhelper\IAPHelper.h"
 #include "thirdsdkhelper\VungleHelper.h"
 #include "thirdsdkhelper\SdkboxPlay.h"
+
 
 USING_NS_CC;
 using namespace spine;
@@ -55,6 +57,7 @@ private:
 	Sprite *m_arSpriteItemMax[5];
 	Sprite *m_arItemCoinSprite[5];
 	Label *m_arItemLabelCost[5];
+	Sprite *m_pReceviveDailyRewardSprite;
 
 	SkeletonAnimation *m_pSpriteQuestAttention;						// 
 	SkeletonAnimation *m_pSpriteFreeCoinAttention;						// 

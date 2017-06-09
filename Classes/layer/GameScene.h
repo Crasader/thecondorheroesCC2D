@@ -214,6 +214,7 @@ private:
 
 public:
 	void onBegin();
+	void onExit();
 	
 	// update public
 	void updateMultiKills();		//DuongPM edited for multi kills

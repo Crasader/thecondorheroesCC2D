@@ -40,6 +40,14 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 	m_pShopBlurBackground->setVisible(false);
 	this->addChild(m_pShopBlurBackground, 5);
 
+	// shop
+	m_pShopBoardLayer = Layer::create();
+	this->addChild(m_pShopBoardLayer, 6);
+
+	m_pBlurScreen = Layer::create();
+	this->addChild(m_pBlurScreen, 8);
+	m_pBlurScreen->setVisible(false);
+
 	if (p_bOnlySelectStage) {
 		m_nMenuStatus = 4;
 		m_pTopMainMenu = Layer::create();
@@ -53,19 +61,6 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 		m_pSelectStageLayer = SelectStageLayer::create(m_nIndexHeroSelected);
 		m_pSelectStageLayer->moveAva();
 		this->addChild(m_pSelectStageLayer, 3);
-
-		m_pBlurScreen = Layer::create();
-		m_pBlurScreen->setContentSize(Size(m_szVisibleSize.width, m_szVisibleSize.height));
-		m_pBlurScreen->setPosition(m_szVisibleSize.width / 2, m_szVisibleSize.height / 2);
-		m_pBlurScreen->setPosition(Vec2(0.0f, 0.0f));
-		this->addChild(m_pBlurScreen, 8);
-		m_pBlurScreen->setVisible(false);
-
-		// shop
-		m_pShopBoardLayer = Layer::create();
-		m_pShopBoardLayer->setContentSize(Size(m_szVisibleSize.width, m_szVisibleSize.height)); // fill screen width, 25% screen height
-		m_pShopBoardLayer->setPosition(0.0f, 0.0f);
-		this->addChild(m_pShopBoardLayer, 6);
         
         auto key_listener = EventListenerKeyboard::create();
         key_listener->onKeyPressed = CC_CALLBACK_2(MenuLayer::onKeyPressed, this);
@@ -104,13 +99,6 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 	m_pGameControl = Layer::create(); // layer 3 : control
 	this->addChild(m_pGameControl, 3);
 	initControlLayer();
-
-	m_pBlurScreen = Layer::create();
-	m_pBlurScreen->setContentSize(Size(m_szVisibleSize.width, m_szVisibleSize.height));
-	m_pBlurScreen->setPosition(m_szVisibleSize.width / 2, m_szVisibleSize.height / 2);
-	m_pBlurScreen->setPosition(Vec2(0.0f, 0.0f));
-	m_pBlurScreen->setVisible(false);
-	this->addChild(m_pBlurScreen, 8);
 
     auto key_listener = EventListenerKeyboard::create();
     key_listener->onKeyPressed = CC_CALLBACK_2(MenuLayer::onKeyPressed, this);
@@ -262,12 +250,6 @@ void MenuLayer::initControlLayer() {
 	m_pBottomHeroLayer->setPosition(0.0f, -m_pBottomHeroLayer->getContentSize().height / 2);
 	m_pGameControl->addChild(m_pBottomHeroLayer, 1);
 	initBottomHeroMenu();
-
-	// shop
-	m_pShopBoardLayer = Layer::create();
-	m_pShopBoardLayer->setContentSize(Size(m_szVisibleSize.width, m_szVisibleSize.height)); // fill screen width, 25% screen height
-	m_pShopBoardLayer->setPosition(0.0f, 0.0f);
-	this->addChild(m_pShopBoardLayer, 6);
 
 	moveLayerViaDirection(m_pTopMainMenu, 2);
 	showMainMenu();
@@ -567,11 +549,6 @@ void MenuLayer::initItemBoard() {
 	float _fItemHeight = m_pItemScrollView->getContentSize().height / _nNumberItemsVisiable;
 	float _fScrollViewPadding = _fItemHeight / 20;
 
-	m_pItemBoardMenu = Menu::create();
-	m_pItemBoardMenu->setContentSize(m_pItemScrollView->getContentSize());
-	m_pItemBoardMenu->setPosition(0.0f, 0.0f);
-	m_pItemScrollView->addChild(m_pItemBoardMenu, 2);
-
 	for (int i = 0; i < _nNumberItems; i++) {
 		Layer *_pItem = Layer::create();
 		_pItem->setContentSize(Size(_fItemWidth, _fItemHeight));
@@ -609,24 +586,9 @@ void MenuLayer::initItemBoard() {
 		_pLabelDescriptionItem->setAlignment(TextHAlignment::LEFT, TextVAlignment::CENTER);
 		_pLabelDescriptionItem->setBMFontSize(_pItem->getContentSize().height * 0.2f);
 		_pLabelDescriptionItem->setMaxLineWidth(_pItem->getContentSize().width - _fItemHeight * 2.0f);
-		_pLabelDescriptionItem->setAnchorPoint(Vec2(0.0f, 1.0f));
-		_pLabelDescriptionItem->setPosition(Vec2(_fItemHeight * 0.95f, _fItemHeight * 0.65f));
+		_pLabelDescriptionItem->setAnchorPoint(Vec2(0.0f, 0.5f));
+		_pLabelDescriptionItem->setPosition(Vec2(_fItemHeight * 0.95f, _fItemHeight * 0.4f));
 		_pItem->addChild(_pLabelDescriptionItem, 1);
-
-		auto _pBuyItemNormal = Sprite::create("UI/UI_main_menu/btn_buy_1.png");
-		auto _pBuyItemSelected = Sprite::create("UI/UI_main_menu/btn_buy_3.png");
-		_pBuyItemSelected->setColor(Color3B(128, 128, 128));
-		m_arBuyItemButton[i] = MenuItemSprite::create(_pBuyItemNormal, _pBuyItemSelected, CC_CALLBACK_0(MenuLayer::buttonBuyItemHandle, this, i));
-		float _fTemp = m_arBuyItemButton[i]->getContentSize().height * _fItemHeight / m_arBuyItemButton[i]->getContentSize().width;
-		if (_fTemp > _fItemHeight * 0.45f) {
-			m_arBuyItemButton[i]->setScale(_fItemHeight / m_arBuyItemButton[i]->getContentSize().height * 0.45f);
-		}
-		else {
-			m_arBuyItemButton[i]->setScale(_fItemHeight / m_arBuyItemButton[i]->getContentSize().width);
-		}
-		m_arBuyItemButton[i]->setAnchorPoint(Vec2(1.0f, 0.5f));
-		m_arBuyItemButton[i]->setPosition(Vec2(_fItemWidth, _fItemHeight * (_nNumberItems - i - 0.7f)));
-		m_pItemBoardMenu->addChild(m_arBuyItemButton[i], 1);
 
 		m_arItemCoinSprite[i] = Sprite::create("UI/UI_main_menu/icon_money_small.png");
 		m_arItemCoinSprite[i]->setScale(_fItemHeight / m_arItemCoinSprite[i]->getContentSize().height * 0.4f);
@@ -635,12 +597,27 @@ void MenuLayer::initItemBoard() {
 		_pItem->addChild(m_arItemCoinSprite[i], 1);
 
 		m_arItemPrice[i] = JSMENU->getItemPrice();
-		m_arItemLabelCost[i] = Label::createWithBMFont("fontsDPM/font_coin-export.fnt", StringUtils::format("%i ", m_arItemPrice[i]));
+		m_arItemLabelCost[i] = Label::createWithBMFont("fontsDPM/font_coin-export.fnt", StringUtils::format("%i", m_arItemPrice[i]));
 		m_arItemLabelCost[i]->setAlignment(TextHAlignment::RIGHT, TextVAlignment::CENTER);
-		m_arItemLabelCost[i]->setBMFontSize(_fItemHeight * 0.3f);
+		m_arItemLabelCost[i]->setBMFontSize(_fItemHeight * 0.4f);
 		m_arItemLabelCost[i]->setAnchorPoint(Vec2(1.0f, 0.5f));
 		m_arItemLabelCost[i]->setPosition(Vec2(_fItemWidth - _fItemHeight * 0.4f, _fItemHeight * 0.75f));
 		_pItem->addChild(m_arItemLabelCost[i], 1);
+
+		m_arBuyItemButton[i] = Button::create("UI/UI_main_menu/btn_buy_1.png", "UI/UI_main_menu/btn_buy_3.png", "UI/UI_main_menu/btn_buy_3.png");
+		float _fTemp = m_arBuyItemButton[i]->getContentSize().height * _fItemHeight / m_arBuyItemButton[i]->getContentSize().width;
+		if (_fTemp > _fItemHeight * 0.45f) {
+			m_arBuyItemButton[i]->setScale(_fItemHeight / m_arBuyItemButton[i]->getContentSize().height * 0.45f);
+		}
+		else {
+			m_arBuyItemButton[i]->setScale(_fItemHeight / m_arBuyItemButton[i]->getContentSize().width);
+		}
+		m_arBuyItemButton[i]->setAnchorPoint(Vec2(0.5, 0.5));
+		m_arBuyItemButton[i]->setTouchEnabled(true);
+		m_arBuyItemButton[i]->addTouchEventListener(CC_CALLBACK_2(MenuLayer::receiveButtonPressEvent, this, i));
+		m_arBuyItemButton[i]->setPosition(Vec2(_fItemWidth - (_fItemHeight * 0.4f + m_arItemLabelCost[i]->getContentSize().width * m_arItemLabelCost[i]->getScale()) / 2, _fItemHeight * (_nNumberItems - i - 0.7f)));
+		m_arBuyItemButton[i]->setSwallowTouches(true);
+		m_pItemScrollView->addChild(m_arBuyItemButton[i]);
 
 		m_arSpriteItemMax[i] = Sprite::create("UI/UI_main_menu/icon_max.png");
 		m_arSpriteItemMax[i]->setScale(_fItemHeight / m_arSpriteItemMax[i]->getContentSize().height * 0.9f);
@@ -905,7 +882,7 @@ void MenuLayer::initQuestBoard(int p_nFocus) {
 				_pQuestBar->setPosition(Vec2(_pQuestLayer->getContentSize().width * 0.8125f, _pQuestLayer->getContentSize().height * 0.5f));
 				_pQuestLayer->addChild(_pQuestBar, 1);
 
-				Label *_pLabelQuestStatus = Label::createWithBMFont("fontsDPM/font_normal_white-export.fnt", StringUtils::format("%d/%d", _nNumber < _nComplete ? _nNumber : _nComplete, _nComplete));
+				Label *_pLabelQuestStatus = Label::createWithBMFont("fontsDPM/font_normal_white-export.fnt", StringUtils::format("%d / %d", _nNumber < _nComplete ? _nNumber : _nComplete, _nComplete));
 				_pLabelQuestStatus->setAlignment(TextHAlignment::CENTER, TextVAlignment::CENTER);
 				_pLabelQuestStatus->setBMFontSize(_pQuestBar->getContentSize().height * 0.8f);
 				_pLabelQuestStatus->setAnchorPoint(Vec2(0.5f, 0.5f));
@@ -927,10 +904,9 @@ void MenuLayer::initQuestBoard(int p_nFocus) {
 				auto _pRewardNormal = Sprite::create("UI/UI_main_menu/UI_quest/btn_claim_1.png");
 				auto _pRewardSelected = Sprite::create("UI/UI_main_menu/UI_quest/btn_claim_2.png");
 				MenuItemSprite *_aQuestRewardButton = MenuItemSprite::create(_pRewardNormal, _pRewardSelected, CC_CALLBACK_0(MenuLayer::buttonRewardQuest, this, i));
-				_aQuestRewardButton->setScaleX(_fItemWidth / _aQuestRewardButton->getContentSize().width * 0.2f);
-				_aQuestRewardButton->setScaleY(_fItemHeight / _aQuestRewardButton->getContentSize().height * 0.4f);
+				_aQuestRewardButton->setScale(_fItemHeight / _aQuestRewardButton->getContentSize().height * 0.4f);
 				_aQuestRewardButton->setAnchorPoint(Vec2(0.5f, 1.0f));
-				_aQuestRewardButton->setPosition(Vec2(_fItemWidth * 0.85f, _fItemHeight * (_nNumberQuests - i - 0.5f)));
+				_aQuestRewardButton->setPosition(Vec2(_fItemWidth * 0.8125f, _fItemHeight * (_nNumberQuests - i - 0.5f)));
 
 				m_pQuestBoardMenu->addChild(_aQuestRewardButton, 1);
 
@@ -1222,14 +1198,18 @@ void MenuLayer::backFunction() {
 
 void MenuLayer::showMainMenu() {
 	m_pBottomMainMenu->setEnabled(true);
-	m_pItemBoardMenu->setEnabled(true);
+	for (int i = 0; i < 5; i++) {
+		m_arBuyItemButton[i]->setTouchEnabled(true);
+	}
 	moveLayerViaDirection(m_pBottomMainLayer, 8);
 	moveLayerViaDirection(m_pItemBoard, 4);
 }
 
 void MenuLayer::hideMainMenu() {
 	m_pBottomMainMenu->setEnabled(false);
-	m_pItemBoardMenu->setEnabled(false);
+	for (int i = 0; i < 5; i++) {
+		m_arBuyItemButton[i]->setTouchEnabled(false);
+	}
 	moveLayerViaDirection(m_pBottomMainLayer, 2);
 	moveLayerViaDirection(m_pItemBoard, 6);
 }
@@ -1238,7 +1218,9 @@ void MenuLayer::showBlurScreen() {
 	m_pTopMenu->setEnabled(false);
 	if (m_nMenuStatus != 4) {
 		m_pBottomMainMenu->setEnabled(false);
-		m_pItemBoardMenu->setEnabled(false);
+		for (int i = 0; i < 5; i++) {
+			m_arBuyItemButton[i]->setTouchEnabled(false);
+		}
 		m_pSkillBoardMenu->setEnabled(false);
 		m_pBottomHeroMenu->setEnabled(false);
 		m_pQuestBoardMenu->setEnabled(false);
@@ -1260,7 +1242,9 @@ void MenuLayer::hideBlurScreen() {
 		m_pTopMenu->setEnabled(true);
 		if (m_nMenuStatus != 4) {
 			m_pBottomMainMenu->setEnabled(true);
-			m_pItemBoardMenu->setEnabled(true);
+			for (int i = 0; i < 5; i++) {
+				m_arBuyItemButton[i]->setTouchEnabled(true);
+			}
 			m_pSkillBoardMenu->setEnabled(true);
 			m_pBottomHeroMenu->setEnabled(true);
 			m_pQuestBoardMenu->setEnabled(true);
@@ -1276,7 +1260,9 @@ void MenuLayer::buttonStartHandle() {
 	this->addChild(m_pSelectStageLayer, 3);
 
 	m_pBottomMainMenu->setEnabled(false);
-	m_pItemBoardMenu->setEnabled(false);
+	for (int i = 0; i < 5; i++) {
+		m_arBuyItemButton[i]->setTouchEnabled(false);
+	}
 	m_pSkillBoardMenu->setEnabled(false);
 	m_pBottomHeroMenu->setEnabled(false);
 	m_pQuestBoardMenu->setEnabled(false);
@@ -1326,7 +1312,9 @@ void MenuLayer::buttonBackHandle() {
 		m_nMenuStatus = 0;
 		m_pSelectStageLayer->removeFromParentAndCleanup(true);
 		m_pBottomMainMenu->setEnabled(true);
-		m_pItemBoardMenu->setEnabled(true);
+		for (int i = 0; i < 5; i++) {
+			m_arBuyItemButton[i]->setTouchEnabled(true);
+		}
 		m_pSkillBoardMenu->setEnabled(true);
 		m_pBottomHeroMenu->setEnabled(true);
 		m_pQuestBoardMenu->setEnabled(true);
@@ -1572,6 +1560,12 @@ void MenuLayer::buttonUpgradeSkillHandle(int p_nIndexSkill) {
 	
 	initTopMainMenu();
 	initUpgradeBoard();
+}
+
+void MenuLayer::receiveButtonPressEvent(Ref *pSender, Widget::TouchEventType type, int p_nIndexItem) {
+	if (type == Widget::TouchEventType::ENDED) {
+		buttonBuyItemHandle(p_nIndexItem);
+	}
 }
 
 void MenuLayer::buttonBuyItemHandle(int p_nIndexItem) {
@@ -1840,7 +1834,9 @@ void MenuLayer::initShopBoard(int p_nOption) {
 	}
 	if (m_nMenuStatus != 4) {
 		m_pBottomMainMenu->setEnabled(false);
-		m_pItemBoardMenu->setEnabled(false);
+		for (int i = 0; i < 5; i++) {
+			m_arBuyItemButton[i]->setTouchEnabled(false);
+		}
 		m_pSkillBoardMenu->setEnabled(false);
 		m_pBottomHeroMenu->setEnabled(false);
 		m_pQuestBoardMenu->setEnabled(false);
@@ -1862,6 +1858,7 @@ void MenuLayer::initShopBoard(int p_nOption) {
 	m_pPacksZone->setAnchorPoint(Vec2(0.0f, 0.0f));
 	m_pPacksZone->setPosition(Vec2(m_pShopBoardLayer->getContentSize().width * 0.1f, m_pShopBoardLayer->getContentSize().height * 0.11f));
 	m_pPacksZone->setDirection(ListView::Direction::HORIZONTAL);
+	m_pPacksZone->setSwallowTouches(true);
 	m_pPacksZone->setBounceEnabled(true);
 	m_pPacksZone->setTouchEnabled(true);
 	m_pPacksZone->setScrollBarOpacity(0.0f);
@@ -2075,7 +2072,9 @@ void MenuLayer::buttonCloseShopHandle() {
 	}
 	if (m_nMenuStatus != 4) {
 		m_pBottomMainMenu->setEnabled(true);
-		m_pItemBoardMenu->setEnabled(true);
+		for (int i = 0; i < 5; i++) {
+			m_arBuyItemButton[i]->setTouchEnabled(true);
+		}
 		m_pSkillBoardMenu->setEnabled(true);
 		m_pBottomHeroMenu->setEnabled(true);
 		m_pQuestBoardMenu->setEnabled(true);
@@ -2157,6 +2156,24 @@ void MenuLayer::buttonDailyRewardHandle() {
 		_pLabelTip->setPosition(Vec2(_pConfirmBackground->getContentSize().width * 0.5f, _pConfirmBackground->getContentSize().height * 0.2f));
 		_pConfirmBackground->addChild(_pLabelTip, 1);
 
+		/*auto actionSpawn = CallFunc::create([&]() {
+			auto particlePaper = ParticleSystemQuad::create("Effect/firework_paper.plist");
+			particlePaper->setDuration(0.2f);
+			particlePaper->setPosition(CCRANDOM_0_1() * m_pBuyPackConfirmBackground->getContentSize().width,
+				m_pBuyPackConfirmBackground->getContentSize().height - CCRANDOM_0_1() * m_pBuyPackConfirmBackground->getContentSize().height * 0.5f);
+			m_pBuyPackConfirmBackground->addChild(particlePaper, 10);
+
+			auto particleStar = ParticleSystemQuad::create("Effect/firework_star.plist");
+			particleStar->setDuration(0.1f);
+			particleStar->setPosition(particlePaper->getPosition());
+			m_pBuyPackConfirmBackground->addChild(particleStar, 2);
+		});
+
+		auto seq = Sequence::create(actionSpawn, DelayTime::create(CCRANDOM_0_1() + 0.75f), nullptr);
+
+		auto forever = RepeatForever::create(seq);
+		m_pBuyPackConfirmBackground->runAction(forever);*/
+
 		// button tap to continue
 		auto _pCloseNormal = Sprite::create("UI/UI_main_menu/UI_shop/btn_close.png");
 		auto _pCloseSelected = Sprite::create("UI/UI_main_menu/UI_shop/btn_close.png");
@@ -2173,6 +2190,21 @@ void MenuLayer::buttonDailyRewardHandle() {
 		_pConfirmMenu->setPosition(0.0f, 0.0f);
 		m_pBuyPackConfirmBackground->addChild(_pConfirmMenu, 2);
 	}), nullptr));
+
+	auto actionSpawn = CallFunc::create([&]() {
+		auto _aParticleFeather = ParticleSystemQuad::create("Effect/firework_paper.plist");
+		_aParticleFeather->setDuration(0.2f);
+		_aParticleFeather->setScale(0.5f);
+		_aParticleFeather->setPosition(Vec2(m_szVisibleSize.width * CCRANDOM_0_1(), m_szVisibleSize.height * CCRANDOM_0_1()));
+		m_pBuyPackConfirmBackground->addChild(_aParticleFeather, 2);
+		auto _aParticleFeather1 = ParticleSystemQuad::create("Effect/firework_star.plist");
+		_aParticleFeather1->setDuration(0.1f);
+		_aParticleFeather1->setScale(0.5f);
+		_aParticleFeather1->setPosition(_aParticleFeather->getPosition());
+		m_pBuyPackConfirmBackground->addChild(_aParticleFeather1, 2);
+	});
+	Sequence *_pBlink = Sequence::create(actionSpawn, DelayTime::create(1.5f), NULL);
+	m_pBuyPackConfirmBackground->runAction(RepeatForever::create(_pBlink));
 }
 
 void MenuLayer::buttonConfirmDailyRewardHandle() {

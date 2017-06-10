@@ -218,7 +218,7 @@
       "selectCharacterPoint": "UI/Select_Stage/character_point_HDS.png",
       "avatarLoadingPath": "UI/Loading/HDS.png",
       "isLocked": true,
-      "coolDownSkill1": 37,
+      "coolDownSkill1": 3,
       "durationSkill1": 0.27,
       "numberOfUseSkill1": 5,
       "skill1Name": {
@@ -272,7 +272,7 @@
       "selectCharacterPoint": "UI/Select_Stage/character_point_QT.png",
       "avatarLoadingPath": "UI/Loading/QT.png",
       "isLocked": true,
-      "coolDownSkill1": 37,
+      "coolDownSkill1": 3,
       "durationSkill1": 6,
       "numberOfUseSkill1": 1,
       "skill1Name": {

@@ -80,6 +80,7 @@ void DialogPauseGame::replayGame(Ref * pSender, int goldRevive, bool isWatchVide
 		if (REF->setDownGold(goldRevive)) {
 			auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
 			gameLayer->reviveHero();
+			GAHelper::getInstance()->logEvent("Button", "Revive", "By Coin", 1);
 		}
 		else {
 			CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(2), TOAST_SHORT);

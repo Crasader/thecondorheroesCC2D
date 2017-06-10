@@ -1,6 +1,6 @@
 #ifndef __GA_HELPER_H__
 #define __GA_HELPER_H__
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 #include "PluginGoogleAnalytics/PluginGoogleAnalytics.h"
 #endif
 #include <string>
@@ -11,44 +11,44 @@ class GAHelper {
 public:
 	//static GAHelper *INSTANCE;
 	GAHelper() {
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 		sdkbox::PluginGoogleAnalytics::init();
 		sdkbox::PluginGoogleAnalytics::startSession();
 #endif
 	}
 
 	void stopSession(std::string adname) {
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 		 sdkbox::PluginGoogleAnalytics::stopSession();
 #endif
 	}
 
 	void startSession(std::string adname) {
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 		sdkbox::PluginGoogleAnalytics::startSession();
 #endif
 	}
 
 	void logEvent(string eventcategory, string eventAction, string eventContent, int eventValue) {
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 		sdkbox::PluginGoogleAnalytics::logEvent(eventcategory, eventAction, eventContent, eventValue);
 #endif
 	}
 
 	void logScreen(string screenName) {
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 		sdkbox::PluginGoogleAnalytics::logScreen(screenName);
 #endif
 	}
 
 	void sendDataNow() {
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 		sdkbox::PluginGoogleAnalytics::dispatchHits();
 #endif
 	}
 
 	/*bool showFullAd() {
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 		if (isAvailable("gameover")) {
 			sdkbox::PluginGoogleAnalytics::show("gameover");
 			return true;

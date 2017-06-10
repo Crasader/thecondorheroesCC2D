@@ -35,8 +35,9 @@
 #include "EnemyLinhTenThang.h"
 #include "EnemyLinhTenXien.h"
 #include "thirdsdkhelper\VungleHelper.h"
+#include "thirdsdkhelper\GoogleAnalysticHelper.h"
 
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 class GameScene : public cocos2d::Layer, public sdkbox::VungleListener
 #else
 class GameScene : public cocos2d::Layer
@@ -267,7 +268,7 @@ public:
 	void jump();
 	void resumeAfterTut(int caseTut);
 
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 	// vungle
 	 void onVungleAdViewed(bool isComplete);
 	 void onVungleCacheAvailable();

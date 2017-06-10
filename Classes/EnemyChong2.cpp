@@ -72,7 +72,7 @@ void EnemyChong2::die()
 
 void EnemyChong2::updateMe(BaseHero* hero)
 {
-	if (!isEndOfScreen && this->getPositionX() + this->getParent()->getPositionX() < hero->getPositionX() - SCREEN_SIZE.width * 0.25f) {
+	if (!isEndOfScreen && this->getPositionX() + this->getParent()->getPositionX() < hero->getPositionX() - SCREEN_SIZE.width * 0.45f) {
 		isEndOfScreen = true;
 	}
 

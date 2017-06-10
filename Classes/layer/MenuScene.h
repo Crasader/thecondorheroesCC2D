@@ -21,7 +21,7 @@ using namespace std;
 using namespace ui;
 using namespace network;
 
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 class MenuLayer : public cocos2d::Layer, public sdkbox::IAPListener, public sdkbox::VungleListener
 #else
 class MenuLayer : public cocos2d::Layer
@@ -188,8 +188,16 @@ private:
 	void logTryHeroEvent(int indexhero);
 	void logUpgradeHeroEvent(int indexhero, int level);
 	void logUpgradeSkillEvent(int indexhero, int indexskill, int level);
+	void logShowMoreCoin();
+	void logShowMoreDiamond();
+	void logShowMoreLife();
+	void logBuyCoin(int dexOfPack);
+	void logBuyLife(int dexOfPack); 
+	void logBuyDiamond(int dexOfPack, float money);
+
+
 	//void logUpgradeSkillEvent(int indexhero, int indexskill, int level);
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 	virtual void onInitialized(bool ok) override;
 	virtual void onSuccess(sdkbox::Product const& p) override;
 	virtual void onFailure(sdkbox::Product const& p, const std::string &msg) override;
@@ -206,7 +214,7 @@ private:
 	void onVungleAdReward(const std::string& name);
 
 #endif // DEBUG
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 	// vungle
 	
 	// ia

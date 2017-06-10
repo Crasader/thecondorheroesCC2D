@@ -108,7 +108,7 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 	m_pBlurScreen->setVisible(false);
 
 	this->scheduleUpdate();
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 	sdkbox::PluginVungle::setListener(this);
 #endif
 	return true;
@@ -1165,7 +1165,7 @@ void MenuLayer::initBottomHeroMenu() {
 
 void MenuLayer::backFunction() {
 	int a = 0;
-	if(SPHelper::getInstance()->isSigned())
+	//if(SPHelper::getInstance()->isSigned())
 	SPHelper::getInstance()->showBoard("score");
 }
 
@@ -1355,6 +1355,13 @@ void MenuLayer::buttonFreeCoinHandle() {
 		// TODO : show ads and check view ads finish
 		// after that, increase gold
 		VungleHelper::getInstance()->showReward();
+		//FacebookHelper::getInstance()->dialogPhoto("SwordManLegend");
+#ifdef SDKBOX_ENABLE
+#else
+		CustomLayerToToast *_pToast = CustomLayerToToast::create("where is my f***ing sdkbox", TOAST_SHORT);
+		_pToast->setPosition(Vec2(300, 300));
+		this->addChild(_pToast, 10);
+#endif 
 
 
 	}
@@ -1974,6 +1981,7 @@ void MenuLayer::buttonBuyLifeHandle(int p_nIndexEnergyPack) {
 	JSMENU->readEnergyPack(p_nIndexEnergyPack);
 	if (JSMENU->getEnergyPackDiamondPrice() <= m_nCurrentDiamond) {
 		//GAHelper::getInstance()->logEvent("buylife", "click", "UpgradeQuachtinh", 1);
+		logBuyLife(p_nIndexEnergyPack);
 		m_nCurrentDiamond -= JSMENU->getEnergyPackDiamondPrice();
 		m_nLifeNumber += JSMENU->getEnergyPackNumberEnergy();
 		REF->setDownDiamond(JSMENU->getEnergyPackDiamondPrice());
@@ -1992,6 +2000,7 @@ void MenuLayer::buttonBuyCoinHandle(int p_nIndexCoinPack) {
 	AudioManager::playSound(SOUND_BTCLICK);
 	JSMENU->readGoldPack(p_nIndexCoinPack);
 	if (JSMENU->getCoinPackDiamondPrice() <= m_nCurrentDiamond) {
+		logBuyCoin(p_nIndexCoinPack);
 		m_nCurrentDiamond -= JSMENU->getCoinPackDiamondPrice();
 		m_nCurrentGold += JSMENU->getCoinPackNumberGold();
 		REF->setDownDiamond(JSMENU->getCoinPackDiamondPrice());
@@ -2362,7 +2371,38 @@ void MenuLayer::logUpgradeSkillEvent(int indexhero, int indexskill, int level)
 	GAHelper::getInstance()->logEvent("UpgradeSkill", indexHeroToName(indexhero)+StringUtils::format(" skill %d", indexskill), StringUtils::format("level %d", level), 1);
 }
 
-#ifdef SDKBOX_ENABLED
+
+void MenuLayer::logShowMoreCoin()
+{
+	GAHelper::getInstance()->logEvent("Coin","Show","",1);
+}
+
+void MenuLayer::logShowMoreDiamond()
+{
+	GAHelper::getInstance()->logEvent("Diamond", "Show", "", 1);
+}
+
+void MenuLayer::logShowMoreLife()
+{
+	GAHelper::getInstance()->logEvent("Life", "Show", "", 1);
+}
+
+void MenuLayer::logBuyCoin(int dexOfPack)
+{
+	GAHelper::getInstance()->logEvent("Coin", "Buy", StringUtils::format("Pack %d", dexOfPack+1), 1);
+}
+
+void MenuLayer::logBuyLife(int dexOfPack)
+{
+	GAHelper::getInstance()->logEvent("Life", "Buy", StringUtils::format("Pack %d", dexOfPack+1), 1);
+}
+
+void MenuLayer::logBuyDiamond(int dexOfPack, float money)
+{
+	GAHelper::getInstance()->logEvent("Diamond", "Buy", StringUtils::format("Pack %d", dexOfPack+1), money);
+}
+
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 
 
 void MenuLayer::onInitialized(bool ok)
@@ -2394,6 +2434,7 @@ void MenuLayer::onSuccess(sdkbox::Product const & p)
 	if (false) {
 		return;
 	}
+	logBuyDiamond(p_nIndexDiamondPack,p.priceValue);
 	m_nCurrentDiamond += JSMENU->getDiamondPackNumberDiamond();
 	REF->setUpDiamondBuy(JSMENU->getDiamondPackNumberDiamond());
 	initTopMainMenu();

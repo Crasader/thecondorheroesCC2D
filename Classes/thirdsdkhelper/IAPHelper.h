@@ -1,12 +1,12 @@
 #ifndef __IAP_HELPER_H__
 #define __IAP_HELPER_H__
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 #include "PluginIAP/PluginIAP.h"
 #endif
 #include <string>
 using namespace std;
 //
-////#ifdef SDKBOX_ENABLED
+////#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 //class IAPHelperListener: public sdkbox::VungleListener{
 //
 //};
@@ -20,12 +20,12 @@ class IAPHelper {
 public:
 	//static IAPHelper *INSTANCE;
 	IAPHelper() {
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 		sdkbox::IAP::init();
 #endif
 	}
 	/*bool showBanner() {
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 		if (isAvailable("home")) {
 			sdkbox::PluginIAP::show("home");
 			return true;
@@ -36,13 +36,13 @@ public:
 		return false;
 	}*/
 	void purchase(std::string name) {
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 		sdkbox::IAP::purchase(name);
 #endif
 	}
 
 	void setIsDebugMode(bool mode) {
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 		sdkbox::IAP::setDebug(mode);
 #endif
 	}

@@ -2160,6 +2160,7 @@ void GameScene::reviveHero()
 
 void GameScene::callingBird()
 {
+	GAHelper::getInstance()->logEvent("Bird","Call","",1);
 	AudioManager::playSound(SOUND_BIRD);
 	REF->setUpNumberQuest(INDEX_QUEST_CALL_BIRD, 1);
 	if (hero->getActiveSkill()->isVisible())
@@ -2250,7 +2251,7 @@ void GameScene::dieGame()
 	if (hero->getIsDriverEagle())
 		_aEagle->pause();
 
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 	sdkbox::PluginVungle::setListener(this);
 #endif
 	dialogPause = DialogRevive::create(++numberRevive);
@@ -2748,7 +2749,7 @@ void GameScene::resumeAfterTut(int caseTut)
 		break;
 	}
 }
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 
 void GameScene::onVungleAdViewed(bool isComplete)
 {
@@ -2766,5 +2767,6 @@ void GameScene::onVungleFinished()
 void GameScene::onVungleAdReward(const std::string & name)
 {
 	this->reviveHero();
+	GAHelper::getInstance()->logEvent("Button", "Revive", "By Vungle", 1);
 }
 #endif 

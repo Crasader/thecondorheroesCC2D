@@ -1,6 +1,6 @@
 #ifndef __FACEBOOK_HELPER_H__
 #define __FACEBOOK_HELPER_H__
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 #include "PluginFacebook/PluginFacebook.h"
 #endif
 #include "cocos2d.h"
@@ -14,7 +14,7 @@ private :
 public:
 	//static GAHelper *INSTANCE;
 	FacebookHelper() {
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 		sdkbox::PluginFacebook::init();
 #endif
 	}
@@ -22,34 +22,34 @@ public:
 public:
 	
 	void login() {
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 		if (!sdkbox::PluginFacebook::isLoggedIn())
 			sdkbox::PluginFacebook::login();
 #endif
 	};
 	void logout() {
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 		sdkbox::PluginFacebook::logout();
 #endif
 	};
 	void isLoggedIn() {
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 		sdkbox::PluginFacebook::isLoggedIn();
 #endif
 };
 	void requestPostPermission() {
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 		sdkbox::PluginFacebook::requestPublishPermissions({ sdkbox::FB_PERM_PUBLISH_POST });
 #endif
 	};
 	void requestReadProfilePermisson() {
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 		sdkbox::PluginFacebook::requestReadPermissions({ sdkbox::FB_PERM_READ_PUBLIC_PROFILE, sdkbox::FB_PERM_READ_USER_FRIENDS });
 #endif
 	};
 	void dialogPhoto(string title)
 	{
-#ifdef SDKBOX_ENABLED
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 
 		if (!_captureFilename.empty() && FileUtils::getInstance()->isFileExist(_captureFilename))
 		{

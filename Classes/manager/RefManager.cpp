@@ -187,8 +187,8 @@ void RefManager::setCurrentScoreAfterIncrease(int score)
 void RefManager::setUpScore(int score)
 {
 	this->currentScore += score;
-	if (SPHelper::getInstance()->isSigned())
-		SPHelper::getInstance()->submitScore("score",this->getCurrentScore());
+	//if (SPHelper::getInstance()->isSigned())
+	SPHelper::getInstance()->submitScore("score",this->getCurrentScore());
 	ref->setIntegerForKey((KEY_SCORE_X + StringUtils::format("%i", selectedHero)).c_str(), this->currentScore);
 	ref->flush();
 

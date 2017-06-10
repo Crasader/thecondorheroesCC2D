@@ -157,6 +157,7 @@
   </object>
   <object id="12" name="12" x="4701.66" y="658.545" width="3" height="3">
    <properties>
+    <property name="boss_order" type="int" value="3"/>
     <property name="mapId" type="int" value="4"/>
     <property name="stage" type="int" value="4"/>
    </properties>

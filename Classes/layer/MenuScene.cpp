@@ -81,8 +81,8 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 		"UI/UI_main_menu/PreviewDuongQua/s_DuongQua.atlas");
 	m_arPreviewHero[1] = new SkeletonAnimation("UI/UI_main_menu/PreviewCoLong/s_CoCo.json",
 		"UI/UI_main_menu/PreviewCoLong/s_CoCo.atlas");
-	m_arPreviewHero[2] = new SkeletonAnimation("UI/UI_main_menu/PreviewDuongQua/s_DuongQua.json",
-		"UI/UI_main_menu/PreviewDuongQua/s_DuongQua.atlas");
+	m_arPreviewHero[2] = new SkeletonAnimation("UI/UI_main_menu/PreviewHoangDung/s_HoangDung.json",
+		"UI/UI_main_menu/PreviewHoangDung/s_HoangDung.atlas");
 	m_arPreviewHero[3] = new SkeletonAnimation("UI/UI_main_menu/PreviewDuongQua/s_DuongQua.json",
 		"UI/UI_main_menu/PreviewDuongQua/s_DuongQua.atlas");
 	m_arPreviewHero[4] = new SkeletonAnimation("UI/UI_main_menu/PreviewQuachTinh/s_QuachTinh.json",
@@ -115,9 +115,14 @@ void MenuLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 {
     if (keyCode == EventKeyboard::KeyCode::KEY_BACK) {
 		if (m_nMenuStatus == 0) {
+			if (m_pShopBlurBackground->isVisible() == true) {
+				buttonCloseShopHandle();
+				return;
+			}
+
 			if (backNumber == 0) {
 				backNumber++;
-				CustomLayerToToast *_pToast = CustomLayerToToast::create("Press back again to exit", TOAST_LONG);
+				CustomLayerToToast *_pToast = CustomLayerToToast::create("Press back again to exit", TOAST_SHORT);
 				_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
 				this->addChild(_pToast, 10);
 			}
@@ -125,7 +130,10 @@ void MenuLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 				Director::getInstance()->end();
 			}
 		}
-	buttonBackHandle();
+		else {
+			backNumber = 0;
+			buttonBackHandle();
+		}
     }
 }
 
@@ -399,7 +407,7 @@ void MenuLayer::initBottomMainMenu() {
 
 	_fXPositionCounter += _aQuestButton->getContentSize().width * _aQuestButton->getScaleX() + _fPadding;
 
-	m_pSpriteQuestAttention = new SkeletonAnimation("UI/UI_main_menu/noti/noti.json", "UI/UI_main_menu/noti/noti.atlas",
+	m_pSpriteQuestAttention = SkeletonAnimation::createWithFile("UI/UI_main_menu/noti/noti.json", "UI/UI_main_menu/noti/noti.atlas",
 		m_pBottomMainLayer->getContentSize().height / 150.0f);
 	m_pSpriteQuestAttention->setAnchorPoint(Vec2(1.0f, 1.0f));
 	m_pSpriteQuestAttention->setPosition(_fXPositionCounter - m_pBottomMainLayer->getContentSize().height * 0.1f,
@@ -457,7 +465,7 @@ void MenuLayer::initBottomMainMenu() {
 
 	_fXPositionCounter += _aFreeCoinButton->getContentSize().width * _aFreeCoinButton->getScaleX() + _fPadding;
 
-	m_pSpriteFreeCoinAttention = new SkeletonAnimation("UI/UI_main_menu/noti/noti.json", "UI/UI_main_menu/noti/noti.atlas",
+	m_pSpriteFreeCoinAttention = SkeletonAnimation::createWithFile("UI/UI_main_menu/noti/noti.json", "UI/UI_main_menu/noti/noti.atlas",
 		m_pBottomMainLayer->getContentSize().height / 150.0f);
 	m_pSpriteFreeCoinAttention->setAnchorPoint(Vec2(1.0f, 1.0f));
 	m_pSpriteFreeCoinAttention->setPosition(_fXPositionCounter - m_pBottomMainLayer->getContentSize().height * 0.1f,
@@ -2349,9 +2357,7 @@ void MenuLayer::buttonUpgradeHeroHandle() {
 	float _nUpgradeCost = JSHERO->getGoldUpgradeLevelX(m_nIndexHeroPicked);
 
 	int level = REF->getCurrentLevel();
-	for (int i = 0; i < level ; i++) {
-		_nUpgradeCost *= 1.05f;
-	}
+	
 	if (m_nCurrentGold >= _nUpgradeCost) {
 		logUpgradeHeroEvent(m_nIndexHeroPicked,level+1);
 		m_nCurrentGold -= _nUpgradeCost;
@@ -2365,6 +2371,10 @@ void MenuLayer::buttonUpgradeHeroHandle() {
 		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(8), TOAST_LONG);
 		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
 		this->addChild(_pToast, 10);
+	}
+
+	for (int i = 0; i < level; i++) {
+		_nUpgradeCost *= 1.05f;
 	}
 }
 

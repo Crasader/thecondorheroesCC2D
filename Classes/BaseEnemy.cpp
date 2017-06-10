@@ -44,6 +44,7 @@ BaseEnemy * BaseEnemy::create(spSkeletonData * data)
 	auto skeleton = new BaseEnemy(data);
 	//skeleton->initWithData(data);
 	skeleton->update(1.0f);
+	skeleton->autorelease();
 	return skeleton;
 }
 

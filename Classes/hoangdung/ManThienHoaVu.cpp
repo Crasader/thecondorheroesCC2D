@@ -15,6 +15,7 @@ ManThienHoaVu * ManThienHoaVu::create(string frameName) {
 	mthv->setAnchorPoint(Vec2(1.0f, 0.5f));
 	mthv->initWithSpriteFrameName(frameName);
 	mthv->setTag(TAG_DQ_TIEU_HON_CHUONG);
+	mthv->autorelease();
 	return mthv;
 }
 

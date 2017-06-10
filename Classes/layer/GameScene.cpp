@@ -2067,7 +2067,7 @@ void GameScene::updateCoin()
 
 void GameScene::shakeTheScreen()
 {
-	auto shake = MoveBy::create(0.01f, Vec2(0, -0.005f * SCREEN_SIZE.height));
+	auto shake = MoveBy::create(0.01f, Vec2(0, -0.006f * SCREEN_SIZE.height));
 	this->runAction(Sequence::create(shake, shake->reverse(), shake, shake->reverse(), nullptr));
 }
 
@@ -2175,7 +2175,7 @@ void GameScene::pauseGame()
 void GameScene::dieGame()
 {
 	if (REF->getIsLockedHero() || hero->getB2Body()->GetLinearVelocity().y < 0
-		|| numberRevive >= 5) {	// if hero is locked
+		|| numberRevive >= 3) {	// if hero is locked
 		overGame();
 		return;
 	}

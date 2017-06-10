@@ -21,6 +21,8 @@ QT_CuuAmChanKinh * QT_CuuAmChanKinh::create()
 	ck->angle = -45.0;
 	ck->setRotation(ck->angle);
 
+	ck->autorelease();
+
 	return ck;
 }
 

@@ -23,6 +23,7 @@ EnemyHoacDo2 * EnemyHoacDo2::create(string jsonFile, string atlasFile, float sca
 	enemy->setScaleEnemy(scale);
 	enemy->health = 1;
 	enemy->exp = 15;
+	enemy->autorelease();
 	return enemy;
 
 }

@@ -30,6 +30,7 @@ public:
 	void update(float p_fDelta);
 	static MenuLayer* create(bool p_bOnlySelectStage);
     void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
+
 private:
 	const Size m_szVisibleSize = Director::getInstance()->getVisibleSize();
 	float m_fButtonStartPosition;							// make start and unlock button at same position
@@ -193,7 +194,7 @@ private:
 	void logUpgradeSkillEvent(int indexhero, int indexskill, int level);
 	//void logUpgradeSkillEvent(int indexhero, int indexskill, int level);
 private:
-		string indexHeroToName(int indexHero);
+	string indexHeroToName(int indexHero);
 };
 
 #endif // __MENUSCENE_H__

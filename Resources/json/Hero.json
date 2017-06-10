@@ -33,10 +33,10 @@
       "noti_5": "Purchase to more fun",
       "noti_6": "Boss is coming",
       "noti_7": "Come to Pipo game to get more",
-      "noti_8": "You dont have enough gold, get more to buy",
-      "noti_9": "You dont have enough diamond, get more to buy",
+      "noti_8": "You don't have enough gold, get more to buy",
+      "noti_9": "You don't have enough diamond, get more to buy",
       "noti_10": "Do you want to buy this pack?",
-      "noti_11": "You've take free coin 3 times today, comeback on tomorrow to get more"
+      "noti_11": "You've taken free coin 3 times today, comeback on tomorrow to get more"
     }
   ],
 
@@ -103,7 +103,7 @@
         "vi": "Tieu Long Nu"
       },
       "inforHero": {
-        "en": "The Johan’s master. Excellent at using concealed weapon. Raise 15% magnet’s item",
+        "en": "The Johan's master. Excellent at using concealed weapon. Raise 15% magnet's item",
         "vi": "Su phu cua Duong Qua. Gioi su dung am khi. Tang thoi gian su dung vat pham hut vang them 15%"
       },
       "avatarPath": "UI/UI_info_ingame/avatar_CoCo.png",
@@ -158,7 +158,7 @@
         "vi": "Hoang Dung"
       },
       "inforHero": {
-        "en": "Robin’s wife. Master of using stick. Revive with one time usage of Marvel Shield",
+        "en": "Robin's wife. Master of using stick. Revive with one time usage of Marvel Shield",
         "vi": "Vo cua Quach Tinh. Cao thu dung gay. Hoi sinh duoc su dung 1 lan chieu thuc Nhuyen Vi Giap"
       },
       "avatarPath": "UI/UI_info_ingame/avatar_HoangDung.png",

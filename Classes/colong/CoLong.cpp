@@ -351,7 +351,7 @@ void CoLong::createPool()
 
 	auto scale = this->getTrueRadiusOfHero() * 1.4f / 250;
 	for (int i = 0; i < 3; ++i) {
-		SkeletonAnimation * clone = new SkeletonAnimation("Animation/CoLong/skill2.json", "Animation/CoLong/skill2.atlas", scale);
+		SkeletonAnimation * clone = SkeletonAnimation::createWithFile("Animation/CoLong/skill2.json", "Animation/CoLong/skill2.atlas", scale);
 		poolSkill2->addObject(clone);
 	}
 }

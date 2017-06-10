@@ -33,6 +33,7 @@ protected:
 	void doCounterSkill2();
 
 	//SkeletonAnimation *effectSkill3;
+	int idSoundSkill3;
 	Sprite* wave;
 	void killAll();
 	void doCounterSkill3();
@@ -59,5 +60,12 @@ protected:
 	void updateMe(float dt);
 
 };
+
+#define SOUND_HDS_DIE				"sound/hdsdie.mp3"
+#define SOUND_HDS_HIT				"sound/hdshit.mp3"
+#define SOUND_HDS_SKILL1			"sound/hdsskill1.mp3"
+#define SOUND_HDS_SKILL2			"sound/hdsskill2.mp3"
+#define SOUND_HDS_SKILL3			"sound/hdsskill3.mp3"
+
 
 #endif // __HOANG_DUOC_SU_H__

@@ -124,6 +124,7 @@ void HoangDuocSu::fastAndFurious()
 
 void HoangDuocSu::doCounterSkill1()
 {
+	AudioManager::playSound(SOUND_HDS_SKILL1);
 	setScoreRatio(2);
 	isInSpecialMode = true;
 	fastAndFurious();
@@ -222,6 +223,9 @@ void HoangDuocSu::killAll()
 void HoangDuocSu::doCounterSkill3()
 {
 	//effectSkill3->setVisible(true);
+
+	idSoundSkill3 = AudioManager::playSoundForever(SOUND_HDS_SKILL3);
+
 	/*this->getB2Body()->SetGravityScale(0);
 	this->getB2Body()->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
 
@@ -252,6 +256,9 @@ void HoangDuocSu::doCounterSkill3()
 		if (checkDurationSkill3 >= getDurationSkill3() * 10) {
 			//this->getB2Body()->SetGravityScale(1);
 			//effectSkill3->setVisible(false);
+
+			AudioManager::stopSoundForever(idSoundSkill3);
+
 			setScoreRatio(1);
 			setIsDoneDuration3(true);
 			checkDurationSkill3 = 0;
@@ -278,14 +285,12 @@ void HoangDuocSu::runEffectSkill1()
 void HoangDuocSu::createEffect()
 {
 	auto scale_1 = getBoxHeight() / 170;
-	effectSkill1 = new SkeletonAnimation("Animation/HoangDuocSu/Skill_1_effect.json", "Animation/HoangDuocSu/Skill_1_effect.atlas", scale_1);
-	effectSkill1->autorelease();
+	effectSkill1 = SkeletonAnimation::createWithFile("Animation/HoangDuocSu/Skill_1_effect.json", "Animation/HoangDuocSu/Skill_1_effect.atlas", scale_1);
 	effectSkill1->setVisible(false);
 	this->getParent()->addChild(effectSkill1, ZORDER_ENEMY);
 
 	auto scale_2 = getBoxHeight() / 140;
-	effectSkill2 = new SkeletonAnimation("Animation/HoangDuocSu/Skill_2_effect1.json", "Animation/HoangDuocSu/Skill_2_effect1.atlas", scale_2);
-	effectSkill2->autorelease();
+	effectSkill2 = SkeletonAnimation::createWithFile("Animation/HoangDuocSu/Skill_2_effect1.json", "Animation/HoangDuocSu/Skill_2_effect1.atlas", scale_2);
 	effectSkill2->setOpacity(100);
 	effectSkill2->setVisible(false);
 	effectSkill2->clearTracks();
@@ -322,7 +327,7 @@ void HoangDuocSu::createPool()
 	poolSkill2->retain();
 
 	for (int i = 0; i < 12; ++i) {
-		auto value = random(0.8f, 1.5f);
+		auto value = random(0.7f, 1.7f);
 		auto scale = getTrueRadiusOfHero() / value / 128;
 		auto dctc = DaCauBongPhap::create("Animation/HoangDuocSu/Skill_2_effect2.json", 
 			"Animation/HoangDuocSu/Skill_2_effect2.atlas", scale);
@@ -382,22 +387,24 @@ void HoangDuocSu::landing()
 void HoangDuocSu::die()
 {
 	BaseHero::die();
-	AudioManager::playSound(SOUND_DQDIE);
+	AudioManager::playSound(SOUND_HDS_DIE);
 }
 
 void HoangDuocSu::attackNormal()
 {
 	if (!isDoneDuration2) {
+		AudioManager::playSound(SOUND_HDS_SKILL2);
 		counterSkill2++;
 		if ((counterSkill2 % 3) == 0) {
-			createDCTC(getBoneLocation("bone58"), 25);
-			createDCTC(getBoneLocation("bone58"), -25);
+			createDCTC(getBoneLocation("bone58"), 30);
+			createDCTC(getBoneLocation("bone58"), -30);
 		}
 
-		createDCTC(getBoneLocation("bone58"), 15);
-		createDCTC(getBoneLocation("bone58"), 5);
-		createDCTC(getBoneLocation("bone58"), -5);
-		createDCTC(getBoneLocation("bone58"), -15);
+		createDCTC(getBoneLocation("bone58"), 20);
+		createDCTC(getBoneLocation("bone58"), 10);
+		createDCTC(getBoneLocation("bone58"), 0);
+		createDCTC(getBoneLocation("bone58"), -10);
+		createDCTC(getBoneLocation("bone58"), -20);
 	}
 
 	BaseHero::attackNormal();
@@ -432,15 +439,17 @@ void HoangDuocSu::attackLanding()
 {
 	if (!isDoneDuration2) {
 		counterSkill2++;
+		AudioManager::playSound(SOUND_HDS_SKILL2);
 		if ((counterSkill2 % 3) == 0) {
-			createDCTC(getBoneLocation("bone58"), 25);
-			createDCTC(getBoneLocation("bone58"), -25);
+			createDCTC(getBoneLocation("bone58"), 30);
+			createDCTC(getBoneLocation("bone58"), -30);
 		}
 
-		createDCTC(getBoneLocation("bone58"), 15);
-		createDCTC(getBoneLocation("bone58"), 5);
-		createDCTC(getBoneLocation("bone58"), -5);
-		createDCTC(getBoneLocation("bone58"), -15);
+		createDCTC(getBoneLocation("bone58"), 20);
+		createDCTC(getBoneLocation("bone58"), 10);
+		createDCTC(getBoneLocation("bone58"), 0);
+		createDCTC(getBoneLocation("bone58"), -10);
+		createDCTC(getBoneLocation("bone58"), -20);
 	}
 	BaseHero::attackLanding();
 	changeSwordCategoryBitmask(BITMASK_SWORD);
@@ -465,7 +474,7 @@ void HoangDuocSu::attackLanding()
 
 void HoangDuocSu::injured()
 {
-	AudioManager::playSound(SOUND_DQHIT);
+	AudioManager::playSound(SOUND_HDS_HIT);
 	clearTracks();
 	addAnimation(0, "injured", false);
 	setToSetupPose();
@@ -591,6 +600,7 @@ void HoangDuocSu::stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSki
 	}
 
 	if (stopSkill3 && !getIsDoneDuration3()) {
+		AudioManager::stopSoundForever(idSoundSkill3);
 		//effectSkill3->setVisible(false);
 		isKillAll = false;
 		setIsDoneDuration3(true);

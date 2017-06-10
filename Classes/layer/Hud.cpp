@@ -201,7 +201,7 @@ void Hud::addButton()
 			coverSkill->setOpacity(50);
 			coverSkill->setPosition(origin_X);
 			coverSkill->setVisible(false);
-			coverSkill->setScale(SCREEN_SIZE.height / (11.5f * scaleRatio) / coverSkill->getContentSize().height);
+			coverSkill->setScale(SCREEN_SIZE.height / (12.5f * scaleRatio) / coverSkill->getContentSize().height);
 
 			addChild(coverSkill);
 

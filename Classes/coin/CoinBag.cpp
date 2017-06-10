@@ -19,6 +19,7 @@ CoinBag * CoinBag::create(string jsonFile, string atlasFile, float scale)
 	coin->setTag(TAG_COINBAG);
 	coin->setAnimation(0, "Gold_bag", true);
 	coin->effect = nullptr;
+	coin->autorelease();
 	return coin;
 }
 
@@ -34,6 +35,7 @@ CoinBag * CoinBag::create(string filename, float scale)
 	bag->setTag(TAG_COINBAG);
 	bag->setAnimation(0, "Gold_bag", true);
 	bag->effect = nullptr;
+	bag->autorelease();
 	return bag;
 }
 

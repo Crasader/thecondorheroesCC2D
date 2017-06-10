@@ -14,6 +14,7 @@ DQ_ToanChanKiemPhap * DQ_ToanChanKiemPhap::create()
 	DQ_ToanChanKiemPhap* tckp = new DQ_ToanChanKiemPhap();
 	tckp->initWithSpriteFrameName("skill1.png");
 	tckp->setTag(TAG_DQ_TOAN_CHAN_KIEM_PHAP);
+	tckp->autorelease();
 	return tckp;
 }
 

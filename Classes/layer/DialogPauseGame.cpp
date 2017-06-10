@@ -158,12 +158,13 @@ void DialogPause::selectedEventMusic(Ref* pSender, ui::CheckBox::EventType type)
 	switch (type)
 	{
 	case ui::CheckBox::EventType::SELECTED:
-		log("Music enable");
+		//log("Music enable");
 		ref->setBoolForKey(KEY_IS_MUSIC, true);
+		//AudioManager::playMusic(MUSIC_STAGE1);
 		break;
 
 	case ui::CheckBox::EventType::UNSELECTED:
-		log("Music disable");
+		//log("Music disable");
 		ref->setBoolForKey(KEY_IS_MUSIC, false);
 		break;
 
@@ -325,7 +326,8 @@ int DialogRevive::calGoldRevive(int number)
 {
 	int goldRevive = 0;
 	if (number == 1 || number == 0) return 300;
-	goldRevive = (number - 1) * 100 + calGoldRevive(number - 1);
+	//goldRevive = (number - 1) * 100 + calGoldRevive(number - 1);
+	goldRevive = 300 * pow(2, number - 1);
 	return goldRevive;
 }
 

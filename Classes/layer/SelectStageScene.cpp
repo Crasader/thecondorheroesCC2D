@@ -19,6 +19,7 @@ bool SelectStageLayer::init(int charId)
 	auto scaleY = screenSize.height / tmxMap->getContentSize().height;
 	tmxMap->setScale(scaleY);
 
+	this->charId = charId;
 	createCloud();
 
 	scrollView = ui::ScrollView::create();
@@ -83,12 +84,12 @@ bool SelectStageLayer::init(int charId)
 
 		if (stage < currentStageUnlocked) {
 			mapBtn = MenuItemSprite::create(un_locked, un_locked_press,
-					CC_CALLBACK_0(SelectStageLayer::gotoPlay, this, id, stage, mapId, charId));
+					CC_CALLBACK_0(SelectStageLayer::gotoPlay, this, id, stage, mapId));
 		}
 		else if (stage == currentStageUnlocked) {
 			if (mapId <= currentMapUnlocked) {
 				mapBtn = MenuItemSprite::create(un_locked, un_locked_press,
-					CC_CALLBACK_0(SelectStageLayer::gotoPlay, this, id, stage, mapId, charId));
+					CC_CALLBACK_0(SelectStageLayer::gotoPlay, this, id, stage, mapId));
 			}
 			else {
 				mapBtn = MenuItemSprite::create(locked, locked,
@@ -173,22 +174,23 @@ void SelectStageLayer::moveAva()
 	}
 }
 
-void SelectStageLayer::gotoPlay(int id, int stage, int map, int charId)
+void SelectStageLayer::gotoPlay(int id, int stage, int map)
 {
 	AudioManager::playSound(SOUND_BTCLICK);
-	auto m_nLifeNumber = REF->getNumberOfLife();
-	if (m_nLifeNumber > 0) {
+	auto menuLayer = (MenuLayer*) this->getParent();
+	if (menuLayer->downLife()) {
 		REF->setLastMapId(id);
-		m_nLifeNumber--;
-		REF->setDownLife(1);
-		REF->setAnchorTime(time(0));
 		AudioManager::stopMusic();
-		auto _aScene = LoadingLayer::createScene(stage, map, charId);
-		Director::getInstance()->replaceScene(_aScene);
-	} else {
-		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(1), TOAST_LONG);
-		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
-		addChild(_pToast, 10);
+
+		this->stage = stage;
+		this->map = map;
+
+		auto action = CallFunc::create([&]() {
+			auto _aScene = LoadingLayer::createScene(this->stage, this->map, charId);
+			Director::getInstance()->replaceScene(_aScene);
+		});
+
+		this->runAction(Sequence::createWithTwoActions(DelayTime::create(0.75f), action));
 	}
 }
 

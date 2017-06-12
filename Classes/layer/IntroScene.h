@@ -4,7 +4,6 @@
 
 #include "cocos2d.h"
 #include "MenuScene.h"
-#include "manager\AudioManager.h"
 
 USING_NS_CC;
 

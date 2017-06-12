@@ -145,7 +145,7 @@ void Hud::addButton()
 
 	menu = Menu::create();
 
-	if (!REF->getIsFirstPlay()) {
+	if (!REF->getIsFirstPlay() && REF->getSelectedHero() == REF->getLastPickHero()) {
 		addAttack();
 
 		addSkills();
@@ -365,7 +365,8 @@ void Hud::addBird()
 
 void Hud::doCalling()
 {
-	REF->decreaseNumberItemBird();
+	if(REF->getSelectedHero() == REF->getLastPickHero())
+		REF->decreaseNumberItemBird();
 
 	btnCalling->setVisible(false);
 	btnCalling->setEnabled(false);
@@ -816,6 +817,9 @@ void Hud::tryHud()
 	addAttack();
 
 	addSkills();
+
+	addBird();
+	menu->addChild(btnCalling);
 }
 
 void Hud::silence()

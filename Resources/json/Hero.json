@@ -11,32 +11,73 @@
 
   "tip": [
     {
-      "tip_1": "Can jump again when  you in the air",
-      "tip_2": "Slash a Gold Bag to take a lot of Gold",
-      "tip_3": "Magnet will automatic collect Gold on your road",
-      "tip_4": "After reborn, you will clear all enemy you can see",
-      "tip_5": "Don't let fall in a abyss on map",
-      "tip_6": "Let's call Cordon when you have scanty of health",
-      "tip_7": "Buy Heart item to increase health",
-      "tip_8": "You can take some Gold after complete a quest",
-      "tip_9": "You can exchange Gold by Diamond",
-      "tip_10": "Upgrade a skill will make it less time of coundown"
+      "en": {
+        "tip_1": "Can jump again when you in the air",
+        "tip_2": "Slash a Gold Bag to take a lot of Gold",
+        "tip_3": "Magnet will automatic collect Gold on your road",
+        "tip_4": "After reborn, you will clear all enemy you can see",
+        "tip_5": "Don't let fall in a abyss on map",
+        "tip_6": "Let's call Cordon when you have scanty of health",
+        "tip_7": "Buy Heart item to increase health",
+        "tip_8": "You can take some Gold after complete a quest",
+        "tip_9": "You can exchange Gold by Diamond",
+        "tip_10": "Upgrade a skill will make it less time of cooldown",
+        "tip_11": "This hero is locked!",
+        "tip_12": "Get Johan to level 10 to unlock Hana",
+        "tip_13": "Get Hana to level 10 to unlock Kim",
+        "tip_14": "Get Kim to level 15 to unlock Athur",
+        "tip_15": "Get Athur to level 15 to unlock Robin"
+      },
+
+      "vi": {
+        "tip_1": "Có thể nhảy lần nữa khi ở trên không",
+        "tip_2": "Chém túi vàng sẽ nhận được nhiều vàng hơn",
+        "tip_3": "Nam châm sẽ tự động hút vàng trên đường đi",
+        "tip_4": "Sau khi hồi sinh, lính xung quanh sẽ bị xóa sạch",
+        "tip_5": "Đừng để rơi xuống hố sâu",
+        "tip_6": "Hãy gọi Chim Điêu khi cần thiết",
+        "tip_7": "Mua item Máu để tăng 1 máu trong trận",
+        "tip_8": "Bạn có thể nhận được một số vàng khi hoàn thành mục tiêu",
+        "tip_9": "Bạn có thể quy đổi kim cương thành vàng",
+        "tip_10": "Nâng cấp một kỹ năng sẽ giảm thời gian hồi chiêu của kĩ năng đó",
+        "tip_11": "Tướng đang bị khóa",
+        "tip_12": "Nâng cấp Dương Quá lên cấp 10 để mở Cô Long",
+        "tip_13": "Nâng cấp Cô Long lên cấp 10 để mở Hoàng Dung",
+        "tip_14": "Nâng cấp Hoàng Dung lên cấp 15 để mở Hoàng Dược Sư",
+        "tip_15": "Nâng cấp Hoàng Dược Sư lên cấp 15 để mở Quách Tĩnh"
+      }
     }
   ],
 
   "notification": [
     {
-      "noti_1": "Your cake for play is not enough",
-      "noti_2": "Your gold is not enough",
-      "noti_3": "Your diamond is not enough",
-      "noti_4": "Get more diamond to buy",
-      "noti_5": "Purchase to more fun",
-      "noti_6": "Boss is coming",
-      "noti_7": "Come to Pipo game to get more",
-      "noti_8": "You don't have enough gold, get more to buy",
-      "noti_9": "You don't have enough diamond, get more to buy",
-      "noti_10": "Do you want to buy this pack?",
-      "noti_11": "You've taken free coin 3 times today, comeback on tomorrow to get more"
+      "en": {
+        "noti_1": "Your cake for play is not enough",
+        "noti_2": "Your gold is not enough",
+        "noti_3": "Your diamond is not enough",
+        "noti_4": "Get more diamond to buy",
+        "noti_5": "Purchase to more fun",
+        "noti_6": "Boss is coming",
+        "noti_7": "Come to Pipo game to get more",
+        "noti_8": "You don't have enough gold, get more to buy",
+        "noti_9": "You don't have enough diamond, get more to buy",
+        "noti_10": "Do you want to buy this pack?",
+        "noti_11": "You've taken free coin 3 times today, comeback on tomorrow to get more"
+      },
+
+      "vi": {
+        "noti_1": "Bánh bao không đủ để chơi",
+        "noti_2": "Vàng không đủ",
+        "noti_3": "Kim cương không đủ",
+        "noti_4": "Cần nhiều kim cương hơn để mua",
+        "noti_5": "Mua",
+        "noti_6": "Boss đang tới",
+        "noti_7": "Đến với PiPoGame để chơi nhiều hơn",
+        "noti_8": "Bạn không đủ vàng, cần nhiều hơn để mua",
+        "noti_9": "Bạn không đủ kim cương, cần nhiều hơn để mua",
+        "noti_10": "Bạn có muốn mua vật phẩm này?",
+        "noti_11": "Bạn đã nhận được 3 lần vàng miễn phí ngày hôm nay, quay lại vào ngày mai để nhận tiếp"
+      }
     }
   ],
 

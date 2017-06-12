@@ -1661,6 +1661,7 @@ void GameScene::reachNewMap()
 	if (stageUnlocked == stage) {
 		int mapUnlocked = REF->getCurrentMapUnLocked();
 		if (mapUnlocked == map) {
+			REF->setReachNewMap(true);
 			switch (stageUnlocked)
 			{
 			case 1: case 2:
@@ -1685,7 +1686,7 @@ void GameScene::reachNewMap()
 				break;
 
 			case 4:
-				if (map < 3) {
+				if (map < 4) {
 					REF->setMapUnlocked(map + 1);
 				}
 				break;
@@ -1736,7 +1737,7 @@ void GameScene::initGroundPhysic(b2World * world, Point pos, Size size)
 	fixtureDef.shape = &shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_FLOOR;
-	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR | BITMASK_COIN | BITMASK_BIRD| BITMASK_WOODER;
+	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR | BITMASK_COIN | BITMASK_BIRD| BITMASK_WOODER | BITMASK_ENEMY;
 
 	bodyDef.type = b2_staticBody;
 
@@ -2105,7 +2106,9 @@ void GameScene::reviveHero()
 void GameScene::callingBird()
 {
 	AudioManager::playSound(SOUND_BIRD);
-	REF->setUpNumberQuest(INDEX_QUEST_CALL_BIRD, 1);
+
+	if(charId == REF->getLastPickHero())
+		REF->setUpNumberQuest(INDEX_QUEST_CALL_BIRD, 1);
 	if (hero->getActiveSkill()->isVisible())
 		hero->getActiveSkill()->setVisible(false);
 
@@ -2250,7 +2253,7 @@ void GameScene::winGame()
 			this->removeChild(child, true);
 	}
 
-	//reachNewMap();
+	reachNewMap();
 
 	blurScreen();
 	if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {

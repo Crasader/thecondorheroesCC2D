@@ -154,6 +154,7 @@ public:
 
 #define REF RefManager::getInstance()
 // Ref
+
 #define KEY_LANGUAGE						"Language"
 #define KEY_FIRST							"FirstPlay"
 #define KEY_LAST_MAP_ID						"LastMapID"
@@ -228,6 +229,18 @@ public:
 #define INDEX_QUEST_TLN			4
 #define INDEX_QUEST_HD			5
 #define INDEX_QUEST_RAMPAGE		6
-#define INDEX_QUEST_DIAMOND		7
+#define INDEX_QUEST_WOODER		7
+#define INDEX_QUEST_TOANCHAN_2	8
+#define INDEX_QUEST_BOSS_1		9
+#define INDEX_QUEST_BEE			10
+#define INDEX_QUEST_ICE			11
+#define INDEX_QUEST_HLB_1		12
+#define INDEX_QUEST_HLB_2		13
+#define INDEX_QUEST_BOSS_2		14
+#define INDEX_QUEST_HD_1		15
+#define INDEX_QUEST_HD_2		16
+#define INDEX_QUEST_DNB			17
+
+
 
 #endif // __REF_MANAGER_H__

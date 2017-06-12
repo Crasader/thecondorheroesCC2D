@@ -36,7 +36,7 @@ void EnemyLinhCamRoi::initBoxPhysic(b2World * world, Point pos)
 	fixtureDef.friction = 1.0f;
 	fixtureDef.restitution = 0.0f;
 	fixtureDef.shape = &shape;
-	fixtureDef.filter.categoryBits = BITMASK_WOODER;
+	fixtureDef.filter.categoryBits = BITMASK_ENEMY;
 	fixtureDef.filter.maskBits = BITMASK_SWORD | BITMASK_FLOOR;
 
 	b2BodyDef bodyDef;

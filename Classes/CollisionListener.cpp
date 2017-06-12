@@ -322,11 +322,11 @@ void CollisionListener::BeginContact(b2Contact * contact)
 				Size(kp->getContentSize().width, kp->getContentSize().height * random(0.61f, 0.63f))));
 		}
 		else if (not_ground->getTag() == TAG_QT_CUU_AM_CHAN_KINH) {
-			if (collidePoint.x <= bodyB->GetPosition().x - (not_ground->getBoundingBox().size.width / 6 / PTM_RATIO) / 2) {
+			//if (collidePoint.x <= bodyB->GetPosition().x - (not_ground->getBoundingBox().size.width / 6 / PTM_RATIO) / 2) {
 				auto ck = (ChanKinh*)not_ground;
 				ck->setIsCollide(true);
 				ck->explosion();
-			}
+			//}
 		}
 
 	}

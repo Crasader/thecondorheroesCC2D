@@ -26,14 +26,6 @@ bool SceneIntro::init() {
 	auto _aOrigin = Director::getInstance()->getVisibleOrigin();
 	this->setPosition(_aOrigin);
 
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("item/coin.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Map/bg.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/skill.plist");
-	//SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/Select_Stage/boss_eff.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/fire_eff.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/chidori_eff.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/rock_eff.plist");
-
 	auto _aIntroBackground = Sprite::create("UI/UI_intro/background.jpg");
 	float _fTemp = _aIntroBackground->getContentSize().height * m_szVisibleSize.width / _aIntroBackground->getContentSize().width;
 	if (_fTemp > m_szVisibleSize.height) {

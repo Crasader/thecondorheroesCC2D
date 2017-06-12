@@ -79,12 +79,12 @@ int JSonHeroManager::getGoldUpgradeLevelX(int indexHero)
 
 string JSonHeroManager::getTipAtX(int index)
 {
-	assert(index > 0 && index <= 10);
-	return jsonDoc["tip"][0][("tip_" + StringUtils::format("%i", index)).c_str()].GetString();
+	assert(index > 0 && index <= 15);
+	return jsonDoc["tip"][0][REF->getLanguage() == 0 ? "en" : "vi"][("tip_" + StringUtils::format("%i", index)).c_str()].GetString();
 }
 
 string JSonHeroManager::getNotifyAtX(int index)
 {
 	assert(index > 0 && index <= 11);
-	return jsonDoc["notification"][0][("noti_" + StringUtils::format("%i", index)).c_str()].GetString();
+	return jsonDoc["notification"][0][REF->getLanguage() == 0 ? "en" : "vi"][("noti_" + StringUtils::format("%i", index)).c_str()].GetString();
 }

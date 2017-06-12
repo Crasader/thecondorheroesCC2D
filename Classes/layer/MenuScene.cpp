@@ -2,7 +2,7 @@
 #include "MenuScene.h"
 #include "LoadingLayer.h"
 #include "IntroScene.h"
-
+#include "manager\AudioManager.h"
 #include "manager\JSonHeroManager.h"
 #include "manager\JSonMenuManager.h"
 #include "manager\JSonQuestManager.h"
@@ -122,6 +122,7 @@ void MenuLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 
 			if (backNumber == 0) {
 				backNumber++;
+				this->schedule(schedule_selector(MenuLayer::singlePress), 2.5f, 1, 0); // interval: 2s, repeate once, delay 0
 				CustomLayerToToast *_pToast = CustomLayerToToast::create("Press back again to exit", TOAST_SHORT);
 				_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
 				this->addChild(_pToast, 10);
@@ -135,6 +136,42 @@ void MenuLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 			buttonBackHandle();
 		}
     }
+}
+
+bool MenuLayer::downLife()
+{
+	if (m_nLifeNumber > 0) {
+		m_nLifeNumber--;
+		REF->setDownLife(1);
+		REF->setAnchorTime(time(0));
+
+		initTopMainMenu();
+
+		m_iconLife = Sprite::create("UI/UI_main_menu/icon_life.png");
+		m_iconLife->setScaleY(m_pTopMainMenu->getBoundingBox().size.height / m_iconLife->getBoundingBox().size.height);
+		m_iconLife->setAnchorPoint(Vec2(0, 0.5f));
+		m_iconLife->setPosition(m_szVisibleSize.width * 0.128f, m_pTopMainMenu->getPositionY());
+		addChild(m_iconLife, 10);
+
+		auto moveDown = MoveBy::create(0.75f, Vec2(0.0f, -m_szVisibleSize.height * 0.3f));
+		
+		m_iconLife->schedule([&](float dt) {
+			int _opacity = (int) m_iconLife->getOpacity();
+			m_iconLife->setOpacity(_opacity - 1);
+			if (_opacity <= 10) m_iconLife->unschedule("key");
+		}, 0.003f, "key");
+
+		m_iconLife->runAction(moveDown);
+
+		return true;
+	}
+	else {
+		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(1), TOAST_LONG);
+		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
+		addChild(_pToast, 10);
+
+		return false;
+	}
 }
 
 void MenuLayer::update(float p_fDelta) {
@@ -656,6 +693,7 @@ void MenuLayer::initItemBoard() {
 
 void MenuLayer::initUpgradeBoard() {
 	m_pUpgradeBoard->removeAllChildrenWithCleanup(true);
+	REF->pointToCurrentHero(m_nIndexHeroPicked);
 
 	// board upgrate
 	Sprite *_pBoardUpgrate = Sprite::create("UI/UI_main_menu/board_skill_upgrade.png");
@@ -2270,7 +2308,7 @@ void MenuLayer::buttonBuyDiamondHandle(int p_nIndexDiamondPack) {
 	initTopMainMenu();
 	m_pTopMenu->setEnabled(false);
 
-	REF->setUpNumberQuest(7, JSMENU->getDiamondPackNumberDiamond());
+	//REF->setUpNumberQuest(7, JSMENU->getDiamondPackNumberDiamond());
 	//initQuestBoard(0);
 }
 
@@ -2308,14 +2346,7 @@ void MenuLayer::buttonUnlockHeroHandle() {
 	REF->pointToCurrentHero(m_nIndexHeroPicked);
 	int _arLevelToUnlock[] = { 0, 10, 10, 15, 15};
 	if (_nPreHeroLevel < _arLevelToUnlock[m_nIndexHeroPicked]) {
-		string _arTipToUnlockHero[5] = {
-			"This hero is unlocked!",
-			"Get Johan to level 10 to unlock Hana",
-			"Get Hana to level 10 to unlock Kim",
-			"Get Kim to level 15 to unlock Athur",
-			"Get Athur to level 15 to unlock Robin"
-		};
-		CustomLayerToToast *_pToast = CustomLayerToToast::create(_arTipToUnlockHero[m_nIndexHeroPicked], TOAST_LONG);
+		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getTipAtX(11 + m_nIndexHeroPicked), TOAST_SHORT);
 		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
 		this->addChild(_pToast, 10);
 
@@ -2758,6 +2789,12 @@ string MenuLayer::indexHeroToName(int indexHero)
 	default:
 		break;
 	}
+}
+
+void MenuLayer::singlePress(float dt)
+{
+	this->unschedule(schedule_selector(MenuLayer::singlePress));
+	backNumber = 0;
 }
 
 void MenuLayer::moveLayerViaDirection(Layer *p_pLayer, int p_nDirection) {

@@ -54,7 +54,7 @@ void AudioManager::cacheAudio()
 void AudioManager::playSound(string keysound)
 {
 	auto ref = UserDefault::getInstance()->sharedUserDefault();
-	bool checkSound = ref->getBoolForKey(KEY_IS_SOUND,true);
+	bool checkSound = ref->getBoolForKey(KEY_IS_SOUND, true);
 	if (checkSound) {
 		experimental::AudioEngine::play2d(keysound);
 	}

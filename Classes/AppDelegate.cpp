@@ -1,5 +1,7 @@
 #include "AppDelegate.h"
 #include "layer/IntroScene.h"
+#include "layer/SplashScene.h"
+#include "AudioEngine.h"
 #include "thirdsdkhelper/AdmobHelper.h"
 #include "thirdsdkhelper/GoogleAnalysticHelper.h"
 #include "thirdsdkhelper/VungleHelper.h"
@@ -80,8 +82,14 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    //auto scene = GameScene::createScene();
-	auto scene = SceneIntro::createScene();
+
+	Scene* scene;
+
+	if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+		scene = SceneIntro::createScene();
+	else
+		scene = SplashScene::createScene();
+
 	AdmobHelper::getInstance();
 	GAHelper::getInstance();
 	VungleHelper::getInstance();

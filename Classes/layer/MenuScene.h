@@ -31,6 +31,8 @@ public:
 	static MenuLayer* create(bool p_bOnlySelectStage);
     void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
 
+	bool downLife();
+
 private:
 	const Size m_szVisibleSize = Director::getInstance()->getVisibleSize();
 	float m_fButtonStartPosition;							// make start and unlock button at same position
@@ -59,6 +61,7 @@ private:
 	Sprite *m_arItemCoinSprite[5];
 	Label *m_arItemLabelCost[5];
 	Sprite *m_pReceviveDailyRewardSprite;
+	Sprite *m_iconLife;
 
 	SkeletonAnimation *m_pSpriteQuestAttention;						// 
 	SkeletonAnimation *m_pSpriteFreeCoinAttention;						// 
@@ -195,6 +198,7 @@ private:
 	//void logUpgradeSkillEvent(int indexhero, int indexskill, int level);
 private:
 	string indexHeroToName(int indexHero);
+	void singlePress(float dt);
 };
 
 #endif // __MENUSCENE_H__

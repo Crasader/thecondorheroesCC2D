@@ -37,7 +37,7 @@
 #include "thirdsdkhelper\VungleHelper.h"
 #include "thirdsdkhelper\GoogleAnalysticHelper.h"
 
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 class GameScene : public cocos2d::Layer, public sdkbox::VungleListener
 #else
 class GameScene : public cocos2d::Layer
@@ -127,13 +127,6 @@ private:
 	EventListenerTouchOneByOne* touch_listener;
 
 	void selectHero();
-
-	// Create For Hero
-	void createDuongQua(string path_Json, string path_Atlas);
-	void createCoLong(string path_Json, string path_Atlas);
-	void createHoangDung(string path_Json, string path_Atlas);
-	void createHoangDuocSu(string path_Json, string path_Atlas);
-	void createQuachTinh(string path_Json, string path_Atlas);
 	void createEagle(Point position);
 	void heroGetOffEagle();
 
@@ -162,7 +155,7 @@ private:
 	void createEnemyLinhTenThang(MyLayer * layer, Vec2 pos);
 	void createEnemyLinhTenXien(MyLayer * layer, Vec2 pos);
 	void createEnemyLinhCamRoi(MyLayer * layer, Vec2 pos);
-	void creatBoss();
+	void createBoss();
 
 
 	// function for process box2d
@@ -222,6 +215,7 @@ private:
 
 public:
 	void onBegin();
+	void onExit();
 	
 	// update public
 	void updateMultiKills();		//DuongPM edited for multi kills
@@ -268,7 +262,7 @@ public:
 	void jump();
 	void resumeAfterTut(int caseTut);
 
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 	// vungle
 	 void onVungleAdViewed(bool isComplete);
 	 void onVungleCacheAvailable();

@@ -1,41 +1,13 @@
 
 Skill_3_effect2.png
-size: 1024,1024
+size: 512,512
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-skill3_effect_01
+skill3
   rotate: false
   xy: 2, 2
-  size: 192, 800
-  orig: 192, 800
-  offset: 0, 0
-  index: -1
-skill3_effect_02
-  rotate: false
-  xy: 196, 2
-  size: 192, 800
-  orig: 192, 800
-  offset: 0, 0
-  index: -1
-skill3_effect_03
-  rotate: false
-  xy: 390, 2
-  size: 192, 800
-  orig: 192, 800
-  offset: 0, 0
-  index: -1
-skill3_effect_04
-  rotate: false
-  xy: 584, 2
-  size: 192, 800
-  orig: 192, 800
-  offset: 0, 0
-  index: -1
-skill3_effect_05
-  rotate: false
-  xy: 778, 2
-  size: 192, 800
-  orig: 192, 800
-  offset: 0, 0
+  size: 455, 455
+  orig: 500, 500
+  offset: 23, 24
   index: -1

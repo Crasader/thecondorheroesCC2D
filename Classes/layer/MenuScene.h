@@ -8,12 +8,15 @@
 #include <time.h>
 #include "network/HttpClient.h"
 
-#include "ui_custom/CustomLayerToToast.h"
+#include "ui_custom\CustomLayerToToast.h"
 #include "SelectStageScene.h"
+
+#include "thirdsdkhelper\GoogleAnalysticHelper.h"
 #include "thirdsdkhelper\GoogleAnalysticHelper.h"
 #include "thirdsdkhelper\IAPHelper.h"
 #include "thirdsdkhelper\VungleHelper.h"
 #include "thirdsdkhelper\SdkboxPlay.h"
+
 
 USING_NS_CC;
 using namespace spine;
@@ -21,7 +24,7 @@ using namespace std;
 using namespace ui;
 using namespace network;
 
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 class MenuLayer : public cocos2d::Layer, public sdkbox::IAPListener, public sdkbox::VungleListener
 #else
 class MenuLayer : public cocos2d::Layer
@@ -31,6 +34,8 @@ public:
 	virtual bool init(bool p_bOnlySelectStage);
 	void update(float p_fDelta);
 	static MenuLayer* create(bool p_bOnlySelectStage);
+    void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
+
 private:
 	const Size m_szVisibleSize = Director::getInstance()->getVisibleSize();
 	float m_fButtonStartPosition;							// make start and unlock button at same position
@@ -48,15 +53,17 @@ private:
 	int m_arItemPrice[5];									// cost of items
 	int m_nShopOption = 0;
 	int m_nLanguage = 0;
+    int backNumber = 0;
 
 	Label *m_pTimeCounter;									// time counter to increase life
 	MenuItemSprite *m_arHeroButton[5];						// hero mini icon
 	SkeletonAnimation *m_arPreviewHero[5];					// hero preview
 	Label *m_arLabelNumberItemOwning[5];					// 
-	MenuItemSprite *m_arBuyItemButton[5];
+	Button *m_arBuyItemButton[5];
 	Sprite *m_arSpriteItemMax[5];
 	Sprite *m_arItemCoinSprite[5];
 	Label *m_arItemLabelCost[5];
+	Sprite *m_pReceviveDailyRewardSprite;
 
 	SkeletonAnimation *m_pSpriteQuestAttention;						// 
 	SkeletonAnimation *m_pSpriteFreeCoinAttention;						// 
@@ -85,11 +92,11 @@ private:
 	SelectStageLayer *m_pSelectStageLayer = nullptr;
 	Layer *m_pBlurScreen;
 	LayerColor *m_pBuyPackConfirmBackground;
+	LayerColor *m_pShopBlurBackground;
 
 	// menus
 	Menu *m_pTopMenu;
 	Menu *m_pBottomMainMenu;
-	Menu *m_pItemBoardMenu;
 	Menu *m_pQuestBoardMenu;
 	Menu *m_pSkillBoardMenu;
 	Menu *m_pBottomHeroMenu;
@@ -133,6 +140,7 @@ private:
 	void buttonStartHandle();
 
 	void buttonDailyRewardHandle();
+	void buttonConfirmDailyRewardHandle();
 
 	// upgrade skill handle
 	void buttonUpgradeSkillHandle(int p_nIndexSkill);
@@ -145,6 +153,7 @@ private:
 
 	// buy items
 	void buttonBuyItemHandle(int p_nIndexItem);
+	void receiveButtonPressEvent(Ref *pSender, Widget::TouchEventType type, int p_nIndexItem);
 
 	// reward quest
 	void buttonRewardQuest(int p_nQuestIndex);
@@ -197,7 +206,7 @@ private:
 
 
 	//void logUpgradeSkillEvent(int indexhero, int indexskill, int level);
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 	virtual void onInitialized(bool ok) override;
 	virtual void onSuccess(sdkbox::Product const& p) override;
 	virtual void onFailure(sdkbox::Product const& p, const std::string &msg) override;
@@ -214,13 +223,9 @@ private:
 	void onVungleAdReward(const std::string& name);
 
 #endif // DEBUG
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-	// vungle
-	
-	// ia
-#endif 
+
 private:
-		string indexHeroToName(int indexHero);
+	string indexHeroToName(int indexHero);
 };
 
 #endif // __MENUSCENE_H__

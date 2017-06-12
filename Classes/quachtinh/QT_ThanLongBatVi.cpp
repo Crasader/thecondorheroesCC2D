@@ -14,6 +14,7 @@ QT_ThanLongBatVi * QT_ThanLongBatVi::create()
 	QT_ThanLongBatVi* tl = new QT_ThanLongBatVi();
 	tl->initWithSpriteFrameName("skill2_lightning_1.png");
 	tl->setTag(TAG_QT_THAN_LONG_BAT_VI);
+	tl->autorelease();
 	return tl;
 }
 

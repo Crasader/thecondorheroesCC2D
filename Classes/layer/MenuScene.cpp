@@ -3,10 +3,10 @@
 #include "LoadingLayer.h"
 #include "IntroScene.h"
 
-#include "manager/JSonHeroManager.h"
-#include "manager/JSonMenuManager.h"
-#include "manager/JSonQuestManager.h"
-#include "manager/RefManager.h"
+#include "manager\JSonHeroManager.h"
+#include "manager\JSonMenuManager.h"
+#include "manager\JSonQuestManager.h"
+#include "manager\RefManager.h"
 
 MenuLayer * MenuLayer::create(bool p_bOnlySelectStage) {
 	MenuLayer *pRet = new(std::nothrow) MenuLayer();
@@ -32,9 +32,21 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 	Vec2 _v2Origin = Director::getInstance()->getVisibleOrigin();
 	this->setPosition(_v2Origin);
 
-	m_pBuyPackConfirmBackground = LayerColor::create(Color4B(0, 0, 0, 220));
+	m_pBuyPackConfirmBackground = LayerColor::create(Color4B(0, 0, 0, 200));
 	m_pBuyPackConfirmBackground->setVisible(false);
 	this->addChild(m_pBuyPackConfirmBackground, 10);
+
+	m_pShopBlurBackground = LayerColor::create(Color4B(0, 0, 0, 220));
+	m_pShopBlurBackground->setVisible(false);
+	this->addChild(m_pShopBlurBackground, 5);
+
+	// shop
+	m_pShopBoardLayer = Layer::create();
+	this->addChild(m_pShopBoardLayer, 6);
+
+	m_pBlurScreen = Layer::create();
+	this->addChild(m_pBlurScreen, 8);
+	m_pBlurScreen->setVisible(false);
 
 	if (p_bOnlySelectStage) {
 		m_nMenuStatus = 4;
@@ -49,69 +61,82 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 		m_pSelectStageLayer = SelectStageLayer::create(m_nIndexHeroSelected);
 		m_pSelectStageLayer->moveAva();
 		this->addChild(m_pSelectStageLayer, 3);
-
-		m_pBlurScreen = Layer::create();
-		m_pBlurScreen->setScaleX(m_szVisibleSize.width / m_pBlurScreen->getContentSize().width); // full screen size width
-		m_pBlurScreen->setScaleY(m_szVisibleSize.height / m_pBlurScreen->getContentSize().height); // full screen size height
-		m_pBlurScreen->setPosition(Vec2(0.0f, 0.0f));
-		this->addChild(m_pBlurScreen, 5);
-		m_pBlurScreen->setVisible(false);
-
-		// shop
-		m_pShopBoardLayer = Layer::create();
-		m_pShopBoardLayer->setContentSize(Size(m_szVisibleSize.width, m_szVisibleSize.height)); // fill screen width, 25% screen height
-		m_pShopBoardLayer->setPosition(0.0f, 0.0f);
-		this->addChild(m_pShopBoardLayer, 6);
+        
+        auto key_listener = EventListenerKeyboard::create();
+        key_listener->onKeyPressed = CC_CALLBACK_2(MenuLayer::onKeyPressed, this);
+        _eventDispatcher->addEventListenerWithSceneGraphPriority(key_listener, this);
+        
 		this->scheduleUpdate();
 
 		return true;
 	}
 
-	m_pGameBackground = new Layer(); // layer 1 : background
+	m_pGameBackground = Layer::create(); // layer 1 : background
 	this->addChild(m_pGameBackground, 1);
 	initBackgroundLayer();
 
-	m_pGameScene = new Layer(); // layer 2 : scene
+	m_pGameScene = Layer::create(); // layer 2 : scene
 	this->addChild(m_pGameScene, 2);
-	float _fScale = m_szVisibleSize.height / 2;
-	m_pGameScene->setContentSize(Size(m_szVisibleSize.width * 0.6f, m_szVisibleSize.height * 0.65f));
-	m_pGameScene->setPosition(0.0f, m_szVisibleSize.height * 0.2f);
 	m_arPreviewHero[0] = new SkeletonAnimation("UI/UI_main_menu/PreviewDuongQua/s_DuongQua.json",
-		"UI/UI_main_menu/PreviewDuongQua/s_DuongQua.atlas", m_pGameScene->getContentSize().height / 650);
+		"UI/UI_main_menu/PreviewDuongQua/s_DuongQua.atlas");
 	m_arPreviewHero[1] = new SkeletonAnimation("UI/UI_main_menu/PreviewCoLong/s_CoCo.json",
-		"UI/UI_main_menu/PreviewCoLong/s_CoCo.atlas", m_pGameScene->getContentSize().height / 650);
-	m_arPreviewHero[2] = new SkeletonAnimation("UI/UI_main_menu/PreviewDuongQua/s_DuongQua.json",
-		"UI/UI_main_menu/PreviewDuongQua/s_DuongQua.atlas", m_pGameScene->getContentSize().height / 650);
+		"UI/UI_main_menu/PreviewCoLong/s_CoCo.atlas");
+	m_arPreviewHero[2] = new SkeletonAnimation("UI/UI_main_menu/PreviewHoangDung/s_HoangDung.json",
+		"UI/UI_main_menu/PreviewHoangDung/s_HoangDung.atlas");
 	m_arPreviewHero[3] = new SkeletonAnimation("UI/UI_main_menu/PreviewDuongQua/s_DuongQua.json",
-		"UI/UI_main_menu/PreviewDuongQua/s_DuongQua.atlas", m_pGameScene->getContentSize().height / 650);
+		"UI/UI_main_menu/PreviewDuongQua/s_DuongQua.atlas");
 	m_arPreviewHero[4] = new SkeletonAnimation("UI/UI_main_menu/PreviewQuachTinh/s_QuachTinh.json",
-		"UI/UI_main_menu/PreviewQuachTinh/s_QuachTinh.atlas", m_pGameScene->getContentSize().height / 650);
+		"UI/UI_main_menu/PreviewQuachTinh/s_QuachTinh.atlas");
 
-	m_arPreviewHero[0]->setPosition(Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
-	m_arPreviewHero[1]->setPosition(Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
-	m_arPreviewHero[2]->setPosition(Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
-	m_arPreviewHero[3]->setPosition(Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
-	m_arPreviewHero[4]->setPosition(Vec2(m_pGameScene->getContentSize().width / 2, 0.0f));
 
+	float _arScaleHero[5] = { 0.65f, 0.55f, 0.65f, 0.65f, 0.75f };
+	for (int i = 0; i < 5; i++) {
+		m_arPreviewHero[i]->update(0.0f);
+		m_arPreviewHero[i]->setScale(m_szVisibleSize.height / m_arPreviewHero[i]->getBoundingBox().size.height * _arScaleHero[i]);
+		m_arPreviewHero[i]->setPosition(Vec2(m_szVisibleSize.width * 0.3f, m_szVisibleSize.height * 0.25f));
+	}
 	initSceneLayer();
 
-	m_pGameControl = new Layer(); // layer 3 : control
+	m_pGameControl = Layer::create(); // layer 3 : control
 	this->addChild(m_pGameControl, 3);
 	initControlLayer();
 
-	m_pBlurScreen = Layer::create();
-	m_pBlurScreen->setScaleX(m_szVisibleSize.width / m_pBlurScreen->getContentSize().width); // full screen size width
-	m_pBlurScreen->setScaleY(m_szVisibleSize.height / m_pBlurScreen->getContentSize().height); // full screen size height
-
-	m_pBlurScreen->setPosition(Vec2(0.0f, 0.0f));
-	this->addChild(m_pBlurScreen, 5);
-	m_pBlurScreen->setVisible(false);
-
+    auto key_listener = EventListenerKeyboard::create();
+    key_listener->onKeyPressed = CC_CALLBACK_2(MenuLayer::onKeyPressed, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(key_listener, this);
+    
 	this->scheduleUpdate();
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 	sdkbox::PluginVungle::setListener(this);
 #endif
+	createRequestToGoogle();
 	return true;
+}
+
+void MenuLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
+{
+    if (keyCode == EventKeyboard::KeyCode::KEY_BACK) {
+		if (m_nMenuStatus == 0) {
+			if (m_pShopBlurBackground->isVisible() == true) {
+				buttonCloseShopHandle();
+				return;
+			}
+
+			if (backNumber == 0) {
+				backNumber++;
+				CustomLayerToToast *_pToast = CustomLayerToToast::create("Press back again to exit", TOAST_SHORT);
+				_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
+				this->addChild(_pToast, 10);
+			}
+			else {
+				Director::getInstance()->end();
+			}
+		}
+		else {
+			backNumber = 0;
+			buttonBackHandle();
+		}
+    }
 }
 
 void MenuLayer::update(float p_fDelta) {
@@ -148,7 +173,6 @@ void MenuLayer::initInputData() {
 	m_arNumberItemOwning[3] = REF->getNumberItemDoubleGold();
 	m_arNumberItemOwning[4] = REF->getNumberItemCoolDown();
 	// m_arItemPrice will be loaded in initItemBoard, just once
-	createRequestToGoogle();
 
 	int _nDeltaTime = time(0) - REF->getAnchorTime();
 	int _nLifeToAdd = (int)(_nDeltaTime / 300);
@@ -183,9 +207,9 @@ void MenuLayer::initBackgroundLayer() {
 
 void MenuLayer::initSceneLayer() {
 	m_pGameScene->removeAllChildrenWithCleanup(true);
+	m_pGameScene->addChild(m_arPreviewHero[m_nIndexHeroPicked], 1);
 	m_arPreviewHero[m_nIndexHeroPicked]->setAnimation(0, "appear", false);
 	m_arPreviewHero[m_nIndexHeroPicked]->addAnimation(0, "idle", true);
-	m_pGameScene->addChild(m_arPreviewHero[m_nIndexHeroPicked], 1);
 }
 
 void MenuLayer::initControlLayer() {
@@ -205,29 +229,29 @@ void MenuLayer::initControlLayer() {
 
 	// item board
 	m_pItemBoard = Layer::create();
-	m_pItemBoard->setContentSize(Size(m_szVisibleSize.width * 0.45f, m_szVisibleSize.height * 0.62f)); // 35% screen width, 62% screen height
-	m_pItemBoard->setPosition(m_szVisibleSize.width, m_szVisibleSize.height * 0.25);
+	m_pItemBoard->setContentSize(Size(m_szVisibleSize.width * 0.5f, m_szVisibleSize.height));
+	m_pItemBoard->setPosition(m_szVisibleSize.width, m_szVisibleSize.height * 0.0f);
 	m_pGameControl->addChild(m_pItemBoard, 1);
 	initItemBoard();
 
 	// upgrade board
 	m_pUpgradeBoard = Layer::create();
-	m_pUpgradeBoard->setContentSize(Size(m_szVisibleSize.width * 0.35f, m_szVisibleSize.height * 0.62f)); // 35% screen width, 62% screen height
-	m_pUpgradeBoard->setPosition(m_szVisibleSize.width, m_szVisibleSize.height * 0.25f);
+	m_pUpgradeBoard->setContentSize(Size(m_szVisibleSize.width * 0.4f, m_szVisibleSize.height));
+	m_pUpgradeBoard->setPosition(m_szVisibleSize.width, 0.0f);
 	m_pGameControl->addChild(m_pUpgradeBoard, 1);
 	initUpgradeBoard();
 
 	// quest board
 	m_pQuestBoard = Layer::create();
-	m_pQuestBoard->setContentSize(Size(m_szVisibleSize.width * 0.6f, m_szVisibleSize.height * 0.77f)); // 60% screen width, 77% screen height
-	m_pQuestBoard->setPosition(-m_pQuestBoard->getContentSize().width, m_szVisibleSize.height * 0.1f);
+	m_pQuestBoard->setContentSize(Size(m_szVisibleSize.width * 0.7f, m_szVisibleSize.height));
+	m_pQuestBoard->setPosition(-m_pQuestBoard->getContentSize().width, 0.0f);
 	m_pGameControl->addChild(m_pQuestBoard, 1);
 	initQuestBoard(0);
 
 	// hero info board
 	m_pHeroInfoBoard = Layer::create();
-	m_pHeroInfoBoard->setContentSize(Size(m_szVisibleSize.width * 0.3f, m_szVisibleSize.height * 0.65f)); // 30% screen width, 65% screen height
-	m_pHeroInfoBoard->setPosition(-m_pHeroInfoBoard->getContentSize().width, m_szVisibleSize.height * 0.22f);
+	m_pHeroInfoBoard->setContentSize(Size(m_szVisibleSize.width * 0.3f, m_szVisibleSize.height));
+	m_pHeroInfoBoard->setPosition(-m_pHeroInfoBoard->getContentSize().width, 0.0f);
 	m_pGameControl->addChild(m_pHeroInfoBoard, 1);
 	initHeroInfoBoard();
 
@@ -237,12 +261,6 @@ void MenuLayer::initControlLayer() {
 	m_pBottomHeroLayer->setPosition(0.0f, -m_pBottomHeroLayer->getContentSize().height / 2);
 	m_pGameControl->addChild(m_pBottomHeroLayer, 1);
 	initBottomHeroMenu();
-
-	// shop
-	m_pShopBoardLayer = Layer::create();
-	m_pShopBoardLayer->setContentSize(Size(m_szVisibleSize.width, m_szVisibleSize.height)); // fill screen width, 25% screen height
-	m_pShopBoardLayer->setPosition(0.0f, 0.0f);
-	this->addChild(m_pShopBoardLayer, 6);
 
 	moveLayerViaDirection(m_pTopMainMenu, 2);
 	showMainMenu();
@@ -282,19 +300,19 @@ void MenuLayer::initTopMainMenu() {
 			_pLifeFrame->getContentSize().height / 2);
 		_pLifeFrame->addChild(_pLifeIcon, 1);
 	}
-	m_pTimeCounter = Label::createWithBMFont("fonts/font_life-export.fnt", StringUtils::format("5:00"));
+	m_pTimeCounter = Label::createWithBMFont("fontsDPM/font_life-export.fnt", StringUtils::format("5:00"));
 	m_pTimeCounter->setBMFontSize(_pLifeFrame->getContentSize().height * 0.6f);
 	m_pTimeCounter->setAlignment(TextHAlignment::RIGHT);
-	m_pTimeCounter->setAnchorPoint(Vec2(1.0f, 0.0f));
-	m_pTimeCounter->setPosition(Vec2(_pLifeFrame->getContentSize().width * 0.8f, _pLifeFrame->getContentSize().height * 0.25f));
+	m_pTimeCounter->setAnchorPoint(Vec2(1.0f, 0.5f));
+	m_pTimeCounter->setPosition(Vec2(_pLifeFrame->getContentSize().width * 0.8f, _pLifeFrame->getContentSize().height * 0.5f));
 	_pLifeFrame->addChild(m_pTimeCounter, 1);
 	m_pTimeCounter->setVisible(false);
 	if (m_nLifeNumber > 5) {
-		Label *_pLabelExtraLife = Label::createWithBMFont("fonts/font_life-export.fnt", StringUtils::format("+%i", m_nLifeNumber - 5));
+		Label *_pLabelExtraLife = Label::createWithBMFont("fontsDPM/font_life-export.fnt", StringUtils::format("+%i", m_nLifeNumber - 5));
 		_pLabelExtraLife->setBMFontSize(_pLifeFrame->getContentSize().height * 0.6f);
 		_pLabelExtraLife->setAlignment(TextHAlignment::RIGHT);
-		_pLabelExtraLife->setAnchorPoint(Vec2(1.0f, 0.0f));
-		_pLabelExtraLife->setPosition(Vec2(_pLifeFrame->getContentSize().width * 0.8f, _pLifeFrame->getContentSize().height * 0.25f));
+		_pLabelExtraLife->setAnchorPoint(Vec2(1.0f, 0.5f));
+		_pLabelExtraLife->setPosition(Vec2(_pLifeFrame->getContentSize().width * 0.8f, _pLifeFrame->getContentSize().height * 0.5f));
 		_pLifeFrame->addChild(_pLabelExtraLife, 1);
 	}
 
@@ -320,11 +338,11 @@ void MenuLayer::initTopMainMenu() {
 	_pMoneyFrame->setPosition(_fXPositionCounter, 0.0f);
 	m_pTopMainMenu->addChild(_pMoneyFrame, 1);
 
-	Label *_pLabelNumberGold = Label::createWithBMFont("fonts/font_coin-export.fnt", StringUtils::format("%i", m_nCurrentGold));
+	Label *_pLabelNumberGold = Label::createWithBMFont("fontsDPM/font_coin-export.fnt", StringUtils::format("%i", m_nCurrentGold));
 	_pLabelNumberGold->setBMFontSize(_pMoneyFrame->getContentSize().height * 0.6f);
 	_pLabelNumberGold->setAlignment(TextHAlignment::RIGHT);
-	_pLabelNumberGold->setAnchorPoint(Vec2(1.0f, 0.0f));
-	_pLabelNumberGold->setPosition(Vec2(_pMoneyFrame->getContentSize().width * 0.7f, _pMoneyFrame->getContentSize().height * 0.25f));
+	_pLabelNumberGold->setAnchorPoint(Vec2(1.0f, 0.5f));
+	_pLabelNumberGold->setPosition(Vec2(_pMoneyFrame->getContentSize().width * 0.73f, _pMoneyFrame->getContentSize().height * 0.5f));
 	_pMoneyFrame->addChild(_pLabelNumberGold, 1);
 
 	_fXPositionCounter += 0.0f;
@@ -348,11 +366,11 @@ void MenuLayer::initTopMainMenu() {
 	_pDiamondFrame->setPosition(_fXPositionCounter, 0.0f);
 	m_pTopMainMenu->addChild(_pDiamondFrame, 1);
 
-	Label *_pLabelNumberDiamond = Label::createWithBMFont("fonts/font_diamond-export.fnt", StringUtils::format("%i", m_nCurrentDiamond));
+	Label *_pLabelNumberDiamond = Label::createWithBMFont("fontsDPM/font_diamond-export.fnt", StringUtils::format("%i", m_nCurrentDiamond));
 	_pLabelNumberDiamond->setBMFontSize(_pMoneyFrame->getContentSize().height * 0.6f);
 	_pLabelNumberDiamond->setAlignment(TextHAlignment::RIGHT);
-	_pLabelNumberDiamond->setAnchorPoint(Vec2(1.0f, 0.0f));
-	_pLabelNumberDiamond->setPosition(Vec2(_pDiamondFrame->getContentSize().width * 0.7f, _pDiamondFrame->getContentSize().height * 0.25f));
+	_pLabelNumberDiamond->setAnchorPoint(Vec2(1.0f, 0.5f));
+	_pLabelNumberDiamond->setPosition(Vec2(_pDiamondFrame->getContentSize().width * 0.73f, _pDiamondFrame->getContentSize().height * 0.5f));
 	_pDiamondFrame->addChild(_pLabelNumberDiamond, 1);
 
 	_fXPositionCounter += 0.0f;
@@ -391,7 +409,7 @@ void MenuLayer::initBottomMainMenu() {
 
 	_fXPositionCounter += _aQuestButton->getContentSize().width * _aQuestButton->getScaleX() + _fPadding;
 
-	m_pSpriteQuestAttention = new SkeletonAnimation("UI/UI_main_menu/noti/noti.json", "UI/UI_main_menu/noti/noti.atlas",
+	m_pSpriteQuestAttention = SkeletonAnimation::createWithFile("UI/UI_main_menu/noti/noti.json", "UI/UI_main_menu/noti/noti.atlas",
 		m_pBottomMainLayer->getContentSize().height / 150.0f);
 	m_pSpriteQuestAttention->setAnchorPoint(Vec2(1.0f, 1.0f));
 	m_pSpriteQuestAttention->setPosition(_fXPositionCounter - m_pBottomMainLayer->getContentSize().height * 0.1f,
@@ -449,7 +467,7 @@ void MenuLayer::initBottomMainMenu() {
 
 	_fXPositionCounter += _aFreeCoinButton->getContentSize().width * _aFreeCoinButton->getScaleX() + _fPadding;
 
-	m_pSpriteFreeCoinAttention = new SkeletonAnimation("UI/UI_main_menu/noti/noti.json", "UI/UI_main_menu/noti/noti.atlas",
+	m_pSpriteFreeCoinAttention = SkeletonAnimation::createWithFile("UI/UI_main_menu/noti/noti.json", "UI/UI_main_menu/noti/noti.atlas",
 		m_pBottomMainLayer->getContentSize().height / 150.0f);
 	m_pSpriteFreeCoinAttention->setAnchorPoint(Vec2(1.0f, 1.0f));
 	m_pSpriteFreeCoinAttention->setPosition(_fXPositionCounter - m_pBottomMainLayer->getContentSize().height * 0.1f,
@@ -510,27 +528,31 @@ void MenuLayer::initItemBoard() {
 
 	// board item
 	Sprite *_pItemBoard = Sprite::create("UI/UI_main_menu/board_item.png");
-	_pItemBoard->setScaleX(m_pItemBoard->getContentSize().width / _pItemBoard->getContentSize().width);
-	_pItemBoard->setScaleY(m_pItemBoard->getContentSize().height / _pItemBoard->getContentSize().height);
-	_pItemBoard->setAnchorPoint(Vec2(0.0f, 0.0f));
-	_pItemBoard->setPosition(0.0f, 0.0f);
+	float _fTemp = _pItemBoard->getContentSize().height * m_szVisibleSize.width / _pItemBoard->getContentSize().width * 0.5f;
+	if (_fTemp > m_szVisibleSize.height * 0.65f) {
+		_pItemBoard->setScale(m_szVisibleSize.height / _pItemBoard->getContentSize().height * 0.65f);
+	}
+	else {
+		_pItemBoard->setScale(m_szVisibleSize.width / _pItemBoard->getContentSize().width * 0.5f);
+	}
+	_pItemBoard->setAnchorPoint(Vec2(0.5f, 0.5f));
+	_pItemBoard->setPosition(Vec2(m_pItemBoard->getContentSize().width * 0.5f, m_szVisibleSize.height * 0.575f));
 	m_pItemBoard->addChild(_pItemBoard, 0);
 
 	int _nNumberItems = 5;
 	int _nNumberItemsVisiable = 3;
 	// scroll view
 	m_pItemScrollView = ScrollView::create();
-	m_pItemScrollView->setContentSize(Size(_pItemBoard->getContentSize().width * _pItemBoard->getScaleX() * 0.8f,
-		_pItemBoard->getContentSize().height * _pItemBoard->getScaleY() * 0.7f));
+	m_pItemScrollView->setContentSize(Size(_pItemBoard->getContentSize().width * 0.8f, _pItemBoard->getContentSize().height * 0.7f));
 	m_pItemScrollView->setAnchorPoint(Vec2(0.0f, 0.0f));
-	m_pItemScrollView->setPosition(Vec2(m_pItemBoard->getContentSize().width * 0.1f, m_pItemBoard->getContentSize().height * 0.1f));
+	m_pItemScrollView->setPosition(Vec2(_pItemBoard->getContentSize().width * 0.1f, _pItemBoard->getContentSize().height * 0.1f));
 	m_pItemScrollView->setDirection(ScrollView::Direction::VERTICAL);
 	m_pItemScrollView->setBounceEnabled(true);
 	m_pItemScrollView->setTouchEnabled(true);
 	m_pItemScrollView->setScrollBarOpacity(0.0f);
 	m_pItemScrollView->setInnerContainerSize(Size(m_pItemScrollView->getContentSize().width,
 		m_pItemScrollView->getContentSize().height * _nNumberItems / _nNumberItemsVisiable));
-	m_pItemBoard->addChild(m_pItemScrollView, 1);
+	_pItemBoard->addChild(m_pItemScrollView, 1);
 	m_pItemScrollView->addEventListener(CC_CALLBACK_2(MenuLayer::scrollSlideHandle, this));
 
 	// int _nItemIndexCounter = 0;
@@ -538,13 +560,8 @@ void MenuLayer::initItemBoard() {
 	float _fItemHeight = m_pItemScrollView->getContentSize().height / _nNumberItemsVisiable;
 	float _fScrollViewPadding = _fItemHeight / 20;
 
-	m_pItemBoardMenu = Menu::create();
-	m_pItemBoardMenu->setContentSize(m_pItemScrollView->getContentSize());
-	m_pItemBoardMenu->setPosition(0.0f, 0.0f);
-	m_pItemScrollView->addChild(m_pItemBoardMenu, 2);
-
 	for (int i = 0; i < _nNumberItems; i++) {
-		Layer *_pItem = new Layer();
+		Layer *_pItem = Layer::create();
 		_pItem->setContentSize(Size(_fItemWidth, _fItemHeight));
 		_pItem->setPosition(0.0f, _fItemHeight * (_nNumberItems - i - 1));
 		m_pItemScrollView->addChild(_pItem, 1);
@@ -552,8 +569,8 @@ void MenuLayer::initItemBoard() {
 
 		Sprite *_pItemSprite = Sprite::create(JSMENU->getItemIconFilePath());
 		_pItemSprite->setScale(_fItemHeight / _pItemSprite->getContentSize().height * 0.9f);
-		_pItemSprite->setAnchorPoint(Vec2(0.0f, 1.0f));
-		_pItemSprite->setPosition(Vec2(0.0f, _fItemHeight));
+		_pItemSprite->setAnchorPoint(Vec2(0.0f, 0.5f));
+		_pItemSprite->setPosition(Vec2(0.0f, _fItemHeight * 0.5f));
 		_pItem->addChild(_pItemSprite, 1);
 
 		Sprite *_ItemNumberSprite = Sprite::create("UI/UI_main_menu/red_circle.png");
@@ -561,54 +578,57 @@ void MenuLayer::initItemBoard() {
 		_ItemNumberSprite->setAnchorPoint(Vec2(1.0f, 0.0f));
 		_ItemNumberSprite->setPosition(Vec2(_pItemSprite->getContentSize().width, 0.0f));
 		_pItemSprite->addChild(_ItemNumberSprite, 1);
-
-		if (m_arNumberItemOwning[i] < 100) {
-			m_arLabelNumberItemOwning[i] = Label::createWithBMFont("fonts/font_life-export.fnt", StringUtils::format("%d", m_arNumberItemOwning[i]));
-		}
-		else {
-			m_arLabelNumberItemOwning[i] = Label::createWithBMFont("fonts/font_life-export.fnt", StringUtils::format("99+"));
-		}
+		m_arLabelNumberItemOwning[i] = Label::createWithBMFont("fontsDPM/font_life-export.fnt", StringUtils::format("%d", m_arNumberItemOwning[i]));
+		m_arLabelNumberItemOwning[i]->setAlignment(TextHAlignment::CENTER, TextVAlignment::CENTER);
 		m_arLabelNumberItemOwning[i]->setBMFontSize(_ItemNumberSprite->getContentSize().height * 0.8f);
-		m_arLabelNumberItemOwning[i]->setAnchorPoint(Vec2(0.5f, 0.0f));
-		m_arLabelNumberItemOwning[i]->setPosition(Vec2(_ItemNumberSprite->getContentSize().width / 2, _ItemNumberSprite->getContentSize().height * 0.1f));
+		m_arLabelNumberItemOwning[i]->setAnchorPoint(Vec2(0.5f, 0.5f));
+		m_arLabelNumberItemOwning[i]->setPosition(Vec2(_ItemNumberSprite->getContentSize().width / 2, _ItemNumberSprite->getContentSize().height * 0.5f));
 		_ItemNumberSprite->addChild(m_arLabelNumberItemOwning[i], 1);
 
 		string _sTempName = JSMENU->getItemName();
-		Label *_pLabelNameItem = Label::createWithBMFont("fonts/font_normal-export.fnt", StringUtils::format("%s", _sTempName.c_str()));
+		Label *_pLabelNameItem = Label::createWithBMFont("fontsDPM/font_normal-export.fnt", StringUtils::format("%s", _sTempName.c_str()));
+		_pLabelNameItem->setAlignment(TextHAlignment::LEFT, TextVAlignment::CENTER);
 		_pLabelNameItem->setBMFontSize(_pItem->getContentSize().height * 0.3f);
 		_pLabelNameItem->setAnchorPoint(Vec2(0.0f, 0.0f));
-		_pLabelNameItem->setPosition(Vec2(_pItemSprite->getContentSize().width * _pItemSprite->getScale() * 1.2f, _fItemHeight * 0.6f));
+		_pLabelNameItem->setPosition(Vec2(_fItemHeight * 0.95f, _fItemHeight * 0.7f));
 		_pItem->addChild(_pLabelNameItem, 1);
 		string _sTempDescription = JSMENU->getItemDescription();
-		Label *_pLabelDescriptionItem = Label::createWithBMFont("fonts/font_normal-export.fnt", StringUtils::format("%s", _sTempDescription.c_str()));
+		Label *_pLabelDescriptionItem = Label::createWithBMFont("fontsDPM/font_normal-export.fnt", StringUtils::format("%s", _sTempDescription.c_str()));
+		_pLabelDescriptionItem->setAlignment(TextHAlignment::LEFT, TextVAlignment::CENTER);
 		_pLabelDescriptionItem->setBMFontSize(_pItem->getContentSize().height * 0.2f);
-		_pLabelDescriptionItem->setMaxLineWidth(_pItem->getContentSize().width * 0.5f);
-		_pLabelDescriptionItem->setLineHeight(_pItem->getContentSize().height * 0.4f);
-		_pLabelDescriptionItem->setAnchorPoint(Vec2(0.0f, 0.0f));
-		_pLabelDescriptionItem->setPosition(Vec2(_pItemSprite->getContentSize().width * _pItemSprite->getScale() * 1.2f, _fItemHeight * 0.6f));
+		_pLabelDescriptionItem->setMaxLineWidth(_pItem->getContentSize().width - _fItemHeight * 2.0f);
+		_pLabelDescriptionItem->setAnchorPoint(Vec2(0.0f, 0.5f));
+		_pLabelDescriptionItem->setPosition(Vec2(_fItemHeight * 0.95f, _fItemHeight * 0.4f));
 		_pItem->addChild(_pLabelDescriptionItem, 1);
-
-		auto _pBuyItemNormal = Sprite::create("UI/UI_main_menu/btn_buy_1.png");
-		auto _pBuyItemSelected = Sprite::create("UI/UI_main_menu/btn_buy_3.png");
-		_pBuyItemSelected->setColor(Color3B(128, 128, 128));
-		m_arBuyItemButton[i] = MenuItemSprite::create(_pBuyItemNormal, _pBuyItemSelected, CC_CALLBACK_0(MenuLayer::buttonBuyItemHandle, this, i));
-		m_arBuyItemButton[i]->setScale(_fItemHeight / m_arBuyItemButton[i]->getContentSize().height * 0.5f);
-		m_arBuyItemButton[i]->setAnchorPoint(Vec2(1.0f, 0.0f));
-		m_arBuyItemButton[i]->setPosition(Vec2(_fItemWidth, _fItemHeight * (_nNumberItems - i - 0.9f)));
-		m_pItemBoardMenu->addChild(m_arBuyItemButton[i], 1);
 
 		m_arItemCoinSprite[i] = Sprite::create("UI/UI_main_menu/icon_money_small.png");
 		m_arItemCoinSprite[i]->setScale(_fItemHeight / m_arItemCoinSprite[i]->getContentSize().height * 0.4f);
-		m_arItemCoinSprite[i]->setAnchorPoint(Vec2(1.0f, 0.0f));
-		m_arItemCoinSprite[i]->setPosition(Vec2(_fItemWidth, _fItemHeight * (_nNumberItems - i - 0.4f)));
-		m_pItemScrollView->addChild(m_arItemCoinSprite[i], 1);
+		m_arItemCoinSprite[i]->setAnchorPoint(Vec2(1.0f, 0.5f));
+		m_arItemCoinSprite[i]->setPosition(Vec2(_fItemWidth, _fItemHeight * 0.75f));
+		_pItem->addChild(m_arItemCoinSprite[i], 1);
 
 		m_arItemPrice[i] = JSMENU->getItemPrice();
-		m_arItemLabelCost[i] = Label::createWithBMFont("fonts/font_coin-export.fnt", StringUtils::format("%i", m_arItemPrice[i]));
+		m_arItemLabelCost[i] = Label::createWithBMFont("fontsDPM/font_coin-export.fnt", StringUtils::format("%i", m_arItemPrice[i]));
+		m_arItemLabelCost[i]->setAlignment(TextHAlignment::RIGHT, TextVAlignment::CENTER);
 		m_arItemLabelCost[i]->setBMFontSize(_fItemHeight * 0.4f);
-		m_arItemLabelCost[i]->setAnchorPoint(Vec2(1.0f, 0.0f));
-		m_arItemLabelCost[i]->setPosition(Vec2(_fItemWidth * 0.9f, _fItemHeight * (_nNumberItems - i - 0.35f)));
-		m_pItemScrollView->addChild(m_arItemLabelCost[i], 1);
+		m_arItemLabelCost[i]->setAnchorPoint(Vec2(1.0f, 0.5f));
+		m_arItemLabelCost[i]->setPosition(Vec2(_fItemWidth - _fItemHeight * 0.4f, _fItemHeight * 0.75f));
+		_pItem->addChild(m_arItemLabelCost[i], 1);
+
+		m_arBuyItemButton[i] = Button::create("UI/UI_main_menu/btn_buy_1.png", "UI/UI_main_menu/btn_buy_3.png", "UI/UI_main_menu/btn_buy_3.png");
+		float _fTemp = m_arBuyItemButton[i]->getContentSize().height * _fItemHeight / m_arBuyItemButton[i]->getContentSize().width;
+		if (_fTemp > _fItemHeight * 0.45f) {
+			m_arBuyItemButton[i]->setScale(_fItemHeight / m_arBuyItemButton[i]->getContentSize().height * 0.45f);
+		}
+		else {
+			m_arBuyItemButton[i]->setScale(_fItemHeight / m_arBuyItemButton[i]->getContentSize().width);
+		}
+		m_arBuyItemButton[i]->setAnchorPoint(Vec2(0.5, 0.5));
+		m_arBuyItemButton[i]->setTouchEnabled(true);
+		m_arBuyItemButton[i]->addTouchEventListener(CC_CALLBACK_2(MenuLayer::receiveButtonPressEvent, this, i));
+		m_arBuyItemButton[i]->setPosition(Vec2(_fItemWidth - (_fItemHeight * 0.4f + m_arItemLabelCost[i]->getContentSize().width * m_arItemLabelCost[i]->getScale()) / 2, _fItemHeight * (_nNumberItems - i - 0.7f)));
+		m_arBuyItemButton[i]->setSwallowTouches(true);
+		m_pItemScrollView->addChild(m_arBuyItemButton[i]);
 
 		m_arSpriteItemMax[i] = Sprite::create("UI/UI_main_menu/icon_max.png");
 		m_arSpriteItemMax[i]->setScale(_fItemHeight / m_arSpriteItemMax[i]->getContentSize().height * 0.9f);
@@ -641,10 +661,15 @@ void MenuLayer::initUpgradeBoard() {
 
 	// board upgrate
 	Sprite *_pBoardUpgrate = Sprite::create("UI/UI_main_menu/board_skill_upgrade.png");
-	_pBoardUpgrate->setScaleX(m_pUpgradeBoard->getContentSize().width / _pBoardUpgrate->getContentSize().width);
-	_pBoardUpgrate->setScaleY(m_pUpgradeBoard->getContentSize().height / _pBoardUpgrate->getContentSize().height);
-	_pBoardUpgrate->setAnchorPoint(Vec2(0.0f, 0.0f));
-	_pBoardUpgrate->setPosition(0.0f, 0.0f);
+	float _fTemp = _pBoardUpgrate->getContentSize().height * m_szVisibleSize.width / _pBoardUpgrate->getContentSize().width * 0.4f;
+	if (_fTemp > m_szVisibleSize.height * 0.65f) {
+		_pBoardUpgrate->setScale(m_szVisibleSize.height / _pBoardUpgrate->getContentSize().height * 0.65f);
+	}
+	else {
+		_pBoardUpgrate->setScale(m_szVisibleSize.width / _pBoardUpgrate->getContentSize().width * 0.4f);
+	}
+	_pBoardUpgrate->setAnchorPoint(Vec2(0.5f, 0.5f));
+	_pBoardUpgrate->setPosition(Vec2(m_pUpgradeBoard->getContentSize().width * 0.5f, m_szVisibleSize.height * 0.575f));
 	m_pUpgradeBoard->addChild(_pBoardUpgrate, 0);
 
 	JSHERO->readFile(m_nLanguage, m_nIndexHeroPicked);
@@ -657,51 +682,50 @@ void MenuLayer::initUpgradeBoard() {
 
 	int _arSkillLevel[3] = { REF->getLevelSkill_1(), REF->getLevelSkill_2(), REF->getLevelSkill_3() };
 	for (int i = 0; i < 3; i++) {
-		Layer *_pSkillInfo = new Layer();
-		_pSkillInfo->setContentSize(Size(m_pUpgradeBoard->getContentSize().width * 0.8f, m_pUpgradeBoard->getContentSize().height * 0.23f));
-		_pSkillInfo->setPosition(m_pUpgradeBoard->getContentSize().width * 0.1f, m_pUpgradeBoard->getContentSize().height * (0.57f - i * 0.23f));
-		m_pUpgradeBoard->addChild(_pSkillInfo, 1);
+		Layer *_pSkillInfo = Layer::create();
+		_pSkillInfo->setContentSize(Size(_pBoardUpgrate->getContentSize().width * 0.8f, _pBoardUpgrate->getContentSize().height * 0.23f));
+		_pSkillInfo->setPosition(_pBoardUpgrate->getContentSize().width * 0.1f, _pBoardUpgrate->getContentSize().height * (0.57f - i * 0.23f));
+		_pBoardUpgrate->addChild(_pSkillInfo, 1);
 
 		Sprite *_pSkillSprite = Sprite::create(_arSkillSpritePath[i]);
-		_pSkillSprite->setScaleX(_pSkillInfo->getContentSize().height / _pSkillSprite->getContentSize().height * 0.9f);
-		_pSkillSprite->setScaleY(_pSkillInfo->getContentSize().height / _pSkillSprite->getContentSize().height * 0.9f);
+		_pSkillSprite->setScale(_pSkillInfo->getContentSize().height / _pSkillSprite->getContentSize().height * 0.8f);
 		_pSkillSprite->setAnchorPoint(Vec2(0.0f, 0.5f));
 		_pSkillSprite->setPosition(0.0f, _pSkillInfo->getContentSize().height / 2);
 		_pSkillInfo->addChild(_pSkillSprite, 0);
 
-		Label *_pSkillNameLabel = Label::createWithBMFont("fonts/font_normal-export.fnt", StringUtils::format("%s", _arSkillName[i].c_str()));
+		Label *_pSkillNameLabel = Label::createWithBMFont("fontsDPM/font_normal-export.fnt", StringUtils::format("%s", _arSkillName[i].c_str()));
 		_pSkillNameLabel->setBMFontSize(_pSkillInfo->getContentSize().height * 0.2f);
 		_pSkillNameLabel->setAnchorPoint(Vec2(0.0f, 0.0f));
-		_pSkillNameLabel->setPosition(Vec2(_pSkillInfo->getContentSize().height, _pSkillInfo->getContentSize().height * 0.7f));
+		_pSkillNameLabel->setPosition(Vec2(_pSkillInfo->getContentSize().height * 0.85f, _pSkillInfo->getContentSize().height * 0.7f));
 		_pSkillInfo->addChild(_pSkillNameLabel, 1);
 
-		Label *_pLevelLabel = Label::createWithBMFont("fonts/font_normal-export.fnt", StringUtils::format("Level :"));
+		Label *_pLevelLabel = Label::createWithBMFont("fontsDPM/font_normal-export.fnt", StringUtils::format("Level: "));
 		_pLevelLabel->setBMFontSize(_pSkillInfo->getContentSize().height * 0.2f);
 		_pLevelLabel->setAnchorPoint(Vec2(0.0f, 0.0f));
-		_pLevelLabel->setPosition(Vec2(_pSkillInfo->getContentSize().height, _pSkillInfo->getContentSize().height * 0.49f));
+		_pLevelLabel->setPosition(Vec2(_pSkillInfo->getContentSize().height * 0.85f, _pSkillInfo->getContentSize().height * 0.49f));
 		_pSkillInfo->addChild(_pLevelLabel, 1);
 
-		Label *_pDurationLabel = Label::createWithBMFont("fonts/font_normal-export.fnt", StringUtils::format("Duration : "));
+		Label *_pDurationLabel = Label::createWithBMFont("fontsDPM/font_normal-export.fnt", StringUtils::format("Duration : "));
 		if (_arNumberUse[i] > 1) _pDurationLabel->setString("Number of use : ");
 		_pDurationLabel->setBMFontSize(_pSkillInfo->getContentSize().height * 0.2f);
 		_pDurationLabel->setAnchorPoint(Vec2(0.0f, 0.0f));
-		_pDurationLabel->setPosition(Vec2(_pSkillInfo->getContentSize().height, _pSkillInfo->getContentSize().height * 0.27f));
+		_pDurationLabel->setPosition(Vec2(_pSkillInfo->getContentSize().height * 0.85f, _pSkillInfo->getContentSize().height * 0.27f));
 		_pSkillInfo->addChild(_pDurationLabel, 1);
 
-		Label *_pDurationValueLabel = Label::createWithBMFont("fonts/font_coin-export.fnt", StringUtils::format("%i", (int)_arDuration[i]));
+		Label *_pDurationValueLabel = Label::createWithBMFont("fontsDPM/font_coin-export.fnt", StringUtils::format("%i", (int)_arDuration[i]));
 		if (_arNumberUse[i] > 1) _pDurationValueLabel->setString(StringUtils::format("%i", _arNumberUse[i]));
 		_pDurationValueLabel->setBMFontSize(_pSkillInfo->getContentSize().height * 0.2f);
 		_pDurationValueLabel->setAnchorPoint(Vec2(0.0f, 0.0f));
 		_pDurationValueLabel->setPosition(Vec2(_pDurationLabel->getContentSize().width, 0.0f));
 		_pDurationLabel->addChild(_pDurationValueLabel, 1);
 
-		Label *_pCoolDownLabel = Label::createWithBMFont("fonts/font_normal-export.fnt", StringUtils::format("Cooldown : "));
+		Label *_pCoolDownLabel = Label::createWithBMFont("fontsDPM/font_normal-export.fnt", StringUtils::format("Cooldown : "));
 		_pCoolDownLabel->setBMFontSize(_pSkillInfo->getContentSize().height * 0.2f);
 		_pCoolDownLabel->setAnchorPoint(Vec2(0.0f, 0.0f));
-		_pCoolDownLabel->setPosition(Vec2(_pSkillInfo->getContentSize().height, _pSkillInfo->getContentSize().height * 0.05f));
+		_pCoolDownLabel->setPosition(Vec2(_pSkillInfo->getContentSize().height * 0.85f, _pSkillInfo->getContentSize().height * 0.05f));
 		_pSkillInfo->addChild(_pCoolDownLabel, 1);
 
-		Label *_pCoolDownValueLabel = Label::createWithBMFont("fonts/font_diamond-export.fnt", StringUtils::format("%i", (int)_arCoolDown[i]));
+		Label *_pCoolDownValueLabel = Label::createWithBMFont("fontsDPM/font_diamond-export.fnt", StringUtils::format("%i", (int)_arCoolDown[i]));
 		_pCoolDownValueLabel->setBMFontSize(_pSkillInfo->getContentSize().height * 0.2f);
 		_pCoolDownValueLabel->setAnchorPoint(Vec2(0.0f, 0.0f));
 		_pCoolDownValueLabel->setPosition(Vec2(_pCoolDownLabel->getContentSize().width, 0.0f));
@@ -710,7 +734,8 @@ void MenuLayer::initUpgradeBoard() {
 		Sprite *_pSkillLevelBar = Sprite::create("UI/UI_main_menu/level_skill_bar.png");
 		_pSkillLevelBar->setScale(_pSkillInfo->getContentSize().width / _pSkillLevelBar->getContentSize().width * 0.25f);
 		_pSkillLevelBar->setAnchorPoint(Vec2(0.0f, 0.0f));
-		_pSkillLevelBar->setPosition(Vec2(_pSkillInfo->getContentSize().width * 0.45f, _pSkillInfo->getContentSize().height * 0.49f));
+		_pSkillLevelBar->setPosition(Vec2(_pLevelLabel->getPosition().x + _pLevelLabel->getContentSize().width * _pLevelLabel->getScale(),
+			_pSkillInfo->getContentSize().height * 0.49f));
 		_pSkillInfo->addChild(_pSkillLevelBar, 1);
 		for (int j = 0; j < _arSkillLevel[i]; j++) {
 			Sprite *_pSkillLevelPoint = Sprite::create("UI/UI_main_menu/level_skill_point.png");
@@ -722,24 +747,25 @@ void MenuLayer::initUpgradeBoard() {
 
 		Sprite *_CoinSprite = Sprite::create("UI/UI_main_menu/icon_money_small.png");
 		_CoinSprite->setScale(_pSkillInfo->getContentSize().height / _CoinSprite->getContentSize().height * 0.3f);
-		_CoinSprite->setAnchorPoint(Vec2(1.0f, 0.0f));
-		_CoinSprite->setPosition(Vec2(_pSkillInfo->getContentSize().width, _pSkillInfo->getContentSize().height * 0.4f));
+		_CoinSprite->setAnchorPoint(Vec2(1.0f, 0.5f));
+		_CoinSprite->setPosition(Vec2(_pSkillInfo->getContentSize().width, _pSkillInfo->getContentSize().height * 0.55f));
 		_pSkillInfo->addChild(_CoinSprite, 1);
 
 		int _nCost = 5000;
 
-		Label *_pLabelCost = Label::createWithBMFont("fonts/font_coin-export.fnt", StringUtils::format("%i", _nCost));
-		_pLabelCost->setBMFontSize(_pSkillInfo->getContentSize().height * 0.25f);
-		_pLabelCost->setAnchorPoint(Vec2(1.0f, 0.0f));
-		_pLabelCost->setPosition(Vec2(_pSkillInfo->getContentSize().width * 0.9f, _pSkillInfo->getContentSize().height * 0.45f));
+		Label *_pLabelCost = Label::createWithBMFont("fontsDPM/font_coin-export.fnt", StringUtils::format("%i", _nCost));
+		_pLabelCost->setBMFontSize(_pSkillInfo->getContentSize().height * 0.3f);
+		_pLabelCost->setAnchorPoint(Vec2(1.0f, 0.5f));
+		_pLabelCost->setPosition(Vec2(_pSkillInfo->getContentSize().width - _pSkillInfo->getContentSize().height * 0.3f
+			, _pSkillInfo->getContentSize().height * 0.55f));
 		_pSkillInfo->addChild(_pLabelCost, 1);
 
 		auto _pUpdgrateNormal = Sprite::create("UI/UI_main_menu/btn_upgrade_1.png");
 		auto _pUpdgrateSelected = Sprite::create("UI/UI_main_menu/btn_upgrade_3.png");
 		_arUpgrateSkill[i] = MenuItemSprite::create(_pUpdgrateNormal, _pUpdgrateSelected, CC_CALLBACK_0(MenuLayer::buttonUpgradeSkillHandle, this, i));
-		_arUpgrateSkill[i]->setScale(m_pUpgradeBoard->getContentSize().width / _arUpgrateSkill[i]->getContentSize().width * 0.2f);
+		_arUpgrateSkill[i]->setScale(_pBoardUpgrate->getContentSize().width / _arUpgrateSkill[i]->getContentSize().width * 0.2f);
 		_arUpgrateSkill[i]->setAnchorPoint(Vec2(1.0f, 0.0f));
-		_arUpgrateSkill[i]->setPosition(Vec2(m_pUpgradeBoard->getContentSize().width * 0.9f, m_pUpgradeBoard->getContentSize().height * (0.57f - i * 0.23f)));
+		_arUpgrateSkill[i]->setPosition(Vec2(_pBoardUpgrate->getContentSize().width * 0.9f, _pBoardUpgrate->getContentSize().height * (0.57f - i * 0.23f)));
 		if (REF->getIsLockedHero()) {
 			_arUpgrateSkill[i]->setEnabled(false);
 			_arUpgrateSkill[i]->setNormalImage(Sprite::create("UI/UI_main_menu/btn_upgrade_2.png"));
@@ -759,9 +785,9 @@ void MenuLayer::initUpgradeBoard() {
 	}
 
 	m_pSkillBoardMenu = Menu::create(_arUpgrateSkill[0], _arUpgrateSkill[1], _arUpgrateSkill[2], NULL);
-	m_pSkillBoardMenu->setContentSize(m_pUpgradeBoard->getContentSize());
+	m_pSkillBoardMenu->setContentSize(_pBoardUpgrate->getContentSize());
 	m_pSkillBoardMenu->setPosition(0.0f, 0.0f);
-	m_pUpgradeBoard->addChild(m_pSkillBoardMenu, 2);
+	_pBoardUpgrate->addChild(m_pSkillBoardMenu, 2);
 }
 
 void MenuLayer::initQuestBoard(int p_nFocus) {
@@ -769,25 +795,30 @@ void MenuLayer::initQuestBoard(int p_nFocus) {
 
 	// board quest
 	Sprite *_pQuestBoardBackground = Sprite::create("UI/UI_main_menu/UI_quest/board_quest.png");
-	_pQuestBoardBackground->setScaleX(m_pQuestBoard->getContentSize().width / _pQuestBoardBackground->getContentSize().width);
-	_pQuestBoardBackground->setScaleY(m_pQuestBoard->getContentSize().height / _pQuestBoardBackground->getContentSize().height);
-	_pQuestBoardBackground->setAnchorPoint(Vec2(0.0f, 0.0f));
-	_pQuestBoardBackground->setPosition(0.0f, 0.0f);
+	float _fTemp = _pQuestBoardBackground->getContentSize().height * m_szVisibleSize.width / _pQuestBoardBackground->getContentSize().width * 0.7f;
+	if (_fTemp > m_szVisibleSize.height * 0.8f) {
+		_pQuestBoardBackground->setScale(m_szVisibleSize.height / _pQuestBoardBackground->getContentSize().height * 0.8f);
+	}
+	else {
+		_pQuestBoardBackground->setScale(m_szVisibleSize.width / _pQuestBoardBackground->getContentSize().width * 0.7f);
+	}
+	_pQuestBoardBackground->setAnchorPoint(Vec2(0.5f, 0.5f));
+	_pQuestBoardBackground->setPosition(Vec2(m_pQuestBoard->getContentSize().width * 0.5f, m_szVisibleSize.height * 0.45f));
 	m_pQuestBoard->addChild(_pQuestBoardBackground, 0);
 
 	int _nNumberQuests = JSQUEST->getNumberQuest();
-	int _nNumberQuestsVisiable = 3;
+	int _nNumberQuestsVisiable = 4;
 	ScrollView *_pQuestBoardZone = ScrollView::create();
-	_pQuestBoardZone->setContentSize(Size(m_pQuestBoard->getContentSize().width * 0.85f, m_pQuestBoard->getContentSize().height * 0.7f));
-	_pQuestBoardZone->setAnchorPoint(Vec2(0.5f, 0.5f));
-	_pQuestBoardZone->setPosition(Vec2(m_pQuestBoard->getContentSize().width * 0.5f, m_pQuestBoard->getContentSize().height * 0.45f));
+	_pQuestBoardZone->setContentSize(Size(_pQuestBoardBackground->getContentSize().width * 0.85f, _pQuestBoardBackground->getContentSize().height * 0.75f));
+	_pQuestBoardZone->setAnchorPoint(Vec2(0.5f, 1.0f));
+	_pQuestBoardZone->setPosition(Vec2(_pQuestBoardBackground->getContentSize().width * 0.5f, _pQuestBoardBackground->getContentSize().height * 0.85f));
 	_pQuestBoardZone->setDirection(ScrollView::Direction::VERTICAL);
 	_pQuestBoardZone->setBounceEnabled(true);
 	_pQuestBoardZone->setTouchEnabled(true);
 	_pQuestBoardZone->setScrollBarOpacity(0.0f);
 	_pQuestBoardZone->setInnerContainerSize(Size(_pQuestBoardZone->getContentSize().width,
 		_pQuestBoardZone->getContentSize().height * _nNumberQuests / _nNumberQuestsVisiable));
-	m_pQuestBoard->addChild(_pQuestBoardZone, 1);
+	_pQuestBoardBackground->addChild(_pQuestBoardZone, 1);
 	_pQuestBoardZone->addEventListener(CC_CALLBACK_2(MenuLayer::scrollSlideHandle, this));
 
 	float _fItemWidth = _pQuestBoardZone->getContentSize().width;
@@ -802,32 +833,33 @@ void MenuLayer::initQuestBoard(int p_nFocus) {
 	m_pSpriteQuestAttention->setVisible(false);
 
 	for (int i = 0; i < _nNumberQuests; i++) {
-		Layer *_pQuestLayer = new Layer();
+		Layer *_pQuestLayer = Layer::create();
 		_pQuestLayer->setContentSize(Size(_fItemWidth, _fItemHeight));
 		_pQuestLayer->setPosition(0.0f, _fItemHeight * (_nNumberQuests - i - 1));
 		_pQuestBoardZone->addChild(_pQuestLayer, 1);
 		JSQUEST->readQuest(m_nLanguage, i);
 		REF->readDataQuest(i);
 
-		Label *_pLabelQuestName = Label::createWithBMFont("fonts/font_normal-export.fnt", StringUtils::format("%s", JSQUEST->getQuestName().c_str()));
+		Label *_pLabelQuestName = Label::createWithBMFont("fontsDPM/font_normal-export.fnt", StringUtils::format("%s", JSQUEST->getQuestName().c_str()));
+		_pLabelQuestName->setAlignment(TextHAlignment::LEFT, TextVAlignment::CENTER);
 		_pLabelQuestName->setBMFontSize(_fItemHeight * 0.3f);
 		_pLabelQuestName->setAnchorPoint(Vec2(0.0f, 0.0f));
 		_pLabelQuestName->setPosition(Vec2(_fItemWidth * 0.0f, _fItemHeight * 0.7f));
 		_pQuestLayer->addChild(_pLabelQuestName, 1);
 
-		Label *_pQuestDescription = Label::createWithBMFont("fonts/font_normal-export.fnt", StringUtils::format("%s", JSQUEST->getQuestDescription().c_str()));
-		_pQuestDescription->setBMFontSize(_fItemHeight * 0.2f);
-		_pQuestDescription->setMaxLineWidth(_fItemWidth * 0.7f);
-		_pQuestDescription->setLineHeight(_fItemHeight * 0.4f);
-		_pQuestDescription->setAnchorPoint(Vec2(0.0f, 0.5f));
-		_pQuestDescription->setPosition(Vec2(0.0f, _fItemHeight * 0.7f));
+		Label *_pQuestDescription = Label::createWithBMFont("fontsDPM/font_normal-export.fnt", StringUtils::format("%s", JSQUEST->getQuestDescription().c_str()));
+		_pQuestDescription->setAlignment(TextHAlignment::LEFT, TextVAlignment::CENTER);
+		_pQuestDescription->setBMFontSize(_fItemHeight * 0.25f);
+		_pQuestDescription->setMaxLineWidth(_fItemWidth * 0.6f);
+		_pQuestDescription->setAnchorPoint(Vec2(0.0f, 1.0f));
+		_pQuestDescription->setPosition(Vec2(0.0f, _fItemHeight * 0.65f));
 		_pQuestLayer->addChild(_pQuestDescription, 1);
 
 		if (REF->getRewardedQuestTimes() >= JSQUEST->getLimitRequest()) {
 			Sprite *_pQuestComplete = Sprite::create("UI/UI_main_menu/UI_quest/icon_completed.png");
 			_pQuestComplete->setScale(_pQuestLayer->getContentSize().height / _pQuestComplete->getContentSize().height * 0.8f);
 			_pQuestComplete->setAnchorPoint(Vec2(0.5f, 0.5f));
-			_pQuestComplete->setPosition(Vec2(_pQuestLayer->getContentSize().width * 0.85f, _pQuestLayer->getContentSize().height * 0.5f));
+			_pQuestComplete->setPosition(Vec2(_pQuestLayer->getContentSize().width * 0.8125f, _pQuestLayer->getContentSize().height * 0.5f));
 			_pQuestLayer->addChild(_pQuestComplete, 1);
 		}
 		else {
@@ -838,32 +870,34 @@ void MenuLayer::initQuestBoard(int p_nFocus) {
 				_nComplete *= JSQUEST->getStepRequest();
 				_nGoldReward *= JSQUEST->getStepRequest();
 			}
-			Label *_pLabelGoldReward = Label::createWithBMFont("fonts/font_coin-export.fnt", StringUtils::format("%d ", _nGoldReward));
-			_pLabelGoldReward->setBMFontSize(_pQuestLayer->getContentSize().height * 0.3f);
-			_pLabelGoldReward->setAnchorPoint(Vec2(1.0f, 0.0f));
-			_pLabelGoldReward->setPosition(Vec2(_pQuestLayer->getContentSize().width * 0.925f, _pQuestLayer->getContentSize().height * 0.6f));
+			Label *_pLabelGoldReward = Label::createWithBMFont("fontsDPM/font_coin-export.fnt", StringUtils::format("%d ", _nGoldReward));
+			_pLabelGoldReward->setAlignment(TextHAlignment::CENTER, TextVAlignment::CENTER);
+			_pLabelGoldReward->setBMFontSize(_pQuestLayer->getContentSize().height * 0.35f);
+			_pLabelGoldReward->setAnchorPoint(Vec2(1.0f, 0.5f));
 			_pQuestLayer->addChild(_pLabelGoldReward, 1);
-
 			Sprite *_pCoinSprite = Sprite::create("UI/UI_main_menu/icon_money_small.png");
-			_pCoinSprite->setScale(_pQuestLayer->getContentSize().height / _pCoinSprite->getContentSize().height * 0.35f);
-			_pCoinSprite->setAnchorPoint(Vec2(0.0f, 0.0f));
-			_pCoinSprite->setPosition(Vec2(_pQuestLayer->getContentSize().width * 0.93f, _pQuestLayer->getContentSize().height * 0.55f));
+			_pCoinSprite->setScale(_pQuestLayer->getContentSize().height / _pCoinSprite->getContentSize().height * 0.4f);
+			_pCoinSprite->setAnchorPoint(Vec2(1.0f, 0.5f));
 			_pQuestLayer->addChild(_pCoinSprite, 1);
+			_pCoinSprite->setPosition(Vec2(_pQuestLayer->getContentSize().width * 0.8125f + (_pLabelGoldReward->getContentSize().width + _pCoinSprite->getContentSize().width) * 0.5f,
+				_pQuestLayer->getContentSize().height * 0.8f));
+			_pLabelGoldReward->setPosition(Vec2(_pCoinSprite->getPosition().x - _pCoinSprite->getContentSize().width * _pCoinSprite->getScaleX(),
+				_pQuestLayer->getContentSize().height * 0.8f));
 
 			float _fScaleX = (float)(_nNumber < _nComplete ? _nNumber : _nComplete) / (float)_nComplete;
 			if (_fScaleX < 1.0f) {
 				Sprite *_pQuestBar = Sprite::create("UI/UI_main_menu/UI_quest/quest_progress_bar.png");
-				_pQuestBar->setScaleX(_pQuestLayer->getContentSize().width / _pQuestBar->getContentSize().width * 0.25f);
+				_pQuestBar->setScaleX(_pQuestLayer->getContentSize().width / _pQuestBar->getContentSize().width * 0.35f);
 				_pQuestBar->setScaleY(_pQuestLayer->getContentSize().height / _pQuestBar->getContentSize().height * 0.3f);
 				_pQuestBar->setAnchorPoint(Vec2(0.5f, 1.0f));
-				_pQuestBar->setPosition(Vec2(_pQuestLayer->getContentSize().width * 0.85f, _pQuestLayer->getContentSize().height * 0.5f));
+				_pQuestBar->setPosition(Vec2(_pQuestLayer->getContentSize().width * 0.8125f, _pQuestLayer->getContentSize().height * 0.5f));
 				_pQuestLayer->addChild(_pQuestBar, 1);
 
-				Label *_pLabelQuestStatus = Label::createWithBMFont("fonts/font_normal_white-export.fnt", StringUtils::format("%d / %d", _nNumber < _nComplete ? _nNumber : _nComplete, _nComplete));
+				Label *_pLabelQuestStatus = Label::createWithBMFont("fontsDPM/font_normal_white-export.fnt", StringUtils::format("%d / %d", _nNumber < _nComplete ? _nNumber : _nComplete, _nComplete));
+				_pLabelQuestStatus->setAlignment(TextHAlignment::CENTER, TextVAlignment::CENTER);
 				_pLabelQuestStatus->setBMFontSize(_pQuestBar->getContentSize().height * 0.8f);
-				_pLabelQuestStatus->setAlignment(TextHAlignment::RIGHT);
-				_pLabelQuestStatus->setAnchorPoint(Vec2(0.5f, 0.0f));
-				_pLabelQuestStatus->setPosition(Vec2(_pQuestBar->getContentSize().width / 2, _pQuestBar->getContentSize().height / 5));
+				_pLabelQuestStatus->setAnchorPoint(Vec2(0.5f, 0.5f));
+				_pLabelQuestStatus->setPosition(Vec2(_pQuestBar->getContentSize().width * 0.5f, _pQuestBar->getContentSize().height * 0.5f));
 				_pQuestBar->addChild(_pLabelQuestStatus, 2);
 
 				Sprite *_pQuestPoint = Sprite::create("UI/UI_main_menu/UI_quest/quest_progress_point.png");
@@ -881,10 +915,9 @@ void MenuLayer::initQuestBoard(int p_nFocus) {
 				auto _pRewardNormal = Sprite::create("UI/UI_main_menu/UI_quest/btn_claim_1.png");
 				auto _pRewardSelected = Sprite::create("UI/UI_main_menu/UI_quest/btn_claim_2.png");
 				MenuItemSprite *_aQuestRewardButton = MenuItemSprite::create(_pRewardNormal, _pRewardSelected, CC_CALLBACK_0(MenuLayer::buttonRewardQuest, this, i));
-				_aQuestRewardButton->setScaleX(_fItemWidth / _aQuestRewardButton->getContentSize().width * 0.2f);
-				_aQuestRewardButton->setScaleY(_fItemHeight / _aQuestRewardButton->getContentSize().height * 0.4f);
+				_aQuestRewardButton->setScale(_fItemHeight / _aQuestRewardButton->getContentSize().height * 0.4f);
 				_aQuestRewardButton->setAnchorPoint(Vec2(0.5f, 1.0f));
-				_aQuestRewardButton->setPosition(Vec2(_fItemWidth * 0.85f, _fItemHeight * (_nNumberQuests - i - 0.5f)));
+				_aQuestRewardButton->setPosition(Vec2(_fItemWidth * 0.8125f, _fItemHeight * (_nNumberQuests - i - 0.5f)));
 
 				m_pQuestBoardMenu->addChild(_aQuestRewardButton, 1);
 
@@ -917,118 +950,119 @@ void MenuLayer::initHeroInfoBoard() {
 
 	// board upgrate
 	Sprite *_pInfoBoard = Sprite::create("UI/UI_main_menu/board_information.png");
-	_pInfoBoard->setScaleX(m_pHeroInfoBoard->getContentSize().width / _pInfoBoard->getContentSize().width);
-	_pInfoBoard->setScaleY(m_pHeroInfoBoard->getContentSize().height / _pInfoBoard->getContentSize().height);
-	_pInfoBoard->setAnchorPoint(Vec2(0.0f, 0.0f));
-	_pInfoBoard->setPosition(0.0f, 0.0f);
+	float _fTemp = _pInfoBoard->getContentSize().height * m_szVisibleSize.width / _pInfoBoard->getContentSize().width * 0.3f;
+	if (_fTemp > m_szVisibleSize.height * 0.65f) {
+		_pInfoBoard->setScale(m_szVisibleSize.height / _pInfoBoard->getContentSize().height * 0.65f);
+	}
+	else {
+		_pInfoBoard->setScale(m_szVisibleSize.width / _pInfoBoard->getContentSize().width * 0.3f);
+	}
+	_pInfoBoard->setAnchorPoint(Vec2(0.5f, 0.5f));
+	_pInfoBoard->setPosition(Vec2(m_pHeroInfoBoard->getContentSize().width * 0.5f, m_szVisibleSize.height * 0.575f));
 	m_pHeroInfoBoard->addChild(_pInfoBoard, 0);
 
 	// character name
 	string _sTempName = JSHERO->getName();
-	Label *_pLabelNameHero = Label::createWithBMFont("fonts/font_normal-export.fnt", StringUtils::format("%s", _sTempName.c_str()));
-	_pLabelNameHero->setBMFontSize(m_pHeroInfoBoard->getContentSize().height * 0.08f);
-	_pLabelNameHero->setAnchorPoint(Vec2(0.5f, 1.0f));
-	_pLabelNameHero->setPosition(Vec2(m_pHeroInfoBoard->getContentSize().width / 2, m_pHeroInfoBoard->getContentSize().height * 0.95f));
-	m_pHeroInfoBoard->addChild(_pLabelNameHero, 1);
+	Label *_pLabelNameHero = Label::createWithBMFont("fontsDPM/font_normal-export.fnt", StringUtils::format("%s", _sTempName.c_str()));
+	_pLabelNameHero->setAlignment(TextHAlignment::CENTER, TextVAlignment::BOTTOM);
+	_pLabelNameHero->setBMFontSize(_pInfoBoard->getContentSize().height * 0.08f);
+	_pLabelNameHero->setAnchorPoint(Vec2(0.5f, 0.0f));
+	_pLabelNameHero->setPosition(Vec2(_pInfoBoard->getContentSize().width * 0.5f, _pInfoBoard->getContentSize().height * 0.75f));
+	_pInfoBoard->addChild(_pLabelNameHero, 1);
 
 	string _sHeroInfo = JSHERO->getInfor();
-	Label *_pHeroDescription = Label::createWithBMFont("fonts/font_normal-export.fnt", StringUtils::format("%s", _sHeroInfo.c_str()));
-	_pHeroDescription->setAlignment(TextHAlignment::CENTER);
-	_pHeroDescription->setBMFontSize(m_pHeroInfoBoard->getContentSize().height * 0.055f);
-	_pHeroDescription->setMaxLineWidth(m_pHeroInfoBoard->getContentSize().width * 0.75f);
-	_pHeroDescription->setLineHeight(m_pHeroInfoBoard->getContentSize().height * 0.1f);
+	Label *_pHeroDescription = Label::createWithBMFont("fontsDPM/font_normal-export.fnt", StringUtils::format("%s", _sHeroInfo.c_str()));
+	_pHeroDescription->setAlignment(TextHAlignment::CENTER, TextVAlignment::TOP);
+	_pHeroDescription->setBMFontSize(_pInfoBoard->getContentSize().height * 0.05f);
+	_pHeroDescription->setMaxLineWidth(_pInfoBoard->getContentSize().width * 0.75f);
 	_pHeroDescription->setAnchorPoint(Vec2(0.5f, 0.5f));
-	_pHeroDescription->setPosition(Vec2(m_pHeroInfoBoard->getContentSize().width * 0.5f, m_pHeroInfoBoard->getContentSize().height * 0.7f));
-	m_pHeroInfoBoard->addChild(_pHeroDescription, 1);
+	_pHeroDescription->setPosition(Vec2(_pInfoBoard->getContentSize().width * 0.5f, _pInfoBoard->getContentSize().height * 0.6f));
+	_pInfoBoard->addChild(_pHeroDescription, 1);
 
 	// character current level label
 	int _nCurrentLevel = REF->getCurrentLevel();
-	Label *_pLabelCurrentLevel = Label::createWithBMFont("fonts/font_normal-export.fnt", StringUtils::format("Current Level %d", _nCurrentLevel));
-	_pLabelCurrentLevel->setBMFontSize(m_pHeroInfoBoard->getContentSize().height * 0.05f);
+	Label *_pLabelCurrentLevel = Label::createWithBMFont("fontsDPM/font_normal-export.fnt", StringUtils::format("Current Level %d", _nCurrentLevel));
+	_pLabelCurrentLevel->setAlignment(TextHAlignment::CENTER, TextVAlignment::CENTER);
+	_pLabelCurrentLevel->setBMFontSize(_pInfoBoard->getContentSize().height * 0.06f);
 	_pLabelCurrentLevel->setAnchorPoint(Vec2(0.5f, 1.0f));
-	_pLabelCurrentLevel->setPosition(Vec2(m_pHeroInfoBoard->getContentSize().width * 0.5f, m_pHeroInfoBoard->getContentSize().height * 0.5f));
-	m_pHeroInfoBoard->addChild(_pLabelCurrentLevel, 1);
+	_pLabelCurrentLevel->setPosition(Vec2(_pInfoBoard->getContentSize().width * 0.5f, _pInfoBoard->getContentSize().height * 0.4f));
+	_pInfoBoard->addChild(_pLabelCurrentLevel, 1);
 
 	int _nHealthPoint = REF->getCurrentHealth();
 	int _nBonusScore = REF->getBonusScore();
 	int _nBonusGold = REF->getBonusGold();
-	Label *_pCurrentInfoLabel = Label::createWithBMFont("fonts/font_normal-export.fnt",
-		StringUtils::format("HP: %d   Score : %d%%   Gold: %d%%", _nHealthPoint, _nBonusScore, _nBonusGold));
-	_pCurrentInfoLabel->setBMFontSize(m_pHeroInfoBoard->getContentSize().height);
-	_pCurrentInfoLabel->setScale(m_pHeroInfoBoard->getContentSize().width / _pCurrentInfoLabel->getContentSize().width * 0.75f);
-	_pCurrentInfoLabel->setAnchorPoint(Vec2(0.5f, 0.0f));
-	_pCurrentInfoLabel->setPosition(Vec2(m_pHeroInfoBoard->getContentSize().width * 0.5f, m_pHeroInfoBoard->getContentSize().height * 0.31f));
-	m_pHeroInfoBoard->addChild(_pCurrentInfoLabel, 1);
+	Label *_pCurrentInfoLabel = Label::createWithBMFont("fontsDPM/font_normal-export.fnt",
+		StringUtils::format("HP:%d    Score:%d%%   Gold:%d%%", _nHealthPoint, _nBonusScore, _nBonusGold));
+	_pCurrentInfoLabel->setBMFontSize(_pInfoBoard->getContentSize().height);
+	_pCurrentInfoLabel->setAnchorPoint(Vec2(0.5f, 0.5f));
+	_pCurrentInfoLabel->setScale(_pInfoBoard->getContentSize().width / _pCurrentInfoLabel->getContentSize().width * 0.75f);
+	_pCurrentInfoLabel->setPosition(Vec2(_pInfoBoard->getContentSize().width * 0.5f, _pInfoBoard->getContentSize().height * 0.3f));
+	_pInfoBoard->addChild(_pCurrentInfoLabel, 1);
 
 	Sprite *_pHPBackground = Sprite::create("UI/UI_main_menu/frame_hp.png");
-	_pHPBackground->setScaleX(m_pHeroInfoBoard->getContentSize().width / _pHPBackground->getContentSize().width * 0.2f);
-	_pHPBackground->setScaleY(m_pHeroInfoBoard->getContentSize().height / _pHPBackground->getContentSize().height * 0.05f);
-	_pHPBackground->setAnchorPoint(Vec2(0.0f, 0.0f));
-	_pHPBackground->setPosition(m_pHeroInfoBoard->getContentSize().width * 0.1f, m_pHeroInfoBoard->getContentSize().height * 0.3f);
-	m_pHeroInfoBoard->addChild(_pHPBackground, 0);
+	_pHPBackground->setScale(_pInfoBoard->getContentSize().width / _pHPBackground->getContentSize().width * 0.2f);
+	_pHPBackground->setAnchorPoint(Vec2(0.0f, 0.5f));
+	_pHPBackground->setPosition(_pInfoBoard->getContentSize().width * 0.1f, _pInfoBoard->getContentSize().height * 0.3f);
+	_pInfoBoard->addChild(_pHPBackground, 0);
 
 	Sprite *_pScoreBackground = Sprite::create("UI/UI_main_menu/frame_score.png");
-	_pScoreBackground->setScaleX(m_pHeroInfoBoard->getContentSize().width / _pScoreBackground->getContentSize().width * 0.3f);
-	_pScoreBackground->setScaleY(m_pHeroInfoBoard->getContentSize().height / _pScoreBackground->getContentSize().height * 0.05f);
-	_pScoreBackground->setAnchorPoint(Vec2(0.0f, 0.0f));
-	_pScoreBackground->setPosition(m_pHeroInfoBoard->getContentSize().width * 0.3f, m_pHeroInfoBoard->getContentSize().height * 0.3f);
-	m_pHeroInfoBoard->addChild(_pScoreBackground, 0);
+	_pScoreBackground->setScale(_pInfoBoard->getContentSize().width / _pScoreBackground->getContentSize().width * 0.3f);
+	_pScoreBackground->setAnchorPoint(Vec2(0.0f, 0.5f));
+	_pScoreBackground->setPosition(_pInfoBoard->getContentSize().width * 0.3f, _pInfoBoard->getContentSize().height * 0.3f);
+	_pInfoBoard->addChild(_pScoreBackground, 0);
 
 	Sprite *_pGoldBackground = Sprite::create("UI/UI_main_menu/frame_gold.png");
-	_pGoldBackground->setScaleX(m_pHeroInfoBoard->getContentSize().width / _pGoldBackground->getContentSize().width * 0.3f);
-	_pGoldBackground->setScaleY(m_pHeroInfoBoard->getContentSize().height / _pGoldBackground->getContentSize().height * 0.05f);
-	_pGoldBackground->setAnchorPoint(Vec2(0.0f, 0.0f));
-	_pGoldBackground->setPosition(m_pHeroInfoBoard->getContentSize().width * 0.6f, m_pHeroInfoBoard->getContentSize().height * 0.3f);
-	m_pHeroInfoBoard->addChild(_pGoldBackground, 0);
+	_pGoldBackground->setScale(_pInfoBoard->getContentSize().width / _pGoldBackground->getContentSize().width * 0.3f);
+	_pGoldBackground->setAnchorPoint(Vec2(0.0f, 0.5f));
+	_pGoldBackground->setPosition(_pInfoBoard->getContentSize().width * 0.6f, _pInfoBoard->getContentSize().height * 0.3f);
+	_pInfoBoard->addChild(_pGoldBackground, 0);
 
 	if (_nCurrentLevel < JSHERO->getMaxLevel()) {
 		// character next level label
-		Label *_pLabelNextLevel = Label::createWithBMFont("fonts/font_normal-export.fnt", StringUtils::format("Next Level %d", _nCurrentLevel + 1));
-		_pLabelNextLevel->setBMFontSize(m_pHeroInfoBoard->getContentSize().height * 0.05f);
+		Label *_pLabelNextLevel = Label::createWithBMFont("fontsDPM/font_normal-export.fnt", StringUtils::format("Next Level %d", _nCurrentLevel + 1));
+		_pLabelCurrentLevel->setAlignment(TextHAlignment::CENTER, TextVAlignment::CENTER);
+		_pLabelNextLevel->setBMFontSize(_pInfoBoard->getContentSize().height * 0.06f);
 		_pLabelNextLevel->setAnchorPoint(Vec2(0.5f, 1.0f));
-		_pLabelNextLevel->setPosition(Vec2(m_pHeroInfoBoard->getContentSize().width * 0.5f, m_pHeroInfoBoard->getContentSize().height * 0.37f));
-		m_pHeroInfoBoard->addChild(_pLabelNextLevel, 1);
+		_pLabelNextLevel->setPosition(Vec2(_pInfoBoard->getContentSize().width * 0.5f, _pInfoBoard->getContentSize().height * 0.25f));
+		_pInfoBoard->addChild(_pLabelNextLevel, 1);
 
 		if ((_nCurrentLevel + 1) % 10 == 0) {
 			_nHealthPoint++;
 		}
 		_nBonusScore++;
 		_nBonusGold++;
-		Label *_pNextLevelInfoLabel = Label::createWithBMFont("fonts/font_normal-export.fnt",
-			StringUtils::format("HP: %d   Score : %d%%   Gold: %d%%", _nHealthPoint, _nBonusScore, _nBonusGold));
-		_pNextLevelInfoLabel->setBMFontSize(m_pHeroInfoBoard->getContentSize().height);
-		_pNextLevelInfoLabel->setScale(m_pHeroInfoBoard->getContentSize().width / _pNextLevelInfoLabel->getContentSize().width * 0.75f);
-		_pNextLevelInfoLabel->setAnchorPoint(Vec2(0.5f, 0.0f));
-		_pNextLevelInfoLabel->setPosition(Vec2(m_pHeroInfoBoard->getContentSize().width * 0.5f, m_pHeroInfoBoard->getContentSize().height * 0.18f));
-		m_pHeroInfoBoard->addChild(_pNextLevelInfoLabel, 1);
+		Label *_pNextLevelInfoLabel = Label::createWithBMFont("fontsDPM/font_normal-export.fnt",
+			StringUtils::format("HP:%d    Score:%d%%   Gold:%d%%", _nHealthPoint, _nBonusScore, _nBonusGold));
+		_pNextLevelInfoLabel->setBMFontSize(_pInfoBoard->getContentSize().height);
+		_pNextLevelInfoLabel->setScale(_pInfoBoard->getContentSize().width / _pNextLevelInfoLabel->getContentSize().width * 0.75f);
+		_pNextLevelInfoLabel->setAnchorPoint(Vec2(0.5f, 0.5f));
+		_pNextLevelInfoLabel->setPosition(Vec2(_pInfoBoard->getContentSize().width * 0.5f, _pInfoBoard->getContentSize().height * 0.15f));
+		_pInfoBoard->addChild(_pNextLevelInfoLabel, 1);
 
 		Sprite *_pHPBackground2 = Sprite::create("UI/UI_main_menu/frame_hp.png");
-		_pHPBackground2->setScaleX(m_pHeroInfoBoard->getContentSize().width / _pHPBackground2->getContentSize().width * 0.2f);
-		_pHPBackground2->setScaleY(m_pHeroInfoBoard->getContentSize().height / _pHPBackground2->getContentSize().height * 0.05f);
-		_pHPBackground2->setAnchorPoint(Vec2(0.0f, 0.0f));
-		_pHPBackground2->setPosition(m_pHeroInfoBoard->getContentSize().width * 0.1f, m_pHeroInfoBoard->getContentSize().height * 0.17f);
-		m_pHeroInfoBoard->addChild(_pHPBackground2, 0);
+		_pHPBackground2->setScale(_pInfoBoard->getContentSize().width / _pHPBackground2->getContentSize().width * 0.2f);
+		_pHPBackground2->setAnchorPoint(Vec2(0.0f, 0.5f));
+		_pHPBackground2->setPosition(_pInfoBoard->getContentSize().width * 0.1f, _pInfoBoard->getContentSize().height * 0.15f);
+		_pInfoBoard->addChild(_pHPBackground2, 0);
 
 		Sprite *_pScoreBackground2 = Sprite::create("UI/UI_main_menu/frame_score.png");
-		_pScoreBackground2->setScaleX(m_pHeroInfoBoard->getContentSize().width / _pScoreBackground2->getContentSize().width * 0.3f);
-		_pScoreBackground2->setScaleY(m_pHeroInfoBoard->getContentSize().height / _pScoreBackground2->getContentSize().height * 0.05f);
-		_pScoreBackground2->setAnchorPoint(Vec2(0.0f, 0.0f));
-		_pScoreBackground2->setPosition(m_pHeroInfoBoard->getContentSize().width * 0.3f, m_pHeroInfoBoard->getContentSize().height * 0.17f);
-		m_pHeroInfoBoard->addChild(_pScoreBackground2, 0);
+		_pScoreBackground2->setScale(_pInfoBoard->getContentSize().width / _pScoreBackground2->getContentSize().width * 0.3f);
+		_pScoreBackground2->setAnchorPoint(Vec2(0.0f, 0.5f));
+		_pScoreBackground2->setPosition(_pInfoBoard->getContentSize().width * 0.3f, _pInfoBoard->getContentSize().height * 0.15f);
+		_pInfoBoard->addChild(_pScoreBackground2, 0);
 
 		Sprite *_pGoldBackground2 = Sprite::create("UI/UI_main_menu/frame_gold.png");
-		_pGoldBackground2->setScaleX(m_pHeroInfoBoard->getContentSize().width / _pGoldBackground2->getContentSize().width * 0.3f);
-		_pGoldBackground2->setScaleY(m_pHeroInfoBoard->getContentSize().height / _pGoldBackground2->getContentSize().height * 0.05f);
-		_pGoldBackground2->setAnchorPoint(Vec2(0.0f, 0.0f));
-		_pGoldBackground2->setPosition(m_pHeroInfoBoard->getContentSize().width * 0.6f, m_pHeroInfoBoard->getContentSize().height * 0.17f);
-		m_pHeroInfoBoard->addChild(_pGoldBackground2, 0);
+		_pGoldBackground2->setScale(_pInfoBoard->getContentSize().width / _pGoldBackground2->getContentSize().width * 0.3f);
+		_pGoldBackground2->setAnchorPoint(Vec2(0.0f, 0.5f));
+		_pGoldBackground2->setPosition(_pInfoBoard->getContentSize().width * 0.6f, _pInfoBoard->getContentSize().height * 0.15f);
+		_pInfoBoard->addChild(_pGoldBackground2, 0);
 	}
 	else {
 		Sprite *_pMaxUpgrate = Sprite::create("UI/UI_main_menu/icon_max.png");
-		_pMaxUpgrate->setScale(m_pHeroInfoBoard->getContentSize().height / _pMaxUpgrate->getContentSize().height * 0.2f);
+		_pMaxUpgrate->setScale(_pInfoBoard->getContentSize().height / _pMaxUpgrate->getContentSize().height * 0.15f);
 		_pMaxUpgrate->setAnchorPoint(Vec2(0.5f, 0.5f));
-		_pMaxUpgrate->setPosition(Vec2(m_pHeroInfoBoard->getContentSize().width / 2, m_pHeroInfoBoard->getContentSize().height * 0.2f));
-		m_pHeroInfoBoard->addChild(_pMaxUpgrate, 1);
+		_pMaxUpgrate->setPosition(Vec2(_pInfoBoard->getContentSize().width / 2, _pInfoBoard->getContentSize().height * 0.15f));
+		_pInfoBoard->addChild(_pMaxUpgrate, 1);
 	}
 }
 
@@ -1064,7 +1098,13 @@ void MenuLayer::initBottomHeroMenu() {
 			}
 		}
 		m_arHeroButton[i] = MenuItemSprite::create(_pHeroSprite, _pHeroSprite, CC_CALLBACK_0(MenuLayer::buttonPickHeroHandle, this, i));
-		m_arHeroButton[i]->setScale(_fHeroHeight / _pHeroSprite->getContentSize().height);
+		float _fTemp = m_arHeroButton[i]->getContentSize().width * _fHeroHeight / _pHeroSprite->getContentSize().height;
+		if (_fTemp > m_pBottomHeroLayer->getContentSize().width * 0.1f) {
+			m_arHeroButton[i]->setScale(m_pBottomHeroLayer->getContentSize().width / _pHeroSprite->getContentSize().width * 0.1f);
+		}
+		else {
+			m_arHeroButton[i]->setScale(_fHeroHeight / _pHeroSprite->getContentSize().height);
+		}
 		m_arHeroButton[i]->setAnchorPoint(Vec2(0.0f, 0.5f));
 		m_arHeroButton[i]->setPosition(Vec2(_fXPositionCounter, 0.0f));
 
@@ -1115,7 +1155,7 @@ void MenuLayer::initBottomHeroMenu() {
 			for (int i = 1; i < REF->getCurrentLevel(); i++) {
 				_nUpgradeCost *= 1.05f;
 			}
-			Label *_pLabelCost = Label::createWithBMFont("fonts/font_coin-export.fnt", StringUtils::format("%d", (int)(_nUpgradeCost)));
+			Label *_pLabelCost = Label::createWithBMFont("fontsDPM/font_coin-export.fnt", StringUtils::format("%d", (int)(_nUpgradeCost)));
 			_pLabelCost->setBMFontSize(_aUnlockButton->getContentSize().height * 0.3f);
 			_pLabelCost->setAnchorPoint(Vec2(1.0f, 0.0f));
 			_pLabelCost->setPosition(Vec2(_aUnlockButton->getContentSize().width * 0.6f, _aUnlockButton->getContentSize().height * 0.52f));
@@ -1130,7 +1170,7 @@ void MenuLayer::initBottomHeroMenu() {
 	}
 	else {
 		if (JSHERO->getGoldPrice() > 0) {
-			Label *_pLabelCost = Label::createWithBMFont("fonts/font_coin-export.fnt", StringUtils::format("%d", JSHERO->getGoldPrice()));
+			Label *_pLabelCost = Label::createWithBMFont("fontsDPM/font_coin-export.fnt", StringUtils::format("%d", JSHERO->getGoldPrice()));
 			_pLabelCost->setBMFontSize(_aUnlockButton->getContentSize().height * 0.3f);
 			_pLabelCost->setAnchorPoint(Vec2(1.0f, 0.0f));
 			_pLabelCost->setPosition(Vec2(_aUnlockButton->getContentSize().width * 0.6f, _aUnlockButton->getContentSize().height * 0.52f));
@@ -1143,7 +1183,7 @@ void MenuLayer::initBottomHeroMenu() {
 			_aUnlockButton->addChild(_pCoinSprite, 1);
 		}
 		else if (JSHERO->getDiamondPrice() > 0) {
-			Label *_pLabelCost = Label::createWithBMFont("fonts/font_diamond-export.fnt", StringUtils::format("%d", JSHERO->getDiamondPrice()));
+			Label *_pLabelCost = Label::createWithBMFont("fontsDPM/font_diamond-export.fnt", StringUtils::format("%d", JSHERO->getDiamondPrice()));
 			_pLabelCost->setBMFontSize(_aUnlockButton->getContentSize().height * 0.3f);
 			_pLabelCost->setAnchorPoint(Vec2(1.0f, 0.0f));
 			_pLabelCost->setPosition(Vec2(_aUnlockButton->getContentSize().width * 0.55f, _aUnlockButton->getContentSize().height * 0.52f));
@@ -1171,14 +1211,18 @@ void MenuLayer::backFunction() {
 
 void MenuLayer::showMainMenu() {
 	m_pBottomMainMenu->setEnabled(true);
-	m_pItemBoardMenu->setEnabled(true);
+	for (int i = 0; i < 5; i++) {
+		m_arBuyItemButton[i]->setTouchEnabled(true);
+	}
 	moveLayerViaDirection(m_pBottomMainLayer, 8);
 	moveLayerViaDirection(m_pItemBoard, 4);
 }
 
 void MenuLayer::hideMainMenu() {
 	m_pBottomMainMenu->setEnabled(false);
-	m_pItemBoardMenu->setEnabled(false);
+	for (int i = 0; i < 5; i++) {
+		m_arBuyItemButton[i]->setTouchEnabled(false);
+	}
 	moveLayerViaDirection(m_pBottomMainLayer, 2);
 	moveLayerViaDirection(m_pItemBoard, 6);
 }
@@ -1187,7 +1231,9 @@ void MenuLayer::showBlurScreen() {
 	m_pTopMenu->setEnabled(false);
 	if (m_nMenuStatus != 4) {
 		m_pBottomMainMenu->setEnabled(false);
-		m_pItemBoardMenu->setEnabled(false);
+		for (int i = 0; i < 5; i++) {
+			m_arBuyItemButton[i]->setTouchEnabled(false);
+		}
 		m_pSkillBoardMenu->setEnabled(false);
 		m_pBottomHeroMenu->setEnabled(false);
 		m_pQuestBoardMenu->setEnabled(false);
@@ -1209,7 +1255,9 @@ void MenuLayer::hideBlurScreen() {
 		m_pTopMenu->setEnabled(true);
 		if (m_nMenuStatus != 4) {
 			m_pBottomMainMenu->setEnabled(true);
-			m_pItemBoardMenu->setEnabled(true);
+			for (int i = 0; i < 5; i++) {
+				m_arBuyItemButton[i]->setTouchEnabled(true);
+			}
 			m_pSkillBoardMenu->setEnabled(true);
 			m_pBottomHeroMenu->setEnabled(true);
 			m_pQuestBoardMenu->setEnabled(true);
@@ -1225,7 +1273,9 @@ void MenuLayer::buttonStartHandle() {
 	this->addChild(m_pSelectStageLayer, 3);
 
 	m_pBottomMainMenu->setEnabled(false);
-	m_pItemBoardMenu->setEnabled(false);
+	for (int i = 0; i < 5; i++) {
+		m_arBuyItemButton[i]->setTouchEnabled(false);
+	}
 	m_pSkillBoardMenu->setEnabled(false);
 	m_pBottomHeroMenu->setEnabled(false);
 	m_pQuestBoardMenu->setEnabled(false);
@@ -1233,6 +1283,10 @@ void MenuLayer::buttonStartHandle() {
 
 void MenuLayer::buttonBackHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
+	if (m_pShopBlurBackground->isVisible() == true) {
+		buttonCloseShopHandle();
+		return;
+	}
 	if (m_nMenuStatus == 0) {
 		auto _aIntroScene = SceneIntro::createScene();
 		Director::getInstance()->replaceScene(TransitionFade::create(0.2f, _aIntroScene));
@@ -1241,7 +1295,7 @@ void MenuLayer::buttonBackHandle() {
 		m_nMenuStatus = 0;
 		moveLayerViaDirection(m_pQuestBoard, 4);
 		runAction(Sequence::create(DelayTime::create(0.2f), CallFunc::create([&]() {
-			m_pGameScene->runAction(MoveTo::create(0.2f, Vec2(0.0f, m_szVisibleSize.height * 0.2f)));
+			m_pGameScene->runAction(MoveTo::create(0.2f, Vec2(0.0f, 0.0f)));
 		}), nullptr));
 		runAction(Sequence::create(DelayTime::create(0.6f), CallFunc::create([&]() {
 			showMainMenu();
@@ -1261,7 +1315,7 @@ void MenuLayer::buttonBackHandle() {
 		moveLayerViaDirection(m_pHeroInfoBoard, 4);
 		moveLayerViaDirection(m_pBottomHeroLayer, 2);
 		runAction(Sequence::create(DelayTime::create(0.2f), CallFunc::create([&]() {
-			m_pGameScene->runAction(MoveTo::create(0.2f, Vec2(0.0f, m_szVisibleSize.height * 0.2f)));
+			m_pGameScene->runAction(MoveTo::create(0.2f, Vec2(0.0f, 0.0f)));
 		}), nullptr));
 		runAction(Sequence::create(DelayTime::create(0.6f), CallFunc::create([&]() {
 			showMainMenu();
@@ -1271,7 +1325,9 @@ void MenuLayer::buttonBackHandle() {
 		m_nMenuStatus = 0;
 		m_pSelectStageLayer->removeFromParentAndCleanup(true);
 		m_pBottomMainMenu->setEnabled(true);
-		m_pItemBoardMenu->setEnabled(true);
+		for (int i = 0; i < 5; i++) {
+			m_arBuyItemButton[i]->setTouchEnabled(true);
+		}
 		m_pSkillBoardMenu->setEnabled(true);
 		m_pBottomHeroMenu->setEnabled(true);
 		m_pQuestBoardMenu->setEnabled(true);
@@ -1286,19 +1342,19 @@ void MenuLayer::buttonBackHandle() {
 
 void MenuLayer::buttonAddLifeHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
-	showBlurScreen();
+	m_pShopBlurBackground->setVisible(true);
 	initShopBoard(2);
 }
 
 void MenuLayer::buttonAddGoldHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
-	showBlurScreen();
+	m_pShopBlurBackground->setVisible(true);
 	initShopBoard(0);
 }
 
 void MenuLayer::buttonAddDiamondHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
-	showBlurScreen();
+	m_pShopBlurBackground->setVisible(true);
 	initShopBoard(1);
 }
 
@@ -1309,7 +1365,7 @@ void MenuLayer::buttonQuestHandle() {
 		m_nMenuStatus = 1;
 		hideMainMenu();
 		runAction(Sequence::create(DelayTime::create(0.2f), CallFunc::create([&]() {
-			m_pGameScene->runAction(MoveTo::create(0.2f, Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height * 0.1f)));
+			m_pGameScene->runAction(MoveTo::create(0.2f, Vec2(m_szVisibleSize.width * 0.55f, m_szVisibleSize.height * (-0.15f))));
 		}), nullptr));
 		runAction(Sequence::create(DelayTime::create(0.6f), CallFunc::create([&]() {
 			moveLayerViaDirection(m_pQuestBoard, 6);
@@ -1329,7 +1385,7 @@ void MenuLayer::buttonHeroesHandle() {
 		hideMainMenu();
 
 		runAction(Sequence::create(DelayTime::create(0.2f), CallFunc::create([&]() {
-			m_pGameScene->runAction(MoveTo::create(0.2f, Vec2(m_szVisibleSize.width / 5, m_szVisibleSize.height * 0.2f)));
+			m_pGameScene->runAction(MoveTo::create(0.2f, Vec2(m_szVisibleSize.width * 0.15f, m_szVisibleSize.height * 0.0f)));
 		}), nullptr));
 
 		runAction(Sequence::create(DelayTime::create(0.6f), CallFunc::create([&]() {
@@ -1343,7 +1399,7 @@ void MenuLayer::buttonHeroesHandle() {
 void MenuLayer::buttonShopHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
 	logButtonClickEvent("Shop");
-	showBlurScreen();
+	m_pShopBlurBackground->setVisible(true);
 	initShopBoard(m_nShopOption);
 }
 
@@ -1356,7 +1412,7 @@ void MenuLayer::buttonFreeCoinHandle() {
 		// after that, increase gold
 		VungleHelper::getInstance()->showReward();
 		//FacebookHelper::getInstance()->dialogPhoto("SwordManLegend");
-#ifdef SDKBOX_ENABLE
+#ifdef SDKBOX_ENABLED
 #else
 		CustomLayerToToast *_pToast = CustomLayerToToast::create("where is my f***ing sdkbox", TOAST_SHORT);
 		_pToast->setPosition(Vec2(300, 300));
@@ -1380,8 +1436,7 @@ void MenuLayer::buttonSettingHandle() {
 
 	Sprite *_pSettingBackground = Sprite::create("UI/UI_main_menu/UI_setting/setting_bg.png");
 
-	float _fTemp = m_pBlurScreen->getContentSize().width / _pSettingBackground->getContentSize().width * 0.6f;
-	_fTemp *= _pSettingBackground->getContentSize().height;
+	float _fTemp = _pSettingBackground->getContentSize().height * m_pBlurScreen->getContentSize().width / _pSettingBackground->getContentSize().width * 0.6f;
 	if (_fTemp > m_szVisibleSize.height * 0.6f) {
 		_pSettingBackground->setScale(m_pBlurScreen->getContentSize().height / _pSettingBackground->getContentSize().height * 0.6f);
 	}
@@ -1397,28 +1452,30 @@ void MenuLayer::buttonSettingHandle() {
 	auto _pCloseSelected = Sprite::create("UI/UI_main_menu/UI_setting/btn_close.png");
 	_pCloseNormal->setColor(Color3B(128, 128, 128));
 	auto _aCloseButton = MenuItemSprite::create(_pCloseNormal, _pCloseSelected, CC_CALLBACK_0(MenuLayer::hideBlurScreen, this));
-	_aCloseButton->setScale(m_pBlurScreen->getContentSize().height / _aCloseButton->getContentSize().height * 0.1f);
+	_aCloseButton->setScale(_pSettingBackground->getContentSize().height / _aCloseButton->getContentSize().height * 0.2f);
 	_aCloseButton->setAnchorPoint(Vec2(1.0f, 1.0f));
-	_aCloseButton->setPosition(m_pBlurScreen->getContentSize().width * 0.75f, m_pBlurScreen->getContentSize().height * 0.75f);
+	_aCloseButton->setPosition(Vec2(_pSettingBackground->getContentSize().width * 0.9f, _pSettingBackground->getContentSize().height * 0.9f));
 
 	m_pLanguageButtonGroup = RadioButtonGroup::create();
-	m_pBlurScreen->addChild(m_pLanguageButtonGroup);
+	_pSettingBackground->addChild(m_pLanguageButtonGroup);
 
 	RadioButton *_pEnglishButton = RadioButton::create("UI/UI_main_menu/UI_setting/btn_off.png", "UI/UI_main_menu/UI_setting/btn_on.png");
-	_pEnglishButton->setScale(m_pBlurScreen->getContentSize().height / _aCloseButton->getContentSize().height * 0.1f);
-	_pEnglishButton->setPosition(Vec2(m_pBlurScreen->getContentSize().width * 0.35f, m_pBlurScreen->getContentSize().height * 0.6f));
+	_pEnglishButton->setScale(_pSettingBackground->getContentSize().height / _aCloseButton->getContentSize().height * 0.15f);
+	_pEnglishButton->setAnchorPoint(Vec2(1.0f, 0.5f));
+	_pEnglishButton->setPosition(Vec2(_pSettingBackground->getContentSize().width * 0.29f, _pSettingBackground->getContentSize().height * 0.68f));
 	_pEnglishButton->addEventListener(CC_CALLBACK_0(MenuLayer::onChangedLanguage, this));
 	_pEnglishButton->setTag(0);
 	m_pLanguageButtonGroup->addRadioButton(_pEnglishButton);
-	m_pBlurScreen->addChild(_pEnglishButton, 2);
+	_pSettingBackground->addChild(_pEnglishButton, 2);
 
 	RadioButton *_pVietnameseButton = RadioButton::create("UI/UI_main_menu/UI_setting/btn_off.png", "UI/UI_main_menu/UI_setting/btn_on.png");
-	_pVietnameseButton->setScale(m_pBlurScreen->getContentSize().height / _aCloseButton->getContentSize().height * 0.1f);
-	_pVietnameseButton->setPosition(Vec2(m_pBlurScreen->getContentSize().width * 0.54f, m_pBlurScreen->getContentSize().height * 0.6f));
+	_pVietnameseButton->setScale(_pSettingBackground->getContentSize().height / _aCloseButton->getContentSize().height * 0.15f);
+	_pVietnameseButton->setAnchorPoint(Vec2(1.0f, 0.5f));
+	_pVietnameseButton->setPosition(Vec2(_pSettingBackground->getContentSize().width * 0.61f, _pSettingBackground->getContentSize().height * 0.68f));
 	_pVietnameseButton->addEventListener(CC_CALLBACK_0(MenuLayer::onChangedLanguage, this));
 	_pVietnameseButton->setTag(1);
 	m_pLanguageButtonGroup->addRadioButton(_pVietnameseButton);
-	m_pBlurScreen->addChild(_pVietnameseButton, 2);
+	_pSettingBackground->addChild(_pVietnameseButton, 2);
 	if (REF->getLanguage() == 0) {
 		m_pLanguageButtonGroup->setSelectedButton(_pEnglishButton);
 	}
@@ -1433,9 +1490,9 @@ void MenuLayer::buttonSettingHandle() {
 	auto _aSoundControlOff = MenuItemSprite::create(_aSoundOff, _aSoundOff, NULL);
 	MenuItemToggle *_pButtonSoundControl = MenuItemToggle::createWithCallback(CC_CALLBACK_1(MenuLayer::buttonSoundControlHandle, this),
 		_aSoundControlOn, _aSoundControlOff, NULL);
-	_pButtonSoundControl->setScale(m_szVisibleSize.height / _pButtonSoundControl->getContentSize().height * 0.1f);
-	_pButtonSoundControl->setAnchorPoint(Vec2(1.0f, 0.0f));
-	_pButtonSoundControl->setPosition(Vec2(m_pBlurScreen->getContentSize().width * 0.65f, m_pBlurScreen->getContentSize().height * 0.41f));
+	_pButtonSoundControl->setScale(_pSettingBackground->getContentSize().height / _aCloseButton->getContentSize().height * 0.15f);
+	_pButtonSoundControl->setAnchorPoint(Vec2(0.0f, 0.5f));
+	_pButtonSoundControl->setPosition(Vec2(_pSettingBackground->getContentSize().width * 0.65f, _pSettingBackground->getContentSize().height * 0.45f));
 	auto ref = UserDefault::getInstance()->sharedUserDefault();
 	bool checkSound = ref->getBoolForKey(KEY_IS_SOUND, true);
 	_pButtonSoundControl->setSelectedIndex(checkSound == true ? 0 : 1);
@@ -1447,16 +1504,16 @@ void MenuLayer::buttonSettingHandle() {
 	auto _aMusicControlOff = MenuItemSprite::create(_aMusicOff, _aMusicOff, NULL);
 	MenuItemToggle *_pButtonMusicControl = MenuItemToggle::createWithCallback(CC_CALLBACK_1(MenuLayer::buttonMusicControlHandle, this),
 		_aMusicControlOn, _aMusicControlOff, NULL);
-	_pButtonMusicControl->setScale(m_szVisibleSize.height / _pButtonMusicControl->getContentSize().height * 0.1f);
-	_pButtonMusicControl->setAnchorPoint(Vec2(1.0f, 0.0f));
-	_pButtonMusicControl->setPosition(Vec2(m_pBlurScreen->getContentSize().width * 0.65f, m_pBlurScreen->getContentSize().height * 0.31f));
+	_pButtonMusicControl->setScale(_pSettingBackground->getContentSize().height / _aCloseButton->getContentSize().height * 0.15f);
+	_pButtonMusicControl->setAnchorPoint(Vec2(0.0f, 0.5f));
+	_pButtonMusicControl->setPosition(Vec2(_pSettingBackground->getContentSize().width * 0.65f, _pSettingBackground->getContentSize().height * 0.25f));
 	bool checkMusic = ref->getBoolForKey(KEY_IS_MUSIC, true);
 	_pButtonMusicControl->setSelectedIndex(checkMusic == true ? 0 : 1);
 
 	Menu *_pShopMenu = Menu::create(_pButtonSoundControl, _pButtonMusicControl, _aCloseButton, NULL);
-	_pShopMenu->setContentSize(Size(m_pBlurScreen->getContentSize().width, m_pBlurScreen->getContentSize().height));
+	_pShopMenu->setContentSize(Size(_pSettingBackground->getContentSize().width, _pSettingBackground->getContentSize().height));
 	_pShopMenu->setPosition(0.0f, 0.0f);
-	m_pBlurScreen->addChild(_pShopMenu, 2);
+	_pSettingBackground->addChild(_pShopMenu, 2);
 }
 
 void MenuLayer::buttonMoreGameHandle() {
@@ -1522,6 +1579,12 @@ void MenuLayer::buttonUpgradeSkillHandle(int p_nIndexSkill) {
 	
 	initTopMainMenu();
 	initUpgradeBoard();
+}
+
+void MenuLayer::receiveButtonPressEvent(Ref *pSender, Widget::TouchEventType type, int p_nIndexItem) {
+	if (type == Widget::TouchEventType::ENDED) {
+		buttonBuyItemHandle(p_nIndexItem);
+	}
 }
 
 void MenuLayer::buttonBuyItemHandle(int p_nIndexItem) {
@@ -1612,7 +1675,7 @@ void MenuLayer::buttonRewardQuest(int p_nQuestIndex) {
 bool MenuLayer::createRequestToGoogle() {
 	HttpRequest* request = new HttpRequest();
 	request->setRequestType(HttpRequest::Type::GET);
-	request->setUrl("http://www.google.com.vn");
+	request->setUrl("https://www.google.com");
 	request->setResponseCallback(CC_CALLBACK_2(MenuLayer::onHttpRequestCompleted, this));
 	request->setTag("Get test");
 	HttpClient::getInstance()->send(request);
@@ -1625,8 +1688,9 @@ void MenuLayer::onHttpRequestCompleted(HttpClient *p_pSender, HttpResponse *p_pR
 	if (p_pResponse && p_pResponse->getResponseCode() == 200 && p_pResponse->getResponseData()) { // is able to get data from google
 		vector<char> *_pData = p_pResponse->getResponseHeader();
 		string _sResult(&(_pData->front()), _pData->size());
-		// CCLOG("%s", ("Response message: " + _sResult).c_str());
+		 //CCLOG("%s", ("Response message: " + _sResult).c_str());
 		m_nCurrentTimeFromGoogle = calTimeFromString(_sResult);
+        //CCLOG("m_nCurrentTimeFromGoogle : %d", m_nCurrentTimeFromGoogle);
 		initDailyRewardBoard();
 	}
 	else {
@@ -1638,30 +1702,33 @@ void MenuLayer::onHttpRequestCompleted(HttpClient *p_pSender, HttpResponse *p_pR
 }
 
 int MenuLayer::calTimeFromString(string p_sInputString) {
-	int _nYear = (p_sInputString.at(37) - 48) * 10 + (p_sInputString.at(38) - 48) * 1;
-	int _nMonth = 0;
-	string _sMonth = p_sInputString.substr(31, 3);
-	string _arMonths[12] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-	for (int i = 0; i < 12; i++) {
-		if (_sMonth.compare(_arMonths[i]) == 0) {
-			_nMonth = i;
-			break;
-		}
-	}
-	int _nDay = (p_sInputString.at(28) - 48) * 10 + (p_sInputString.at(29) - 48) * 1;
-	int _nHour = (p_sInputString.at(40) - 48) * 10 + (p_sInputString.at(41) - 48) * 1;
-	int _nMinute = (p_sInputString.at(43) - 48) * 10 + (p_sInputString.at(44) - 48) * 1;
-	int _nSecond = (p_sInputString.at(46) - 48) * 10 + (p_sInputString.at(47) - 48) * 1;
-
-	tm _pTempTime;
-	_pTempTime.tm_year = _nYear + 100;
-	_pTempTime.tm_mon = _nMonth;
-	_pTempTime.tm_mday = _nDay;
-	_pTempTime.tm_hour = _nHour;
-	_pTempTime.tm_min = _nMinute;
-	_pTempTime.tm_sec = _nSecond;
-
-	return mktime(&_pTempTime);
+    int _nGMTPosition = p_sInputString.find(" GMT");
+    int _nYear = (p_sInputString.at(_nGMTPosition - 13) - 48) * 1000
+    + (p_sInputString.at(_nGMTPosition - 12) - 48) * 100
+    + (p_sInputString.at(_nGMTPosition - 11) - 48) * 10
+    + (p_sInputString.at(_nGMTPosition - 10) - 48);
+    
+    int _nMonth = 0;
+    string _sMonth = p_sInputString.substr(_nGMTPosition - 17, 3);
+    string _arMonths[12] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+    for (int i = 0; i < 12; i++) {
+        if (_sMonth.compare(_arMonths[i]) == 0) {
+            _nMonth = i;
+            break;
+        }
+    }
+    int _nDay = (p_sInputString.at(_nGMTPosition - 20) - 48) * 10 + (p_sInputString.at(_nGMTPosition - 19) - 48) * 1;
+    
+    tm _pTempTime;
+    _pTempTime.tm_year = _nYear - 1900;
+    _pTempTime.tm_mon = _nMonth;
+    _pTempTime.tm_mday = _nDay;
+    _pTempTime.tm_hour = 0;
+    _pTempTime.tm_min = 0;
+    _pTempTime.tm_sec = 0;
+    _pTempTime.tm_isdst = -1;
+    
+    return mktime(&_pTempTime);
 }
 
 void MenuLayer::initDailyRewardBoard() {
@@ -1669,37 +1736,113 @@ void MenuLayer::initDailyRewardBoard() {
 		return;
 	}
 	time_t _nLastDailyRewardTime = REF->getLastDailyRewardTime();
-	time_t _nCurrentTimeFromGoogle = m_nCurrentTimeFromGoogle;
-	tm *_pCurrentTimeFromGoogle = localtime(&_nCurrentTimeFromGoogle);
-	_nCurrentTimeFromGoogle -= _pCurrentTimeFromGoogle->tm_hour * 3600 + _pCurrentTimeFromGoogle->tm_min * 60 + _pCurrentTimeFromGoogle->tm_sec;
 
-	if (_nLastDailyRewardTime < _nCurrentTimeFromGoogle) { // if realtime from google.vn "greater than" last daily reward time "more than 1 day"
+	if (_nLastDailyRewardTime < m_nCurrentTimeFromGoogle) { // if realtime from google.vn "greater than" last daily reward time "more than 1 day"
 		REF->updateDailyRewardAvailable(true);
 		REF->resetFreeCoin();
-		REF->updateTimeFromGoogle(_nCurrentTimeFromGoogle);
+		REF->updateTimeFromGoogle(m_nCurrentTimeFromGoogle);
 	}
 	if (REF->getDailyRewardAvailable()) { // if daily reward is available
 		showBlurScreen(); // open daily reward
 
-		Sprite *_pDailyRewardBackground = Sprite::create("UI/UI_main_menu/DailyReward/test_daily_reward.png");
-		_pDailyRewardBackground->setScale(m_pBlurScreen->getContentSize().width / _pDailyRewardBackground->getContentSize().width * 0.6f,
-			m_pBlurScreen->getContentSize().height / _pDailyRewardBackground->getContentSize().height * 0.6f);
+		Sprite *_pDailyRewardBackground = Sprite::create("UI/UI_main_menu/DailyReward/bg.png");
+		float _fTemp = _pDailyRewardBackground->getContentSize().height * m_szVisibleSize.width / _pDailyRewardBackground->getContentSize().width * 0.9f;
+		if (_fTemp > m_szVisibleSize.height * 0.7f) {
+			_pDailyRewardBackground->setScale(m_szVisibleSize.height / _pDailyRewardBackground->getContentSize().height * 0.7f);
+		}
+		else {
+			_pDailyRewardBackground->setScale(m_szVisibleSize.width / _pDailyRewardBackground->getContentSize().width * 0.9f);
+		}
 		_pDailyRewardBackground->setAnchorPoint(Vec2(0.5f, 0.5f));
 		_pDailyRewardBackground->setPosition(m_pBlurScreen->getContentSize().width * 0.5f, m_pBlurScreen->getContentSize().height * 0.5f);
 		m_pBlurScreen->addChild(_pDailyRewardBackground, 1);
 
+		Sprite *_pDailyRewardTitle = Sprite::create("UI/UI_main_menu/DailyReward/titles.png");
+		_pDailyRewardTitle->setScale(_pDailyRewardBackground->getContentSize().width / _pDailyRewardTitle->getContentSize().width * 0.6f);
+		_pDailyRewardTitle->setAnchorPoint(Vec2(0.5f, 0.0f));
+		_pDailyRewardTitle->setPosition(_pDailyRewardBackground->getContentSize().width * 0.5f, _pDailyRewardBackground->getContentSize().height * 0.85f);
+		_pDailyRewardBackground->addChild(_pDailyRewardTitle, 1);
+
+		float _fCounterX = _pDailyRewardBackground->getContentSize().width * 0.2f;
+		float _fCounterY = _pDailyRewardBackground->getContentSize().height * 0.5f;
+		for (int i = 0; i < 7; i++) {
+			if (i == 3) {
+				_fCounterX = _pDailyRewardBackground->getContentSize().width * 0.1f;
+				_fCounterY = _pDailyRewardBackground->getContentSize().height * 0.15f;
+			}
+			
+			Sprite *_pDailyReward = Sprite::create(StringUtils::format("UI/UI_main_menu/DailyReward/day_%d.png", i + 1));
+			float _fTemp = _pDailyReward->getContentSize().height * _pDailyRewardBackground->getContentSize().width / _pDailyReward->getContentSize().width * 0.2f;
+			if (_fTemp > _pDailyRewardBackground->getContentSize().height * 0.4f) {
+				_pDailyReward->setScale(_pDailyRewardBackground->getContentSize().height / _pDailyReward->getContentSize().height * 0.4f);
+			}
+			else {
+				_pDailyReward->setScale(_pDailyRewardBackground->getContentSize().width / _pDailyReward->getContentSize().width * 0.2f);
+			}
+			_pDailyReward->setAnchorPoint(Vec2(0.0f, 0.0f));
+			_pDailyReward->setPosition(_fCounterX, _fCounterY);
+			_pDailyRewardBackground->addChild(_pDailyReward, 1);
+
+			JSQUEST->readDailyReward(i);
+			Label *_pRewardNumber = Label::createWithBMFont("fontsDPM/font_diamond-export.fnt", StringUtils::format("+%d", JSQUEST->getDailyRewardNumber()));
+			_pRewardNumber->setBMFontSize(_pDailyReward->getContentSize().height * 0.2f);
+			_pRewardNumber->setAnchorPoint(Vec2(0.5f, 0.0f));
+			_pRewardNumber->setPosition(Vec2(_pDailyReward->getContentSize().width * 0.55f, _pDailyReward->getContentSize().height * 0.1f));
+			_pDailyReward->addChild(_pRewardNumber, 1);
+			Label *_pDayNumber = Label::createWithBMFont("fontsDPM/font_life-export.fnt", StringUtils::format("%d", i + 1));
+			_pDayNumber->setBMFontSize(_pDailyReward->getContentSize().height * 0.2f);
+			_pDayNumber->setAnchorPoint(Vec2(0.5f, 0.0f));
+			_pDayNumber->setPosition(Vec2(_pDailyReward->getContentSize().width * 0.2f, _pDailyReward->getContentSize().height * 0.3f));
+			_pDailyReward->addChild(_pDayNumber, 1);
+
+			if (i < REF->getDailyRewardCounter()) {
+				Sprite *_pDailyRewardCheck = Sprite::create("UI/UI_main_menu/DailyReward/recevived.png");
+				_pDailyRewardCheck->setScale(_pDailyReward->getContentSize().width / _pDailyRewardCheck->getContentSize().width * 0.6f);
+				_pDailyRewardCheck->setAnchorPoint(Vec2(0.5f, 0.5f));
+				_pDailyRewardCheck->setPosition(_pDailyReward->getContentSize().width * 0.6f, _pDailyReward->getContentSize().height * 0.6f);
+				_pDailyReward->addChild(_pDailyRewardCheck, 1);
+			}
+			if (i == REF->getDailyRewardCounter()) {
+				Sprite *_pDailyRewardCheck = Sprite::create("UI/UI_main_menu/DailyReward/recevive_on.png");
+				_pDailyRewardCheck->setScale(_pDailyReward->getContentSize().width / _pDailyRewardCheck->getContentSize().width * 1.15f);
+				_pDailyRewardCheck->setAnchorPoint(Vec2(0.5f, 0.5f));
+				_pDailyRewardCheck->setPosition(_pDailyReward->getContentSize().width * 0.5f, _pDailyReward->getContentSize().height * 0.5f);
+				_pDailyReward->addChild(_pDailyRewardCheck, 1);
+
+				Sequence *_pBlink = Sequence::create(Blink::create(1.0f, 5), Show::create(), NULL);
+				_pDailyRewardCheck->runAction(RepeatForever::create(_pBlink));
+
+				m_pReceviveDailyRewardSprite = Sprite::create("UI/UI_main_menu/DailyReward/recevived.png");
+				m_pReceviveDailyRewardSprite->setScale(_pDailyReward->getContentSize().width / m_pReceviveDailyRewardSprite->getContentSize().width * 3.0f);
+				m_pReceviveDailyRewardSprite->setAnchorPoint(Vec2(0.5f, 0.5f));
+				m_pReceviveDailyRewardSprite->setPosition(_pDailyReward->getContentSize().width * 0.6f, _pDailyReward->getContentSize().height * 0.6f);
+				_pDailyReward->addChild(m_pReceviveDailyRewardSprite, 1);
+				m_pReceviveDailyRewardSprite->setVisible(false);
+			}
+
+			_fCounterX += _pDailyRewardBackground->getContentSize().width * 0.2f;
+		}
+
 		// button reward
-		auto _pRewardNormal = Sprite::create("UI/UI_main_menu/btn_buy_1.png");
-		auto _pRewardSelected = Sprite::create("UI/UI_main_menu/btn_buy_2.png");
+		auto _pRewardNormal = Sprite::create("UI/UI_main_menu/DailyReward/btn_recevive.png");
+		auto _pRewardSelected = Sprite::create("UI/UI_main_menu/DailyReward/btn_recevive.png");
 		auto _aRewardButton = MenuItemSprite::create(_pRewardNormal, _pRewardSelected, CC_CALLBACK_0(MenuLayer::buttonDailyRewardHandle, this));
-		_aRewardButton->setScale(m_pBlurScreen->getContentSize().height / _aRewardButton->getContentSize().height * 0.1f);
-		_aRewardButton->setAnchorPoint(Vec2(0.5f, 0.0f));
-		_aRewardButton->setPosition(m_pBlurScreen->getContentSize().width * 0.5f, m_pBlurScreen->getContentSize().height * 0.2f);
+		_aRewardButton->setScale(_pDailyRewardBackground->getContentSize().height / _aRewardButton->getContentSize().height * 0.2f);
+		_aRewardButton->setAnchorPoint(Vec2(0.5f, 1.0f));
+		_aRewardButton->setPosition(_pDailyRewardBackground->getContentSize().width * 0.5f, _pDailyRewardBackground->getContentSize().height * 0.05f);
+		ScaleBy *_pZoomOut = ScaleBy::create(0.5f, 0.9f);
+		Sequence *_pZoomSequence = Sequence::create(_pZoomOut, _pZoomOut->reverse(), NULL);
+		RepeatForever* _pZoomRepeat = RepeatForever::create(_pZoomSequence);
+		_aRewardButton->runAction(_pZoomRepeat);
 
 		Menu *_pDailyRewardDialogMenu = Menu::create(_aRewardButton, NULL);
-		_pDailyRewardDialogMenu->setContentSize(Size(m_pBlurScreen->getContentSize().width, m_pBlurScreen->getContentSize().height));
+		_pDailyRewardDialogMenu->setContentSize(Size(_pDailyRewardBackground->getContentSize().width, _pDailyRewardBackground->getContentSize().height));
 		_pDailyRewardDialogMenu->setPosition(0.0f, 0.0f);
-		m_pBlurScreen->addChild(_pDailyRewardDialogMenu, 2);
+		_pDailyRewardBackground->addChild(_pDailyRewardDialogMenu, 2);
+
+		float _fTempScale = _pDailyRewardBackground->getScale();
+		_pDailyRewardBackground->setScale(0.0f);
+		_pDailyRewardBackground->runAction(ScaleTo::create(0.2f, _fTempScale));
 	}
 }
 
@@ -1707,6 +1850,16 @@ void MenuLayer::initShopBoard(int p_nOption) {
 	if (m_nMenuStatus == 3 || m_nMenuStatus == 4) {
 		m_pSelectStageLayer->getmScrollView()->setEnabled(false);
 		m_pSelectStageLayer->getmMenu()->setEnabled(false);
+	}
+	if (m_nMenuStatus != 4) {
+		m_pBottomMainMenu->setEnabled(false);
+		for (int i = 0; i < 5; i++) {
+			m_arBuyItemButton[i]->setTouchEnabled(false);
+		}
+		m_pSkillBoardMenu->setEnabled(false);
+		m_pBottomHeroMenu->setEnabled(false);
+		m_pQuestBoardMenu->setEnabled(false);
+		m_pItemScrollView->setTouchEnabled(false);
 	}
 
 	m_nShopOption = p_nOption;
@@ -1724,6 +1877,7 @@ void MenuLayer::initShopBoard(int p_nOption) {
 	m_pPacksZone->setAnchorPoint(Vec2(0.0f, 0.0f));
 	m_pPacksZone->setPosition(Vec2(m_pShopBoardLayer->getContentSize().width * 0.1f, m_pShopBoardLayer->getContentSize().height * 0.11f));
 	m_pPacksZone->setDirection(ListView::Direction::HORIZONTAL);
+	m_pPacksZone->setSwallowTouches(true);
 	m_pPacksZone->setBounceEnabled(true);
 	m_pPacksZone->setTouchEnabled(true);
 	m_pPacksZone->setScrollBarOpacity(0.0f);
@@ -1802,7 +1956,7 @@ void MenuLayer::initShopBoard(int p_nOption) {
 			_pCoinSprite->setAnchorPoint(Vec2(0.5f, 0.0f));
 			_pCoinSprite->setPosition(Vec2(_pCoinPackBackground->getContentSize().width * 0.2f, _pCoinPackBackground->getContentSize().height * 0.02f));
 			_pCoinPackBackground->addChild(_pCoinSprite, 1);
-			Label *_pLabelCoinNumber = Label::createWithBMFont("fonts/font_coin-export.fnt", StringUtils::format("%d", JSMENU->getCoinPackNumberGold()));
+			Label *_pLabelCoinNumber = Label::createWithBMFont("fontsDPM/font_coin-export.fnt", StringUtils::format("%d", JSMENU->getCoinPackNumberGold()));
 			_pLabelCoinNumber->setBMFontSize(_pCoinPackBackground->getContentSize().height * 0.13f);
 			_pLabelCoinNumber->setAnchorPoint(Vec2(0.5f, 0.0f));
 			_pLabelCoinNumber->setPosition(Vec2(_pCoinPackBackground->getContentSize().width * 0.6f, _pCoinPackBackground->getContentSize().height * 0.03f));
@@ -1819,7 +1973,7 @@ void MenuLayer::initShopBoard(int p_nOption) {
 			_pDiamondSprite->setPosition(Vec2(_pPackCostSprite->getContentSize().width * 0.4f, _pPackCostSprite->getContentSize().height * 0.2f));
 			_pPackCostSprite->addChild(_pDiamondSprite, 1);
 
-			Label *_pLabelDiamondCost = Label::createWithBMFont("fonts/font_life-export.fnt", StringUtils::format("%d", JSMENU->getCoinPackDiamondPrice()));
+			Label *_pLabelDiamondCost = Label::createWithBMFont("fontsDPM/font_life-export.fnt", StringUtils::format("%d", JSMENU->getCoinPackDiamondPrice()));
 			_pLabelDiamondCost->setBMFontSize(_pPackCostSprite->getContentSize().height * 0.5f);
 			_pLabelDiamondCost->setAnchorPoint(Vec2(0.0f, 0.0f));
 			_pLabelDiamondCost->setPosition(Vec2(_pPackCostSprite->getContentSize().width * 0.45f, _pPackCostSprite->getContentSize().height * 0.3f));
@@ -1858,7 +2012,7 @@ void MenuLayer::initShopBoard(int p_nOption) {
 			_pCoinSprite->setAnchorPoint(Vec2(0.0f, 0.0f));
 			_pCoinSprite->setPosition(Vec2(_pDiamondPackBackground->getContentSize().width * 0.15f, _pDiamondPackBackground->getContentSize().height * 0.02f));
 			_pDiamondPackBackground->addChild(_pCoinSprite, 1);
-			Label *_pLabelCoinNumber = Label::createWithBMFont("fonts/font_diamond-export.fnt", StringUtils::format("%d", JSMENU->getDiamondPackNumberDiamond()));
+			Label *_pLabelCoinNumber = Label::createWithBMFont("fontsDPM/font_diamond-export.fnt", StringUtils::format("%d", JSMENU->getDiamondPackNumberDiamond()));
 			_pLabelCoinNumber->setBMFontSize(_pDiamondPackBackground->getContentSize().height * 0.13f);
 			_pLabelCoinNumber->setAnchorPoint(Vec2(0.5f, 0.0f));
 			_pLabelCoinNumber->setPosition(Vec2(_pDiamondPackBackground->getContentSize().width * 0.6f, _pDiamondPackBackground->getContentSize().height * 0.03f));
@@ -1869,7 +2023,7 @@ void MenuLayer::initShopBoard(int p_nOption) {
 			_pPackCostSprite->setAnchorPoint(Vec2(0.5f, 0.0f));
 			_pPackCostSprite->setPosition(Vec2(_aPackButton->getContentSize().width * 0.5f, 0.0f));
 			_aPackButton->addChild(_pPackCostSprite, 0);
-			Label *_pLabelDiamondCost = Label::createWithBMFont("fonts/font_life-export.fnt", StringUtils::format("%s", JSMENU->getDiamondPackMoneyPrice().c_str()));
+			Label *_pLabelDiamondCost = Label::createWithBMFont("fontsDPM/font_life-export.fnt", StringUtils::format("%s", JSMENU->getDiamondPackMoneyPrice().c_str()));
 			_pLabelDiamondCost->setBMFontSize(_pPackCostSprite->getContentSize().height * 0.5f);
 			_pLabelDiamondCost->setAnchorPoint(Vec2(0.5f, 0.0f));
 			_pLabelDiamondCost->setPosition(Vec2(_pPackCostSprite->getContentSize().width * 0.5f, _pPackCostSprite->getContentSize().height * 0.3f));
@@ -1903,7 +2057,7 @@ void MenuLayer::initShopBoard(int p_nOption) {
 			_aPackButton->addChild(_pEnergyPackBackground, 1);
 
 			// energy number
-			Label *_pLabelCoinNumber = Label::createWithBMFont("fonts/font_life-export.fnt", StringUtils::format("x%d", JSMENU->getEnergyPackNumberEnergy()));
+			Label *_pLabelCoinNumber = Label::createWithBMFont("fontsDPM/font_life-export.fnt", StringUtils::format("x%d", JSMENU->getEnergyPackNumberEnergy()));
 			_pLabelCoinNumber->setBMFontSize(_pEnergyPackBackground->getContentSize().height * 0.13f);
 			_pLabelCoinNumber->setAnchorPoint(Vec2(0.5f, 0.0f));
 			_pLabelCoinNumber->setPosition(Vec2(_pEnergyPackBackground->getContentSize().width * 0.5f, _pEnergyPackBackground->getContentSize().height * 0.03f));
@@ -1919,7 +2073,7 @@ void MenuLayer::initShopBoard(int p_nOption) {
 			_pDiamondSprite->setAnchorPoint(Vec2(1.0f, 0.0f));
 			_pDiamondSprite->setPosition(Vec2(_pPackCostSprite->getContentSize().width * 0.48f, _pPackCostSprite->getContentSize().height * 0.2f));
 			_pPackCostSprite->addChild(_pDiamondSprite, 1);
-			Label *_pLabelDiamondCost = Label::createWithBMFont("fonts/font_life-export.fnt", StringUtils::format("%d", JSMENU->getEnergyPackDiamondPrice()));
+			Label *_pLabelDiamondCost = Label::createWithBMFont("fontsDPM/font_life-export.fnt", StringUtils::format("%d", JSMENU->getEnergyPackDiamondPrice()));
 			_pLabelDiamondCost->setBMFontSize(_pPackCostSprite->getContentSize().height * 0.5f);
 			_pLabelDiamondCost->setAnchorPoint(Vec2(0.0f, 0.0f));
 			_pLabelDiamondCost->setPosition(Vec2(_pPackCostSprite->getContentSize().width * 0.53f, _pPackCostSprite->getContentSize().height * 0.3f));
@@ -1935,45 +2089,149 @@ void MenuLayer::buttonCloseShopHandle() {
 		m_pSelectStageLayer->getmScrollView()->setEnabled(true);
 		m_pSelectStageLayer->getmMenu()->setEnabled(true);
 	}
+	if (m_nMenuStatus != 4) {
+		m_pBottomMainMenu->setEnabled(true);
+		for (int i = 0; i < 5; i++) {
+			m_arBuyItemButton[i]->setTouchEnabled(true);
+		}
+		m_pSkillBoardMenu->setEnabled(true);
+		m_pBottomHeroMenu->setEnabled(true);
+		m_pQuestBoardMenu->setEnabled(true);
+		m_pItemScrollView->setTouchEnabled(true);
+	}
 
 	AudioManager::playSound(SOUND_BTCLICK);
 	m_pShopBoardLayer->runAction(ScaleTo::create(0.2f, 0.0f));
 	// TODO: fix custom sprite to buy pack, because if you dont remove children of shop board, they still get response clicks on screen
+	m_pShopBlurBackground->setVisible(false);
+    m_pTopMenu->setEnabled(true);
 	runAction(Sequence::create(DelayTime::create(0.2f), CallFunc::create([&]() {
-		hideBlurScreen();
 		m_pShopBoardLayer->removeAllChildrenWithCleanup(true);
 	}), nullptr));
 }
 
 void MenuLayer::buttonDailyRewardHandle() {
+	if (m_pReceviveDailyRewardSprite->isVisible() == true) {
+		return;
+	}
 	AudioManager::playSound(SOUND_BTCLICK);
-	int _nDailyRewardCounter = REF->getDailyRewardCounter();
+	JSQUEST->readDailyReward(REF->getDailyRewardCounter());
 
-	JSQUEST->readDailyReward(_nDailyRewardCounter);
-	string a = JSQUEST->getDailyRewardType();
-	if (JSQUEST->getDailyRewardType().compare("gold") == 0) {
-		m_nCurrentGold += JSQUEST->getDailyRewardNumber();
-		REF->setUpGoldExplored(JSQUEST->getDailyRewardNumber());
-	}
-	if (JSQUEST->getDailyRewardType().compare("play_turn") == 0) {
-		m_nLifeNumber += JSQUEST->getDailyRewardNumber();
-		REF->setUpLife(JSQUEST->getDailyRewardNumber());
-	}
-	if (JSQUEST->getDailyRewardType().compare("item_bird") == 0) {
-		m_arNumberItemOwning[1] += JSQUEST->getDailyRewardNumber();
-		REF->increaseNumberItemBird();
-		m_arBuyItemButton[1]->setVisible(false);
-		m_arSpriteItemMax[1]->setVisible(true);
-	}
-	if (JSQUEST->getDailyRewardType().compare("diamond") == 0) {
-		m_nCurrentDiamond += JSQUEST->getDailyRewardNumber();
-		REF->setUpDiamondBuy(JSQUEST->getDailyRewardNumber());
-	}
+	m_pReceviveDailyRewardSprite->setVisible(true);
+	m_pReceviveDailyRewardSprite->runAction(ScaleTo::create(0.3f, m_pReceviveDailyRewardSprite->getParent()->getContentSize().width / m_pReceviveDailyRewardSprite->getContentSize().width * 0.6f));
+
+	runAction(Sequence::create(DelayTime::create(0.8f), CallFunc::create([&]() {
+		m_pBuyPackConfirmBackground->setVisible(true);
+		Sprite *_pConfirmBackground = Sprite::create("UI/UI_main_menu/DailyReward/popup_confirm.png");
+		_pConfirmBackground->setScale(m_pBuyPackConfirmBackground->getContentSize().height / _pConfirmBackground->getContentSize().height * 0.35f);
+		_pConfirmBackground->setAnchorPoint(Vec2(0.5f, 0.5f));
+		_pConfirmBackground->setPosition(m_pBuyPackConfirmBackground->getContentSize().width * 0.5f, m_pBuyPackConfirmBackground->getContentSize().height * 0.5f);
+		m_pBuyPackConfirmBackground->addChild(_pConfirmBackground, 1);
+
+		Sprite *_pIconSprite = Sprite::create("UI/UI_main_menu/icon_diamond.png");
+		if (JSQUEST->getDailyRewardType().compare("gold") == 0) {
+			m_nCurrentGold += JSQUEST->getDailyRewardNumber();
+			REF->setUpGoldExplored(JSQUEST->getDailyRewardNumber());
+			_pIconSprite = Sprite::create("UI/UI_main_menu/icon_money_small.png");
+		}
+		if (JSQUEST->getDailyRewardType().compare("play_turn") == 0) {
+			m_nLifeNumber += JSQUEST->getDailyRewardNumber();
+			REF->setUpLife(JSQUEST->getDailyRewardNumber());
+			_pIconSprite = Sprite::create("UI/UI_main_menu/icon_life.png");
+		}
+		if (JSQUEST->getDailyRewardType().compare("item_bird") == 0) {
+			m_arNumberItemOwning[1] += JSQUEST->getDailyRewardNumber();
+			REF->increaseNumberItemBird();
+			m_arBuyItemButton[1]->setVisible(false);
+			m_arSpriteItemMax[1]->setVisible(true);
+			_pIconSprite = Sprite::create("UI/UI_main_menu/item2_bird.png");
+		}
+		if (JSQUEST->getDailyRewardType().compare("diamond") == 0) {
+			m_nCurrentDiamond += JSQUEST->getDailyRewardNumber();
+			REF->setUpDiamondBuy(JSQUEST->getDailyRewardNumber());
+			_pIconSprite = Sprite::create("UI/UI_main_menu/icon_diamond.png");
+		}
+		REF->increaseDailyRewardCounter();
+		REF->updateDailyRewardAvailable(false);
+
+		_pIconSprite->setScale(_pConfirmBackground->getContentSize().height / _pIconSprite->getContentSize().height * 0.18f);
+		_pIconSprite->setAnchorPoint(Vec2(0.0f, 0.0f));
+		_pConfirmBackground->addChild(_pIconSprite, 1);
+
+		Label *_pLabelNumber = Label::createWithBMFont("fontsDPM/font_normal-export.fnt", StringUtils::format(" x %d", JSQUEST->getDailyRewardNumber()));
+		_pLabelNumber->setBMFontSize(_pConfirmBackground->getContentSize().height * 0.15f);
+		_pLabelNumber->setAnchorPoint(Vec2(0.0f, 0.0f));
+		_pConfirmBackground->addChild(_pLabelNumber, 1);
+
+		_pIconSprite->setPosition(Vec2((_pConfirmBackground->getContentSize().width - _pIconSprite->getContentSize().width - _pLabelNumber->getContentSize().width) * 0.5f,
+			_pConfirmBackground->getContentSize().height * 0.4f));
+		_pLabelNumber->setPosition(Vec2(_pIconSprite->getPosition().x + _pIconSprite->getContentSize().width * _pIconSprite->getScaleX(),
+			_pConfirmBackground->getContentSize().height * 0.43f));
+
+		Label *_pLabelTip = Label::createWithTTF("Tap to continue", "fontsDPM/arial.ttf", 72);
+		_pLabelTip->setColor(Color3B(144, 32, 12));
+		_pLabelTip->setScale(_pConfirmBackground->getContentSize().width / _pLabelTip->getContentSize().width * 0.35f);
+		_pLabelTip->setAnchorPoint(Vec2(0.5f, 0.0f));
+		_pLabelTip->setPosition(Vec2(_pConfirmBackground->getContentSize().width * 0.5f, _pConfirmBackground->getContentSize().height * 0.2f));
+		_pConfirmBackground->addChild(_pLabelTip, 1);
+
+		/*auto actionSpawn = CallFunc::create([&]() {
+			auto particlePaper = ParticleSystemQuad::create("Effect/firework_paper.plist");
+			particlePaper->setDuration(0.2f);
+			particlePaper->setPosition(CCRANDOM_0_1() * m_pBuyPackConfirmBackground->getContentSize().width,
+				m_pBuyPackConfirmBackground->getContentSize().height - CCRANDOM_0_1() * m_pBuyPackConfirmBackground->getContentSize().height * 0.5f);
+			m_pBuyPackConfirmBackground->addChild(particlePaper, 10);
+
+			auto particleStar = ParticleSystemQuad::create("Effect/firework_star.plist");
+			particleStar->setDuration(0.1f);
+			particleStar->setPosition(particlePaper->getPosition());
+			m_pBuyPackConfirmBackground->addChild(particleStar, 2);
+		});
+
+		auto seq = Sequence::create(actionSpawn, DelayTime::create(CCRANDOM_0_1() + 0.75f), nullptr);
+
+		auto forever = RepeatForever::create(seq);
+		m_pBuyPackConfirmBackground->runAction(forever);*/
+
+		// button tap to continue
+		auto _pCloseNormal = Sprite::create("UI/UI_main_menu/UI_shop/btn_close.png");
+		auto _pCloseSelected = Sprite::create("UI/UI_main_menu/UI_shop/btn_close.png");
+		_pCloseNormal->setColor(Color3B(128, 128, 128));
+		auto _aCloseButton = MenuItemSprite::create(_pCloseNormal, _pCloseSelected, CC_CALLBACK_0(MenuLayer::buttonConfirmDailyRewardHandle, this));
+		_aCloseButton->setScaleX(m_szVisibleSize.width / _aCloseButton->getContentSize().width);
+		_aCloseButton->setScaleY(m_szVisibleSize.height / _aCloseButton->getContentSize().height);
+		_aCloseButton->setAnchorPoint(Vec2(0.0f, 0.0f));
+		_aCloseButton->setPosition(0.0f, 0.0f);
+		_aCloseButton->setOpacity(0.0f);
+
+		Menu *_pConfirmMenu = Menu::create(_aCloseButton, NULL);
+		_pConfirmMenu->setContentSize(Size(_pConfirmBackground->getContentSize().width, _pConfirmBackground->getContentSize().height));
+		_pConfirmMenu->setPosition(0.0f, 0.0f);
+		m_pBuyPackConfirmBackground->addChild(_pConfirmMenu, 2);
+	}), nullptr));
+
+	auto actionSpawn = CallFunc::create([&]() {
+		auto _aParticleFeather = ParticleSystemQuad::create("Effect/firework_paper.plist");
+		_aParticleFeather->setDuration(0.2f);
+		_aParticleFeather->setScale(0.5f);
+		_aParticleFeather->setPosition(Vec2(m_szVisibleSize.width * CCRANDOM_0_1(), m_szVisibleSize.height * CCRANDOM_0_1()));
+		m_pBuyPackConfirmBackground->addChild(_aParticleFeather, 2);
+		auto _aParticleFeather1 = ParticleSystemQuad::create("Effect/firework_star.plist");
+		_aParticleFeather1->setDuration(0.1f);
+		_aParticleFeather1->setScale(0.5f);
+		_aParticleFeather1->setPosition(_aParticleFeather->getPosition());
+		m_pBuyPackConfirmBackground->addChild(_aParticleFeather1, 2);
+	});
+	Sequence *_pBlink = Sequence::create(actionSpawn, DelayTime::create(1.5f), NULL);
+	m_pBuyPackConfirmBackground->runAction(RepeatForever::create(_pBlink));
+}
+
+void MenuLayer::buttonConfirmDailyRewardHandle() {
 	initTopMainMenu();
-	m_pTopMenu->setEnabled(false);
+	initItemBoard();
 	hideBlurScreen();
-	REF->increaseDailyRewardCounter();
-	REF->updateDailyRewardAvailable(false);
+	m_pBuyPackConfirmBackground->setVisible(false);
+	m_pBuyPackConfirmBackground->removeAllChildrenWithCleanup(true);
 }
 
 void MenuLayer::buttonBuyLifeHandle(int p_nIndexEnergyPack) {
@@ -2015,34 +2273,9 @@ void MenuLayer::buttonBuyCoinHandle(int p_nIndexCoinPack) {
 	}
 }
 
-void MenuLayer::buttonBuyDiamondHandle(int p_nIndexDiamondPack) {// index 0-4
+void MenuLayer::buttonBuyDiamondHandle(int p_nIndexDiamondPack) {
 	AudioManager::playSound(SOUND_BTCLICK);
-	switch (p_nIndexDiamondPack)
-	{
-	case 0: {
-		IAPHelper::getInstance()->purchase("diamond_1");
-		break;
-	}
-	case 1: {
-		IAPHelper::getInstance()->purchase("diamond_2");
-		break;
-	}
-	case 2: {
-		IAPHelper::getInstance()->purchase("diamond_3");
-		break;
-	}
-	case 3: {
-		IAPHelper::getInstance()->purchase("diamond_4");
-		break;
-	}
-	case 4: {
-		IAPHelper::getInstance()->purchase("diamond_5");
-		break;
-	}
-	default:
-		break;
-	}
-	/*JSMENU->readDiamondPack(p_nIndexDiamondPack);
+	JSMENU->readDiamondPack(p_nIndexDiamondPack);
 	if (false) {
 		return;
 	}
@@ -2051,7 +2284,7 @@ void MenuLayer::buttonBuyDiamondHandle(int p_nIndexDiamondPack) {// index 0-4
 	initTopMainMenu();
 	m_pTopMenu->setEnabled(false);
 
-	REF->setUpNumberQuest(7, JSMENU->getDiamondPackNumberDiamond());*/
+	REF->setUpNumberQuest(7, JSMENU->getDiamondPackNumberDiamond());
 	//initQuestBoard(0);
 }
 
@@ -2138,9 +2371,7 @@ void MenuLayer::buttonUpgradeHeroHandle() {
 	float _nUpgradeCost = JSHERO->getGoldUpgradeLevelX(m_nIndexHeroPicked);
 
 	int level = REF->getCurrentLevel();
-	for (int i = 0; i < level ; i++) {
-		_nUpgradeCost *= 1.05f;
-	}
+	
 	if (m_nCurrentGold >= _nUpgradeCost) {
 		logUpgradeHeroEvent(m_nIndexHeroPicked,level+1);
 		m_nCurrentGold -= _nUpgradeCost;
@@ -2154,6 +2385,10 @@ void MenuLayer::buttonUpgradeHeroHandle() {
 		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(8), TOAST_LONG);
 		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
 		this->addChild(_pToast, 10);
+	}
+
+	for (int i = 0; i < level; i++) {
+		_nUpgradeCost *= 1.05f;
 	}
 }
 
@@ -2231,7 +2466,7 @@ void MenuLayer::selectedItemEvent(Ref* sender, ListView::EventType type) {
 			_pConfirmBackground->setPosition(m_pBuyPackConfirmBackground->getContentSize().width * 0.5f, m_pBuyPackConfirmBackground->getContentSize().height * 0.5f);
 			m_pBuyPackConfirmBackground->addChild(_pConfirmBackground, 1);
 
-			Label *_pLabelConfirm = Label::createWithBMFont("fonts/font_normal-export.fnt", StringUtils::format("%s", JSHERO->getNotifyAtX(10).c_str()));
+			Label *_pLabelConfirm = Label::createWithBMFont("fontsDPM/font_normal-export.fnt", StringUtils::format("%s", JSHERO->getNotifyAtX(10).c_str()));
 			_pLabelConfirm->setBMFontSize(_pConfirmBackground->getContentSize().height);
 			_pLabelConfirm->setScale(_pConfirmBackground->getContentSize().width / _pLabelConfirm->getContentSize().width * 0.7f);
 			_pLabelConfirm->setAnchorPoint(Vec2(0.5f, 0.0f));
@@ -2255,7 +2490,7 @@ void MenuLayer::selectedItemEvent(Ref* sender, ListView::EventType type) {
 				_nTempPrice = JSMENU->getEnergyPackDiamondPrice();
 			}
 
-			Label *_pLabelDiamondCost = Label::createWithBMFont("fonts/font_diamond-export.fnt", StringUtils::format("%d", _nTempPrice));
+			Label *_pLabelDiamondCost = Label::createWithBMFont("fontsDPM/font_diamond-export.fnt", StringUtils::format("%d", _nTempPrice));
 			_pLabelDiamondCost->setBMFontSize(_pConfirmBackground->getContentSize().height * 0.11f);
 			_pLabelDiamondCost->setAnchorPoint(Vec2(0.0f, 0.0f));
 			_pLabelDiamondCost->setPosition(Vec2(_pConfirmBackground->getContentSize().width * 0.5f, _pConfirmBackground->getContentSize().height * 0.5f));
@@ -2402,7 +2637,7 @@ void MenuLayer::logBuyDiamond(int dexOfPack, float money)
 	GAHelper::getInstance()->logEvent("Diamond", "Buy", StringUtils::format("Pack %d", dexOfPack+1), money);
 }
 
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 
 
 void MenuLayer::onInitialized(bool ok)
@@ -2543,6 +2778,7 @@ void MenuLayer::onVungleAdReward(const std::string & name)
 }
 
 #endif 
+
 
 string MenuLayer::indexHeroToName(int indexHero)
 {

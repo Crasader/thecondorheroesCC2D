@@ -28,6 +28,8 @@ protected:
 	CC_SYNTHESIZE_READONLY(string, avatarLoadingPath, AvatarLoadingPath);
 	CC_SYNTHESIZE_READONLY(bool, isLocked, IsLocked);
 
+	CC_SYNTHESIZE_READONLY(string, pathButtonAttack, PathButtonAttack);
+
 	CC_SYNTHESIZE_READONLY(string, skill_1Name, NameOfSkill_1);
 	CC_SYNTHESIZE_READONLY(float, coolDownSkill1, CoolDownSkill1);
 	CC_SYNTHESIZE_READONLY(float, durationSkill1, DurationSkill1);

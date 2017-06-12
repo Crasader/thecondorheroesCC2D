@@ -1,6 +1,6 @@
 #ifndef __SDKBOXPLAY_HELPER_H__
 #define __SDKBOXPLAY_HELPER_H__
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 #include "PluginSdkboxPlay/PluginSdkboxPlay.h"
 #endif
 #include <string>
@@ -11,33 +11,33 @@ class SPHelper {
 public:
 	//static GAHelper *INSTANCE;
 	SPHelper() {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 		sdkbox::PluginSdkboxPlay::init();
 #endif
 	}
 
 	
 	bool isSigned() {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 		return sdkbox::PluginSdkboxPlay::isSignedIn();
 #endif
 		return false;
 	}
 	void signIn() {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 		sdkbox::PluginSdkboxPlay::signin();
 #endif
 
 	}
 
 	void submitScore(string name, int score) {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 		sdkbox::PluginSdkboxPlay::submitScore(name,  score);
 #endif
 	}
 
 	void showBoard(string name) {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 		sdkbox::PluginSdkboxPlay::showLeaderboard(name);
 #endif
 	}

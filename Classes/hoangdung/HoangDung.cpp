@@ -23,7 +23,7 @@ HoangDung * HoangDung::create(string jsonFile, string atlasFile, float scale)
 		hoangDung->setBoxHeight(hoangDung->getBoundingBox().size.height / 2.2f);
 
 		//
-		hoangDung->blash = Sprite::create("Animation/CoLong/blash.png");
+		hoangDung->blash = Sprite::create("Animation/HoangDung/blash.png");
 		hoangDung->blash->setScale(scale / 2);
 		hoangDung->blash->setPosition(hoangDung->getContentSize() / 2);
 		hoangDung->blash->setVisible(false);
@@ -45,7 +45,7 @@ void HoangDung::initSwordPhysic(b2World * world, Point position)
 	b2PolygonShape shape;
 	b2FixtureDef fixtureDef;
 
-	shape.SetAsBox(trueRadiusOfHero * 0.75f / PTM_RATIO, trueRadiusOfHero * 1.0f / PTM_RATIO);
+	shape.SetAsBox(trueRadiusOfHero * 0.85f / PTM_RATIO, trueRadiusOfHero * 1.25f / PTM_RATIO);
 
 	fixtureDef.density = 0.0f;
 	fixtureDef.friction = 0.0f;
@@ -67,7 +67,7 @@ void HoangDung::initSwordPhysic(b2World * world, Point position)
 void HoangDung::createThunderShield()
 {
 	auto scale = this->getTrueRadiusOfHero() * 1.4f / 250.0f;
-	thunderShield = new SkeletonAnimation("Animation/HoangDung/Skill_1_effect.json", "Animation/HoangDung/Skill_1_effect.atlas", scale);
+	thunderShield = SkeletonAnimation::createWithFile("Animation/HoangDung/Skill_1_effect.json", "Animation/HoangDung/Skill_1_effect.atlas", scale);
 	thunderShield->setPosition(this->getContentSize().width / 2, this->getContentSize().height / 2);
 	thunderShield->update(0.0f);
 	thunderShield->setVisible(false);
@@ -80,8 +80,7 @@ void HoangDung::createThunderShield()
 void HoangDung::createSkill2Effect()
 {
 	auto scale = this->getTrueRadiusOfHero() * 1.4f / 250.0f;
-	Skill2Effect1 = new SkeletonAnimation("Animation/HoangDung/Skill_2_effect1.json", "Animation/HoangDung/Skill_2_effect1.atlas", scale);
-	Skill2Effect1->autorelease();
+	Skill2Effect1 = SkeletonAnimation::createWithFile("Animation/HoangDung/Skill_2_effect1.json", "Animation/HoangDung/Skill_2_effect1.atlas", scale);
 	Skill2Effect1->setPosition(this->getContentSize().width / 2, this->getContentSize().height / 2);
 	Skill2Effect1->update(0.0f);
 	Skill2Effect1->setVisible(false);
@@ -90,8 +89,7 @@ void HoangDung::createSkill2Effect()
 	Skill2Effect1->setToSetupPose();
 	this->addChild(Skill2Effect1, -1);
 
-	Skill2Effect2 = new SkeletonAnimation("Animation/HoangDung/Skill_2_effect2.json", "Animation/HoangDung/Skill_2_effect2.atlas", scale);
-	Skill2Effect2->autorelease();
+	Skill2Effect2 = SkeletonAnimation::createWithFile("Animation/HoangDung/Skill_2_effect2.json", "Animation/HoangDung/Skill_2_effect2.atlas", scale);
 	Skill2Effect2->setPosition(this->getContentSize().width / 2, this->getContentSize().height / 2);
 	Skill2Effect2->update(0.0f);
 	Skill2Effect2->setVisible(false);
@@ -100,8 +98,7 @@ void HoangDung::createSkill2Effect()
 	Skill2Effect2->setToSetupPose();
 	this->addChild(Skill2Effect2, 1);
 
-	Skill2Effect3 = new SkeletonAnimation("Animation/HoangDung/Skill_2_effect3.json", "Animation/HoangDung/Skill_2_effect3.atlas", scale);
-	Skill2Effect3->autorelease();
+	Skill2Effect3 = SkeletonAnimation::createWithFile("Animation/HoangDung/Skill_2_effect3.json", "Animation/HoangDung/Skill_2_effect3.atlas", scale);
 	Skill2Effect3->setPosition(this->getContentSize().width, this->getContentSize().height);
 	Skill2Effect3->update(0.0f);
 	Skill2Effect3->setVisible(false);
@@ -113,6 +110,7 @@ void HoangDung::createSkill2Effect()
 
 void HoangDung::doCounterSkill1()
 {
+	AudioManager::playSound(SOUND_HD_SKILL1);
 	thunderShield->setVisible(true);
 
 	changeBodyMaskBits(BITMASK_FLOOR | BITMASK_COIN_BULLION | BITMASK_BOSS);
@@ -148,7 +146,7 @@ void HoangDung::doCounterSkill1()
 
 void HoangDung::createManThienHoaVu(Point posHand, int Zoder, float angle)
 {
-	AudioManager::playSound(SOUND_DQSKILL2);
+	AudioManager::playSound(SOUND_HD_SKILL2);
 	auto mthv = (ManThienHoaVu*)poolSkill2->getObjectAtIndex(indexSkill2++);
 	mthv->setVisible(true);
 	auto gameLayer = (GameScene*) this->getParent();
@@ -226,6 +224,7 @@ void HoangDung::doCounterSkill2() {
 // SKILL 3
 void HoangDung::createDaCauBongPhap(Point posSword)
 {
+	AudioManager::playSound(SOUND_HD_SKILL3);
 	auto dcbp = (DaCauBongPhap*)poolSkill3->getObjectAtIndex(indexSkill3++);
 	dcbp->setVel(b2Vec2(SCREEN_SIZE.width * 1.5f / PTM_RATIO, 0));
 	dcbp->setVisible(true);
@@ -420,7 +419,7 @@ void HoangDung::landing()
 void HoangDung::die()
 {
 	BaseHero::die();
-	AudioManager::playSound(SOUND_DQDIE);
+	AudioManager::playSound(SOUND_HD_DIE);
 }
 
 void HoangDung::attackNormal()
@@ -429,7 +428,7 @@ void HoangDung::attackNormal()
 		clearTracks();
 		addAnimation(0, "skill3", false);
 		setToSetupPose();
-		log("AAA");
+		//log("AAA");
 		createDaCauBongPhap(getBoneLocation("bone6"));
 
 		setIsPriorSkill3(true);			// move to attack
@@ -450,6 +449,7 @@ void HoangDung::attackNormal()
 		}
 		else {
 			addAnimation(0, "attack3", false);
+			this->getSwordBody()->SetTransform(getSwordBody()->GetPosition(), PI / 2);
 		}
 
 		//log("atttack*");
@@ -487,7 +487,7 @@ void HoangDung::attackLanding()
 
 void HoangDung::injured()
 {
-	AudioManager::playSound(SOUND_DQHIT);
+	AudioManager::playSound(SOUND_HD_HIT);
 	clearTracks();
 	addAnimation(0, "injured", false);
 	setToSetupPose();
@@ -539,7 +539,8 @@ void HoangDung::listener()
 		else if ((strcmp(getCurrent()->animation->name, "attack1") == 0) ||
 			(strcmp(getCurrent()->animation->name, "attack2") == 0) ||
 			(strcmp(getCurrent()->animation->name, "attack3") == 0)) {
-
+			if (strcmp(getCurrent()->animation->name, "attack3") == 0)
+				this->getSwordBody()->SetTransform(getSwordBody()->GetPosition(), 0);
 			changeSwordCategoryBitmask(BITMASK_ENEMY);
 
 			setIsPriorAttack(false);

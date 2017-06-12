@@ -41,15 +41,15 @@ public:
 
 	void silence();
 
+	void onExit();
+
 protected:
 
 	CC_SYNTHESIZE(MenuItemImage*, pauseItem, PauseItem);
-	CC_SYNTHESIZE(Sprite*, avatar, AvatarSprite);
 
 	CC_SYNTHESIZE(Sprite*, bloodBoard, BloodBoard);
 	CC_SYNTHESIZE(CCArray*, listBlood, ListBlood);
 
-	CC_SYNTHESIZE(Sprite*, moneyBoard, MoneyBoard);
 	CC_SYNTHESIZE(Label*, lbMoney, LbMoney);
 	CC_SYNTHESIZE(Sprite*, scoreBoard, ScoreBoard);
 	CC_SYNTHESIZE(Label*, lbScore, LbScore);
@@ -82,6 +82,8 @@ private:
 	TMXTiledMap *tmxMap;
 	list<Sprite*> g_lTemp;
 	LayerColor *blur;
+
+	bool is43Ratio = false;
 	
 	float timerSkill;
 	float durationSkill;
@@ -103,14 +105,14 @@ private:
 	void addSkills();
 	void addBird();
 
-	void doSuctionCoin(Ref *pSender);
-	void doDoublingCoin(Ref *pSender);
-	void doCalling(Ref* pSender);
-	void doPause(Ref* pSender);
+	//void doSuctionCoin(Ref *pSender);
+	//void doDoublingCoin(Ref *pSender);
+	void doCalling();
+	void doPause();
 
-	void showSpecialButton();
-	void createButtonX(int index, Point position);
-	vector<int> getListIndexOfTypeItemBuy();
+	//void showSpecialButton();
+	//void createButtonX(int index, Point position);
+	//vector<int> getListIndexOfTypeItemBuy();
 
 public:
 	// tuts

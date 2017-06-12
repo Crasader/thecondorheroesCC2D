@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+			<key>skill1_broken_1.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,1113},{560,242}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{240,145},{560,242}}</string>
+				<key>sourceSize</key>
+				<string>{800,396}</string>
+			</dict>
+
+			<key>skill1_broken_2.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{654,736},{641,321}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{158,75},{641,321}}</string>
+				<key>sourceSize</key>
+				<string>{800,396}</string>
+			</dict>
+
+			<key>skill1_broken_3.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{684,364},{638,348}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{153,48},{638,348}}</string>
+				<key>sourceSize</key>
+				<string>{800,396}</string>
+			</dict>
+
+			<key>skill1_broken_4.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,0},{691,363}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{81,31},{691,363}}</string>
+				<key>sourceSize</key>
+				<string>{800,396}</string>
+			</dict>
+
+			<key>skill1_broken_5.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,364},{683,371}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{38,18},{683,371}}</string>
+				<key>sourceSize</key>
+				<string>{800,396}</string>
+			</dict>
+
+			<key>skill1_broken_6.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,736},{653,376}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{26,10},{653,376}}</string>
+				<key>sourceSize</key>
+				<string>{800,396}</string>
+			</dict>
+
+			<key>skill1_broken_7.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{654,1058},{640,278}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,105},{640,278}}</string>
+				<key>sourceSize</key>
+				<string>{800,396}</string>
+			</dict>
+
+			<key>skill1_broken_8.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{692,0},{588,284}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{12,112},{588,284}}</string>
+				<key>sourceSize</key>
+				<string>{800,396}</string>
+			</dict>
+
+		</dict>
+
+		<key>metadata</key>
+		<dict>
+			<key>format</key>
+			<integer>2</integer>
+			<key>size</key>
+			<string>{1323,1356}</string>
+			<key>textureFileName</key>
+			<string>fire_eff.png</string>
+			</dict>
+		</dict>
+</plist>

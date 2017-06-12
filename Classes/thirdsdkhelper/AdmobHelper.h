@@ -1,12 +1,12 @@
 #ifndef __ADMOB_HELPER_H__
 #define __ADMOB_HELPER_H__
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 #include "pluginadmob/PluginAdMob.h"
 #endif
 #include <string>
 using namespace std;
 
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 
 class IMListener : public sdkbox::AdMobListener {
 public:
@@ -21,7 +21,7 @@ class AdmobHelper {
 public:
 	//static AdmobHelper *INSTANCE;
 	AdmobHelper() {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 		sdkbox::PluginAdMob::init();
 		sdkbox::PluginAdMob::cache("home");
 		sdkbox::PluginAdMob::cache("gameover");
@@ -29,13 +29,13 @@ public:
 #endif
 	}
 	bool isAvailable(std::string adname) {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 		return sdkbox::PluginAdMob::isAvailable(adname);
 #endif
 //		return false;
 	}
 	/*bool showBanner() {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 		if (isAvailable("home")) {
 			sdkbox::PluginAdMob::show("home");
 			return true;
@@ -46,19 +46,19 @@ public:
 		return false;
 	}*/
 	void showBanner() {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 		sdkbox::PluginAdMob::show("home");
 #endif
 	}
 
 	void hideBanner() {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 		sdkbox::PluginAdMob::hide("home");
 #endif
 	}
 
 	/*bool showFullAd() {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 		if (isAvailable("gameover")) {
 			sdkbox::PluginAdMob::show("gameover");
 			return true;
@@ -69,7 +69,7 @@ public:
 		return false;
 	}*/
 	void showFullAd() {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 		
 		sdkbox::PluginAdMob::show("gameover");
 		sdkbox::PluginAdMob::cache("gameover");
@@ -77,7 +77,7 @@ public:
 	}
 
 	void showRewardVideoToRevive() {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 		sdkbox::PluginAdMob::show("rewarded");
 		sdkbox::PluginAdMob::cache("rewarded");
 #endif

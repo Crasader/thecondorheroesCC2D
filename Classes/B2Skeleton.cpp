@@ -32,6 +32,7 @@ B2Skeleton * B2Skeleton::create(spSkeletonData * data)
 	auto skeleton = new B2Skeleton(data);
 	//skeleton->initWithData(data);
 	skeleton->update(1.0f);
+	skeleton->autorelease();
 	return skeleton;
 }
 
@@ -107,6 +108,7 @@ void B2Skeleton::initPhysicWithShapeCache(b2World * world, Point pos, string key
 
 void B2Skeleton::changeBodyCategoryBits(uint16 mask)
 {
+	if (this->body == nullptr) return;
 	auto fixture = this->body->GetFixtureList();
 	b2Filter filter = fixture->GetFilterData();
 	filter.categoryBits = mask;
@@ -115,6 +117,7 @@ void B2Skeleton::changeBodyCategoryBits(uint16 mask)
 
 void B2Skeleton::changeBodyMaskBits(uint16 mask)
 {
+	if (this->body == nullptr) return;
 	auto fixture = this->body->GetFixtureList();
 	b2Filter filter = fixture->GetFilterData();
 	filter.maskBits = mask;

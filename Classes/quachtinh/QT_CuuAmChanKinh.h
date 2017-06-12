@@ -15,10 +15,13 @@ public:
 	void initCirclePhysic(b2World *world, Point pos);
 	void updateMe();
 	void runAni();
+	void explosion();
 
 protected:
 	CC_SYNTHESIZE(bool, isAdded, IsAdded);
+	CC_SYNTHESIZE(bool, isCollide, IsCollide);
 	CC_SYNTHESIZE(float, angle, mAngle);
+	CC_SYNTHESIZE(Sprite*, fireEffect, Effect);
 	
 };
 

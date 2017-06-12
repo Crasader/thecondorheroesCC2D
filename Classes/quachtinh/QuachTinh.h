@@ -42,6 +42,7 @@ protected:
 	void landTLs();
 	void doCounterSkill2();
 
+	int idSoundSkill3;
 	void doCounterSkill3();
 	
 
@@ -76,6 +77,12 @@ private:
 
 };
 
-#define TIME_UP		15
+#define TIME_UP		30
+
+#define SOUND_QT_DIE				"sound/qtdie.mp3"
+#define SOUND_QT_HIT				"sound/qthit.mp3"
+#define SOUND_QT_SKILL1				"sound/qtskill1.mp3"
+#define SOUND_QT_SKILL2				"sound/qtskill2.mp3"
+#define SOUND_QT_SKILL3				"sound/qtskill3.mp3"
 
 #endif // __QUACH_TINH_H__

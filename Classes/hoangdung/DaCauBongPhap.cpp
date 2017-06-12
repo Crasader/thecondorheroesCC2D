@@ -12,6 +12,7 @@ DaCauBongPhap * DaCauBongPhap::create(string jsonFile, string atlasFile, float s
 	dcbp->update(0.0f);
 	dcbp->radius = dcbp->getBoundingBox().size.height / 2;
 	dcbp->setB2Body(nullptr);
+	dcbp->autorelease();
 	return dcbp;
 }
 

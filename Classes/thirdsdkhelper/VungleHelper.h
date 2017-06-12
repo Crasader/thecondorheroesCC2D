@@ -1,12 +1,12 @@
 #ifndef __VUNGLE_HELPER_H__
 #define __VUNGLE_HELPER_H__
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 #include "PluginVungle/PluginVungle.h"
 #endif
 #include <string>
 using namespace std;
 //
-////#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+////#ifdef SDKBOX_ENABLED
 //class VungleHelperListener: public sdkbox::VungleListener{
 //
 //};
@@ -20,12 +20,12 @@ class VungleHelper {
 public:
 	//static VungleHelper *INSTANCE;
 	VungleHelper() {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 		sdkbox::PluginVungle::init();
 #endif
 	}
 	/*bool showBanner() {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 		if (isAvailable("home")) {
 			sdkbox::PluginVungle::show("home");
 			return true;
@@ -36,13 +36,13 @@ public:
 		return false;
 	}*/
 	void showVideo() {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 		sdkbox::PluginVungle::show("video");
 #endif
 	}
 
 	void showReward() {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#ifdef SDKBOX_ENABLED
 		
 		sdkbox::PluginVungle::show("reward");
 #endif

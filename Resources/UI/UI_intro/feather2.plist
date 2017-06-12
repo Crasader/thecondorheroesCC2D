@@ -17,7 +17,7 @@
 	<key>finishColorAlpha</key>
 	<real>1</real>
 	<key>finishColorBlue</key>
-	<real>0.6</real>
+	<real>1</real>
 	<key>finishColorGreen</key>
 	<real>1</real>
 	<key>finishColorRed</key>
@@ -31,9 +31,9 @@
 	<key>finishColorVarianceRed</key>
 	<real>0</real>
 	<key>finishParticleSize</key>
-	<real>97</real>
+	<real>19</real>
 	<key>finishParticleSizeVariance</key>
-	<real>76</real>
+	<real>15</real>
 	<key>gravityx</key>
 	<real>40</real>
 	<key>gravityy</key>
@@ -59,21 +59,21 @@
 	<key>rotatePerSecondVariance</key>
 	<real>0</real>
 	<key>rotationEnd</key>
-	<real>0</real>
+	<real>847</real>
 	<key>rotationEndVariance</key>
 	<real>0.0</real>
 	<key>rotationStart</key>
-	<real>232</real>
+	<real>1440</real>
 	<key>rotationStartVariance</key>
-	<real>0</real>
+	<real>1303</real>
 	<key>sourcePositionVariancex</key>
 	<real>675</real>
 	<key>sourcePositionVariancey</key>
 	<real>20</real>
 	<key>sourcePositionx</key>
-	<real>605.0909090909091</real>
+	<real>375</real>
 	<key>sourcePositiony</key>
-	<real>702.060606060606</real>
+	<real>667</real>
 	<key>speed</key>
 	<real>41</real>
 	<key>speedVariance</key>
@@ -81,11 +81,11 @@
 	<key>startColorAlpha</key>
 	<real>1</real>
 	<key>startColorBlue</key>
-	<real>0.8</real>
+	<real>1</real>
 	<key>startColorGreen</key>
-	<real>0.4</real>
+	<real>1</real>
 	<key>startColorRed</key>
-	<real>0.6</real>
+	<real>1</real>
 	<key>startColorVarianceAlpha</key>
 	<real>0.2</real>
 	<key>startColorVarianceBlue</key>
@@ -95,9 +95,9 @@
 	<key>startColorVarianceRed</key>
 	<real>0</real>
 	<key>startParticleSize</key>
-	<real>69</real>
+	<real>36</real>
 	<key>startParticleSizeVariance</key>
-	<real>49</real>
+	<real>9</real>
 	<key>tangentialAccelVariance</key>
 	<real>55</real>
 	<key>tangentialAcceleration</key>

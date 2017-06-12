@@ -3,10 +3,12 @@
 QT_CuuAmChanKinh::QT_CuuAmChanKinh()
 {
 	isAdded = false;
+	isCollide = false;
 }
 
 QT_CuuAmChanKinh::~QT_CuuAmChanKinh()
 {
+
 }
 
 QT_CuuAmChanKinh * QT_CuuAmChanKinh::create()
@@ -18,6 +20,8 @@ QT_CuuAmChanKinh * QT_CuuAmChanKinh::create()
 
 	ck->angle = -45.0;
 	ck->setRotation(ck->angle);
+
+	ck->autorelease();
 
 	return ck;
 }
@@ -40,7 +44,7 @@ void QT_CuuAmChanKinh::initCirclePhysic(b2World * world, Point pos)
 	fixtureDef.isSensor = true;
 
 	fixtureDef.filter.categoryBits = BITMASK_SWORD;
-	fixtureDef.filter.maskBits = BITMASK_WOODER | BITMASK_BOSS | BITMASK_COIN_BAG | BITMASK_ENEMY;
+	fixtureDef.filter.maskBits = BITMASK_UNDER_GROUND | BITMASK_WOODER | BITMASK_BOSS | BITMASK_COIN_BAG | BITMASK_ENEMY;
 
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.userData = this;		// pass sprite to bodyDef with argument: userData
@@ -70,7 +74,36 @@ void QT_CuuAmChanKinh::runAni()
 		aniFrames.pushBack(frame);
 	}
 
-	auto animate = Animate::create(Animation::createWithSpriteFrames(aniFrames, 0.05f));
+	auto animate = Animate::create(Animation::createWithSpriteFrames(aniFrames, 0.07f));
 	this->runAction(RepeatForever::create(animate));
+}
+
+void QT_CuuAmChanKinh::explosion()
+{
+	fireEffect = Sprite::createWithSpriteFrameName("skill1_broken_1.png");
+	fireEffect->setFlippedX(-1);
+	fireEffect->setAnchorPoint(Vec2(0, 0));
+	fireEffect->setScale(getScale() * 0.45f);
+	
+
+	fireEffect->setPosition(this->getPositionX(), 
+							this->getPositionY() - this->getBoundingBox().size.height * 0.4f);
+	auto gameLayer = this->getParent();
+	gameLayer->addChild(fireEffect, ZORDER_ENEMY);
+
+	Vector<SpriteFrame* > aniFrames;
+	for (int i = 1; i <= 8; ++i) {
+		auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(StringUtils::format("skill1_broken_%i.png", i));
+		aniFrames.pushBack(frame);
+	}
+
+	auto animate = Animate::create(Animation::createWithSpriteFrames(aniFrames, 0.06f));
+
+	auto hideEffect = CallFunc::create([&]() {
+		fireEffect->removeFromParentAndCleanup(true);
+	});
+
+	auto seq = Sequence::createWithTwoActions(animate, hideEffect);
+	fireEffect->runAction(seq);
 }
 

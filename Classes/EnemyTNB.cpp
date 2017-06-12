@@ -86,10 +86,10 @@ void EnemyTNB::updateMe(BaseHero* hero)
 	}
 
 	if (hero->getIsKillAll() && this->getB2Body() != nullptr) {
-		if (this->getPositionX() + this->getParent()->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width * 0.76f &&
-			this->getPositionX() + this->getParent()->getPositionX() > hero->getPositionX() - SCREEN_SIZE.width * 0.27f) {
+		if (this->getPositionX() + this->getParent()->getPositionX() < hero->getPositionX() + SCREEN_SIZE.width * 0.77f &&
+			this->getPositionX() + this->getParent()->getPositionX() > hero->getPositionX() - SCREEN_SIZE.width * 0.28f) {
 			auto gameLayer = (GameScene *)hero->getParent();
-			if (gameLayer->getFollow()->getPositionY() + SCREEN_SIZE.height * 0.55f > this->getPositionY() &&
+			if (gameLayer->getFollow()->getPositionY() + SCREEN_SIZE.height * 0.6f > this->getPositionY() &&
 				gameLayer->getFollow()->getPositionY() - SCREEN_SIZE.height * 0.55f < this->getPositionY())
 
 				die();

@@ -23,7 +23,7 @@ RefManager::RefManager()
 	lastDailyRewardTime = ref->getIntegerForKey(KEY_LAST_DAILY_REWARD_TIME, 0);
 	dailyRewardCounter = ref->getIntegerForKey(KEY_DAILY_REWARD_COUNTER, 0);
 	dailyRewardAvailable = ref->getBoolForKey(KEY_DAILY_REWARD_AVAILABLE, false);
-	freeCoin = ref->getIntegerForKey(KEY_FREE_COIN, 3);
+	freeCoin = ref->getIntegerForKey(KEY_FREE_COIN, 0);
 
 	numberOfLife = ref->getIntegerForKey(KEY_LIFE, 5);
 	goldExplored = ref->getIntegerForKey(KEY_GOLD, 0);

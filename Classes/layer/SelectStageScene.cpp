@@ -24,7 +24,7 @@ bool SelectStageLayer::init(int charId)
 	scrollView = ui::ScrollView::create();
 	scrollView->setContentSize(Size(screenSize.width, screenSize.height));
 	scrollView->setInnerContainerSize(Size(tmxMap->getBoundingBox().size.width, screenSize.height));
-	scrollView->setPosition(originXY);
+	scrollView->setPosition(Vec2::ZERO);
 	scrollView->setDirection(ScrollView::Direction::HORIZONTAL);
 	scrollView->setTouchEnabled(true);
 	scrollView->setBounceEnabled(false);
@@ -176,7 +176,7 @@ void SelectStageLayer::moveAva()
 void SelectStageLayer::gotoPlay(int id, int stage, int map, int charId)
 {
 	AudioManager::playSound(SOUND_BTCLICK);
-	m_nLifeNumber = REF->getNumberOfLife();
+	auto m_nLifeNumber = REF->getNumberOfLife();
 	if (m_nLifeNumber > 0) {
 		REF->setLastMapId(id);
 		m_nLifeNumber--;
@@ -234,25 +234,25 @@ void SelectStageLayer::doNothing()
 {
 }
 
-int SelectStageLayer::convertId()
-{
-	int currentStageUnlocked = REF->getCurrentStageUnlocked();
-	int currentMapUnlocked = REF->getCurrentMapUnLocked();
-	int convertValue = 1;
-	switch (currentStageUnlocked)
-	{
-	case 1: case 2: case 3:
-		convertValue = currentMapUnlocked + (currentStageUnlocked - 1 ) * 3;
-		break;
-
-	case 4:
-		convertValue = currentStageUnlocked + 8;
-		break;
-	default:
-		break;
-	}
-	return convertValue;
-}
+//int SelectStageLayer::convertId()
+//{
+//	int currentStageUnlocked = REF->getCurrentStageUnlocked();
+//	int currentMapUnlocked = REF->getCurrentMapUnLocked();
+//	int convertValue = 1;
+//	switch (currentStageUnlocked)
+//	{
+//	case 1: case 2: case 3:
+//		convertValue = currentMapUnlocked + (currentStageUnlocked - 1 ) * 3;
+//		break;
+//
+//	case 4:
+//		convertValue = currentStageUnlocked + 8;
+//		break;
+//	default:
+//		break;
+//	}
+//	return convertValue;
+//}
 
 void SelectStageLayer::createCloud() {
 	auto screenSize = Director::getInstance()->getVisibleSize();

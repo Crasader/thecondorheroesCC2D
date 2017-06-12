@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="530" height="10" tilewidth="80" tileheight="80" nextobjectid="295">
+<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="530" height="10" tilewidth="80" tileheight="80" nextobjectid="295">
  <tileset firstgid="1" name="street2" tilewidth="80" tileheight="80" tilecount="30" columns="6">
   <image source="street1_2.png" width="480" height="400"/>
  </tileset>
@@ -55,55 +55,55 @@
 </data>
  </layer>
  <objectgroup name="ground">
-  <object id="5" x="1352" y="524" width="328"/>
-  <object id="6" x="2000" y="620" width="1928"/>
-  <object id="7" x="2240" y="448" width="320"/>
-  <object id="8" x="3444" y="448" width="324"/>
-  <object id="9" x="4144.61" y="688.986" width="1535.46"/>
-  <object id="10" x="5280" y="520" width="324"/>
-  <object id="12" x="5918.56" y="606.269" width="1201.51" height="3.75472"/>
-  <object id="13" x="6080" y="452" width="316"/>
-  <object id="14" x="6640" y="280" width="328"/>
-  <object id="15" x="7431.33" y="701.239" width="3363.67"/>
-  <object id="17" x="8550" y="524" width="656" height="2"/>
-  <object id="18" x="9754" y="524" width="334" height="2"/>
-  <object id="19" x="11036" y="602" width="972" height="4"/>
-  <object id="20" x="12156" y="688" width="1290" height="2"/>
-  <object id="21" x="13592" y="610" width="1294" height="4"/>
-  <object id="22" x="15039.4" y="687.879" width="1933.33"/>
-  <object id="23" x="17115.2" y="609.091" width="333.333" height="3.0303"/>
-  <object id="24" x="17990.9" y="530.303" width="654.545" height="6.06061"/>
-  <object id="25" x="18793.9" y="363.636" width="969.697"/>
-  <object id="26" x="17683.3" y="691.667" width="3841.67"/>
-  <object id="27" x="21668" y="616" width="2260"/>
-  <object id="28" x="22632" y="452" width="660"/>
-  <object id="30" x="23520" y="284" width="324"/>
-  <object id="31" x="24142.7" y="689.708" width="909.333" height="3.72678"/>
-  <object id="32" x="24636" y="524" width="336"/>
-  <object id="33" x="25200" y="444" width="324"/>
-  <object id="34" x="25283.2" y="610.699" width="879.025" height="3.66261"/>
-  <object id="35" x="26640" y="436" width="324" height="8"/>
-  <object id="36" x="27108" y="288" width="344"/>
-  <object id="38" x="28472" y="448" width="340" height="4"/>
-  <object id="39" x="26408.3" y="616.667" width="4800"/>
-  <object id="40" x="30152" y="440.121" width="336" height="4"/>
-  <object id="41" x="30636" y="364" width="340" height="4"/>
-  <object id="42" x="31428.7" y="689.863" width="903.273" height="3.70194"/>
-  <object id="43" x="32476" y="604" width="972" height="4"/>
-  <object id="45" x="33670.8" y="540.814" width="495.394" height="3.02069"/>
-  <object id="46" x="34476" y="448" width="340" height="4"/>
-  <object id="47" x="34956" y="288" width="336"/>
-  <object id="48" x="34400" y="612" width="964" height="4"/>
-  <object id="51" x="36628" y="460" width="340"/>
-  <object id="52" x="37196" y="352" width="332" height="8"/>
-  <object id="54" x="38632" y="620" width="1620" height="4"/>
-  <object id="55" x="39348" y="444" width="348"/>
-  <object id="56" x="39824" y="292" width="348" height="4"/>
-  <object id="57" x="40384" y="456" width="664" height="4"/>
-  <object id="59" x="41192" y="608" width="1208" height="4"/>
-  <object id="169" x="0" y="700" width="1772"/>
-  <object id="171" x="35600" y="680.851" width="2807.15" height="3.88264"/>
-  <object id="213" x="19914" y="532" width="640"/>
+  <object id="5" x="1360" y="520" width="320" height="10"/>
+  <object id="6" x="2000" y="600" width="1920" height="10"/>
+  <object id="7" x="2240" y="450" width="320" height="10"/>
+  <object id="8" x="3440" y="450" width="320" height="10"/>
+  <object id="9" x="4160" y="680" width="1520" height="10"/>
+  <object id="10" x="5280" y="520" width="320" height="10"/>
+  <object id="12" x="5920" y="600" width="1200" height="10"/>
+  <object id="13" x="6080" y="440" width="320" height="10"/>
+  <object id="14" x="6640" y="280" width="320" height="10"/>
+  <object id="15" x="7440" y="680" width="3360" height="10"/>
+  <object id="17" x="8560" y="520" width="640" height="10"/>
+  <object id="18" x="9760" y="520" width="320" height="10"/>
+  <object id="19" x="11040" y="600" width="960" height="10"/>
+  <object id="20" x="12160" y="680" width="1280" height="10"/>
+  <object id="21" x="13600" y="600" width="1280" height="10"/>
+  <object id="22" x="15040" y="680" width="1920" height="10"/>
+  <object id="23" x="17120" y="600" width="320" height="10"/>
+  <object id="24" x="18000" y="520" width="640" height="10"/>
+  <object id="25" x="18800" y="360" width="960" height="10"/>
+  <object id="26" x="17680" y="680" width="3840" height="10"/>
+  <object id="27" x="21680" y="600" width="2240" height="10"/>
+  <object id="28" x="22640" y="440" width="640" height="10"/>
+  <object id="30" x="23520" y="280" width="320" height="10"/>
+  <object id="31" x="24160" y="680" width="880" height="10"/>
+  <object id="32" x="24640" y="520" width="320" height="10"/>
+  <object id="33" x="25200" y="450" width="320" height="10"/>
+  <object id="34" x="25280" y="600" width="880" height="10"/>
+  <object id="35" x="26640" y="440" width="320" height="10"/>
+  <object id="36" x="27120" y="280" width="320" height="10"/>
+  <object id="38" x="28480" y="440" width="320" height="10"/>
+  <object id="39" x="26400" y="600" width="4800" height="10"/>
+  <object id="40" x="30160" y="440" width="320" height="10"/>
+  <object id="41" x="30640" y="360" width="320" height="10"/>
+  <object id="42" x="31440" y="680" width="880" height="10"/>
+  <object id="43" x="32480" y="600" width="960" height="10"/>
+  <object id="45" x="33680" y="540" width="480" height="10"/>
+  <object id="46" x="34480" y="440" width="320" height="10"/>
+  <object id="47" x="34960" y="280" width="320" height="10"/>
+  <object id="48" x="34400" y="600" width="960" height="10"/>
+  <object id="51" x="36640" y="440" width="320" height="10"/>
+  <object id="52" x="37200" y="360" width="320" height="10"/>
+  <object id="54" x="38640" y="600" width="1600" height="10"/>
+  <object id="55" x="39360" y="440" width="320" height="10"/>
+  <object id="56" x="39840" y="280" width="320" height="10"/>
+  <object id="57" x="40400" y="460" width="640" height="10"/>
+  <object id="59" x="41200" y="600" width="1200" height="10"/>
+  <object id="169" x="0" y="680" width="1760" height="10"/>
+  <object id="171" x="35600" y="680" width="2800" height="10"/>
+  <object id="213" x="19920" y="530" width="640" height="10"/>
  </objectgroup>
  <objectgroup name="coin_straight">
   <object id="62" name="coin_straight" x="558.909" y="566.545" width="629.212" height="16"/>

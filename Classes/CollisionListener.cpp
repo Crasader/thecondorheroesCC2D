@@ -3,6 +3,7 @@
 #include "BaseEnemy.h"
 #include "duongqua/DQ_DocCoKiemPhap.h"
 #include "duongqua/DQ_TieuHonChuong.h"
+#include "quachtinh/QT_CuuAmChanKinh.h"
 #include "layer/GameScene.h"
 #include "coin/Coin.h"
 #include "Slash.h"
@@ -128,7 +129,12 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		|| (bitmaskB == BITMASK_RADA_SKILL_2 && bitmaskA == BITMASK_ENEMY)) {
 		auto enemy = bitmaskA == BITMASK_ENEMY ? (BaseEnemy*)bodyA->GetUserData() : (BaseEnemy*)bodyB->GetUserData();
 		auto parentGameScene = (GameScene*)enemy->getParent()->getParent();
+
+		if (enemy->getTag() == TAG_ENEMY_CHONG1 || enemy->getTag() == TAG_ENEMY_CHONG2 || enemy->getTag() == TAG_ENEMY_CHONG3)
+			return;
 		if (bitmaskA == BITMASK_RADA_SKILL_1 || bitmaskB == BITMASK_RADA_SKILL_1) {
+			if (enemy->getTag() == TAG_ENEMY_CHONG1 || enemy->getTag() == TAG_ENEMY_CHONG2 || enemy->getTag() == TAG_ENEMY_CHONG3)
+				return;
 			parentGameScene->getHero()->selectEnemyBySkill1(enemy);
 		}
 		if (bitmaskA == BITMASK_RADA_SKILL_2 || bitmaskB == BITMASK_RADA_SKILL_2) {
@@ -167,10 +173,11 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		}
 		enemy->hit();
 		if (bodySword->GetUserData()) {
-
-			auto thc = (B2Sprite*)(bodySword->GetUserData());
-			if (thc->getTag() == TAG_DQ_TIEU_HON_CHUONG)
-				((DQ_TieuHonChuong*)thc)->setIsCollide(true);
+			auto not_wooder = (B2Sprite*)(bodySword->GetUserData());
+			if (not_wooder->getTag() == TAG_DQ_TIEU_HON_CHUONG) {
+				auto thc = (TieuHonChuong*)not_wooder;
+				thc->setIsCollide(true);
+			}
 		}
 
 	}
@@ -203,7 +210,10 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
 		auto coin = sA->getTag() == TAG_HERO ? (CoinBullion *)sB : (CoinBullion *)sA;
 		coin->picked();
-		hero->setCoinExplored(hero->getCoinExplored() + 5 * hero->getCoinRatio());
+		if(coin->getTag() == TAG_COINBULLION)
+			hero->setCoinExplored(hero->getCoinExplored() + 5 * hero->getCoinRatio());
+		else
+			hero->setCoinExplored(hero->getCoinExplored() + 10 * hero->getCoinRatio());
 	}
 	//giu
 	if ((bitmaskA == BITMASK_COIN_BAG && bitmaskB == BITMASK_SWORD) ||
@@ -311,6 +321,13 @@ void CollisionListener::BeginContact(b2Contact * contact)
 			kp->setTextureRect(Rect(Vec2::ZERO,
 				Size(kp->getContentSize().width, kp->getContentSize().height * random(0.61f, 0.63f))));
 		}
+		else if (not_ground->getTag() == TAG_QT_CUU_AM_CHAN_KINH) {
+			if (collidePoint.x <= bodyB->GetPosition().x - (not_ground->getBoundingBox().size.width / 6 / PTM_RATIO) / 2) {
+				auto ck = (ChanKinh*)not_ground;
+				ck->setIsCollide(true);
+				ck->explosion();
+			}
+		}
 
 	}
 }
@@ -332,6 +349,8 @@ void CollisionListener::EndContact(b2Contact * contact)
 
 		auto parentGameScene = (GameScene*)enemy->getParent()->getParent();
 		if (bitmaskA == BITMASK_RADA_SKILL_1 || bitmaskB == BITMASK_RADA_SKILL_1) {
+			if (enemy->getTag() == TAG_ENEMY_CHONG1 || enemy->getTag() == TAG_ENEMY_CHONG2 || enemy->getTag() == TAG_ENEMY_CHONG3)
+				return;
 			parentGameScene->getHero()->deSelectEnemyBySkill1();
 		}
 		if (bitmaskA == BITMASK_RADA_SKILL_2 || bitmaskB == BITMASK_RADA_SKILL_2) {

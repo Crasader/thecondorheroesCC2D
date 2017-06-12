@@ -24,7 +24,12 @@ using namespace std;
 using namespace ui;
 using namespace network;
 
-class MenuLayer : public Layer {
+#ifdef SDKBOX_ENABLED
+class MenuLayer : public cocos2d::Layer, public sdkbox::IAPListener, public sdkbox::VungleListener
+#else
+class MenuLayer : public cocos2d::Layer
+#endif
+{
 public:
 	virtual bool init(bool p_bOnlySelectStage);
 	void update(float p_fDelta);
@@ -32,11 +37,14 @@ public:
     void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
 
 	bool downLife();
+	void disableListener();
 
 private:
 	const Size m_szVisibleSize = Director::getInstance()->getVisibleSize();
 	float m_fButtonStartPosition;							// make start and unlock button at same position
 	int m_nMenuStatus = 0;
+	EventListenerKeyboard* key_listener;
+
 
 	// input value
 	int m_nCurrentTimeFromGoogle = 0;						// time from google.com.vn (-7 hours from Viet Nam)
@@ -195,7 +203,33 @@ private:
 	void logTryHeroEvent(int indexhero);
 	void logUpgradeHeroEvent(int indexhero, int level);
 	void logUpgradeSkillEvent(int indexhero, int indexskill, int level);
+	void logShowMoreCoin();
+	void logShowMoreDiamond();
+	void logShowMoreLife();
+	void logBuyCoin(int dexOfPack);
+	void logBuyLife(int dexOfPack); 
+	void logBuyDiamond(int dexOfPack, float money);
+
+
 	//void logUpgradeSkillEvent(int indexhero, int indexskill, int level);
+#ifdef SDKBOX_ENABLED
+	virtual void onInitialized(bool ok) override;
+	virtual void onSuccess(sdkbox::Product const& p) override;
+	virtual void onFailure(sdkbox::Product const& p, const std::string &msg) override;
+	virtual void onCanceled(sdkbox::Product const& p) override;
+	virtual void onRestored(sdkbox::Product const& p) override;
+	virtual void onProductRequestSuccess(std::vector<sdkbox::Product> const &products) override;
+	virtual void onProductRequestFailure(const std::string &msg) override;
+	void onRestoreComplete(bool ok, const std::string &msg) override;
+
+	void onVungleAdViewed(bool isComplete);
+	void onVungleCacheAvailable();
+	void onVungleStarted();
+	void onVungleFinished();
+	void onVungleAdReward(const std::string& name);
+
+#endif // DEBUG
+
 private:
 	string indexHeroToName(int indexHero);
 	void singlePress(float dt);

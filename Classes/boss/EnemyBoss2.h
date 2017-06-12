@@ -16,6 +16,8 @@ public:
 	void playSoundAttack1();
 	void playSoundAttack2();
 	void playSoundDie();
+
+	void completeQuest();
 };
 
 #endif // __ENEMY_H__

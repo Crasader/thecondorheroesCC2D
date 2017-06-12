@@ -97,6 +97,13 @@ void SceneIntro::goToMainMenuScene(Ref* p_pSender) {
 	//FacebookHelper::getInstance()->requestPostPermission();
 	////FacebookHelper::getInstance()->scrShotAndDialog("SwordmanLegend");
 	//FacebookHelper::getInstance()->dialogPhoto("SwordManLegend");
+//#ifdef SDKBOX_ENABLED
+//#else
+//	CustomLayerToToast *_pToast = CustomLayerToToast::create("where is my f***ing sdkbox", TOAST_SHORT);
+//	_pToast->setPosition(Vec2(300, 300));
+//	this->addChild(_pToast, 10);
+//#endif // SDKBOX_ENABLED
+
 	AdmobHelper::getInstance()->hideBanner();
 	AudioManager::playSound(SOUND_BTCLICK);
 	Layer *_pMenuScene = MenuLayer::create(false);

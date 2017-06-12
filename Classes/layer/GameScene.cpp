@@ -56,7 +56,7 @@ bool GameScene::init(int stage, int map, int charId)
 	}
 
 
-	//isModeDebug = false;
+	isModeDebug = false;
 
 	changebg = 0;
 
@@ -129,7 +129,7 @@ void GameScene::selectHero()
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	heroStartPosition = Point(origin.x, visibleSize.height * 0.7f);
+	heroStartPosition = Point(origin.x + SCREEN_SIZE.width * 0.01f, visibleSize.height * 0.7f);
 
 	switch (charId)
 	{
@@ -701,7 +701,7 @@ void GameScene::initB2World()
 	world = new b2World(b2Vec2(0, -SCREEN_SIZE.height * 10.0f / 3.0f / PTM_RATIO));
 
 	// draw debug
-	/*if (isModeDebug) {
+	if (isModeDebug) {
 		auto debugDraw = new (std::nothrow) GLESDebugDraw(PTM_RATIO);
 		world->SetDebugDraw(debugDraw);
 		uint32 flags = 0;
@@ -709,7 +709,7 @@ void GameScene::initB2World()
 		flags += b2Draw::e_jointBit;
 
 		debugDraw->SetFlags(flags);
-	}*/
+	}
 
 	world->SetAllowSleeping(true);
 	world->SetContinuousPhysics(true);
@@ -726,39 +726,39 @@ void GameScene::updateB2World(float dt)
 	world->Step(dt, velocityIterations, positionIterations);
 }
 
-//void GameScene::draw(Renderer * renderer, const Mat4 & transform, uint32_t flags)
-//{
-//	//
-//	// IMPORTANT:
-//	// This is only for debug purposes
-//	// It is recommend to disable it
-//	//
-//	Layer::draw(renderer, transform, flags);
-//
-//	GL::enableVertexAttribs(cocos2d::GL::VERTEX_ATTRIB_FLAG_POSITION);
-//	Director* director = Director::getInstance();
-//	CCASSERT(nullptr != director, "Director is null when seting matrix stack");
-//	director->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
-//
-//	_modelViewMV = director->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
-//
-//	_customCommand.init(_globalZOrder);
-//	_customCommand.func = CC_CALLBACK_0(GameScene::onDraw, this);
-//	renderer->addCommand(&_customCommand);
-//
-//	director->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
-//}
-//
-//void GameScene::onDraw()
-//{
-//	Director* director = Director::getInstance();
-//	CCASSERT(nullptr != director, "Director is null when seting matrix stack");
-//
-//	auto oldMV = director->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
-//	director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, _modelViewMV);
-//	world->DrawDebugData();
-//	director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, oldMV);
-//}
+void GameScene::draw(Renderer * renderer, const Mat4 & transform, uint32_t flags)
+{
+	//
+	// IMPORTANT:
+	// This is only for debug purposes
+	// It is recommend to disable it
+	//
+	Layer::draw(renderer, transform, flags);
+
+	GL::enableVertexAttribs(cocos2d::GL::VERTEX_ATTRIB_FLAG_POSITION);
+	Director* director = Director::getInstance();
+	CCASSERT(nullptr != director, "Director is null when seting matrix stack");
+	director->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+
+	_modelViewMV = director->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+
+	_customCommand.init(_globalZOrder);
+	_customCommand.func = CC_CALLBACK_0(GameScene::onDraw, this);
+	renderer->addCommand(&_customCommand);
+
+	director->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+}
+
+void GameScene::onDraw()
+{
+	Director* director = Director::getInstance();
+	CCASSERT(nullptr != director, "Director is null when seting matrix stack");
+
+	auto oldMV = director->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+	director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, _modelViewMV);
+	world->DrawDebugData();
+	director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, oldMV);
+}
 
 
 void GameScene::loadBackground()
@@ -773,8 +773,8 @@ void GameScene::loadBackground()
 
 	tmx_map->setPosition(Point::ZERO);
 
-	//if (isModeDebug)
-		//tmx_map->setVisible(false);
+	if (isModeDebug)
+		tmx_map->setVisible(false);
 
 	this->haveboss = tmx_map->getObjectGroup("boss") != nullptr ? 1 : 0;
 
@@ -790,8 +790,8 @@ void GameScene::loadBackground()
 			tmx_mapboss[i] = TMXTiledMap::create(StringUtils::format("Map/map%d/mapboss.tmx", stage));
 			tmx_mapboss[i]->setAnchorPoint(Point::ZERO);
 			tmx_mapboss[i]->setScale(scaleOfMap);
-			//if (isModeDebug)
-				//tmx_mapboss[i]->setVisible(false);
+			if (isModeDebug)
+				tmx_mapboss[i]->setVisible(false);
 		}
 
 		tmx_mapboss[0]->setPosition(tmx_map->getPosition() + Vec2(tmx_map->getBoundingBox().size.width, 0));
@@ -890,8 +890,8 @@ void GameScene::createInfiniteNode()
 	//background->setPosition(Point(-SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 	background->setPosition(Point(0, SCREEN_SIZE.height / 2));
 	background->setAnchorPoint(Point(0, 0.5f));
-	//if (isModeDebug)
-		//background->setVisible(false);
+	if (isModeDebug)
+		background->setVisible(false);
 	this->addChild(background, ZORDER_BG);
 
 	background2 = InfiniteParallaxNode::create();
@@ -1355,7 +1355,7 @@ void GameScene::createEnemyLinhCamGiao(MyLayer * layer, Vec2 pos)
 		}
 
 		enemy->initBoxPhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
-		enemy->makeMask();
+		//enemy->makeMask();
 
 		enemy->listener();
 	}
@@ -1380,7 +1380,7 @@ void GameScene::createEnemyLinhCamGiao2(MyLayer * layer, Vec2 pos)
 		}
 
 		enemy->initBoxPhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
-		enemy->makeMask();
+		//enemy->makeMask();
 
 		enemy->listener();
 	}
@@ -1455,7 +1455,7 @@ void GameScene::createEnemyLinhCamRoi(MyLayer * layer, Vec2 pos)
 		}
 
 		enemy->initBoxPhysic(world, Point(pos.x + layer->getPositionX(), pos.y + layer->getPositionY() + enemy->getBoundingBox().size.height / 2));
-		enemy->makeMask();
+		//enemy->makeMask();
 
 		enemy->listener();
 	}
@@ -1737,7 +1737,8 @@ void GameScene::initGroundPhysic(b2World * world, Point pos, Size size)
 	fixtureDef.shape = &shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_FLOOR;
-	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR | BITMASK_COIN | BITMASK_BIRD| BITMASK_WOODER | BITMASK_ENEMY;
+
+	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR | BITMASK_COIN | BITMASK_BIRD | BITMASK_ENEMY;
 
 	bodyDef.type = b2_staticBody;
 
@@ -2105,6 +2106,7 @@ void GameScene::reviveHero()
 
 void GameScene::callingBird()
 {
+	GAHelper::getInstance()->logEvent("Bird","Call","",1);
 	AudioManager::playSound(SOUND_BIRD);
 
 	if(charId == REF->getLastPickHero())
@@ -2715,5 +2717,6 @@ void GameScene::onVungleFinished()
 void GameScene::onVungleAdReward(const std::string & name)
 {
 	this->reviveHero();
+	GAHelper::getInstance()->logEvent("Button", "Revive", "By Vungle", 1);
 }
 #endif 

@@ -48,6 +48,10 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 	this->addChild(m_pBlurScreen, 8);
 	m_pBlurScreen->setVisible(false);
 
+	key_listener = EventListenerKeyboard::create();
+	key_listener->onKeyPressed = CC_CALLBACK_2(MenuLayer::onKeyPressed, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(key_listener, this);
+
 	if (p_bOnlySelectStage) {
 		m_nMenuStatus = 4;
 		m_pTopMainMenu = Layer::create();
@@ -61,10 +65,6 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 		m_pSelectStageLayer = SelectStageLayer::create(m_nIndexHeroSelected);
 		m_pSelectStageLayer->moveAva();
 		this->addChild(m_pSelectStageLayer, 3);
-        
-        auto key_listener = EventListenerKeyboard::create();
-        key_listener->onKeyPressed = CC_CALLBACK_2(MenuLayer::onKeyPressed, this);
-        _eventDispatcher->addEventListenerWithSceneGraphPriority(key_listener, this);
         
 		this->scheduleUpdate();
 
@@ -100,14 +100,12 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 	m_pGameControl = Layer::create(); // layer 3 : control
 	this->addChild(m_pGameControl, 3);
 	initControlLayer();
-
-    auto key_listener = EventListenerKeyboard::create();
-    key_listener->onKeyPressed = CC_CALLBACK_2(MenuLayer::onKeyPressed, this);
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(key_listener, this);
     
 	this->scheduleUpdate();
+#ifdef SDKBOX_ENABLED
+	sdkbox::PluginVungle::setListener(this);
+#endif
 	createRequestToGoogle();
-
 	return true;
 }
 
@@ -115,7 +113,7 @@ void MenuLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 {
     if (keyCode == EventKeyboard::KeyCode::KEY_BACK) {
 		if (m_nMenuStatus == 0) {
-			if (m_pShopBlurBackground->isVisible() == true) {
+			if (m_pShopBlurBackground->isVisible()) {
 				buttonCloseShopHandle();
 				return;
 			}
@@ -172,6 +170,12 @@ bool MenuLayer::downLife()
 
 		return false;
 	}
+}
+
+void MenuLayer::disableListener()
+{
+	m_pTopMenu->setEnabled(false);
+	Director::getInstance()->getEventDispatcher()->removeEventListener(key_listener);
 }
 
 void MenuLayer::update(float p_fDelta) {
@@ -1241,7 +1245,7 @@ void MenuLayer::initBottomHeroMenu() {
 
 void MenuLayer::backFunction() {
 	int a = 0;
-	if(SPHelper::getInstance()->isSigned())
+	//if(SPHelper::getInstance()->isSigned())
 	SPHelper::getInstance()->showBoard("score");
 }
 
@@ -1446,6 +1450,16 @@ void MenuLayer::buttonFreeCoinHandle() {
 		//GAHelper::getInstance()->logEvent("FreeCoin", "click", "can getFreecoin", 1);
 		// TODO : show ads and check view ads finish
 		// after that, increase gold
+		VungleHelper::getInstance()->showReward();
+		//FacebookHelper::getInstance()->dialogPhoto("SwordManLegend");
+#ifdef SDKBOX_ENABLED
+#else
+		//CustomLayerToToast *_pToast = CustomLayerToToast::create("where is my f***ing sdkbox", TOAST_SHORT);
+		//_pToast->setPosition(Vec2(300, 300));
+		//this->addChild(_pToast, 10);
+#endif 
+
+
 	}
 	else {
 		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(11), TOAST_LONG);
@@ -2265,6 +2279,7 @@ void MenuLayer::buttonBuyLifeHandle(int p_nIndexEnergyPack) {
 	JSMENU->readEnergyPack(p_nIndexEnergyPack);
 	if (JSMENU->getEnergyPackDiamondPrice() <= m_nCurrentDiamond) {
 		//GAHelper::getInstance()->logEvent("buylife", "click", "UpgradeQuachtinh", 1);
+		logBuyLife(p_nIndexEnergyPack);
 		m_nCurrentDiamond -= JSMENU->getEnergyPackDiamondPrice();
 		m_nLifeNumber += JSMENU->getEnergyPackNumberEnergy();
 		REF->setDownDiamond(JSMENU->getEnergyPackDiamondPrice());
@@ -2283,6 +2298,7 @@ void MenuLayer::buttonBuyCoinHandle(int p_nIndexCoinPack) {
 	AudioManager::playSound(SOUND_BTCLICK);
 	JSMENU->readGoldPack(p_nIndexCoinPack);
 	if (JSMENU->getCoinPackDiamondPrice() <= m_nCurrentDiamond) {
+		logBuyCoin(p_nIndexCoinPack);
 		m_nCurrentDiamond -= JSMENU->getCoinPackDiamondPrice();
 		m_nCurrentGold += JSMENU->getCoinPackNumberGold();
 		REF->setDownDiamond(JSMENU->getCoinPackDiamondPrice());
@@ -2379,6 +2395,11 @@ void MenuLayer::buttonUnlockHeroHandle() {
 		REF->setDownDiamond(JSHERO->getDiamondPrice());
 		initBottomHeroMenu();
 		initUpgradeBoard();
+	}
+	else {
+		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(5), TOAST_SHORT);
+		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
+		this->addChild(_pToast, 10);
 	}
 }
 
@@ -2623,143 +2644,179 @@ void MenuLayer::logUpgradeSkillEvent(int indexhero, int indexskill, int level)
 	GAHelper::getInstance()->logEvent("UpgradeSkill", indexHeroToName(indexhero)+StringUtils::format(" skill %d", indexskill), StringUtils::format("level %d", level), 1);
 }
 
-//void MenuLayer::onInitialized(bool ok)
-//{
-//}
-//
-//void MenuLayer::onSuccess(sdkbox::Product const & p)
-//{
-//	int p_nIndexDiamondPack;
-//	if (p.name == "diamond_1") {
-//		p_nIndexDiamondPack = 0;
-//	}
-//	else if (p.name == "diamond_2") {
-//		p_nIndexDiamondPack = 1;
-//		
-//	}
-//	else if (p.name == "diamond_3") {
-//		p_nIndexDiamondPack = 2;
-//		
-//	}
-//	else if (p.name == "diamond_4") {
-//		p_nIndexDiamondPack = 3;
-//
-//	}
-//	else if (p.name == "diamond_5") {
-//		p_nIndexDiamondPack = 4;
-//	}
-//	JSMENU->readDiamondPack(p_nIndexDiamondPack);
-//	if (false) {
-//		return;
-//	}
-//	m_nCurrentDiamond += JSMENU->getDiamondPackNumberDiamond();
-//	REF->setUpDiamondBuy(JSMENU->getDiamondPackNumberDiamond());
-//	initTopMainMenu();
-//	m_pTopMenu->setEnabled(false);
-//
-//	REF->setUpNumberQuest(7, JSMENU->getDiamondPackNumberDiamond());
-//}
-//
-//void MenuLayer::onFailure(sdkbox::Product const & p, const std::string & msg)
-//{
-//}
-//
-//void MenuLayer::onCanceled(sdkbox::Product const & p)
-//{
-//}
-//
-//void MenuLayer::onRestored(sdkbox::Product const & p)
-//{
-//}
-//
-//void MenuLayer::onProductRequestSuccess(std::vector<sdkbox::Product> const & products)
-//{
-//}
-//
-//void MenuLayer::onProductRequestFailure(const std::string & msg)
-//{
-//}
-//
-//void MenuLayer::onRestoreComplete(bool ok, const std::string & msg)
-//{
-//}
-//
-//void MenuLayer::onVungleAdViewed(bool isComplete)
-//{
-//}
-//
-//void MenuLayer::onVungleCacheAvailable()
-//{
-//}
-//
-//void MenuLayer::onVungleStarted()
-//{
-//}
-//
-//void MenuLayer::onVungleFinished()
-//{
-//}
-//
-//void MenuLayer::onVungleAdReward(const std::string & name)
-//{
-//	REF->decreaseFreeCoin();
-//	if (REF->getFreeCoin() <= 0) {
-//		m_pSpriteFreeCoinAttention->setVisible(false);
-//	}
-//	if (REF->getNumberOfLife() == 0) {
-//		m_nLifeNumber += 5;
-//		REF->setUpLife(5);
-//		initTopMainMenu();
-//		m_pTopMenu->setEnabled(false);
-//	}
-//	else {
-//		float type = CCRANDOM_0_1();
-//		float percent = CCRANDOM_0_1();
-//		if (type >= 0.5f) {
-//			if (percent < 0.5f) {
-//				m_nCurrentGold += 300;
-//				REF->setUpGoldExplored(300);
-//				initTopMainMenu();
-//				m_pTopMenu->setEnabled(false);
-//			}
-//			else if (percent < 0.85f) {
-//				m_nCurrentGold += 400;
-//				REF->setUpGoldExplored(400);
-//				initTopMainMenu();
-//				m_pTopMenu->setEnabled(false);
-//			}
-//			else {
-//				m_nCurrentGold += 500;
-//				REF->setUpGoldExplored(500);
-//				initTopMainMenu();
-//				m_pTopMenu->setEnabled(false);
-//			}
-//		}
-//		else {
-//			if (percent < 0.5f) {
-//				m_nLifeNumber += 3;
-//				REF->setUpLife(3);
-//				initTopMainMenu();
-//				m_pTopMenu->setEnabled(false);
-//			}
-//			else if (percent < 0.85f) {
-//				m_nLifeNumber += 4;
-//				REF->setUpLife(4);
-//				initTopMainMenu();
-//				m_pTopMenu->setEnabled(false);
-//			}
-//			else {
-//				m_nLifeNumber += 5;
-//				REF->setUpLife(5);
-//				initTopMainMenu();
-//				m_pTopMenu->setEnabled(false);
-//			}
-//		}
-//	}
-//
-//}
-//
-//#endif 
+
+void MenuLayer::logShowMoreCoin()
+{
+	GAHelper::getInstance()->logEvent("Coin","Show","",1);
+}
+
+void MenuLayer::logShowMoreDiamond()
+{
+	GAHelper::getInstance()->logEvent("Diamond", "Show", "", 1);
+}
+
+void MenuLayer::logShowMoreLife()
+{
+	GAHelper::getInstance()->logEvent("Life", "Show", "", 1);
+}
+
+void MenuLayer::logBuyCoin(int dexOfPack)
+{
+	GAHelper::getInstance()->logEvent("Coin", "Buy", StringUtils::format("Pack %d", dexOfPack+1), 1);
+}
+
+void MenuLayer::logBuyLife(int dexOfPack)
+{
+	GAHelper::getInstance()->logEvent("Life", "Buy", StringUtils::format("Pack %d", dexOfPack+1), 1);
+}
+
+void MenuLayer::logBuyDiamond(int dexOfPack, float money)
+{
+	GAHelper::getInstance()->logEvent("Diamond", "Buy", StringUtils::format("Pack %d", dexOfPack+1), money);
+}
+
+#ifdef SDKBOX_ENABLED
+
+
+void MenuLayer::onInitialized(bool ok)
+{
+}
+
+void MenuLayer::onSuccess(sdkbox::Product const & p)
+{
+	int p_nIndexDiamondPack;
+	if (p.name == "diamond_1") {
+		p_nIndexDiamondPack = 0;
+	}
+	else if (p.name == "diamond_2") {
+		p_nIndexDiamondPack = 1;
+		
+	}
+	else if (p.name == "diamond_3") {
+		p_nIndexDiamondPack = 2;
+		
+	}
+	else if (p.name == "diamond_4") {
+		p_nIndexDiamondPack = 3;
+
+	}
+	else if (p.name == "diamond_5") {
+		p_nIndexDiamondPack = 4;
+	}
+	JSMENU->readDiamondPack(p_nIndexDiamondPack);
+	if (false) {
+		return;
+	}
+	logBuyDiamond(p_nIndexDiamondPack,p.priceValue);
+	m_nCurrentDiamond += JSMENU->getDiamondPackNumberDiamond();
+	REF->setUpDiamondBuy(JSMENU->getDiamondPackNumberDiamond());
+	initTopMainMenu();
+	m_pTopMenu->setEnabled(false);
+
+	REF->setUpNumberQuest(7, JSMENU->getDiamondPackNumberDiamond());
+}
+
+void MenuLayer::onFailure(sdkbox::Product const & p, const std::string & msg)
+{
+}
+
+void MenuLayer::onCanceled(sdkbox::Product const & p)
+{
+}
+
+void MenuLayer::onRestored(sdkbox::Product const & p)
+{
+}
+
+void MenuLayer::onProductRequestSuccess(std::vector<sdkbox::Product> const & products)
+{
+}
+
+void MenuLayer::onProductRequestFailure(const std::string & msg)
+{
+}
+
+void MenuLayer::onRestoreComplete(bool ok, const std::string & msg)
+{
+}
+
+void MenuLayer::onVungleAdViewed(bool isComplete)
+{
+}
+
+void MenuLayer::onVungleCacheAvailable()
+{
+}
+
+void MenuLayer::onVungleStarted()
+{
+}
+
+void MenuLayer::onVungleFinished()
+{
+}
+
+void MenuLayer::onVungleAdReward(const std::string & name)
+{
+	REF->decreaseFreeCoin();
+	if (REF->getFreeCoin() <= 0) {
+		m_pSpriteFreeCoinAttention->setVisible(false);
+	}
+	if (REF->getNumberOfLife() == 0) {
+		m_nLifeNumber += 5;
+		REF->setUpLife(5);
+		initTopMainMenu();
+		m_pTopMenu->setEnabled(false);
+	}
+	else {
+		float type = CCRANDOM_0_1();
+		float percent = CCRANDOM_0_1();
+		if (type >= 0.5f) {
+			if (percent < 0.5f) {
+				m_nCurrentGold += 300;
+				REF->setUpGoldExplored(300);
+				initTopMainMenu();
+				m_pTopMenu->setEnabled(false);
+			}
+			else if (percent < 0.85f) {
+				m_nCurrentGold += 400;
+				REF->setUpGoldExplored(400);
+				initTopMainMenu();
+				m_pTopMenu->setEnabled(false);
+			}
+			else {
+				m_nCurrentGold += 500;
+				REF->setUpGoldExplored(500);
+				initTopMainMenu();
+				m_pTopMenu->setEnabled(false);
+			}
+		}
+		else {
+			if (percent < 0.5f) {
+				m_nLifeNumber += 3;
+				REF->setUpLife(3);
+				initTopMainMenu();
+				m_pTopMenu->setEnabled(false);
+			}
+			else if (percent < 0.85f) {
+				m_nLifeNumber += 4;
+				REF->setUpLife(4);
+				initTopMainMenu();
+				m_pTopMenu->setEnabled(false);
+			}
+			else {
+				m_nLifeNumber += 5;
+				REF->setUpLife(5);
+				initTopMainMenu();
+				m_pTopMenu->setEnabled(false);
+			}
+		}
+	}
+
+}
+
+#endif 
+
 
 string MenuLayer::indexHeroToName(int indexHero)
 {

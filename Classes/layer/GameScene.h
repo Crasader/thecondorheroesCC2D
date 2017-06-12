@@ -35,6 +35,7 @@
 #include "EnemyLinhTenThang.h"
 #include "EnemyLinhTenXien.h"
 #include "thirdsdkhelper\VungleHelper.h"
+#include "thirdsdkhelper\GoogleAnalysticHelper.h"
 
 #ifdef SDKBOX_ENABLED
 class GameScene : public cocos2d::Layer, public sdkbox::VungleListener
@@ -56,7 +57,7 @@ public:
 
 private:
 
-	//bool isModeDebug;
+	bool isModeDebug;
 	
 	// props
 	int stage;
@@ -95,9 +96,9 @@ public:
 
 
 private:
-	//GLESDebugDraw *debugDraw;
-	//Mat4 _modelViewMV;
-	//CustomCommand _customCommand;
+	GLESDebugDraw *debugDraw;
+	Mat4 _modelViewMV;
+	CustomCommand _customCommand;
 
 	Follow *camera;
 	Node* follow;
@@ -158,8 +159,8 @@ private:
 
 
 	// function for process box2d
-	//void draw(Renderer * renderer, const Mat4 & transform, uint32_t flags);
-	//void onDraw();
+	void draw(Renderer * renderer, const Mat4 & transform, uint32_t flags);
+	void onDraw();
 	void initB2World();
 	void updateB2World(float dt);
 

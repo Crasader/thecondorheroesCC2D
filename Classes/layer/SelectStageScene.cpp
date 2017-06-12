@@ -179,6 +179,9 @@ void SelectStageLayer::gotoPlay(int id, int stage, int map)
 	AudioManager::playSound(SOUND_BTCLICK);
 	auto menuLayer = (MenuLayer*) this->getParent();
 	if (menuLayer->downLife()) {
+		menu->setEnabled(false);
+		menuLayer->disableListener();
+
 		REF->setLastMapId(id);
 		AudioManager::stopMusic();
 

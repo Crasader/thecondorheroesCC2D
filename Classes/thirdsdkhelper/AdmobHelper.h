@@ -32,7 +32,7 @@ public:
 #ifdef SDKBOX_ENABLED
 		return sdkbox::PluginAdMob::isAvailable(adname);
 #endif
-		return false;
+//		return false;
 	}
 	/*bool showBanner() {
 #ifdef SDKBOX_ENABLED

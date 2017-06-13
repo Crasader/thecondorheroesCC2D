@@ -17,6 +17,7 @@ DQ_TieuHonChuong * DQ_TieuHonChuong::create(string frameName)
 	thc->setAnchorPoint(Vec2(1.0f, 0.5f));
 	thc->initWithSpriteFrameName(frameName);
 	thc->setTag(TAG_DQ_TIEU_HON_CHUONG);
+	thc->autorelease();
 	return thc;
 }
 

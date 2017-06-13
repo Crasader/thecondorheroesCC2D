@@ -60,16 +60,15 @@ void MyButton::addEvents()
 {
 	//auto originX = Director::getInstance()->getVisibleOrigin().x;
 	listener = cocos2d::EventListenerTouchOneByOne::create();
-	listener->setSwallowTouches(true);								// preventing other listener from using it
+	listener->setSwallowTouches(false);								// preventing other listener from using it
 
 	listener->onTouchBegan = [&](Touch *mTouch, Event *mEvent)
 	{
 		auto location = mTouch->getLocation();
-		auto p = Vec2(location);
-		//convertToNodeSpace(p);
+		//auto p = Vec2(location);
 		Rect rect = this->getBoundingBox();
 		
-		if (rect.containsPoint(p) && !isBlocked)	// if this button is blocked (smt while another button is active), cannot active
+		if (rect.containsPoint(location) && !isBlocked)	// if this button is blocked (smt while another button is active), cannot active
 		{	
 			if (canTouch) {
 				--numberOfUseHasNotUsedYet;

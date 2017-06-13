@@ -163,7 +163,7 @@ void DuongQua::doCounterSkill2()
 void DuongQua::createSpiritHole()
 {
 	auto scale = this->getTrueRadiusOfHero() * 1.4f / 400;  // 400: height of spine
-	spiritHole = new SkeletonAnimation("Effect/skill3.json", "Effect/skill3.atlas", scale);
+	spiritHole = SkeletonAnimation::createWithFile("Effect/skill3.json", "Effect/skill3.atlas", scale);
 	//spiritHole->autorelease();
 	spiritHole->setPosition(this->getContentSize().width / 2 - 1.5f * this->getTrueRadiusOfHero(), 1.5f * this->getTrueRadiusOfHero());
 	spiritHole->update(0.0f);

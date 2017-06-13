@@ -41,7 +41,7 @@ void EnemyBoss3::createPool()
 void EnemyBoss3::attack3()
 {
 	AudioManager::playSound(SOUND_BOSS3SKILL2);
-	this->isNodie = true;
+	this->immortal();
 	this->clearTracks();
 	this->setAnimation(0, "attack3", false);
 	this->setTimeScale(0.4f);
@@ -106,9 +106,10 @@ void EnemyBoss3::playSoundDie()
 
 void EnemyBoss3::doAttack2()
 {
+	this->unschedule("bossinjured");
 	if (this->getPositionY() > SCREEN_SIZE.height / 5) {
 		this->schedule([&](float dt) {
-			//log("do attack2");
+			////log("do attack2");
 			this->setControlState(this->getControlState() + 1);
 			if (this->getControlState() == 1) {
 				this->attack2();
@@ -162,7 +163,7 @@ void EnemyBoss3::doAttack2()
 	}
 	else {
 		this->schedule([&](float dt) {
-			//log("do attack2");
+			////log("do attack2");
 			this->setControlState(this->getControlState() + 1);
 			if (this->getControlState() == 1) {
 				this->attack3();
@@ -177,7 +178,7 @@ void EnemyBoss3::doAttack2()
 				this->setAnimation(0, "idle", true);
 				this->setTimeScale(1);
 				this->setToSetupPose();
-				this->setIsNodie(false);
+				this->unImmortal();
 			}
 
 			if (this->getControlState() >= 30) {
@@ -212,15 +213,15 @@ void EnemyBoss3::listener()
 		if (getCurrent()) {
 			if ((strcmp(getCurrent()->animation->name, "attack2") == 0 && loopCount == 1)) {
 				this->idle();
-				setIsNodie(false);
+				this->unImmortal();
 			}
 			if ((strcmp(getCurrent()->animation->name, "attack3") == 0 && loopCount == 1)) {
 				this->idle();
-				setIsNodie(false);
+				this->unImmortal();
 			}
 			else if ((strcmp(getCurrent()->animation->name, "attack") == 0 && loopCount == 1)) {
 				this->idle();
-				setIsNodie(false);
+				this->unImmortal();
 			}
 		}
 	});

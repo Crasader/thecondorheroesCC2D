@@ -167,12 +167,12 @@
 		},
 		{
 			"questName": {
-				"en" : "Boss 1",
-				"vi" : "Trieu Tri Kinh"
+				"en" : "Boss level 3",
+				"vi" : "Boss man choi 3"
 			},
 			"questDescription": {
-				"en" : "Kill boss 1 10 times",
-				"vi" : "Giet Trieu Tri Kinh 50 lan"
+				"en" : "Kill boss level 3 10 times",
+				"vi" : "Giet boss man choi 3 10 lan"
 			},
 			"completeRequest": 10,
 			"goldReward": 4000,
@@ -242,12 +242,12 @@
 		},
 		{
 			"questName": {
-				"en" : "Boss 2",
-				"vi" : "Ly Mac Sau"
+				"en" : "Boss level 6",
+				"vi" : "Boss man choi 6"
 			},
 			"questDescription": {
-				"en" : "Kill boss 2 10 times",
-				"vi" : "Giet Ly Mac Sau 10 lan"
+				"en" : "Kill boss level 6 10 times",
+				"vi" : "Giet boss man choi 6 10 lan"
 			},
 			"completeRequest": 10,
 			"goldReward": 12000,

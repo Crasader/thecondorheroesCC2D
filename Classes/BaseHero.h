@@ -19,7 +19,6 @@ protected:
 	StateMachine* stateMachine;
 	list<BaseEnemy *> m_lEnemiesSelectedBySkill1;		//DuongPM edited
 	list<BaseEnemy *> m_lEnemiesSelectedBySkill2;		//DuongPM edited
-	list<BaseEnemy *> m_lEnemiesSelectedBySkill3;
 
 	CC_SYNTHESIZE(b2Body*, swordBody, SwordBody);
 	CC_SYNTHESIZE(float, boxHeight, BoxHeight);
@@ -83,6 +82,7 @@ protected:
 	CC_SYNTHESIZE(float, currentRunDis, CurrentRunDis);
 	CC_SYNTHESIZE(float, preRunDis, PreRunDis);
 
+	CC_SYNTHESIZE(bool, isInSpecialMode, IsInSpecialMode);
 
 public:
 	int checkItem[5];// key and state power, state 0 power off. key define in global
@@ -123,8 +123,6 @@ public:
 	void deSelectEnemyBySkill1();							//DuongPM edited
 	void selectEnemyBySkill2(BaseEnemy *p_pEnemySelected); //DuongPM edited
 	void deSelectEnemyBySkill2();							//DuongPM edited
-	void selectEnemyBySkill3(BaseEnemy *p_pEnemySelected); //DuongPM edited
-	void deSelectEnemyBySkill3();							//DuongPM edited
 
 	void killThemAll();
 	void silence();

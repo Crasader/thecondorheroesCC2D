@@ -1,10 +1,13 @@
 #include "AppDelegate.h"
 #include "layer/IntroScene.h"
+#include "layer/SplashScene.h"
+#include "AudioEngine.h"
 #include "thirdsdkhelper/AdmobHelper.h"
 #include "thirdsdkhelper/GoogleAnalysticHelper.h"
 #include "thirdsdkhelper/VungleHelper.h"
 #include "thirdsdkhelper\FacebookHelper.h"
 #include "thirdsdkhelper\IAPHelper.h"
+#include "thirdsdkhelper\SdkboxPlay.h"
 
 USING_NS_CC;
 
@@ -58,7 +61,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0f / 60);
 
     // Set the design resolution
-    glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
+    glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::EXACT_FIT);
     auto frameSize = glview->getFrameSize();
     // if the frame's height is larger than the height of medium size.
     if (frameSize.height > mediumResolutionSize.height)
@@ -79,13 +82,20 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    //auto scene = GameScene::createScene();
-	auto scene = SceneIntro::createScene();
+
+	Scene* scene;
+
+	if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+		scene = SceneIntro::createScene();
+	else
+		scene = SplashScene::createScene();
+
 	AdmobHelper::getInstance();
 	GAHelper::getInstance();
 	VungleHelper::getInstance();
 	FacebookHelper::getInstance();
 	IAPHelper::getInstance();
+	SPHelper::getInstance();
 
 
     // run

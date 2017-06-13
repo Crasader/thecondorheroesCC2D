@@ -20,6 +20,7 @@ CoinBullion * CoinBullion::create(string jsonFile, string atlasFile, float scale
 	coin->setTag(TAG_COINBULLION);
 	coin->setAnimation(0, "Gold", true);
 	coin->effect = nullptr;
+	coin->autorelease();
 	return coin;
 }
 
@@ -36,6 +37,7 @@ CoinBullion * CoinBullion::create(string filename, float scale)
 	coin->setTag(TAG_COINBULLION);
 	coin->setAnimation(0, "Gold", true);
 	coin->effect = nullptr;
+	coin->autorelease();
 	return coin;
 }
 

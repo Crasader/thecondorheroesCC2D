@@ -3,6 +3,7 @@
 #include "Global.h"
 #include "thirdsdkhelper\AdmobHelper.h"
 #include "thirdsdkhelper\FacebookHelper.h"
+#include "thirdsdkhelper\SdkboxPlay.h"
 
 Scene* SceneIntro::createScene() {
     auto scene = Scene::create();
@@ -17,6 +18,7 @@ bool SceneIntro::init() {
         return false;
 	}
 	FacebookHelper::getInstance()->logout();
+	SPHelper::getInstance()->signIn();
 	
 	AdmobHelper::getInstance()->showBanner();
 	AudioManager::playMusic(MUSIC_MENU);
@@ -31,7 +33,17 @@ bool SceneIntro::init() {
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/chidori_eff.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/rock_eff.plist");
 
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu.plist");
+	// cache for menu
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/BottomMenu/bottom_menu.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/DailyReward/daily_reward.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/HeroMenu/hero_menu.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/InfoBoard/info_board.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/ItemBoard/item_board.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/QuestBoard/quest_board.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/SettingBoard/setting_board.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/ShopBoard/shop_board.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/TopMenu/top_menu.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/UpgradeBoard/upgrade_board.plist");
 
 	auto _aIntroBackground = Sprite::create("UI/UI_intro/background.jpg");
 	float _fTemp = _aIntroBackground->getContentSize().height * m_szVisibleSize.width / _aIntroBackground->getContentSize().width;
@@ -104,6 +116,13 @@ void SceneIntro::goToMainMenuScene(Ref* p_pSender) {
 	//FacebookHelper::getInstance()->requestPostPermission();
 	////FacebookHelper::getInstance()->scrShotAndDialog("SwordmanLegend");
 	//FacebookHelper::getInstance()->dialogPhoto("SwordManLegend");
+//#ifdef SDKBOX_ENABLED
+//#else
+//	CustomLayerToToast *_pToast = CustomLayerToToast::create("where is my f***ing sdkbox", TOAST_SHORT);
+//	_pToast->setPosition(Vec2(300, 300));
+//	this->addChild(_pToast, 10);
+//#endif // SDKBOX_ENABLED
+
 	AdmobHelper::getInstance()->hideBanner();
 	AudioManager::playSound(SOUND_BTCLICK);
 	Layer *_pMenuScene = MenuLayer::create(false);

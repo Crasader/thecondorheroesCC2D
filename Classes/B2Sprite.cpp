@@ -77,6 +77,7 @@ void B2Sprite::initPhysicWithShapeCache(b2World * world, Point pos, string key)
 
 void B2Sprite::changeBodyCategoryBits(uint16 mask)
 {
+	if (this->body == nullptr) return;
 	auto fixture = this->body->GetFixtureList();
 	b2Filter filter = fixture->GetFilterData();
 	filter.categoryBits = mask;
@@ -85,6 +86,7 @@ void B2Sprite::changeBodyCategoryBits(uint16 mask)
 
 void B2Sprite::changeBodyMaskBits(uint16 mask)
 {
+	if (this->body == nullptr) return;
 	auto fixture = this->body->GetFixtureList();
 	b2Filter filter = fixture->GetFilterData();
 	filter.maskBits = mask;

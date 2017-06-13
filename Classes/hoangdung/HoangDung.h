@@ -73,8 +73,12 @@ protected:
 	void doDestroyBodies(b2World *world);
 
 	void updateMe(float dt);
-
-private:
-
 };
+
+#define SOUND_HD_DIE				"sound/hddie.mp3"
+#define SOUND_HD_HIT				"sound/hdhit.mp3"
+#define SOUND_HD_SKILL1				"sound/hdskill1.mp3"
+#define SOUND_HD_SKILL2				"sound/hdskill2.mp3"
+#define SOUND_HD_SKILL3				"sound/hdskill3.mp3"
+
 #endif // __HOANG_DUNG_H__

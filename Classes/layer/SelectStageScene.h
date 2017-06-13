@@ -19,18 +19,20 @@ protected:
 
 private:
 	const Size m_szVisibleSize = Director::getInstance()->getVisibleSize();
-	int m_nLifeNumber;
-	int m_nTimeAnchor;
 
 	TMXTiledMap *tmxMap;
 	Point nextMapPos;
 
-	void gotoPlay(int id, int stage, int map, int charId);
+	int stage;
+	int map;
+	int charId;
+
+	void gotoPlay(int id, int stage, int map);
 
 	Sprite *character_point;
 	Sprite* bossSprite(int order);
 	void doNothing();
-	int convertId();
+	//int convertId();
 
 	void createCloud();
 };

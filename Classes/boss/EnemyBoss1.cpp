@@ -1,10 +1,11 @@
 #include "EnemyBoss1.h"
 #include "BaseHero.h"
+#include "manager\RefManager.h"
 #include "manager\AudioManager.h"
 
 EnemyBoss1::EnemyBoss1(string jsonFile, string atlasFile, float scale) :BaseEnemy(jsonFile, atlasFile, scale)
 {
-	isNodie = false;
+	//isNodie = false;
 	isDie = false;
 	control = 0;
 	controlAttack = 2;
@@ -19,6 +20,7 @@ EnemyBoss1::EnemyBoss1(string jsonFile, string atlasFile, float scale) :BaseEnem
 	realMoveVelocity = Vec2::ZERO;
 	exxp = nullptr;
 	randAt2 = 1;
+	dsBoss_Follow = b2Vec2(INT_MIN, INT_MIN);
 	//lockState = false;
 }
 
@@ -46,20 +48,23 @@ void EnemyBoss1::idle()
 void EnemyBoss1::attack()
 {
 	this->playSoundAttack1();
-	this->isNodie = true;
+	this->immortal();
 	this->clearTracks();
 	this->setAnimation(0, "attack", false);
-	auto callfun = CallFunc::create([&] {
+	auto callfun1 = CallFunc::create([&] {
 		this->creatHidenSlash((heroLocation - this->getPosition()).getAngle());
-		this->setIsNodie(false);
 	});
-	this->runAction(Sequence::createWithTwoActions(DelayTime::create(0.5f),callfun));
+	auto callfun2 = CallFunc::create([&] {
+		this->unImmortal();
+		this->changeState(new BossFixingStupid());
+	});
+	this->runAction(Sequence::create(DelayTime::create(0.2f), callfun1, DelayTime::create(0.5f), callfun2, nullptr));
 }
 
 void EnemyBoss1::attack2()
 {
 	this->playSoundAttack1();
-	this->isNodie = true;
+	this->immortal();
 	this->clearTracks();
 	this->setAnimation(0, "attack2", false);
 }
@@ -67,33 +72,34 @@ void EnemyBoss1::attack2()
 void EnemyBoss1::fixStupid()
 {
 	float a = CCRANDOM_0_1();
-	log("fixstupid %f", a);
+	//log("fixstupid %f", a);
 	this->setRealMoveVelocity(Vec2(this->getmoveVelocity().x, this->getmoveVelocity().y*a));
-	//log("fixstupid");
+	////log("fixstupid");
 }
 
 
 
 void EnemyBoss1::die()
 {
-	if (!isDie && !isNodie) {
+	if (!isDie && !isImmortal) {
 		health--;
 		if (health > 0) {
 			this->playSoundHit();
-			this->isNodie = true;
+			this->immortal();
 			this->clearTracks();
 			this->setAnimation(0, "injured-red", false);
 			this->setToSetupPose();
 			this->scheduleOnce([&](float dt) {
-				this->isNodie = false;
+				this->unImmortal();
 				this->clearTracks();
 				this->setAnimation(0, "idle", false);
 				this->setToSetupPose();
-			}, 0.2f, "bossinjured");
+			}, 0.5f, "bossinjured");
 		}
 		else {
+			completeQuest();
 			this->playSoundDie();
-			this->isNodie = true;
+			this->immortal();
 			this->clearTracks();
 			this->setAnimation(0, "injured-red", false);
 			this->setToSetupPose();
@@ -279,8 +285,8 @@ void EnemyBoss1::updateMe(BaseHero* hero)
 	if (hero->getB2Body() != nullptr) {
 		this->heroLocation = Vec2(hero->getB2Body()->GetPosition().x*PTM_RATIO, hero->getB2Body()->GetPosition().y*PTM_RATIO);
 	}
-	//log("ParentBoss: %f, %f, %s", this->getParent()->getPositionX(), this->getParent()->getPositionY(), this->getParent()->getName().c_str());
-	//log();
+	////log("ParentBoss: %f, %f, %s", this->getParent()->getPositionX(), this->getParent()->getPositionY(), this->getParent()->getName().c_str());
+	////log();
 	auto posHero = hero->getPosition();
 	if (body != nullptr) {
 		this->setPositionX(body->GetPosition().x * PTM_RATIO);
@@ -292,18 +298,38 @@ void EnemyBoss1::updateMe(BaseHero* hero)
 		exxp->setPosition(this->getPosition());
 	}
 
-	
+
 	state->execute(this);
-	
+
 	if (hero->getHealth() <= 0 || hero->getB2Body() == nullptr) {
 		this->getB2Body()->SetLinearVelocity(b2Vec2(0, 0));
 	}
+	//else if(hero->getIsInSpecialMode()){
+	//	this->getB2Body()->SetLinearVelocity(b2Vec2(0, 0));
+	//}
+	//else if (!hero->getIsInSpecialMode() && this->getPositionX() < hero->getPositionX()+SCREEN_SIZE.width/10) {
+	//	
+	//	//this->changeState(new BossFixingStupid());
+	//	float dx =  hero->getPositionX() + SCREEN_SIZE.width / 10 - this->getPositionX();
+	//	this->getB2Body()->SetLinearVelocity(b2Vec2(this->realtimeVec.x / PTM_RATIO, this->realtimeVec.y*cosf(control / 120.0f * 2 * PI) / PTM_RATIO) +
+	//		b2Vec2(realMoveVelocity.x / PTM_RATIO, realMoveVelocity.y / PTM_RATIO) + b2Vec2(dx*2/PTM_RATIO,0));
+	//}
 	else {
 
 		this->getB2Body()->SetLinearVelocity(b2Vec2(this->realtimeVec.x / PTM_RATIO, this->realtimeVec.y*cosf(control / 120.0f * 2 * PI) / PTM_RATIO) +
 			b2Vec2(realMoveVelocity.x / PTM_RATIO, realMoveVelocity.y / PTM_RATIO));
 	}
 
+	if (hero->getIsInSpecialMode() && dsBoss_Follow.x == INT_MIN) {
+		//this->pauseSchedulerAndActions();
+		dsBoss_Follow = b2Vec2(this->getB2Body()->GetPosition().x - hero->getB2Body()->GetPosition().x, this->getB2Body()->GetPosition().y);
+	}
+
+	if (!hero->getIsInSpecialMode() && dsBoss_Follow.x != INT_MIN) {
+		//this->resumeSchedulerAndActions();
+		this->getB2Body()->SetTransform(b2Vec2(hero->getB2Body()->GetPosition().x + dsBoss_Follow.x, dsBoss_Follow.y), 0);
+		dsBoss_Follow = b2Vec2(INT_MIN, INT_MIN);
+	}
 
 	//else
 	//	this->getB2Body()->SetLinearVelocity(b2Vec2(0, 0));
@@ -318,7 +344,7 @@ void EnemyBoss1::updateMe(BaseHero* hero)
 	for (int i = 0; i < slashPool->count(); i++) {
 		auto slash = (SlashBoss*)slashPool->getObjectAtIndex(i);
 		slash->updateMe(0.0f);
-		if (slash->getB2Body() != nullptr && slash->getPositionX() < (posHero.x-SCREEN_SIZE.width/4)) {
+		if (slash->getB2Body() != nullptr && slash->getPositionX() < (posHero.x - SCREEN_SIZE.width / 4)) {
 			slash->die();
 		}
 	}
@@ -340,11 +366,11 @@ void EnemyBoss1::listener()
 		if (getCurrent()) {
 			if ((strcmp(getCurrent()->animation->name, "attack2") == 0 && loopCount == 1)) {
 				this->idle();
-				setIsNodie(false);
+				this->unImmortal();
 			}
 			else if ((strcmp(getCurrent()->animation->name, "attack") == 0 && loopCount == 1)) {
 				this->idle();
-				setIsNodie(false);
+				this->unImmortal();
 			}
 		}
 	});
@@ -368,25 +394,26 @@ void EnemyBoss1::changeState(StateBoss * state)
 
 void EnemyBoss1::doAttack1()
 {
-	this->schedule([&](float dt) {
-		//log("doattack1");
-		this->setControlState(this->getControlState() + 1);
-		if (this->getControlState() % 20 == 0) {
-			if (this->getControlAttack() == 0) {
-				this->changeState(new BossFixingStupid());
-				//delete this;
-				this->unschedule("bossattack1");
-			}
-			this->attack();
-			this->setControlAttack(this->getControlAttack() - 1);
-		}
-	}, 0.1f, "bossattack1");
+	//this->schedule([&](float dt) {
+		////log("doattack1");
+		//this->setControlState(this->getControlState() + 1);
+		//if (this->getControlState() % 2 == 0) {
+			//if (this->getControlAttack() == 0) {
+			//	this->changeState(new BossFixingStupid());
+			//	//delete this;
+			//	this->unschedule("bossattack1");
+			//}
+	this->attack();
+	//this->setControlAttack(this->getControlAttack() - 1);
+//}
+//}, 0.1f, "bossattack1");
 }
 
 void EnemyBoss1::doAttack2()
 {
+	this->unschedule("bossinjured");
 	this->schedule([&](float dt) {
-		//log("do attack2");
+		////log("do attack2");
 		this->setControlState(this->getControlState() + 1);
 		if (this->getControlState() == 1) {
 			this->attack2();
@@ -453,5 +480,22 @@ void EnemyBoss1::playSoundHit()
 void EnemyBoss1::playSoundDie()
 {
 	AudioManager::playSound(SOUND_BOSS1DIE);
+}
+
+void EnemyBoss1::immortal()
+{
+	setIsImmortal(true);
+	//log("immortal");
+}
+
+void EnemyBoss1::unImmortal()
+{
+	setIsImmortal(false);
+	//log("unimmortal");
+}
+
+void EnemyBoss1::completeQuest()
+{
+	REF->setUpNumberQuest(INDEX_QUEST_BOSS_1, 1);
 }
 

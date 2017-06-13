@@ -20,6 +20,7 @@ Coin * Coin::create()
 	Coin* coin = new Coin();
 	coin->initWithSpriteFrameName("coin_01.png");
 	coin->setTag(TAG_COIN);
+	coin->autorelease();
 	return coin;
 }
 
@@ -29,6 +30,7 @@ Coin * Coin::create(SpriteBatchNode * batchNode)
 	coin->initWithTexture(batchNode->getTexture());
 	coin->setTag(TAG_COIN);
 	//coin->runAnimation();
+	coin->autorelease();
 	return coin;
 }
 

@@ -75,8 +75,9 @@ void EnemyLinhCamGiao2::initBoxPhysic(b2World * world, Point pos)
 	fixtureDef.friction = 1.0f;
 	fixtureDef.restitution = 0.0f;
 	fixtureDef.shape = &shape;
-	fixtureDef.filter.categoryBits = BITMASK_WOODER;
-	fixtureDef.filter.maskBits = BITMASK_SWORD|BITMASK_FLOOR;
+	fixtureDef.filter.categoryBits = BITMASK_ENEMY;
+
+	fixtureDef.filter.maskBits = BITMASK_SWORD | BITMASK_FLOOR | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2;
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_staticBody;

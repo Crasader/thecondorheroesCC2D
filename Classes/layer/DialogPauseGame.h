@@ -26,13 +26,13 @@ public:
 
 public:
 
-	void resumeGame(Ref* pSender);
-	void backHome(Ref* pSender);
+	void resumeGame();
+	void backHome();
 	void overGame();
-	void replayGame(Ref* pSender, int goldRevive, bool isWatchVideo);
-	void nextStage(Ref* pSender);
-	void restartGame(Ref* pSender);
-	void upgrade(Ref* pSender);
+	void replayGame(int goldRevive, bool isWatchVideo);
+	void nextStage();
+	void restartGame();
+	void upgrade();
 
 	virtual void effect();
 
@@ -41,8 +41,8 @@ public:
 class DialogPause : public DialogPauseGame
 {
 private:
-	void selectedEventMusic(Ref* pSender, ui::CheckBox::EventType type);
-	void selectedEventSound(Ref* pSender, ui::CheckBox::EventType type);
+	void selectedEventMusic(Ref *pSender, ui::CheckBox::EventType type);
+	void selectedEventSound(Ref *pSender, ui::CheckBox::EventType type);
 
 public:
 	bool init();
@@ -53,10 +53,8 @@ public:
 class DialogRevive : public DialogPauseGame
 {
 private:
-	ui::LoadingBar *loading;
 	int countDown = 50;
-
-	Label *goldReviveLb;
+	ui::LoadingBar *loading;
 
 public:
 	bool init(int numberOfRevive);
@@ -68,12 +66,8 @@ private:
 
 class DialogStageClear : public DialogPauseGame
 {
-protected:
-	Label *scoreLb;
-	Label *goldLb;
-	Label *bonusScoreLb;
+private:
 	Label *bonusGoldLb;
-
 public:
 	bool init(int score, int gold);
 	static DialogStageClear* create(int score, int gold);

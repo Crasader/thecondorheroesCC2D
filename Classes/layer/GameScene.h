@@ -35,6 +35,7 @@
 #include "EnemyLinhTenThang.h"
 #include "EnemyLinhTenXien.h"
 #include "thirdsdkhelper\VungleHelper.h"
+#include "thirdsdkhelper\GoogleAnalysticHelper.h"
 
 #ifdef SDKBOX_ENABLED
 class GameScene : public cocos2d::Layer, public sdkbox::VungleListener
@@ -126,13 +127,6 @@ private:
 	EventListenerTouchOneByOne* touch_listener;
 
 	void selectHero();
-
-	// Create For Hero
-	void createDuongQua(string path_Json, string path_Atlas);
-	void createCoLong(string path_Json, string path_Atlas);
-	void createHoangDung(string path_Json, string path_Atlas);
-	void createHoangDuocSu(string path_Json, string path_Atlas);
-	void createQuachTinh(string path_Json, string path_Atlas);
 	void createEagle(Point position);
 	void heroGetOffEagle();
 
@@ -161,7 +155,7 @@ private:
 	void createEnemyLinhTenThang(MyLayer * layer, Vec2 pos);
 	void createEnemyLinhTenXien(MyLayer * layer, Vec2 pos);
 	void createEnemyLinhCamRoi(MyLayer * layer, Vec2 pos);
-	void creatBoss();
+	void createBoss();
 
 
 	// function for process box2d
@@ -221,6 +215,7 @@ private:
 
 public:
 	void onBegin();
+	void onExit();
 	
 	// update public
 	void updateMultiKills();		//DuongPM edited for multi kills

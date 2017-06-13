@@ -29,20 +29,8 @@
  <objectgroup name="score_board">
   <object id="6" name="score_board" x="786" y="45" width="31" height="28"/>
  </objectgroup>
- <objectgroup name="btn_attack">
-  <object id="8" name="btn_attack" x="1167" y="654" width="28" height="28"/>
- </objectgroup>
- <objectgroup name="btn_skill1">
-  <object id="10" name="btn_skill1" x="984" y="689" width="12" height="12"/>
- </objectgroup>
- <objectgroup name="btn_skill2">
-  <object id="11" name="btn_skill2" x="1034" y="519" width="12" height="12"/>
- </objectgroup>
- <objectgroup name="btn_skill3">
-  <object id="12" name="btn_skill3" x="1188" y="464" width="12" height="12"/>
- </objectgroup>
  <objectgroup name="distance_bar">
-  <object id="13" name="distance_bar" x="368" y="742" width="20" height="14"/>
+  <object id="13" name="distance_bar" x="476" y="736" width="20" height="14"/>
  </objectgroup>
  <objectgroup name="btn_special">
   <object id="14" name="btn_special" x="101" y="232.333" width="30" height="24"/>

@@ -53,6 +53,7 @@ BaseHero::BaseHero(string jsonFile, string atlasFile, float scale) : B2Skeleton(
 	coinRatio = 1;
 	scoreRatio = 1;
 	createMapItem();
+	isInSpecialMode = false;
 }
 
 BaseHero * BaseHero::create(string jsonFile, string atlasFile, float scale)
@@ -139,20 +140,13 @@ void BaseHero::changeSwordCategoryBitmask(uint16 bit)
 void BaseHero::addStuff()
 {
 	auto scale = this->getScale() / 3;
-	activeSkill = new SkeletonAnimation("Effect/active_skill_eff.json", "Effect/active_skill_eff.atlas", scale * 0.75f);
-	activeSkill->autorelease();
-	slashBreak = new SkeletonAnimation("Effect/slash-break.json", "Effect/slash-break.atlas", scale / 2);
-	slashBreak->autorelease();
-	smokeJumpX2 = new SkeletonAnimation("Effect/smoke-jumpx2.json", "Effect/smoke-jumpx2.atlas", scale / 2);
-	smokeJumpX2->autorelease();
-	smokeLand = new SkeletonAnimation("Effect/smoke-landing.json", "Effect/smoke-landing.atlas", scale / 2);
-	smokeLand->autorelease();
-	smokeRun = new SkeletonAnimation("Effect/smoke-run.json", "Effect/smoke-run.atlas", scale);
-	smokeRun->autorelease();
-	reviveMe = new SkeletonAnimation("Effect/revive.json", "Effect/revive.atlas", scale / 2);
-	reviveMe->autorelease();
-	suctionCoin = new SkeletonAnimation("Effect/effect_magnet.json", "Effect/effect_magnet.atlas", scale * 1.43f);
-	suctionCoin->autorelease();
+	activeSkill = SkeletonAnimation::createWithFile("Effect/active_skill_eff.json", "Effect/active_skill_eff.atlas", scale * 0.75f);
+	slashBreak = SkeletonAnimation::createWithFile("Effect/slash-break.json", "Effect/slash-break.atlas", scale / 2);
+	smokeJumpX2 = SkeletonAnimation::createWithFile("Effect/smoke-jumpx2.json", "Effect/smoke-jumpx2.atlas", scale / 2);
+	smokeLand = SkeletonAnimation::createWithFile("Effect/smoke-landing.json", "Effect/smoke-landing.atlas", scale / 2);
+	smokeRun = SkeletonAnimation::createWithFile("Effect/smoke-run.json", "Effect/smoke-run.atlas", scale);
+	reviveMe = SkeletonAnimation::createWithFile("Effect/revive.json", "Effect/revive.atlas", scale / 2);
+	suctionCoin = SkeletonAnimation::createWithFile("Effect/effect_magnet.json", "Effect/effect_magnet.atlas", scale * 1.43f);
 
 	activeSkill->setVisible(false);		activeSkill->update(0.0f);
 	slashBreak->setVisible(false);		slashBreak->update(0.0f);
@@ -388,18 +382,6 @@ void BaseHero::deSelectEnemyBySkill2()
 {
 	if (!m_lEnemiesSelectedBySkill2.empty()) {
 		m_lEnemiesSelectedBySkill2.pop_front();
-	}
-}
-
-void BaseHero::selectEnemyBySkill3(BaseEnemy * p_pEnemySelected)
-{
-	m_lEnemiesSelectedBySkill3.push_back(p_pEnemySelected);
-}
-
-void BaseHero::deSelectEnemyBySkill3()
-{
-	if (!m_lEnemiesSelectedBySkill3.empty()) {
-		m_lEnemiesSelectedBySkill3.pop_front();
 	}
 }
 

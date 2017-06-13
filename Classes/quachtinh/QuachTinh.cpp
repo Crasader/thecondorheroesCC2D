@@ -76,7 +76,7 @@ void QuachTinh::pause()
 void QuachTinh::resume()
 {
 	Node::resume();
-	if (songLong->isVisible())
+	if (songLong != nullptr && songLong->isVisible())
 		songLong->resume();
 }
 
@@ -109,6 +109,7 @@ void QuachTinh::landRocks()
 	this->schedule([&](float dt) {
 		if (checkDurationSkill1 % 6 == 0) {		// every 0.3 second
 			float width = this->getPositionX() + SCREEN_SIZE.width * random(0.0f, 0.4f);
+			AudioManager::playSound(SOUND_QT_SKILL1);
 			createRock(width);
 		}
 
@@ -138,7 +139,6 @@ void QuachTinh::createTL(float posX)
 	auto tl = (ThanLong*)poolSkill2->getObjectAtIndex(indexSkill2++);
 	tl->setVisible(true);
 	tl->runAni();
-
 	auto gameLayer = (GameScene*) this->getParent();
 
 	tl->setPosition(posX, gameLayer->getFollow()->getPositionY());
@@ -179,7 +179,7 @@ void QuachTinh::doCounterSkill2()
 	addAnimation(0, "skill2", false);
 	setToSetupPose();
 	setIsPriorSkill2(true);*/
-
+	AudioManager::playSound(SOUND_QT_SKILL2);
 	landTLs();
 }
 	
@@ -197,9 +197,12 @@ void QuachTinh::doCounterSkill3()
 	setToSetupPose();
 	setIsPriorSkill3(true);
 
+	idSoundSkill3 = AudioManager::playSoundForever(SOUND_QT_SKILL3);
+
 	this->schedule([&](float dt) {
 		checkDurationSkill3++;
 		if (checkDurationSkill3 >= getDurationSkill3() * 10) {
+			AudioManager::stopSoundForever(idSoundSkill3);
 			songLong->changeBodyCategoryBits(BITMASK_WOODER);
 			songLong->setVisible(false);
 			setIsDoneDuration3(true);
@@ -335,7 +338,7 @@ void QuachTinh::die()
 {
 	BaseHero::die();
 	checkHealth = 0;
-	AudioManager::playSound(SOUND_DQDIE);
+	AudioManager::playSound(SOUND_QT_DIE);
 }
 
 void QuachTinh::attackNormal()
@@ -381,7 +384,7 @@ void QuachTinh::attackLanding()
 
 void QuachTinh::injured()
 {
-	AudioManager::playSound(SOUND_DQHIT);
+	AudioManager::playSound(SOUND_QT_HIT);
 	clearTracks();
 	addAnimation(0, "injured", false);
 	setToSetupPose();
@@ -489,6 +492,7 @@ void QuachTinh::stopSkillAction(bool stopSkill1, bool stopSkill2, bool stopSkill
 	}
 
 	if (stopSkill3 && !getIsDoneDuration3()) {
+		AudioManager::stopSoundForever(idSoundSkill3);
 		songLong->changeBodyCategoryBits(BITMASK_WOODER);
 		songLong->setVisible(false);
 		setIsDoneDuration3(true);

@@ -21,7 +21,7 @@ protected:
 	CC_SYNTHESIZE(bool, isAdded, IsAdded);
 	CC_SYNTHESIZE(bool, isCollide, IsCollide);
 	CC_SYNTHESIZE(float, angle, mAngle);
-	CC_SYNTHESIZE(ParticleSystemQuad*, particle, Particle);
+	CC_SYNTHESIZE(Sprite*, fireEffect, Effect);
 	
 };
 

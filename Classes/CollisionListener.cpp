@@ -192,7 +192,8 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		B2Skeleton* sA = (B2Skeleton*)bodyA->GetUserData();
 		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
 		auto enemy = sA->getTag() == TAG_BOSS ? (EnemyBoss1 *)sA : (EnemyBoss1 *)sB;
-
+		auto hero  = sA->getTag() == TAG_BOSS ? (BaseHero *)sB : (BaseHero *)sA;
+		if(!hero->getIsInSpecialMode())
 		if (enemy->getControlState() < 0)
 			enemy->changeState(new BossAttacking1());
 
@@ -209,7 +210,10 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		auto hero = sA->getTag() == TAG_HERO ? (BaseHero *)sA : (BaseHero *)sB;
 		auto coin = sA->getTag() == TAG_HERO ? (CoinBullion *)sB : (CoinBullion *)sA;
 		coin->picked();
-		hero->setCoinExplored(hero->getCoinExplored() + 5 * hero->getCoinRatio());
+		if(coin->getTag() == TAG_COINBULLION)
+			hero->setCoinExplored(hero->getCoinExplored() + 5 * hero->getCoinRatio());
+		else
+			hero->setCoinExplored(hero->getCoinExplored() + 10 * hero->getCoinRatio());
 	}
 	//giu
 	if ((bitmaskA == BITMASK_COIN_BAG && bitmaskB == BITMASK_SWORD) ||
@@ -318,9 +322,11 @@ void CollisionListener::BeginContact(b2Contact * contact)
 				Size(kp->getContentSize().width, kp->getContentSize().height * random(0.61f, 0.63f))));
 		}
 		else if (not_ground->getTag() == TAG_QT_CUU_AM_CHAN_KINH) {
-			auto ck = (ChanKinh*)not_ground;
-			ck->setIsCollide(true);
-			ck->explosion();
+			//if (collidePoint.x <= bodyB->GetPosition().x - (not_ground->getBoundingBox().size.width / 6 / PTM_RATIO) / 2) {
+				auto ck = (ChanKinh*)not_ground;
+				ck->setIsCollide(true);
+				ck->explosion();
+			//}
 		}
 
 	}

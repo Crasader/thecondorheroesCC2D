@@ -647,6 +647,7 @@ void MenuLayer::initItemBoard() {
 
 void MenuLayer::initUpgradeBoard() {
 	m_pUpgradeBoard->removeAllChildrenWithCleanup(true);
+	REF->pointToCurrentHero(m_nIndexHeroPicked);
 
 	// board upgrate
 	Sprite *_pBoardUpgrate = Sprite::create("UI/UI_main_menu/board_skill_upgrade.png");
@@ -2350,9 +2351,6 @@ void MenuLayer::buttonUpgradeHeroHandle() {
 	float _nUpgradeCost = JSHERO->getGoldUpgradeLevelX(m_nIndexHeroPicked);
 
 	int level = REF->getCurrentLevel();
-	for (int i = 0; i < level ; i++) {
-		_nUpgradeCost *= 1.05f;
-	}
 	if (m_nCurrentGold >= _nUpgradeCost) {
 		logUpgradeHeroEvent(m_nIndexHeroPicked,level+1);
 		m_nCurrentGold -= _nUpgradeCost;
@@ -2366,6 +2364,9 @@ void MenuLayer::buttonUpgradeHeroHandle() {
 		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(8), TOAST_LONG);
 		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
 		this->addChild(_pToast, 10);
+	}
+	for (int i = 0; i < level; i++) {
+		_nUpgradeCost *= 1.05f;
 	}
 }
 

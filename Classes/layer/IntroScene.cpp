@@ -31,6 +31,8 @@ bool SceneIntro::init() {
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/chidori_eff.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/rock_eff.plist");
 
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu.plist");
+
 	auto _aIntroBackground = Sprite::create("UI/UI_intro/background.jpg");
 	float _fTemp = _aIntroBackground->getContentSize().height * m_szVisibleSize.width / _aIntroBackground->getContentSize().width;
 	if (_fTemp > m_szVisibleSize.height) {

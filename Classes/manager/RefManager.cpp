@@ -37,10 +37,6 @@ RefManager::RefManager()
 
 	// need to fix
 	unLockHero(0);
-	unLockHero(1);
-	unLockHero(2);
-	unLockHero(3);
-	unLockHero(4);
 	pointToCurrentHero(selectedHero);
 }
 

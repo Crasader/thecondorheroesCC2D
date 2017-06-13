@@ -606,7 +606,7 @@ void MenuLayer::initItemBoard() {
 		m_pItemScrollView->addChild(_pItem, 1);
 		JSMENU->readItem(m_nLanguage, i);
 
-		Sprite *_pItemSprite = Sprite::create(JSMENU->getItemIconFilePath());
+		Sprite *_pItemSprite = Sprite::createWithSpriteFrameName(JSMENU->getItemIconFilePath());
 		_pItemSprite->setScale(_fItemHeight / _pItemSprite->getContentSize().height * 0.9f);
 		_pItemSprite->setAnchorPoint(Vec2(0.0f, 0.5f));
 		_pItemSprite->setPosition(Vec2(0.0f, _fItemHeight * 0.5f));
@@ -1126,15 +1126,15 @@ void MenuLayer::initBottomHeroMenu() {
 		JSHERO->readFile(m_nLanguage, i);
 		Sprite *_pHeroSprite;
 		if (REF->getIsLockedHero()) {
-			_pHeroSprite = Sprite::create(JSHERO->getIconLocked());
+			_pHeroSprite = Sprite::createWithSpriteFrameName(JSHERO->getIconLocked());
 			if (m_nIndexHeroPicked == i) {
-				_pHeroSprite = Sprite::create(JSHERO->getIconLockedSelected());
+				_pHeroSprite = Sprite::createWithSpriteFrameName(JSHERO->getIconLockedSelected());
 			}
 		}
 		else {
-			_pHeroSprite = Sprite::create(JSHERO->getIconUnlocked());
+			_pHeroSprite = Sprite::createWithSpriteFrameName(JSHERO->getIconUnlocked());
 			if (m_nIndexHeroPicked == i) {
-				_pHeroSprite = Sprite::create(JSHERO->getIconUnlockedSelected());
+				_pHeroSprite = Sprite::createWithSpriteFrameName(JSHERO->getIconUnlockedSelected());
 			}
 		}
 		m_arHeroButton[i] = MenuItemSprite::create(_pHeroSprite, _pHeroSprite, CC_CALLBACK_0(MenuLayer::buttonPickHeroHandle, this, i));
@@ -1970,7 +1970,7 @@ void MenuLayer::initShopBoard(int p_nOption) {
 
 		for (int i = 0; i < JSMENU->getNumberGoldPack(); i++) {
 			JSMENU->readGoldPack(i);
-			Sprite *_pCoinPackBackground = Sprite::create(JSMENU->getIconGoldPackPath());
+			Sprite *_pCoinPackBackground = Sprite::createWithSpriteFrameName(JSMENU->getIconGoldPackPath());
 			Sprite *_pPackCostSprite = Sprite::createWithSpriteFrameName("btn_price.png");
 			float _fTempScale = m_pPacksZone->getContentSize().height / (_pCoinPackBackground->getContentSize().height + _pPackCostSprite->getContentSize().height);
 
@@ -2027,7 +2027,7 @@ void MenuLayer::initShopBoard(int p_nOption) {
 		for (int i = 0; i < JSMENU->getNumberDiamondPack(); i++) {
 			JSMENU->readDiamondPack(i);
 
-			Sprite *_pDiamondPackBackground = Sprite::create(JSMENU->getIconDiamondPackPath());
+			Sprite *_pDiamondPackBackground = Sprite::createWithSpriteFrameName(JSMENU->getIconDiamondPackPath());
 			Sprite *_pPackCostSprite = Sprite::createWithSpriteFrameName("btn_price.png");
 			float _fTempScale = m_pPacksZone->getContentSize().height / (_pDiamondPackBackground->getContentSize().height + _pPackCostSprite->getContentSize().height);
 
@@ -2077,7 +2077,7 @@ void MenuLayer::initShopBoard(int p_nOption) {
 		for (int i = 0; i < JSMENU->getNumberEnergyPack(); i++) {
 			JSMENU->readEnergyPack(i);
 
-			Sprite *_pEnergyPackBackground = Sprite::create(JSMENU->getIconEnergyPackPath());
+			Sprite *_pEnergyPackBackground = Sprite::createWithSpriteFrameName(JSMENU->getIconEnergyPackPath());
 			Sprite *_pPackCostSprite = Sprite::createWithSpriteFrameName("btn_price.png");
 			float _fTempScale = m_pPacksZone->getContentSize().height / (_pEnergyPackBackground->getContentSize().height + _pPackCostSprite->getContentSize().height);
 

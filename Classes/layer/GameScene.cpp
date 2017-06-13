@@ -135,7 +135,7 @@ void GameScene::selectHero()
 	{
 	case 0:
 		hero = DuongQua::create("Animation/DuongQua/DuongQua.json", 
-								"Animation/DuongQua/DuongQua.atlas", SCREEN_SIZE.height / 5 / 340);
+								"Animation/DuongQua/DuongQua.atlas", SCREEN_SIZE.height / 5 / 315);
 		break;
 
 	case 1:
@@ -160,7 +160,7 @@ void GameScene::selectHero()
 
 	default:
 		hero = DuongQua::create("Animation/DuongQua/DuongQua.json",
-			"Animation/DuongQua/DuongQua.atlas", SCREEN_SIZE.height / 5 / 340);
+			"Animation/DuongQua/DuongQua.atlas", SCREEN_SIZE.height / 5 / 315);
 		break;
 	}
 
@@ -1636,7 +1636,7 @@ void GameScene::createItem()
 
 void GameScene::updateQuest()
 {
-	if (charId != REF->getLastPickHero())
+	if (REF->getIsLockedHero())
 		return;
 
 	switch (charId)
@@ -2109,7 +2109,7 @@ void GameScene::callingBird()
 	GAHelper::getInstance()->logEvent("Bird","Call","",1);
 	AudioManager::playSound(SOUND_BIRD);
 
-	if(charId == REF->getLastPickHero())
+	if(!REF->getIsLockedHero())
 		REF->setUpNumberQuest(INDEX_QUEST_CALL_BIRD, 1);
 	if (hero->getActiveSkill()->isVisible())
 		hero->getActiveSkill()->setVisible(false);

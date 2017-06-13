@@ -80,45 +80,47 @@ void BaseEnemy::die()
 	hero->setScore(hero->getScore() + this->getExp() * hero->getScoreRatio());
 	// when Authur using Skill, hero's score ratio is 2. // Ending return to 1.
 
-	switch (this->getTag()) {
-	case TAG_ENEMY_WOODER:
-		REF->setUpNumberQuest(INDEX_QUEST_WOODER, 1);
-		break;
-	
-	case TAG_ENEMY_TOANCHAN2:
-		REF->setUpNumberQuest(INDEX_QUEST_TOANCHAN_2, 1);
-		break;
+	if (!REF->getIsLockedHero()) {
+		switch (this->getTag()) {
+		case TAG_ENEMY_WOODER:
+			REF->setUpNumberQuest(INDEX_QUEST_WOODER, 1);
+			break;
 
-	case TAG_ENEMY_TOONG:
-		REF->setUpNumberQuest(INDEX_QUEST_BEE, 1);
-		break;
+		case TAG_ENEMY_TOANCHAN2:
+			REF->setUpNumberQuest(INDEX_QUEST_TOANCHAN_2, 1);
+			break;
 
-	case TAG_ENEMY_TNB:
-		REF->setUpNumberQuest(INDEX_QUEST_ICE, 1);
-		break;
+		case TAG_ENEMY_TOONG:
+			REF->setUpNumberQuest(INDEX_QUEST_BEE, 1);
+			break;
 
-	case TAG_ENEMY_HONGLANGBA1:
-		REF->setUpNumberQuest(INDEX_QUEST_HLB_1, 1);
-		break;
+		case TAG_ENEMY_TNB:
+			REF->setUpNumberQuest(INDEX_QUEST_ICE, 1);
+			break;
 
-	case TAG_ENEMY_HONGLANGBA2:
-		REF->setUpNumberQuest(INDEX_QUEST_HLB_2, 1);
-		break;
+		case TAG_ENEMY_HONGLANGBA1:
+			REF->setUpNumberQuest(INDEX_QUEST_HLB_1, 1);
+			break;
 
-	case TAG_ENEMY_HOACDO1:
-		REF->setUpNumberQuest(INDEX_QUEST_HD_1, 1);
-		break;
+		case TAG_ENEMY_HONGLANGBA2:
+			REF->setUpNumberQuest(INDEX_QUEST_HLB_2, 1);
+			break;
 
-	case TAG_ENEMY_HOACDO2:
-		REF->setUpNumberQuest(INDEX_QUEST_HD_2, 1);
-		break;
+		case TAG_ENEMY_HOACDO1:
+			REF->setUpNumberQuest(INDEX_QUEST_HD_1, 1);
+			break;
 
-	case TAG_ENEMY_DATNHIBA1:
-		REF->setUpNumberQuest(INDEX_QUEST_DNB, 1);
-		break;
+		case TAG_ENEMY_HOACDO2:
+			REF->setUpNumberQuest(INDEX_QUEST_HD_2, 1);
+			break;
 
-	default:
-		break;
+		case TAG_ENEMY_DATNHIBA1:
+			REF->setUpNumberQuest(INDEX_QUEST_DNB, 1);
+			break;
+
+		default:
+			break;
+		}
 	}
 }
 

@@ -100,8 +100,8 @@ void DialogPauseGame::nextStage()
 {	
 	Layer *_pMenuScene;
 
-	auto gameScene = this->getParent();
-	gameScene->removeAllChildrenWithCleanup(true);
+	//auto gameScene = this->getParent();
+	//gameScene->removeAllChildrenWithCleanup(true);
 
 	if (!REF->getIsLockedHero()) {
 		_pMenuScene = MenuLayer::create(true);// select stage
@@ -112,7 +112,7 @@ void DialogPauseGame::nextStage()
 
 	auto _aMainMenuScene = Scene::create();
 	_aMainMenuScene->addChild(_pMenuScene);
-	Director::getInstance()->replaceScene(_aMainMenuScene);
+	Director::getInstance()->replaceScene(TransitionFade::create(0.67f, _aMainMenuScene));
 }
 
 void DialogPauseGame::restartGame()
@@ -134,11 +134,6 @@ void DialogPauseGame::restartGame()
 	else {
 		gameLayer->restartGame();
 	}
-}
-
-void DialogPauseGame::upgrade()
-{
-
 }
 
 void DialogPauseGame::effect()
@@ -546,23 +541,16 @@ bool DialogOverGame::init(int score, int gold)
 	backBtnActive->setColor(Color3B(128, 128, 128));
 	auto backBtn = MenuItemSprite::create(backBtnNormal, backBtnActive, CC_CALLBACK_0(DialogPauseGame::backHome, this));
 	backBtn->setAnchorPoint(Vec2(1, 1));
-	backBtn->setPosition(background->getContentSize().width*0.1f, 0);
-
-	auto upgradeBtnNormal = Sprite::create("UI/UI_Endgame/btn_upgrade.png");
-	auto upgradeBtnActive = Sprite::create("UI/UI_Endgame/btn_upgrade.png");
-	upgradeBtnActive->setColor(Color3B(128, 128, 128));
-	auto upgradeBtn = MenuItemSprite::create(upgradeBtnNormal, upgradeBtnActive, CC_CALLBACK_0(DialogPauseGame::upgrade, this));
-	upgradeBtn->setAnchorPoint(Vec2(0.5f, 1));
-	upgradeBtn->setPosition(background->getContentSize().width*0.5f, 0);
+	backBtn->setPosition(background->getContentSize().width*0.3f, 0);
 
 	auto restartBtnNormal = Sprite::create("UI/UI_Endgame/btn_restart.png");
 	auto restartBtnActive = Sprite::create("UI/UI_Endgame/btn_restart.png");
 	restartBtnActive->setColor(Color3B(128, 128, 128));
 	auto restartBtn = MenuItemSprite::create(restartBtnNormal, restartBtnActive, CC_CALLBACK_0(DialogPauseGame::restartGame, this));
 	restartBtn->setAnchorPoint(Vec2(0, 1));
-	restartBtn->setPosition(background->getContentSize().width*0.9f, 0);
+	restartBtn->setPosition(background->getContentSize().width*0.7f, 0);
 
-	menu = Menu::create(backBtn, upgradeBtn, restartBtn, nullptr);
+	menu = Menu::create(backBtn, restartBtn, nullptr);
 	menu->setEnabled(false);
 	menu->setPosition(Vec2::ZERO);
 	background->addChild(menu);

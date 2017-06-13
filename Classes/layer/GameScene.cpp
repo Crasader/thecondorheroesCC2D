@@ -1617,13 +1617,13 @@ void GameScene::createItem()
 		switch (type_val)
 		{
 		case 0:				// health
-			item = Item::create("UI/UI_main_menu/item1_health.png", Item_type::HEALTH, origin);
+			item = Item::create("item1_health.png", Item_type::HEALTH, origin);
 			break;
 		case 1:
-			item = Item::create("UI/UI_main_menu/item4_doublecoin.png", Item_type::DOUBLE_COIN, origin);
+			item = Item::create("tem4_doublecoin.png", Item_type::DOUBLE_COIN, origin);
 			break;
 		case 2:
-			item = Item::create("UI/UI_main_menu/item3_magnet.png", Item_type::MAGNET, origin);
+			item = Item::create("item3_magnet.png", Item_type::MAGNET, origin);
 			break;
 		}
 
@@ -2255,7 +2255,7 @@ void GameScene::winGame()
 			this->removeChild(child, true);
 	}
 
-	reachNewMap();
+	//reachNewMap();
 
 	blurScreen();
 	if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {

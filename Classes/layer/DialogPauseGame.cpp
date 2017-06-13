@@ -2,7 +2,7 @@
 #include "DialogPauseGame.h"
 #include "GameScene.h"
 #include "MenuScene.h"
-#include "SimpleAudioEngine.h"
+#include "manager/AudioManager.h"
 #include "manager/RefManager.h"
 #include "manager/JSonHeroManager.h"
 #include "ui_custom/CustomLayerToToast.h"
@@ -151,17 +151,39 @@ void DialogPauseGame::effect()
 void DialogPause::selectedEventMusic(Ref* pSender, ui::CheckBox::EventType type)
 {
 	auto ref = UserDefault::getInstance()->sharedUserDefault();
+	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
 	switch (type)
 	{
 	case ui::CheckBox::EventType::SELECTED:
 		//log("Music enable");
 		ref->setBoolForKey(KEY_IS_MUSIC, true);
-		//AudioManager::playMusic(MUSIC_STAGE1);
+
+		switch (gameLayer->getStage())
+		{
+		case 1:
+			AudioManager::playMusic(MUSIC_STAGE1);
+			break;
+
+		case 2:
+			AudioManager::playMusic(MUSIC_STAGE2);
+			break;
+
+		case 3:
+			AudioManager::playMusic(MUSIC_STAGE3);
+			break;
+
+		case 4:
+			AudioManager::playMusic(MUSIC_STAGE4);
+			break;
+		default:
+			break;
+		}
 		break;
 
 	case ui::CheckBox::EventType::UNSELECTED:
 		//log("Music disable");
 		ref->setBoolForKey(KEY_IS_MUSIC, false);
+		AudioManager::stopMusic();
 		break;
 
 	default:
@@ -175,12 +197,12 @@ void DialogPause::selectedEventSound(Ref* pSender, ui::CheckBox::EventType type)
 	switch (type)
 	{
 	case ui::CheckBox::EventType::SELECTED:
-		log("Sound enable");
+		//log("Sound enable");
 		ref->setBoolForKey(KEY_IS_SOUND, true);
 		break;
 
 	case ui::CheckBox::EventType::UNSELECTED:
-		log("Sound disable");
+		//log("Sound disable");
 		ref->setBoolForKey(KEY_IS_SOUND, false);
 		break;
 
@@ -194,6 +216,7 @@ bool DialogPause::init()
 	DialogPauseGame::init();
 	auto origin = Director::getInstance()->getVisibleOrigin();
 
+	auto ref = UserDefault::getInstance()->sharedUserDefault();
 
 	auto background = Sprite::create("UI/UI_Endgame/paper_pause.png");
 	background->setScale(SCREEN_SIZE.width / 2 / background->getContentSize().width);
@@ -201,11 +224,18 @@ bool DialogPause::init()
 	addChild(background);
 
 	auto checkBoxMusic = ui::CheckBox::create("UI/UI_Endgame/btn_off.png", "UI/UI_Endgame/btn_on.png");
+	if (ref->getBoolForKey(KEY_IS_MUSIC, true)) {
+		checkBoxMusic->setSelected(true);
+	}
 	checkBoxMusic->addEventListener(CC_CALLBACK_2(DialogPause::selectedEventMusic, this));
 	checkBoxMusic->setPosition(Vec2(background->getContentSize().width*0.25f, background->getContentSize().height*0.7f));
 	background->addChild(checkBoxMusic);
 
 	auto checkBoxSound = ui::CheckBox::create("UI/UI_Endgame/btn_off.png", "UI/UI_Endgame/btn_on.png");
+	if (ref->getBoolForKey(KEY_IS_SOUND, true)) {
+		checkBoxSound->setSelected(true);
+	}
+
 	checkBoxSound->addEventListener(CC_CALLBACK_2(DialogPause::selectedEventSound, this));
 	checkBoxSound->setPosition(Vec2(background->getContentSize().width*0.63f, background->getContentSize().height*0.7f));
 	background->addChild(checkBoxSound);

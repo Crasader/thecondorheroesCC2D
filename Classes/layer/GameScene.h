@@ -51,6 +51,7 @@ public:
 
 	BaseHero * getHero() { return hero; }
 	Node* getFollow() { return follow; }
+	int getStage() { return stage; }
 	void setLastScore(int lastScore) { m_lastScore = lastScore; }
 	CC_SYNTHESIZE(Hud*, hud, Hud);
 	void enableCalling();

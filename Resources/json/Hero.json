@@ -132,10 +132,10 @@
       "percentBonusCoin": 0,
       "goldPrice": 0,
       "diamondPrice": 0,
-      "iconUnlocked": "UI/UI_main_menu/icon_hero_dq_2.png",
-      "iconUnlockedSelected": "UI/UI_main_menu/icon_hero_dq_1.png",
-      "iconLocked": "UI/UI_main_menu/icon_hero_dq_3.png",
-      "iconLockedSelected": "UI/UI_main_menu/icon_hero_dq_4.png"
+      "iconUnlocked": "icon_hero_dq_2.png",
+      "iconUnlockedSelected": "icon_hero_dq_1.png",
+      "iconLocked": "icon_hero_dq_3.png",
+      "iconLockedSelected": "icon_hero_dq_4.png"
     },
     {
       "key": "132456789abc",
@@ -187,10 +187,10 @@
       "percentBonusCoin": 2,
       "goldPrice": 2000,
       "diamondPrice": 0,
-      "iconUnlocked": "UI/UI_main_menu/icon_hero_cc_2.png",
-      "iconUnlockedSelected": "UI/UI_main_menu/icon_hero_cc_1.png",
-      "iconLocked": "UI/UI_main_menu/icon_hero_cc_3.png",
-      "iconLockedSelected": "UI/UI_main_menu/icon_hero_cc_4.png"
+      "iconUnlocked": "icon_hero_cc_2.png",
+      "iconUnlockedSelected": "icon_hero_cc_1.png",
+      "iconLocked": "icon_hero_cc_3.png",
+      "iconLockedSelected": "icon_hero_cc_4.png"
     },
     {
       "key": "124356789abc",
@@ -242,10 +242,10 @@
       "percentBonusCoin": 10,
       "goldPrice": 6000,
       "diamondPrice": 0,
-      "iconUnlocked": "UI/UI_main_menu/icon_hero_hd_2.png",
-      "iconUnlockedSelected": "UI/UI_main_menu/icon_hero_hd_1.png",
-      "iconLocked": "UI/UI_main_menu/icon_hero_hd_3.png",
-      "iconLockedSelected": "UI/UI_main_menu/icon_hero_hd_4.png"
+      "iconUnlocked": "icon_hero_hd_2.png",
+      "iconUnlockedSelected": "icon_hero_hd_1.png",
+      "iconLocked": "icon_hero_hd_3.png",
+      "iconLockedSelected": "icon_hero_hd_4.png"
     },
     {
       "key": "123457689abc",
@@ -297,10 +297,10 @@
       "percentBonusCoin": 15,
       "goldPrice": 0,
       "diamondPrice": 100,
-      "iconUnlocked": "UI/UI_main_menu/icon_hero_hds_2.png",
-      "iconUnlockedSelected": "UI/UI_main_menu/icon_hero_hds_1.png",
-      "iconLocked": "UI/UI_main_menu/icon_hero_hds_3.png",
-      "iconLockedSelected": "UI/UI_main_menu/icon_hero_hds_4.png"
+      "iconUnlocked": "icon_hero_hds_2.png",
+      "iconUnlockedSelected": "icon_hero_hds_1.png",
+      "iconLocked": "icon_hero_hds_3.png",
+      "iconLockedSelected": "icon_hero_hds_4.png"
     },
     {
       "key": "123546789abc",
@@ -352,10 +352,10 @@
       "percentBonusCoin": 20,
       "goldPrice": 0,
       "diamondPrice": 400,
-      "iconUnlocked": "UI/UI_main_menu/icon_hero_qt_2.png",
-      "iconUnlockedSelected": "UI/UI_main_menu/icon_hero_qt_1.png",
-      "iconLocked": "UI/UI_main_menu/icon_hero_qt_3.png",
-      "iconLockedSelected": "UI/UI_main_menu/icon_hero_qt_4.png"
+      "iconUnlocked": "icon_hero_qt_2.png",
+      "iconUnlockedSelected": "icon_hero_qt_1.png",
+      "iconLocked": "icon_hero_qt_3.png",
+      "iconLockedSelected": "icon_hero_qt_4.png"
     }
   ]
 }

@@ -178,7 +178,7 @@ void LoadingLayer::doProcess()
 
 			unschedule("key");
 			AdmobHelper::getInstance()->hideBanner();
-			Director::getInstance()->replaceScene(GameScene::createScene(mainScene, hud));
+			Director::getInstance()->replaceScene(TransitionFade::create(0.43f, GameScene::createScene(mainScene, hud)));
 		}
 
 	}, 1.33f / (100.0f - percent), "key");

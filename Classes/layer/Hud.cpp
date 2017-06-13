@@ -178,8 +178,8 @@ void Hud::addButton()
 	addChild(multiKills, 1);
 
 	coverSkill = Sprite::createWithSpriteFrameName(JSHERO->getPathMainImageSkill1());
-	coverItemMagnet = Sprite::create("UI/UI_main_menu/item3_magnet.png");
-	coverItemDC = Sprite::create("UI/UI_main_menu/item4_doublecoin.png");
+	coverItemMagnet = Sprite::createWithSpriteFrameName("item3_magnet.png");
+	coverItemDC = Sprite::createWithSpriteFrameName("item4_doublecoin.png");
 
 	auto groupIcon = tmxMap->getObjectGroup("icon");
 	for (auto child : groupIcon->getObjects()) {
@@ -208,7 +208,7 @@ void Hud::addButton()
 			break;
 
 		case 2:
-			icon_Item_Magnet = ProgressTimer::create(Sprite::create("UI/UI_main_menu/item3_magnet.png"));
+			icon_Item_Magnet = ProgressTimer::create(Sprite::createWithSpriteFrameName("item3_magnet.png"));
 			icon_Item_Magnet->setPosition(coverItemMagnet->getContentSize() / 2);
 			icon_Item_Magnet->setPercentage(100.0f);
 			icon_Item_Magnet->setReverseDirection(true);
@@ -225,7 +225,7 @@ void Hud::addButton()
 
 			break;
 		case 3:
-			icon_Item_DC = ProgressTimer::create(Sprite::create("UI/UI_main_menu/item4_doublecoin.png"));
+			icon_Item_DC = ProgressTimer::create(Sprite::createWithSpriteFrameName("item4_doublecoin.png"));
 			icon_Item_DC->setPosition(coverItemMagnet->getContentSize() / 2);
 			icon_Item_DC->setPercentage(100.0f);
 			icon_Item_DC->setReverseDirection(true);

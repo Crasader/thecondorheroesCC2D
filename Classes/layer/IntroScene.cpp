@@ -26,6 +26,25 @@ bool SceneIntro::init() {
 	auto _aOrigin = Director::getInstance()->getVisibleOrigin();
 	this->setPosition(_aOrigin);
 
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("item/coin.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Map/bg.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/skill.plist");
+	//SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/Select_Stage/boss_eff.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/chidori_eff.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/rock_eff.plist");
+
+	// cache for menu
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/BottomMenu/bottom_menu.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/DailyReward/daily_reward.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/HeroMenu/hero_menu.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/InfoBoard/info_board.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/ItemBoard/item_board.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/QuestBoard/quest_board.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/SettingBoard/setting_board.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/ShopBoard/shop_board.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/TopMenu/top_menu.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/UpgradeBoard/upgrade_board.plist");
+
 	auto _aIntroBackground = Sprite::create("UI/UI_intro/background.jpg");
 	float _fTemp = _aIntroBackground->getContentSize().height * m_szVisibleSize.width / _aIntroBackground->getContentSize().width;
 	if (_fTemp > m_szVisibleSize.height) {

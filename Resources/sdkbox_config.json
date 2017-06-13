@@ -3,6 +3,23 @@
         "GoogleAnalytics": {
             "trackingCode": "UA-99018383-1"
         }, 
+<<<<<<< HEAD
+        "Vungle": {
+            "id": "5930d3443a12e89576001319", 
+            "ads": {
+                "reward": {
+                    "sound": true, 
+                    "backbutton": true, 
+                    "incentivized": true
+                }, 
+                "video": {
+                    "sound": true, 
+                    "backbutton": false
+                }
+            }
+        }, 
+=======
+>>>>>>> 30e85be038999783889216e3811678df1eeab8de
         "AdMob": {
             "test": false, 
             "ads": {
@@ -23,11 +40,24 @@
                 }, 
                 "top_banner": {
                     "type": "banner", 
+<<<<<<< HEAD
+                    "id": "ca-app-pub-1329374026572143/3087700911", 
+=======
                     "id": "ca-app-pub-4291038556071828/2797055798", 
+>>>>>>> 30e85be038999783889216e3811678df1eeab8de
                     "alignment": "top"
                 }, 
                 "next_level": {
                     "type": "interstitial", 
+<<<<<<< HEAD
+                    "id": "ca-app-pub-1329374026572143/4564434111"
+                }
+            }
+        }, 
+        "Facebook": {
+            "debug": false
+        }, 
+=======
                     "id": "ca-app-pub-4291038556071828/4273788997"
                 }
             }
@@ -61,6 +91,7 @@
                 }
             }
         }, 
+>>>>>>> 30e85be038999783889216e3811678df1eeab8de
         "iap": {
             "items": {
                 "diamond_1": {
@@ -77,6 +108,8 @@
                 }, 
                 "diamond_5": {
                     "id": "swordsman_legend_diamond_1"
+<<<<<<< HEAD
+=======
                 }, 
                 "coin_package2": {
                     "id": "com.cocos2dx.plugintest3"
@@ -91,6 +124,7 @@
                 }, 
                 "coin_package": {
                     "id": "com.cocos2dx.plugintest2"
+>>>>>>> 30e85be038999783889216e3811678df1eeab8de
                 }
             }, 
             "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu7K3TgvP3xrq4fpnoBkyYRhpmqO8X1E6lzNbAbsvZ6bD5nB4ZVlvHluih3aGsqM0DMdvg1h9x4EMVFKOBp4JYFL1gzJV0wdLnfNBjJU16hw1GCO1zPWiXwzk0nSmZ5b8jaRa68tWjWrrigYD9AlEVV1hNizYkiU/+F6lgCP4ppnD1uU6HXGQJvP/uABetYhG/zbbLMxzJUQLPvp8s8Yds46c3FMH8EYeonfvVn1IKDWdiGlJNd+2qNK97dRo5wJG0/CyuCMNQd/nciIwTSh/IdMv5WG9b76CJ/iEK6uGGYwFTIcLYmnB+AVKbOIa2Fq16If0N/rLW5quzW0Dl2EbaQIDAQAB"
@@ -104,28 +138,52 @@
         "AdMob": {
             "test": false, 
             "ads": {
+<<<<<<< HEAD
+                "gameover": {
+                    "type": "interstitial", 
+                    "id": "ca-app-pub-4291038556071828/1180721794"
+=======
                "gameover": {
                     "type": "interstitial", 
                     "id": "ca-app-pub-4291038556071828/4273788997"
+>>>>>>> 30e85be038999783889216e3811678df1eeab8de
                 }, 
                 "home": {
                     "width": 0, 
                     "type": "banner", 
+<<<<<<< HEAD
+                    "id": "ca-app-pub-4291038556071828/8703988590", 
+=======
                     "id": "ca-app-pub-4291038556071828/2797055798", 
+>>>>>>> 30e85be038999783889216e3811678df1eeab8de
                     "alignment": "top", 
                     "height": 0
                 }, 
                 "rewarded": {
                     "type": "rewarded_video", 
+<<<<<<< HEAD
+                    "id": "ca-app-pub-4291038556071828/2657454997"
+                }, 
+                "top_banner": {
+                    "type": "banner", 
+                    "id": "ca-app-pub-1329374026572143/6690628914", 
+=======
                     "id": "ca-app-pub-4291038556071828/5750522193"
                 }, 
                 "top_banner": {
                     "type": "banner", 
                     "id": "ca-app-pub-4291038556071828/2797055798", 
+>>>>>>> 30e85be038999783889216e3811678df1eeab8de
                     "alignment": "top"
                 }, 
                 "next_level": {
                     "type": "interstitial", 
+<<<<<<< HEAD
+                    "id": "ca-app-pub-1329374026572143/9390403312"
+                }
+            }
+        }, 
+=======
                     "id": "ca-app-pub-4291038556071828/4273788997"
                 }
             }
@@ -142,10 +200,14 @@
             "connect_on_start": true, 
             "show_achievement_notification": true
         }, 
+>>>>>>> 30e85be038999783889216e3811678df1eeab8de
         "Facebook": {
             "debug": true
         }, 
         "iap": {
+<<<<<<< HEAD
+            "items": {}
+=======
             "items": {
                 "remove_ads": {
                     "type": "non_consumable", 
@@ -162,6 +224,7 @@
                     "id": "com.cocos2dx.plugintest3"
                 }
             }
+>>>>>>> 30e85be038999783889216e3811678df1eeab8de
         }
     }
 }

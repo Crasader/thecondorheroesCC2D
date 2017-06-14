@@ -2,12 +2,25 @@
 #include "layer/IntroScene.h"
 #include "layer/SplashScene.h"
 #include "AudioEngine.h"
-#include "thirdsdkhelper/AdmobHelper.h"
-#include "thirdsdkhelper/GoogleAnalysticHelper.h"
-#include "thirdsdkhelper/VungleHelper.h"
-#include "thirdsdkhelper\FacebookHelper.h"
-#include "thirdsdkhelper\IAPHelper.h"
-#include "thirdsdkhelper\SdkboxPlay.h"
+
+#ifdef SDKBOX_ENABLED
+#include "PluginFacebook/PluginFacebook.h"
+#endif
+#ifdef SDKBOX_ENABLED
+#include "PluginSdkboxPlay/PluginSdkboxPlay.h"
+#endif
+#ifdef SDKBOX_ENABLED
+#include "PluginGoogleAnalytics/PluginGoogleAnalytics.h"
+#endif
+#ifdef SDKBOX_ENABLED
+#include "PluginIAP/PluginIAP.h"
+#endif
+#ifdef SDKBOX_ENABLED
+#include "PluginAdMob/PluginAdMob.h"
+#endif
+#ifdef SDKBOX_ENABLED
+#include "PluginVungle/PluginVungle.h"
+#endif
 
 USING_NS_CC;
 
@@ -43,6 +56,22 @@ static int register_all_packages()
 
 bool AppDelegate::applicationDidFinishLaunching() {
     // initialize director
+#ifdef SDKBOX_ENABLED
+	sdkbox::PluginFacebook::init();
+#endif
+#ifdef SDKBOX_ENABLED
+	sdkbox::PluginSdkboxPlay::init();
+#endif
+#ifdef SDKBOX_ENABLED
+	sdkbox::PluginGoogleAnalytics::init();
+#endif
+#ifdef SDKBOX_ENABLED
+	sdkbox::IAP::init();
+#endif
+#ifdef SDKBOX_ENABLED
+	sdkbox::PluginAdMob::init();
+	sdkbox::PluginVungle::init();
+#endif
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
@@ -114,14 +143,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
 		scene = SceneIntro::createScene();
 	else
 		scene = SplashScene::createScene();
-
-	AdmobHelper::getInstance();
-	GAHelper::getInstance();
-	VungleHelper::getInstance();
-	FacebookHelper::getInstance();
-	IAPHelper::getInstance();
-	SPHelper::getInstance();
-
 
     // run
     director->runWithScene(scene);

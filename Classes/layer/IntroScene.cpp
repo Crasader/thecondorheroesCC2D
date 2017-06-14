@@ -17,10 +17,10 @@ bool SceneIntro::init() {
     if ( !Layer::init() ) {
         return false;
 	}
-	FacebookHelper::getInstance()->logout();
+	//FacebookHelper::getInstance()->logout();
 	SPHelper::getInstance()->signIn();
 	
-	AdmobHelper::getInstance()->showBanner();
+	AdmobHelper::getInstance()->showAd("top_banner");
 	AudioManager::playMusic(MUSIC_MENU);
 
 	auto _aOrigin = Director::getInstance()->getVisibleOrigin();
@@ -88,23 +88,12 @@ bool SceneIntro::init() {
 	_aParticleFeather2->setScale(1.0f);
 	_aParticleFeather2->setPosition(Vec2(m_szVisibleSize.width * 0.5f, m_szVisibleSize.height));
 	this->addChild(_aParticleFeather2, 2);
-	/*FacebookHelper::getInstance()->login();
-	FacebookHelper::getInstance()->captureScreen();*/
 	return true;
 }
 
 void SceneIntro::goToMainMenuScene(Ref* p_pSender) {
-	//FacebookHelper::getInstance()->requestPostPermission();
-	////FacebookHelper::getInstance()->scrShotAndDialog("SwordmanLegend");
-	//FacebookHelper::getInstance()->dialogPhoto("SwordManLegend");
-//#ifdef SDKBOX_ENABLED
-//#else
-//	CustomLayerToToast *_pToast = CustomLayerToToast::create("where is my f***ing sdkbox", TOAST_SHORT);
-//	_pToast->setPosition(Vec2(300, 300));
-//	this->addChild(_pToast, 10);
-//#endif // SDKBOX_ENABLED
 
-	AdmobHelper::getInstance()->hideBanner();
+	AdmobHelper::getInstance()->hide("top_banner");
 	AudioManager::playSound(SOUND_BTCLICK);
 	Layer *_pMenuScene = MenuLayer::create(false);
 	auto _aMainMenuScene = Scene::create();

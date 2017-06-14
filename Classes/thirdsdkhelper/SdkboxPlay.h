@@ -9,11 +9,7 @@ using namespace std;
 
 class SPHelper {
 public:
-	//static GAHelper *INSTANCE;
 	SPHelper() {
-#ifdef SDKBOX_ENABLED
-		sdkbox::PluginSdkboxPlay::init();
-#endif
 	}
 
 	
@@ -26,6 +22,13 @@ public:
 	void signIn() {
 #ifdef SDKBOX_ENABLED
 		sdkbox::PluginSdkboxPlay::signin();
+#endif
+
+	}
+
+	void signOut() {
+#ifdef SDKBOX_ENABLED
+		sdkbox::PluginSdkboxPlay::signout();
 #endif
 
 	}

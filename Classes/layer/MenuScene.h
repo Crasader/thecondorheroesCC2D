@@ -59,7 +59,7 @@ private:
 	int m_nShopOption = 0;
 	int m_nLanguage = 0;
     int backNumber = 0;
-	float m_nCakeScale;
+	//float m_nCakeScale;
 
 	Label *m_pTimeCounter;									// time counter to increase life
 	MenuItemSprite *m_arHeroButton[5];						// hero mini icon

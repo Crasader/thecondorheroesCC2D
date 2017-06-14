@@ -65,7 +65,7 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 		m_pSelectStageLayer = SelectStageLayer::create(m_nIndexHeroSelected);
 		m_pSelectStageLayer->moveAva();
 		this->addChild(m_pSelectStageLayer, 3);
-        
+
 		this->scheduleUpdate();
 
 		return true;
@@ -100,10 +100,11 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 	m_pGameControl = Layer::create(); // layer 3 : control
 	this->addChild(m_pGameControl, 3);
 	initControlLayer();
-    
+
 	this->scheduleUpdate();
 #ifdef SDKBOX_ENABLED
 	sdkbox::PluginVungle::setListener(this);
+	sdkbox::IAP::setListener(this);
 #endif
 	createRequestToGoogle();
 	return true;
@@ -111,7 +112,7 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 
 void MenuLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 {
-    if (keyCode == EventKeyboard::KeyCode::KEY_BACK) {
+	if (keyCode == EventKeyboard::KeyCode::KEY_BACK) {
 		if (m_nMenuStatus == 0) {
 			if (m_pShopBlurBackground->isVisible()) {
 				buttonCloseShopHandle();
@@ -133,7 +134,7 @@ void MenuLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 			backNumber = 0;
 			buttonBackHandle();
 		}
-    }
+	}
 }
 
 bool MenuLayer::downLife()
@@ -146,7 +147,7 @@ bool MenuLayer::downLife()
 		initTopMainMenu();
 
 		m_iconLife = Sprite::createWithSpriteFrameName("icon_life.png");
-		m_iconLife->setScale(m_nCakeScale);
+		m_iconLife->setScale(m_pTopMainMenu->getBoundingBox().size.height / m_iconLife->getBoundingBox().size.height);
 		m_iconLife->setAnchorPoint(Vec2(0, 0.5f));
 		m_iconLife->setPosition(m_szVisibleSize.width * 0.128f, m_pTopMainMenu->getPositionY());
 		addChild(m_iconLife, 10);
@@ -334,7 +335,7 @@ void MenuLayer::initTopMainMenu() {
 	for (int i = 0; i < (m_nLifeNumber > 5 ? 5 : m_nLifeNumber); i++) {
 		auto _pLifeIcon = Sprite::createWithSpriteFrameName("icon_life.png");
 		_pLifeIcon->setScale(_pLifeFrame->getContentSize().height / _pLifeIcon->getContentSize().height);
-		m_nCakeScale = _pLifeIcon->getScale();
+		//m_nCakeScale = _pLifeIcon->getScale();
 		_pLifeIcon->setAnchorPoint(Vec2(0.0f, 0.5f));
 		_pLifeIcon->setPosition(_pLifeIcon->getContentSize().width * _pLifeIcon->getScale() * i * 0.9f,
 			_pLifeFrame->getContentSize().height / 2);
@@ -1452,15 +1453,6 @@ void MenuLayer::buttonFreeCoinHandle() {
 		// TODO : show ads and check view ads finish
 		// after that, increase gold
 		VungleHelper::getInstance()->showReward();
-		//FacebookHelper::getInstance()->dialogPhoto("SwordManLegend");
-#ifdef SDKBOX_ENABLED
-#else
-		//CustomLayerToToast *_pToast = CustomLayerToToast::create("where is my f***ing sdkbox", TOAST_SHORT);
-		//_pToast->setPosition(Vec2(300, 300));
-		//this->addChild(_pToast, 10);
-#endif 
-
-
 	}
 	else {
 		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(11), TOAST_LONG);
@@ -1617,7 +1609,7 @@ void MenuLayer::buttonUpgradeSkillHandle(int p_nIndexSkill) {
 		}
 		logUpgradeSkillEvent(m_nIndexHeroPicked, p_nIndexSkill, REF->getLevelSkill_3());
 	}
-	
+
 	initTopMainMenu();
 	initUpgradeBoard();
 }
@@ -1729,9 +1721,9 @@ void MenuLayer::onHttpRequestCompleted(HttpClient *p_pSender, HttpResponse *p_pR
 	if (p_pResponse && p_pResponse->getResponseCode() == 200 && p_pResponse->getResponseData()) { // is able to get data from google
 		vector<char> *_pData = p_pResponse->getResponseHeader();
 		string _sResult(&(_pData->front()), _pData->size());
-		 //CCLOG("%s", ("Response message: " + _sResult).c_str());
+		//CCLOG("%s", ("Response message: " + _sResult).c_str());
 		m_nCurrentTimeFromGoogle = calTimeFromString(_sResult);
-        //CCLOG("m_nCurrentTimeFromGoogle : %d", m_nCurrentTimeFromGoogle);
+		//CCLOG("m_nCurrentTimeFromGoogle : %d", m_nCurrentTimeFromGoogle);
 		initDailyRewardBoard();
 	}
 	else {
@@ -1743,33 +1735,33 @@ void MenuLayer::onHttpRequestCompleted(HttpClient *p_pSender, HttpResponse *p_pR
 }
 
 int MenuLayer::calTimeFromString(string p_sInputString) {
-    int _nGMTPosition = p_sInputString.find(" GMT");
-    int _nYear = (p_sInputString.at(_nGMTPosition - 13) - 48) * 1000
-    + (p_sInputString.at(_nGMTPosition - 12) - 48) * 100
-    + (p_sInputString.at(_nGMTPosition - 11) - 48) * 10
-    + (p_sInputString.at(_nGMTPosition - 10) - 48);
-    
-    int _nMonth = 0;
-    string _sMonth = p_sInputString.substr(_nGMTPosition - 17, 3);
-    string _arMonths[12] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-    for (int i = 0; i < 12; i++) {
-        if (_sMonth.compare(_arMonths[i]) == 0) {
-            _nMonth = i;
-            break;
-        }
-    }
-    int _nDay = (p_sInputString.at(_nGMTPosition - 20) - 48) * 10 + (p_sInputString.at(_nGMTPosition - 19) - 48) * 1;
-    
-    tm _pTempTime;
-    _pTempTime.tm_year = _nYear - 1900;
-    _pTempTime.tm_mon = _nMonth;
-    _pTempTime.tm_mday = _nDay;
-    _pTempTime.tm_hour = 0;
-    _pTempTime.tm_min = 0;
-    _pTempTime.tm_sec = 0;
-    _pTempTime.tm_isdst = -1;
-    
-    return mktime(&_pTempTime);
+	int _nGMTPosition = p_sInputString.find(" GMT");
+	int _nYear = (p_sInputString.at(_nGMTPosition - 13) - 48) * 1000
+		+ (p_sInputString.at(_nGMTPosition - 12) - 48) * 100
+		+ (p_sInputString.at(_nGMTPosition - 11) - 48) * 10
+		+ (p_sInputString.at(_nGMTPosition - 10) - 48);
+
+	int _nMonth = 0;
+	string _sMonth = p_sInputString.substr(_nGMTPosition - 17, 3);
+	string _arMonths[12] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+	for (int i = 0; i < 12; i++) {
+		if (_sMonth.compare(_arMonths[i]) == 0) {
+			_nMonth = i;
+			break;
+		}
+	}
+	int _nDay = (p_sInputString.at(_nGMTPosition - 20) - 48) * 10 + (p_sInputString.at(_nGMTPosition - 19) - 48) * 1;
+
+	tm _pTempTime;
+	_pTempTime.tm_year = _nYear - 1900;
+	_pTempTime.tm_mon = _nMonth;
+	_pTempTime.tm_mday = _nDay;
+	_pTempTime.tm_hour = 0;
+	_pTempTime.tm_min = 0;
+	_pTempTime.tm_sec = 0;
+	_pTempTime.tm_isdst = -1;
+
+	return mktime(&_pTempTime);
 }
 
 void MenuLayer::initDailyRewardBoard() {
@@ -1813,6 +1805,7 @@ void MenuLayer::initDailyRewardBoard() {
 			}
 			
 			Sprite *_pDailyReward = Sprite::createWithSpriteFrameName(StringUtils::format("day_%d.png", i + 1));
+
 			float _fTemp = _pDailyReward->getContentSize().height * _pDailyRewardBackground->getContentSize().width / _pDailyReward->getContentSize().width * 0.2f;
 			if (_fTemp > _pDailyRewardBackground->getContentSize().height * 0.4f) {
 				_pDailyReward->setScale(_pDailyRewardBackground->getContentSize().height / _pDailyReward->getContentSize().height * 0.4f);
@@ -2145,7 +2138,7 @@ void MenuLayer::buttonCloseShopHandle() {
 	m_pShopBoardLayer->runAction(ScaleTo::create(0.2f, 0.0f));
 	// TODO: fix custom sprite to buy pack, because if you dont remove children of shop board, they still get response clicks on screen
 	m_pShopBlurBackground->setVisible(false);
-    m_pTopMenu->setEnabled(true);
+	m_pTopMenu->setEnabled(true);
 	runAction(Sequence::create(DelayTime::create(0.2f), CallFunc::create([&]() {
 		m_pShopBoardLayer->removeAllChildrenWithCleanup(true);
 	}), nullptr));
@@ -2317,16 +2310,36 @@ void MenuLayer::buttonBuyCoinHandle(int p_nIndexCoinPack) {
 void MenuLayer::buttonBuyDiamondHandle(int p_nIndexDiamondPack) {
 	AudioManager::playSound(SOUND_BTCLICK);
 	JSMENU->readDiamondPack(p_nIndexDiamondPack);
-	if (false) {
+	/*if (false) {
 		return;
-	}
-	m_nCurrentDiamond += JSMENU->getDiamondPackNumberDiamond();
+	}*/
+	/*m_nCurrentDiamond += JSMENU->getDiamondPackNumberDiamond();
 	REF->setUpDiamondBuy(JSMENU->getDiamondPackNumberDiamond());
 	initTopMainMenu();
-	m_pTopMenu->setEnabled(false);
+	m_pTopMenu->setEnabled(false);*/
 
 	//REF->setUpNumberQuest(7, JSMENU->getDiamondPackNumberDiamond());
 	//initQuestBoard(0);
+	switch (p_nIndexDiamondPack)
+	{
+	case 0: {
+		IAPHelper::getInstance()->purchase("diamond_1");
+	}
+	case 1: {
+		IAPHelper::getInstance()->purchase("diamond_2");
+	}
+	case 2: {
+		IAPHelper::getInstance()->purchase("diamond_3");
+	}
+	case 3: {
+		IAPHelper::getInstance()->purchase("diamond_4");
+	}
+	case 4: {
+		IAPHelper::getInstance()->purchase("diamond_5");
+	}
+	default:
+		break;
+	}
 }
 
 void MenuLayer::buttonPickHeroHandle(int p_nIndexHero) {
@@ -2361,7 +2374,7 @@ void MenuLayer::buttonUnlockHeroHandle() {
 	REF->pointToCurrentHero(m_nIndexHeroPicked - 1); // point to pre-hero
 	int _nPreHeroLevel = REF->getCurrentLevel(); // get level of pre-hero
 	REF->pointToCurrentHero(m_nIndexHeroPicked);
-	int _arLevelToUnlock[] = { 0, 10, 10, 15, 15};
+	int _arLevelToUnlock[] = { 0, 10, 10, 15, 15 };
 	if (_nPreHeroLevel < _arLevelToUnlock[m_nIndexHeroPicked]) {
 		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getTipAtX(11 + m_nIndexHeroPicked), TOAST_SHORT);
 		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
@@ -2412,7 +2425,7 @@ void MenuLayer::buttonUpgradeHeroHandle() {
 	int level = REF->getCurrentLevel();
 
 	if (m_nCurrentGold >= _nUpgradeCost) {
-		logUpgradeHeroEvent(m_nIndexHeroPicked,level+1);
+		logUpgradeHeroEvent(m_nIndexHeroPicked, level + 1);
 		m_nCurrentGold -= _nUpgradeCost;
 		REF->setDownGold(_nUpgradeCost);
 		REF->increaseLevel();
@@ -2611,7 +2624,7 @@ void MenuLayer::buttonMusicControlHandle(Ref* p_pSender) {
 
 void MenuLayer::logButtonClickEvent(string button)
 {
-	GAHelper::getInstance()->logEvent("Button","Click",button,1);
+	GAHelper::getInstance()->logEvent("Button", "Click", button, 1);
 }
 
 void MenuLayer::logBuyItemEvent(string item)
@@ -2621,12 +2634,12 @@ void MenuLayer::logBuyItemEvent(string item)
 
 void MenuLayer::logUnlockHeroEvent(int indexhero)
 {
-	GAHelper::getInstance()->logEvent("Hero","Unlock",indexHeroToName(indexhero),1);
+	GAHelper::getInstance()->logEvent("Hero", "Unlock", indexHeroToName(indexhero), 1);
 }
 
 void MenuLayer::logClickHeroEvent(int index)
 {
-	
+
 	GAHelper::getInstance()->logEvent("Hero", "Click", indexHeroToName(index), 1);
 }
 
@@ -2637,18 +2650,18 @@ void MenuLayer::logTryHeroEvent(int indexhero)
 
 void MenuLayer::logUpgradeHeroEvent(int  indexhero, int level)
 {
-	GAHelper::getInstance()->logEvent("Hero", StringUtils::format("Upgrade level: %d" , level), indexHeroToName(indexhero), 1);
+	GAHelper::getInstance()->logEvent("Hero", StringUtils::format("Upgrade level: %d", level), indexHeroToName(indexhero), 1);
 }
 
 void MenuLayer::logUpgradeSkillEvent(int indexhero, int indexskill, int level)
 {
-	GAHelper::getInstance()->logEvent("UpgradeSkill", indexHeroToName(indexhero)+StringUtils::format(" skill %d", indexskill), StringUtils::format("level %d", level), 1);
+	GAHelper::getInstance()->logEvent("UpgradeSkill", indexHeroToName(indexhero) + StringUtils::format(" skill %d", indexskill), StringUtils::format("level %d", level), 1);
 }
 
 
 void MenuLayer::logShowMoreCoin()
 {
-	GAHelper::getInstance()->logEvent("Coin","Show","",1);
+	GAHelper::getInstance()->logEvent("Coin", "Show", "", 1);
 }
 
 void MenuLayer::logShowMoreDiamond()
@@ -2663,17 +2676,17 @@ void MenuLayer::logShowMoreLife()
 
 void MenuLayer::logBuyCoin(int dexOfPack)
 {
-	GAHelper::getInstance()->logEvent("Coin", "Buy", StringUtils::format("Pack %d", dexOfPack+1), 1);
+	GAHelper::getInstance()->logEvent("Coin", "Buy", StringUtils::format("Pack %d", dexOfPack + 1), 1);
 }
 
 void MenuLayer::logBuyLife(int dexOfPack)
 {
-	GAHelper::getInstance()->logEvent("Life", "Buy", StringUtils::format("Pack %d", dexOfPack+1), 1);
+	GAHelper::getInstance()->logEvent("Life", "Buy", StringUtils::format("Pack %d", dexOfPack + 1), 1);
 }
 
 void MenuLayer::logBuyDiamond(int dexOfPack, float money)
 {
-	GAHelper::getInstance()->logEvent("Diamond", "Buy", StringUtils::format("Pack %d", dexOfPack+1), money);
+	GAHelper::getInstance()->logEvent("Diamond", "Buy", StringUtils::format("Pack %d", dexOfPack + 1), money);
 }
 
 #ifdef SDKBOX_ENABLED
@@ -2691,11 +2704,11 @@ void MenuLayer::onSuccess(sdkbox::Product const & p)
 	}
 	else if (p.name == "diamond_2") {
 		p_nIndexDiamondPack = 1;
-		
+
 	}
 	else if (p.name == "diamond_3") {
 		p_nIndexDiamondPack = 2;
-		
+
 	}
 	else if (p.name == "diamond_4") {
 		p_nIndexDiamondPack = 3;
@@ -2708,7 +2721,7 @@ void MenuLayer::onSuccess(sdkbox::Product const & p)
 	if (false) {
 		return;
 	}
-	logBuyDiamond(p_nIndexDiamondPack,p.priceValue);
+	logBuyDiamond(p_nIndexDiamondPack, p.priceValue);
 	m_nCurrentDiamond += JSMENU->getDiamondPackNumberDiamond();
 	REF->setUpDiamondBuy(JSMENU->getDiamondPackNumberDiamond());
 	initTopMainMenu();
@@ -2767,7 +2780,7 @@ void MenuLayer::onVungleAdReward(const std::string & name)
 		m_nLifeNumber += 5;
 		REF->setUpLife(5);
 		initTopMainMenu();
-		m_pTopMenu->setEnabled(false);
+		m_pTopMenu->setEnabled(true);
 	}
 	else {
 		float type = CCRANDOM_0_1();
@@ -2777,19 +2790,19 @@ void MenuLayer::onVungleAdReward(const std::string & name)
 				m_nCurrentGold += 300;
 				REF->setUpGoldExplored(300);
 				initTopMainMenu();
-				m_pTopMenu->setEnabled(false);
+				m_pTopMenu->setEnabled(true);
 			}
 			else if (percent < 0.85f) {
 				m_nCurrentGold += 400;
 				REF->setUpGoldExplored(400);
 				initTopMainMenu();
-				m_pTopMenu->setEnabled(false);
+				m_pTopMenu->setEnabled(true);
 			}
 			else {
 				m_nCurrentGold += 500;
 				REF->setUpGoldExplored(500);
 				initTopMainMenu();
-				m_pTopMenu->setEnabled(false);
+				m_pTopMenu->setEnabled(true);
 			}
 		}
 		else {
@@ -2797,19 +2810,19 @@ void MenuLayer::onVungleAdReward(const std::string & name)
 				m_nLifeNumber += 3;
 				REF->setUpLife(3);
 				initTopMainMenu();
-				m_pTopMenu->setEnabled(false);
+				m_pTopMenu->setEnabled(true);
 			}
 			else if (percent < 0.85f) {
 				m_nLifeNumber += 4;
 				REF->setUpLife(4);
 				initTopMainMenu();
-				m_pTopMenu->setEnabled(false);
+				m_pTopMenu->setEnabled(true);
 			}
 			else {
 				m_nLifeNumber += 5;
 				REF->setUpLife(5);
 				initTopMainMenu();
-				m_pTopMenu->setEnabled(false);
+				m_pTopMenu->setEnabled(true);
 			}
 		}
 	}

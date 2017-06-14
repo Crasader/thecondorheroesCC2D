@@ -1699,6 +1699,7 @@ void MenuLayer::buttonBuyItemHandle(int p_nIndexItem) {
 void MenuLayer::buttonRewardQuest(int p_nQuestIndex) {
 	AudioManager::playSound(SOUND_BTCLICK);
 	// update gold by reward
+	JSQUEST->readQuest(m_nLanguage, p_nQuestIndex);
 	int _nGoldReward = JSQUEST->getGoldReward();
 	for (int j = 0; j < REF->getRewardedQuestTimes(); j++) {
 		_nGoldReward *= JSQUEST->getStepRequest();
@@ -2570,6 +2571,7 @@ void MenuLayer::buttonConfirmHandle(bool p_bConfirm, int p_nIndexPack) {
 	}
 	m_pBuyPackConfirmBackground->setVisible(false);
 	m_pPacksZone->setTouchEnabled(true);
+	m_pShopMenu->setEnabled(true);
 	m_pShopMenu->setEnabled(true);
 }
 

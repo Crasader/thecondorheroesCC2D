@@ -225,11 +225,17 @@ void CoLong::updateMe(float p_fDelta) {
 			auto enemy = m_lEnemiesSelectedBySkill1.front();
 			createDocPhongCham(this->getPosition(), enemy->getPosition() + enemy->getParent()->getPosition());
 		}
+		else {
+			createDocPhongCham(this->getPosition(), Point(this->getPosition().x + 100.0f, this->getPosition().y));
+		}
 	}
 	if (!getIsDoneDuration2()) {
 		if (!this->m_lEnemiesSelectedBySkill2.empty()) {
 			auto enemy = m_lEnemiesSelectedBySkill2.front();
 			createNgocNuKiemPhap(enemy->getPosition() + enemy->getParent()->getPosition());
+		}
+		else {
+			createNgocNuKiemPhap(Point(this->getPosition().x + this->getTrueRadiusOfHero() * 4.0f, this->getPosition().y));
 		}
 	}
 

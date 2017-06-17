@@ -15,7 +15,7 @@
   <object id="128" x="0" y="1072" width="37244" height="32"/>
  </objectgroup>
  <objectgroup name="boss">
-  <object id="126" x="31838.4" y="641.788" width="76" height="80"/>
+  <object id="126" x="34318.4" y="321.788" width="76" height="80"/>
  </objectgroup>
  <objectgroup name="coming_boss">
   <object id="127" x="30161.5" y="-1.09091" width="12" height="1196"/>

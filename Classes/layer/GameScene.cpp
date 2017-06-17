@@ -237,7 +237,7 @@ void GameScene::onBegin()
 	this->scheduleUpdate();
 
 	if (REF->getNumberItemDoubleGold() > 0) {
-		runnerItem(Item_type::DOUBLE_COIN, DURATION_DOUBLE_COIN);
+		runnerItem(Item_type::DOUBLE_COIN, -99);
 		REF->decreaseNumberItemDoubleGold();
 	}
 
@@ -418,7 +418,8 @@ void GameScene::listener()
 			hud->getPauseItem()->setEnabled(false);
 
 			hero->setItemValue(KEY_ITEM_MAGNET, 0);
-			hero->setItemValue(KEY_ITEM_DOUPLE_COIN, 0);
+			if(hero->getItemValue(KEY_ITEM_DOUPLE_COIN) >= -1)
+				hero->setItemValue(KEY_ITEM_DOUPLE_COIN, 0);
 
 			if (hero->getActiveSkill()->isVisible())
 				hero->getActiveSkill()->setVisible(false);
@@ -1927,7 +1928,9 @@ void GameScene::runnerItem(Item_type type, int counter)
 		break;
 	case DOUBLE_COIN:
 		hud->runnerItemDC(counter);
-		hero->setItemValue(KEY_ITEM_DOUPLE_COIN, counter);
+		hero->setCoinRatio(2);
+		if (hero->getItemValue(KEY_ITEM_DOUPLE_COIN) >= -1) // means double 4ver is not active
+			hero->setItemValue(KEY_ITEM_DOUPLE_COIN, counter);
 		break;
 	}
 

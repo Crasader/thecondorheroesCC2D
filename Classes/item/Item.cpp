@@ -78,7 +78,6 @@ void Item::updateMe(BaseHero *hero)
 					}
 
 					if (typeItem == Item_type::DOUBLE_COIN) {
-						hero->setCoinRatio(2);
 						parentGameScene->runnerItem(Item_type::DOUBLE_COIN, DURATION_DOUBLE_COIN);
 					}
 

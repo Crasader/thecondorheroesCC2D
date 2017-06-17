@@ -464,7 +464,7 @@ void Hud::introAttack()
 		coverItemMagnet->pause();
 	}
 
-	if (coverItemDC->isVisible()) {
+	if (coverItemDC->isVisible() && isItemDCActive) {
 		coverItemDC->pause();
 	}
 
@@ -484,7 +484,7 @@ void Hud::introSkills()
 		coverItemMagnet->pause();
 	}
 
-	if (coverItemDC->isVisible()) {
+	if (coverItemDC->isVisible() && isItemDCActive) {
 		coverItemDC->pause();
 	}
 
@@ -568,7 +568,7 @@ void Hud::pauseIfVisible()
 		coverItemMagnet->pause();
 	}
 
-	if (coverItemDC->isVisible()) {
+	if (coverItemDC->isVisible() && isItemDCActive) {
 		coverItemDC->pause();
 	}
 
@@ -599,7 +599,7 @@ void Hud::resumeIfVisible()
 		coverItemMagnet->resume();
 	}
 
-	if (coverItemDC->isVisible()) {
+	if (coverItemDC->isVisible() && isItemDCActive) {
 		coverItemDC->resume();
 	}
 
@@ -653,7 +653,7 @@ void Hud::refreshControl()
 		coverItemMagnet->unscheduleAllCallbacks();
 	}
 
-	if (coverItemDC->isVisible()) {
+	if (coverItemDC->isVisible() && isItemDCActive) {
 		isItemDCActive = false;
 		coverItemDC->setVisible(false);
 		coverItemDC->unscheduleAllCallbacks();
@@ -792,6 +792,12 @@ void Hud::runnerItemMagnet(int counter)
 
 void Hud::runnerItemDC(int counter)
 {
+	if (counter < 0) {
+		coverItemDC->setVisible(true);
+		return;
+	}
+
+
 	durationItemDC = counter / 60.0f;
 	if (isItemDCActive) {
 		coverItemDC->unschedule("itemRunnerDC");

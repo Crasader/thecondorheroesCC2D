@@ -7,13 +7,13 @@
 			<key>board_skill_upgrade.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,0},{512,512}}</string>
+				<string>{{0,0},{512,511}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{512,512}}</string>
+				<string>{{0,1},{512,511}}</string>
 				<key>sourceSize</key>
 				<string>{512,512}</string>
 			</dict>
@@ -21,13 +21,13 @@
 			<key>btn_upgrade.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,513},{323,152}}</string>
+				<string>{{513,0},{241,113}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,2},{323,152}}</string>
+				<string>{{41,22},{241,113}}</string>
 				<key>sourceSize</key>
 				<string>{323,159}</string>
 			</dict>
@@ -35,49 +35,49 @@
 			<key>btn_upgrade_1.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,727},{93,41}}</string>
+				<string>{{513,200},{117,41}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{1,0},{93,41}}</string>
+				<string>{{1,0},{117,41}}</string>
 				<key>sourceSize</key>
-				<string>{94,43}</string>
+				<string>{118,43}</string>
 			</dict>
 
 			<key>btn_upgrade_2.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,769},{93,41}}</string>
+				<string>{{513,158},{117,41}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{1,0},{93,41}}</string>
+				<string>{{1,0},{117,41}}</string>
 				<key>sourceSize</key>
-				<string>{94,43}</string>
+				<string>{118,43}</string>
 			</dict>
 
 			<key>btn_upgrade_3.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,683},{93,43}}</string>
+				<string>{{513,114},{117,43}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{1,0},{93,43}}</string>
+				<string>{{1,0},{117,43}}</string>
 				<key>sourceSize</key>
-				<string>{94,43}</string>
+				<string>{118,43}</string>
 			</dict>
 
 			<key>level_skill_bar.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,666},{102,16}}</string>
+				<string>{{513,242},{102,16}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -91,7 +91,7 @@
 			<key>level_skill_point.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,811},{8,12}}</string>
+				<string>{{513,259},{8,12}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -109,7 +109,7 @@
 			<key>format</key>
 			<integer>2</integer>
 			<key>size</key>
-			<string>{1024,1024}</string>
+			<string>{1024,512}</string>
 			<key>textureFileName</key>
 			<string>upgrade_board.png</string>
 			</dict>

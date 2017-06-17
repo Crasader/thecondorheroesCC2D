@@ -32,6 +32,12 @@ int JSonMenuManager::getNumberEnergyPack() {
 	return (int)_bResult;
 }
 
+string JSonMenuManager::readMenuText(int p_nLanguage, int p_nIndex) {
+	string _arLanguages[2] = { "en", "vi" };
+	this->m_sItemName = jsonDoc["menu_text"][p_nIndex][_arLanguages[p_nLanguage].c_str()].GetString();
+	return m_sItemName;
+}
+
 void JSonMenuManager::readItem(int p_nLanguage, int firstIndex) {
 	string _arLanguages[2] = { "en", "vi" };
 	this->m_sItemIconFilePath = jsonDoc["items"][firstIndex]["iconFilePath"].GetString();

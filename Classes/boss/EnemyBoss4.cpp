@@ -37,7 +37,7 @@ void EnemyBoss4::die()
 {
 	float  magicNumber = CCRANDOM_0_1();
 	
-	if (!isDie) {
+	if (!isDie && !isImmortal) {
 		if (magicNumber < 0.6f) {
 			health--;
 			if (health > 0) {
@@ -51,9 +51,10 @@ void EnemyBoss4::die()
 					this->clearTracks();
 					this->setAnimation(0, "idle", false);
 					this->setToSetupPose();
-				}, 0.2f, "bossinjured");
+				}, 0.3f, "bossinjured");
 			}
 			else {
+				this->unschedule("bossinjured");
 				this->playSoundDie();
 				this->immortal();
 				this->clearTracks();

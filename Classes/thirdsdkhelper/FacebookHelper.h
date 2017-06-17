@@ -49,6 +49,7 @@ public:
 	};
 	void dialogPhoto(string title)
 	{
+		captureScreen();
 #ifdef SDKBOX_ENABLED
 
 		if (!_captureFilename.empty() && FileUtils::getInstance()->isFileExist(_captureFilename))

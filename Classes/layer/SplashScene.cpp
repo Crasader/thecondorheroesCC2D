@@ -37,15 +37,6 @@ bool SplashScene::init()
 	splashSprite->setPosition(origin + visibleSize / 2);
 	addChild(splashSprite);
 
-	// cache frame
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("item/coin.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Map/bg.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/skill.plist");
-	//SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/Select_Stage/boss_eff.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/fire_eff.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/chidori_eff.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/rock_eff.plist");
-
 
 	auto nextScene = CallFunc::create([]() {
 		Director::getInstance()->replaceScene(TransitionFade::create(0.3f, SceneIntro::createScene()));

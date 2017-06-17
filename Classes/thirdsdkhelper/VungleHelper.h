@@ -20,21 +20,8 @@ class VungleHelper {
 public:
 	//static VungleHelper *INSTANCE;
 	VungleHelper() {
-#ifdef SDKBOX_ENABLED
-		sdkbox::PluginVungle::init();
-#endif
+
 	}
-	/*bool showBanner() {
-#ifdef SDKBOX_ENABLED
-		if (isAvailable("home")) {
-			sdkbox::PluginVungle::show("home");
-			return true;
-		}
-		sdkbox::PluginVungle::cache("home");
-		return false;
-#endif
-		return false;
-	}*/
 	void showVideo() {
 #ifdef SDKBOX_ENABLED
 		sdkbox::PluginVungle::show("video");

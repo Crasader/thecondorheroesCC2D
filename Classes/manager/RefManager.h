@@ -15,6 +15,7 @@ public:
 
 protected:
 	CC_SYNTHESIZE_READONLY(int, language, Language);
+	CC_SYNTHESIZE_READONLY(bool, isShowStory, IsShowStory);
 	CC_SYNTHESIZE_READONLY(bool, isFirstPlay, IsFirstPlay);
 	CC_SYNTHESIZE_READONLY(int, lastMapIdPlay, LastMapIdPlay);
 	CC_SYNTHESIZE_READONLY(bool, isGetNewMap, IsGetNewMap);
@@ -86,6 +87,7 @@ public:
 	void setReachNewMap(bool value);
 
 	void setDoneFirstPlay();
+	void setShowedStory();
 	void setLastMapId(int id);
 
 	void unLockHero(int index);
@@ -157,6 +159,7 @@ public:
 
 #define KEY_LANGUAGE						"Language"
 #define KEY_FIRST							"FirstPlay"
+#define KEY_STORY							"ShowedStory"
 #define KEY_LAST_MAP_ID						"LastMapID"
 #define KEY_UNLOCK_MAP						"GetNewMap"
 #define KEY_SELECTED_HERO					"SelectedHero"		// integer

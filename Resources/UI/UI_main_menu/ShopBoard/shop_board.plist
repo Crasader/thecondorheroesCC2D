@@ -18,16 +18,16 @@
 				<string>{1234,677}</string>
 			</dict>
 
-			<key>btn_close.png</key>
+			<key>btn_close_shop.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,1886},{47,48}}</string>
+				<string>{{0,1826},{74,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{16,15},{47,48}}</string>
+				<string>{{0,0},{74,74}}</string>
 				<key>sourceSize</key>
 				<string>{74,74}</string>
 			</dict>
@@ -287,7 +287,7 @@
 			<key>icon_diamond.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,1826},{66,59}}</string>
+				<string>{{0,1901},{66,59}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>

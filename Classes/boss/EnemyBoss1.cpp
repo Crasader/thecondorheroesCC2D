@@ -98,6 +98,7 @@ void EnemyBoss1::die()
 		}
 		else {
 			completeQuest();
+			this->unschedule("bossinjured");
 			this->playSoundDie();
 			this->immortal();
 			this->clearTracks();
@@ -403,6 +404,7 @@ void EnemyBoss1::doAttack1()
 			//	//delete this;
 			//	this->unschedule("bossattack1");
 			//}
+	this->unschedule("bossinjured");
 	this->attack();
 	//this->setControlAttack(this->getControlAttack() - 1);
 //}

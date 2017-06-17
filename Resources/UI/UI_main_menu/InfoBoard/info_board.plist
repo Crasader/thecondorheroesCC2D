@@ -7,15 +7,15 @@
 			<key>board_information.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,0},{384,512}}</string>
+				<string>{{0,0},{440,512}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{384,512}}</string>
+				<string>{{0,0},{440,512}}</string>
 				<key>sourceSize</key>
-				<string>{384,512}</string>
+				<string>{440,512}</string>
 			</dict>
 
 			<key>frame_gold.png</key>
@@ -35,7 +35,7 @@
 			<key>frame_hp.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,575},{80,30}}</string>
+				<string>{{0,606},{80,30}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -58,6 +58,76 @@
 				<string>{{0,0},{114,30}}</string>
 				<key>sourceSize</key>
 				<string>{114,30}</string>
+			</dict>
+
+			<key>icon_coin.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,699},{30,31}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{30,31}}</string>
+				<key>sourceSize</key>
+				<string>{31,31}</string>
+			</dict>
+
+			<key>icon_hp.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,731},{29,28}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{1,2},{29,28}}</string>
+				<key>sourceSize</key>
+				<string>{31,31}</string>
+			</dict>
+
+			<key>icon_score.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,668},{31,30}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,1},{31,30}}</string>
+				<key>sourceSize</key>
+				<string>{31,31}</string>
+			</dict>
+
+			<key>text_current.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,575},{97,30}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{97,30}}</string>
+				<key>sourceSize</key>
+				<string>{97,30}</string>
+			</dict>
+
+			<key>text_next.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,637},{61,30}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{61,30}}</string>
+				<key>sourceSize</key>
+				<string>{61,30}</string>
 			</dict>
 
 		</dict>

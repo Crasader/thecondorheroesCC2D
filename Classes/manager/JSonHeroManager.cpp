@@ -26,6 +26,7 @@ void JSonHeroManager::readFile(int p_nLanguage, int indexHero)
 	this->key = jsonDoc["hero"][indexHero]["key"].GetString();
 	this->name = jsonDoc["hero"][indexHero]["name"][_arLanguages[p_nLanguage].c_str()].GetString();
 	this->infor = jsonDoc["hero"][indexHero]["inforHero"][_arLanguages[p_nLanguage].c_str()].GetString();
+	this->intrinsic = jsonDoc["hero"][indexHero]["intrinsicHero"][_arLanguages[p_nLanguage].c_str()].GetString();
 	this->avatarPath = jsonDoc["hero"][indexHero]["avatarPath"].GetString();
 	this->characterPointPath = jsonDoc["hero"][indexHero]["characterPointPath"].GetString();
 	this->selectCharacterPoint = jsonDoc["hero"][indexHero]["selectCharacterPoint"].GetString();

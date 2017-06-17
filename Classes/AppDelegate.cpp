@@ -2,15 +2,29 @@
 #include "layer/IntroScene.h"
 #include "layer/SplashScene.h"
 #include "AudioEngine.h"
-#include "thirdsdkhelper/AdmobHelper.h"
-#include "thirdsdkhelper/GoogleAnalysticHelper.h"
-#include "thirdsdkhelper/VungleHelper.h"
-#include "thirdsdkhelper\FacebookHelper.h"
-#include "thirdsdkhelper\IAPHelper.h"
-#include "thirdsdkhelper\SdkboxPlay.h"
+
+#ifdef SDKBOX_ENABLED
+#include "PluginFacebook/PluginFacebook.h"
+#endif
+#ifdef SDKBOX_ENABLED
+#include "PluginSdkboxPlay/PluginSdkboxPlay.h"
+#endif
+#ifdef SDKBOX_ENABLED
+#include "PluginGoogleAnalytics/PluginGoogleAnalytics.h"
+#endif
+#ifdef SDKBOX_ENABLED
+#include "PluginIAP/PluginIAP.h"
+#endif
+#ifdef SDKBOX_ENABLED
+#include "PluginAdMob/PluginAdMob.h"
+#endif
+#ifdef SDKBOX_ENABLED
+#include "PluginVungle/PluginVungle.h"
+#endif
 
 USING_NS_CC;
 
+//static cocos2d::Size designResolutionSize = cocos2d::Size(800, 600);
 static cocos2d::Size designResolutionSize = cocos2d::Size(711, 400);
 static cocos2d::Size smallResolutionSize = cocos2d::Size(1280, 720);
 static cocos2d::Size mediumResolutionSize = cocos2d::Size(1920, 1080);
@@ -43,6 +57,22 @@ static int register_all_packages()
 
 bool AppDelegate::applicationDidFinishLaunching() {
     // initialize director
+#ifdef SDKBOX_ENABLED
+	sdkbox::PluginFacebook::init();
+#endif
+#ifdef SDKBOX_ENABLED
+	sdkbox::PluginSdkboxPlay::init();
+#endif
+#ifdef SDKBOX_ENABLED
+	sdkbox::PluginGoogleAnalytics::init();
+#endif
+#ifdef SDKBOX_ENABLED
+	sdkbox::IAP::init();
+#endif
+#ifdef SDKBOX_ENABLED
+	sdkbox::PluginAdMob::init();
+	sdkbox::PluginVungle::init();
+#endif
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
@@ -81,6 +111,31 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     register_all_packages();
 
+
+	// cache frame
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("item/coin.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Map/bg.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/skill.plist");
+	//SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/Select_Stage/boss_eff.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/fire_eff.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/chidori_eff.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/rock_eff.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/Select_Stage/select_stage.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_info_ingame/info_hud.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/Btn_attack/button_attack.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/Btn_skill/button_skill.plist");
+
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/BottomMenu/bottom_menu.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/DailyReward/daily_reward.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/HeroMenu/hero_menu.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/InfoBoard/info_board.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/ItemBoard/item_board.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/QuestBoard/quest_board.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/SettingBoard/setting_board.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/ShopBoard/shop_board.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/TopMenu/top_menu.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/UpgradeBoard/upgrade_board.plist");
+
     // create a scene. it's an autorelease object
 
 	Scene* scene;
@@ -89,14 +144,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
 		scene = SceneIntro::createScene();
 	else
 		scene = SplashScene::createScene();
-
-	AdmobHelper::getInstance();
-	GAHelper::getInstance();
-	VungleHelper::getInstance();
-	FacebookHelper::getInstance();
-	IAPHelper::getInstance();
-	SPHelper::getInstance();
-
 
     // run
     director->runWithScene(scene);

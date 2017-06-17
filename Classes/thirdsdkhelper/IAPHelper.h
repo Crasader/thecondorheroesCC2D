@@ -5,39 +5,31 @@
 #endif
 #include <string>
 using namespace std;
-//
-////#ifdef SDKBOX_ENABLED
-//class IAPHelperListener: public sdkbox::VungleListener{
-//
-//};
-//#else
-//class IAPHelperListener {
-//	
-//};
-//#endif
-
 class IAPHelper {
 public:
 	//static IAPHelper *INSTANCE;
 	IAPHelper() {
 #ifdef SDKBOX_ENABLED
-		sdkbox::IAP::init();
+		//sdkbox::IAP::init();
 #endif
 	}
-	/*bool showBanner() {
-#ifdef SDKBOX_ENABLED
-		if (isAvailable("home")) {
-			sdkbox::PluginIAP::show("home");
-			return true;
-		}
-		sdkbox::PluginIAP::cache("home");
-		return false;
-#endif
-		return false;
-	}*/
 	void purchase(std::string name) {
 #ifdef SDKBOX_ENABLED
 		sdkbox::IAP::purchase(name);
+#endif
+	}
+
+	void refresh() {
+#ifdef SDKBOX_ENABLED
+		sdkbox::IAP::refresh();
+		//CCLOG("refresh");
+#endif
+	}
+
+	void restore() {
+#ifdef SDKBOX_ENABLED
+		sdkbox::IAP::restore();
+		//CCLOG("restore");
 #endif
 	}
 
@@ -46,7 +38,6 @@ public:
 		sdkbox::IAP::setDebug(mode);
 #endif
 	}
-
 
 	static IAPHelper* getInstance() {
 		static  IAPHelper *iapInstance;

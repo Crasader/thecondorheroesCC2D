@@ -11,19 +11,15 @@ class GAHelper {
 public:
 	//static GAHelper *INSTANCE;
 	GAHelper() {
-#ifdef SDKBOX_ENABLED
-		sdkbox::PluginGoogleAnalytics::init();
-		sdkbox::PluginGoogleAnalytics::startSession();
-#endif
 	}
-
-	void stopSession(std::string adname) {
+	
+	void stopSession() {
 #ifdef SDKBOX_ENABLED
 		 sdkbox::PluginGoogleAnalytics::stopSession();
 #endif
 	}
 
-	void startSession(std::string adname) {
+	void startSession() {
 #ifdef SDKBOX_ENABLED
 		sdkbox::PluginGoogleAnalytics::startSession();
 #endif
@@ -47,17 +43,6 @@ public:
 #endif
 	}
 
-	/*bool showFullAd() {
-#ifdef SDKBOX_ENABLED
-		if (isAvailable("gameover")) {
-			sdkbox::PluginGoogleAnalytics::show("gameover");
-			return true;
-		}
-		sdkbox::PluginGoogleAnalytics::cache("gameover");
-		return false;
-#endif
-		return false;
-	}*/
 	
 
 	static GAHelper* getInstance() {

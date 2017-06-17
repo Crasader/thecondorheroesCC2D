@@ -22,6 +22,7 @@ protected:
 	CC_SYNTHESIZE_READONLY(string, key, Key);
 	CC_SYNTHESIZE_READONLY(string, name, Name);
 	CC_SYNTHESIZE_READONLY(string, infor, Infor);
+	CC_SYNTHESIZE_READONLY(string, intrinsic, Intrinsic);
 	CC_SYNTHESIZE_READONLY(string, avatarPath, avatarPath);
 	CC_SYNTHESIZE_READONLY(string, characterPointPath, CharacterPointPath);
 	CC_SYNTHESIZE_READONLY(string, selectCharacterPoint, SelectCharacterPoint);

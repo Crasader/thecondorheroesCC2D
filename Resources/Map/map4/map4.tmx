@@ -9,7 +9,7 @@
   </data>
  </layer>
  <objectgroup name="ground">
-  <object id="1" x="-143.667" y="987.333" width="3" height="22"/>
+  <object id="1" x="-143.667" y="987.333" width="37244" height="22"/>
  </objectgroup>
  <objectgroup name="under_ground">
   <object id="128" x="0" y="1072" width="37244" height="32"/>

@@ -11,7 +11,8 @@ EnemyBoss3 * EnemyBoss3::create(string jsonFile, string atlasFile, float scale)
 	EnemyBoss3* boss = new EnemyBoss3(jsonFile, atlasFile, scale);
 	boss->setAnimation(0, "idle", true);
 	boss->update(0.0f);
-	boss->state = new BossIdling();
+	boss->normalState = new BossIdling();
+	boss->crazyState = nullptr;
 	boss->setTag(TAG_BOSS);
 	boss->scaleBoss = scale;
 	boss->setLevelBoss(3);
@@ -55,6 +56,7 @@ void EnemyBoss3::fixStupid()
 	}
 		
 	else {
+		EnemyBoss1::fixStupid();
 		this->setRealMoveVelocity(Vec2(this->getmoveVelocity().x, this->getmoveVelocity().y*CCRANDOM_0_1()*-1));
 	}
 }
@@ -106,7 +108,6 @@ void EnemyBoss3::playSoundDie()
 
 void EnemyBoss3::doAttack2()
 {
-	this->unschedule("bossinjured");
 	if (this->getPositionY() > SCREEN_SIZE.height / 5) {
 		this->schedule([&](float dt) {
 			////log("do attack2");
@@ -154,10 +155,10 @@ void EnemyBoss3::doAttack2()
 			//if (boss->getLevelBoss() == 1) {
 
 
-			if (this->getControlState() >= 30) {
+			/*if (this->getControlState() >= 30) {
 				this->changeState(new BossStupiding());
 				this->unschedule("bossattack2");
-			}
+			}*/
 
 		}, 0.1f, "bossattack2");
 	}
@@ -173,18 +174,18 @@ void EnemyBoss3::doAttack2()
 				this->creatHidenSlash(PI);
 			}
 			//if (boss->getLevelBoss() == 1) {
-			if (this->getControlState() == 25) {
+			/*if (this->getControlState() == 25) {
 				this->clearTracks();
 				this->setAnimation(0, "idle", true);
 				this->setTimeScale(1);
 				this->setToSetupPose();
 				this->unImmortal();
-			}
+			}*/
 
-			if (this->getControlState() >= 30) {
+			/*if (this->getControlState() >= 30) {
 				this->changeState(new BossStupiding());
 				this->unschedule("bossattack2");
-			}
+			}*/
 
 		}, 0.1f, "bossattack2");
 	}
@@ -212,16 +213,16 @@ void EnemyBoss3::listener()
 	this->setCompleteListener([&](int trackIndex, int loopCount) {
 		if (getCurrent()) {
 			if ((strcmp(getCurrent()->animation->name, "attack2") == 0 && loopCount == 1)) {
-				this->idle();
-				this->unImmortal();
+				this->normalState->exit(this);
+				this->unschedule("bossattack2");
 			}
-			if ((strcmp(getCurrent()->animation->name, "attack3") == 0 && loopCount == 1)) {
-				this->idle();
-				this->unImmortal();
+			else if ((strcmp(getCurrent()->animation->name, "attack3") == 0 && loopCount == 1)) {
+				this->normalState->exit(this);
+				this->unschedule("bossattack2");
+				this->setTimeScale(1);
 			}
 			else if ((strcmp(getCurrent()->animation->name, "attack") == 0 && loopCount == 1)) {
-				this->idle();
-				this->unImmortal();
+				this->normalState->exit(this);
 			}
 		}
 	});

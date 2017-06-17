@@ -12,7 +12,8 @@ EnemyBoss2 * EnemyBoss2::create(string jsonFile, string atlasFile, float scale)
 	EnemyBoss2* boss = new EnemyBoss2(jsonFile, atlasFile, scale);
 	boss->setAnimation(0, "idle", true);
 	boss->update(0.0f);
-	boss->state = new BossIdling();
+	boss->normalState = new BossIdling();
+	boss->crazyState = nullptr;
 	boss->setTag(TAG_BOSS);
 	boss->scaleBoss = scale;
 	boss->setLevelBoss(2);

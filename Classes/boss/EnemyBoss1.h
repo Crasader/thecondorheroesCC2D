@@ -12,6 +12,7 @@
 class EnemyBoss1 : public BaseEnemy
 {
 private:
+	CC_SYNTHESIZE(int, balanceAt1andAT2, BalanceAt1andAT2);
 	CC_SYNTHESIZE(int, levelBoss, LevelBoss);
 	CC_SYNTHESIZE(int, randAt2, RandAt2);
 	CC_SYNTHESIZE(bool, isImmortal, IsImmortal);
@@ -30,7 +31,8 @@ public:
 	//bool lockState;
 	b2Vec2 dsBoss_Follow;
 	Vec2 heroLocation;
-	StateBoss *state;
+	StateBoss *normalState;
+	StateBoss *crazyState;
 	CCArray *slashPool;
 	ui::LoadingBar *spHp;
 	int indexSlash;

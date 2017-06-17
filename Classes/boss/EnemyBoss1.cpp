@@ -20,6 +20,7 @@ EnemyBoss1::EnemyBoss1(string jsonFile, string atlasFile, float scale) :BaseEnem
 	exxp = nullptr;
 	randAt2 = 1;
 	dsBoss_Follow = b2Vec2(INT_MIN, INT_MIN);
+	balanceAt1andAT2 = 1;
 	//lockState = false;
 }
 
@@ -28,7 +29,8 @@ EnemyBoss1 * EnemyBoss1::create(string jsonFile, string atlasFile, float scale)
 	EnemyBoss1* boss = new EnemyBoss1(jsonFile, atlasFile, scale);
 	boss->setAnimation(0, "idle", true);
 	boss->update(0.0f);
-	boss->state = new BossIdling();
+	boss->normalState = new BossIdling();
+	boss->crazyState = nullptr;
 	boss->setTag(TAG_BOSS);
 	boss->scaleBoss = scale;
 	boss->setLevelBoss(1);
@@ -51,11 +53,11 @@ void EnemyBoss1::attack()
 	this->clearTracks();
 	this->setAnimation(0, "attack", false);
 	auto callfun1 = CallFunc::create([&] {
-		this->creatHidenSlash((heroLocation - this->getPosition()).getAngle());
+		this->creatHidenSlash((heroLocation - this->getPosGenSlash()).getAngle());
 	});
 	auto callfun2 = CallFunc::create([&] {
 		this->unImmortal();
-		this->changeState(new BossFixingStupid());
+		normalState->exit(this);
 	});
 	this->runAction(Sequence::create(DelayTime::create(0.2f), callfun1, DelayTime::create(0.5f), callfun2, nullptr));
 }
@@ -70,6 +72,9 @@ void EnemyBoss1::attack2()
 
 void EnemyBoss1::fixStupid()
 {
+	this->clearTracks();
+	this->setAnimation(0, "idle", true);
+	this->setToSetupPose();
 	float a = CCRANDOM_0_1();
 	//log("fixstupid %f", a);
 	this->setRealMoveVelocity(Vec2(this->getmoveVelocity().x, this->getmoveVelocity().y*a));
@@ -84,24 +89,11 @@ void EnemyBoss1::die()
 		health--;
 		if (health > 0) {
 			this->playSoundHit();
-			this->immortal();
-			this->clearTracks();
-			this->setAnimation(0, "injured-red", false);
-			this->setToSetupPose();
-			this->scheduleOnce([&](float dt) {
-				this->unImmortal();
-				this->clearTracks();
-				this->setAnimation(0, "idle", false);
-				this->setToSetupPose();
-			}, 0.5f, "bossinjured");
+			this->crazyState = new BossInjure();
+			this->crazyState->enter(this);
 		}
 		else {
-			this->unschedule("bossinjured");
 			this->playSoundDie();
-			this->immortal();
-			this->clearTracks();
-			this->setAnimation(0, "injured-red", false);
-			this->setToSetupPose();
 			this->changeState(new BossDie());
 		}
 		if (health <= 0) {
@@ -297,8 +289,10 @@ void EnemyBoss1::updateMe(BaseHero* hero)
 		exxp->setPosition(this->getPosition());
 	}
 
-
-	state->execute(this);
+	normalState->execute(this);
+	if (crazyState) {
+		crazyState->execute(this);
+	}
 
 	if (hero->getHealth() <= 0 || hero->getB2Body() == nullptr) {
 		this->getB2Body()->SetLinearVelocity(b2Vec2(0, 0));
@@ -364,12 +358,11 @@ void EnemyBoss1::listener()
 	this->setCompleteListener([&](int trackIndex, int loopCount) {
 		if (getCurrent()) {
 			if ((strcmp(getCurrent()->animation->name, "attack2") == 0 && loopCount == 1)) {
-				this->idle();
-				this->unImmortal();
+				this->normalState->exit(this);
+				this->unschedule("bossattack2");
 			}
 			else if ((strcmp(getCurrent()->animation->name, "attack") == 0 && loopCount == 1)) {
-				this->idle();
-				this->unImmortal();
+				this->normalState->exit(this);
 			}
 		}
 	});
@@ -385,8 +378,8 @@ bool EnemyBoss1::checkStop()
 
 void EnemyBoss1::changeState(StateBoss * state)
 {
-	auto tmp = this->state;
-	this->state = state;
+	auto tmp = this->normalState;
+	this->normalState = state;
 	state->enter(this);
 	delete tmp;
 }
@@ -402,7 +395,6 @@ void EnemyBoss1::doAttack1()
 			//	//delete this;
 			//	this->unschedule("bossattack1");
 			//}
-	this->unschedule("bossinjured");
 	this->attack();
 	//this->setControlAttack(this->getControlAttack() - 1);
 //}
@@ -411,7 +403,6 @@ void EnemyBoss1::doAttack1()
 
 void EnemyBoss1::doAttack2()
 {
-	this->unschedule("bossinjured");
 	this->schedule([&](float dt) {
 		////log("do attack2");
 		this->setControlState(this->getControlState() + 1);
@@ -450,10 +441,9 @@ void EnemyBoss1::doAttack2()
 		}
 		//if (boss->getLevelBoss() == 1) {
 
-		if (this->getControlState() >= 30) {
-			this->changeState(new BossStupiding());
-			this->unschedule("bossattack2");
-		}
+		/*if (this->getControlState() >= 30) {
+			
+		}*/
 	}, 0.1f, "bossattack2");
 }
 

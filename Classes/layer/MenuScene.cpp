@@ -667,8 +667,8 @@ void MenuLayer::initItemBoard() {
 		//_pLabelDescriptionItem->setLineHeight(_pItem->getContentSize().height * 0.35f);
 		_pLabelDescriptionItem->setLineSpacing(0.0f);
 		_pLabelDescriptionItem->setMaxLineWidth(_pItem->getContentSize().width - _fItemHeight * 2.0f);
-		_pLabelDescriptionItem->setAnchorPoint(Vec2(0.0f, 1.0f));
-		_pLabelDescriptionItem->setPosition(Vec2(_fItemHeight * 0.95f, _fItemHeight * 0.65f));
+		_pLabelDescriptionItem->setAnchorPoint(Vec2(0.0f, 0.5f));
+		_pLabelDescriptionItem->setPosition(Vec2(_fItemHeight * 0.95f, _fItemHeight * 0.3f));
 		_pItem->addChild(_pLabelDescriptionItem, 1);
 
 		m_arItemCoinSprite[i] = Sprite::createWithSpriteFrameName("icon_money_small.png");
@@ -851,9 +851,9 @@ void MenuLayer::initUpgradeBoard() {
 
 			Sprite *_pMaxUpgrate = Sprite::createWithSpriteFrameName("icon_max.png");
 			_pMaxUpgrate->setScale(_pSkillLevelBar->getContentSize().height / _pSkillLevelBar->getContentSize().height * 0.9f);
-			_pMaxUpgrate->setAnchorPoint(Vec2(0.5f, 0.0f));
-			_pMaxUpgrate->setPosition(Vec2(_pSkillInfo->getContentSize().width * 0.85f, 0.0f));
-			_pSkillInfo->addChild(_pMaxUpgrate, 1);
+			_pMaxUpgrate->setAnchorPoint(Vec2(0.5f, 0.5f));
+			_pMaxUpgrate->setPosition(Vec2(_pSkillInfo->getContentSize().width * 0.85f, _pSkillInfo->getContentSize().height * 0.5f));
+			_pSkillInfo->addChild(_pMaxUpgrate, 0);
 		}
 
 		if (i < 2) {
@@ -936,8 +936,8 @@ void MenuLayer::initQuestBoard(int p_nFocus) {
 		//_pQuestDescription->setLineHeight(_fItemHeight * 0.35f);
 		_pQuestDescription->setLineSpacing(0.0f);
 		_pQuestDescription->setMaxLineWidth(_fItemWidth * 0.6f);
-		_pQuestDescription->setAnchorPoint(Vec2(0.0f, 1.0f));
-		_pQuestDescription->setPosition(Vec2(0.0f, _fItemHeight * 0.6f));
+		_pQuestDescription->setAnchorPoint(Vec2(0.0f, 0.5f));
+		_pQuestDescription->setPosition(Vec2(0.0f, _fItemHeight * 0.3f));
 		_pQuestLayer->addChild(_pQuestDescription, 1);
 
 		if (REF->getRewardedQuestTimes() >= JSQUEST->getLimitRequest()) {
@@ -1060,24 +1060,24 @@ void MenuLayer::initHeroInfoBoard() {
 	Label *_pHeroDescription = Label::createWithTTF(StringUtils::format("%s", _sHeroInfo.c_str()), "fontsDPM/UTM_BRUSHSCI.ttf",
 		_pInfoBoard->getContentSize().height * 0.06f);
 	_pHeroDescription->setColor(Color3B::BLACK);
-	_pHeroDescription->setAlignment(TextHAlignment::CENTER, TextVAlignment::CENTER);
+	_pHeroDescription->setAlignment(TextHAlignment::LEFT, TextVAlignment::CENTER);
 	//_pHeroDescription->setLineHeight(_pInfoBoard->getContentSize().height * 0.1f);
 	_pHeroDescription->setLineSpacing(0.0f);
 	_pHeroDescription->setMaxLineWidth(_pInfoBoard->getContentSize().width * 0.75f);
-	_pHeroDescription->setAnchorPoint(Vec2(0.5f, 1.0f));
-	_pHeroDescription->setPosition(Vec2(_pInfoBoard->getContentSize().width * 0.5f, _pInfoBoard->getContentSize().height * 0.77f));
+	_pHeroDescription->setAnchorPoint(Vec2(0.0f, 1.0f));
+	_pHeroDescription->setPosition(Vec2(_pInfoBoard->getContentSize().width * 0.125f, _pInfoBoard->getContentSize().height * 0.77f));
 	_pInfoBoard->addChild(_pHeroDescription, 1);
 
 	string _sHeroIntrinsic = JSHERO->getIntrinsic();
 	Label *_pHeroIntrinsic = Label::createWithTTF(StringUtils::format("%s", _sHeroIntrinsic.c_str()), "fontsDPM/UTM_BRUSHSCI.ttf",
 		_pInfoBoard->getContentSize().height * 0.06f);
 	_pHeroIntrinsic->setColor(Color3B(148, 0, 0));
-	_pHeroIntrinsic->setAlignment(TextHAlignment::CENTER, TextVAlignment::CENTER);
+	_pHeroIntrinsic->setAlignment(TextHAlignment::LEFT, TextVAlignment::CENTER);
 	//_pHeroIntrinsic->setLineHeight(_pInfoBoard->getContentSize().height * 0.1f);
 	_pHeroIntrinsic->setLineSpacing(0.0f);
 	_pHeroIntrinsic->setMaxLineWidth(_pInfoBoard->getContentSize().width * 0.75f);
-	_pHeroIntrinsic->setAnchorPoint(Vec2(0.5f, 1.0f));
-	_pHeroIntrinsic->setPosition(Vec2(_pHeroDescription->getContentSize().width * 0.5f, 0.0f));
+	_pHeroIntrinsic->setAnchorPoint(Vec2(0.0f, 1.0f));
+	_pHeroIntrinsic->setPosition(Vec2(_pHeroDescription->getContentSize().width * 0.0f, 0.0f));
 	_pHeroDescription->addChild(_pHeroIntrinsic, 1);
 
 	Sprite *_pLine = Sprite::createWithSpriteFrameName("line.png");
@@ -1091,11 +1091,11 @@ void MenuLayer::initHeroInfoBoard() {
 	int _nCurrentLevel = REF->getCurrentLevel();
 
 	Sprite *_pCurrentLevelSprite = Sprite::createWithSpriteFrameName("text_current.png");
-	_pCurrentLevelSprite->setScale(_pInfoBoard->getContentSize().width / _pCurrentLevelSprite->getContentSize().width * 0.25f);
+	_pCurrentLevelSprite->setScale(_pInfoBoard->getContentSize().width / _pCurrentLevelSprite->getContentSize().width * 0.23f);
 	_pCurrentLevelSprite->setAnchorPoint(Vec2(0.0f, 0.0f));
 	_pCurrentLevelSprite->setPosition(_pInfoBoard->getContentSize().width * 0.1f, _pInfoBoard->getContentSize().height * 0.4f);
 	_pInfoBoard->addChild(_pCurrentLevelSprite, 0);
-	Label *_pLabelCurrentLevel = Label::createWithTTF(StringUtils::format(JSMENU->readMenuText(m_nLanguage, 0).c_str(), _nCurrentLevel),
+	Label *_pLabelCurrentLevel = Label::createWithTTF(StringUtils::format((JSMENU->readMenuText(m_nLanguage, 0) + "%d").c_str(), _nCurrentLevel),
 		"fontsDPM/UTM_DK_Drop_Dead.ttf", _pCurrentLevelSprite->getContentSize().height * 0.5f);
 	_pLabelCurrentLevel->setColor(Color3B::BLACK);
 	_pLabelCurrentLevel->setAlignment(TextHAlignment::CENTER, TextVAlignment::CENTER);
@@ -1112,7 +1112,7 @@ void MenuLayer::initHeroInfoBoard() {
 	_pCurrentHPIcon->setAnchorPoint(Vec2(0.0f, 0.0f));
 	_pCurrentHPIcon->setPosition(_pInfoBoard->getContentSize().width * 0.13f, _pInfoBoard->getContentSize().height * 0.3f);
 	_pInfoBoard->addChild(_pCurrentHPIcon, 1);
-	Label *_pCurrentHPLabel = Label::createWithTTF(StringUtils::format(JSMENU->readMenuText(m_nLanguage, 1).c_str()),
+	Label *_pCurrentHPLabel = Label::createWithTTF(StringUtils::format("%s", JSMENU->readMenuText(m_nLanguage, 1).c_str()),
 		"fontsDPM/UTM_DK_Drop_Dead.ttf", _pCurrentHPIcon->getContentSize().height * 0.5f);
 	_pCurrentHPLabel->setColor(Color3B::BLACK);
 	_pCurrentHPLabel->setAnchorPoint(Vec2(0.0f, 0.5f));
@@ -1129,7 +1129,7 @@ void MenuLayer::initHeroInfoBoard() {
 	_pCurrentScoreIcon->setAnchorPoint(Vec2(0.0f, 0.0f));
 	_pCurrentScoreIcon->setPosition(_pInfoBoard->getContentSize().width * 0.13f, _pInfoBoard->getContentSize().height * 0.225f);
 	_pInfoBoard->addChild(_pCurrentScoreIcon, 1);
-	Label *_pCurrentScoreLabel = Label::createWithTTF(StringUtils::format(JSMENU->readMenuText(m_nLanguage, 2).c_str()),
+	Label *_pCurrentScoreLabel = Label::createWithTTF(StringUtils::format("%s", JSMENU->readMenuText(m_nLanguage, 2).c_str()),
 		"fontsDPM/UTM_DK_Drop_Dead.ttf", _pCurrentScoreIcon->getContentSize().height * 0.5f);
 	_pCurrentScoreLabel->setColor(Color3B::BLACK);
 	_pCurrentScoreLabel->setAnchorPoint(Vec2(0.0f, 0.5f));
@@ -1146,7 +1146,7 @@ void MenuLayer::initHeroInfoBoard() {
 	_pCurrentGoldIcon->setAnchorPoint(Vec2(0.0f, 0.0f));
 	_pCurrentGoldIcon->setPosition(_pInfoBoard->getContentSize().width * 0.13f, _pInfoBoard->getContentSize().height * 0.15f);
 	_pInfoBoard->addChild(_pCurrentGoldIcon, 1);
-	Label *_pCurrentGoldLabel = Label::createWithTTF(StringUtils::format(JSMENU->readMenuText(m_nLanguage, 3).c_str()),
+	Label *_pCurrentGoldLabel = Label::createWithTTF(StringUtils::format("%s", JSMENU->readMenuText(m_nLanguage, 3).c_str()),
 		"fontsDPM/UTM_DK_Drop_Dead.ttf", _pCurrentGoldIcon->getContentSize().height * 0.5f);
 	_pCurrentGoldLabel->setColor(Color3B::BLACK);
 	_pCurrentGoldLabel->setAnchorPoint(Vec2(0.0f, 0.5f));
@@ -1165,7 +1165,7 @@ void MenuLayer::initHeroInfoBoard() {
 		_pNextLevelSprite->setAnchorPoint(Vec2(0.0f, 0.0f));
 		_pNextLevelSprite->setPosition(_pInfoBoard->getContentSize().width * 0.55f, _pInfoBoard->getContentSize().height * 0.4f);
 		_pInfoBoard->addChild(_pNextLevelSprite, 0);
-		Label *_pLabelNextLevel = Label::createWithTTF(StringUtils::format(JSMENU->readMenuText(m_nLanguage, 0).c_str(), _nCurrentLevel + 1),
+		Label *_pLabelNextLevel = Label::createWithTTF(StringUtils::format((JSMENU->readMenuText(m_nLanguage, 0) + "%d").c_str(), _nCurrentLevel + 1),
 			"fontsDPM/UTM_DK_Drop_Dead.ttf", _pNextLevelSprite->getContentSize().height * 0.5f);
 		_pLabelNextLevel->setColor(Color3B::BLACK);
 		_pLabelNextLevel->setAnchorPoint(Vec2(0.0f, 0.5f));
@@ -1183,7 +1183,7 @@ void MenuLayer::initHeroInfoBoard() {
 		_pNextHPIcon->setAnchorPoint(Vec2(0.0f, 0.0f));
 		_pNextHPIcon->setPosition(_pInfoBoard->getContentSize().width * 0.53f, _pInfoBoard->getContentSize().height * 0.3f);
 		_pInfoBoard->addChild(_pNextHPIcon, 1);
-		Label *_pNextHPLabel = Label::createWithTTF(StringUtils::format(JSMENU->readMenuText(m_nLanguage, 1).c_str()),
+		Label *_pNextHPLabel = Label::createWithTTF(StringUtils::format("%s", JSMENU->readMenuText(m_nLanguage, 1).c_str()),
 			"fontsDPM/UTM_DK_Drop_Dead.ttf", _pNextHPIcon->getContentSize().height * 0.5f);
 		_pNextHPLabel->setColor(Color3B::BLACK);
 		_pNextHPLabel->setAnchorPoint(Vec2(0.0f, 0.5f));
@@ -1200,7 +1200,7 @@ void MenuLayer::initHeroInfoBoard() {
 		_pNextScoreIcon->setAnchorPoint(Vec2(0.0f, 0.0f));
 		_pNextScoreIcon->setPosition(_pInfoBoard->getContentSize().width * 0.53f, _pInfoBoard->getContentSize().height * 0.225f);
 		_pInfoBoard->addChild(_pNextScoreIcon, 1);
-		Label *_pNextScoreLabel = Label::createWithTTF(StringUtils::format(JSMENU->readMenuText(m_nLanguage, 2).c_str()),
+		Label *_pNextScoreLabel = Label::createWithTTF(StringUtils::format("%s", JSMENU->readMenuText(m_nLanguage, 2).c_str()),
 			"fontsDPM/UTM_DK_Drop_Dead.ttf", _pNextScoreIcon->getContentSize().height * 0.5f);
 		_pNextScoreLabel->setColor(Color3B::BLACK);
 		_pNextScoreLabel->setAnchorPoint(Vec2(0.0f, 0.5f));
@@ -1217,7 +1217,7 @@ void MenuLayer::initHeroInfoBoard() {
 		_pNextGoldIcon->setAnchorPoint(Vec2(0.0f, 0.0f));
 		_pNextGoldIcon->setPosition(_pInfoBoard->getContentSize().width * 0.53f, _pInfoBoard->getContentSize().height * 0.15f);
 		_pInfoBoard->addChild(_pNextGoldIcon, 1);
-		Label *_pNextGoldLabel = Label::createWithTTF(StringUtils::format(JSMENU->readMenuText(m_nLanguage, 3).c_str()),
+		Label *_pNextGoldLabel = Label::createWithTTF(StringUtils::format("%s", JSMENU->readMenuText(m_nLanguage, 3).c_str()),
 			"fontsDPM/UTM_DK_Drop_Dead.ttf", _pNextGoldIcon->getContentSize().height * 0.5f);
 		_pNextGoldLabel->setColor(Color3B::BLACK);
 		_pNextGoldLabel->setAnchorPoint(Vec2(0.0f, 0.5f));
@@ -1231,9 +1231,9 @@ void MenuLayer::initHeroInfoBoard() {
 	}
 	else {
 		Sprite *_pMaxUpgrate = Sprite::createWithSpriteFrameName("icon_max.png");
-		_pMaxUpgrate->setScale(_pInfoBoard->getContentSize().width / _pMaxUpgrate->getContentSize().width * 0.42f);
+		_pMaxUpgrate->setScale(_pInfoBoard->getContentSize().width / _pMaxUpgrate->getContentSize().width * 0.35f);
 		_pMaxUpgrate->setAnchorPoint(Vec2(0.5f, 0.5f));
-		_pMaxUpgrate->setPosition(Vec2(_pInfoBoard->getContentSize().width * 0.75f, _pInfoBoard->getContentSize().height * 0.2f));
+		_pMaxUpgrate->setPosition(Vec2(_pInfoBoard->getContentSize().width * 0.7f, _pInfoBoard->getContentSize().height * 0.3f));
 		_pInfoBoard->addChild(_pMaxUpgrate, 1);
 	}
 }
@@ -1315,12 +1315,7 @@ void MenuLayer::initBottomHeroMenu() {
 		_aTryHeroButton->setVisible(false);
 		if (REF->getCurrentLevel() == JSHERO->getMaxLevel()) {
 			_aUnlockButton->setEnabled(false);
-
-			Sprite *_pMaxUpgrate = Sprite::createWithSpriteFrameName("icon_max.png");
-			_pMaxUpgrate->setScale(_aUnlockButton->getContentSize().height / _pMaxUpgrate->getContentSize().height * 0.8f);
-			_pMaxUpgrate->setAnchorPoint(Vec2(0.5f, 0.5f));
-			_pMaxUpgrate->setPosition(Vec2(_aUnlockButton->getContentSize().width / 2, _aUnlockButton->getContentSize().height / 2));
-			_aUnlockButton->addChild(_pMaxUpgrate, 1);
+			_aUnlockButton->setColor(Color3B::GRAY);
 		}
 		else {
 			float _nUpgradeCost = JSHERO->getGoldUpgradeLevelX(m_nIndexHeroPicked);
@@ -1468,7 +1463,7 @@ void MenuLayer::buttonBackHandle() {
 		moveLayerViaDirection(m_pQuestBoard, 4);
 		runAction(Sequence::create(DelayTime::create(0.2f), CallFunc::create([&]() {
 			m_pGameScene->runAction(MoveTo::create(0.2f, Vec2(0.0f, 0.0f)));
-			m_pGameScene->runAction(ScaleBy::create(0.3f, 1.2f)->reverse());
+			//m_pGameScene->runAction(ScaleBy::create(0.3f, 1.2f)->reverse());
 		}), nullptr));
 		runAction(Sequence::create(DelayTime::create(0.6f), CallFunc::create([&]() {
 			showMainMenu();
@@ -1539,7 +1534,7 @@ void MenuLayer::buttonQuestHandle() {
 		hideMainMenu();
 		runAction(Sequence::create(DelayTime::create(0.2f), CallFunc::create([&]() {
 			m_pGameScene->runAction(MoveTo::create(0.2f, Vec2(m_szVisibleSize.width * 0.55f, m_szVisibleSize.height * (-0.15f))));
-			m_pGameScene->runAction(ScaleBy::create(0.3f, 1.2f));
+			//m_pGameScene->runAction(ScaleBy::create(0.3f, 1.2f));
 		}), nullptr));
 		runAction(Sequence::create(DelayTime::create(0.6f), CallFunc::create([&]() {
 			moveLayerViaDirection(m_pQuestBoard, 6);

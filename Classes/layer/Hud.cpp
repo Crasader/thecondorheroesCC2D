@@ -179,7 +179,7 @@ void Hud::addButton()
 
 	coverSkill = Sprite::createWithSpriteFrameName(JSHERO->getPathMainImageSkill1());
 	coverItemMagnet = Sprite::createWithSpriteFrameName("item3_magnet.png");
-	coverItemDC = Sprite::createWithSpriteFrameName("item4_doublecoin.png");
+	/*coverItemDC = Sprite::createWithSpriteFrameName("item4_doublecoin.png");*/
 
 	auto groupIcon = tmxMap->getObjectGroup("icon");
 	for (auto child : groupIcon->getObjects()) {
@@ -225,15 +225,17 @@ void Hud::addButton()
 
 			break;
 		case 3:
-			icon_Item_DC = ProgressTimer::create(Sprite::createWithSpriteFrameName("item4_doublecoin.png"));
+			/*icon_Item_DC = ProgressTimer::create(Sprite::createWithSpriteFrameName("item4_doublecoin.png"));
 			icon_Item_DC->setPosition(coverItemMagnet->getContentSize() / 2);
 			icon_Item_DC->setPercentage(100.0f);
 			icon_Item_DC->setReverseDirection(true);
 			icon_Item_DC->setType(ProgressTimer::Type::RADIAL);
 
-			coverItemDC->addChild(icon_Item_DC);
+			coverItemDC->addChild(icon_Item_DC);*/
 
-			coverItemDC->setOpacity(50);
+			coverItemDC = Sprite::createWithSpriteFrameName("item4_doublecoin.png"); // added
+
+			//coverItemDC->setOpacity(50);
 			coverItemDC->setPosition(origin_X);
 			coverItemDC->setVisible(false);
 			coverItemDC->setScale(SCREEN_SIZE.height / (12.0f * scaleRatio) / coverItemDC->getContentSize().height);
@@ -464,9 +466,9 @@ void Hud::introAttack()
 		coverItemMagnet->pause();
 	}
 
-	if (coverItemDC->isVisible() && isItemDCActive) {
+	/*if (coverItemDC->isVisible() && isItemDCActive) {
 		coverItemDC->pause();
-	}
+	}*/
 
 	addAttack();
 	btnAttack->addEvents();
@@ -484,9 +486,9 @@ void Hud::introSkills()
 		coverItemMagnet->pause();
 	}
 
-	if (coverItemDC->isVisible() && isItemDCActive) {
+	/*if (coverItemDC->isVisible() && isItemDCActive) {
 		coverItemDC->pause();
-	}
+	}*/
 
 	addSkills();
 	btnSkill_1->addEvents();
@@ -568,9 +570,9 @@ void Hud::pauseIfVisible()
 		coverItemMagnet->pause();
 	}
 
-	if (coverItemDC->isVisible() && isItemDCActive) {
+	/*if (coverItemDC->isVisible() && isItemDCActive) {
 		coverItemDC->pause();
-	}
+	}*/
 
 	if (btnAttack != nullptr && btnAttack->isVisible())
 		btnAttack->pauseListener();
@@ -599,9 +601,9 @@ void Hud::resumeIfVisible()
 		coverItemMagnet->resume();
 	}
 
-	if (coverItemDC->isVisible() && isItemDCActive) {
+	/*if (coverItemDC->isVisible() && isItemDCActive) {
 		coverItemDC->resume();
-	}
+	}*/
 
 	if (btnAttack != nullptr && btnAttack->isVisible()) {
 		btnAttack->addEvents();
@@ -653,11 +655,11 @@ void Hud::refreshControl()
 		coverItemMagnet->unscheduleAllCallbacks();
 	}
 
-	if (coverItemDC->isVisible() && isItemDCActive) {
+	/*if (coverItemDC->isVisible() && isItemDCActive) {
 		isItemDCActive = false;
 		coverItemDC->setVisible(false);
 		coverItemDC->unscheduleAllCallbacks();
-	}
+	}*/
 }
 
 void Hud::moveCallBirdToCenterScreen(Vec2 p_ptCenterScreen)
@@ -792,13 +794,13 @@ void Hud::runnerItemMagnet(int counter)
 
 void Hud::runnerItemDC(int counter)
 {
-	if (counter < 0) {
+	//if (counter < 0) {
 		coverItemDC->setVisible(true);
-		return;
-	}
+		//return;
+	//}
 
 
-	durationItemDC = counter / 60.0f;
+	/*durationItemDC = counter / 60.0f;
 	if (isItemDCActive) {
 		coverItemDC->unschedule("itemRunnerDC");
 	}
@@ -818,7 +820,7 @@ void Hud::runnerItemDC(int counter)
 			coverItemDC->setVisible(false);
 			coverItemDC->unschedule("itemRunnerDC");
 		}
-	}, 0.1f, "itemRunnerDC");
+	}, 0.1f, "itemRunnerDC");*/
 }
 
 void Hud::tryHud()

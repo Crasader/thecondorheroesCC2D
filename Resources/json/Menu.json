@@ -1,8 +1,8 @@
 {
 	"menu_text": [
 		{
-			"en" : "Level %d",
-			"vi" : "Cấp %d"
+			"en" : "Level ",
+			"vi" : "Cấp "
 		},
 		{
 			"en" : "HP: ",

@@ -95,7 +95,7 @@ void SceneIntro::showStoryLayer() {
 	auto _pSkipSelected = Sprite::create("UI/UI_intro/intro_story/btn_skip.png");
 	_pSkipSelected->setColor(Color3B(128, 128, 128));
 	auto _aSkipButton = MenuItemSprite::create(_pSkipNormal, _pSkipSelected, CC_CALLBACK_0(SceneIntro::hideStoryLayerAndInitIntroScene, this));
-	_aSkipButton->setScale(m_szVisibleSize.height / _aSkipButton->getContentSize().height * 0.1f);
+	_aSkipButton->setScale(m_szVisibleSize.height / _aSkipButton->getContentSize().height * 0.05f);
 	_aSkipButton->setAnchorPoint(Vec2(1.0f, 0.0f));
 	_aSkipButton->setPosition(Vec2(m_szVisibleSize.width, 0.0f));
 
@@ -147,8 +147,8 @@ void SceneIntro::initIntroScene() {
 
 	for (auto _aTwinkle : _aGameName->getObjectGroup("Twinkle")->getObjects()) {
 		auto _aObjectTwinkle = _aTwinkle.asValueMap();
-		Vec2 _v2PositionTwinkle = Point(_aObjectTwinkle["x"].asFloat() * _aGameName->getScale(),
-			_aObjectTwinkle["y"].asFloat() * _aGameName->getScale());
+		Vec2 _v2PositionTwinkle = Point(_aObjectTwinkle["x"].asFloat(),
+			_aObjectTwinkle["y"].asFloat());
 	
 		Twinkle *_pTwinkle = Twinkle::create(2.0f);
 		_pTwinkle->setScale(_aGameName->getContentSize().height / _pTwinkle->getContentSize().height * 0.4f);

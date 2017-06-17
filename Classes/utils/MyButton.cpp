@@ -4,6 +4,10 @@ MyButton::MyButton() {
 
 }
 
+MyButton::~MyButton()
+{
+}
+
 MyButton * MyButton::create(string file_name_main, string file_name_CoolDown, Point pos)
 {
 	MyButton *mNode = new MyButton();

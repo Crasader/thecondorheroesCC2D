@@ -84,12 +84,12 @@ bool SelectStageLayer::init(int charId)
 
 		if (stage < currentStageUnlocked) {
 			mapBtn = MenuItemSprite::create(un_locked, un_locked_press,
-					CC_CALLBACK_0(SelectStageLayer::gotoPlay, this, id, stage, mapId));
+					CC_CALLBACK_0(SelectStageLayer::gotoPlay, this, id, stage, mapId, origin));
 		}
 		else if (stage == currentStageUnlocked) {
 			if (mapId <= currentMapUnlocked) {
 				mapBtn = MenuItemSprite::create(un_locked, un_locked_press,
-					CC_CALLBACK_0(SelectStageLayer::gotoPlay, this, id, stage, mapId));
+					CC_CALLBACK_0(SelectStageLayer::gotoPlay, this, id, stage, mapId, origin));
 			}
 			else {
 				mapBtn = MenuItemSprite::create(locked, locked,
@@ -174,11 +174,16 @@ void SelectStageLayer::moveAva()
 	}
 }
 
-void SelectStageLayer::gotoPlay(int id, int stage, int map)
+void SelectStageLayer::gotoPlay(int id, int stage, int map, Point point)
 {
 	AudioManager::playSound(SOUND_BTCLICK);
 	auto menuLayer = (MenuLayer*) this->getParent();
 	if (menuLayer->downLife()) {
+
+		mapPlayPos = Point(point.x, point.y + character_point->getBoundingBox().size.height * 0.25f);
+		if(mapPlayPos.x != character_point->getPositionX())
+			character_point->setPosition(mapPlayPos);
+
 		menu->setEnabled(false);
 		menuLayer->disableListener();
 

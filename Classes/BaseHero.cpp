@@ -390,7 +390,7 @@ void BaseHero::killThemAll()
 	auto boss = (BaseEnemy*) this->getParent()->getChildByTag(TAG_BOSS);
 	if (boss != nullptr && boss->getPositionX() < this->getPositionX() + SCREEN_SIZE.width * 0.75f) {
 		boss->die();
-		log("%i", boss->getHealth());
+		//log("%i", boss->getHealth());
 	}
 
 	isKillAll = true;

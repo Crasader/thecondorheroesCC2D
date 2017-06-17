@@ -208,7 +208,7 @@
       },
       "inforHero": {
         "en": "Robin's wife. Master of using stick",
-        "vi": "Vợ của Quách Tĩnh. Cao thử dùng gậy"
+        "vi": "Vợ của Quách Tĩnh. Cao thủ dùng gậy"
       },
       "intrinsicHero": {
         "en": "Revive with one time usage of Marvel Shield",
@@ -293,7 +293,7 @@
       "numberOfUseSkill2": 1,
       "skill2Name": {
         "en": "One shot",
-        "vi": "Đại Chỉ Thần Công"
+        "vi": "Đàn Chỉ Thần Công"
       },
       "pathMainImageSkill2": "btnHDS_skill2_up.png",
       "pathSubImageSkill2": "btnHDS_skill2_down.png",

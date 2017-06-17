@@ -13,6 +13,7 @@ class MyButton : public Sprite
 {
 public:
 	MyButton();
+	~MyButton();
 	static MyButton* create(string file_name_main, string file_name_CoolDown, Point pos);
 
 private:

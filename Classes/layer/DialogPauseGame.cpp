@@ -473,7 +473,7 @@ void DialogStageClear::shareFB()
 {
 	//FacebookHelper::getInstance()->dialogPhoto(FACE_SHARE_TITLE);
 	FacebookHelper::getInstance()->dialogPhoto(FACE_SHARE_TITLE);
-	log("Sharing");
+	//log("Sharing");
 }
 
 

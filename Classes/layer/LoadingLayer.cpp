@@ -166,7 +166,7 @@ void LoadingLayer::doProcess()
 	end = chrono::system_clock::now();
 	
 	chrono::duration<double> elapsed_seconds = end - start;
-	log("%f", elapsed_seconds.count());
+	//log("%f", elapsed_seconds.count());
 
 	this->schedule([&](float dt) {
 		++percent;

@@ -21,7 +21,7 @@
 			<key>btn_buy_1.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,558},{93,41}}</string>
+				<string>{{0,600},{93,41}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -35,7 +35,7 @@
 			<key>btn_buy_2.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,600},{93,41}}</string>
+				<string>{{0,558},{93,41}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>

@@ -15,6 +15,9 @@ public:
 	CREATE_FUNC(SceneIntro);
 
 private:
+	void showStoryLayer();
+	void initIntroScene();
+	void hideStoryLayerAndInitIntroScene();
 	void goToMainMenuScene(Ref* p_pSender);
 };
 

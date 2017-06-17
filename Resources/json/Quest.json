@@ -33,11 +33,11 @@
 		{
 			"questName": {
 				"en" : "Call bird",
-				"vi" : "Goi chim dieu"
+				"vi" : "Gọi chim điêu"
 			},
 			"questDescription": {
 				"en" : "Use item call bird 20 times",
-				"vi" : "Dung vat pham goi chim dieu 20 lan"
+				"vi" : "Sử dụng vật phẩm gọi chim điêu 20 lần"
 			},
 			"completeRequest": 20,
 			"goldReward": 10000,
@@ -48,11 +48,11 @@
 		{
 			"questName": {
 				"en" : "Health",
-				"vi" : "Them mau"
+				"vi" : "Thêm máu"
 			},
 			"questDescription": {
 				"en" : "Use item health 100 times",
-				"vi" : "Dung vat pham them mau 100 lan"
+				"vi" : "Sử dụng vật phẩm thêm máu 100 lần"
 			},
 			"completeRequest": 100,
 			"goldReward": 20000,
@@ -63,11 +63,11 @@
 		{
 			"questName": {
 				"en" : "Cooldown",
-				"vi" : "Hoi chieu"
+				"vi" : "Hồi chiêu"
 			},
 			"questDescription": {
 				"en" : "Use item cooldown 100 times",
-				"vi" : "Dung vat pham hoi chieu 100 lan"
+				"vi" : "Sử dụng vật phẩm hồi chiêu 100 lần"
 			},
 			"completeRequest": 100,
 			"goldReward": 10000,
@@ -78,11 +78,11 @@
 		{
 			"questName": {
 				"en" : "Score Johan",
-				"vi" : "Thong thao Duong Qua"
+				"vi" : "Thông thạo Dương Quá"
 			},
 			"questDescription": {
 				"en" : "Get 50000 scores by Johan",
-				"vi" : "Dat 50000 diem voi nhan vat Duong Qua"
+				"vi" : "Đạt 50000 điểm với nhân vật Dương Quá"
 			},
 			"completeRequest": 50000,
 			"goldReward": 10000,
@@ -93,11 +93,11 @@
 		{
 			"questName": {
 				"en" : "Score Hana",
-				"vi" : "Thong thao Tieu Long Nu"
+				"vi" : "Thông thạo Tiểu Long Nữ"
 			},
 			"questDescription": {
 				"en" : "Get 80000 scores by Hana",
-				"vi" : "Dat 80000 diem voi nhan vat Tieu Long Nu"
+				"vi" : "Đạt 80000 điểm với nhân vật Tiểu Long Nữ"
 			},
 			"completeRequest": 80000,
 			"goldReward": 16000,
@@ -108,11 +108,11 @@
 		{
 			"questName": {
 				"en" : "Score Kim",
-				"vi" : "Thong thao Hoang Dung"
+				"vi" : "Thông thạo Hoàng Dung"
 			},
 			"questDescription": {
 				"en" : "Get 120000 scores by Kim",
-				"vi" : "Dat 80000 diem voi nhan vat Hoang Dung"
+				"vi" : "Đạt 120000 điểm với Hoàng Dung"
 			},
 			"completeRequest": 120000,
 			"goldReward": 24000,
@@ -123,11 +123,11 @@
 		{
 			"questName": {
 				"en" : "Rampage",
-				"vi" : "Giet nguoi nhu ngoe"
+				"vi" : "Giết người như ngóe"
 			},
 			"questDescription": {
 				"en" : "Kill multiple enemy in a short time to get rampages",
-				"vi" : "Giet doi phuong lien tiep trong thoi gian ngan"
+				"vi" : "Giết đối phương liên tiếp trong thời gian ngắn"
 			},
 			"completeRequest": 1,
 			"goldReward": 100,
@@ -138,11 +138,11 @@
 		{
 			"questName": {
 				"en" : "Woodmans",
-				"vi" : "Pha nguoi go"
+				"vi" : "Phá người gỗ"
 			},
 			"questDescription": {
 				"en" : "Destroy 20 woodmans",
-				"vi" : "Pha huy 20 nguoi go"
+				"vi" : "Phá hủy 20 người gỗ"
 			},
 			"completeRequest": 20,
 			"goldReward": 500,
@@ -153,11 +153,11 @@
 		{
 			"questName": {
 				"en" : "Toan Chan Student 2",
-				"vi" : "De tu toan chan 2"
+				"vi" : "Đệ tử Toàn Chân 2"
 			},
 			"questDescription": {
 				"en" : "Kill 50 Toan Chan students 2",
-				"vi" : "Giet 50 de tu Toan Chan 2"
+				"vi" : "Giết 50 đệ tử Toàn Chân 2"
 			},
 			"completeRequest": 50,
 			"goldReward": 1000,
@@ -168,11 +168,11 @@
 		{
 			"questName": {
 				"en" : "Boss level 3",
-				"vi" : "Boss man choi 3"
+				"vi" : "Quái chủ màn chơi 3"
 			},
 			"questDescription": {
 				"en" : "Kill boss level 3 10 times",
-				"vi" : "Giet boss man choi 3 10 lan"
+				"vi" : "Giết quái chủ màn chơi 3 10 lần"
 			},
 			"completeRequest": 10,
 			"goldReward": 4000,
@@ -183,11 +183,11 @@
 		{
 			"questName": {
 				"en" : "Bee",
-				"vi" : "Ong vang"
+				"vi" : "Ong vàng"
 			},
 			"questDescription": {
 				"en" : "Destroy 50 bee hive",
-				"vi" : "Pha huy 50 to ong"
+				"vi" : "Phá hủy 50 tổ ong vàng"
 			},
 			"completeRequest": 50,
 			"goldReward": 1000,
@@ -198,11 +198,11 @@
 		{
 			"questName": {
 				"en" : "Ice Thorny",
-				"vi" : "Cot bang"
+				"vi" : "Cột băng"
 			},
 			"questDescription": {
 				"en" : "Destroy 50 ice Thorny",
-				"vi" : "Pha huy 50 cot bang"
+				"vi" : "Phá hủy 50 cột băng"
 			},
 			"completeRequest": 50,
 			"goldReward": 2000,
@@ -213,11 +213,11 @@
 		{
 			"questName": {
 				"en" : "Female Taoist 1",
-				"vi" : "Nu Tu Si 1"
+				"vi" : "Nữ tu sĩ 1"
 			},
 			"questDescription": {
 				"en" : "Kill 20 Female Taoists 1",
-				"vi" : "Giet 20 Nu Tu Si 1"
+				"vi" : "Giết 20 nữ tu sĩ 1"
 			},
 			"completeRequest": 20,
 			"goldReward": 2000,
@@ -228,11 +228,11 @@
 		{
 			"questName": {
 				"en" : "Female Taoist 2",
-				"vi" : "Nu Tu Si 2"
+				"vi" : "Nữ tu sĩ 2"
 			},
 			"questDescription": {
 				"en" : "Kill 20 Female Taoists 2",
-				"vi" : "Giet 20 Nu Tu Si 2"
+				"vi" : "Giết 20 nữ tu sĩ 2"
 			},
 			"completeRequest": 20,
 			"goldReward": 2000,
@@ -243,11 +243,11 @@
 		{
 			"questName": {
 				"en" : "Boss level 6",
-				"vi" : "Boss man choi 6"
+				"vi" : "Quái chủ màn chơi 6"
 			},
 			"questDescription": {
 				"en" : "Kill boss level 6 10 times",
-				"vi" : "Giet boss man choi 6 10 lan"
+				"vi" : "Giết quái chủ màn chơi 6 10 lần"
 			},
 			"completeRequest": 10,
 			"goldReward": 12000,
@@ -258,11 +258,11 @@
 		{
 			"questName": {
 				"en" : "Hoac Do 1",
-				"vi" : "Hoac Do 1"
+				"vi" : "Hoắc Đô 1"
 			},
 			"questDescription": {
 				"en" : "Kill 20 Hoac Do 1",
-				"vi" : "Giet 20 Hoac Do 1"
+				"vi" : "Giết 20 Hoắc Đô 1"
 			},
 			"completeRequest": 20,
 			"goldReward": 4000,
@@ -273,11 +273,11 @@
 		{
 			"questName": {
 				"en" : "Hoac Do 2",
-				"vi" : "Hoac Do 2"
+				"vi" : "Hoắc Đô 2"
 			},
 			"questDescription": {
 				"en" : "Kill 20 Hoac Do 2",
-				"vi" : "Giet 20 Hoac Do 2"
+				"vi" : "Giết 20 Hoắc Đô 2"
 			},
 			"completeRequest": 20,
 			"goldReward": 4000,
@@ -288,11 +288,11 @@
 		{
 			"questName": {
 				"en" : "Dat Nhi Ba",
-				"vi" : "Dat Nhi Ba"
+				"vi" : "Đạt Nhĩ Ba"
 			},
 			"questDescription": {
 				"en" : "Kill 20 Dat Nhi Ba",
-				"vi" : "Giet 20 Dat Nhi Ba"
+				"vi" : "Giết 20 Đạt Nhĩ Ba"
 			},
 			"completeRequest": 20,
 			"goldReward": 6000,

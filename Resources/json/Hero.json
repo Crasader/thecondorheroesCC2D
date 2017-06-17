@@ -86,11 +86,15 @@
       "key": "123456789abc",
       "name": {
         "en": "Johan",
-        "vi": "Duong Qua"
+        "vi": "Dương Quá"
       },
       "inforHero": {
-        "en": "Master of swords. Raise 15% speed of the condor",
-        "vi": "Cao thu dung kiem, toc do bay cua chim dieu tang 15%"
+        "en": "Master of swords",
+        "vi": "Cao thủ dùng kiếm"
+      },
+      "intrinsicHero": {
+        "en": "Raise 15% speed of the condor",
+        "vi": "Tốc độ bay của chim điêu tăng 15%"
       },
       "avatarPath": "avatar_DuongQua.png",
       "characterPointPath": "character_point.png",
@@ -103,7 +107,7 @@
       "numberOfUseSkill1": 1,
       "skill1Name": {
         "en": "Wind Blade",
-        "vi": "Toan chan kiem phap"
+        "vi": "Toàn Chân Kiếm Pháp"
       },
       "pathMainImageSkill1": "btnDQ_skill1_up.png",
       "pathSubImageSkill1": "btnDQ_skill1_down.png",
@@ -112,7 +116,7 @@
       "numberOfUseSkill2": 1,
       "skill2Name": {
         "en": "Sword Storem",
-        "vi": "Doc co kiem phap"
+        "vi": "Độc Cô Kiếm Pháp"
       },
       "pathMainImageSkill2": "btnDQ_skill2_up.png",
       "pathSubImageSkill2": "btnDQ_skill2_down.png",
@@ -121,7 +125,7 @@
       "numberOfUseSkill3": 1,
       "skill3Name": {
         "en": "Hold of fire",
-        "vi": "Am nhien tieu hon chuong"
+        "vi": "Ám Nhiên Tiêu Hồn Chưởng"
       },
       "pathMainImageSkill3": "btnDQ_skill3_up.png",
       "pathSubImageSkill3": "btnDQ_skill3_down.png",
@@ -141,11 +145,15 @@
       "key": "132456789abc",
       "name": {
         "en": "Hana",
-        "vi": "Tieu Long Nu"
+        "vi": "Tiểu Long Nữ"
       },
       "inforHero": {
-        "en": "The Johan's master. Excellent at using concealed weapon. Raise 15% magnet's item",
-        "vi": "Su phu cua Duong Qua. Gioi su dung am khi. Tang thoi gian su dung vat pham hut vang them 15%"
+        "en": "The Johan's master. Excellent at using concealed weapon",
+        "vi": "Sư phụ của Dương Quá. Giỏi sử dụng ám khí"
+      },
+      "intrinsicHero": {
+        "en": "Raise 15% magnet's item",
+        "vi": "Tăng thời gian sử dụng vật phẩm hút vàng thêm 15%"
       },
       "avatarPath": "avatar_CoCo.png",
       "characterPointPath": "CoCo_point.png",
@@ -158,7 +166,7 @@
       "numberOfUseSkill1": 1,
       "skill1Name": {
         "en": "Shuriken",
-        "vi": "Doc Phong Cham"
+        "vi": "Độc Phong Châm"
       },
       "pathMainImageSkill1": "btnCC_skill1_up.png",
       "pathSubImageSkill1": "btnCC_skill1_down.png",
@@ -167,7 +175,7 @@
       "numberOfUseSkill2": 1,
       "skill2Name": {
         "en": "Shadow",
-        "vi": "Ngoc Nu Tam Kinh"
+        "vi": "Ngọc Nữ Tâm Kinh"
       },
       "pathMainImageSkill2": "btnCC_skill2_up.png",
       "pathSubImageSkill2": "btnCC_skill2_down.png",
@@ -176,7 +184,7 @@
       "numberOfUseSkill3": 1,
       "skill3Name": {
         "en": "Blade Fury",
-        "vi": "Song kiem hop bich"
+        "vi": "Song Kiếm Hợp Bích"
       },
       "pathMainImageSkill3": "btnCC_skill3_up.png",
       "pathSubImageSkill3": "btnCC_skill3_down.png",
@@ -196,11 +204,15 @@
       "key": "124356789abc",
       "name": {
         "en": "Kim",
-        "vi": "Hoang Dung"
+        "vi": "Hoàng Dung"
       },
       "inforHero": {
-        "en": "Robin's wife. Master of using stick. Revive with one time usage of Marvel Shield",
-        "vi": "Vo cua Quach Tinh. Cao thu dung gay. Hoi sinh duoc su dung 1 lan chieu thuc Nhuyen Vi Giap"
+        "en": "Robin's wife. Master of using stick",
+        "vi": "Vợ của Quách Tĩnh. Cao thử dùng gậy"
+      },
+      "intrinsicHero": {
+        "en": "Revive with one time usage of Marvel Shield",
+        "vi": "Hồi sinh được sử dụng 1 lần chiêu thức Nhuyễn Vị Giáp"
       },
       "avatarPath": "avatar_HoangDung.png",
       "characterPointPath": "HoangDung_point.png",
@@ -213,7 +225,7 @@
       "numberOfUseSkill1": 1,
       "skill1Name": {
         "en": "Immortal Shield",
-        "vi": "Nhuyen Vi Giap"
+        "vi": "Nhuyễn Vị Giáp"
       },
       "pathMainImageSkill1": "btnHD_skill1_up.png",
       "pathSubImageSkill1": "btnHD_skill1_down.png",
@@ -222,7 +234,7 @@
       "numberOfUseSkill2": 1,
       "skill2Name": {
         "en": "Cherry Storm",
-        "vi": "Man Thien Hoa Vu"
+        "vi": "Màn Thiên Hoa Vũ"
       },
       "pathMainImageSkill2": "btnHD_skill2_up.png",
       "pathSubImageSkill2": "btnHD_skill2_down.png",
@@ -231,7 +243,7 @@
       "numberOfUseSkill3": 1,
       "skill3Name": {
         "en": "Jingu Mastery",
-        "vi": "Da Cau Bong Phap"
+        "vi": "Đả Cẩu Bổng Pháp"
       },
       "pathMainImageSkill3": "btnHD_skill3_up.png",
       "pathSubImageSkill3": "btnHD_skill3_down.png",
@@ -251,11 +263,15 @@
       "key": "123457689abc",
       "name": {
         "en": "Athur",
-        "vi": "Hoang Duoc Su"
+        "vi": "Hoàng Dược Sư"
       },
       "inforHero": {
-        "en": "Master of Kungfu. Kim's father. Double score when using skills",
-        "vi": "Cao thu vo lam. Cha cua Hoang Dung. Duoc nhan doi diem khi su dung ky nang"
+        "en": "Master of Kungfu. Kim's father",
+        "vi": "Cao thủ võ lâm. Cha của Hoàng Dung"
+      },
+      "intrinsicHero": {
+        "en": "Double score when using skills",
+        "vi": "Được nhân đôi điểm khi sử dụng kỹ năng"
       },
       "avatarPath": "avatar_HoangDuocSu.png",
       "characterPointPath": "HoangDuocSu_point.png",
@@ -268,7 +284,7 @@
       "numberOfUseSkill1": 4,
       "skill1Name": {
         "en": "God of wind",
-        "vi": "Toan Phong Thoai Phap"
+        "vi": "Toàn Phong Thoái Pháp"
       },
       "pathMainImageSkill1": "btnHDS_skill1_up.png",
       "pathSubImageSkill1": "btnHDS_skill1_down.png",
@@ -277,7 +293,7 @@
       "numberOfUseSkill2": 1,
       "skill2Name": {
         "en": "One shot",
-        "vi": "Dai Chi Than Cong"
+        "vi": "Đại Chỉ Thần Công"
       },
       "pathMainImageSkill2": "btnHDS_skill2_up.png",
       "pathSubImageSkill2": "btnHDS_skill2_down.png",
@@ -286,7 +302,7 @@
       "numberOfUseSkill3": 1,
       "skill3Name": {
         "en": "Super Sonic wave",
-        "vi": "Bich Hai Chieu Sinh Khuc"
+        "vi": "Bích Hải Chiều Sinh Khúc"
       },
       "pathMainImageSkill3": "btnHDS_skill3_up.png",
       "pathSubImageSkill3": "btnHDS_skill3_down.png",
@@ -306,11 +322,15 @@
       "key": "123546789abc",
       "name": {
         "en": "Robin",
-        "vi": "Quach Tinh"
+        "vi": "Quách Tĩnh"
       },
       "inforHero": {
-        "en": "The best master of martial arts in the world. Having Wide-area damage skills. Auto recover health skill after each 30 seconds",
-        "vi": "De nhat vo cong thien ha. Ky nang gay sat thuong dien rong. Tu dong hoi 1 mau sau 30s"
+        "en": "The best master of martial arts in the world. Having Wide-area damage skills",
+        "vi": "Đệ nhất võ công thiên hạ. Kỹ năng gây sát thương diện rộng"
+      },
+      "intrinsicHero": {
+        "en": "Auto recover health skill after each 30 seconds",
+        "vi": "Tự động hồi 1 máu sau 30s"
       },
       "avatarPath": "avatar_QuachTinh.png",
       "characterPointPath": "QuachTinh_point.png",
@@ -323,7 +343,7 @@
       "numberOfUseSkill1": 1,
       "skill1Name": {
         "en": "Age of Wushu",
-        "vi": "Cuu Am Chan Kinh"
+        "vi": "Cửu Âm Chân Kinh"
       },
       "pathMainImageSkill1": "btnQT_skill1_up.png",
       "pathSubImageSkill1": "btnQT_skill1_down.png",
@@ -332,7 +352,7 @@
       "numberOfUseSkill2": 4,
       "skill2Name": {
         "en": "Amber of Dragon",
-        "vi": "Than Long Bai Vi"
+        "vi": "Thần Long Bãi Vĩ"
       },
       "pathMainImageSkill2": "btnQT_skill2_up.png",
       "pathSubImageSkill2": "btnQT_skill2_down.png",
@@ -341,7 +361,7 @@
       "numberOfUseSkill3": 1,
       "skill3Name": {
         "en": "Double Dragon",
-        "vi": "Song Long Xuat Thuy"
+        "vi": "Song Long Xuất Thủy"
       },
       "pathMainImageSkill3": "btnQT_skill3_up.png",
       "pathSubImageSkill3": "btnQT_skill3_down.png",

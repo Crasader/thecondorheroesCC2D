@@ -7,7 +7,7 @@
 			<key>btn_try.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,313},{139,51}}</string>
+				<string>{{0,274},{139,51}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -21,13 +21,13 @@
 			<key>btn_unlock.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,0},{323,152}}</string>
+				<string>{{0,0},{241,113}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,2},{323,152}}</string>
+				<string>{{41,22},{241,113}}</string>
 				<key>sourceSize</key>
 				<string>{323,159}</string>
 			</dict>
@@ -35,7 +35,7 @@
 			<key>effect_unlock_1.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,153},{166,159}}</string>
+				<string>{{0,114},{166,159}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -49,7 +49,7 @@
 			<key>effect_unlock_2.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{119,487},{99,94}}</string>
+				<string>{{119,449},{99,94}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -63,7 +63,7 @@
 			<key>icon_hero_cc_1.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{119,365},{114,121}}</string>
+				<string>{{0,598},{114,121}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -77,7 +77,7 @@
 			<key>icon_hero_cc_2.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{219,561},{69,69}}</string>
+				<string>{{230,593},{69,69}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -91,7 +91,7 @@
 			<key>icon_hero_cc_3.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{230,851},{69,72}}</string>
+				<string>{{230,809},{69,72}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -105,7 +105,7 @@
 			<key>icon_hero_cc_4.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{115,884},{114,121}}</string>
+				<string>{{0,844},{114,121}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -119,7 +119,7 @@
 			<key>icon_hero_dq_1.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{115,761},{114,122}}</string>
+				<string>{{119,326},{114,122}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -133,7 +133,7 @@
 			<key>icon_hero_dq_2.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{230,631},{69,69}}</string>
+				<string>{{219,523},{69,69}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -147,7 +147,7 @@
 			<key>icon_hero_hd_1.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,766},{114,123}}</string>
+				<string>{{115,598},{114,123}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -161,7 +161,7 @@
 			<key>icon_hero_hd_2.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{230,924},{69,70}}</string>
+				<string>{{230,738},{69,70}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -175,7 +175,7 @@
 			<key>icon_hero_hd_3.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{230,701},{69,74}}</string>
+				<string>{{230,882},{69,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -189,7 +189,7 @@
 			<key>icon_hero_hd_4.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{115,637},{114,123}}</string>
+				<string>{{0,720},{114,123}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -203,7 +203,7 @@
 			<key>icon_hero_hds_1.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,890},{114,128}}</string>
+				<string>{{115,851},{114,128}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -217,7 +217,7 @@
 			<key>icon_hero_hds_2.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{219,487},{69,73}}</string>
+				<string>{{219,449},{69,73}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -231,7 +231,7 @@
 			<key>icon_hero_hds_3.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{230,776},{69,74}}</string>
+				<string>{{230,663},{69,74}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -245,7 +245,7 @@
 			<key>icon_hero_hds_4.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,637},{114,128}}</string>
+				<string>{{115,722},{114,128}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -259,7 +259,7 @@
 			<key>icon_hero_qt_1.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,365},{118,135}}</string>
+				<string>{{0,326},{118,135}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -273,7 +273,7 @@
 			<key>icon_hero_qt_2.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{167,234},{71,80}}</string>
+				<string>{{167,114},{71,80}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -287,7 +287,7 @@
 			<key>icon_hero_qt_3.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{167,153},{71,80}}</string>
+				<string>{{167,195},{71,80}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -301,7 +301,7 @@
 			<key>icon_hero_qt_4.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,501},{118,135}}</string>
+				<string>{{0,462},{118,135}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>

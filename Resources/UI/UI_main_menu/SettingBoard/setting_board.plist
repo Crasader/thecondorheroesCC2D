@@ -7,7 +7,7 @@
 			<key>btn_close.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{65,381},{47,48}}</string>
+				<string>{{0,719},{47,48}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -21,7 +21,7 @@
 			<key>btn_off.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,446},{64,64}}</string>
+				<string>{{0,589},{64,64}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -35,7 +35,7 @@
 			<key>btn_on.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,381},{64,64}}</string>
+				<string>{{0,654},{64,64}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -49,15 +49,15 @@
 			<key>setting_bg.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,0},{679,380}}</string>
+				<string>{{0,0},{1133,588}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{1,0},{679,380}}</string>
+				<string>{{0,0},{1133,588}}</string>
 				<key>sourceSize</key>
-				<string>{681,381}</string>
+				<string>{1133,588}</string>
 			</dict>
 
 		</dict>
@@ -67,7 +67,7 @@
 			<key>format</key>
 			<integer>2</integer>
 			<key>size</key>
-			<string>{1024,512}</string>
+			<string>{2048,1024}</string>
 			<key>textureFileName</key>
 			<string>setting_board.png</string>
 			</dict>

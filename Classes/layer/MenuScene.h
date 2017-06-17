@@ -150,7 +150,7 @@ private:
 	void buttonConfirmDailyRewardHandle();
 
 	// upgrade skill handle
-	void buttonUpgradeSkillHandle(int p_nIndexSkill);
+	void buttonUpgradeSkillHandle(int p_nIndexSkill, int p_nCost);
 
 	// hero menu
 	void buttonPickHeroHandle(int p_nIndexHero);

@@ -10,7 +10,8 @@ RefManager::RefManager()
 {
 	ref = UserDefault::sharedUserDefault();
 
-	isFirstPlay = ref->getBoolForKey(KEY_FIRST, false);
+	isFirstPlay = ref->getBoolForKey(KEY_FIRST, true);
+	isShowStory = ref->getBoolForKey(KEY_STORY, false);
 	lastMapIdPlay = ref->getIntegerForKey(KEY_LAST_MAP_ID, 1);
 	selectedHero = ref->getIntegerForKey(KEY_SELECTED_HERO, 0);
 	lastPickHero = ref->getIntegerForKey(KEY_LAST_PICK_HERO, 0);
@@ -120,6 +121,13 @@ void RefManager::setDoneFirstPlay()
 {
 	isFirstPlay = false;
 	ref->setBoolForKey(KEY_FIRST, isFirstPlay);
+	ref->flush();
+}
+
+void RefManager::setShowedStory()
+{
+	isShowStory = true;
+	ref->setBoolForKey(KEY_STORY, isShowStory);
 	ref->flush();
 }
 

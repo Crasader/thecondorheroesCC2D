@@ -41,6 +41,8 @@ private:
 public:
 	static JSonMenuManager * getInstance();
 
+	string readMenuText(int p_nLanguage, int p_nIndex);
+
 	void readItem(int p_nLanguage, int p_nFirstIndex);
 	void readGoldPack(int p_nFirstIndex);
 	void readDiamondPack(int p_nFirstIndex);

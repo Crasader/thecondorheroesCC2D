@@ -238,3 +238,4 @@ void EnemyToanChanStudent2::onExit()
 	world->DestroyBody(slash->getB2Body());
 	log("delete slash");*/
 }
+

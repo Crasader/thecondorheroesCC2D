@@ -33,6 +33,7 @@ public:
 	//void removeFromParentAndCleanup(bool onExit);
 	virtual void updatePos();
 	virtual void onExit();
+	//virtual void prepare();
 };
 
 #endif // __ENEMY_H__

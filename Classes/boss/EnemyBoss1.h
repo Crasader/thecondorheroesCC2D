@@ -68,7 +68,6 @@ public:
 	void immortal();
 	void unImmortal();
 
-
 	// void initCirclePhysic(b2World *world, Point pos);
 };
 

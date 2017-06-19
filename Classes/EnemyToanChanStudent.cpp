@@ -129,6 +129,14 @@ void EnemyToanChanStudent::playsoundDie()
 //	this->addChild(splash);
 //}
 
+void EnemyToanChanStudent::prepare()
+{
+	BaseEnemy::prepare();
+	this->clearTracks();
+	this->setAnimation(0, "waiting", false);
+	this->setToSetupPose();
+}
+
 void EnemyToanChanStudent::listener()
 {
 	this->setCompleteListener([&](int trackIndex, int loopCount) {
@@ -136,17 +144,19 @@ void EnemyToanChanStudent::listener()
 			//getSplash()->setVisible(false);
 			//setIsAttacking(false);
 			this->clearTracks();
-			this->addAnimation(0, "idle", true);
+			this->addAnimation(0, "idle2", true);
 			this->setToSetupPose();
 		}
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
 
 			this->setVisible(false);
-		/*	this->clearTracks();
-			this->setAnimation(0, "idle", true);
-			this->setToSetupPose();*/
 			this->pauseSchedulerAndActions();
 
+		}
+		if (strcmp(getCurrent()->animation->name, "waiting") == 0 && loopCount == 1) {
+			this->clearTracks();
+			this->setAnimation(0, "idle2", true);
+			this->setToSetupPose();
 		}
 
 	});

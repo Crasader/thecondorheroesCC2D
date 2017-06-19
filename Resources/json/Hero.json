@@ -112,7 +112,7 @@
       "avatarLoadingPath": "UI/Loading/CL.png",
       "pathButtonAttack": "UI/Btn_attack/CC_attack1a.png",
       "isLocked": false,
-      "coolDownSkill1": 37,
+      "coolDownSkill1": 10,
       "durationSkill1": 6,
       "numberOfUseSkill1": 1,
       "skill1Name": {
@@ -121,7 +121,7 @@
       },
       "pathMainImageSkill1": "UI/Btn_skill/btnCC_skill1_up.png",
       "pathSubImageSkill1": "UI/Btn_skill/btnCC_skill1_down.png",
-      "coolDownSkill2": 39,
+      "coolDownSkill2": 9,
       "durationSkill2": 5,
       "numberOfUseSkill2": 1,
       "skill2Name": {

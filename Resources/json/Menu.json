@@ -1,143 +1,185 @@
 {
+	"menu_text": [
+		{
+			"en" : "Level ",
+			"vi" : "Cấp "
+		},
+		{
+			"en" : "HP: ",
+			"vi" : "Máu: "
+		},
+		{
+			"en" : "Score: ",
+			"vi" : "Điểm: "
+		},
+		{
+			"en" : "Gold: ",
+			"vi" : "Vàng: "
+		},
+		{
+			"en" : "Level: ",
+			"vi" : "Cấp: "
+		},
+		{
+			"en" : "Duration: ",
+			"vi" : "Thời gian: "
+		},
+		{
+			"en" : "Number of use: ",
+			"vi" : "Số lần sử dụng: "
+		},
+		{
+			"en" : "Cooldown: ",
+			"vi" : "Hồi chiêu: "
+		},
+		{
+			"en" : " English",
+			"vi" : " English"
+		},
+		{
+			"en" : " Tiếng Việt",
+			"vi" : " Tiếng Việt"
+		}
+	],
 	"items": [
 		{
-			"iconFilePath": "UI/UI_main_menu/item1_health.png",
+			"iconFilePath": "item1_health.png",
 			"priceItem": 500,
 			"nameItem": {
 				"en" : "Health",
-				"vi" : "Them mau"
+				"vi" : "Thêm máu"
 			},
 			"description": {
 				"en" : "+1 maximum health",
-				"vi" : "Tang 1 mau toi da"
+				"vi" : "Tăng thêm 1 máu tối đa"
 			}
 		},
 		{
-			"iconFilePath": "UI/UI_main_menu/item2_bird.png",
+			"iconFilePath": "item2_bird.png",
 			"priceItem": 700,
 			"nameItem": {
 				"en" : "Condor",
-				"vi" : "Chim dieu"
+				"vi" : "Chim điêu"
 			},
 			"description": {
 				"en" : "Fly when dangerous",
-				"vi" : "Goi chim dieu cuu nguy"
+				"vi" : "Gọi chim Điêu cứu nguy"
 			}
 		},
 		{
-			"iconFilePath": "UI/UI_main_menu/item3_magnet.png",
+			"iconFilePath": "item3_magnet.png",
 			"priceItem": 300,
 			"nameItem": {
 				"en" : "Magnet",
-				"vi" : "Nam cham"
+				"vi" : "Nam châm"
 			},
 			"description": {
 				"en" : "Collect nearby golds",
-				"vi" : "Su dung nam cham hut vang xung quanh"
+				"vi" : "Sử dụng nam châm hút vàng xung quanh"
 			}
 		},
 		{
-			"iconFilePath": "UI/UI_main_menu/item4_doublecoin.png",
+			"iconFilePath": "item4_doublecoin.png",
 			"priceItem": 400,
 			"nameItem": {
 				"en" : "x2 Coin",
-				"vi" : "Nhan doi vang"
+				"vi" : "Nhân đôi vàng"
 			},
 			"description": {
 				"en" : "Double collected gold",
-				"vi" : "Nhan doi luong vang thu duoc"
+				"vi" : "Nhân đôi lượng vàng thu được"
 			}
 		},
 		{
-			"iconFilePath": "UI/UI_main_menu/item5_cooldown.png",
+			"iconFilePath": "item5_cooldown.png",
 			"priceItem": 750,
 			"nameItem": {
 				"en" : "Cooldown",
-				"vi" : "Hoi chieu"
+				"vi" : "Hồi chiêu"
 			},
 			"description": {
 				"en" : "Skill colldown -15%",
-				"vi" : "Giam thoi gian hoi chieu 15%"
+				"vi" : "Giảm thời gian hồi chiêu 15%"
 			}
 		}
 	],
 	"gold_packs": [
 		{
-		"iconGoldPackPath": "UI/UI_main_menu/UI_shop/gold_board1.png",
+		"iconGoldPackPath": "gold_board1.png",
 		"goldNumber": 10000,
 		"diamondPrice": 100
 		},
 		{
-		"iconGoldPackPath": "UI/UI_main_menu/UI_shop/gold_board2.png",
+		"iconGoldPackPath": "gold_board2.png",
 		"goldNumber": 21000,
 		"diamondPrice": 200
 		},
 		{
-		"iconGoldPackPath": "UI/UI_main_menu/UI_shop/gold_board3.png",
+		"iconGoldPackPath": "gold_board3.png",
 		"goldNumber": 42000,
 		"diamondPrice": 400
 		},
 		{
-		"iconGoldPackPath": "UI/UI_main_menu/UI_shop/gold_board4.png",
+		"iconGoldPackPath": "gold_board4.png",
 		"goldNumber": 110000,
 		"diamondPrice": 600
 		},
 		{
-		"iconGoldPackPath": "UI/UI_main_menu/UI_shop/gold_board5.png",
+		"iconGoldPackPath": "gold_board5.png",
 		"goldNumber": 150000,
 		"diamondPrice": 800
 		}
 	],
 	"diamond_packs": [
 		{
-		"iconDiamondPackPath": "UI/UI_main_menu/UI_shop/diamond_board1.png",
+		"iconDiamondPackPath": "diamond_board1.png",
 		"diamondNumber": 100,
 		"moneyPrice": "0.99$"
 		},
 		{
-		"iconDiamondPackPath": "UI/UI_main_menu/UI_shop/diamond_board2.png",
+		"iconDiamondPackPath": "diamond_board2.png",
 		"diamondNumber": 200,
 		"moneyPrice": "1.99$"
 		},
 		{
-		"iconDiamondPackPath": "UI/UI_main_menu/UI_shop/diamond_board3.png",
+		"iconDiamondPackPath": "diamond_board3.png",
 		"diamondNumber": 400,
 		"moneyPrice": "2.99$"
 		},
 		{
-		"iconDiamondPackPath": "UI/UI_main_menu/UI_shop/diamond_board4.png",
+		"iconDiamondPackPath": "diamond_board4.png",
 		"diamondNumber": 800,
 		"moneyPrice": "4.99$"
 		},
 		{
-		"iconDiamondPackPath": "UI/UI_main_menu/UI_shop/diamond_board5.png",
+		"iconDiamondPackPath": "diamond_board5.png",
 		"diamondNumber": 1600,
 		"moneyPrice": "9.99$"
 		}
 	],
 	"energy_packs": [
 		{
-		"iconEnergyPackPath": "UI/UI_main_menu/UI_shop/energy_board1.png",
+		"iconEnergyPackPath": "energy_board1.png",
 		"energyNumber": 3,
 		"diamondPrice": 3
 		},
 		{
-		"iconEnergyPackPath": "UI/UI_main_menu/UI_shop/energy_board2.png",
+		"iconEnergyPackPath": "energy_board2.png",
 		"energyNumber": 5,
 		"diamondPrice": 5
 		},
 		{
-		"iconEnergyPackPath": "UI/UI_main_menu/UI_shop/energy_board3.png",
+		"iconEnergyPackPath": "energy_board3.png",
 		"energyNumber": 10,
 		"diamondPrice": 8
 		},
 		{
-		"iconEnergyPackPath": "UI/UI_main_menu/UI_shop/energy_board4.png",
+		"iconEnergyPackPath": "energy_board4.png",
 		"energyNumber": 15,
 		"diamondPrice": 10
 		},
 		{
-		"iconEnergyPackPath": "UI/UI_main_menu/UI_shop/energy_board5.png",
+		"iconEnergyPackPath": "energy_board5.png",
 		"energyNumber": 25,
 		"diamondPrice": 15
 		}

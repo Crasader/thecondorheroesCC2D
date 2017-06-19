@@ -26,6 +26,7 @@ void JSonHeroManager::readFile(int p_nLanguage, int indexHero)
 	this->key = jsonDoc["hero"][indexHero]["key"].GetString();
 	this->name = jsonDoc["hero"][indexHero]["name"][_arLanguages[p_nLanguage].c_str()].GetString();
 	this->infor = jsonDoc["hero"][indexHero]["inforHero"][_arLanguages[p_nLanguage].c_str()].GetString();
+	this->intrinsic = jsonDoc["hero"][indexHero]["intrinsicHero"][_arLanguages[p_nLanguage].c_str()].GetString();
 	this->avatarPath = jsonDoc["hero"][indexHero]["avatarPath"].GetString();
 	this->characterPointPath = jsonDoc["hero"][indexHero]["characterPointPath"].GetString();
 	this->selectCharacterPoint = jsonDoc["hero"][indexHero]["selectCharacterPoint"].GetString();
@@ -79,12 +80,12 @@ int JSonHeroManager::getGoldUpgradeLevelX(int indexHero)
 
 string JSonHeroManager::getTipAtX(int index)
 {
-	assert(index > 0 && index <= 10);
-	return jsonDoc["tip"][0][("tip_" + StringUtils::format("%i", index)).c_str()].GetString();
+	assert(index > 0 && index <= 15);
+	return jsonDoc["tip"][0][REF->getLanguage() == 0 ? "en" : "vi"][("tip_" + StringUtils::format("%i", index)).c_str()].GetString();
 }
 
 string JSonHeroManager::getNotifyAtX(int index)
 {
 	assert(index > 0 && index <= 11);
-	return jsonDoc["notification"][0][("noti_" + StringUtils::format("%i", index)).c_str()].GetString();
+	return jsonDoc["notification"][0][REF->getLanguage() == 0 ? "en" : "vi"][("noti_" + StringUtils::format("%i", index)).c_str()].GetString();
 }

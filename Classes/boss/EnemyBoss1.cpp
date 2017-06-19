@@ -1,5 +1,6 @@
 #include "EnemyBoss1.h"
 #include "BaseHero.h"
+#include "manager\RefManager.h"
 #include "manager\AudioManager.h"
 
 EnemyBoss1::EnemyBoss1(string jsonFile, string atlasFile, float scale) :BaseEnemy(jsonFile, atlasFile, scale)
@@ -93,6 +94,7 @@ void EnemyBoss1::die()
 			this->crazyState->enter(this);
 		}
 		else {
+			completeQuest();
 			this->playSoundDie();
 			this->changeState(new BossDie());
 		}
@@ -482,5 +484,10 @@ void EnemyBoss1::unImmortal()
 {
 	setIsImmortal(false);
 	//log("unimmortal");
+}
+
+void EnemyBoss1::completeQuest()
+{
+	REF->setUpNumberQuest(INDEX_QUEST_BOSS_1, 1);
 }
 

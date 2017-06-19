@@ -19,6 +19,7 @@ bool SelectStageLayer::init(int charId)
 	auto scaleY = screenSize.height / tmxMap->getContentSize().height;
 	tmxMap->setScale(scaleY);
 
+	this->charId = charId;
 	createCloud();
 
 	scrollView = ui::ScrollView::create();
@@ -40,7 +41,7 @@ bool SelectStageLayer::init(int charId)
 	int lastMapId = REF->getLastMapIdPlay();
 	int nextMapId = lastMapId < 12 ? lastMapId + 1 : 12;
 
-	character_point = Sprite::create(JSHERO->getSelectCharacterPoint());
+	character_point = Sprite::createWithSpriteFrameName(JSHERO->getSelectCharacterPoint());
 	character_point->setAnchorPoint(Vec2(0.5f, 0));
 	character_point->setScale(screenSize.height / 8.0f / character_point->getContentSize().width);
 	auto moveUp = MoveBy::create(0.3f, Vec2(0, character_point->getBoundingBox().size.height * 0.04f));
@@ -75,20 +76,20 @@ bool SelectStageLayer::init(int charId)
 		int mapId = mObject["mapId"].asInt();
 
 
-		Sprite* un_locked = Sprite::create("UI/Select_Stage/level_on.png");
-		Sprite* un_locked_press = Sprite::create("UI/Select_Stage/level_on.png");
+		Sprite* un_locked = Sprite::createWithSpriteFrameName("level_on.png");
+		Sprite* un_locked_press = Sprite::createWithSpriteFrameName("level_on.png");
 		un_locked_press->setColor(Color3B(128, 128, 128));
 
-		Sprite* locked = Sprite::create("UI/Select_Stage/level_off.png");
+		Sprite* locked = Sprite::createWithSpriteFrameName("level_off.png");
 
 		if (stage < currentStageUnlocked) {
 			mapBtn = MenuItemSprite::create(un_locked, un_locked_press,
-					CC_CALLBACK_0(SelectStageLayer::gotoPlay, this, id, stage, mapId, charId));
+					CC_CALLBACK_0(SelectStageLayer::gotoPlay, this, id, stage, mapId, origin));
 		}
 		else if (stage == currentStageUnlocked) {
 			if (mapId <= currentMapUnlocked) {
 				mapBtn = MenuItemSprite::create(un_locked, un_locked_press,
-					CC_CALLBACK_0(SelectStageLayer::gotoPlay, this, id, stage, mapId, charId));
+					CC_CALLBACK_0(SelectStageLayer::gotoPlay, this, id, stage, mapId, origin));
 			}
 			else {
 				mapBtn = MenuItemSprite::create(locked, locked,
@@ -152,7 +153,7 @@ void SelectStageLayer::moveAva()
 	if (lastMapId < 12) {
 		if (REF->getIsGetNewMap()) {
 			auto screenSize = Director::getInstance()->getVisibleSize();
-			auto effectUpLvMap = Sprite::create("UI/Select_Stage/effect_lv.png");
+			auto effectUpLvMap = Sprite::createWithSpriteFrameName("effect_lv.png");
 			effectUpLvMap->setScale(screenSize.height / 5.0f / effectUpLvMap->getContentSize().width);
 			auto pos = Point(nextMapPos.x, nextMapPos.y - character_point->getBoundingBox().size.height * 0.25f);
 			effectUpLvMap->setPosition(pos);
@@ -173,22 +174,31 @@ void SelectStageLayer::moveAva()
 	}
 }
 
-void SelectStageLayer::gotoPlay(int id, int stage, int map, int charId)
+void SelectStageLayer::gotoPlay(int id, int stage, int map, Point point)
 {
 	AudioManager::playSound(SOUND_BTCLICK);
-	auto m_nLifeNumber = REF->getNumberOfLife();
-	if (m_nLifeNumber > 0) {
+	auto menuLayer = (MenuLayer*) this->getParent();
+	if (menuLayer->downLife()) {
+
+		mapPlayPos = Point(point.x, point.y + character_point->getBoundingBox().size.height * 0.25f);
+		if(mapPlayPos.x != character_point->getPositionX())
+			character_point->setPosition(mapPlayPos);
+
+		menu->setEnabled(false);
+		menuLayer->disableListener();
+
 		REF->setLastMapId(id);
-		m_nLifeNumber--;
-		REF->setDownLife(1);
-		REF->setAnchorTime(time(0));
 		AudioManager::stopMusic();
-		auto _aScene = LoadingLayer::createScene(stage, map, charId);
-		Director::getInstance()->replaceScene(_aScene);
-	} else {
-		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(1), TOAST_LONG);
-		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
-		addChild(_pToast, 10);
+
+		this->stage = stage;
+		this->map = map;
+
+		auto action = CallFunc::create([&]() {
+			auto _aScene = LoadingLayer::createScene(this->stage, this->map, charId);
+			Director::getInstance()->replaceScene(_aScene);
+		});
+
+		this->runAction(Sequence::createWithTwoActions(DelayTime::create(0.75f), action));
 	}
 }
 
@@ -198,15 +208,15 @@ Sprite* SelectStageLayer::bossSprite(int order)
 	switch (order)
 	{
 	case 1:
-		boss = Sprite::create("UI/Select_Stage/boss_TTK_off.png");
+		boss = Sprite::createWithSpriteFrameName("boss_TTK_off.png");
 		break;
 
 	case 2:
-		boss = Sprite::create("UI/Select_Stage/boss_LMS_off.png");
+		boss = Sprite::createWithSpriteFrameName("boss_LMS_off.png");
 		break;
 
 	case 3:
-		boss = Sprite::create("UI/Select_Stage/boss_KLPV_off.png");
+		boss = Sprite::createWithSpriteFrameName("boss_KLPV_off.png");
 		break;
 	default:
 		break;

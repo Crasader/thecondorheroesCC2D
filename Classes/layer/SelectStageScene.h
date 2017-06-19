@@ -21,9 +21,13 @@ private:
 	const Size m_szVisibleSize = Director::getInstance()->getVisibleSize();
 
 	TMXTiledMap *tmxMap;
-	Point nextMapPos;
+	Point nextMapPos, mapPlayPos;
 
-	void gotoPlay(int id, int stage, int map, int charId);
+	int stage;
+	int map;
+	int charId;
+
+	void gotoPlay(int id, int stage, int map, Point point);
 
 	Sprite *character_point;
 	Sprite* bossSprite(int order);

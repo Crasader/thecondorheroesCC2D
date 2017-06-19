@@ -11,6 +11,7 @@ RefManager::RefManager()
 	ref = UserDefault::sharedUserDefault();
 
 	isFirstPlay = ref->getBoolForKey(KEY_FIRST, false);
+	isShowStory = ref->getBoolForKey(KEY_STORY, false);
 	lastMapIdPlay = ref->getIntegerForKey(KEY_LAST_MAP_ID, 1);
 	selectedHero = ref->getIntegerForKey(KEY_SELECTED_HERO, 0);
 	lastPickHero = ref->getIntegerForKey(KEY_LAST_PICK_HERO, 0);
@@ -123,6 +124,13 @@ void RefManager::setDoneFirstPlay()
 	ref->flush();
 }
 
+void RefManager::setShowedStory()
+{
+	isShowStory = true;
+	ref->setBoolForKey(KEY_STORY, isShowStory);
+	ref->flush();
+}
+
 void RefManager::setLastMapId(int id)
 {
 	lastMapIdPlay = id;
@@ -132,7 +140,8 @@ void RefManager::setLastMapId(int id)
 
 void RefManager::unLockHero(int index)
 {
-	ref->setBoolForKey((KEY_LOCKED_HERO_X + StringUtils::format("%i", index)).c_str(), false);
+	isLockedHero = false;
+	ref->setBoolForKey((KEY_LOCKED_HERO_X + StringUtils::format("%i", index)).c_str(), isLockedHero);
 	ref->flush();
 }
 

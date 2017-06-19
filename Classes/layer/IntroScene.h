@@ -4,7 +4,6 @@
 
 #include "cocos2d.h"
 #include "MenuScene.h"
-#include "manager\AudioManager.h"
 
 USING_NS_CC;
 
@@ -16,6 +15,9 @@ public:
 	CREATE_FUNC(SceneIntro);
 
 private:
+	void showStoryLayer();
+	void initIntroScene();
+	void hideStoryLayerAndInitIntroScene();
 	void goToMainMenuScene(Ref* p_pSender);
 };
 

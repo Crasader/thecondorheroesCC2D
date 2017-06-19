@@ -15,6 +15,7 @@ public:
 
 protected:
 	CC_SYNTHESIZE_READONLY(int, language, Language);
+	CC_SYNTHESIZE_READONLY(bool, isShowStory, IsShowStory);
 	CC_SYNTHESIZE_READONLY(bool, isFirstPlay, IsFirstPlay);
 	CC_SYNTHESIZE_READONLY(int, lastMapIdPlay, LastMapIdPlay);
 	CC_SYNTHESIZE_READONLY(bool, isGetNewMap, IsGetNewMap);
@@ -86,6 +87,7 @@ public:
 	void setReachNewMap(bool value);
 
 	void setDoneFirstPlay();
+	void setShowedStory();
 	void setLastMapId(int id);
 
 	void unLockHero(int index);
@@ -154,8 +156,10 @@ public:
 
 #define REF RefManager::getInstance()
 // Ref
+
 #define KEY_LANGUAGE						"Language"
 #define KEY_FIRST							"FirstPlay"
+#define KEY_STORY							"ShowedStory"
 #define KEY_LAST_MAP_ID						"LastMapID"
 #define KEY_UNLOCK_MAP						"GetNewMap"
 #define KEY_SELECTED_HERO					"SelectedHero"		// integer
@@ -228,6 +232,18 @@ public:
 #define INDEX_QUEST_TLN			4
 #define INDEX_QUEST_HD			5
 #define INDEX_QUEST_RAMPAGE		6
-#define INDEX_QUEST_DIAMOND		7
+#define INDEX_QUEST_WOODER		7
+#define INDEX_QUEST_TOANCHAN_2	8
+#define INDEX_QUEST_BOSS_1		9
+#define INDEX_QUEST_BEE			10
+#define INDEX_QUEST_ICE			11
+#define INDEX_QUEST_HLB_1		12
+#define INDEX_QUEST_HLB_2		13
+#define INDEX_QUEST_BOSS_2		14
+#define INDEX_QUEST_HD_1		15
+#define INDEX_QUEST_HD_2		16
+#define INDEX_QUEST_DNB			17
+
+
 
 #endif // __REF_MANAGER_H__

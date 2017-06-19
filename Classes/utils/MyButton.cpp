@@ -4,11 +4,15 @@ MyButton::MyButton() {
 
 }
 
+MyButton::~MyButton()
+{
+}
+
 MyButton * MyButton::create(string file_name_main, string file_name_CoolDown, Point pos)
 {
 	MyButton *mNode = new MyButton();
-	mNode->initWithFile(file_name_CoolDown);
-	mNode->main = ProgressTimer::create(Sprite::create(file_name_main));
+	mNode->initWithSpriteFrameName(file_name_CoolDown);
+	mNode->main = ProgressTimer::create(Sprite::createWithSpriteFrameName(file_name_main));
 	mNode->main->setType(ProgressTimer::Type::RADIAL);
 	mNode->main->setPercentage(100.0f);
 

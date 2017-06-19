@@ -36,10 +36,15 @@ public:
 	static MenuLayer* create(bool p_bOnlySelectStage);
     void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
 
+	bool downLife();
+	void disableListener();
+
 private:
 	const Size m_szVisibleSize = Director::getInstance()->getVisibleSize();
 	float m_fButtonStartPosition;							// make start and unlock button at same position
 	int m_nMenuStatus = 0;
+	EventListenerKeyboard* key_listener;
+
 
 	// input value
 	int m_nCurrentTimeFromGoogle = 0;						// time from google.com.vn (-7 hours from Viet Nam)
@@ -54,6 +59,7 @@ private:
 	int m_nShopOption = 0;
 	int m_nLanguage = 0;
     int backNumber = 0;
+	//float m_nCakeScale;
 
 	Label *m_pTimeCounter;									// time counter to increase life
 	MenuItemSprite *m_arHeroButton[5];						// hero mini icon
@@ -64,6 +70,7 @@ private:
 	Sprite *m_arItemCoinSprite[5];
 	Label *m_arItemLabelCost[5];
 	Sprite *m_pReceviveDailyRewardSprite;
+	Sprite *m_iconLife;
 
 	SkeletonAnimation *m_pSpriteQuestAttention;						// 
 	SkeletonAnimation *m_pSpriteFreeCoinAttention;						// 
@@ -143,7 +150,7 @@ private:
 	void buttonConfirmDailyRewardHandle();
 
 	// upgrade skill handle
-	void buttonUpgradeSkillHandle(int p_nIndexSkill);
+	void buttonUpgradeSkillHandle(int p_nIndexSkill, int p_nCost);
 
 	// hero menu
 	void buttonPickHeroHandle(int p_nIndexHero);
@@ -226,6 +233,7 @@ private:
 
 private:
 	string indexHeroToName(int indexHero);
+	void singlePress(float dt);
 };
 
 #endif // __MENUSCENE_H__

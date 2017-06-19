@@ -101,7 +101,7 @@ void LoadingLayer::addStuff()
 		boardTime->getPositionY() + boardTime->getBoundingBox().size.height * 0.2f));
 	addChild(loading);
 
-	auto lbGuide = Label::createWithTTF("Guide here", "fonts/Marker Felt.ttf", 32);
+	auto lbGuide = Label::createWithTTF("Guide here", "fonts/arial.ttf", 32);
 	lbGuide->setAnchorPoint(Vec2::ZERO);
 	lbGuide->setScale(boardTime->getBoundingBox().size.height * 0.6f / lbGuide->getContentSize().height);
 	lbGuide->setPosition(boardTime->getPositionX(), boardTime->getPositionY() - boardTime->getBoundingBox().size.height * 1.3f);
@@ -158,7 +158,7 @@ void LoadingLayer::doProcess()
 
 	mainScene->setHud(hud);
 	
-	if (REF->getIsFirstPlay() && charId != REF->getLastPickHero()) {	// try
+	if (charId != REF->getLastPickHero()) {	// try
 		hud->tryHud();
 	}
 	
@@ -166,7 +166,7 @@ void LoadingLayer::doProcess()
 	end = chrono::system_clock::now();
 	
 	chrono::duration<double> elapsed_seconds = end - start;
-	log("%f", elapsed_seconds.count());
+	//log("%f", elapsed_seconds.count());
 
 	this->schedule([&](float dt) {
 		++percent;
@@ -177,8 +177,9 @@ void LoadingLayer::doProcess()
 			loading->setVisible(false);
 
 			unschedule("key");
+
 			AdmobHelper::getInstance()->hide("top_banner");
-			Director::getInstance()->replaceScene(GameScene::createScene(mainScene, hud));
+			Director::getInstance()->replaceScene(TransitionFade::create(0.43f, GameScene::createScene(mainScene, hud)));
 		}
 
 	}, 1.33f / (100.0f - percent), "key");

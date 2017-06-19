@@ -32,7 +32,6 @@ public:
 	void replayGame(int goldRevive, bool isWatchVideo);
 	void nextStage();
 	void restartGame();
-	void upgrade();
 
 	virtual void effect();
 

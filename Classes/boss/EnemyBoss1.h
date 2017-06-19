@@ -67,7 +67,7 @@ public:
 	virtual void playSoundDie();
 	void immortal();
 	void unImmortal();
-
+	virtual void completeQuest();
 	// void initCirclePhysic(b2World *world, Point pos);
 };
 

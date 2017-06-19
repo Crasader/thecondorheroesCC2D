@@ -1,5 +1,8 @@
 #include "AppDelegate.h"
 #include "layer/IntroScene.h"
+#include "layer/SplashScene.h"
+#include "AudioEngine.h"
+
 #ifdef SDKBOX_ENABLED
 #include "PluginFacebook/PluginFacebook.h"
 #endif
@@ -21,6 +24,7 @@
 
 USING_NS_CC;
 
+//static cocos2d::Size designResolutionSize = cocos2d::Size(800, 600);
 static cocos2d::Size designResolutionSize = cocos2d::Size(711, 400);
 static cocos2d::Size smallResolutionSize = cocos2d::Size(1280, 720);
 static cocos2d::Size mediumResolutionSize = cocos2d::Size(1920, 1080);
@@ -107,10 +111,39 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     register_all_packages();
 
-    // create a scene. it's an autorelease object
-    //auto scene = GameScene::createScene();
-	auto scene = SceneIntro::createScene();
 
+	// cache frame
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("item/coin.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Map/bg.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/skill.plist");
+	//SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/Select_Stage/boss_eff.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/fire_eff.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/chidori_eff.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/rock_eff.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/Select_Stage/select_stage.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_info_ingame/info_hud.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/Btn_attack/button_attack.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/Btn_skill/button_skill.plist");
+
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/BottomMenu/bottom_menu.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/DailyReward/daily_reward.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/HeroMenu/hero_menu.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/InfoBoard/info_board.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/ItemBoard/item_board.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/QuestBoard/quest_board.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/SettingBoard/setting_board.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/ShopBoard/shop_board.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/TopMenu/top_menu.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/UpgradeBoard/upgrade_board.plist");
+
+    // create a scene. it's an autorelease object
+
+	Scene* scene;
+
+	if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+		scene = SceneIntro::createScene();
+	else
+		scene = SplashScene::createScene();
 
     // run
     director->runWithScene(scene);

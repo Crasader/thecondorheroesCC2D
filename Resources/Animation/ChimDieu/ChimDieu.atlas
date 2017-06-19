@@ -313,8 +313,8 @@ HD/arm1_L
   offset: 0, 0
   index: -1
 HD/arm1_R
-  rotate: false
-  xy: 3185, 519
+  rotate: true
+  xy: 2464, 34
   size: 84, 43
   orig: 84, 43
   offset: 0, 0
@@ -328,7 +328,7 @@ HD/arm2_L
   index: -1
 HD/arm2_R
   rotate: false
-  xy: 1729, 28
+  xy: 1646, 6
   size: 81, 75
   orig: 81, 75
   offset: 0, 0
@@ -390,31 +390,38 @@ HD/lappet
   offset: 0, 0
   index: -1
 HD/leg_L
-  rotate: false
-  xy: 2714, 99
+  rotate: true
+  xy: 2645, 52
   size: 70, 67
   orig: 70, 67
   offset: 0, 0
   index: -1
 HD/leg_R
   rotate: false
-  xy: 2509, 50
+  xy: 2033, 31
   size: 67, 72
   orig: 67, 72
   offset: 0, 0
   index: -1
 HDS/arm1_R
-  rotate: true
-  xy: 2464, 34
+  rotate: false
+  xy: 3185, 519
   size: 84, 43
   orig: 84, 43
   offset: 0, 0
   index: -1
 HDS/arm2_R
   rotate: false
-  xy: 1646, 6
+  xy: 1729, 28
   size: 81, 75
   orig: 81, 75
+  offset: 0, 0
+  index: -1
+HDS/beard
+  rotate: false
+  xy: 930, 602
+  size: 33, 44
+  orig: 33, 44
   offset: 0, 0
   index: -1
 HDS/black_hair
@@ -467,22 +474,22 @@ HDS/lappet
   offset: 0, 0
   index: -1
 HDS/leg_L
-  rotate: true
-  xy: 2645, 52
+  rotate: false
+  xy: 2714, 99
   size: 70, 67
   orig: 70, 67
   offset: 0, 0
   index: -1
 HDS/leg_R
   rotate: false
-  xy: 2033, 31
+  xy: 2509, 50
   size: 67, 72
   orig: 67, 72
   offset: 0, 0
   index: -1
 HDS/white_hair1_R
   rotate: false
-  xy: 930, 607
+  xy: 2171, 2
   size: 33, 39
   orig: 33, 39
   offset: 0, 0

@@ -1,4 +1,5 @@
 #include "EnemyBoss2.h"
+#include "manager\RefManager.h"
 #include "manager\AudioManager.h"
 
 EnemyBoss2::EnemyBoss2(string jsonFile, string atlasFile, float scale) :EnemyBoss1(jsonFile, atlasFile, scale)
@@ -80,4 +81,9 @@ void EnemyBoss2::playSoundAttack2()
 void EnemyBoss2::playSoundDie()
 {
 	AudioManager::playSound(SOUND_BOSS2DIE);
+}
+
+void EnemyBoss2::completeQuest()
+{
+	REF->setUpNumberQuest(INDEX_QUEST_BOSS_2, 1);
 }

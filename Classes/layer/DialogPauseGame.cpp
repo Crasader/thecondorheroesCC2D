@@ -2,7 +2,7 @@
 #include "DialogPauseGame.h"
 #include "GameScene.h"
 #include "MenuScene.h"
-#include "SimpleAudioEngine.h"
+#include "manager/AudioManager.h"
 #include "manager/RefManager.h"
 #include "manager/JSonHeroManager.h"
 #include "ui_custom/CustomLayerToToast.h"
@@ -100,8 +100,8 @@ void DialogPauseGame::nextStage()
 {	
 	Layer *_pMenuScene;
 
-	auto gameScene = this->getParent();
-	gameScene->removeAllChildrenWithCleanup(true);
+	//auto gameScene = this->getParent();
+	//gameScene->removeAllChildrenWithCleanup(true);
 
 	if (!REF->getIsLockedHero()) {
 		_pMenuScene = MenuLayer::create(true);// select stage
@@ -112,7 +112,7 @@ void DialogPauseGame::nextStage()
 
 	auto _aMainMenuScene = Scene::create();
 	_aMainMenuScene->addChild(_pMenuScene);
-	Director::getInstance()->replaceScene(_aMainMenuScene);
+	Director::getInstance()->replaceScene(TransitionFade::create(0.67f, _aMainMenuScene));
 }
 
 void DialogPauseGame::restartGame()
@@ -136,11 +136,6 @@ void DialogPauseGame::restartGame()
 	}
 }
 
-void DialogPauseGame::upgrade()
-{
-
-}
-
 void DialogPauseGame::effect()
 {
 	this->setPosition(0, SCREEN_SIZE.height * 1.1f);
@@ -156,17 +151,39 @@ void DialogPauseGame::effect()
 void DialogPause::selectedEventMusic(Ref* pSender, ui::CheckBox::EventType type)
 {
 	auto ref = UserDefault::getInstance()->sharedUserDefault();
+	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
 	switch (type)
 	{
 	case ui::CheckBox::EventType::SELECTED:
 		//log("Music enable");
 		ref->setBoolForKey(KEY_IS_MUSIC, true);
-		//AudioManager::playMusic(MUSIC_STAGE1);
+
+		switch (gameLayer->getStage())
+		{
+		case 1:
+			AudioManager::playMusic(MUSIC_STAGE1);
+			break;
+
+		case 2:
+			AudioManager::playMusic(MUSIC_STAGE2);
+			break;
+
+		case 3:
+			AudioManager::playMusic(MUSIC_STAGE3);
+			break;
+
+		case 4:
+			AudioManager::playMusic(MUSIC_STAGE4);
+			break;
+		default:
+			break;
+		}
 		break;
 
 	case ui::CheckBox::EventType::UNSELECTED:
 		//log("Music disable");
 		ref->setBoolForKey(KEY_IS_MUSIC, false);
+		AudioManager::stopMusic();
 		break;
 
 	default:
@@ -180,12 +197,12 @@ void DialogPause::selectedEventSound(Ref* pSender, ui::CheckBox::EventType type)
 	switch (type)
 	{
 	case ui::CheckBox::EventType::SELECTED:
-		log("Sound enable");
+		//log("Sound enable");
 		ref->setBoolForKey(KEY_IS_SOUND, true);
 		break;
 
 	case ui::CheckBox::EventType::UNSELECTED:
-		log("Sound disable");
+		//log("Sound disable");
 		ref->setBoolForKey(KEY_IS_SOUND, false);
 		break;
 
@@ -199,6 +216,7 @@ bool DialogPause::init()
 	DialogPauseGame::init();
 	auto origin = Director::getInstance()->getVisibleOrigin();
 
+	auto ref = UserDefault::getInstance()->sharedUserDefault();
 
 	auto background = Sprite::create("UI/UI_Endgame/paper_pause.png");
 	background->setScale(SCREEN_SIZE.width / 2 / background->getContentSize().width);
@@ -206,11 +224,18 @@ bool DialogPause::init()
 	addChild(background);
 
 	auto checkBoxMusic = ui::CheckBox::create("UI/UI_Endgame/btn_off.png", "UI/UI_Endgame/btn_on.png");
+	if (ref->getBoolForKey(KEY_IS_MUSIC, true)) {
+		checkBoxMusic->setSelected(true);
+	}
 	checkBoxMusic->addEventListener(CC_CALLBACK_2(DialogPause::selectedEventMusic, this));
 	checkBoxMusic->setPosition(Vec2(background->getContentSize().width*0.25f, background->getContentSize().height*0.7f));
 	background->addChild(checkBoxMusic);
 
 	auto checkBoxSound = ui::CheckBox::create("UI/UI_Endgame/btn_off.png", "UI/UI_Endgame/btn_on.png");
+	if (ref->getBoolForKey(KEY_IS_SOUND, true)) {
+		checkBoxSound->setSelected(true);
+	}
+
 	checkBoxSound->addEventListener(CC_CALLBACK_2(DialogPause::selectedEventSound, this));
 	checkBoxSound->setPosition(Vec2(background->getContentSize().width*0.63f, background->getContentSize().height*0.7f));
 	background->addChild(checkBoxSound);
@@ -448,7 +473,7 @@ void DialogStageClear::shareFB()
 {
 	//FacebookHelper::getInstance()->dialogPhoto(FACE_SHARE_TITLE);
 	FacebookHelper::getInstance()->dialogPhoto(FACE_SHARE_TITLE);
-	log("Sharing");
+	//log("Sharing");
 }
 
 
@@ -546,23 +571,16 @@ bool DialogOverGame::init(int score, int gold)
 	backBtnActive->setColor(Color3B(128, 128, 128));
 	auto backBtn = MenuItemSprite::create(backBtnNormal, backBtnActive, CC_CALLBACK_0(DialogPauseGame::backHome, this));
 	backBtn->setAnchorPoint(Vec2(1, 1));
-	backBtn->setPosition(background->getContentSize().width*0.1f, 0);
-
-	auto upgradeBtnNormal = Sprite::create("UI/UI_Endgame/btn_upgrade.png");
-	auto upgradeBtnActive = Sprite::create("UI/UI_Endgame/btn_upgrade.png");
-	upgradeBtnActive->setColor(Color3B(128, 128, 128));
-	auto upgradeBtn = MenuItemSprite::create(upgradeBtnNormal, upgradeBtnActive, CC_CALLBACK_0(DialogPauseGame::upgrade, this));
-	upgradeBtn->setAnchorPoint(Vec2(0.5f, 1));
-	upgradeBtn->setPosition(background->getContentSize().width*0.5f, 0);
+	backBtn->setPosition(background->getContentSize().width*0.3f, 0);
 
 	auto restartBtnNormal = Sprite::create("UI/UI_Endgame/btn_restart.png");
 	auto restartBtnActive = Sprite::create("UI/UI_Endgame/btn_restart.png");
 	restartBtnActive->setColor(Color3B(128, 128, 128));
 	auto restartBtn = MenuItemSprite::create(restartBtnNormal, restartBtnActive, CC_CALLBACK_0(DialogPauseGame::restartGame, this));
 	restartBtn->setAnchorPoint(Vec2(0, 1));
-	restartBtn->setPosition(background->getContentSize().width*0.9f, 0);
+	restartBtn->setPosition(background->getContentSize().width*0.7f, 0);
 
-	menu = Menu::create(backBtn, upgradeBtn, restartBtn, nullptr);
+	menu = Menu::create(backBtn, restartBtn, nullptr);
 	menu->setEnabled(false);
 	menu->setPosition(Vec2::ZERO);
 	background->addChild(menu);

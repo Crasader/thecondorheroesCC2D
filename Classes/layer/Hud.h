@@ -64,11 +64,11 @@ protected:
 	CC_SYNTHESIZE(MyButton*, btnSkill_2, BtnSkill_2);
 	CC_SYNTHESIZE(MyButton*, btnSkill_3, BtnSkill_3);
 
-	CC_SYNTHESIZE(MenuItemImage*, btnCalling, BtnCalling);
+	CC_SYNTHESIZE(MenuItemSprite*, btnCalling, BtnCalling);
 
 	CC_SYNTHESIZE(ProgressTimer*, icon_Skill, Icon_Skill);
 	CC_SYNTHESIZE(ProgressTimer*, icon_Item_Magnet, Icon_Item_Magnet);
-	CC_SYNTHESIZE(ProgressTimer*, icon_Item_DC, Icon_Item_DC);
+	//CC_SYNTHESIZE(ProgressTimer*, icon_Item_DC, Icon_Item_DC);
 
 	CC_SYNTHESIZE(bool, btnCallingHintDone, BtnCallingHintDone);
 
@@ -92,9 +92,9 @@ private:
 	float durationItemMagnet;
 	bool isItemMagnetActive = false;
 
-	float timerItemDC;
-	float durationItemDC;
-	bool isItemDCActive = false;
+	//float timerItemDC;
+	//float durationItemDC;
+	//bool isItemDCActive = false;
 	Menu* menu;
 
 	void addProfile();

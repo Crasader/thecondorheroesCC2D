@@ -56,7 +56,7 @@ bool GameScene::init(int stage, int map, int charId)
 	}
 
 
-	isModeDebug = true;
+	isModeDebug = false;
 
 	changebg = 0;
 
@@ -129,13 +129,13 @@ void GameScene::selectHero()
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	heroStartPosition = Point(origin.x, visibleSize.height * 0.7f);
+	heroStartPosition = Point(origin.x + SCREEN_SIZE.width * 0.01f, visibleSize.height * 0.7f);
 
 	switch (charId)
 	{
 	case 0:
 		hero = DuongQua::create("Animation/DuongQua/DuongQua.json", 
-								"Animation/DuongQua/DuongQua.atlas", SCREEN_SIZE.height / 5 / 340);
+								"Animation/DuongQua/DuongQua.atlas", SCREEN_SIZE.height / 5 / 315);
 		break;
 
 	case 1:
@@ -160,7 +160,7 @@ void GameScene::selectHero()
 
 	default:
 		hero = DuongQua::create("Animation/DuongQua/DuongQua.json",
-			"Animation/DuongQua/DuongQua.atlas", SCREEN_SIZE.height / 5 / 340);
+			"Animation/DuongQua/DuongQua.atlas", SCREEN_SIZE.height / 5 / 315);
 		break;
 	}
 
@@ -237,7 +237,7 @@ void GameScene::onBegin()
 	this->scheduleUpdate();
 
 	if (REF->getNumberItemDoubleGold() > 0) {
-		runnerItem(Item_type::DOUBLE_COIN, DURATION_DOUBLE_COIN);
+		runnerItem(Item_type::DOUBLE_COIN, -99);
 		REF->decreaseNumberItemDoubleGold();
 	}
 
@@ -418,7 +418,8 @@ void GameScene::listener()
 			hud->getPauseItem()->setEnabled(false);
 
 			hero->setItemValue(KEY_ITEM_MAGNET, 0);
-			hero->setItemValue(KEY_ITEM_DOUPLE_COIN, 0);
+			if(hero->getItemValue(KEY_ITEM_DOUPLE_COIN) >= -1)
+				hero->setItemValue(KEY_ITEM_DOUPLE_COIN, 0);
 
 			if (hero->getActiveSkill()->isVisible())
 				hero->getActiveSkill()->setVisible(false);
@@ -569,7 +570,7 @@ void GameScene::update(float dt)
 		else {
 			hero->getB2Body()->SetTransform(b2Vec2(
 				_aEagle->getB2Body()->GetPosition().x,
-				_aEagle->getB2Body()->GetPosition().y + hero->getTrueRadiusOfHero() / PTM_RATIO), 0.0f);
+				_aEagle->getB2Body()->GetPosition().y + hero->getTrueRadiusOfHero() * 1.1f / PTM_RATIO), 0.0f);
 		}
 	}
 
@@ -1617,13 +1618,13 @@ void GameScene::createItem()
 		switch (type_val)
 		{
 		case 0:				// health
-			item = Item::create("UI/UI_main_menu/item1_health.png", Item_type::HEALTH, origin);
+			item = Item::create("item1_health.png", Item_type::HEALTH, origin);
 			break;
 		case 1:
-			item = Item::create("UI/UI_main_menu/item4_doublecoin.png", Item_type::DOUBLE_COIN, origin);
+			item = Item::create("tem4_doublecoin.png", Item_type::DOUBLE_COIN, origin);
 			break;
 		case 2:
-			item = Item::create("UI/UI_main_menu/item3_magnet.png", Item_type::MAGNET, origin);
+			item = Item::create("item3_magnet.png", Item_type::MAGNET, origin);
 			break;
 		}
 
@@ -1636,7 +1637,7 @@ void GameScene::createItem()
 
 void GameScene::updateQuest()
 {
-	if (charId != REF->getLastPickHero())
+	if (REF->getIsLockedHero())
 		return;
 
 	switch (charId)
@@ -1661,6 +1662,7 @@ void GameScene::reachNewMap()
 	if (stageUnlocked == stage) {
 		int mapUnlocked = REF->getCurrentMapUnLocked();
 		if (mapUnlocked == map) {
+			REF->setReachNewMap(true);
 			switch (stageUnlocked)
 			{
 			case 1: case 2:
@@ -1685,7 +1687,7 @@ void GameScene::reachNewMap()
 				break;
 
 			case 4:
-				if (map < 3) {
+				if (map < 4) {
 					REF->setMapUnlocked(map + 1);
 				}
 				break;
@@ -1736,7 +1738,8 @@ void GameScene::initGroundPhysic(b2World * world, Point pos, Size size)
 	fixtureDef.shape = &shape;
 
 	fixtureDef.filter.categoryBits = BITMASK_FLOOR;
-	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR | BITMASK_COIN | BITMASK_BIRD| BITMASK_ENEMY;
+
+	fixtureDef.filter.maskBits = BITMASK_HERO | BITMASK_FLOOR | BITMASK_COIN | BITMASK_BIRD | BITMASK_ENEMY;
 
 	bodyDef.type = b2_staticBody;
 
@@ -1925,7 +1928,9 @@ void GameScene::runnerItem(Item_type type, int counter)
 		break;
 	case DOUBLE_COIN:
 		hud->runnerItemDC(counter);
-		hero->setItemValue(KEY_ITEM_DOUPLE_COIN, counter);
+		hero->setCoinRatio(2);
+		if (hero->getItemValue(KEY_ITEM_DOUPLE_COIN) >= -1) // means double 4ver is not active
+			hero->setItemValue(KEY_ITEM_DOUPLE_COIN, counter);
 		break;
 	}
 
@@ -2106,7 +2111,9 @@ void GameScene::callingBird()
 {
 	GAHelper::getInstance()->logEvent("Bird","Call","",1);
 	AudioManager::playSound(SOUND_BIRD);
-	REF->setUpNumberQuest(INDEX_QUEST_CALL_BIRD, 1);
+
+	if(!REF->getIsLockedHero())
+		REF->setUpNumberQuest(INDEX_QUEST_CALL_BIRD, 1);
 	if (hero->getActiveSkill()->isVisible())
 		hero->getActiveSkill()->setVisible(false);
 

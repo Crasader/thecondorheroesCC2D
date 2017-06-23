@@ -257,6 +257,7 @@ private:
 	void introBird();
 
 	void tutorial();
+	void cacheEnemySound();
 
 public:
 

@@ -24,6 +24,7 @@ EnemyDatNhiBa2 * EnemyDatNhiBa2::create(string jsonFile, string atlasFile, float
 	enemy->health = 2;
 	enemy->setDamage(2);
 	enemy->exp = 12;
+	enemy->autorelease();
 	return enemy;
 
 }

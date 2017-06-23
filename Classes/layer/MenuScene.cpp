@@ -2936,6 +2936,10 @@ void MenuLayer::onVungleAdReward(const std::string & name)
 		REF->setUpLife(5);
 		initTopMainMenu();
 		m_pTopMenu->setEnabled(true);
+
+		CustomLayerToToast *_pToast = CustomLayerToToast::create("5 cake for you!", TOAST_SHORT);
+		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
+		this->addChild(_pToast, 10);
 	}
 	else {
 		float type = CCRANDOM_0_1();
@@ -2946,18 +2950,28 @@ void MenuLayer::onVungleAdReward(const std::string & name)
 				REF->setUpGoldExplored(300);
 				initTopMainMenu();
 				m_pTopMenu->setEnabled(true);
+
+				CustomLayerToToast *_pToast = CustomLayerToToast::create("300 gold for you!", TOAST_SHORT);
+				_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
+				this->addChild(_pToast, 10);
 			}
 			else if (percent < 0.85f) {
 				m_nCurrentGold += 400;
 				REF->setUpGoldExplored(400);
 				initTopMainMenu();
 				m_pTopMenu->setEnabled(true);
+				CustomLayerToToast *_pToast = CustomLayerToToast::create("400 gold for you!", TOAST_SHORT);
+				_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
+				this->addChild(_pToast, 10);
 			}
 			else {
 				m_nCurrentGold += 500;
 				REF->setUpGoldExplored(500);
 				initTopMainMenu();
 				m_pTopMenu->setEnabled(true);
+				CustomLayerToToast *_pToast = CustomLayerToToast::create("500 gold for you!", TOAST_SHORT);
+				_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
+				this->addChild(_pToast, 10);
 			}
 		}
 		else {
@@ -2966,18 +2980,27 @@ void MenuLayer::onVungleAdReward(const std::string & name)
 				REF->setUpLife(3);
 				initTopMainMenu();
 				m_pTopMenu->setEnabled(true);
+				CustomLayerToToast *_pToast = CustomLayerToToast::create("3 cake for you!", TOAST_SHORT);
+				_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
+				this->addChild(_pToast, 10);
 			}
 			else if (percent < 0.85f) {
 				m_nLifeNumber += 4;
 				REF->setUpLife(4);
 				initTopMainMenu();
 				m_pTopMenu->setEnabled(true);
+				CustomLayerToToast *_pToast = CustomLayerToToast::create("4 cake for you!", TOAST_SHORT);
+				_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
+				this->addChild(_pToast, 10);
 			}
 			else {
 				m_nLifeNumber += 5;
 				REF->setUpLife(5);
 				initTopMainMenu();
 				m_pTopMenu->setEnabled(true);
+				CustomLayerToToast *_pToast = CustomLayerToToast::create("5 cake for you!", TOAST_SHORT);
+				_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
+				this->addChild(_pToast, 10);
 			}
 		}
 	}

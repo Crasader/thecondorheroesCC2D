@@ -99,7 +99,10 @@ void DialogPauseGame::replayGame(int goldRevive, bool isWatchVideo)
 void DialogPauseGame::nextStage()
 {	
 	Layer *_pMenuScene;
-
+	int checkAds = UserDefault::getInstance()->getBoolForKey(KEY_PRE_STAGE_STATUS, false);
+	if (checkAds) {
+		AdmobHelper::getInstance()->showAd("gameover");
+	}
 	//auto gameScene = this->getParent();
 	//gameScene->removeAllChildrenWithCleanup(true);
 
@@ -537,11 +540,16 @@ void DialogStageClear::effect()
 	this->runAction(Sequence::create(mainEffect, DelayTime::create(0.5f), runParticle, nullptr));
 }
 
+void DialogStageClear::onExit()
+{
+	UserDefault::getInstance()->setBoolForKey(KEY_PRE_STAGE_STATUS,true);
+}
+
 
 bool DialogOverGame::init(int score, int gold)
 {
 	DialogPauseGame::init();
-
+	UserDefault::getInstance()->setBoolForKey(KEY_PRE_STAGE_STATUS,true);
 	auto origin = Director::getInstance()->getVisibleOrigin();
 
 
@@ -644,4 +652,9 @@ DialogOverGame * DialogOverGame::create(int score, int gold)
 void DialogOverGame::effect()
 {
 	DialogPauseGame::effect();
+}
+
+void DialogOverGame::onExit()
+{
+	UserDefault::getInstance()->setBoolForKey(KEY_PRE_STAGE_STATUS, false);
 }

@@ -26,6 +26,7 @@ public:
 	//virtual void genSplash();
 	virtual void listener();
 	virtual void updatePos();
+	virtual void prepare();
 
 };
 

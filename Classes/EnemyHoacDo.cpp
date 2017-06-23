@@ -79,6 +79,23 @@ void EnemyHoacDo::initCirclePhysic(b2World * world, Point pos)
 	body->CreateFixture(&fixtureDef);
 }
 
+//void EnemyHoacDo::listener()
+//{
+//	this->setCompleteListener([&](int trackIndex, int loopCount) {
+//		if (strcmp(getCurrent()->animation->name, "attack") == 0 && loopCount == 1) {
+//			this->clearTracks();
+//			this->addAnimation(0, "idle", true);
+//			this->setToSetupPose();
+//		}
+//
+//		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
+//			this->setVisible(false);
+//			this->pauseSchedulerAndActions();
+//		}
+//
+//	});
+//}
+
 
 
 

@@ -123,7 +123,7 @@ void LoadingLayer::doLoading()
 		timer += 5;
 
 		if (timer >= 200) {
-			start = chrono::system_clock::now();
+			//start = chrono::system_clock::now();
 			timer = 0;
 			doProcess();
 			unschedule("Key_loading");
@@ -163,9 +163,9 @@ void LoadingLayer::doProcess()
 	}
 	
 
-	end = chrono::system_clock::now();
+	//end = chrono::system_clock::now();
 	
-	chrono::duration<double> elapsed_seconds = end - start;
+	//chrono::duration<double> elapsed_seconds = end - start;
 	//log("%f", elapsed_seconds.count());
 
 	this->schedule([&](float dt) {

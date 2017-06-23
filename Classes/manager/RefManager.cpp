@@ -10,15 +10,15 @@ RefManager::RefManager()
 {
 	ref = UserDefault::sharedUserDefault();
 
-	isFirstPlay = ref->getBoolForKey(KEY_FIRST, false);
+	isFirstPlay = ref->getBoolForKey(KEY_FIRST, true);
 	isShowStory = ref->getBoolForKey(KEY_STORY, false);
 	lastMapIdPlay = ref->getIntegerForKey(KEY_LAST_MAP_ID, 1);
 	selectedHero = ref->getIntegerForKey(KEY_SELECTED_HERO, 0);
 	lastPickHero = ref->getIntegerForKey(KEY_LAST_PICK_HERO, 0);
 	isGetNewMap = ref->getBoolForKey(KEY_UNLOCK_MAP, false);
 
-	currentStageUnlocked = ref->getIntegerForKey(KEY_CUR_STAGE_UNLOCKED, 4);
-	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 4);
+	currentStageUnlocked = ref->getIntegerForKey(KEY_CUR_STAGE_UNLOCKED, 1);
+	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 1);
 
 	anchorTime = ref->getIntegerForKey(KEY_ANCHORTIME, time(0));
 	lastDailyRewardTime = ref->getIntegerForKey(KEY_LAST_DAILY_REWARD_TIME, 0);
@@ -41,8 +41,8 @@ RefManager::RefManager()
 	unLockHero(0);
 	unLockHero(1);
 	unLockHero(2);
-	unLockHero(3);
-	unLockHero(4);
+	//unLockHero(3);
+	//unLockHero(4);
 	pointToCurrentHero(selectedHero);
 }
 

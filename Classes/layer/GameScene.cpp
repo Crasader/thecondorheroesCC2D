@@ -49,12 +49,6 @@ bool GameScene::init(int stage, int map, int charId)
 
 	AudioManager::stopMusic();
 	GAHelper::getInstance()->logScreen(StringUtils::format("Stage: %d, Map: %d", stage, map));
-	isFirstPlay = REF->getIsFirstPlay();
-	if (isFirstPlay) {
-		if (REF->getLastPickHero() != charId)
-			isFirstPlay = false;
-	}
-
 
 	isModeDebug = false;
 
@@ -68,6 +62,15 @@ bool GameScene::init(int stage, int map, int charId)
 	this->isWinGame = false;
 
 	initB2World();
+
+	isFirstPlay = REF->getIsFirstPlay();
+	if (isFirstPlay) {
+		if (REF->getLastPickHero() != charId)
+			isFirstPlay = false;
+		else
+			createEagle(Point(Director::getInstance()->getVisibleOrigin().x - SCREEN_SIZE.width, SCREEN_SIZE.height / 2));
+	}
+
 	// cache batchnode
 	batchNode = SpriteBatchNode::create("coin_01.png");
 	this->addChild(batchNode);
@@ -679,14 +682,16 @@ void GameScene::update(float dt)
 
 	if (posXComingBoss > 0) {
 		if (hero->getPositionX() >= posXComingBoss) {
-			if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isEnabled()) {
-				CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(6), TOAST_LONG);
-				_pToast->setPosition(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 4));
-				this->getParent()->addChild(_pToast, 10);
 
-				hud->getBtnCalling()->setEnabled(false);
-				posXComingBoss = -1;
+			CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(6), TOAST_LONG);
+			_pToast->setPosition(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 4));
+			this->getParent()->addChild(_pToast, 10);
+
+			if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isEnabled()) {
+				hud->getBtnCalling()->setEnabled(false);	
 			}
+
+			posXComingBoss = -1;
 		}
 	}
 
@@ -2258,7 +2263,7 @@ void GameScene::winGame()
 			this->removeChild(child, true);
 	}
 
-	//reachNewMap();
+	reachNewMap();
 
 	blurScreen();
 	if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
@@ -2593,8 +2598,6 @@ void GameScene::introSkills()
 
 void GameScene::introBird()
 {
-	createEagle(Point(hero->getB2Body()->GetPosition().x - SCREEN_SIZE.width, SCREEN_SIZE.height / 2));
-
 	tut = TutorialIntroBird::create();
 	this->getParent()->addChild(tut);
 
@@ -2647,6 +2650,7 @@ void GameScene::tutorial()
 		}
 	}
 }
+
 
 void GameScene::resumeAfterTut(int caseTut)
 {

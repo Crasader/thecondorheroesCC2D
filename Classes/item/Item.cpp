@@ -17,7 +17,7 @@ Item::~Item()
 Item * Item::create(string frameName, Item_type type, Point pos)
 {
 	Item* item = new Item();
-	item->initWithSpriteFrameName(frameName);
+	item->initWithFile(frameName);
 	item->typeItem = type;
 	item->bubble = Sprite::create("item/bubble_item.png");
 	item->bubble->setScale(item->getContentSize().height * 1.3f / item->bubble->getContentSize().height);

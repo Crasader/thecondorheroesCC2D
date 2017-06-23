@@ -38,7 +38,7 @@ bool TutorialLayer::init()
 
 TutorialLayer* TutorialLayer::create()
 {
-	TutorialLayer* tut = new TutorialLayer();
+	TutorialLayer* tut = new(std::nothrow) TutorialLayer();
 
 	if (tut && tut->init())
 	{
@@ -107,7 +107,7 @@ bool TutorialJump::init(int type)
 
 TutorialJump * TutorialJump::create(int type)
 {
-	TutorialJump* tut = new TutorialJump();
+	TutorialJump* tut = new(std::nothrow) TutorialJump();
 
 	if (tut && tut->init(type))
 	{
@@ -142,7 +142,7 @@ bool TutorialAttack::init()
 
 TutorialAttack * TutorialAttack::create()
 {
-	TutorialAttack* tut = new TutorialAttack();
+	TutorialAttack* tut = new(std::nothrow) TutorialAttack();
 
 	if (tut && tut->init())
 	{
@@ -177,7 +177,7 @@ bool TutorialSkill::init()
 
 TutorialSkill * TutorialSkill::create()
 {
-	TutorialSkill* tut = new TutorialSkill();
+	TutorialSkill* tut = new(std::nothrow) TutorialSkill();
 
 	if (tut && tut->init())
 	{
@@ -228,7 +228,7 @@ bool TutorialIntroBird::init()
 
 TutorialIntroBird * TutorialIntroBird::create()
 {
-	TutorialIntroBird* tut = new TutorialIntroBird();
+	TutorialIntroBird* tut = new(std::nothrow) TutorialIntroBird();
 
 	if (tut && tut->init())
 	{

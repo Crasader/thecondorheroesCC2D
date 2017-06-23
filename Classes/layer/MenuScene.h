@@ -39,6 +39,8 @@ public:
 	bool downLife();
 	void disableListener();
 
+	void onExit();
+
 private:
 	const Size m_szVisibleSize = Director::getInstance()->getVisibleSize();
 	float m_fButtonStartPosition;							// make start and unlock button at same position

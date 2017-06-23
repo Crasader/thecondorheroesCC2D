@@ -124,10 +124,6 @@ bool SelectStageLayer::init(int charId)
 	menu->setPosition(Vec2::ZERO);
 	scrollView->addChild(menu);
 
-	auto key_listener = EventListenerKeyboard::create();
-	key_listener->onKeyPressed = CC_CALLBACK_2(SelectStageLayer::onKeyPressed, this);
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(key_listener, this);
-
 	return true;
 }
 
@@ -172,6 +168,7 @@ void SelectStageLayer::moveAva()
 		character_point->runAction(Sequence::createWithTwoActions(DelayTime::create(0.5f), Spawn::createWithTwoActions(actionMove, scroll)));
 		REF->setLastMapId(lastMapId + 1);
 	}
+	else REF->setReachNewMap(false); // for sure
 }
 
 void SelectStageLayer::gotoPlay(int id, int stage, int map, Point point)
@@ -194,6 +191,8 @@ void SelectStageLayer::gotoPlay(int id, int stage, int map, Point point)
 		this->map = map;
 
 		auto action = CallFunc::create([&]() {
+
+
 			auto _aScene = LoadingLayer::createScene(this->stage, this->map, charId);
 			Director::getInstance()->replaceScene(_aScene);
 		});

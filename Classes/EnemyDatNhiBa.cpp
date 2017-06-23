@@ -45,6 +45,7 @@ EnemyDatNhiBa * EnemyDatNhiBa::create(string filename, float scale)
 	enemy->health = 2;
 	enemy->setDamage(1);
 	enemy->exp = 12;
+	enemy->autorelease();
 	return enemy;
 }
 
@@ -58,7 +59,7 @@ void EnemyDatNhiBa::hit()
 		 this->setIsDie(true);
 	 }
 	 else {
-		 this->addAnimation(10, "injured-red", false);
+		 this->addAnimation(0, "injured-red", false);
 		 canRun = true;
 	 }
 }

@@ -179,6 +179,22 @@ void MenuLayer::disableListener()
 	Director::getInstance()->getEventDispatcher()->removeEventListener(key_listener);
 }
 
+void MenuLayer::onExit()
+{
+	/*for (int i = 0; i < 5; ++i) {
+		m_arPreviewHero[i]->release();
+	}
+*/
+	Layer::onExit();
+	//delete[] m_arHeroButton;
+	//delete[] m_arPreviewHero;
+	//delete[] m_arLabelNumberItemOwning;
+	//delete[] m_arBuyItemButton;
+	//delete[] m_arSpriteItemMax;
+	//delete[] m_arItemCoinSprite;
+	//delete[] m_arItemLabelCost;
+}
+
 void MenuLayer::update(float p_fDelta) {
 	time_t _nCurrentTime = time(0);
 	if (m_nLifeNumber < 5) {
@@ -1554,7 +1570,7 @@ void MenuLayer::buttonHeroesHandle() {
 		hideMainMenu();
 
 		runAction(Sequence::create(DelayTime::create(0.2f), CallFunc::create([&]() {
-			m_pGameScene->runAction(MoveTo::create(0.2f, Vec2(m_szVisibleSize.width * 0.15f, m_szVisibleSize.height * 0.0f)));
+			m_pGameScene->runAction(MoveTo::create(0.2f, Vec2(m_szVisibleSize.width * 0.2f, m_szVisibleSize.height * 0.0f)));
 		}), nullptr));
 
 		runAction(Sequence::create(DelayTime::create(0.6f), CallFunc::create([&]() {
@@ -2074,12 +2090,20 @@ void MenuLayer::initShopBoard(int p_nOption) {
 	m_pPacksZone->addEventListener((ListView::ccListViewCallback)CC_CALLBACK_2(MenuLayer::selectedItemEvent, this));
 
 	// button diamond tab
+	auto _pEnergyTabNormal = Sprite::createWithSpriteFrameName("tab_energy_off.png");
+	auto _pEnergyTabSelected = Sprite::createWithSpriteFrameName("tab_energy_off.png");
+	auto _aEnergyTabButton = MenuItemSprite::create(_pEnergyTabNormal, _pEnergyTabSelected, CC_CALLBACK_0(MenuLayer::initShopBoard, this, 2));
+	_aEnergyTabButton->setScale(m_pShopBoardLayer->getContentSize().width / _aEnergyTabButton->getContentSize().width * 0.25f);
+	_aEnergyTabButton->setAnchorPoint(Vec2(0.5f, 1.0f));
+	_aEnergyTabButton->setPosition(m_pShopBoardLayer->getContentSize().width * 0.25f, m_pShopBoardLayer->getContentSize().height * 0.85f);
+
+	// button diamond tab
 	auto _pGoldTabNormal = Sprite::createWithSpriteFrameName("tab_gold_off.png");
 	auto _pGoldTabTabSelected = Sprite::createWithSpriteFrameName("tab_gold_off.png");
 	auto _aGoldTabTabButton = MenuItemSprite::create(_pGoldTabNormal, _pGoldTabTabSelected, CC_CALLBACK_0(MenuLayer::initShopBoard, this, 0));
 	_aGoldTabTabButton->setScale(m_pShopBoardLayer->getContentSize().width / _aGoldTabTabButton->getContentSize().width * 0.25f);
 	_aGoldTabTabButton->setAnchorPoint(Vec2(0.5f, 1.0f));
-	_aGoldTabTabButton->setPosition(m_pShopBoardLayer->getContentSize().width * 0.25f, m_pShopBoardLayer->getContentSize().height * 0.85f);
+	_aGoldTabTabButton->setPosition(m_pShopBoardLayer->getContentSize().width * 0.5f, m_pShopBoardLayer->getContentSize().height * 0.85f);
 
 	// button diamond tab
 	auto _pDiamondTabNormal = Sprite::createWithSpriteFrameName("tab_diamond_off.png");
@@ -2087,15 +2111,7 @@ void MenuLayer::initShopBoard(int p_nOption) {
 	auto _aDiamondTabButton = MenuItemSprite::create(_pDiamondTabNormal, _pDiamondTabSelected, CC_CALLBACK_0(MenuLayer::initShopBoard, this, 1));
 	_aDiamondTabButton->setScale(m_pShopBoardLayer->getContentSize().width / _aDiamondTabButton->getContentSize().width * 0.25f);
 	_aDiamondTabButton->setAnchorPoint(Vec2(0.5f, 1.0f));
-	_aDiamondTabButton->setPosition(m_pShopBoardLayer->getContentSize().width * 0.5f, m_pShopBoardLayer->getContentSize().height * 0.85f);
-
-	// button diamond tab
-	auto _pEnergyTabNormal = Sprite::createWithSpriteFrameName("tab_energy_off.png");
-	auto _pEnergyTabSelected = Sprite::createWithSpriteFrameName("tab_energy_off.png");
-	auto _aEnergyTabButton = MenuItemSprite::create(_pEnergyTabNormal, _pEnergyTabSelected, CC_CALLBACK_0(MenuLayer::initShopBoard, this, 2));
-	_aEnergyTabButton->setScale(m_pShopBoardLayer->getContentSize().width / _aEnergyTabButton->getContentSize().width * 0.25f);
-	_aEnergyTabButton->setAnchorPoint(Vec2(0.5f, 1.0f));
-	_aEnergyTabButton->setPosition(m_pShopBoardLayer->getContentSize().width * 0.75f, m_pShopBoardLayer->getContentSize().height * 0.85f);
+	_aDiamondTabButton->setPosition(m_pShopBoardLayer->getContentSize().width * 0.75f, m_pShopBoardLayer->getContentSize().height * 0.85f);
 
 	// button close shop
 	auto _pCloseNormal = Sprite::createWithSpriteFrameName("btn_close_shop.png");
@@ -2578,9 +2594,13 @@ void MenuLayer::buttonUpgradeHeroHandle() {
 
 	int level = REF->getCurrentLevel();
 
+	for (int i = 1; i < level; i++) {
+		_nUpgradeCost *= 1.05f;
+	}
+
 	if (m_nCurrentGold >= _nUpgradeCost) {
 		logUpgradeHeroEvent(m_nIndexHeroPicked, level + 1);
-		m_nCurrentGold -= _nUpgradeCost;
+		m_nCurrentGold -= (int)_nUpgradeCost;
 		REF->setDownGold(_nUpgradeCost);
 		REF->increaseLevel();
 		initTopMainMenu();
@@ -2591,10 +2611,6 @@ void MenuLayer::buttonUpgradeHeroHandle() {
 		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(8), TOAST_LONG);
 		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
 		this->addChild(_pToast, 10);
-	}
-
-	for (int i = 0; i < level; i++) {
-		_nUpgradeCost *= 1.05f;
 	}
 }
 
@@ -3013,6 +3029,7 @@ string MenuLayer::indexHeroToName(int indexHero)
 		break;
 	}
 	default:
+		return "DuongQua";
 		break;
 	}
 }

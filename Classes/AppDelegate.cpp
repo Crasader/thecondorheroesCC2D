@@ -124,6 +124,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_info_ingame/info_hud.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/Btn_attack/button_attack.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/Btn_skill/button_skill.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_Endgame/end_game.plist");
 
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/BottomMenu/bottom_menu.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/DailyReward/daily_reward.plist");

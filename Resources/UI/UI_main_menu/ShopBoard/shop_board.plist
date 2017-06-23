@@ -4,7 +4,7 @@
 	<dict>
 		<key>frames</key>
 		<dict>
-			<key>board_shop.png</key>
+			<key>bg.png</key>
 			<dict>
 				<key>frame</key>
 				<string>{{0,0},{1234,672}}</string>
@@ -74,161 +74,7 @@
 				<string>{681,381}</string>
 			</dict>
 
-			<key>diamond_board1.png</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1544,0},{308,366}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{308,366}}</string>
-				<key>sourceSize</key>
-				<string>{308,366}</string>
-			</dict>
-
-			<key>diamond_board2.png</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1298,367},{308,366}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{308,366}}</string>
-				<key>sourceSize</key>
-				<string>{308,366}</string>
-			</dict>
-
-			<key>diamond_board3.png</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1260,1040},{308,366}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{308,366}}</string>
-				<key>sourceSize</key>
-				<string>{308,366}</string>
-			</dict>
-
-			<key>diamond_board4.png</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1239,1407},{308,366}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{308,366}}</string>
-				<key>sourceSize</key>
-				<string>{308,366}</string>
-			</dict>
-
-			<key>diamond_board5.png</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1235,0},{308,366}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{308,366}}</string>
-				<key>sourceSize</key>
-				<string>{308,366}</string>
-			</dict>
-
 			<key>energy_board1.png</key>
-			<dict>
-				<key>frame</key>
-				<string>{{989,673},{308,366}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{308,366}}</string>
-				<key>sourceSize</key>
-				<string>{308,366}</string>
-			</dict>
-
-			<key>energy_board2.png</key>
-			<dict>
-				<key>frame</key>
-				<string>{{951,1040},{308,366}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{308,366}}</string>
-				<key>sourceSize</key>
-				<string>{308,366}</string>
-			</dict>
-
-			<key>energy_board3.png</key>
-			<dict>
-				<key>frame</key>
-				<string>{{930,1421},{308,366}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{308,366}}</string>
-				<key>sourceSize</key>
-				<string>{308,366}</string>
-			</dict>
-
-			<key>energy_board4.png</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1569,734},{308,366}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{308,366}}</string>
-				<key>sourceSize</key>
-				<string>{308,366}</string>
-			</dict>
-
-			<key>energy_board5.png</key>
-			<dict>
-				<key>frame</key>
-				<string>{{642,1054},{308,366}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{308,366}}</string>
-				<key>sourceSize</key>
-				<string>{308,366}</string>
-			</dict>
-
-			<key>gold_board1.png</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1548,1407},{308,366}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{308,366}}</string>
-				<key>sourceSize</key>
-				<string>{308,366}</string>
-			</dict>
-
-			<key>gold_board2.png</key>
 			<dict>
 				<key>frame</key>
 				<string>{{333,1054},{308,366}}</string>
@@ -242,35 +88,7 @@
 				<string>{308,366}</string>
 			</dict>
 
-			<key>gold_board3.png</key>
-			<dict>
-				<key>frame</key>
-				<string>{{312,1624},{308,366}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{308,366}}</string>
-				<key>sourceSize</key>
-				<string>{308,366}</string>
-			</dict>
-
-			<key>gold_board4.png</key>
-			<dict>
-				<key>frame</key>
-				<string>{{621,1421},{308,366}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{308,366}}</string>
-				<key>sourceSize</key>
-				<string>{308,366}</string>
-			</dict>
-
-			<key>gold_board5.png</key>
+			<key>energy_board2.png</key>
 			<dict>
 				<key>frame</key>
 				<string>{{680,673},{308,366}}</string>
@@ -284,24 +102,52 @@
 				<string>{308,366}</string>
 			</dict>
 
-			<key>icon_diamond.png</key>
+			<key>energy_board3.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,1901},{66,59}}</string>
+				<string>{{312,1624},{308,366}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{1,1},{66,59}}</string>
+				<string>{{0,0},{308,366}}</string>
 				<key>sourceSize</key>
-				<string>{68,61}</string>
+				<string>{308,366}</string>
+			</dict>
+
+			<key>energy_board4.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{642,1054},{308,366}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{308,366}}</string>
+				<key>sourceSize</key>
+				<string>{308,366}</string>
+			</dict>
+
+			<key>energy_board5.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{621,1421},{308,366}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{308,366}}</string>
+				<key>sourceSize</key>
+				<string>{308,366}</string>
 			</dict>
 
 			<key>tab_diamond_off.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,1339},{332,94}}</string>
+				<string>{{0,1529},{332,94}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -315,7 +161,7 @@
 			<key>tab_diamond_on.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,1434},{332,94}}</string>
+				<string>{{0,1149},{332,94}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -329,7 +175,7 @@
 			<key>tab_energy_off.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,1529},{332,94}}</string>
+				<string>{{0,1244},{332,94}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -357,7 +203,7 @@
 			<key>tab_gold_off.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,1244},{332,94}}</string>
+				<string>{{0,1434},{332,94}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -371,7 +217,7 @@
 			<key>tab_gold_on.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,1149},{332,94}}</string>
+				<string>{{0,1339},{332,94}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>

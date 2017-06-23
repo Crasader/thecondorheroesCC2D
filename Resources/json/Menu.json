@@ -105,54 +105,54 @@
 	],
 	"gold_packs": [
 		{
-		"iconGoldPackPath": "gold_board1.png",
+		"iconGoldPackPath": "UI/UI_main_menu/ShopBoard/gold_board1.tmx",
 		"goldNumber": 10000,
 		"diamondPrice": 100
 		},
 		{
-		"iconGoldPackPath": "gold_board2.png",
+		"iconGoldPackPath": "UI/UI_main_menu/ShopBoard/gold_board2.tmx",
 		"goldNumber": 21000,
 		"diamondPrice": 200
 		},
 		{
-		"iconGoldPackPath": "gold_board3.png",
+		"iconGoldPackPath": "UI/UI_main_menu/ShopBoard/gold_board3.tmx",
 		"goldNumber": 42000,
 		"diamondPrice": 400
 		},
 		{
-		"iconGoldPackPath": "gold_board4.png",
+		"iconGoldPackPath": "UI/UI_main_menu/ShopBoard/gold_board4.tmx",
 		"goldNumber": 110000,
 		"diamondPrice": 600
 		},
 		{
-		"iconGoldPackPath": "gold_board5.png",
+		"iconGoldPackPath": "UI/UI_main_menu/ShopBoard/gold_board5.tmx",
 		"goldNumber": 150000,
 		"diamondPrice": 800
 		}
 	],
 	"diamond_packs": [
 		{
-		"iconDiamondPackPath": "diamond_board1.png",
+		"iconDiamondPackPath": "UI/UI_main_menu/ShopBoard/diamond_board1.tmx",
 		"diamondNumber": 100,
 		"moneyPrice": "0.99$"
 		},
 		{
-		"iconDiamondPackPath": "diamond_board2.png",
+		"iconDiamondPackPath": "UI/UI_main_menu/ShopBoard/diamond_board2.tmx",
 		"diamondNumber": 200,
 		"moneyPrice": "1.99$"
 		},
 		{
-		"iconDiamondPackPath": "diamond_board3.png",
+		"iconDiamondPackPath": "UI/UI_main_menu/ShopBoard/diamond_board3.tmx",
 		"diamondNumber": 400,
 		"moneyPrice": "2.99$"
 		},
 		{
-		"iconDiamondPackPath": "diamond_board4.png",
+		"iconDiamondPackPath": "UI/UI_main_menu/ShopBoard/diamond_board4.tmx",
 		"diamondNumber": 800,
 		"moneyPrice": "4.99$"
 		},
 		{
-		"iconDiamondPackPath": "diamond_board5.png",
+		"iconDiamondPackPath": "UI/UI_main_menu/ShopBoard/diamond_board5.tmx",
 		"diamondNumber": 1600,
 		"moneyPrice": "9.99$"
 		}

@@ -18,7 +18,6 @@ protected:
 	CC_SYNTHESIZE(Menu*, menu, mMenu);
 
 private:
-	const Size m_szVisibleSize = Director::getInstance()->getVisibleSize();
 
 	TMXTiledMap *tmxMap;
 	Point nextMapPos, mapPlayPos;

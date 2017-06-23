@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="308" tileheight="366" nextobjectid="26">
+ <tileset firstgid="1" name="gold_board5" tilewidth="308" tileheight="366" tilecount="1" columns="1">
+  <image source="gold_board5.png" width="308" height="366"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="1" height="1">
+  <data encoding="csv">
+1
+</data>
+ </layer>
+ <objectgroup name="Twinkle">
+  <object id="11" x="118.773" y="47.5" width="1" height="1"/>
+  <object id="12" x="181.682" y="69.5" width="1" height="1"/>
+  <object id="13" x="130.955" y="90.2273" width="1" height="1"/>
+  <object id="14" x="185.5" y="120.5" width="1" height="1"/>
+  <object id="15" x="213.5" y="111.833" width="1" height="1"/>
+  <object id="16" x="201.833" y="90.8333" width="1" height="1"/>
+  <object id="17" x="145.167" y="141.833" width="1" height="1"/>
+  <object id="18" x="98.1667" y="117.5" width="1" height="1"/>
+  <object id="19" x="56.8333" y="242.833" width="1" height="1"/>
+  <object id="20" x="124.833" y="233.5" width="1" height="1"/>
+  <object id="21" x="236.167" y="174.833" width="1" height="1"/>
+  <object id="22" x="262.833" y="233.833" width="1" height="1"/>
+  <object id="23" x="252.5" y="258.167" width="1" height="1"/>
+  <object id="24" x="213.167" y="245.167" width="1" height="1"/>
+  <object id="25" x="192.167" y="223.5" width="1" height="1"/>
+ </objectgroup>
+</map>

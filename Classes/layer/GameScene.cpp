@@ -50,11 +50,7 @@ bool GameScene::init(int stage, int map, int charId)
 	AudioManager::stopMusic();
 	GAHelper::getInstance()->logScreen(StringUtils::format("Stage: %d, Map: %d", stage, map));
 	isFirstPlay = REF->getIsFirstPlay();
-	if (isFirstPlay) {
-		if (REF->getLastPickHero() != charId)
-			isFirstPlay = false;
-	}
-
+	
 
 	isModeDebug = false;
 
@@ -68,6 +64,15 @@ bool GameScene::init(int stage, int map, int charId)
 	this->isWinGame = false;
 
 	initB2World();
+
+	if (isFirstPlay) {
+		if (REF->getLastPickHero() != charId)
+			isFirstPlay = false;
+		else
+			createEagle(Point(Director::getInstance()->getVisibleOrigin().x - SCREEN_SIZE.width,
+				SCREEN_SIZE.height / 2));
+	}
+
 	// cache batchnode
 	batchNode = SpriteBatchNode::create("coin_01.png");
 	this->addChild(batchNode);
@@ -2638,8 +2643,6 @@ void GameScene::introSkills()
 
 void GameScene::introBird()
 {
-	createEagle(Point(hero->getB2Body()->GetPosition().x - SCREEN_SIZE.width, SCREEN_SIZE.height / 2));
-
 	tut = TutorialIntroBird::create();
 	this->getParent()->addChild(tut);
 

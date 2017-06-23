@@ -124,10 +124,6 @@ bool SelectStageLayer::init(int charId)
 	menu->setPosition(Vec2::ZERO);
 	scrollView->addChild(menu);
 
-	auto key_listener = EventListenerKeyboard::create();
-	key_listener->onKeyPressed = CC_CALLBACK_2(SelectStageLayer::onKeyPressed, this);
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(key_listener, this);
-
 	return true;
 }
 

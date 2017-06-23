@@ -38,7 +38,20 @@ void SceneIntro::showStoryLayer() {
 	LayerColor *_pBlackLayer = LayerColor::create(Color4B(0, 0, 0, 255));
 	this->addChild(_pBlackLayer, 1);
 
-	Sprite *_pScene1 = Sprite::create("UI/UI_intro/intro_story/scene_1.png");
+	auto _aStoryScene = TMXTiledMap::create("UI/UI_intro/intro_story/story_scenes.tmx");
+	_aStoryScene->setScaleX(m_szVisibleSize.width / _aStoryScene->getContentSize().width);
+	_aStoryScene->setScaleY(m_szVisibleSize.height / _aStoryScene->getContentSize().height);
+	_aStoryScene->setPosition(Vec2(0.0f, 0.0f));
+	this->addChild(_aStoryScene, 2);
+	auto _aScene1 = _aStoryScene->getLayer("Scene1"); _aScene1->setOpacity(0.5f);
+	auto _aScene2 = _aStoryScene->getLayer("Scene2"); _aScene2->setOpacity(0.5f);
+	auto _aScene3 = _aStoryScene->getLayer("Scene3"); _aScene3->setOpacity(0.5f);
+	auto _aScene4 = _aStoryScene->getLayer("Scene4"); _aScene4->setOpacity(0.5f);
+	auto _aScene5 = _aStoryScene->getLayer("Scene5"); _aScene5->setOpacity(0.5f);
+	_aStoryScene->update(0.0f);
+	_aStoryScene->retain();
+
+	/*Sprite *_pScene1 = Sprite::create("UI/UI_intro/intro_story/scene_1.png");
 	_pScene1->getTexture()->setAntiAliasTexParameters();
 	_pScene1->setScaleX(m_szVisibleSize.width / _pScene1->getContentSize().width);
 	_pScene1->setScaleY(m_szVisibleSize.height / _pScene1->getContentSize().height);
@@ -76,18 +89,16 @@ void SceneIntro::showStoryLayer() {
 	_pScene5->setScaleY(m_szVisibleSize.height / _pScene5->getContentSize().height);
 	_pScene5->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 2));
 	_pScene5->setOpacity(0.0f);
-
-	this->addChild(_pScene5, 2);
+	this->addChild(_pScene5, 2);*/
 
 	float _fStepTime = 0.5f;
-
 	FadeIn *_pSceneFadeIn = FadeIn::create(_fStepTime * 4);
 
-	_pScene1->runAction(Sequence::create(DelayTime::create(_fStepTime * 0), EaseIn::create(_pSceneFadeIn->clone(), 5.0f), NULL));
+	/*_pScene1->runAction(Sequence::create(DelayTime::create(_fStepTime * 0), EaseIn::create(_pSceneFadeIn->clone(), 5.0f), NULL));
 	_pScene2->runAction(Sequence::create(DelayTime::create(_fStepTime * 4), EaseIn::create(_pSceneFadeIn->clone(), 5.0f), NULL));
 	_pScene3->runAction(Sequence::create(DelayTime::create(_fStepTime * 8), EaseIn::create(_pSceneFadeIn->clone(), 5.0f), NULL));
 	_pScene4->runAction(Sequence::create(DelayTime::create(_fStepTime * 12), EaseIn::create(_pSceneFadeIn->clone(), 5.0f), NULL));
-	_pScene5->runAction(Sequence::create(DelayTime::create(_fStepTime * 16), EaseIn::create(_pSceneFadeIn->clone(), 5.0f), NULL));
+	_pScene5->runAction(Sequence::create(DelayTime::create(_fStepTime * 16), EaseIn::create(_pSceneFadeIn->clone(), 5.0f), NULL));*/
 	this->runAction(Sequence::create(DelayTime::create(_fStepTime * 40),
 		CCCallFunc::create(CC_CALLBACK_0(SceneIntro::hideStoryLayerAndInitIntroScene, this)), NULL));
 	
@@ -147,25 +158,13 @@ void SceneIntro::initIntroScene() {
 
 	for (auto _aTwinkle : _aGameName->getObjectGroup("Twinkle")->getObjects()) {
 		auto _aObjectTwinkle = _aTwinkle.asValueMap();
-		Vec2 _v2PositionTwinkle = Point(_aObjectTwinkle["x"].asFloat(),
-			_aObjectTwinkle["y"].asFloat());
+		Point _ptPositionTwinkle = Point(_aObjectTwinkle["x"].asFloat(), _aObjectTwinkle["y"].asFloat());
 	
-		Twinkle *_pTwinkle = Twinkle::create(2.0f);
+		Twinkle *_pTwinkle = Twinkle::create();
 		_pTwinkle->setScale(_aGameName->getContentSize().height / _pTwinkle->getContentSize().height * 0.4f);
-		_pTwinkle->setPosition(_v2PositionTwinkle);
+		_pTwinkle->setPosition(Vec2(_ptPositionTwinkle.x, _ptPositionTwinkle.y));
 		_aGameName->addChild(_pTwinkle, 1);
 	}
-
-
-	/*Twinkle *_pTwinkle = Twinkle::create(2.0f);
-	_pTwinkle->setScale(_aGameName->getContentSize().height / _pTwinkle->getContentSize().height * 0.4f);
-	_pTwinkle->setPosition(Vec2(_aGameName->getContentSize().width * 0.3f, _aGameName->getContentSize().height * 0.7f));
-	_aGameName->addChild(_pTwinkle, 1);
-
-	Twinkle *_pTwinkle2 = Twinkle::create(3.0f);
-	_pTwinkle2->setScale(_aGameName->getContentSize().height / _pTwinkle2->getContentSize().height * 0.4f);
-	_pTwinkle2->setPosition(Vec2(_aGameName->getContentSize().width * 0.8f, _aGameName->getContentSize().height * 0.2f));
-	_aGameName->addChild(_pTwinkle2, 1);*/
 
 	auto _pStartNormal = Sprite::create("UI/UI_intro/btn_play.png");
 	auto _pStartSelected = Sprite::create("UI/UI_intro/btn_play.png");

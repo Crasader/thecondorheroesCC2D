@@ -187,6 +187,8 @@ private:
 	void hideBlurScreen();
 	void createLayerViaInput(Layer *p_pLayer, Size p_v2Size, Vec2 p_v2Position);
 	void moveLayerViaDirection(Layer *p_pLayer, int p_nDirection);
+	void loadTwinkle(TMXTiledMap *p_pSprite, float p_fMinScaleViaHeight, float p_fMaxScaleViaHeight);
+	void buttonSpringy(MenuItemSprite *p_pButton);
 
 	// supporter
 	int calTimeFromString(string p_sInputString);

@@ -24,7 +24,7 @@ bool DialogPauseGame::init()
 
 DialogPauseGame* DialogPauseGame::create()
 {
-	DialogPauseGame* dialog = new DialogPauseGame();
+	DialogPauseGame* dialog = new(std::nothrow) DialogPauseGame();
 
 	if (dialog && dialog->init())
 	{
@@ -269,7 +269,7 @@ bool DialogPause::init()
 
 DialogPause * DialogPause::create()
 {
-	DialogPause* dialog = new DialogPause();
+	DialogPause* dialog = new(std::nothrow) DialogPause();
 
 	if (dialog && dialog->init())
 	{
@@ -363,7 +363,7 @@ int DialogRevive::calGoldRevive(int number)
 
 DialogRevive * DialogRevive::create(int numberOfRevive)
 {
-	DialogRevive* dialog = new DialogRevive();
+	DialogRevive* dialog = new(std::nothrow) DialogRevive();
 
 	if (dialog && dialog->init(numberOfRevive)) {
 		dialog->autorelease();
@@ -475,6 +475,7 @@ bool DialogStageClear::init(int score, int gold)
 void DialogStageClear::shareFB()
 {
 	//FacebookHelper::getInstance()->dialogPhoto(FACE_SHARE_TITLE);
+	AdmobHelper::getInstance()->hide("top_banner");
 	FacebookHelper::getInstance()->dialogPhoto(FACE_SHARE_TITLE);
 	//log("Sharing");
 }
@@ -482,7 +483,7 @@ void DialogStageClear::shareFB()
 
 DialogStageClear * DialogStageClear::create(int score, int gold)
 {
-	DialogStageClear* dialog = new DialogStageClear();
+	DialogStageClear* dialog = new(std::nothrow) DialogStageClear();
 
 	if (dialog && dialog->init(score, gold))
 	{
@@ -633,7 +634,7 @@ bool DialogOverGame::init(int score, int gold)
 
 DialogOverGame * DialogOverGame::create(int score, int gold)
 {
-	DialogOverGame* dialog = new DialogOverGame();
+	DialogOverGame* dialog = new(std::nothrow) DialogOverGame();
 
 	if (dialog && dialog->init(score, gold))
 	{

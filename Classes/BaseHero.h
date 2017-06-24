@@ -2,7 +2,6 @@
 #define __BASE_HERO_H__
 
 #include "B2Skeleton.h"
-#include "utils/GB2ShapeCache-x.h"
 #include "state/StateMachine.h"
 #include "BaseEnemy.h"
 

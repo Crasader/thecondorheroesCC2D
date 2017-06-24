@@ -15,7 +15,7 @@ void AudioManager::cacheAudio()
 	experimental::AudioEngine::preload(MUSIC_STAGE1);
 	experimental::AudioEngine::preload(MUSIC_STAGE2);
 	experimental::AudioEngine::preload(MUSIC_STAGE3);
-	experimental::AudioEngine::preload(MUSIC_STAGE4);*/
+	experimental::AudioEngine::preload(MUSIC_STAGE4);
 	experimental::AudioEngine::preload(SOUND_DQDIE);
 	experimental::AudioEngine::preload(SOUND_DQHIT);
 	experimental::AudioEngine::preload(SOUND_DQSKILL1);
@@ -48,7 +48,7 @@ void AudioManager::cacheAudio()
 
 	experimental::AudioEngine::preload(SOUND_SCROLL_SLIDE);
 	experimental::AudioEngine::preload(SOUND_UNLOCK_HERO);
-	experimental::AudioEngine::preload(SOUND_UPGRADE_LEVEL);
+	experimental::AudioEngine::preload(SOUND_UPGRADE_LEVEL);*/
 }
 
 void AudioManager::playSound(string keysound)

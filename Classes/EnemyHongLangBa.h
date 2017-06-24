@@ -26,6 +26,8 @@ public:
 	//virtual void genSplash();
 	virtual void listener();
 	virtual void updatePos();
+	virtual void prepare();
+
 };
 
 #endif // __ENEMY_HONGLANGBA_H__

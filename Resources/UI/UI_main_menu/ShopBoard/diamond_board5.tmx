@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="308" tileheight="366" nextobjectid="40">
+ <tileset firstgid="1" name="diamond_board5" tilewidth="308" tileheight="366" tilecount="1" columns="1">
+  <image source="diamond_board5.png" width="308" height="366"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="1" height="1">
+  <data encoding="csv">
+1
+</data>
+ </layer>
+ <objectgroup name="Twinkle">
+  <object id="11" x="100.5" y="65.5" width="1" height="1"/>
+  <object id="12" x="165.833" y="47.5" width="1" height="1"/>
+  <object id="13" x="78.1667" y="113.833" width="1" height="1"/>
+  <object id="14" x="132.5" y="148.5" width="1" height="1"/>
+  <object id="15" x="162.167" y="152.833" width="1" height="1"/>
+  <object id="16" x="184.833" y="131.5" width="1" height="1"/>
+  <object id="17" x="209.833" y="127.167" width="1" height="1"/>
+  <object id="18" x="232" y="122" width="1" height="1"/>
+  <object id="19" x="211.5" y="102" width="1" height="1"/>
+  <object id="20" x="187" y="99" width="1" height="1"/>
+  <object id="21" x="140.5" y="89.5" width="1" height="1"/>
+  <object id="22" x="102.5" y="115" width="1" height="1"/>
+  <object id="23" x="141.5" y="116.5" width="1" height="1"/>
+  <object id="24" x="171.5" y="117.5" width="1" height="1"/>
+  <object id="25" x="52" y="205.5" width="1" height="1"/>
+  <object id="26" x="84.5" y="227.5" width="1" height="1"/>
+  <object id="27" x="77.5" y="255" width="1" height="1"/>
+  <object id="28" x="61.5" y="223.5" width="1" height="1"/>
+  <object id="29" x="114.5" y="250.5" width="1" height="1"/>
+  <object id="30" x="179" y="248.5" width="1" height="1"/>
+  <object id="31" x="205.5" y="227.5" width="1" height="1"/>
+  <object id="32" x="246" y="233.5" width="1" height="1"/>
+  <object id="33" x="232.5" y="253.5" width="1" height="1"/>
+  <object id="34" x="255" y="243" width="1" height="1"/>
+  <object id="35" x="275.5" y="249" width="1" height="1"/>
+  <object id="36" x="275.5" y="210" width="1" height="1"/>
+  <object id="37" x="263" y="163" width="1" height="1"/>
+  <object id="38" x="224.5" y="200.5" width="1" height="1"/>
+  <object id="39" x="269" y="231" width="1" height="1"/>
+ </objectgroup>
+</map>

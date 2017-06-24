@@ -3,7 +3,7 @@
 
 #include "Global.h"
 #include <spine/spine-cocos2dx.h>
-#include "utils/GB2ShapeCache-x.h"
+//#include "utils/GB2ShapeCache-x.h"
 
 using namespace spine;
 class BaseHero;
@@ -20,7 +20,7 @@ public:
 	static B2Skeleton* create(spSkeletonData *data);
 	virtual void initBoxPhysic(b2World *world, Point pos);
 	virtual void initCirclePhysic(b2World *world, Point pos);
-	virtual void initPhysicWithShapeCache(b2World * world, Point pos, string key);
+	//virtual void initPhysicWithShapeCache(b2World * world, Point pos, string key);
 	virtual void die();
 	virtual void changeBodyCategoryBits(uint16 mask);
 	virtual void changeBodyMaskBits(uint16 mask);

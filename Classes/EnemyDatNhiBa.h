@@ -1,12 +1,12 @@
 #ifndef __ENEMY_DATNHIBA_H__
 #define __ENEMY_DATNHIBA_H__
 
-#include "EnemyToanChanStudent.h"
+#include "EnemyHoacDo.h"
 
 
 
 
-class EnemyDatNhiBa : public EnemyToanChanStudent
+class EnemyDatNhiBa : public EnemyHoacDo
 {
 private:
 	CC_SYNTHESIZE(bool, canRun, CanRun);
@@ -22,6 +22,8 @@ public:
 	void playsoundDie();
 	virtual void initCirclePhysic(b2World * world, Point pos);
 	virtual void updatePos();
+	virtual void prepare();
+	virtual void listener();
 };
 
 #endif // __ENEMY_H__

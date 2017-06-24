@@ -9,8 +9,8 @@ class Twinkle : public Sprite {
 public:
 	Twinkle();
 	~Twinkle();
-	static Twinkle * create(float p_fDelay);
-	void initTwinkle(float p_fDelay);
+	static Twinkle * create();
+	void initTwinkle();
 
 };
 

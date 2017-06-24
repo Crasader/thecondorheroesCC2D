@@ -416,7 +416,7 @@ void EnemyBoss1::doAttack2()
 		switch (this->getRandAt2())
 		{
 		case 0: {
-			if (this->getControlState() == 1 || this->getControlState() == 3 || this->getControlState() == 5) {
+			if (this->getControlState() == 1 || this->getControlState() == 4 || this->getControlState() == 7) {
 				auto vecBossToHero = posHero - posBoss;
 				this->creatSlash(vecBossToHero.getAngle());
 			}

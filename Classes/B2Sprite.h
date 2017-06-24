@@ -3,7 +3,7 @@
 
 #include "Global.h"
 #include <spine/spine-cocos2dx.h>
-#include "utils/GB2ShapeCache-x.h"
+//#include "utils/GB2ShapeCache-x.h"
 
 using namespace spine;
 class BaseHero;
@@ -36,7 +36,7 @@ public:
 	* pos: position to add body in pixel
 	* key of shape cache
 	*/
-	virtual void initPhysicWithShapeCache(b2World *world, Point pos, string key);
+	//virtual void initPhysicWithShapeCache(b2World *world, Point pos, string key);
 	virtual void changeBodyCategoryBits(uint16 mask);
 	virtual void changeBodyMaskBits(uint16 mask);
 	virtual void setAngle(float radian);

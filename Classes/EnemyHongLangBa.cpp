@@ -119,21 +119,24 @@ void EnemyHongLangBa::updateMe(BaseHero * hero)
 void EnemyHongLangBa::listener()
 {
 	this->setCompleteListener([&](int trackIndex, int loopCount) {
-		if (strcmp(getCurrent()->animation->name, "attack") == 0 && loopCount == 1) {
-			//getSplash()->setVisible(false);
-			//setIsAttacking(false);
-			this->clearTracks();
-			this->addAnimation(0, "idle", true);
-			this->setToSetupPose();
-		}
-		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
-			//this->removeFromParentAndCleanup(true);
-			this->setVisible(false);
-			/*this->clearTracks();
-			this->setAnimation(0, "idle", true);
-			this->setToSetupPose();*/
-			this->pauseSchedulerAndActions();
-		}
+			if (strcmp(getCurrent()->animation->name, "attack") == 0 && loopCount == 1) {
+				//getSplash()->setVisible(false);
+				//setIsAttacking(false);
+				this->clearTracks();
+				this->addAnimation(0, "idle2", true);
+				this->setToSetupPose();
+			}
+			if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
+
+				this->setVisible(false);
+				this->pauseSchedulerAndActions();
+
+			}
+			if (strcmp(getCurrent()->animation->name, "waiting") == 0 && loopCount == 1) {
+				this->clearTracks();
+				this->setAnimation(0, "idle2", true);
+				this->setToSetupPose();
+			}
 
 	});
 }
@@ -141,3 +144,12 @@ void EnemyHongLangBa::listener()
 void EnemyHongLangBa::updatePos()
 {
 }
+
+void EnemyHongLangBa::prepare()
+{
+	BaseEnemy::prepare();
+	this->clearTracks();
+	this->setAnimation(0, "waiting", false);
+	this->setToSetupPose();
+}
+

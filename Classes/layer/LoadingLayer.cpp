@@ -101,9 +101,9 @@ void LoadingLayer::addStuff()
 		boardTime->getPositionY() + boardTime->getBoundingBox().size.height * 0.2f));
 	addChild(loading);
 
-	auto lbGuide = Label::createWithTTF("Guide here", "fonts/arial.ttf", 32);
+	auto lbGuide = Label::createWithTTF("Guide here", "fontsDPM/UTM_BRUSHSCI.ttf", 32);
 	lbGuide->setAnchorPoint(Vec2::ZERO);
-	lbGuide->setScale(boardTime->getBoundingBox().size.height * 0.6f / lbGuide->getContentSize().height);
+	lbGuide->setScale(boardTime->getBoundingBox().size.height * 0.8f / lbGuide->getContentSize().height);
 	lbGuide->setPosition(boardTime->getPositionX(), boardTime->getPositionY() - boardTime->getBoundingBox().size.height * 1.3f);
 	addChild(lbGuide);
 

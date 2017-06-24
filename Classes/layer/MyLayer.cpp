@@ -49,6 +49,7 @@ bool MyLayer::init(TMXTiledMap* tmx_map)
 	}
 	int max = 5;
 	if (tmx_map->getObjectGroup("wooder")) {
+		//Audo
 		wooderPool = MyPool::create(max, TAG_ENEMY_WOODER);
 		for (int i = 0; i < wooderPool->maxPool; i++) {
 			auto tmp = (EnemyWooder*)wooderPool->getObject();

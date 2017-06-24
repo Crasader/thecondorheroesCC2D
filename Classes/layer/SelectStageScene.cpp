@@ -41,7 +41,7 @@ bool SelectStageLayer::init(int charId)
 	int lastMapId = REF->getLastMapIdPlay();
 	int nextMapId = lastMapId < 12 ? lastMapId + 1 : 12;
 
-	character_point = Sprite::createWithSpriteFrameName(JSHERO->getSelectCharacterPoint());
+	character_point = Sprite::create(JSHERO->getSelectCharacterPoint());
 	character_point->setAnchorPoint(Vec2(0.5f, 0));
 	character_point->setScale(screenSize.height / 8.0f / character_point->getContentSize().width);
 	auto moveUp = MoveBy::create(0.3f, Vec2(0, character_point->getBoundingBox().size.height * 0.04f));
@@ -76,11 +76,11 @@ bool SelectStageLayer::init(int charId)
 		int mapId = mObject["mapId"].asInt();
 
 
-		Sprite* un_locked = Sprite::createWithSpriteFrameName("level_on.png");
-		Sprite* un_locked_press = Sprite::createWithSpriteFrameName("level_on.png");
+		Sprite* un_locked = Sprite::create("UI/Select_Stage/level_on.png");
+		Sprite* un_locked_press = Sprite::create("UI/Select_Stage/level_on.png");
 		un_locked_press->setColor(Color3B(128, 128, 128));
 
-		Sprite* locked = Sprite::createWithSpriteFrameName("level_off.png");
+		Sprite* locked = Sprite::create("UI/Select_Stage/level_off.png");
 
 		if (stage < currentStageUnlocked) {
 			mapBtn = MenuItemSprite::create(un_locked, un_locked_press,
@@ -149,7 +149,7 @@ void SelectStageLayer::moveAva()
 	if (lastMapId < 12) {
 		if (REF->getIsGetNewMap()) {
 			auto screenSize = Director::getInstance()->getVisibleSize();
-			auto effectUpLvMap = Sprite::createWithSpriteFrameName("effect_lv.png");
+			auto effectUpLvMap = Sprite::create("UI/Select_Stage/effect_lv.png");
 			effectUpLvMap->setScale(screenSize.height / 5.0f / effectUpLvMap->getContentSize().width);
 			auto pos = Point(nextMapPos.x, nextMapPos.y - character_point->getBoundingBox().size.height * 0.25f);
 			effectUpLvMap->setPosition(pos);
@@ -207,15 +207,15 @@ Sprite* SelectStageLayer::bossSprite(int order)
 	switch (order)
 	{
 	case 1:
-		boss = Sprite::createWithSpriteFrameName("boss_TTK_off.png");
+		boss = Sprite::create("UI/Select_Stage/boss_TTK_off.png");
 		break;
 
 	case 2:
-		boss = Sprite::createWithSpriteFrameName("boss_LMS_off.png");
+		boss = Sprite::create("UI/Select_Stage/boss_LMS_off.png");
 		break;
 
 	case 3:
-		boss = Sprite::createWithSpriteFrameName("boss_KLPV_off.png");
+		boss = Sprite::create("UI/Select_Stage/boss_KLPV_off.png");
 		break;
 	default:
 		break;

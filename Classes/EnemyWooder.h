@@ -24,7 +24,6 @@ public:
 	void updateMe(BaseHero* hero);
 	void listener();
 	void makeMask();
-
 };
 
 #endif // __ENEMY_H__

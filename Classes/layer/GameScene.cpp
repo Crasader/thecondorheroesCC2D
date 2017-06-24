@@ -1669,13 +1669,13 @@ void GameScene::createItem()
 		switch (type_val)
 		{
 		case 0:				// health
-			item = Item::create("item1_health.png", Item_type::HEALTH, origin);
+			item = Item::create("UI/UI_main_menu/ItemBoard/item1_health.png", Item_type::HEALTH, origin);
 			break;
 		case 1:
-			item = Item::create("tem4_doublecoin.png", Item_type::DOUBLE_COIN, origin);
+			item = Item::create("UI/UI_main_menu/ItemBoard/tem4_doublecoin.png", Item_type::DOUBLE_COIN, origin);
 			break;
 		case 2:
-			item = Item::create("item3_magnet.png", Item_type::MAGNET, origin);
+			item = Item::create("UI/UI_main_menu/ItemBoard/item3_magnet.png", Item_type::MAGNET, origin);
 			break;
 		}
 

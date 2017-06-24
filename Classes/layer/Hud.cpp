@@ -178,7 +178,7 @@ void Hud::addButton()
 	addChild(multiKills, 1);
 
 	coverSkill = Sprite::create(JSHERO->getPathMainImageSkill1());
-	coverItemMagnet = Sprite::create("item3_magnet.png");
+	coverItemMagnet = Sprite::create("UI/UI_main_menu/ItemBoard/item3_magnet.png");
 	/*coverItemDC = Sprite::createWithSpriteFrameName("item4_doublecoin.png");*/
 
 	auto groupIcon = tmxMap->getObjectGroup("icon");
@@ -208,7 +208,7 @@ void Hud::addButton()
 			break;
 
 		case 2:
-			icon_Item_Magnet = ProgressTimer::create(Sprite::create("item3_magnet.png"));
+			icon_Item_Magnet = ProgressTimer::create(Sprite::create("UI/UI_main_menu/ItemBoard/item3_magnet.png"));
 			icon_Item_Magnet->setPosition(coverItemMagnet->getContentSize() / 2);
 			icon_Item_Magnet->setPercentage(100.0f);
 			icon_Item_Magnet->setReverseDirection(true);
@@ -233,7 +233,7 @@ void Hud::addButton()
 
 			coverItemDC->addChild(icon_Item_DC);*/
 
-			coverItemDC = Sprite::create("item4_doublecoin.png"); // added
+			coverItemDC = Sprite::create("UI/UI_main_menu/ItemBoard/item4_doublecoin.png"); // added
 
 			//coverItemDC->setOpacity(50);
 			coverItemDC->setPosition(origin_X);

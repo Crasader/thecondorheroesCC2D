@@ -43,7 +43,7 @@
 	],
 	"items": [
 		{
-			"iconFilePath": "item1_health.png",
+			"iconFilePath": "UI/UI_main_menu/ItemBoard/item1_health.png",
 			"priceItem": 500,
 			"nameItem": {
 				"en" : "Health",
@@ -55,7 +55,7 @@
 			}
 		},
 		{
-			"iconFilePath": "item2_bird.png",
+			"iconFilePath": "UI/UI_main_menu/ItemBoard/item2_bird.png",
 			"priceItem": 700,
 			"nameItem": {
 				"en" : "Condor",
@@ -67,7 +67,7 @@
 			}
 		},
 		{
-			"iconFilePath": "item3_magnet.png",
+			"iconFilePath": "UI/UI_main_menu/ItemBoard/item3_magnet.png",
 			"priceItem": 300,
 			"nameItem": {
 				"en" : "Magnet",
@@ -79,7 +79,7 @@
 			}
 		},
 		{
-			"iconFilePath": "item4_doublecoin.png",
+			"iconFilePath": "UI/UI_main_menu/ItemBoard/item4_doublecoin.png",
 			"priceItem": 400,
 			"nameItem": {
 				"en" : "x2 Coin",
@@ -91,7 +91,7 @@
 			}
 		},
 		{
-			"iconFilePath": "item5_cooldown.png",
+			"iconFilePath": "UI/UI_main_menu/ItemBoard/item5_cooldown.png",
 			"priceItem": 750,
 			"nameItem": {
 				"en" : "Cooldown",
@@ -159,27 +159,27 @@
 	],
 	"energy_packs": [
 		{
-		"iconEnergyPackPath": "energy_board1.png",
+		"iconEnergyPackPath": "UI/UI_main_menu/ShopBoard/energy_board1.png",
 		"energyNumber": 3,
 		"diamondPrice": 3
 		},
 		{
-		"iconEnergyPackPath": "energy_board2.png",
+		"iconEnergyPackPath": "UI/UI_main_menu/ShopBoard/energy_board2.png",
 		"energyNumber": 5,
 		"diamondPrice": 5
 		},
 		{
-		"iconEnergyPackPath": "energy_board3.png",
+		"iconEnergyPackPath": "UI/UI_main_menu/ShopBoard/energy_board3.png",
 		"energyNumber": 10,
 		"diamondPrice": 8
 		},
 		{
-		"iconEnergyPackPath": "energy_board4.png",
+		"iconEnergyPackPath": "UI/UI_main_menu/ShopBoard/energy_board4.png",
 		"energyNumber": 15,
 		"diamondPrice": 10
 		},
 		{
-		"iconEnergyPackPath": "energy_board5.png",
+		"iconEnergyPackPath": "UI/UI_main_menu/ShopBoard/energy_board5.png",
 		"energyNumber": 25,
 		"diamondPrice": 15
 		}

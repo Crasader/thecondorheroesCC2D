@@ -17,12 +17,37 @@
 #include "thirdsdkhelper\VungleHelper.h"
 #include "thirdsdkhelper\SdkboxPlay.h"
 
-
 USING_NS_CC;
 using namespace spine;
 using namespace std;
 using namespace ui;
 using namespace network;
+
+//#ifndef __MENUSCENE_H__
+//#define __MENUSCENE_H__
+//
+//#include "cocos2d.h"
+//#include "ui/CocosGUI.h"
+//#include <spine/spine-cocos2dx.h>
+//#include <vector>
+//#include <time.h>
+//#include "network/HttpClient.h"
+//
+//#include "CustomLayerToToast.h"
+//#include "SelectStageScene.h"
+//
+//#include "GoogleAnalysticHelper.h"
+//#include "GoogleAnalysticHelper.h"
+//#include "IAPHelper.h"
+//#include "VungleHelper.h"
+//#include "SdkboxPlay.h"
+//
+//
+//USING_NS_CC;
+//using namespace spine;
+//using namespace std;
+//using namespace ui;
+//using namespace network;
 
 #ifdef SDKBOX_ENABLED
 class MenuLayer : public cocos2d::Layer, public sdkbox::IAPListener, public sdkbox::VungleListener
@@ -34,7 +59,7 @@ public:
 	virtual bool init(bool p_bOnlySelectStage);
 	void update(float p_fDelta);
 	static MenuLayer* create(bool p_bOnlySelectStage);
-    void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
+	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
 
 	bool downLife();
 	void disableListener();
@@ -58,7 +83,7 @@ private:
 	int m_arItemPrice[5];									// cost of items
 	int m_nShopOption = 0;
 	int m_nLanguage = 0;
-    int backNumber = 0;
+	int backNumber = 0;
 	//float m_nCakeScale;
 
 	Label *m_pTimeCounter;									// time counter to increase life
@@ -127,8 +152,6 @@ private:
 	void initDailyRewardBoard();
 
 	void initShopBoard(int p_nOption);
-
-	void backFunction();
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// HANDLE
 	// handle button
@@ -140,6 +163,7 @@ private:
 	void buttonQuestHandle();
 	void buttonHeroesHandle();
 	void buttonShopHandle();
+	void buttonLeaderBoardHandle();
 	void buttonFreeCoinHandle();
 	void buttonSettingHandle();
 	void buttonMoreGameHandle();
@@ -169,7 +193,7 @@ private:
 	bool createRequestToGoogle();														// send a request to google.com.vn to get data
 	void onHttpRequestCompleted(HttpClient *p_pSender, HttpResponse *p_pResponse);		// handle response an get realtime from google.com.vm
 
-																						// buy coin
+	// buy coin
 	void buttonConfirmHandle(bool p_bConfirm, int p_nIndexPack);
 	void buttonBuyLifeHandle(int p_nIndexEnergyPack);
 	void buttonBuyCoinHandle(int p_nIndexCoinPack);
@@ -190,6 +214,11 @@ private:
 	void loadTwinkle(TMXTiledMap *p_pSprite, float p_fMinScaleViaHeight, float p_fMaxScaleViaHeight);
 	void buttonSpringy(MenuItemSprite *p_pButton);
 
+	Sprite * createSpriteOnParent(Layer *p_pLayerParent, Sprite *p_pSpriteParent, int p_nLayer, string p_sPath, float p_fScaleX, float p_fScaleY, bool p_bScaleByWidth, Vec2 p_v2Anchor, Vec2 p_v2Position);
+	MenuItemSprite * createButtonOnParent(Layer *p_pLayerParent, Sprite *p_pSpriteParent, string p_sPath, ccMenuCallback p_pCallback, float p_fScaleX, float p_fScaleY, bool p_bScaleByWidth, Vec2 p_v2Anchor, Vec2 p_v2Position);
+	Label * createLabelBMOnParent(Layer *p_pLayerParent, Sprite *p_pSpriteParent, int p_nLayer, string p_sFontName, string p_sText, float p_fFontSize, TextHAlignment p_pHAlignment, TextVAlignment p_pVAlignment, Vec2 p_v2Anchor, Vec2 p_v2Position);
+	Label * createLabelTTFOnParent(Layer *p_pLayerParent, Sprite *p_pSpriteParent, int p_nLayer, string p_sFontName, string p_sText, float p_fScale, bool p_bScaleByWidth, TextHAlignment p_pHAlignment, TextVAlignment p_pVAlignment, Vec2 p_v2Anchor, Vec2 p_v2Position, Color3B p_b3Color);
+
 	// supporter
 	int calTimeFromString(string p_sInputString);
 	void scrollSlideHandle(Ref* sender, ScrollView::EventType type);
@@ -198,6 +227,7 @@ private:
 	void onChangedLanguage();
 	void buttonSoundControlHandle(Ref* p_pSender);
 	void buttonMusicControlHandle(Ref* p_pSender);
+
 	// for google analytic
 	void logButtonClickEvent(string button);
 	void logBuyItemEvent(string item);
@@ -210,7 +240,7 @@ private:
 	void logShowMoreDiamond();
 	void logShowMoreLife();
 	void logBuyCoin(int dexOfPack);
-	void logBuyLife(int dexOfPack); 
+	void logBuyLife(int dexOfPack);
 	void logBuyDiamond(int dexOfPack, float money);
 
 
@@ -239,3 +269,4 @@ private:
 };
 
 #endif // __MENUSCENE_H__
+

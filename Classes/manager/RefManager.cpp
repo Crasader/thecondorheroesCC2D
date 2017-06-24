@@ -39,10 +39,10 @@ RefManager::RefManager()
 
 	// need to fix
 	unLockHero(0);
-	unLockHero(1);
+	/*unLockHero(1);
 	unLockHero(2);
-	//unLockHero(3);
-	//unLockHero(4);
+	unLockHero(3);
+	unLockHero(4);*/
 	pointToCurrentHero(selectedHero);
 }
 
@@ -334,7 +334,7 @@ void RefManager::updateDailyRewardAvailable(bool p_bData) {
 }
 
 void RefManager::resetFreeCoin() {
-	freeCoin = 3;
+	freeCoin = 1;
 	ref->setIntegerForKey(KEY_FREE_COIN, freeCoin);
 	ref->flush();
 }

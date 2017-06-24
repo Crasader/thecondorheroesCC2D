@@ -63,7 +63,9 @@
         "noti_9": "You don't have enough diamond, get more to buy",
         "noti_10": "Do you want to buy this pack?",
         "noti_11": "You've taken free coin 3 times today, comeback on tomorrow to get more",
-        "noti_12": "Press back again to exit!"
+        "noti_12": "Press back again to exit!",
+        "noti_13": "Bonus %d energies",
+        "noti_14": "%d gold for you"
       },
 
       "vi": {
@@ -78,7 +80,9 @@
         "noti_9": "Bạn không đủ kim cương, cần nhiều hơn để mua",
         "noti_10": "Bạn có muốn mua vật phẩm này?",
         "noti_11": "Bạn đã nhận được 3 lần vàng miễn phí ngày hôm nay, quay lại vào ngày mai để nhận tiếp",
-        "noti_12": "Ấn nút Back lần nữa để thoát!"
+        "noti_12": "Ấn nút Back lần nữa để thoát!",
+        "noti_13": "Cộng %d bánh bao",
+        "noti_14": "%d vàng cộng thêm"
       }
     }
   ],
@@ -138,10 +142,10 @@
       "percentBonusCoin": 0,
       "goldPrice": 0,
       "diamondPrice": 0,
-      "iconUnlocked": "icon_hero_dq_2.png",
-      "iconUnlockedSelected": "icon_hero_dq_1.png",
-      "iconLocked": "icon_hero_dq_3.png",
-      "iconLockedSelected": "icon_hero_dq_4.png"
+      "iconUnlocked": "UI/UI_main_menu/HeroMenu/icon_hero_dq_2.png",
+      "iconUnlockedSelected": "UI/UI_main_menu/HeroMenu/icon_hero_dq_1.png",
+      "iconLocked": "UI/UI_main_menu/HeroMenu/icon_hero_dq_3.png",
+      "iconLockedSelected": "UI/UI_main_menu/HeroMenu/icon_hero_dq_4.png"
     },
     {
       "key": "132456789abc",
@@ -197,10 +201,10 @@
       "percentBonusCoin": 2,
       "goldPrice": 2000,
       "diamondPrice": 0,
-      "iconUnlocked": "icon_hero_cc_2.png",
-      "iconUnlockedSelected": "icon_hero_cc_1.png",
-      "iconLocked": "icon_hero_cc_3.png",
-      "iconLockedSelected": "icon_hero_cc_4.png"
+      "iconUnlocked": "UI/UI_main_menu/HeroMenu/icon_hero_cc_2.png",
+      "iconUnlockedSelected": "UI/UI_main_menu/HeroMenu/icon_hero_cc_1.png",
+      "iconLocked": "UI/UI_main_menu/HeroMenu/icon_hero_cc_3.png",
+      "iconLockedSelected": "UI/UI_main_menu/HeroMenu/icon_hero_cc_4.png"
     },
     {
       "key": "124356789abc",
@@ -256,10 +260,10 @@
       "percentBonusCoin": 10,
       "goldPrice": 6000,
       "diamondPrice": 0,
-      "iconUnlocked": "icon_hero_hd_2.png",
-      "iconUnlockedSelected": "icon_hero_hd_1.png",
-      "iconLocked": "icon_hero_hd_3.png",
-      "iconLockedSelected": "icon_hero_hd_4.png"
+      "iconUnlocked": "UI/UI_main_menu/HeroMenu/icon_hero_hd_2.png",
+      "iconUnlockedSelected": "UI/UI_main_menu/HeroMenu/icon_hero_hd_1.png",
+      "iconLocked": "UI/UI_main_menu/HeroMenu/icon_hero_hd_3.png",
+      "iconLockedSelected": "UI/UI_main_menu/HeroMenu/icon_hero_hd_4.png"
     },
     {
       "key": "123457689abc",
@@ -315,10 +319,10 @@
       "percentBonusCoin": 15,
       "goldPrice": 0,
       "diamondPrice": 100,
-      "iconUnlocked": "icon_hero_hds_2.png",
-      "iconUnlockedSelected": "icon_hero_hds_1.png",
-      "iconLocked": "icon_hero_hds_3.png",
-      "iconLockedSelected": "icon_hero_hds_4.png"
+      "iconUnlocked": "UI/UI_main_menu/HeroMenu/icon_hero_hds_2.png",
+      "iconUnlockedSelected": "UI/UI_main_menu/HeroMenu/icon_hero_hds_1.png",
+      "iconLocked": "UI/UI_main_menu/HeroMenu/icon_hero_hds_3.png",
+      "iconLockedSelected": "UI/UI_main_menu/HeroMenu/icon_hero_hds_4.png"
     },
     {
       "key": "123546789abc",
@@ -374,10 +378,10 @@
       "percentBonusCoin": 20,
       "goldPrice": 0,
       "diamondPrice": 400,
-      "iconUnlocked": "icon_hero_qt_2.png",
-      "iconUnlockedSelected": "icon_hero_qt_1.png",
-      "iconLocked": "icon_hero_qt_3.png",
-      "iconLockedSelected": "icon_hero_qt_4.png"
+      "iconUnlocked": "UI/UI_main_menu/HeroMenu/icon_hero_qt_2.png",
+      "iconUnlockedSelected": "UI/UI_main_menu/HeroMenu/icon_hero_qt_1.png",
+      "iconLocked": "UI/UI_main_menu/HeroMenu/icon_hero_qt_3.png",
+      "iconLockedSelected": "UI/UI_main_menu/HeroMenu/icon_hero_qt_4.png"
     }
   ]
 }

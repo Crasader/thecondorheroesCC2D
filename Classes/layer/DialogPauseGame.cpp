@@ -230,7 +230,7 @@ bool DialogPause::init()
 	background->setPosition(origin + SCREEN_SIZE / 2);
 	addChild(background);
 
-	auto checkBoxMusic = ui::CheckBox::create("UI/UI_main_menu/btn_off.png", "UI/UI_main_menu/btn_on.png");
+	auto checkBoxMusic = ui::CheckBox::create("UI/UI_main_menu/SettingBoard/btn_off.png", "UI/UI_main_menu/SettingBoard/btn_on.png");
 	if (ref->getBoolForKey(KEY_IS_MUSIC, true)) {
 		checkBoxMusic->setSelected(true);
 	}
@@ -238,7 +238,7 @@ bool DialogPause::init()
 	checkBoxMusic->setPosition(Vec2(background->getContentSize().width*0.25f, background->getContentSize().height*0.7f));
 	background->addChild(checkBoxMusic);
 
-	auto checkBoxSound = ui::CheckBox::create("UI/UI_main_menu/btn_off.png", "UI/UI_main_menu/btn_on.png");
+	auto checkBoxSound = ui::CheckBox::create("UI/UI_main_menu/SettingBoard/btn_off.png", "UI/UI_main_menu/SettingBoard/btn_on.png");
 	if (ref->getBoolForKey(KEY_IS_SOUND, true)) {
 		checkBoxSound->setSelected(true);
 	}

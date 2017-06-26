@@ -9,7 +9,7 @@
 
 bool SelectStageLayer::init(int charId)
 {
-	AudioManager::playMusic(MUSIC_MENU);
+	
 
 	auto originXY = Director::getInstance()->getVisibleOrigin();
 	auto screenSize = Director::getInstance()->getVisibleSize();
@@ -232,7 +232,8 @@ Sprite* SelectStageLayer::bossSprite(int order)
 	auto scaleUp = ScaleBy::create(0.8f, 1.04f);
 	auto seq = Sequence::createWithTwoActions(EaseInOut::create(scaleUp, 2), EaseInOut::create(scaleUp->reverse(), 2));
 	boss->runAction(RepeatForever::create(seq));
-
+	AudioManager::stopSoundandMusic();
+	AudioManager::playMusic(MUSIC_MENU);
 	return boss;
 }
 

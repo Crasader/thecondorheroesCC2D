@@ -26,9 +26,6 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 	if (!Layer::init()) {
 		return false;
 	}
-
-	AudioManager::stopSoundandMusic();
-	AudioManager::playMusic(MUSIC_MENU);
 	initInputData();
 	Vec2 _v2Origin = Director::getInstance()->getVisibleOrigin();
 	this->setPosition(_v2Origin);
@@ -109,6 +106,8 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 	sdkbox::IAP::setListener(this);
 #endif
 	createRequestToGoogle();
+	AudioManager::stopSoundandMusic();
+	AudioManager::playMusic(MUSIC_MENU);
 	return true;
 }
 

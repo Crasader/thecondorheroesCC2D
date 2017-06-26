@@ -139,61 +139,61 @@ void GameScene::selectHero()
 	switch (charId)
 	{
 	case 0:
-		experimental::AudioEngine::preload(SOUND_DQDIE);
-		experimental::AudioEngine::preload(SOUND_DQHIT);
-		experimental::AudioEngine::preload(SOUND_DQSKILL1);
-		experimental::AudioEngine::preload(SOUND_DQSKILL2);
-		experimental::AudioEngine::preload(SOUND_DQSKILL3);
+		preload(SOUND_DQDIE);
+		preload(SOUND_DQHIT);
+		preload(SOUND_DQSKILL1);
+		preload(SOUND_DQSKILL2);
+		preload(SOUND_DQSKILL3);
 		hero = DuongQua::create("Animation/DuongQua/DuongQua.json", 
 								"Animation/DuongQua/DuongQua.atlas", SCREEN_SIZE.height / 5 / 315);
 		break;
 
 	case 1:
-		experimental::AudioEngine::preload(SOUND_CLDIE);
-		experimental::AudioEngine::preload(SOUND_CLHIT);
-		experimental::AudioEngine::preload(SOUND_CLSKILL1);
-		experimental::AudioEngine::preload(SOUND_CLSKILL2);
-		experimental::AudioEngine::preload(SOUND_CLSKILL3);
+		preload(SOUND_CLDIE);
+		preload(SOUND_CLHIT);
+		preload(SOUND_CLSKILL1);
+		preload(SOUND_CLSKILL2);
+		preload(SOUND_CLSKILL3);
 		hero = CoLong::create("Animation/CoLong/CoLong.json", 
 								"Animation/CoLong/CoLong.atlas", SCREEN_SIZE.height / 5 / 340);
 		break;
 
 	case 2:
-		experimental::AudioEngine::preload(SOUND_HD_DIE);
-		experimental::AudioEngine::preload(SOUND_HD_HIT);
-		experimental::AudioEngine::preload(SOUND_HD_SKILL1);
-		experimental::AudioEngine::preload(SOUND_HD_SKILL2);
-		experimental::AudioEngine::preload(SOUND_HD_SKILL3);
+		preload(SOUND_HD_DIE);
+		preload(SOUND_HD_HIT);
+		preload(SOUND_HD_SKILL1);
+		preload(SOUND_HD_SKILL2);
+		preload(SOUND_HD_SKILL3);
 		hero = HoangDung::create("Animation/HoangDung/HoangDung.json", 
 									"Animation/HoangDung/HoangDung.atlas", SCREEN_SIZE.height / 5 / 340);
 		break;
 
 	case 3:
-		experimental::AudioEngine::preload(SOUND_HDS_DIE);
-		experimental::AudioEngine::preload(SOUND_HDS_HIT);
-		experimental::AudioEngine::preload(SOUND_HDS_SKILL1);
-		experimental::AudioEngine::preload(SOUND_HDS_SKILL2);
-		experimental::AudioEngine::preload(SOUND_HDS_SKILL3);
+		preload(SOUND_HDS_DIE);
+		preload(SOUND_HDS_HIT);
+		preload(SOUND_HDS_SKILL1);
+		preload(SOUND_HDS_SKILL2);
+		preload(SOUND_HDS_SKILL3);
 		hero = HoangDuocSu::create("Animation/HoangDuocSu/HoangDuocSu.json", 
 								"Animation/HoangDuocSu/HoangDuocSu.atlas", SCREEN_SIZE.height / 5 / 300);
 		break;
 
 	case 4:
-		experimental::AudioEngine::preload(SOUND_QT_DIE);
-		experimental::AudioEngine::preload(SOUND_QT_HIT);
-		experimental::AudioEngine::preload(SOUND_QT_SKILL1);
-		experimental::AudioEngine::preload(SOUND_QT_SKILL2);
-		experimental::AudioEngine::preload(SOUND_QT_SKILL3);
+		preload(SOUND_QT_DIE);
+		preload(SOUND_QT_HIT);
+		preload(SOUND_QT_SKILL1);
+		preload(SOUND_QT_SKILL2);
+		preload(SOUND_QT_SKILL3);
 		hero = QuachTinh::create("Animation/QuachTinh/QuachTinh.json", 
 								"Animation/QuachTinh/QuachTinh.atlas", SCREEN_SIZE.height / 5 / 300);
 		break;
 
 	default:
-		experimental::AudioEngine::preload(SOUND_DQDIE);
-		experimental::AudioEngine::preload(SOUND_DQHIT);
-		experimental::AudioEngine::preload(SOUND_DQSKILL1);
-		experimental::AudioEngine::preload(SOUND_DQSKILL2);
-		experimental::AudioEngine::preload(SOUND_DQSKILL3);
+		preload(SOUND_DQDIE);
+		preload(SOUND_DQHIT);
+		preload(SOUND_DQSKILL1);
+		preload(SOUND_DQSKILL2);
+		preload(SOUND_DQSKILL3);
 		hero = DuongQua::create("Animation/DuongQua/DuongQua.json",
 			"Animation/DuongQua/DuongQua.atlas", SCREEN_SIZE.height / 5 / 315);
 		break;
@@ -303,6 +303,7 @@ void GameScene::onBegin()
 void GameScene::onExit()
 {
 	Layer::onExit();
+	uncacheSound();
 	b2Body* list = world->GetBodyList();
 	while (list)
 	{
@@ -1565,9 +1566,9 @@ void GameScene::createBoss()
 
 void GameScene::createCoin()
 {
-	experimental::AudioEngine::preload(SOUND_COIN);
-	experimental::AudioEngine::preload(SOUND_COINBULLION);
-	experimental::AudioEngine::preload(SOUND_COINBAG);
+	preload(SOUND_COIN);
+	preload(SOUND_COINBULLION);
+	preload(SOUND_COINBAG);
 
 	createFormCoin("coin_tim", "Map/tim.tmx", "tim");
 	createFormCoin("coin_straight", "Map/straight.tmx", "straight");
@@ -1659,7 +1660,7 @@ void GameScene::createFormCoin(string objectName, string objectMap, string objec
 
 void GameScene::createItem()
 {
-	experimental::AudioEngine::preload(SOUND_ITEM);
+	preload(SOUND_ITEM);
 
 	auto groupItem = tmx_map->getObjectGroup("item");
 	if (!groupItem) return;
@@ -2703,67 +2704,80 @@ void GameScene::tutorial()
 void GameScene::cacheEnemySound()
 {
 	if (tmx_map->getObjectGroup("wooder")) {
-		experimental::AudioEngine::preload(SOUND_ENEMYHIT);
+		preload(SOUND_ENEMYHIT);
 	}
 	else if (tmx_map->getObjectGroup("toanchan_student")) {
-		experimental::AudioEngine::preload(SOUND_TC1AT);
-		experimental::AudioEngine::preload(SOUND_TC1DIE);
+		preload(SOUND_TC1AT);
+		preload(SOUND_TC1DIE);
 	}
 	else if (tmx_map->getObjectGroup("toanchan_student2")) {
-		experimental::AudioEngine::preload(SOUND_TC2AT);
-		experimental::AudioEngine::preload(SOUND_TC2DIE);
+		preload(SOUND_TC2AT);
+		preload(SOUND_TC2DIE);
 	}
 	else if (tmx_map->getObjectGroup("bee")) {
-		experimental::AudioEngine::preload(SOUND_TOONGDIE);
+		preload(SOUND_TOONGDIE);
 	}
 	else if (tmx_map->getObjectGroup("lms_student lv1")) {
-		experimental::AudioEngine::preload(SOUND_HLB1AT);
-		experimental::AudioEngine::preload(SOUND_HLB1DIE);
+		preload(SOUND_HLB1AT);
+		preload(SOUND_HLB1DIE);
 	}
 	else if (tmx_map->getObjectGroup("lms_student lv2")) {
-		experimental::AudioEngine::preload(SOUND_HLB2AT);
-		experimental::AudioEngine::preload(SOUND_HLB2DIE);
+		preload(SOUND_HLB2AT);
+		preload(SOUND_HLB2DIE);
 	}
 	else if (tmx_map->getObjectGroup("tnb")) {
-		experimental::AudioEngine::preload(SOUND_TNBDIE);
+		preload(SOUND_TNBDIE);
 	}
 	else if (tmx_map->getObjectGroup("hoacdo_1")) {
-		experimental::AudioEngine::preload(SOUND_HD1AT);
-		experimental::AudioEngine::preload(SOUND_HD1DIE);
+		preload(SOUND_HD1AT);
+		preload(SOUND_HD1DIE);
 	}
 	else if (tmx_map->getObjectGroup("hoacdo_2")) {
-		experimental::AudioEngine::preload(SOUND_HD2AT);
-		experimental::AudioEngine::preload(SOUND_HD2DIE);
+		preload(SOUND_HD2AT);
+		preload(SOUND_HD2DIE);
 	}
 	else if (tmx_map->getObjectGroup("datnhiba_1")) {
-		experimental::AudioEngine::preload(SOUND_DNBAT);
-		experimental::AudioEngine::preload(SOUND_DNBAT);
+		preload(SOUND_DNBAT);
+		preload(SOUND_DNBAT);
 	}
 	else if (tmx_map->getObjectGroup("datnhiba_2")) {
-		experimental::AudioEngine::preload(SOUND_DNBAT);
-		experimental::AudioEngine::preload(SOUND_DNBAT);
+		preload(SOUND_DNBAT);
+		preload(SOUND_DNBAT);
 	}
 	else if (tmx_map->getObjectGroup("chonggo")) {
-		experimental::AudioEngine::preload(SOUND_TNBDIE);
-		//experimental::AudioEngine::preload(SOUND_DNBAT);
+		preload(SOUND_TNBDIE);
+		//preload(SOUND_DNBAT);
 	}
 	else if (tmx_map->getObjectGroup("linhcamgiao1")) {
-		experimental::AudioEngine::preload(SOUND_GIAOAT);
-		experimental::AudioEngine::preload(SOUND_GIAOAT);
+		preload(SOUND_GIAOAT);
+		preload(SOUND_GIAOAT);
 	}
 	else if (tmx_map->getObjectGroup("linhcamgiao2")) {
-		experimental::AudioEngine::preload(SOUND_GIAOAT);
-		experimental::AudioEngine::preload(SOUND_GIAOAT);
+		preload(SOUND_GIAOAT);
+		preload(SOUND_GIAOAT);
 	}
 	else if (tmx_map->getObjectGroup("linhtenthang")) {
-		experimental::AudioEngine::preload(SOUND_CUNGAT);
-		experimental::AudioEngine::preload(SOUND_CUNGDIE);
+		preload(SOUND_CUNGAT);
+		preload(SOUND_CUNGDIE);
 	}
 	else if (tmx_map->getObjectGroup("linhcamroi")) {
-		experimental::AudioEngine::preload(SOUND_ROIAT);
-		experimental::AudioEngine::preload(SOUND_ROIDIE);
+		preload(SOUND_ROIAT);
+		preload(SOUND_ROIDIE);
 	}
 
+}
+
+void GameScene::preload(string filename)
+{
+	experimental::AudioEngine::preload(filename);
+	listsoundPreLoad.push_back(filename);
+}
+
+void GameScene::uncacheSound()
+{
+	for (auto i : listsoundPreLoad) {
+		experimental::AudioEngine::uncache(i);
+	}
 }
 
 void GameScene::resumeAfterTut(int caseTut)

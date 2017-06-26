@@ -123,6 +123,7 @@ private:
 
 	// dialog here
 	DialogPauseGame* dialogPause;
+	vector<string> listsoundPreLoad;
 
 	// listener
 	EventListenerTouchOneByOne* touch_listener;
@@ -258,6 +259,8 @@ private:
 
 	void tutorial();
 	void cacheEnemySound();
+	void preload(string filename);
+	void uncacheSound();
 
 public:
 

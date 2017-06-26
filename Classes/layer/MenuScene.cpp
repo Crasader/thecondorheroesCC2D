@@ -2810,11 +2810,7 @@ void MenuLayer::onVungleAdReward(const std::string & name)
 		REF->setUpLife(5);
 		initTopMainMenu();
 		m_pTopMenu->setEnabled(true);
-
-
-		CustomLayerToToast *_pToast = CustomLayerToToast::create("Bonus 5 energies", TOAST_SHORT);
-		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
-		this->addChild(_pToast, 10);
+		actionToast(13, 5);
 	}
 	else {
 		float type = CCRANDOM_0_1();
@@ -2826,27 +2822,21 @@ void MenuLayer::onVungleAdReward(const std::string & name)
 				initTopMainMenu();
 				m_pTopMenu->setEnabled(true);
 
-				CustomLayerToToast *_pToast = CustomLayerToToast::create(StringUtils::format(JSHERO->getNotifyAtX(14).c_str(), 300), TOAST_SHORT);
-				_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
-				this->addChild(_pToast, 10);
+				actionToast(14, 300);
 			}
 			else if (percent < 0.85f) {
 				m_nCurrentGold += 400;
 				REF->setUpGoldExplored(400);
 				initTopMainMenu();
 				m_pTopMenu->setEnabled(true);
-				CustomLayerToToast *_pToast = CustomLayerToToast::create(StringUtils::format(JSHERO->getNotifyAtX(14).c_str(), 400), TOAST_SHORT);
-				_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
-				this->addChild(_pToast, 10);
+				actionToast(14, 400);
 			}
 			else {
 				m_nCurrentGold += 500;
 				REF->setUpGoldExplored(500);
 				initTopMainMenu();
 				m_pTopMenu->setEnabled(true);
-				CustomLayerToToast *_pToast = CustomLayerToToast::create(StringUtils::format(JSHERO->getNotifyAtX(14).c_str(), 500), TOAST_SHORT);
-				_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
-				this->addChild(_pToast, 10);
+				actionToast(14, 500);
 			}
 		}
 		else {
@@ -2855,10 +2845,8 @@ void MenuLayer::onVungleAdReward(const std::string & name)
 				REF->setUpLife(3);
 				initTopMainMenu();
 				m_pTopMenu->setEnabled(true);
-
-				CustomLayerToToast *_pToast = CustomLayerToToast::create(StringUtils::format(JSHERO->getNotifyAtX(13).c_str(), 3), TOAST_SHORT);
-				_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
-				this->addChild(_pToast, 10);
+				
+				actionToast(13, 3);
 			}
 			else if (percent < 0.85f) {
 				m_nLifeNumber += 4;
@@ -2866,9 +2854,7 @@ void MenuLayer::onVungleAdReward(const std::string & name)
 				initTopMainMenu();
 				m_pTopMenu->setEnabled(true);
 
-				CustomLayerToToast *_pToast = CustomLayerToToast::create(StringUtils::format(JSHERO->getNotifyAtX(13).c_str(), 4), TOAST_SHORT);
-				_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
-				this->addChild(_pToast, 10);
+				actionToast(13, 4);
 			}
 			else {
 				m_nLifeNumber += 5;
@@ -2876,9 +2862,7 @@ void MenuLayer::onVungleAdReward(const std::string & name)
 				initTopMainMenu();
 				m_pTopMenu->setEnabled(true);
 
-				CustomLayerToToast *_pToast = CustomLayerToToast::create(StringUtils::format(JSHERO->getNotifyAtX(13).c_str(), 5), TOAST_SHORT);
-				_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
-				this->addChild(_pToast, 10);
+				actionToast(13, 5);
 			}
 		}
 	}
@@ -2923,6 +2907,17 @@ void MenuLayer::singlePress(float dt)
 {
 	this->unschedule(schedule_selector(MenuLayer::singlePress));
 	backNumber = 0;
+}
+
+void MenuLayer::actionToast(int index, int value)
+{
+	auto action = CallFunc::create([=]() {
+		CustomLayerToToast *_pToast = CustomLayerToToast::create(StringUtils::format(JSHERO->getNotifyAtX(index).c_str(), value), TOAST_SHORT);
+		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
+		this->addChild(_pToast, 10);
+	});
+	
+	this->runAction(Sequence::createWithTwoActions(DelayTime::create(0.5f), action));
 }
 
 void MenuLayer::loadTwinkle(TMXTiledMap *p_pTMXTiledMap, float p_fMinScaleViaHeight, float p_fMaxScaleViaHeight) {

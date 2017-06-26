@@ -266,6 +266,7 @@ private:
 private:
 	string indexHeroToName(int indexHero);
 	void singlePress(float dt);
+	void actionToast(int index, int value);
 };
 
 #endif // __MENUSCENE_H__

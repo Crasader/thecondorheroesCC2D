@@ -543,6 +543,7 @@ void DialogStageClear::effect()
 
 void DialogStageClear::onExit()
 {
+	DialogPauseGame::onExit();
 	UserDefault::getInstance()->setBoolForKey(KEY_PRE_STAGE_STATUS,true);
 }
 
@@ -657,5 +658,6 @@ void DialogOverGame::effect()
 
 void DialogOverGame::onExit()
 {
+	DialogPauseGame::onExit();
 	UserDefault::getInstance()->setBoolForKey(KEY_PRE_STAGE_STATUS, false);
 }

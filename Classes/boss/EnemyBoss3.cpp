@@ -108,13 +108,14 @@ void EnemyBoss3::playSoundDie()
 
 void EnemyBoss3::doAttack2()
 {
+	this->setControlState(0);
 	if (this->getPositionY() > SCREEN_SIZE.height / 5) {
+		this->attack2();
 		this->schedule([&](float dt) {
-			////log("do attack2");
+			log("do attack2");
 			this->setControlState(this->getControlState() + 1);
-			if (this->getControlState() == 1) {
-				this->attack2();
-			}
+			//if (this->getControlState() == 1) {
+			//}
 			auto posHero = this->heroLocation;
 			auto posBoss = this->getPosGenSlash();
 
@@ -163,13 +164,13 @@ void EnemyBoss3::doAttack2()
 		}, 0.1f, "bossattack2");
 	}
 	else {
+		this->attack3();
 		this->schedule([&](float dt) {
-			////log("do attack2");
+			//log("do attack2");
 			this->setControlState(this->getControlState() + 1);
-			if (this->getControlState() == 1) {
-				this->attack3();
+			/*if (this->getControlState() == 1) {
 
-			}
+			}*/
 			if (this->getControlState() == 7 ||this->getControlState() == 12 || this->getControlState() == 17) {
 				this->creatHidenSlash(PI);
 			}

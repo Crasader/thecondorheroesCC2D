@@ -405,12 +405,14 @@ void EnemyBoss1::doAttack1()
 
 void EnemyBoss1::doAttack2()
 {
+	this->setControlState(0);
+	this->attack2();
 	this->schedule([&](float dt) {
-		////log("do attack2");
+		//log("do attack2");
 		this->setControlState(this->getControlState() + 1);
-		if (this->getControlState() == 1) {
+		//if (this->getControlState() == 1) {
 			this->attack2();
-		}
+		//}
 		auto posHero = this->heroLocation;
 		auto posBoss = this->getPosGenSlash();
 		switch (this->getRandAt2())

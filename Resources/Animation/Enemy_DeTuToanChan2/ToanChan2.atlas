@@ -1,131 +1,173 @@
 
 ToanChan2.png
-size: 1024,512
+size: 4096,2048
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 buitoc
   rotate: false
-  xy: 699, 355
+  xy: 1369, 832
   size: 81, 55
   orig: 81, 55
   offset: 0, 0
   index: -1
 caidau
-  rotate: true
-  xy: 481, 303
+  rotate: false
+  xy: 141, 235
   size: 95, 119
   orig: 95, 119
   offset: 0, 0
   index: -1
 caidau2
-  rotate: true
-  xy: 459, 206
+  rotate: false
+  xy: 2736, 1386
   size: 95, 119
   orig: 95, 119
   offset: 0, 0
   index: -1
 caidau3
   rotate: false
-  xy: 602, 279
+  xy: 2838, 1571
   size: 95, 119
   orig: 95, 119
   offset: 0, 0
   index: -1
 canhtay1
   rotate: true
-  xy: 782, 365
+  xy: 1509, 1018
   size: 45, 69
   orig: 45, 69
   offset: 0, 0
   index: -1
 canhtay2
   rotate: false
-  xy: 699, 285
+  xy: 1626, 1124
   size: 62, 68
   orig: 62, 68
   offset: 0, 0
   index: -1
 chansau1
-  rotate: true
-  xy: 666, 412
+  rotate: false
+  xy: 3076, 1845
   size: 88, 185
   orig: 88, 185
   offset: 0, 0
   index: -1
 chantruoc1
-  rotate: true
-  xy: 481, 400
+  rotate: false
+  xy: 2736, 1507
   size: 100, 183
   orig: 100, 183
   offset: 0, 0
   index: -1
 day
   rotate: false
-  xy: 302, 20
+  xy: 3076, 1703
   size: 35, 140
   orig: 35, 140
   offset: 0, 0
   index: -1
 kiem
   rotate: false
-  xy: 342, 325
+  xy: 2, 179
   size: 137, 175
   orig: 137, 175
   offset: 0, 0
   index: -1
 kiem2
-  rotate: true
-  xy: 2, 22
+  rotate: false
+  xy: 1369, 1017
   size: 138, 175
   orig: 138, 175
   offset: 0, 0
   index: -1
 mau1
   rotate: false
-  xy: 2, 162
+  xy: 2736, 1692
   size: 338, 338
   orig: 338, 338
   offset: 0, 0
   index: -1
+s1
+  rotate: false
+  xy: 2, 1194
+  size: 1365, 417
+  orig: 1365, 417
+  offset: 0, 0
+  index: -1
+s2
+  rotate: false
+  xy: 1369, 1613
+  size: 1365, 417
+  orig: 1365, 417
+  offset: 0, 0
+  index: -1
+s3
+  rotate: false
+  xy: 2, 775
+  size: 1365, 417
+  orig: 1365, 417
+  offset: 0, 0
+  index: -1
+s4
+  rotate: false
+  xy: 1369, 1194
+  size: 1365, 417
+  orig: 1365, 417
+  offset: 0, 0
+  index: -1
+s5
+  rotate: false
+  xy: 2, 356
+  size: 1365, 417
+  orig: 1365, 417
+  offset: 0, 0
+  index: -1
+s6
+  rotate: false
+  xy: 2, 1613
+  size: 1365, 417
+  orig: 1365, 417
+  offset: 0, 0
+  index: -1
 shadow
   rotate: false
-  xy: 2, 2
+  xy: 3166, 2012
   size: 126, 18
   orig: 126, 18
   offset: 0, 0
   index: -1
 taysau
   rotate: false
-  xy: 853, 371
+  xy: 2, 2
   size: 41, 38
   orig: 41, 38
   offset: 0, 0
   index: -1
 taytruoc1
-  rotate: true
-  xy: 990, 454
+  rotate: false
+  xy: 93, 145
   size: 46, 32
   orig: 46, 32
   offset: 0, 0
   index: -1
 than
-  rotate: true
-  xy: 853, 411
+  rotate: false
+  xy: 2, 42
   size: 89, 135
   orig: 89, 135
   offset: 0, 0
   index: -1
 vatsau
   rotate: false
-  xy: 179, 34
+  xy: 1369, 889
   size: 121, 126
   orig: 121, 126
   offset: 0, 0
   index: -1
 vattruoc
   rotate: false
-  xy: 342, 196
+  xy: 1509, 1065
   size: 115, 127
   orig: 115, 127
   offset: 0, 0

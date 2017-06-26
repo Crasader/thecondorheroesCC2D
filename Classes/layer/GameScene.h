@@ -58,7 +58,7 @@ public:
 
 private:
 
-	bool isModeDebug;
+	//bool isModeDebug;
 	
 	// props
 	int stage;

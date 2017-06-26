@@ -42,6 +42,7 @@ EnemyToanChanStudent2 * EnemyToanChanStudent2::create(string filename, float sca
 	//enemy->setTimeScale(1.4f);
 	enemy->health = 1;
 	enemy->exp = 15;
+	enemy->setControlAttack(115);
 	enemy->autorelease();
 	return enemy;
 }
@@ -65,6 +66,7 @@ void EnemyToanChanStudent2::attack()
 	slash->setAnimation(0, "animation", true);
 	slash->resume();
 	slash->initCirclePhysic(this->getB2Body()->GetWorld(), this->getBoneLocation("b-hand") + this->getParent()->getPosition());
+	slash->setVisible(false);
 	slash->getB2Body()->SetLinearVelocity(b2Vec2(-SCREEN_SIZE.width/3/PTM_RATIO,0));
 }
 
@@ -114,21 +116,23 @@ void EnemyToanChanStudent2::listener()
 			this->clearTracks();
 			this->addAnimation(0, "idle", true);
 			this->setToSetupPose();
+			if(this->getB2Body())
+			this->getSlash()->setVisible(true);
 		}
-		if (strcmp(getCurrent()->animation->name, "attack1") == 0 && loopCount == 1) {
-			//getSlash()->setVisible(false);
-			//setIsAttacking(false);
-			this->clearTracks();
-			this->addAnimation(0, "idle", true);
-			this->setToSetupPose();
-		}
-		if (strcmp(getCurrent()->animation->name, "attack2") == 0 && loopCount == 1) {
-			//getSlash()->setVisible(false);
-			//setIsAttacking(false);
-			this->clearTracks();
-			this->addAnimation(0, "idle", true);
-			this->setToSetupPose();
-		}
+		//if (strcmp(getCurrent()->animation->name, "attack1") == 0 && loopCount == 1) {
+		//	//getSlash()->setVisible(false);
+		//	//setIsAttacking(false);
+		//	this->clearTracks();
+		//	this->addAnimation(0, "idle", true);
+		//	this->setToSetupPose();
+		//}
+		//if (strcmp(getCurrent()->animation->name, "attack2") == 0 && loopCount == 1) {
+		//	//getSlash()->setVisible(false);
+		//	//setIsAttacking(false);
+		//	this->clearTracks();
+		//	this->addAnimation(0, "idle", true);
+		//	this->setToSetupPose();
+		//}
 		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
 
 			this->setVisible(false);

@@ -1,83 +1,111 @@
 
 MocNhan.png
-size: 493,534
+size: 2048,256
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 CCMocNhan
   rotate: true
-  xy: 2, 281
+  xy: 2, 3
   size: 251, 364
   orig: 251, 364
   offset: 0, 0
   index: -1
 break1
-  rotate: true
-  xy: 189, 33
+  rotate: false
+  xy: 1310, 39
   size: 232, 215
   orig: 232, 215
   offset: 0, 0
   index: -1
 break2
-  rotate: true
-  xy: 2, 2
+  rotate: false
+  xy: 700, 69
   size: 277, 185
   orig: 277, 185
   offset: 0, 0
   index: -1
-mieng1
+la1
   rotate: true
-  xy: 368, 406
+  xy: 1786, 185
+  size: 69, 83
+  orig: 69, 83
+  offset: 0, 0
+  index: -1
+la2
+  rotate: false
+  xy: 466, 2
+  size: 22, 38
+  orig: 22, 38
+  offset: 0, 0
+  index: -1
+mieng1
+  rotate: false
+  xy: 1544, 157
   size: 126, 97
   orig: 126, 97
   offset: 0, 0
   index: -1
 mieng2
   rotate: false
-  xy: 368, 267
+  xy: 979, 77
   size: 118, 61
   orig: 118, 61
   offset: 0, 0
   index: -1
 mieng3
-  rotate: true
-  xy: 406, 153
+  rotate: false
+  xy: 1672, 191
   size: 112, 63
   orig: 112, 63
   offset: 0, 0
   index: -1
 mieng4
   rotate: false
-  xy: 368, 330
+  xy: 1544, 81
   size: 108, 74
   orig: 108, 74
   offset: 0, 0
   index: -1
 mieng5
-  rotate: true
-  xy: 406, 16
+  rotate: false
+  xy: 1099, 94
   size: 58, 44
   orig: 58, 44
   offset: 0, 0
   index: -1
 mieng6
   rotate: false
-  xy: 189, 3
+  xy: 368, 12
   size: 96, 28
   orig: 96, 28
   offset: 0, 0
   index: -1
 mieng7
-  rotate: true
-  xy: 452, 11
+  rotate: false
+  xy: 1544, 40
   size: 63, 39
   orig: 63, 39
   offset: 0, 0
   index: -1
 mieng8
   rotate: true
-  xy: 406, 76
+  xy: 1871, 179
   size: 75, 76
   orig: 75, 76
+  offset: 0, 0
+  index: -1
+mu1
+  rotate: false
+  xy: 368, 42
+  size: 330, 212
+  orig: 330, 212
+  offset: 0, 0
+  index: -1
+mu2
+  rotate: false
+  xy: 979, 140
+  size: 329, 114
+  orig: 329, 114
   offset: 0, 0
   index: -1

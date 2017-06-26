@@ -361,7 +361,7 @@ void EnemyBoss1::listener()
 		if (getCurrent()) {
 			if ((strcmp(getCurrent()->animation->name, "attack2") == 0 && loopCount == 1)) {
 				this->normalState->exit(this);
-				this->unschedule("bossattack2");
+				//this->unschedule("bossattack2");
 			}
 			else if ((strcmp(getCurrent()->animation->name, "attack") == 0 && loopCount == 1)) {
 				this->normalState->exit(this);
@@ -388,65 +388,39 @@ void EnemyBoss1::changeState(StateBoss * state)
 
 void EnemyBoss1::doAttack1()
 {
-	//this->schedule([&](float dt) {
-		////log("doattack1");
-		//this->setControlState(this->getControlState() + 1);
-		//if (this->getControlState() % 2 == 0) {
-			//if (this->getControlAttack() == 0) {
-			//	this->changeState(new BossFixingStupid());
-			//	//delete this;
-			//	this->unschedule("bossattack1");
-			//}
 	this->attack();
-	//this->setControlAttack(this->getControlAttack() - 1);
-//}
-//}, 0.1f, "bossattack1");
 }
 
 void EnemyBoss1::doAttack2()
 {
-	this->schedule([&](float dt) {
-		////log("do attack2");
-		this->setControlState(this->getControlState() + 1);
-		if (this->getControlState() == 1) {
-			this->attack2();
-		}
-		auto posHero = this->heroLocation;
-		auto posBoss = this->getPosGenSlash();
-		switch (this->getRandAt2())
-		{
-		case 0: {
-			if (this->getControlState() == 1 || this->getControlState() == 4 || this->getControlState() == 7) {
-				auto vecBossToHero = posHero - posBoss;
-				this->creatSlash(vecBossToHero.getAngle());
-			}
-			break;
-		}
-		case 1: {
-			if (this->getControlState() == 2 || this->getControlState() == 4) {
-				auto vecBossToHero = posHero - posBoss;
-				this->creatSlash(vecBossToHero.getAngle() - PI / 24);
-				this->creatSlash(vecBossToHero.getAngle());
-				this->creatSlash(vecBossToHero.getAngle() + PI / 24);
-			}
-			break;
-		}
-		case 2: {
-			break;
-		}
-		default:
-			if (this->getControlState() == 1 || this->getControlState() == 3 || this->getControlState() == 5) {
-				auto vecBossToHero = posHero - posBoss;
-				this->creatSlash(vecBossToHero.getAngle());
-			}
-			break;
-		}
-		//if (boss->getLevelBoss() == 1) {
+	this->attack2();
+	auto type1 = CallFunc::create([&]() {
+		auto vecBossToHero = this->heroLocation -this->getPosGenSlash();
+		this->creatSlash(vecBossToHero.getAngle());
 
-		/*if (this->getControlState() >= 30) {
-			
-		}*/
-	}, 0.1f, "bossattack2");
+	});
+
+	auto type2 = CallFunc::create([&]() {
+		auto vecBossToHero = this->heroLocation -this->getPosGenSlash();
+		this->creatSlash(vecBossToHero.getAngle() - PI / 24);
+		this->creatSlash(vecBossToHero.getAngle());
+		this->creatSlash(vecBossToHero.getAngle() + PI / 24);
+	});
+	switch (this->getRandAt2())
+	{
+	case 0: {
+		this->runAction(Sequence::create(type1,DelayTime::create(0.3f),type1, DelayTime::create(0.3f),type1, nullptr));
+		break;
+	}
+	case 1: {
+		this->runAction(Sequence::create(type2, DelayTime::create(0.3f), type2, nullptr));
+		break;
+	}
+	default:
+		this->runAction(Sequence::create(type1, DelayTime::create(0.3f), type1, DelayTime::create(0.3f), type1, nullptr));
+		break;
+	}
+	
 }
 
 Vec2 EnemyBoss1::getPosGenSlash()

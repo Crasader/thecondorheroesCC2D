@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "ZEOkEb2uyDSWIsor1Wz3jVUIHRE", "spine": "3.6.34", "width": 603.59, "height": 432.96, "images": "" },
+"skeleton": { "hash": "dDkSpv8bvvxaeH23wK55rl7WfrY", "spine": "3.6.36", "width": 1642.81, "height": 457.48, "images": "" },
 "bones": [
 	{ "name": "root" },
 	{ "name": "body", "parent": "root", "length": 72.04, "rotation": 93.84, "x": 9.87, "y": 183.07 },
@@ -38,6 +38,7 @@
 	{ "name": "f-hand", "parent": "bone16", "length": 24.73, "rotation": 2.04, "x": 54.45, "y": 2.43 },
 	{ "name": "f-lappet", "parent": "body", "length": 56.22, "rotation": 175.27, "x": -21.55, "y": 2.73 },
 	{ "name": "shadow", "parent": "root", "length": 55.6, "rotation": 90 },
+	{ "name": "slash", "parent": "root", "length": 453.93, "rotation": 180, "x": -35.72, "y": 13.82 },
 	{ "name": "weapon", "parent": "b-hand", "length": 49.62, "rotation": -2.89, "x": 31.6, "y": 2.72 },
 	{ "name": "weapon2", "parent": "root", "length": 49.62, "rotation": 119.53, "x": -120.2, "y": 182.4 }
 ],
@@ -60,7 +61,8 @@
 	{ "name": "canhtay1", "bone": "f-arm", "attachment": "canhtay1" },
 	{ "name": "canhtay2", "bone": "bone16", "attachment": "canhtay2" },
 	{ "name": "taytruoc", "bone": "f-hand", "attachment": "taytruoc" },
-	{ "name": "mau", "bone": "blood", "color": "ffffff00", "attachment": "mau1" }
+	{ "name": "mau", "bone": "blood", "color": "ffffff00", "attachment": "mau1" },
+	{ "name": "s1", "bone": "slash", "color": "ffffff00", "attachment": "s1" }
 ],
 "ik": [
 	{
@@ -166,6 +168,14 @@
 		},
 		"mau": {
 			"mau1": { "x": 184.77, "y": 27.86, "scaleX": 1.2, "scaleY": 1.2, "width": 338, "height": 338 }
+		},
+		"s1": {
+			"s1": { "x": 551.79, "y": -156.66, "rotation": 180, "width": 1365, "height": 417 },
+			"s2": { "x": 551.79, "y": -156.66, "rotation": 180, "width": 1365, "height": 417 },
+			"s3": { "x": 551.79, "y": -156.66, "rotation": 180, "width": 1365, "height": 417 },
+			"s4": { "x": 551.79, "y": -156.66, "rotation": 180, "width": 1365, "height": 417 },
+			"s5": { "x": 551.79, "y": -156.66, "rotation": 180, "width": 1365, "height": 417 },
+			"s6": { "x": 551.79, "y": -156.66, "rotation": 180, "width": 1365, "height": 417 }
 		},
 		"shadow": {
 			"shadow": { "scaleX": 1.5, "scaleY": 1.5, "rotation": -90, "width": 126, "height": 18 }
@@ -274,6 +284,22 @@
 				"attachment": [
 					{ "time": 0, "name": "mau1" },
 					{ "time": 0.5, "name": "mau1" }
+				]
+			},
+			"s1": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 0.1, "color": "ffffff00" },
+					{ "time": 0.1333, "color": "fffffffe", "curve": "stepped" },
+					{ "time": 0.2667, "color": "fffffffe" },
+					{ "time": 0.3667, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "time": 0.1333, "name": "s2" },
+					{ "time": 0.1667, "name": "s3" },
+					{ "time": 0.2, "name": "s4" },
+					{ "time": 0.2333, "name": "s5" },
+					{ "time": 0.2667, "name": "s6" }
 				]
 			},
 			"shadow": {
@@ -884,6 +910,17 @@
 					{ "time": 0.2333, "x": 1, "y": 1, "curve": "stepped" },
 					{ "time": 0.4333, "x": 1, "y": 1 }
 				]
+			},
+			"slash": {
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1.175 },
+					{ "time": 0.1333, "x": 1, "y": 1, "curve": "stepped" },
+					{ "time": 0.2667, "x": 1, "y": 1 },
+					{ "time": 0.3667, "x": 1, "y": 1.449 }
+				]
 			}
 		},
 		"ik": {
@@ -906,7 +943,7 @@
 		},
 		"drawOrder": [
 			{ "time": 0 },
-			{ "time": 0.5 }
+			{ "time": 0.3667 }
 		]
 	},
 	"die": {

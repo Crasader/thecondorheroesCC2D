@@ -108,86 +108,42 @@ void EnemyBoss3::playSoundDie()
 
 void EnemyBoss3::doAttack2()
 {
+	//this->setControlState(0);
 	if (this->getPositionY() > SCREEN_SIZE.height / 5) {
-		this->schedule([&](float dt) {
-			////log("do attack2");
-			this->setControlState(this->getControlState() + 1);
-			if (this->getControlState() == 1) {
-				this->attack2();
-			}
-			auto posHero = this->heroLocation;
-			auto posBoss = this->getPosGenSlash();
+		this->attack2();
+		auto type1 = CallFunc::create([&]() {
+			auto vecBossToHero = this->heroLocation -this->getPosGenSlash();
+			this->creatSlash(vecBossToHero.getAngle());
 
-			switch (this->getRandAt2())
-			{
-			case 0: {
-				if (this->getControlState() == 1 || this->getControlState() == 3 || this->getControlState() == 5) {
-					auto vecBossToHero = posHero - posBoss;
-					this->creatSlash(vecBossToHero.getAngle());
-				}
-				break;
-			}
-			case 1: {
-				if (this->getControlState() == 3) {
-					auto vecBossToHero = posHero - posBoss;
-					this->creatSlash(vecBossToHero.getAngle() - PI / 24);
-					this->creatSlash(vecBossToHero.getAngle());
-					this->creatSlash(vecBossToHero.getAngle() + PI / 24);
-				}
-				break;
-			}
-			case 2: {
-				if (this->getControlState() == 3) {
-					auto vecBossToHero = posHero - posBoss;
-					this->creatSlash(vecBossToHero.getAngle() - PI / 24);
-					this->creatSlash(vecBossToHero.getAngle());
-					this->creatSlash(vecBossToHero.getAngle() + PI / 24);
-				}
-				break;
-			}
-			default:
-				if (this->getControlState() == 1 || this->getControlState() == 3 || this->getControlState() == 5) {
-					auto vecBossToHero = posHero - posBoss;
-					this->creatSlash(vecBossToHero.getAngle());
-				}
-				break;
-			}
-			//if (boss->getLevelBoss() == 1) {
+		});
 
-
-			/*if (this->getControlState() >= 30) {
-				this->changeState(new BossStupiding());
-				this->unschedule("bossattack2");
-			}*/
-
-		}, 0.1f, "bossattack2");
+		auto type2 = CallFunc::create([&]() {
+			auto vecBossToHero = this->heroLocation -this->getPosGenSlash();
+			this->creatSlash(vecBossToHero.getAngle() - PI / 24);
+			this->creatSlash(vecBossToHero.getAngle());
+			this->creatSlash(vecBossToHero.getAngle() + PI / 24);
+		});
+		switch (this->getRandAt2())
+		{
+		case 0: {
+			this->runAction(Sequence::create(type1, DelayTime::create(0.3f), type1, DelayTime::create(0.3f), type1, nullptr));
+			break;
+		}
+		case 1: {
+			this->runAction(type2);
+			break;
+		}
+		default:
+			this->runAction(type2);
+			break;
+		}
 	}
 	else {
-		this->schedule([&](float dt) {
-			////log("do attack2");
-			this->setControlState(this->getControlState() + 1);
-			if (this->getControlState() == 1) {
-				this->attack3();
-
-			}
-			if (this->getControlState() == 7 ||this->getControlState() == 12 || this->getControlState() == 17) {
-				this->creatHidenSlash(PI);
-			}
-			//if (boss->getLevelBoss() == 1) {
-			/*if (this->getControlState() == 25) {
-				this->clearTracks();
-				this->setAnimation(0, "idle", true);
-				this->setTimeScale(1);
-				this->setToSetupPose();
-				this->unImmortal();
-			}*/
-
-			/*if (this->getControlState() >= 30) {
-				this->changeState(new BossStupiding());
-				this->unschedule("bossattack2");
-			}*/
-
-		}, 0.1f, "bossattack2");
+		this->attack3();
+		auto type3 = CallFunc::create([&]() {
+			this->creatHidenSlash(PI);
+		});
+		this->runAction(Sequence::create(DelayTime::create(0.7f),type3,DelayTime::create(0.5f),type3, DelayTime::create(0.5f), type3, nullptr));
 	}
 
 }
@@ -214,11 +170,11 @@ void EnemyBoss3::listener()
 		if (getCurrent()) {
 			if ((strcmp(getCurrent()->animation->name, "attack2") == 0 && loopCount == 1)) {
 				this->normalState->exit(this);
-				this->unschedule("bossattack2");
+				//this->unschedule("bossattack2");
 			}
 			else if ((strcmp(getCurrent()->animation->name, "attack3") == 0 && loopCount == 1)) {
 				this->normalState->exit(this);
-				this->unschedule("bossattack2");
+			//	this->unschedule("bossattack2");
 				this->setTimeScale(1);
 			}
 			else if ((strcmp(getCurrent()->animation->name, "attack") == 0 && loopCount == 1)) {

@@ -35,6 +35,7 @@ void BossIdling::enter(EnemyBoss1 * boss)
 	boss->unImmortal();
 	boss->setRealMoveVelocity(Vec2::ZERO);
 	boss->idle();
+	id = IdStateBoss::Idling;
 	log("idle");
 }
 
@@ -63,6 +64,7 @@ void BossIdling::exit(EnemyBoss1 * boss)
 			boss->setBalanceAt1andAT2(1);
 		}
 	}
+	log("exit idle");
 }
 
 BossAttacking1::BossAttacking1()
@@ -81,6 +83,8 @@ void BossAttacking1::enter(EnemyBoss1 * boss)
 	srand(time(NULL));
 	//boss->setControlAttack(rand() % 3 + 1);
 	boss->setControlAttack(0);
+	id = IdStateBoss::Attack1;
+	log("attack1");
 	
 }
 
@@ -92,6 +96,7 @@ void BossAttacking1::execute(EnemyBoss1 * boss)
 void BossAttacking1::exit(EnemyBoss1 * boss)
 {
 	boss->changeState(new BossFixingStupid());
+	log("exit attack1");
 }
 
 BossAttacking2::BossAttacking2()
@@ -105,9 +110,10 @@ BossAttacking2::~BossAttacking2()
 void BossAttacking2::enter(EnemyBoss1 * boss)
 {
 	StateBoss::enter(boss);
-	boss->doAttack2();
 	boss->setRealMoveVelocity(Vec2::ZERO);
 	boss->setRandAt2(cocos2d::random() % (boss->getLevelBoss()));
+	boss->doAttack2();
+	id = IdStateBoss::Attack2;
 	log("attack2");
 	
 }
@@ -121,6 +127,7 @@ void BossAttacking2::execute(EnemyBoss1 * boss)
 void BossAttacking2::exit(EnemyBoss1 * boss)
 {
 	boss->changeState(new BossIdling());
+	log("exit attack2");
 }
 
 BossStupiding::BossStupiding()
@@ -137,6 +144,7 @@ void BossStupiding::enter(EnemyBoss1 * boss)
 	boss->idle();
 	boss->setRealMoveVelocity(-boss->getmoveVelocity());
 	boss->setControlState(-1);
+	id = IdStateBoss::Stupiding;
 	log("stupiding");
 }
 
@@ -160,6 +168,7 @@ void BossStupiding::execute(EnemyBoss1 * boss)
 void BossStupiding::exit(EnemyBoss1 * boss)
 {
 	boss->changeState(new BossAttacking1());
+	log("exit attack1");
 }
 
 BossFixingStupid::BossFixingStupid()
@@ -174,6 +183,8 @@ void BossFixingStupid::enter(EnemyBoss1 * boss)
 {
 	StateBoss::enter(boss);
 	boss->fixStupid();
+	id = IdStateBoss::FixStupiding;
+	log("fixstupid");
 }
 
 void BossFixingStupid::execute(EnemyBoss1 * boss)
@@ -193,6 +204,7 @@ void BossFixingStupid::execute(EnemyBoss1 * boss)
 void BossFixingStupid::exit(EnemyBoss1 * boss)
 {
 	boss->changeState(new BossIdling());
+	log("exit fixstupid");
 }
 
 BossDie::BossDie()
@@ -210,6 +222,7 @@ void BossDie::enter(EnemyBoss1 * boss)
 	boss->setAnimation(0, "injured-red", false);
 	boss->setToSetupPose();
 	boss->setRealMoveVelocity(Vec2(boss->getmoveVelocity().x, boss->getmoveVelocity().y));
+	id = IdStateBoss::Die;
 	/*boss->unschedule("bossattack1");
 	boss->unschedule("bossattack2");*/
 }
@@ -230,6 +243,7 @@ void BossDie::execute(EnemyBoss1 * boss)
 
 void BossDie::exit(EnemyBoss1 * boss)
 {
+	log("die attack1");
 }
 
 BossInjure::BossInjure()
@@ -247,6 +261,7 @@ void BossInjure::enter(EnemyBoss1 * boss)
 	boss->setAnimation(0, "injured-red", false);
 	boss->setToSetupPose();
 	boss->setControlState(boss->getControlState() - boss->getControlState() % 20);
+	id = IdStateBoss::Injure;
 }
 
 void BossInjure::execute(EnemyBoss1 * boss)
@@ -262,5 +277,6 @@ void BossInjure::exit(EnemyBoss1 * boss)
 	boss->unImmortal();
 	boss->crazyState = nullptr;
 	boss->idle();
+	log("exit injure");
 	delete this;
 }

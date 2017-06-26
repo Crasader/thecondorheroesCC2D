@@ -3,10 +3,21 @@
 
 class EnemyBoss1;
 
+enum IdStateBoss {
+	Idling,
+	Attack1,
+	Attack2,
+	Stupiding,
+	FixStupiding,
+	Die,
+	Injure,
+
+};
 
 class StateBoss
 {
 public:
+	IdStateBoss id;
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
 	StateBoss();
 	~StateBoss();

@@ -50,7 +50,7 @@ bool GameScene::init(int stage, int map, int charId)
 	AudioManager::stopMusic();
 	GAHelper::getInstance()->logScreen(StringUtils::format("Stage: %d, Map: %d", stage, map));
 
-	isModeDebug = false;
+	//isModeDebug = false;
 
 	changebg = 0;
 
@@ -818,8 +818,8 @@ void GameScene::loadBackground()
 
 	tmx_map->setPosition(Point::ZERO);
 
-	if (isModeDebug)
-		tmx_map->setVisible(false);
+	//if (isModeDebug)
+		//tmx_map->setVisible(false);
 
 	this->haveboss = tmx_map->getObjectGroup("boss") != nullptr ? 1 : 0;
 
@@ -835,8 +835,8 @@ void GameScene::loadBackground()
 			tmx_mapboss[i] = TMXTiledMap::create(StringUtils::format("Map/map%d/mapboss.tmx", stage));
 			tmx_mapboss[i]->setAnchorPoint(Point::ZERO);
 			tmx_mapboss[i]->setScale(scaleOfMap);
-			if (isModeDebug)
-				tmx_mapboss[i]->setVisible(false);
+			//if (isModeDebug)
+				//tmx_mapboss[i]->setVisible(false);
 		}
 
 		tmx_mapboss[0]->setPosition(tmx_map->getPosition() + Vec2(tmx_map->getBoundingBox().size.width, 0));
@@ -936,8 +936,8 @@ void GameScene::createInfiniteNode()
 	//background->setPosition(Point(-SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 	background->setPosition(Point(0, SCREEN_SIZE.height / 2));
 	background->setAnchorPoint(Point(0, 0.5f));
-	if (isModeDebug)
-		background->setVisible(false);
+	//if (isModeDebug)
+		//background->setVisible(false);
 	this->addChild(background, ZORDER_BG);
 
 	background2 = InfiniteParallaxNode::create();

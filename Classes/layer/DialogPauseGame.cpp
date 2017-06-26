@@ -567,7 +567,7 @@ void DialogStageClear::onExit()
 bool DialogOverGame::init(int score, int gold)
 {
 	DialogPauseGame::init();
-	UserDefault::getInstance()->setBoolForKey(KEY_PRE_STAGE_STATUS,true);
+	UserDefault::getInstance()->setBoolForKey(KEY_PRE_STAGE_STATUS, true);
 	auto origin = Director::getInstance()->getVisibleOrigin();
 
 

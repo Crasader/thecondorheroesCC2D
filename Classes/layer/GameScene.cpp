@@ -214,8 +214,8 @@ void GameScene::selectHero()
 
 void GameScene::createEagle(Point position)
 {
-	_aEagle = ChimDieu::create("Animation/ChimDieu/ChimDieu.json",
-		"Animation/ChimDieu/ChimDieu.atlas", SCREEN_SIZE.height / 2048);
+	_aEagle = ChimDieu::create("Animation/ChimDieu/ChimDieu", SCREEN_SIZE.height / 2048);
+	_aEagle->setPosition(position);
 	_aEagle->initCirclePhysic(world, position);
 	this->addChild(_aEagle, ZORDER_HERO);
 	switch (charId) {
@@ -594,11 +594,11 @@ void GameScene::update(float dt)
 	checkActiveButton();
 
 	if (_aEagle != nullptr) {
-		_aEagle->updateMe(dt);
 		if (_aEagle->getIsAbleToDropHero()) {
 			heroGetOffEagle();
 			_aEagle->setIsAbleToDropHero(false);
 		}
+		_aEagle->updateMe(dt);
 	}
 
 	if (hero->getIsDriverEagle()) {
@@ -1709,6 +1709,8 @@ void GameScene::updateQuest()
 
 void GameScene::reachNewMap()
 {
+	if (REF->getIsLockedHero()) return;		// cannot reach new map when you try hero
+
 	int stageUnlocked = REF->getCurrentStageUnlocked();
 	if (stageUnlocked == stage) {
 		int mapUnlocked = REF->getCurrentMapUnLocked();

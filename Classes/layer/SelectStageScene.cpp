@@ -191,8 +191,6 @@ void SelectStageLayer::gotoPlay(int id, int stage, int map, Point point)
 		this->map = map;
 
 		auto action = CallFunc::create([&]() {
-
-
 			auto _aScene = LoadingLayer::createScene(this->stage, this->map, charId);
 			Director::getInstance()->replaceScene(_aScene);
 		});

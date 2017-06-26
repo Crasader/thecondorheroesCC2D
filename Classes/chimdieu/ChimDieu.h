@@ -23,7 +23,9 @@ public:
 	ChimDieu(spSkeletonData *data);
 	ChimDieu(string jsonFile, string atlasFile, float scale);
 	static ChimDieu * create(string jsonFile, string atlasFile, float scale);
-	static ChimDieu * create(spSkeletonData*data);
+	static ChimDieu * create(string filename, float scale);
+
+	~ChimDieu();
 
 	void flyUp(b2Vec2 p_b2v2Velocity);
 	void flyDown(b2Vec2 p_b2v2Velocity);

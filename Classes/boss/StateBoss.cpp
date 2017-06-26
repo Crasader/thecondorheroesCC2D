@@ -110,9 +110,9 @@ BossAttacking2::~BossAttacking2()
 void BossAttacking2::enter(EnemyBoss1 * boss)
 {
 	StateBoss::enter(boss);
-	boss->doAttack2();
 	boss->setRealMoveVelocity(Vec2::ZERO);
 	boss->setRandAt2(cocos2d::random() % (boss->getLevelBoss()));
+	boss->doAttack2();
 	id = IdStateBoss::Attack2;
 	log("attack2");
 	

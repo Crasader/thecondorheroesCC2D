@@ -310,7 +310,7 @@ void GameScene::onExit()
 		world->DestroyBody(tmp);
 	}
 	delete world;
-	experimental::AudioEngine::uncacheAll();
+	//experimental::AudioEngine::uncache();
 }
 
 void GameScene::checkActiveButton()
@@ -1046,6 +1046,10 @@ void GameScene::creatEnemyWooder(MyLayer * layer, Vec2 pos)
 		enemy->setIsEndOfScreen(false);
 		enemy->setPosition(pos);
 		enemy->setVisible(true);
+		enemy->clearTracks();
+		enemy->setAnimation(0, "idle", true);
+		enemy->setToSetupPose();
+		enemy->update(0.0f);
 		enemy->resumeSchedulerAndActions();
 		//layer->addChild(enemy, ZORDER_ENEMY);
 		if (enemy->getB2Body()) {

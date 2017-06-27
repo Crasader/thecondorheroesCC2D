@@ -207,8 +207,8 @@ void SceneIntro::goToMainMenuScene(Ref* p_pSender) {
 
 	AdmobHelper::getInstance()->hide("top_banner");
 	AudioManager::playSound(SOUND_BTCLICK);
-	Layer *_pMenuScene = MenuLayer::create(false);
+	Layer *_pMenuScene = MenuLayer::create(true);
 	auto _aMainMenuScene = Scene::create();
 	_aMainMenuScene->addChild(_pMenuScene);
-	Director::getInstance()->replaceScene(TransitionFade::create(0.3f, _aMainMenuScene));
+	Director::getInstance()->replaceScene(TransitionFade::create(1.0f, _aMainMenuScene));
 }

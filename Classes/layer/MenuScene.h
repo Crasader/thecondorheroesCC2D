@@ -56,9 +56,9 @@ class MenuLayer : public cocos2d::Layer
 #endif
 {
 public:
-	virtual bool init(bool p_bOnlySelectStage);
+	virtual bool init(bool p_bOnlySelectStage, bool p_bGoToHeroesMenu = false);
 	void update(float p_fDelta);
-	static MenuLayer* create(bool p_bOnlySelectStage);
+	static MenuLayer* create(bool p_bOnlySelectStage, bool p_bGoToHeroesMenu = false);
 	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
 
 	bool downLife();
@@ -73,6 +73,7 @@ private:
 
 	// input value
 	int m_nCurrentTimeFromGoogle = 0;						// time from google.com.vn (-7 hours from Viet Nam)
+	int m_nTimeForLife = 3;
 
 	int m_nIndexHeroSelected = 0;
 	int m_nIndexHeroPicked = 0;
@@ -98,6 +99,7 @@ private:
 	Sprite *m_iconLife;
 
 	SkeletonAnimation *m_pSpriteQuestAttention;						// 
+	SkeletonAnimation *m_pSpriteBuyHeroAttention;						// 
 	SkeletonAnimation *m_pSpriteFreeCoinAttention;						// 
 
 	ListView *m_pPacksZone;
@@ -213,6 +215,8 @@ private:
 	void moveLayerViaDirection(Layer *p_pLayer, int p_nDirection);
 	void loadTwinkle(TMXTiledMap *p_pSprite, float p_fMinScaleViaHeight, float p_fMaxScaleViaHeight);
 	void buttonSpringy(MenuItemSprite *p_pButton);
+	void showPopupInfoDialog(string p_sMessage, bool p_bGoToHeroesMenu = false);
+	void GoToHeroesMenu();
 
 	Sprite * createSpriteOnParent(Layer *p_pLayerParent, Sprite *p_pSpriteParent, int p_nLayer, string p_sPath, float p_fScaleX, float p_fScaleY, bool p_bScaleByWidth, Vec2 p_v2Anchor, Vec2 p_v2Position);
 	MenuItemSprite * createButtonOnParent(Layer *p_pLayerParent, Sprite *p_pSpriteParent, string p_sPath, ccMenuCallback p_pCallback, float p_fScaleX, float p_fScaleY, bool p_bScaleByWidth, Vec2 p_v2Anchor, Vec2 p_v2Position);

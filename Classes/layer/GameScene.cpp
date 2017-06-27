@@ -86,13 +86,13 @@ bool GameScene::init(int stage, int map, int charId)
 
 	loadPosAndTag();
 	createGroundBody();
-	createItem();
-	initLayerToAddAgent();
+	//createItem();
+	//initLayerToAddAgent();
 
 	if (this->haveboss)
 		createBoss();
 
-	createCoin();
+	//createCoin();
 	return true;
 }
 

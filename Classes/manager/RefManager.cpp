@@ -11,6 +11,8 @@ RefManager::RefManager()
 	ref = UserDefault::sharedUserDefault();
 
 	isFirstPlay = ref->getBoolForKey(KEY_FIRST, true);
+	menuTutorialUpgrade = ref->getIntegerForKey(KEY_MENU_TUT_UPGRADE, false);
+	menuTutorialHero = ref->getIntegerForKey(KEY_MENU_TUT_HERO, false);
 	isShowStory = ref->getBoolForKey(KEY_STORY, false);
 	lastMapIdPlay = ref->getIntegerForKey(KEY_LAST_MAP_ID, 1);
 	selectedHero = ref->getIntegerForKey(KEY_SELECTED_HERO, 0);
@@ -20,7 +22,7 @@ RefManager::RefManager()
 	currentStageUnlocked = ref->getIntegerForKey(KEY_CUR_STAGE_UNLOCKED, 4);
 	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 4);
 
-	anchorTime = ref->getIntegerForKey(KEY_ANCHORTIME, time(0));
+	anchorTime = ref->getIntegerForKey(KEY_ANCHORTIME, time(0) + 180);
 	lastDailyRewardTime = ref->getIntegerForKey(KEY_LAST_DAILY_REWARD_TIME, 0);
 	dailyRewardCounter = ref->getIntegerForKey(KEY_DAILY_REWARD_COUNTER, 0);
 	dailyRewardAvailable = ref->getBoolForKey(KEY_DAILY_REWARD_AVAILABLE, false);
@@ -115,6 +117,20 @@ void RefManager::pointToCurrentHero(int index)
 	levelSkill_2 = ref->getIntegerForKey((KEY_LEVEL_SKILL_2_HERO_X + m_index).c_str(), 1);
 	levelSkill_3 = ref->getIntegerForKey((KEY_LEVEL_SKILL_3_HERO_X + m_index).c_str(), 1);
 
+}
+
+void RefManager::setupMenuTutorialHero() {
+	if (menuTutorialHero == false) {
+		menuTutorialHero = true;
+		ref->setBoolForKey(KEY_MENU_TUT_HERO, menuTutorialHero);
+		ref->flush();
+	}
+}
+
+void RefManager::setupMenuTutorialUpgrate() {
+	menuTutorialUpgrade = true;
+	ref->setBoolForKey(KEY_MENU_TUT_UPGRADE, menuTutorialUpgrade);
+	ref->flush();
 }
 
 void RefManager::setDoneFirstPlay()

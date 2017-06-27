@@ -18,9 +18,9 @@
 //#include "JSonQuestManager.h"
 //#include "RefManager.h"
 
-MenuLayer * MenuLayer::create(bool p_bOnlySelectStage) {
+MenuLayer * MenuLayer::create(bool p_bOnlySelectStage, bool p_bGoToHeroesMenu) {
 	MenuLayer *pRet = new(std::nothrow) MenuLayer();
-	if (pRet && pRet->init(p_bOnlySelectStage)) {
+	if (pRet && pRet->init(p_bOnlySelectStage, p_bGoToHeroesMenu)) {
 		pRet->autorelease();
 		return pRet;
 	}
@@ -31,7 +31,7 @@ MenuLayer * MenuLayer::create(bool p_bOnlySelectStage) {
 	}
 }
 
-bool MenuLayer::init(bool p_bOnlySelectStage) {
+bool MenuLayer::init(bool p_bOnlySelectStage, bool p_bGoToHeroesMenu) {
 	if (!Layer::init()) {
 		return false;
 	}
@@ -78,6 +78,11 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 
 		this->scheduleUpdate();
 
+		if (REF->getCurrentMapUnLocked() > 1 && REF->getMenuTutorialUpgrade() == false) {
+			showPopupInfoDialog(JSMENU->readMenuText(m_nLanguage, 11).c_str(), true);
+			REF->setupMenuTutorialUpgrate();
+		}
+
 		return true;
 	}
 	createRequestToGoogle();
@@ -88,21 +93,15 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 
 	m_pGameScene = Layer::create(); // layer 2 : scene
 	this->addChild(m_pGameScene, 2);
-	m_arPreviewHero[0] = new SkeletonAnimation("UI/UI_main_menu/PreviewDuongQua/s_DuongQua.json",
-		"UI/UI_main_menu/PreviewDuongQua/s_DuongQua.atlas");
-	m_arPreviewHero[1] = new SkeletonAnimation("UI/UI_main_menu/PreviewCoLong/s_CoCo.json",
-		"UI/UI_main_menu/PreviewCoLong/s_CoCo.atlas");
-	m_arPreviewHero[2] = new SkeletonAnimation("UI/UI_main_menu/PreviewHoangDung/s_HoangDung.json",
-		"UI/UI_main_menu/PreviewHoangDung/s_HoangDung.atlas");
-	m_arPreviewHero[3] = new SkeletonAnimation("UI/UI_main_menu/PreviewHoangDuocSu/s_HoangDuocSu.json",
-		"UI/UI_main_menu/PreviewHoangDuocSu/s_HoangDuocSu.atlas");
-	m_arPreviewHero[4] = new SkeletonAnimation("UI/UI_main_menu/PreviewQuachTinh/s_QuachTinh.json",
-		"UI/UI_main_menu/PreviewQuachTinh/s_QuachTinh.atlas");
-
+	string _arNameHero[5] = { "DuongQua", "Coco", "HoangDung", "HoangDuocSu", "QuachTinh" };
 	float _arScaleHero[5] = { 0.7f, 0.6f, 0.65f, 0.6f, 0.75f };
 	float _arPositionXHero[5] = { 0.28f, 0.3f, 0.3f, 0.29f, 0.27f };
 	float _arPositionYHero[5] = { 0.25f, 0.25f, 0.27f, 0.29f, 0.27f };
 	for (int i = 0; i < 5; i++) {
+		m_arPreviewHero[i] = new SkeletonAnimation(
+			StringUtils::format("UI/UI_main_menu/Preview%s/s_%s.json", _arNameHero[i].c_str(), _arNameHero[i].c_str()),
+			StringUtils::format("UI/UI_main_menu/Preview%s/s_%s.atlas", _arNameHero[i].c_str(), _arNameHero[i].c_str())
+			);
 		m_arPreviewHero[i]->update(0.0f);
 		m_arPreviewHero[i]->setScale(m_szVisibleSize.height / m_arPreviewHero[i]->getBoundingBox().size.height * _arScaleHero[i]);
 		m_arPreviewHero[i]->setPosition(Vec2(m_szVisibleSize.width * _arPositionXHero[i], m_szVisibleSize.height * _arPositionYHero[i]));
@@ -112,6 +111,10 @@ bool MenuLayer::init(bool p_bOnlySelectStage) {
 	m_pGameControl = Layer::create(); // layer 3 : control
 	this->addChild(m_pGameControl, 3);
 	initControlLayer();
+	
+	if (p_bGoToHeroesMenu) {
+		buttonHeroesHandle();
+	}
 
 	this->scheduleUpdate();
 #ifdef SDKBOX_ENABLED
@@ -153,7 +156,9 @@ bool MenuLayer::downLife()
 	if (m_nLifeNumber > 0) {
 		m_nLifeNumber--;
 		REF->setDownLife(1);
-		REF->setAnchorTime(time(0));
+		if (m_nLifeNumber == 4) {
+			REF->setAnchorTime(time(0) + 180);
+		}
 
 		initTopMainMenu();
 
@@ -193,19 +198,17 @@ void MenuLayer::disableListener()
 void MenuLayer::update(float p_fDelta) {
 	time_t _nCurrentTime = time(0);
 	if (m_nLifeNumber < 5) {
-		int _arCooldownLife[5] = { 60, 120, 180, 240, 300 };
-		int _nCooldownLife = _arCooldownLife[m_nLifeNumber];
 		m_pTimeCounter->setVisible(true);
-		int _nDeltaTime = _nCurrentTime - REF->getAnchorTime();
-		if (_nDeltaTime >= _nCooldownLife) {
+		int _nDeltaTime = REF->getAnchorTime() - _nCurrentTime;
+		if (_nDeltaTime < 0) {
 			m_nLifeNumber++;
 			REF->setLife(m_nLifeNumber);
-			REF->setAnchorTime(time(0));
+			REF->setAnchorTime(REF->getAnchorTime() + 60 * m_nTimeForLife);
 			initTopMainMenu();
 		}
-		int _nMinute = (_nCooldownLife - _nDeltaTime) / 60;
-		int _nSecond = (_nCooldownLife - _nDeltaTime) % 60;
-		m_pTimeCounter->setString(StringUtils::format(_nSecond < 10 ? "%i:0%i" : "%i:%i", _nMinute, _nSecond));
+		int _nMinute = _nDeltaTime / 60;
+		int _nSecond = _nDeltaTime % 60;
+		m_pTimeCounter->setString(StringUtils::format("%d:%02d", _nMinute, _nSecond));
 	}
 	else {
 		m_pTimeCounter->setVisible(false);
@@ -225,7 +228,7 @@ void MenuLayer::initInputData() {
 	m_arNumberItemOwning[4] = REF->getNumberItemCoolDown();
 	// m_arItemPrice will be loaded in initItemBoard, just once
 
-	int _nDeltaTime = time(0) - REF->getAnchorTime();
+	/*int _nDeltaTime = time(0) - REF->getAnchorTime();
 	int _nLifeToAdd = (int)(_nDeltaTime / 300);
 	int _nTimeToNextLife = (int)(_nDeltaTime % 300);
 	if (m_nLifeNumber < 5) {
@@ -238,7 +241,7 @@ void MenuLayer::initInputData() {
 			REF->setAnchorTime(REF->getAnchorTime() + _nLifeToAdd * 300);
 		}
 		REF->setLife(m_nLifeNumber);
-	}
+	}*/
 
 	m_nLanguage = REF->getLanguage();
 }
@@ -259,7 +262,7 @@ void MenuLayer::initBackgroundLayer() {
 
 	string _arLanguages[5] = {
 		"UI/UI_main_menu/PreviewDuongQua/DQ_effect%d.plist",
-		"UI/UI_main_menu/PreviewCoLong/CL_effect%d.plist",
+		"UI/UI_main_menu/PreviewCoco/CL_effect%d.plist",
 		"UI/UI_main_menu/PreviewHoangDung/HD_effect%d.plist",
 		"UI/UI_main_menu/PreviewHoangDuocSu/HDS_effect%d.plist",
 		"UI/UI_main_menu/PreviewQuachTinh/QT_effect%d.plist"
@@ -436,7 +439,6 @@ void MenuLayer::initBottomMainMenu() {
 	// button quest
 	auto _aQuestButton = createButtonOnParent(m_pBottomMainLayer, NULL, "UI/UI_main_menu/BottomMenu/btn_quest.png",
 		CC_CALLBACK_0(MenuLayer::buttonQuestHandle, this), 0.1f, 1.0f, false, Vec2(0.0f, 0.0f), Vec2(_fXPositionCounter, 0.0f));
-
 	_fXPositionCounter += _aQuestButton->getContentSize().width * _aQuestButton->getScaleX();
 
 	// quest attention
@@ -455,6 +457,17 @@ void MenuLayer::initBottomMainMenu() {
 
 	_fXPositionCounter += _aHeroButton->getContentSize().width * _aHeroButton->getScaleX();
 
+	// quest attention
+	m_pSpriteBuyHeroAttention = SkeletonAnimation::createWithFile("UI/UI_main_menu/noti/noti.json", "UI/UI_main_menu/noti/noti.atlas",
+		m_pBottomMainLayer->getContentSize().height / 120.0f);
+	m_pSpriteBuyHeroAttention->setAnchorPoint(Vec2(1.0f, 1.0f));
+	m_pSpriteBuyHeroAttention->setPosition(_fXPositionCounter - m_pBottomMainLayer->getContentSize().height * 0.1f,
+		m_pBottomMainLayer->getContentSize().height * 0.7f);
+	m_pBottomMainLayer->addChild(m_pSpriteBuyHeroAttention, 2);
+	m_pSpriteBuyHeroAttention->setAnimation(0, "idle", true);
+	if (REF->getMenuTutorialHero() == true) {
+		m_pSpriteBuyHeroAttention->setVisible(false);
+	}
 	// button shop
 	auto _aShopButton = createButtonOnParent(m_pBottomMainLayer, NULL, "UI/UI_main_menu/BottomMenu/btn_shop.png",
 		CC_CALLBACK_0(MenuLayer::buttonShopHandle, this), 0.1f, 1.0f, false, Vec2(0.0f, 0.0f), Vec2(_fXPositionCounter, 0.0f));
@@ -869,7 +882,7 @@ void MenuLayer::initQuestBoard(int p_nFocus) {
 				_pQuestPoint->setAnchorPoint(Vec2(0.0f, 0.0f));
 				_pQuestPoint->setPosition(Vec2(0.0f, 0.0f));
 				_pQuestBar->addChild(_pQuestPoint, 1);
-				_pQuestPoint->setSpriteFrame(SpriteFrame::create("UI/UI_main_menu/quest_progress_point.png", Rect(0.0f, 0.0f,
+				_pQuestPoint->setSpriteFrame(SpriteFrame::create("UI/UI_main_menu/QuestBoard/quest_progress_point.png", Rect(0.0f, 0.0f,
 					_pQuestPoint->getContentSize().width * _fScaleX, _pQuestPoint->getContentSize().height)));
 			}
 			else {
@@ -1272,10 +1285,10 @@ void MenuLayer::hideMainMenu() {
 void MenuLayer::showBlurScreen() {
 	m_pTopMenu->setEnabled(false);
 	if (m_nMenuStatus != 4) {
-		m_pBottomMainMenu->setEnabled(false);
 		for (int i = 0; i < 5; i++) {
 			m_arBuyItemButton[i]->setTouchEnabled(false);
 		}
+		m_pBottomMainMenu->setEnabled(false);
 		m_pSkillBoardMenu->setEnabled(false);
 		m_pBottomHeroMenu->setEnabled(false);
 		m_pQuestBoardMenu->setEnabled(false);
@@ -1296,10 +1309,10 @@ void MenuLayer::hideBlurScreen() {
 	runAction(Sequence::create(DelayTime::create(0.3f), CallFunc::create([&]() {
 		m_pTopMenu->setEnabled(true);
 		if (m_nMenuStatus != 4) {
-			m_pBottomMainMenu->setEnabled(true);
 			for (int i = 0; i < 5; i++) {
 				m_arBuyItemButton[i]->setTouchEnabled(true);
 			}
+			m_pBottomMainMenu->setEnabled(true);
 			m_pSkillBoardMenu->setEnabled(true);
 			m_pBottomHeroMenu->setEnabled(true);
 			m_pQuestBoardMenu->setEnabled(true);
@@ -1314,10 +1327,10 @@ void MenuLayer::buttonStartHandle() {
 	m_nMenuStatus = 3;
 	this->addChild(m_pSelectStageLayer, 3);
 
-	m_pBottomMainMenu->setEnabled(false);
 	for (int i = 0; i < 5; i++) {
 		m_arBuyItemButton[i]->setTouchEnabled(false);
 	}
+	m_pBottomMainMenu->setEnabled(false);
 	m_pSkillBoardMenu->setEnabled(false);
 	m_pBottomHeroMenu->setEnabled(false);
 	m_pQuestBoardMenu->setEnabled(false);
@@ -1331,7 +1344,7 @@ void MenuLayer::buttonBackHandle() {
 	}
 	if (m_nMenuStatus == 0) {
 		auto _aIntroScene = SceneIntro::createScene();
-		Director::getInstance()->replaceScene(TransitionFade::create(0.2f, _aIntroScene));
+		Director::getInstance()->replaceScene(TransitionFade::create(1.0f, _aIntroScene));
 	}
 	if (m_nMenuStatus == 1) {
 		m_nMenuStatus = 0;
@@ -1402,6 +1415,7 @@ void MenuLayer::buttonAddDiamondHandle() {
 
 void MenuLayer::buttonQuestHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
+
 	logButtonClickEvent("Quest");
 	if (m_nMenuStatus != 1) {
 		m_nMenuStatus = 1;
@@ -1417,6 +1431,8 @@ void MenuLayer::buttonQuestHandle() {
 
 void MenuLayer::buttonHeroesHandle() {
 	AudioManager::playSound(SOUND_BTCLICK);
+	REF->setupMenuTutorialHero();
+	m_pSpriteBuyHeroAttention->setVisible(false);
 	logButtonClickEvent("Hero");
 	if (m_nIndexHeroSelected != m_nIndexHeroPicked) {
 		m_nIndexHeroSelected = m_nIndexHeroPicked;
@@ -1636,6 +1652,8 @@ void MenuLayer::buttonUpgradeSkillHandle(int p_nIndexSkill, int p_nCost) {
 	}
 
 	initTopMainMenu();
+	initBottomMainMenu();
+	initBottomHeroMenu();
 	initUpgradeBoard();
 }
 
@@ -1653,6 +1671,8 @@ void MenuLayer::buttonBuyItemHandle(int p_nIndexItem) {
 		m_arLabelNumberItemOwning[p_nIndexItem]->setString((String::createWithFormat("%d", m_arNumberItemOwning[p_nIndexItem]))->getCString());
 		m_arLabelNumberItemOwning[p_nIndexItem]->getParent()->setVisible(true);
 		initTopMainMenu();
+		initBottomMainMenu();
+		initBottomHeroMenu();
 
 		// save data
 		REF->setDownGold(m_arItemPrice[p_nIndexItem]);
@@ -1728,6 +1748,8 @@ void MenuLayer::buttonRewardQuest(int p_nQuestIndex) {
 	REF->setUpGoldExplored(_nGoldReward);
 	initQuestBoard(p_nQuestIndex);
 	initTopMainMenu();
+	initBottomMainMenu();
+	initBottomHeroMenu();
 	//log
 }
 
@@ -1803,6 +1825,7 @@ void MenuLayer::initDailyRewardBoard() {
 		REF->updateTimeFromGoogle(m_nCurrentTimeFromGoogle);
 	}
 	if (REF->getDailyRewardAvailable()) { // if daily reward is available
+		REF->updateDailyRewardAvailable(false);
 		showBlurScreen(); // open daily reward
 
 		Sprite *_pDailyRewardBackground = Sprite::create("UI/UI_main_menu/DailyReward/daily_reward_bg.png");
@@ -2211,7 +2234,6 @@ void MenuLayer::buttonDailyRewardHandle() {
 			_pIconSprite = Sprite::create("UI/UI_main_menu/ShopBoard/icon_diamond.png");
 		}
 		REF->increaseDailyRewardCounter();
-		REF->updateDailyRewardAvailable(false);
 
 		_pIconSprite->setScale(_pConfirmBackground->getContentSize().height / _pIconSprite->getContentSize().height * 0.18f);
 		_pIconSprite->setAnchorPoint(Vec2(0.0f, 0.0f));
@@ -2287,6 +2309,8 @@ void MenuLayer::buttonDailyRewardHandle() {
 
 void MenuLayer::buttonConfirmDailyRewardHandle() {
 	initTopMainMenu();
+	initBottomMainMenu();
+	initBottomHeroMenu();
 	initItemBoard();
 	hideBlurScreen();
 	m_pBuyPackConfirmBackground->setVisible(false);
@@ -2323,6 +2347,8 @@ void MenuLayer::buttonBuyCoinHandle(int p_nIndexCoinPack) {
 		REF->setDownDiamond(JSMENU->getCoinPackDiamondPrice());
 		REF->setUpGoldExplored(JSMENU->getCoinPackNumberGold());
 		initTopMainMenu();
+		initBottomMainMenu();
+		initBottomHeroMenu();
 		m_pTopMenu->setEnabled(false);
 	}
 	else {
@@ -2365,6 +2391,8 @@ void MenuLayer::buttonBuyDiamondHandle(int p_nIndexDiamondPack) {
 	default:
 		break;
 	}
+	initBottomMainMenu();
+	initBottomHeroMenu();
 }
 
 void MenuLayer::buttonPickHeroHandle(int p_nIndexHero) {
@@ -2427,14 +2455,18 @@ void MenuLayer::buttonUnlockHeroHandle() {
 
 		m_nCurrentGold -= JSHERO->getGoldPrice();
 		m_nCurrentDiamond -= JSHERO->getDiamondPrice();
-		initTopMainMenu();
 		runAction(Sequence::create(DelayTime::create(0.2f), CallFunc::create([&]() { initBottomHeroMenu(); }), nullptr));
 		// save data
 		REF->unLockHero(m_nIndexHeroPicked);
 		REF->setDownGold(JSHERO->getGoldPrice());
 		REF->setDownDiamond(JSHERO->getDiamondPrice());
+		m_nIndexHeroSelected = m_nIndexHeroPicked;
+		REF->setSelectedHero(m_nIndexHeroSelected);
+		initTopMainMenu();
+		initBottomMainMenu();
 		initBottomHeroMenu();
 		initUpgradeBoard();
+		showPopupInfoDialog(JSMENU->readMenuText(m_nLanguage, 10).c_str());
 	}
 	else {
 		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(5), TOAST_SHORT);
@@ -2460,6 +2492,8 @@ void MenuLayer::buttonUpgradeHeroHandle() {
 		REF->setDownGold(_nUpgradeCost);
 		REF->increaseLevel();
 		initTopMainMenu();
+		initBottomMainMenu();
+		initBottomHeroMenu();
 		initBottomHeroMenu();
 		initHeroInfoBoard();
 	}
@@ -3080,4 +3114,52 @@ Label * MenuLayer::createLabelTTFOnParent(Layer *p_pLayerParent, Sprite *p_pSpri
 	}
 
 	return _pLabel;
+}
+
+void MenuLayer::showPopupInfoDialog(string p_sMessage, bool p_bGoToHeroesMenu) {
+	showBlurScreen();
+	Sprite *_pBackground = Sprite::create("UI/UI_main_menu/SettingBoard/setting_bg.png");
+
+	float _fTemp = _pBackground->getContentSize().height * m_pBlurScreen->getContentSize().width / _pBackground->getContentSize().width * 0.6f;
+	if (_fTemp > m_szVisibleSize.height * 0.6f) {
+		_pBackground->setScale(m_pBlurScreen->getContentSize().height / _pBackground->getContentSize().height * 0.6f);
+	}
+	else {
+		_pBackground->setScale(m_pBlurScreen->getContentSize().width / _pBackground->getContentSize().width * 0.6f);
+	}
+	_pBackground->setAnchorPoint(Vec2(0.5f, 0.5f));
+	_pBackground->setPosition(m_pBlurScreen->getContentSize().width * 0.5f, m_pBlurScreen->getContentSize().height * 0.5f);
+	m_pBlurScreen->addChild(_pBackground, 1);
+
+	Label *_pLabelMessage = Label::createWithTTF(p_sMessage, "fontsDPM/UTM_BRUSHSCI.ttf", _pBackground->getContentSize().height * 0.1f);
+	_pLabelMessage->setColor(Color3B::BLACK);
+	_pLabelMessage->setAlignment(TextHAlignment::CENTER, TextVAlignment::CENTER);
+	_pLabelMessage->setMaxLineWidth(_pBackground->getContentSize().width * 0.8f);
+	_pLabelMessage->setAnchorPoint(Vec2(0.5f, 0.5f));
+	_pLabelMessage->setPosition(Vec2(_pBackground->getContentSize().width * 0.5f, _pBackground->getContentSize().height * 0.55f));
+	_pBackground->addChild(_pLabelMessage, 1);
+
+	// button close
+	auto _pCloseNormal = Sprite::create("UI/UI_main_menu/ShopBoard/btn_ok.png");
+	auto _pCloseSelected = Sprite::create("UI/UI_main_menu/ShopBoard/btn_ok.png");
+	_pCloseSelected->setColor(Color3B(128, 128, 128));
+	auto _aCloseButton = MenuItemSprite::create(_pCloseNormal, _pCloseSelected, CC_CALLBACK_0(MenuLayer::hideBlurScreen, this));
+	if (p_bGoToHeroesMenu) {
+		_aCloseButton->setCallback(CC_CALLBACK_0(MenuLayer::GoToHeroesMenu, this));
+	}
+	_aCloseButton->setScale(_pBackground->getContentSize().height / _aCloseButton->getContentSize().height * 0.2f);
+	_aCloseButton->setAnchorPoint(Vec2(0.5f, 0.5f));
+	_aCloseButton->setPosition(Vec2(_pBackground->getContentSize().width * 0.5f, _pBackground->getContentSize().height * 0.3f));
+
+	Menu *_pMenu = Menu::create(_aCloseButton, NULL);
+	_pMenu->setContentSize(Size(_pBackground->getContentSize().width, _pBackground->getContentSize().height));
+	_pMenu->setPosition(0.0f, 0.0f);
+	_pBackground->addChild(_pMenu, 2);
+}
+
+void MenuLayer::GoToHeroesMenu() {
+	Layer *_pMenuScene = MenuLayer::create(false, true);
+	auto scene = Scene::create();
+	scene->addChild(_pMenuScene);
+	Director::getInstance()->replaceScene(scene);
 }

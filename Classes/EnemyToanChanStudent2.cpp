@@ -66,7 +66,7 @@ void EnemyToanChanStudent2::attack()
 	slash->setAnimation(0, "animation", true);
 	slash->resume();
 	slash->initCirclePhysic(this->getB2Body()->GetWorld(), this->getBoneLocation("b-hand") + this->getParent()->getPosition());
-	slash->setVisible(false);
+	//slash->setVisible(false);
 	slash->getB2Body()->SetLinearVelocity(b2Vec2(-SCREEN_SIZE.width/3/PTM_RATIO,0));
 }
 
@@ -103,7 +103,7 @@ void EnemyToanChanStudent2::genSlash()
 	//slash->setAnchorPoint(Point(0.5f, 0.4f));
 	
 	slash->setPosition(this->getBoneLocation("b-hand"));
-	slash->setVisible(false);
+	slash->setVisible(true);
 	this->getParent()->addChild(slash,ZORDER_ENEMY);
 }
 
@@ -116,8 +116,8 @@ void EnemyToanChanStudent2::listener()
 			this->clearTracks();
 			this->addAnimation(0, "idle", true);
 			this->setToSetupPose();
-			if(this->getB2Body())
-			this->getSlash()->setVisible(true);
+			//if(this->getB2Body())
+			//this->getSlash()->setVisible(true);
 		}
 		//if (strcmp(getCurrent()->animation->name, "attack1") == 0 && loopCount == 1) {
 		//	//getSlash()->setVisible(false);

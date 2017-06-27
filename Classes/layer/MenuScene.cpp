@@ -2929,10 +2929,12 @@ void MenuLayer::onVungleCacheAvailable()
 
 void MenuLayer::onVungleStarted()
 {
+	//experimental::AudioEngine::pauseAll();
 }
 
 void MenuLayer::onVungleFinished()
 {
+	//experimental::AudioEngine::resumeAll();
 }
 
 void MenuLayer::onVungleAdReward(const std::string & name)

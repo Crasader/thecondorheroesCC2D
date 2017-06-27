@@ -154,7 +154,7 @@ bool MenuLayer::downLife()
 	if (m_nLifeNumber > 0) {
 		m_nLifeNumber--;
 		REF->setDownLife(1);
-		REF->setAnchorTime(time(0));
+		//REF->setAnchorTime(time(0));
 
 		initTopMainMenu();
 
@@ -194,19 +194,18 @@ void MenuLayer::disableListener()
 void MenuLayer::update(float p_fDelta) {
 	time_t _nCurrentTime = time(0);
 	if (m_nLifeNumber < 5) {
-		int _arCooldownLife[5] = { 60, 120, 180, 240, 300 };
-		int _nCooldownLife = _arCooldownLife[m_nLifeNumber];
+		int _nTimeForLife = 3;
 		m_pTimeCounter->setVisible(true);
-		int _nDeltaTime = _nCurrentTime - REF->getAnchorTime();
-		if (_nDeltaTime >= _nCooldownLife) {
+		int _nDeltaTime = REF->getAnchorTime() - _nCurrentTime;
+		if (_nDeltaTime < 0) {
 			m_nLifeNumber++;
 			REF->setLife(m_nLifeNumber);
-			REF->setAnchorTime(time(0));
+			REF->setAnchorTime(REF->getAnchorTime() + 60 * _nTimeForLife);
 			initTopMainMenu();
 		}
-		int _nMinute = (_nCooldownLife - _nDeltaTime) / 60;
-		int _nSecond = (_nCooldownLife - _nDeltaTime) % 60;
-		m_pTimeCounter->setString(StringUtils::format(_nSecond < 10 ? "%i:0%i" : "%i:%i", _nMinute, _nSecond));
+		int _nMinute = _nDeltaTime / 60;
+		int _nSecond = _nDeltaTime % 60;
+		m_pTimeCounter->setString(StringUtils::format("%d:%02d", _nMinute, _nSecond));
 	}
 	else {
 		m_pTimeCounter->setVisible(false);
@@ -226,7 +225,7 @@ void MenuLayer::initInputData() {
 	m_arNumberItemOwning[4] = REF->getNumberItemCoolDown();
 	// m_arItemPrice will be loaded in initItemBoard, just once
 
-	int _nDeltaTime = time(0) - REF->getAnchorTime();
+	/*int _nDeltaTime = time(0) - REF->getAnchorTime();
 	int _nLifeToAdd = (int)(_nDeltaTime / 300);
 	int _nTimeToNextLife = (int)(_nDeltaTime % 300);
 	if (m_nLifeNumber < 5) {
@@ -239,7 +238,7 @@ void MenuLayer::initInputData() {
 			REF->setAnchorTime(REF->getAnchorTime() + _nLifeToAdd * 300);
 		}
 		REF->setLife(m_nLifeNumber);
-	}
+	}*/
 
 	m_nLanguage = REF->getLanguage();
 }
@@ -1804,6 +1803,7 @@ void MenuLayer::initDailyRewardBoard() {
 		REF->updateTimeFromGoogle(m_nCurrentTimeFromGoogle);
 	}
 	if (REF->getDailyRewardAvailable()) { // if daily reward is available
+		REF->updateDailyRewardAvailable(false);
 		showBlurScreen(); // open daily reward
 
 		Sprite *_pDailyRewardBackground = Sprite::create("UI/UI_main_menu/DailyReward/daily_reward_bg.png");
@@ -2212,7 +2212,6 @@ void MenuLayer::buttonDailyRewardHandle() {
 			_pIconSprite = Sprite::create("UI/UI_main_menu/ShopBoard/icon_diamond.png");
 		}
 		REF->increaseDailyRewardCounter();
-		REF->updateDailyRewardAvailable(false);
 
 		_pIconSprite->setScale(_pConfirmBackground->getContentSize().height / _pIconSprite->getContentSize().height * 0.18f);
 		_pIconSprite->setAnchorPoint(Vec2(0.0f, 0.0f));
@@ -2793,10 +2792,12 @@ void MenuLayer::onVungleCacheAvailable()
 
 void MenuLayer::onVungleStarted()
 {
+	//experimental::AudioEngine::pauseAll();
 }
 
 void MenuLayer::onVungleFinished()
 {
+	//experimental::AudioEngine::resumeAll();
 }
 
 void MenuLayer::onVungleAdReward(const std::string & name)

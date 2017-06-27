@@ -2842,16 +2842,18 @@ void GameScene::resumeAfterTut(int caseTut)
 
 void GameScene::onVungleAdViewed(bool isComplete)
 {
-	
+	experimental::AudioEngine::resumeAll();
 }
 void GameScene::onVungleCacheAvailable()
 {
 }
 void GameScene::onVungleStarted()
 {
+	//experimental::AudioEngine::pauseAll();
 }
 void GameScene::onVungleFinished()
 {
+	//experimental::AudioEngine::resumeAll();
 }
 void GameScene::onVungleAdReward(const std::string & name)
 {

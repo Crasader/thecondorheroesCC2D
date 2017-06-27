@@ -48,12 +48,14 @@ void DialogPauseGame::onExit()
 
 void DialogPauseGame::resumeGame()
 {
+	menu->setEnabled(false);
 	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
 	gameLayer->resumeGame();
 }
 
 void DialogPauseGame::backHome()
 {
+	menu->setEnabled(false);
 	AdmobHelper::getInstance()->showAd("gameover");
 	auto gameScene = this->getParent();
 	gameScene->removeAllChildrenWithCleanup(true);
@@ -65,6 +67,7 @@ void DialogPauseGame::backHome()
 
 void DialogPauseGame::overGame()
 {
+	menu->setEnabled(false);
 	this->stopAllActions();
 	auto parentLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
 	this->removeFromParentAndCleanup(true);
@@ -74,6 +77,7 @@ void DialogPauseGame::overGame()
 
 void DialogPauseGame::replayGame(int goldRevive, bool isWatchVideo)
 {
+	menu->setEnabled(false);
 	//AdmobHelper::getInstance()->showFullAd();
 	//log("%i", goldRevive);
 	if (!isWatchVideo) {
@@ -98,6 +102,7 @@ void DialogPauseGame::replayGame(int goldRevive, bool isWatchVideo)
 
 void DialogPauseGame::nextStage()
 {	
+	menu->setEnabled(false);
 	Layer *_pMenuScene;
 	int checkAds = UserDefault::getInstance()->getBoolForKey(KEY_PRE_STAGE_STATUS, false);
 	if (checkAds) {
@@ -120,6 +125,7 @@ void DialogPauseGame::nextStage()
 
 void DialogPauseGame::restartGame()
 {
+	menu->setEnabled(false);
 	AdmobHelper::getInstance()->showAd("gameover");
 	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
 

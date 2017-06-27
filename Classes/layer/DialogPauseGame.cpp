@@ -518,7 +518,13 @@ DialogStageClear * DialogStageClear::create(int score, int gold)
 void DialogStageClear::effect()
 {
 	auto mainEffect = CallFunc::create([&]() {
-		DialogPauseGame::effect();
+		this->setPosition(0, SCREEN_SIZE.height * 1.1f);
+		auto actionMove = MoveTo::create(0.4f, Vec2::ZERO);
+		auto effect = EaseBackOut::create(actionMove);
+		auto enableMenu = CallFunc::create([&]() {
+			menu->setEnabled(true);
+		});
+		this->runAction(Sequence::create(effect, DelayTime::create(0.5f), enableMenu, nullptr));
 	});
 
 	auto runParticle = CallFunc::create([&]() {

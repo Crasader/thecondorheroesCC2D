@@ -9,7 +9,6 @@
 
 bool SelectStageLayer::init(int charId)
 {
-	
 
 	auto originXY = Director::getInstance()->getVisibleOrigin();
 	auto screenSize = Director::getInstance()->getVisibleSize();
@@ -233,8 +232,6 @@ Sprite* SelectStageLayer::bossSprite(int order)
 	auto scaleUp = ScaleBy::create(0.8f, 1.04f);
 	auto seq = Sequence::createWithTwoActions(EaseInOut::create(scaleUp, 2), EaseInOut::create(scaleUp->reverse(), 2));
 	boss->runAction(RepeatForever::create(seq));
-	AudioManager::stopSoundandMusic();
-	AudioManager::playMusic(MUSIC_MENU);
 	return boss;
 }
 
@@ -263,14 +260,18 @@ void SelectStageLayer::doNothing()
 //}
 
 void SelectStageLayer::createCloud() {
+	AudioManager::stopSoundandMusic();
+	AudioManager::playMusic(MUSIC_MENU);
+
+	auto batchCloud = SpriteBatchNode::create("cloud.png");		this->addChild(batchCloud, 10);
 	auto screenSize = Director::getInstance()->getVisibleSize();
 	for (int i = 0; i < 5; i++) {
-		auto _aClound = Sprite::create("cloud.png");
+		auto _aClound = Sprite::createWithTexture(batchCloud->getTexture());
 		_aClound->setScale(screenSize.height / _aClound->getContentSize().height * (0.1f + CCRANDOM_0_1() * 0.05f));
 		_aClound->setAnchorPoint(Vec2(0.0f, 0.0f));
 		_aClound->setPosition(screenSize.width * (1.0f + CCRANDOM_0_1() * 0.5f), screenSize.height * (0.6f + i * 0.04f + CCRANDOM_0_1() * 0.04f));
 		_aClound->setOpacity(220.0f);
-		this->addChild(_aClound, 9);
+		batchCloud->addChild(_aClound, 9);
 
 		MoveBy *_pMove1 = MoveBy::create((15.0f + CCRANDOM_0_1() * 15.0f), Vec2(-screenSize.width * 2.0f, 0.0f));
 		MoveBy *_pMove2 = MoveBy::create(0.0f, Vec2(screenSize.width * 2.0f, 0.0f));

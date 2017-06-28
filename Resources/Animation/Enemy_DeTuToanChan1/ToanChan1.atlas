@@ -1,145 +1,180 @@
 
 ToanChan1.png
-size: 2048,512
+size: 2048,1024
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 baokiem
-  rotate: false
-  xy: 949, 230
+  rotate: true
+  xy: 1831, 764
   size: 145, 117
   orig: 145, 117
   offset: 0, 0
   index: -1
 buitoc
-  rotate: false
-  xy: 204, 46
+  rotate: true
+  xy: 2, 2
   size: 74, 43
   orig: 74, 43
   offset: 0, 0
   index: -1
 caidau
   rotate: false
-  xy: 1529, 394
+  xy: 1296, 571
   size: 94, 116
   orig: 94, 116
   offset: 0, 0
   index: -1
 caidau2
-  rotate: false
-  xy: 1625, 394
+  rotate: true
+  xy: 1392, 578
   size: 94, 116
   orig: 94, 116
   offset: 0, 0
   index: -1
 caidau3
   rotate: false
-  xy: 1721, 394
+  xy: 1510, 556
   size: 94, 116
   orig: 94, 116
   offset: 0, 0
   index: -1
 canhtay1
-  rotate: true
-  xy: 949, 183
+  rotate: false
+  xy: 1591, 693
   size: 45, 69
   orig: 45, 69
   offset: 0, 0
   index: -1
 canhtay2
   rotate: false
-  xy: 523, 123
+  xy: 1961, 954
   size: 62, 68
   orig: 62, 68
   offset: 0, 0
   index: -1
 chansau1
   rotate: true
-  xy: 1102, 422
+  xy: 1404, 674
   size: 88, 185
   orig: 88, 185
   offset: 0, 0
   index: -1
 chantruoc1
-  rotate: true
-  xy: 204, 91
+  rotate: false
+  xy: 542, 190
   size: 100, 183
   orig: 100, 183
   offset: 0, 0
   index: -1
 chuoikiem
   rotate: false
-  xy: 949, 349
+  xy: 648, 414
   size: 151, 161
   orig: 151, 161
   offset: 0, 0
   index: -1
 kiem
   rotate: true
-  xy: 2, 34
-  size: 157, 200
-  orig: 157, 200
+  xy: 1668, 758
+  size: 151, 161
+  orig: 151, 161
   offset: 0, 0
   index: -1
 mau1
   rotate: false
-  xy: 609, 172
-  size: 338, 338
-  orig: 338, 338
-  offset: 0, 0
+  xy: 2, 375
+  size: 644, 647
+  orig: 902, 725
+  offset: 232, 11
   index: -1
 shadow
   rotate: false
-  xy: 2, 14
+  xy: 648, 394
   size: 126, 18
   orig: 126, 18
   offset: 0, 0
   index: -1
 slashenemy
   rotate: true
-  xy: 2, 193
-  size: 317, 605
+  xy: 2, 78
+  size: 295, 538
   orig: 317, 605
-  offset: 0, 0
+  offset: 0, 47
+  index: -1
+slashy1
+  rotate: true
+  xy: 1668, 911
+  size: 111, 291
+  orig: 400, 455
+  offset: 289, 96
+  index: -1
+slashy2
+  rotate: false
+  xy: 1404, 764
+  size: 262, 258
+  orig: 400, 455
+  offset: 71, 190
+  index: -1
+slashy3
+  rotate: false
+  xy: 897, 620
+  size: 278, 402
+  orig: 400, 455
+  offset: 77, 53
+  index: -1
+slashy5
+  rotate: false
+  xy: 648, 577
+  size: 247, 445
+  orig: 400, 455
+  offset: 132, 9
+  index: -1
+slashy6
+  rotate: false
+  xy: 1177, 689
+  size: 225, 333
+  orig: 400, 455
+  offset: 132, 10
   index: -1
 taysau
   rotate: false
-  xy: 1102, 382
+  xy: 897, 580
   size: 41, 38
   orig: 41, 38
   offset: 0, 0
   index: -1
 taysau2
   rotate: false
-  xy: 1817, 470
+  xy: 1961, 912
   size: 39, 40
   orig: 39, 40
   offset: 0, 0
   index: -1
 taytruoc1
-  rotate: true
-  xy: 204, 2
+  rotate: false
+  xy: 47, 32
   size: 42, 44
   orig: 42, 44
   offset: 0, 0
   index: -1
 than
-  rotate: true
-  xy: 389, 102
+  rotate: false
+  xy: 801, 443
   size: 89, 132
   orig: 89, 132
   offset: 0, 0
   index: -1
 vatsau
   rotate: false
-  xy: 1289, 392
+  xy: 542, 70
   size: 121, 118
   orig: 121, 118
   offset: 0, 0
   index: -1
 vattruoc
-  rotate: false
-  xy: 1412, 393
+  rotate: true
+  xy: 1177, 572
   size: 115, 117
   orig: 115, 117
   offset: 0, 0

@@ -12,7 +12,7 @@ RefManager::RefManager()
 
 	isFirstPlay = ref->getBoolForKey(KEY_FIRST, true);
 	menuTutorialUpgrade = ref->getIntegerForKey(KEY_MENU_TUT_UPGRADE, false);
-	menuTutorialHero = ref->getIntegerForKey(KEY_MENU_TUT_HERO, false);
+	//menuTutorialHero = ref->getIntegerForKey(KEY_MENU_TUT_HERO, false);
 	isShowStory = ref->getBoolForKey(KEY_STORY, false);
 	lastMapIdPlay = ref->getIntegerForKey(KEY_LAST_MAP_ID, 1);
 	selectedHero = ref->getIntegerForKey(KEY_SELECTED_HERO, 0);
@@ -119,13 +119,13 @@ void RefManager::pointToCurrentHero(int index)
 
 }
 
-void RefManager::setupMenuTutorialHero() {
-	if (menuTutorialHero == false) {
-		menuTutorialHero = true;
-		ref->setBoolForKey(KEY_MENU_TUT_HERO, menuTutorialHero);
-		ref->flush();
-	}
-}
+//void RefManager::setupMenuTutorialHero() {
+//	if (menuTutorialHero == false) {
+//		menuTutorialHero = true;
+//		ref->setBoolForKey(KEY_MENU_TUT_HERO, menuTutorialHero);
+//		ref->flush();
+//	}
+//}
 
 void RefManager::setupMenuTutorialUpgrate() {
 	menuTutorialUpgrade = true;

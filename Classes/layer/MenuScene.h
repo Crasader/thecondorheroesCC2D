@@ -92,6 +92,7 @@ private:
 	SkeletonAnimation *m_arPreviewHero[5];					// hero preview
 	Label *m_arLabelNumberItemOwning[5];					// 
 	Button *m_arBuyItemButton[5];
+	Button *m_arUpgradeSkillButton[3];
 	Sprite *m_arSpriteItemMax[5];
 	Sprite *m_arItemCoinSprite[5];
 	Label *m_arItemLabelCost[5];
@@ -132,7 +133,7 @@ private:
 	Menu *m_pTopMenu;
 	Menu *m_pBottomMainMenu;
 	Menu *m_pQuestBoardMenu;
-	Menu *m_pSkillBoardMenu;
+	//Menu *m_pSkillBoardMenu;
 	Menu *m_pBottomHeroMenu;
 	Menu *m_pShopMenu;
 	RadioButtonGroup *m_pLanguageButtonGroup;
@@ -186,7 +187,8 @@ private:
 
 	// buy items
 	void buttonBuyItemHandle(int p_nIndexItem);
-	void receiveButtonPressEvent(Ref *pSender, Widget::TouchEventType type, int p_nIndexItem);
+	void buyItemHandle(Ref *pSender, Widget::TouchEventType type, int p_nIndexItem);
+	void upgradeSkillHero(Ref *pSender, Widget::TouchEventType type, int p_nIndexSkill, int p_nCost);
 
 	// reward quest
 	void buttonRewardQuest(int p_nQuestIndex);

@@ -1,4 +1,5 @@
 #include "ChimDieu.h"
+#include "manager/SkeletonManager.h"
 
 ChimDieu::ChimDieu(spSkeletonData * data) :B2Skeleton(data) {
 }
@@ -22,8 +23,28 @@ ChimDieu * ChimDieu::create(string jsonFile, string atlasFile, float scale) {
 	return _pEagle;
 }
 
-ChimDieu * ChimDieu::create(spSkeletonData * data) {
-	return nullptr;
+ChimDieu * ChimDieu::create(string filename, float scale) {
+	if (!SkeletonManager::getSkeletonData(filename)) {
+		SkeletonManager::getInstance()->cacheSkeleton(filename, scale);
+	}
+	auto data = SkeletonManager::getSkeletonData(filename);
+	ChimDieu * _pEagle = new ChimDieu(data);
+	_pEagle->setAnimation(0, "fly", true);
+	_pEagle->setSkin("Free");
+	_pEagle->setSlotsToSetupPose();
+	_pEagle->update(0.0f);
+	_pEagle->setTag(TAG_EAGLE);
+	_pEagle->isUp = false;
+	_pEagle->isDown = false;
+	_pEagle->setVisible(false);
+	_pEagle->sequenceCloud = 0.9f;
+	_pEagle->isCarry = false;
+	_pEagle->isAbleToDropHero = false;
+	return _pEagle;
+}
+
+ChimDieu::~ChimDieu()
+{
 }
 
 void ChimDieu::updateMe(float dt) {
@@ -138,5 +159,4 @@ void ChimDieu::flyAway() {
 	this->isCarry = false;
 	this->isUp = false;
 	this->isDown = false;
-	this->removeAllChildrenWithCleanup(true);
 }

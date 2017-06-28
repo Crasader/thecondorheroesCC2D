@@ -6,7 +6,7 @@
 #include "manager/RefManager.h"
 #include "manager/JSonHeroManager.h"
 #include "ui_custom/CustomLayerToToast.h"
-#include "thirdsdkhelper\FacebookHelper.h"
+#include "thirdsdkhelper/FacebookHelper.h"
 
 #define FACE_SHARE_TITLE  "SwordsMan"
 
@@ -24,7 +24,7 @@ bool DialogPauseGame::init()
 
 DialogPauseGame* DialogPauseGame::create()
 {
-	DialogPauseGame* dialog = new DialogPauseGame();
+	DialogPauseGame* dialog = new(std::nothrow) DialogPauseGame();
 
 	if (dialog && dialog->init())
 	{
@@ -48,12 +48,14 @@ void DialogPauseGame::onExit()
 
 void DialogPauseGame::resumeGame()
 {
+	menu->setEnabled(false);
 	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
 	gameLayer->resumeGame();
 }
 
 void DialogPauseGame::backHome()
 {
+	menu->setEnabled(false);
 	AdmobHelper::getInstance()->showAd("gameover");
 	auto gameScene = this->getParent();
 	gameScene->removeAllChildrenWithCleanup(true);
@@ -65,6 +67,7 @@ void DialogPauseGame::backHome()
 
 void DialogPauseGame::overGame()
 {
+	menu->setEnabled(false);
 	this->stopAllActions();
 	auto parentLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
 	this->removeFromParentAndCleanup(true);
@@ -74,6 +77,7 @@ void DialogPauseGame::overGame()
 
 void DialogPauseGame::replayGame(int goldRevive, bool isWatchVideo)
 {
+	menu->setEnabled(false);
 	//AdmobHelper::getInstance()->showFullAd();
 	//log("%i", goldRevive);
 	if (!isWatchVideo) {
@@ -98,8 +102,12 @@ void DialogPauseGame::replayGame(int goldRevive, bool isWatchVideo)
 
 void DialogPauseGame::nextStage()
 {	
+	menu->setEnabled(false);
 	Layer *_pMenuScene;
-
+	int checkAds = UserDefault::getInstance()->getBoolForKey(KEY_PRE_STAGE_STATUS, false);
+	if (checkAds) {
+		AdmobHelper::getInstance()->showAd("gameover");
+	}
 	//auto gameScene = this->getParent();
 	//gameScene->removeAllChildrenWithCleanup(true);
 
@@ -112,11 +120,12 @@ void DialogPauseGame::nextStage()
 
 	auto _aMainMenuScene = Scene::create();
 	_aMainMenuScene->addChild(_pMenuScene);
-	Director::getInstance()->replaceScene(TransitionFade::create(0.67f, _aMainMenuScene));
+	Director::getInstance()->replaceScene(TransitionFade::create(1.0f, _aMainMenuScene));
 }
 
 void DialogPauseGame::restartGame()
 {
+	menu->setEnabled(false);
 	AdmobHelper::getInstance()->showAd("gameover");
 	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
 
@@ -213,7 +222,11 @@ void DialogPause::selectedEventSound(Ref* pSender, ui::CheckBox::EventType type)
 
 bool DialogPause::init()
 {
-	DialogPauseGame::init();
+	if (!Layer::init())
+	{
+		return false;
+	}
+
 	auto origin = Director::getInstance()->getVisibleOrigin();
 
 	auto ref = UserDefault::getInstance()->sharedUserDefault();
@@ -223,7 +236,7 @@ bool DialogPause::init()
 	background->setPosition(origin + SCREEN_SIZE / 2);
 	addChild(background);
 
-	auto checkBoxMusic = ui::CheckBox::create("UI/UI_Endgame/btn_off.png", "UI/UI_Endgame/btn_on.png");
+	auto checkBoxMusic = ui::CheckBox::create("UI/UI_main_menu/SettingBoard/btn_off.png", "UI/UI_main_menu/SettingBoard/btn_on.png");
 	if (ref->getBoolForKey(KEY_IS_MUSIC, true)) {
 		checkBoxMusic->setSelected(true);
 	}
@@ -231,7 +244,7 @@ bool DialogPause::init()
 	checkBoxMusic->setPosition(Vec2(background->getContentSize().width*0.25f, background->getContentSize().height*0.7f));
 	background->addChild(checkBoxMusic);
 
-	auto checkBoxSound = ui::CheckBox::create("UI/UI_Endgame/btn_off.png", "UI/UI_Endgame/btn_on.png");
+	auto checkBoxSound = ui::CheckBox::create("UI/UI_main_menu/SettingBoard/btn_off.png", "UI/UI_main_menu/SettingBoard/btn_on.png");
 	if (ref->getBoolForKey(KEY_IS_SOUND, true)) {
 		checkBoxSound->setSelected(true);
 	}
@@ -266,7 +279,7 @@ bool DialogPause::init()
 
 DialogPause * DialogPause::create()
 {
-	DialogPause* dialog = new DialogPause();
+	DialogPause* dialog = new(std::nothrow) DialogPause();
 
 	if (dialog && dialog->init())
 	{
@@ -282,7 +295,7 @@ DialogPause * DialogPause::create()
 	return dialog;
 }
 
-bool DialogRevive::init(int numberOfRevive)
+bool DialogRevive::init(int numberOfRevive, bool isWatchedVid)
 {
 	DialogPauseGame::init();
 
@@ -299,8 +312,14 @@ bool DialogRevive::init(int numberOfRevive)
 	auto reviveBtnActive = Sprite::create("UI/UI_Endgame/btn_revive.png");
 	reviveBtnActive->setColor(Color3B(128, 128, 128));
 	auto reviveBtn = MenuItemSprite::create(reviveBtnNormal, reviveBtnActive, CC_CALLBACK_0(DialogPauseGame::replayGame, this, gold, false));
-	reviveBtn->setAnchorPoint(Vec2(0, 0.5f));
-	reviveBtn->setPosition(0, 0);
+	
+	if (!isWatchedVid) {
+		reviveBtn->setAnchorPoint(Vec2(0, 0.5f));
+		reviveBtn->setPosition(0, 0);
+	}
+	else {
+		reviveBtn->setPosition(background->getContentSize().width / 2, 0);
+	}
 
 	loading = ui::LoadingBar::create("UI/UI_Endgame/timeline_revive.png");
 	loading->setPosition(Vec2(reviveBtn->getContentSize().width / 2.05f, reviveBtn->getContentSize().height*0.275f));
@@ -315,13 +334,7 @@ bool DialogRevive::init(int numberOfRevive)
 		}
 	});
 	this->runAction(RepeatForever::create(Sequence::createWithTwoActions(DelayTime::create(0.1f), countdownFun)));
-
-	auto videoBtnNormal = Sprite::create("UI/UI_Endgame/btn_video.png");
-	auto videoBtnActive = Sprite::create("UI/UI_Endgame/btn_video.png");
-	videoBtnActive->setColor(Color3B(128, 128, 128));
-	auto videoBtn = MenuItemSprite::create(videoBtnNormal, videoBtnActive, CC_CALLBACK_0(DialogPauseGame::replayGame, this, gold, true));
-	videoBtn->setAnchorPoint(Vec2(1, 0.5f));
-	videoBtn->setPosition(background->getContentSize().width, 0);
+	
 
 	auto exitBtnNormal = Sprite::create("UI/UI_Endgame/btn_close.png");
 	auto exitBtnActive = Sprite::create("UI/UI_Endgame/btn_close.png");
@@ -330,15 +343,27 @@ bool DialogRevive::init(int numberOfRevive)
 	exitBtn->setAnchorPoint(Vec2(1, 1));
 	exitBtn->setPosition(background->getContentSize().width, background->getContentSize().height * 0.8f);
 
+	if (!isWatchedVid) {
+		auto videoBtnNormal = Sprite::create("UI/UI_Endgame/btn_video.png");
+		auto videoBtnActive = Sprite::create("UI/UI_Endgame/btn_video.png");
+		videoBtnActive->setColor(Color3B(128, 128, 128));
+		auto videoBtn = MenuItemSprite::create(videoBtnNormal, videoBtnActive, CC_CALLBACK_0(DialogPauseGame::replayGame, this, gold, true));
+		videoBtn->setAnchorPoint(Vec2(1, 0.5f));
+		videoBtn->setPosition(background->getContentSize().width, 0);
+
+		menu = Menu::create(reviveBtn, videoBtn, exitBtn, nullptr);
+	}
+	else {
+		menu = Menu::create(reviveBtn, exitBtn, nullptr);
+	}
+
 	// show gold revive
 	auto goldReviveLb = Label::createWithBMFont("fonts/font_coin-export.fnt", StringUtils::format("%i", gold));
 	goldReviveLb->setBMFontSize(exitBtnNormal->getBoundingBox().size.height * 0.75f);
 	goldReviveLb->setAnchorPoint(Vec2::ZERO);
 	goldReviveLb->setPosition(reviveBtn->getContentSize().width * 0.43f, reviveBtn->getContentSize().height * 0.43f);
 	reviveBtn->addChild(goldReviveLb);
-
-
-	menu = Menu::create(reviveBtn, videoBtn, exitBtn, nullptr);
+	
 	menu->setEnabled(false);
 	menu->setPosition(Vec2::ZERO);
 	background->addChild(menu);
@@ -358,11 +383,11 @@ int DialogRevive::calGoldRevive(int number)
 }
 
 
-DialogRevive * DialogRevive::create(int numberOfRevive)
+DialogRevive * DialogRevive::create(int numberOfRevive, bool isWatchedVid)
 {
-	DialogRevive* dialog = new DialogRevive();
+	DialogRevive* dialog = new(std::nothrow) DialogRevive();
 
-	if (dialog && dialog->init(numberOfRevive)) {
+	if (dialog && dialog->init(numberOfRevive, isWatchedVid)) {
 		dialog->autorelease();
 		return dialog;
 	}
@@ -409,14 +434,14 @@ bool DialogStageClear::init(int score, int gold)
 	backBtnActive->setColor(Color3B(128, 128, 128));
 	auto backBtn = MenuItemSprite::create(backBtnNormal, backBtnActive, CC_CALLBACK_0(DialogPauseGame::backHome, this));
 	backBtn->setAnchorPoint(Vec2(0, 1));
-	backBtn->setPosition(background->getContentSize().width*0.1, 0);
+	backBtn->setPosition(background->getContentSize().width*0.1f, 0);
 
 	auto nextBtnNormal = Sprite::create("UI/UI_Endgame/btn_next.png");
 	auto nextBtnActive = Sprite::create("UI/UI_Endgame/btn_next.png");
 	nextBtnActive->setColor(Color3B(128, 128, 128));
 	auto nextBtn = MenuItemSprite::create(nextBtnNormal, nextBtnActive, CC_CALLBACK_0(DialogPauseGame::nextStage, this));
 	nextBtn->setAnchorPoint(Vec2(1, 1));
-	nextBtn->setPosition(background->getContentSize().width*0.9, 0);
+	nextBtn->setPosition(background->getContentSize().width*0.9f, 0);
 
 
 	auto fbShareBtnNormal = Sprite::create("UI/UI_Endgame/btn_facebook.png");
@@ -472,14 +497,15 @@ bool DialogStageClear::init(int score, int gold)
 void DialogStageClear::shareFB()
 {
 	//FacebookHelper::getInstance()->dialogPhoto(FACE_SHARE_TITLE);
+	AdmobHelper::getInstance()->hide("top_banner");
 	FacebookHelper::getInstance()->dialogPhoto(FACE_SHARE_TITLE);
-	log("Sharing");
+	//log("Sharing");
 }
 
 
 DialogStageClear * DialogStageClear::create(int score, int gold)
 {
-	DialogStageClear* dialog = new DialogStageClear();
+	DialogStageClear* dialog = new(std::nothrow) DialogStageClear();
 
 	if (dialog && dialog->init(score, gold))
 	{
@@ -498,7 +524,13 @@ DialogStageClear * DialogStageClear::create(int score, int gold)
 void DialogStageClear::effect()
 {
 	auto mainEffect = CallFunc::create([&]() {
-		DialogPauseGame::effect();
+		this->setPosition(0, SCREEN_SIZE.height * 1.1f);
+		auto actionMove = MoveTo::create(0.4f, Vec2::ZERO);
+		auto effect = EaseBackOut::create(actionMove);
+		auto enableMenu = CallFunc::create([&]() {
+			menu->setEnabled(true);
+		});
+		this->runAction(Sequence::create(effect, DelayTime::create(0.5f), enableMenu, nullptr));
 	});
 
 	auto runParticle = CallFunc::create([&]() {
@@ -537,11 +569,17 @@ void DialogStageClear::effect()
 	this->runAction(Sequence::create(mainEffect, DelayTime::create(0.5f), runParticle, nullptr));
 }
 
+void DialogStageClear::onExit()
+{
+	DialogPauseGame::onExit();
+	UserDefault::getInstance()->setBoolForKey(KEY_PRE_STAGE_STATUS, true);
+}
+
 
 bool DialogOverGame::init(int score, int gold)
 {
 	DialogPauseGame::init();
-
+	UserDefault::getInstance()->setBoolForKey(KEY_PRE_STAGE_STATUS, true);
 	auto origin = Director::getInstance()->getVisibleOrigin();
 
 
@@ -625,7 +663,7 @@ bool DialogOverGame::init(int score, int gold)
 
 DialogOverGame * DialogOverGame::create(int score, int gold)
 {
-	DialogOverGame* dialog = new DialogOverGame();
+	DialogOverGame* dialog = new(std::nothrow) DialogOverGame();
 
 	if (dialog && dialog->init(score, gold))
 	{
@@ -644,4 +682,10 @@ DialogOverGame * DialogOverGame::create(int score, int gold)
 void DialogOverGame::effect()
 {
 	DialogPauseGame::effect();
+}
+
+void DialogOverGame::onExit()
+{
+	DialogPauseGame::onExit();
+	UserDefault::getInstance()->setBoolForKey(KEY_PRE_STAGE_STATUS, false);
 }

@@ -3,19 +3,19 @@
 #include "manager/AudioManager.h"
 
 
-EnemyDatNhiBa::EnemyDatNhiBa(spSkeletonData * data):EnemyToanChanStudent(data)
+EnemyDatNhiBa::EnemyDatNhiBa(spSkeletonData * data) :EnemyHoacDo(data)
 {
 	canRun = false;
 }
 
-EnemyDatNhiBa::EnemyDatNhiBa(string jsonFile, string atlasFile, float scale):EnemyToanChanStudent(jsonFile, atlasFile,scale)
+EnemyDatNhiBa::EnemyDatNhiBa(string jsonFile, string atlasFile, float scale) : EnemyHoacDo(jsonFile, atlasFile, scale)
 {
 	canRun = false;
 }
 
 EnemyDatNhiBa * EnemyDatNhiBa::create(string jsonFile, string atlasFile, float scale)
 {
-	EnemyDatNhiBa *enemy = new EnemyDatNhiBa(jsonFile, atlasFile,scale);
+	EnemyDatNhiBa *enemy = new EnemyDatNhiBa(jsonFile, atlasFile, scale);
 	enemy->update(0.0f);
 	enemy->setTag(TAG_ENEMY_DATNHIBA1);
 	enemy->setScaleX(1);
@@ -45,22 +45,24 @@ EnemyDatNhiBa * EnemyDatNhiBa::create(string filename, float scale)
 	enemy->health = 2;
 	enemy->setDamage(1);
 	enemy->exp = 12;
+	enemy->autorelease();
 	return enemy;
 }
 
 
 void EnemyDatNhiBa::hit()
 {
-	
-	 health--;
-	 
-	 if (health == 0) {
-		 this->setIsDie(true);
-	 }
-	 else {
-		 this->addAnimation(10, "injured-red", false);
-		 canRun = true;
-	 }
+	health--;
+
+	if (health == 0) {
+		this->setIsDie(true);
+	}
+	else {
+		this->clearTracks();
+		this->setAnimation(0, "injured-red", false);
+		this->setToSetupPose();
+		canRun = true;
+	}
 }
 
 void EnemyDatNhiBa::updateMe(BaseHero* hero)
@@ -73,8 +75,8 @@ void EnemyDatNhiBa::updateMe(BaseHero* hero)
 
 void EnemyDatNhiBa::run()
 {
-	body->SetLinearVelocity(b2Vec2(SCREEN_SIZE.width/PTM_RATIO, 0));
-	body->SetLinearDamping(SCREEN_SIZE.width/PTM_RATIO / 4);
+	body->SetLinearVelocity(b2Vec2(SCREEN_SIZE.width / PTM_RATIO, 0));
+	body->SetLinearDamping(SCREEN_SIZE.width / PTM_RATIO / 4);
 	canRun = false;
 	this->changeBodyMaskBits(BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
 	this->schedule([&](float dt) {
@@ -123,6 +125,34 @@ void EnemyDatNhiBa::initCirclePhysic(b2World * world, Point pos)
 void EnemyDatNhiBa::updatePos()
 {
 	BaseEnemy::updatePos();
+}
+
+void EnemyDatNhiBa::prepare()
+{
+	BaseEnemy::prepare();
+}
+
+void EnemyDatNhiBa::listener()
+{
+	this->setCompleteListener([&](int trackIndex, int loopCount) {
+		if (strcmp(getCurrent()->animation->name, "attack") == 0 && loopCount == 1) {
+			this->clearTracks();
+			this->addAnimation(0, "idle", true);
+			this->setToSetupPose();
+		}
+
+		if (strcmp(getCurrent()->animation->name, "injured-red") == 0 && loopCount == 1) {
+			this->clearTracks();
+			this->addAnimation(0, "idle", true);
+			this->setToSetupPose();
+		}
+
+		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
+			this->setVisible(false);
+			this->pauseSchedulerAndActions();
+		}
+
+	});
 }
 
 

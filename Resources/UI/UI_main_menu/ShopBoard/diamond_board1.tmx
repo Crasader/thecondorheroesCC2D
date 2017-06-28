@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="308" tileheight="366" nextobjectid="19">
+<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="308" tileheight="366" nextobjectid="19">
  <tileset firstgid="1" name="diamond_board1" tilewidth="308" tileheight="366" tilecount="1" columns="1">
   <image source="diamond_board1.png" width="308" height="366"/>
  </tileset>

@@ -6,6 +6,7 @@
 #include "thirdsdkhelper\AdmobHelper.h"
 #include "thirdsdkhelper\FacebookHelper.h"
 #include "thirdsdkhelper\SdkboxPlay.h"
+#include "GameScene.h"
 
 Scene* SceneIntro::createScene() {
     auto scene = Scene::create();
@@ -207,8 +208,8 @@ void SceneIntro::goToMainMenuScene(Ref* p_pSender) {
 
 	AdmobHelper::getInstance()->hide("top_banner");
 	AudioManager::playSound(SOUND_BTCLICK);
-	Layer *_pMenuScene = MenuLayer::create(true);
+	Layer *_pMenuScene = MenuLayer::create(false);
 	auto _aMainMenuScene = Scene::create();
 	_aMainMenuScene->addChild(_pMenuScene);
-	Director::getInstance()->replaceScene(TransitionFade::create(1.0f, _aMainMenuScene));
+	Director::getInstance()->replaceScene(TransitionFade::create(0.5f, _aMainMenuScene));
 }

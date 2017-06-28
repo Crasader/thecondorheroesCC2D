@@ -11,6 +11,7 @@ BaseEnemy::BaseEnemy() :B2Skeleton()
 	isEndOfScreen = false;
 	damage = 1;
 	health = 1;
+	isPrepare = false;
 }
 
 BaseEnemy::~BaseEnemy()
@@ -24,15 +25,17 @@ BaseEnemy::BaseEnemy(spSkeletonData * data) :B2Skeleton(data)
 	isEndOfScreen = false;
 	damage = 1;
 	health = 1;
+	isPrepare = false;
 }
 
-BaseEnemy::BaseEnemy(string jsonFile, string atlasFile, float scale):B2Skeleton(jsonFile, atlasFile, scale)
+BaseEnemy::BaseEnemy(string jsonFile, string atlasFile, float scale) :B2Skeleton(jsonFile, atlasFile, scale)
 {
 	isDie = false;
 	isOccur = false;
 	isEndOfScreen = false;
 	damage = 1;
 	health = 1;
+	isPrepare = false;
 }
 
 BaseEnemy * BaseEnemy::create(string jsonFile, string atlasFile, float scale)
@@ -47,6 +50,18 @@ BaseEnemy * BaseEnemy::create(spSkeletonData * data)
 	skeleton->update(1.0f);
 	skeleton->autorelease();
 	return skeleton;
+}
+
+void BaseEnemy::prepare()
+{
+	//if (!isPrepare) {
+	isPrepare = true;
+	//}
+}
+
+void BaseEnemy::unprepare()
+{
+	isPrepare = false;
 }
 
 void BaseEnemy::hit()
@@ -78,6 +93,7 @@ void BaseEnemy::die()
 
 	auto hero = parentGameScene->getHero();
 	hero->setScore(hero->getScore() + this->getExp() * hero->getScoreRatio());
+	unprepare();
 	// when Authur using Skill, hero's score ratio is 2. // Ending return to 1.
 
 	if (!REF->getIsLockedHero()) {
@@ -127,6 +143,14 @@ void BaseEnemy::die()
 void BaseEnemy::updateMe(BaseHero* hero)
 {
 	updatePos();
+	bool a = this->isPrepare;
+	if (this->getPositionX() + this->getParent()->getPositionX() -hero->getPositionX() < SCREEN_SIZE.width / 2 && this->getPositionX() + +this->getParent()->getPositionX() > hero->getPositionX() && !this->isPrepare) {
+		this->prepare();
+	}
+
+	if ( this->getPositionX() + this->getParent()->getPositionX() < hero->getPositionX() && this->isPrepare) {
+		this->unprepare();
+	}
 
 	if (!isEndOfScreen && this->getPositionX() + this->getParent()->getPositionX() < hero->getPositionX() - SCREEN_SIZE.width * 0.25f) {
 		isEndOfScreen = true;
@@ -164,7 +188,7 @@ void BaseEnemy::makeMask()
 	this->changeBodyCategoryBits(BITMASK_ENEMY);
 	// phan vung co hai
 	if (this->getTag() >= 120 && this->getTag() <= 140) {
-		this->changeBodyMaskBits(BITMASK_HERO|BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
+		this->changeBodyMaskBits(BITMASK_HERO | BITMASK_SWORD | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2);
 	}
 	// phan vung vo hai
 	else if (this->getTag() >= 100 && this->getTag() < 120) {

@@ -61,7 +61,7 @@ void Hud::addProfile()
 		mObject_1["y"].asFloat()* tmxMap->getScaleY());
 
 
-	auto avatar = Sprite::createWithSpriteFrameName(JSHERO->getavatarPath());
+	auto avatar = Sprite::create(JSHERO->getavatarPath());
 	
 	avatar->setScale(SCREEN_SIZE.height / (4.7f * scaleRatio) / avatar->getContentSize().height);
 	avatar->setPosition(origin_1);
@@ -69,7 +69,7 @@ void Hud::addProfile()
 
 
 	// BLOOD BAR
-	bloodBoard = Sprite::createWithSpriteFrameName("blood_board.png");
+	bloodBoard = Sprite::create("UI/UI_info_ingame/blood_board.png");
 	bloodBoard->setAnchorPoint(Vec2::ZERO);
 	bloodBoard->setScale(SCREEN_SIZE.width / 4 / bloodBoard->getContentSize().width);
 	bloodBoard->setPosition(avatar->getPositionX() + avatar->getBoundingBox().size.width * 0.2f,
@@ -81,7 +81,7 @@ void Hud::addProfile()
 	auto mObject_2 = groupMoney->getObject("money_board");
 	float pos_2X = mObject_2["x"].asFloat() * tmxMap->getScaleX();
 
-	auto moneyBoard = Sprite::createWithSpriteFrameName("money_board.png");
+	auto moneyBoard = Sprite::create("UI/UI_info_ingame/money_board.png");
 	moneyBoard->setAnchorPoint(Vec2::ZERO);
 	moneyBoard->setScale(SCREEN_SIZE.height / (10 * scaleRatio) / moneyBoard->getContentSize().height);
 	moneyBoard->setPosition(pos_2X, bloodBoard->getPositionY());
@@ -101,7 +101,7 @@ void Hud::addProfile()
 	auto mObject_3 = groupScore->getObject("score_board");
 	float pos_3X = mObject_3["x"].asFloat() * tmxMap->getScaleX();
 
-	scoreBoard = Sprite::createWithSpriteFrameName("score_board.png");
+	scoreBoard = Sprite::create("UI/UI_info_ingame/score_board.png");
 	scoreBoard->setAnchorPoint(Vec2::ZERO);
 	scoreBoard->setScale(SCREEN_SIZE.height / (9 * scaleRatio) / scoreBoard->getContentSize().height);
 	scoreBoard->setPosition(pos_3X, bloodBoard->getPositionY());
@@ -128,7 +128,7 @@ void Hud::addProfile()
 
 	addChild(distanceBar);
 
-	characterPoint = Sprite::createWithSpriteFrameName(JSHERO->getCharacterPointPath());
+	characterPoint = Sprite::create(JSHERO->getCharacterPointPath());
 	characterPoint->setScale(SCREEN_SIZE.height / (8 * scaleRatio) / characterPoint->getContentSize().width);
 	characterPoint->setPosition(distanceBar->getPositionX() - distanceBar->getBoundingBox().size.width * 0.41f,
 		distanceBar->getPositionY());
@@ -177,9 +177,9 @@ void Hud::addButton()
 	multiKills->setSkin("default");
 	addChild(multiKills, 1);
 
-	coverSkill = Sprite::createWithSpriteFrameName(JSHERO->getPathMainImageSkill1());
-	coverItemMagnet = Sprite::createWithSpriteFrameName("item3_magnet.png");
-	coverItemDC = Sprite::createWithSpriteFrameName("item4_doublecoin.png");
+	coverSkill = Sprite::create(JSHERO->getPathMainImageSkill1());
+	coverItemMagnet = Sprite::create("UI/UI_main_menu/ItemBoard/item3_magnet.png");
+	/*coverItemDC = Sprite::createWithSpriteFrameName("item4_doublecoin.png");*/
 
 	auto groupIcon = tmxMap->getObjectGroup("icon");
 	for (auto child : groupIcon->getObjects()) {
@@ -208,7 +208,7 @@ void Hud::addButton()
 			break;
 
 		case 2:
-			icon_Item_Magnet = ProgressTimer::create(Sprite::createWithSpriteFrameName("item3_magnet.png"));
+			icon_Item_Magnet = ProgressTimer::create(Sprite::create("UI/UI_main_menu/ItemBoard/item3_magnet.png"));
 			icon_Item_Magnet->setPosition(coverItemMagnet->getContentSize() / 2);
 			icon_Item_Magnet->setPercentage(100.0f);
 			icon_Item_Magnet->setReverseDirection(true);
@@ -225,15 +225,17 @@ void Hud::addButton()
 
 			break;
 		case 3:
-			icon_Item_DC = ProgressTimer::create(Sprite::createWithSpriteFrameName("item4_doublecoin.png"));
+			/*icon_Item_DC = ProgressTimer::create(Sprite::createWithSpriteFrameName("item4_doublecoin.png"));
 			icon_Item_DC->setPosition(coverItemMagnet->getContentSize() / 2);
 			icon_Item_DC->setPercentage(100.0f);
 			icon_Item_DC->setReverseDirection(true);
 			icon_Item_DC->setType(ProgressTimer::Type::RADIAL);
 
-			coverItemDC->addChild(icon_Item_DC);
+			coverItemDC->addChild(icon_Item_DC);*/
 
-			coverItemDC->setOpacity(50);
+			coverItemDC = Sprite::create("UI/UI_main_menu/ItemBoard/item4_doublecoin.png"); // added
+
+			//coverItemDC->setOpacity(50);
 			coverItemDC->setPosition(origin_X);
 			coverItemDC->setVisible(false);
 			coverItemDC->setScale(SCREEN_SIZE.height / (12.0f * scaleRatio) / coverItemDC->getContentSize().height);
@@ -260,12 +262,12 @@ void Hud::createBloodBar()
 
 	int arraySize = listBlood->capacity();
 	for (int i = 0; i < arraySize; ++i) {
-		auto blood = Sprite::createWithSpriteFrameName("blood.png");
+		auto blood = Sprite::create("UI/UI_info_ingame/blood.png");
 		blood->setAnchorPoint(Vec2::ZERO);
 		blood->setScaleX(bloodBoard->getBoundingBox().size.width * (8.0f / 11.4f) / arraySize / blood->getContentSize().width);
-		blood->setScaleY(bloodBoard->getBoundingBox().size.height * 0.35f / blood->getContentSize().height);
+		blood->setScaleY(bloodBoard->getBoundingBox().size.height * 0.33f / blood->getContentSize().height);
 		blood->setPosition(Point(i * blood->getBoundingBox().size.width + bloodBoard->getBoundingBox().size.width / 11 + bloodBoard->getPositionX(),
-			bloodBoard->getPositionY() + bloodBoard->getBoundingBox().size.height * 0.33f));
+			bloodBoard->getPositionY() + bloodBoard->getBoundingBox().size.height * 0.295f));
 		addChild(blood, 1);
 		listBlood->addObject(blood);
 	}
@@ -279,7 +281,7 @@ void Hud::addAttack()
 	float posY = SCREEN_SIZE.height * 0.165f / scaleRatio;
 	Point origin = Point(SCREEN_SIZE.width - posY, posY);
 
-	btnAttack = MyButton::create(JSHERO->getPathButtonAttack(), "attack_1b.png", origin);
+	btnAttack = MyButton::create(JSHERO->getPathButtonAttack(), "UI/Btn_attack/attack_1b.png", origin);
 	btnAttack->getMain()->setScale(btnAttack->getContentSize().height * 0.925f / btnAttack->getMain()->getContentSize().height);
 	btnAttack->setTimeCoolDown(0.33f);
 	btnAttack->setScale(SCREEN_SIZE.height / (3.7f * scaleRatio) / btnAttack->getContentSize().height);
@@ -346,11 +348,10 @@ void Hud::addBird()
 	auto mObject_4 = groupBtnCalling->getObject("btn_special");
 	Point origin_4 = Point(mObject_4["x"].asFloat() * tmxMap->getScaleX(), mObject_4["y"].asFloat()* tmxMap->getScaleY());
 
-	auto btn_bird_normal = Sprite::createWithSpriteFrameName("btn_callbird.png");
-	auto btn_bird_active = Sprite::createWithSpriteFrameName("btn_callbird_off.png");
-	btnCalling = MenuItemSprite::create(btn_bird_normal, btn_bird_active, CC_CALLBACK_0(Hud::doCalling, this));
+	btnCalling = MenuItemImage::create("UI/Btn_skill/btn_callbird.png", "UI/Btn_skill/btn_callbird_off.png", 
+										CC_CALLBACK_0(Hud::doCalling, this));
 	btnCalling->setEnabled(false);
-	btnCalling->setDisabledImage(Sprite::createWithSpriteFrameName("btn_callbird_off.png"));
+	btnCalling->setDisabledImage(Sprite::create("UI/Btn_skill/btn_callbird_off.png"));
 	btnCalling->setPosition(origin_4);
 	btnCalling->setScale(SCREEN_SIZE.height / (7 * scaleRatio) / btnCalling->getContentSize().height);
 }
@@ -464,9 +465,9 @@ void Hud::introAttack()
 		coverItemMagnet->pause();
 	}
 
-	if (coverItemDC->isVisible()) {
+	/*if (coverItemDC->isVisible() && isItemDCActive) {
 		coverItemDC->pause();
-	}
+	}*/
 
 	addAttack();
 	btnAttack->addEvents();
@@ -484,9 +485,9 @@ void Hud::introSkills()
 		coverItemMagnet->pause();
 	}
 
-	if (coverItemDC->isVisible()) {
+	/*if (coverItemDC->isVisible() && isItemDCActive) {
 		coverItemDC->pause();
-	}
+	}*/
 
 	addSkills();
 	btnSkill_1->addEvents();
@@ -568,9 +569,9 @@ void Hud::pauseIfVisible()
 		coverItemMagnet->pause();
 	}
 
-	if (coverItemDC->isVisible()) {
+	/*if (coverItemDC->isVisible() && isItemDCActive) {
 		coverItemDC->pause();
-	}
+	}*/
 
 	if (btnAttack != nullptr && btnAttack->isVisible())
 		btnAttack->pauseListener();
@@ -599,9 +600,9 @@ void Hud::resumeIfVisible()
 		coverItemMagnet->resume();
 	}
 
-	if (coverItemDC->isVisible()) {
+	/*if (coverItemDC->isVisible() && isItemDCActive) {
 		coverItemDC->resume();
-	}
+	}*/
 
 	if (btnAttack != nullptr && btnAttack->isVisible()) {
 		btnAttack->addEvents();
@@ -653,11 +654,11 @@ void Hud::refreshControl()
 		coverItemMagnet->unscheduleAllCallbacks();
 	}
 
-	if (coverItemDC->isVisible()) {
+	/*if (coverItemDC->isVisible() && isItemDCActive) {
 		isItemDCActive = false;
 		coverItemDC->setVisible(false);
 		coverItemDC->unscheduleAllCallbacks();
-	}
+	}*/
 }
 
 void Hud::moveCallBirdToCenterScreen(Vec2 p_ptCenterScreen)
@@ -736,16 +737,16 @@ void Hud::runnerSkillDuration(int skillWhat, float duration)
 	switch (skillWhat)
 	{
 	case 1:
-		coverSkill->setSpriteFrame(JSHERO->getPathMainImageSkill1());
-		icon_Skill->setSprite(Sprite::createWithSpriteFrameName(JSHERO->getPathMainImageSkill1()));
+		coverSkill->setTexture(JSHERO->getPathMainImageSkill1());
+		icon_Skill->setSprite(Sprite::create(JSHERO->getPathMainImageSkill1()));
 		break;
 	case 2:
-		coverSkill->setSpriteFrame(JSHERO->getPathMainImageSkill2());
-		icon_Skill->setSprite(Sprite::createWithSpriteFrameName(JSHERO->getPathMainImageSkill2()));
+		coverSkill->setTexture(JSHERO->getPathMainImageSkill2());
+		icon_Skill->setSprite(Sprite::create(JSHERO->getPathMainImageSkill2()));
 		break;
 	case 3:
-		coverSkill->setSpriteFrame(JSHERO->getPathMainImageSkill3());
-		icon_Skill->setSprite(Sprite::createWithSpriteFrameName(JSHERO->getPathMainImageSkill3()));
+		coverSkill->setTexture(JSHERO->getPathMainImageSkill3());
+		icon_Skill->setSprite(Sprite::create(JSHERO->getPathMainImageSkill3()));
 		break;
 	}
 
@@ -792,7 +793,13 @@ void Hud::runnerItemMagnet(int counter)
 
 void Hud::runnerItemDC(int counter)
 {
-	durationItemDC = counter / 60.0f;
+	//if (counter < 0) {
+		coverItemDC->setVisible(true);
+		//return;
+	//}
+
+
+	/*durationItemDC = counter / 60.0f;
 	if (isItemDCActive) {
 		coverItemDC->unschedule("itemRunnerDC");
 	}
@@ -812,7 +819,7 @@ void Hud::runnerItemDC(int counter)
 			coverItemDC->setVisible(false);
 			coverItemDC->unschedule("itemRunnerDC");
 		}
-	}, 0.1f, "itemRunnerDC");
+	}, 0.1f, "itemRunnerDC");*/
 }
 
 void Hud::tryHud()

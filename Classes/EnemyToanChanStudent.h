@@ -26,6 +26,7 @@ public:
 	virtual void playsoundAt();
 	virtual void playsoundDie();
 	//virtual void genSplash();
+	virtual void prepare();
 	virtual void listener();
 	virtual void updatePos();
 };

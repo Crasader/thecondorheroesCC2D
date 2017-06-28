@@ -7,7 +7,7 @@
 #include <spine/spine-cocos2dx.h>
 #include "thirdsdkhelper\AdmobHelper.h"
 #include "thirdsdkhelper\VungleHelper.h"
-
+#define KEY_PRE_STAGE_STATUS "keyPreStageStatus"// true is win, false is else
 USING_NS_CC;
 using namespace std;
 using namespace spine;
@@ -56,8 +56,8 @@ private:
 	ui::LoadingBar *loading;
 
 public:
-	bool init(int numberOfRevive);
-	static DialogRevive* create(int numberOfRevive);
+	bool init(int numberOfRevive, bool isWatchedVid);
+	static DialogRevive* create(int numberOfRevive, bool isWatchedVid);
 
 private:
 	int calGoldRevive(int number);
@@ -71,6 +71,7 @@ public:
 	bool init(int score, int gold);
 	static DialogStageClear* create(int score, int gold);
 	void effect();
+	void onExit();
 
 private:
 	void shareFB();
@@ -83,6 +84,7 @@ public:
 	bool init(int score, int gold);
 	static DialogOverGame* create(int score, int gold);
 	void effect();
+	void onExit();
 };
 
 

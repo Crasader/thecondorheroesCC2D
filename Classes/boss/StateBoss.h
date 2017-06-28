@@ -3,15 +3,27 @@
 
 class EnemyBoss1;
 
+enum IdStateBoss {
+	Idling,
+	Attack1,
+	Attack2,
+	Stupiding,
+	FixStupiding,
+	Die,
+	Injure,
+
+};
 
 class StateBoss
 {
 public:
+	IdStateBoss id;
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
 	StateBoss();
 	~StateBoss();
 	virtual void enter(EnemyBoss1 *boss);
 	virtual void execute(EnemyBoss1 *boss) = 0;
+	virtual void exit(EnemyBoss1 *boss)=0;
 	
 };
 
@@ -22,6 +34,7 @@ public:
 	
 	void enter(EnemyBoss1 *boss);
 	void execute(EnemyBoss1 *boss);
+	void exit(EnemyBoss1 *boss);
 };
 
 class BossAttacking1 : public StateBoss {
@@ -31,6 +44,7 @@ public:
 	
 	void enter(EnemyBoss1 *boss);
 	void execute(EnemyBoss1 *boss) ;
+	void exit(EnemyBoss1 *boss);
 };
 
 class BossAttacking2 : public StateBoss {
@@ -40,6 +54,7 @@ public:
 	
 	void enter(EnemyBoss1 *boss);
 	void execute(EnemyBoss1 *boss);
+	void exit(EnemyBoss1 *boss);
 };
 
 class BossStupiding : public StateBoss {
@@ -49,6 +64,7 @@ public:
 
 	void enter(EnemyBoss1 *boss);
 	void execute(EnemyBoss1 *boss);
+	void exit(EnemyBoss1 *boss);
 };
 
 class BossFixingStupid : public StateBoss {
@@ -58,6 +74,7 @@ public:
 
 	void enter(EnemyBoss1 *boss);
 	void execute(EnemyBoss1 *boss);
+	void exit(EnemyBoss1 *boss);
 	
 };
 
@@ -69,6 +86,18 @@ public:
 
 	void enter(EnemyBoss1 *boss);
 	void execute(EnemyBoss1 *boss);
+	void exit(EnemyBoss1 *boss);
+
+};
+
+class BossInjure : public StateBoss {
+public:
+	BossInjure();
+	~BossInjure();
+
+	void enter(EnemyBoss1 *boss);
+	void execute(EnemyBoss1 *boss);
+	void exit(EnemyBoss1 *boss);
 
 };
 

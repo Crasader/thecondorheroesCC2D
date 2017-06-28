@@ -192,3 +192,4 @@ void EnemyHongLangBa2::onExit()
 {
 	BaseEnemy::onExit();
 }
+

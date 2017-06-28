@@ -24,7 +24,7 @@
 #include "coin/CoinBullion.h"
 #include "CollisionListener.h"
 #include "utils/InfiniteParallaxNode.h"
-#include "utils/GLES-Render.h"
+//#include "utils/GLES-Render.h"
 #include "DialogPauseGame.h"
 #include "TutorialLayer.h"
 #include "datastructures/MyData.h"
@@ -58,7 +58,7 @@ public:
 
 private:
 
-	bool isModeDebug;
+	//bool isModeDebug;
 	
 	// props
 	int stage;
@@ -69,6 +69,7 @@ private:
 
 
 	int charId;	//Thinhnv Edited for select character
+	bool isWatchedVid = false;
 	int numberRevive = 0;
 
 	bool isWinGame;
@@ -97,9 +98,6 @@ public:
 
 
 private:
-	GLESDebugDraw *debugDraw;
-	Mat4 _modelViewMV;
-	CustomCommand _customCommand;
 
 	Follow *camera;
 	Node* follow;
@@ -123,6 +121,7 @@ private:
 
 	// dialog here
 	DialogPauseGame* dialogPause;
+	vector<string> listsoundPreLoad;
 
 	// listener
 	EventListenerTouchOneByOne* touch_listener;
@@ -160,8 +159,8 @@ private:
 
 
 	// function for process box2d
-	void draw(Renderer * renderer, const Mat4 & transform, uint32_t flags);
-	void onDraw();
+	/*void draw(Renderer * renderer, const Mat4 & transform, uint32_t flags);
+	void onDraw();*/
 	void initB2World();
 	void updateB2World(float dt);
 
@@ -257,6 +256,9 @@ private:
 	void introBird();
 
 	void tutorial();
+	void cacheEnemySound();
+	void preload(string filename);
+	void uncacheSound();
 
 public:
 

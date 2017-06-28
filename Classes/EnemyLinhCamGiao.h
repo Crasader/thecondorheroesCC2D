@@ -1,11 +1,11 @@
 #ifndef __ENEMY_LINH_CAM_GIAO_H__
 #define __ENEMY_LINH_CAM_GIAO_H__
 
-#include "EnemyToanChanStudent.h"
+#include "EnemyHoacDo.h"
 
 #define SOUND_GIAOAT		"sound/giaoat.mp3"
 #define SOUND_GIAODIE		"sound/giaodie.mp3"
-class EnemyLinhCamGiao : public EnemyToanChanStudent
+class EnemyLinhCamGiao : public EnemyHoacDo
 {
 public:
 	EnemyLinhCamGiao(spSkeletonData*data);
@@ -19,6 +19,8 @@ public:
 	virtual void playsoundAt();
 	virtual void playsoundDie();
 	virtual void addSquareFixture(Size size, Vec2 pos, unsigned int category, unsigned int mask);
+	virtual void prepare();
+	virtual void listener();
 };
 
 #endif // __ENEMY_H__

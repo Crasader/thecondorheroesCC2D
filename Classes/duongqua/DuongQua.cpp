@@ -21,7 +21,7 @@ DuongQua * DuongQua::create(string jsonFile, string atlasFile, float scale)
 		duongQua->stateMachine = new StateMachine(duongQua);
 		duongQua->stateMachine->setCurrentState(MLand);
 
-		duongQua->setBoxHeight(duongQua->getBoundingBox().size.height / 6.4f);
+		duongQua->setBoxHeight(duongQua->getBoundingBox().size.height / 6.7f);
 
 		//
 		duongQua->blash = Sprite::create("Animation/DuongQua/blash.png");

@@ -98,9 +98,9 @@ void CoLong::createNgocNuKiemPhap(Point p_ptPoint) {
 
 		this->setScore(this->getScore() + 15);
 	}
-	else {
+	/*else {
 		clone->setPosition(p_ptPoint);
-	}
+	}*/
 
 	if (!isAddedAll) {
 		/*clone->setEndListener([&](int trackIndex) {

@@ -120,10 +120,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/fire_eff.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/chidori_eff.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/rock_eff.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/Select_Stage/select_stage.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_info_ingame/info_hud.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/Btn_attack/button_attack.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/Btn_skill/button_skill.plist");
 
 	/*SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/BottomMenu/bottom_menu.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/DailyReward/daily_reward.plist");

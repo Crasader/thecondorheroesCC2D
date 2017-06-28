@@ -86,6 +86,6 @@ string JSonHeroManager::getTipAtX(int index)
 
 string JSonHeroManager::getNotifyAtX(int index)
 {
-	assert(index > 0 && index <= 11);
+	assert(index > 0 && index <= 15);
 	return jsonDoc["notification"][0][REF->getLanguage() == 0 ? "en" : "vi"][("noti_" + StringUtils::format("%i", index)).c_str()].GetString();
 }

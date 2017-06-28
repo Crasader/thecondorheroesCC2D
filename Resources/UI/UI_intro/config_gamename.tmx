@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="8" height="4" tilewidth="80" tileheight="80" nextobjectid="14">
- <tileset firstgid="1" name="namegame" tilewidth="80" tileheight="80" tilecount="32" columns="8">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="8" height="4" tilewidth="80" tileheight="80" nextobjectid="6">
+ <tileset firstgid="1" name="name" tilewidth="80" tileheight="80" tilecount="32" columns="8">
   <image source="namegame.png" width="648" height="326"/>
  </tileset>
  <layer name="Tile Layer 1" width="8" height="4">
@@ -12,9 +12,10 @@
 </data>
  </layer>
  <objectgroup name="Twinkle">
-  <object id="9" x="63.5" y="46.5" width="1" height="1"/>
-  <object id="10" x="455.5" y="165.5" width="1" height="1"/>
-  <object id="11" x="145.5" y="162.5" width="1" height="1"/>
-  <object id="13" x="610.5" y="51.5" width="1" height="1"/>
+  <object id="1" x="65" y="47"/>
+  <object id="2" x="456" y="169"/>
+  <object id="3" x="610" y="51"/>
+  <object id="4" x="143" y="163"/>
+  <object id="5" x="322" y="225"/>
  </objectgroup>
 </map>

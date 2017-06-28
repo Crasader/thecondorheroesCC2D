@@ -3,17 +3,17 @@
 #include "manager/AudioManager.h"
 
 
-EnemyLinhCamGiao::EnemyLinhCamGiao(spSkeletonData * data):EnemyToanChanStudent(data)
+EnemyLinhCamGiao::EnemyLinhCamGiao(spSkeletonData * data) :EnemyHoacDo(data)
 {
 }
 
-EnemyLinhCamGiao::EnemyLinhCamGiao(string jsonFile, string atlasFile, float scale):EnemyToanChanStudent(jsonFile, atlasFile,scale)
+EnemyLinhCamGiao::EnemyLinhCamGiao(string jsonFile, string atlasFile, float scale) : EnemyHoacDo(jsonFile, atlasFile, scale)
 {
 }
 
 EnemyLinhCamGiao * EnemyLinhCamGiao::create(string jsonFile, string atlasFile, float scale)
 {
-	EnemyLinhCamGiao *enemy = new EnemyLinhCamGiao(jsonFile, atlasFile,scale);
+	EnemyLinhCamGiao *enemy = new EnemyLinhCamGiao(jsonFile, atlasFile, scale);
 	enemy->update(0.0f);
 	enemy->setTag(TAG_ENEMY_LINHCAMGIAO1);
 	enemy->setScaleX(1);
@@ -73,7 +73,7 @@ void EnemyLinhCamGiao::initBoxPhysic(b2World * world, Point pos)
 	fixtureDef.shape = &shape;
 	fixtureDef.filter.categoryBits = BITMASK_ENEMY;
 
-	fixtureDef.filter.maskBits = BITMASK_SWORD | BITMASK_FLOOR | BITMASK_RADA_SKILL_1 |BITMASK_RADA_SKILL_2;
+	fixtureDef.filter.maskBits = BITMASK_SWORD | BITMASK_FLOOR | BITMASK_RADA_SKILL_1 | BITMASK_RADA_SKILL_2;
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_staticBody;
@@ -111,6 +111,28 @@ void EnemyLinhCamGiao::addSquareFixture(Size size, Vec2 pos, unsigned int catego
 	myFixtureDef.filter.maskBits = mask;
 	b2Fixture* footSensorFixture = body->CreateFixture(&myFixtureDef);
 	footSensorFixture->SetUserData(this);
+}
+
+void EnemyLinhCamGiao::prepare()
+{
+	BaseEnemy::prepare();
+}
+
+void EnemyLinhCamGiao::listener()
+{
+	this->setCompleteListener([&](int trackIndex, int loopCount) {
+		if (strcmp(getCurrent()->animation->name, "attack") == 0 && loopCount == 1) {
+			this->clearTracks();
+			this->addAnimation(0, "idle", true);
+			this->setToSetupPose();
+		}
+
+		if (strcmp(getCurrent()->animation->name, "die") == 0 && loopCount == 1) {
+			this->setVisible(false);
+			this->pauseSchedulerAndActions();
+		}
+
+	});
 }
 
 

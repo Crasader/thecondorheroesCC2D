@@ -3,10 +3,7 @@
 
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
-#include <string>
 USING_NS_CC;
-using namespace std;
-using namespace ui;
 
 class Twinkle : public Sprite {
 public:

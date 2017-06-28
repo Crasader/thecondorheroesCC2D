@@ -16,6 +16,7 @@ public:
 	CC_SYNTHESIZE(bool, isEndOfScreen, IsEndOfScreen);
 	CC_SYNTHESIZE(int, damage, Damage);
 	CC_SYNTHESIZE(int, exp, Exp);
+	CC_SYNTHESIZE(bool, isPrepare, isPrepare);
 
 	BaseEnemy();
 	~BaseEnemy();
@@ -23,6 +24,8 @@ public:
 	BaseEnemy(string jsonFile, string atlasFile, float scale);
 	static BaseEnemy* create(string jsonFile, string atlasFile, float scale);
 	static BaseEnemy* create(spSkeletonData*data);
+	virtual void prepare();
+	virtual void unprepare();
 	virtual void hit();
 	virtual void run();
 	virtual void attack();
@@ -32,6 +35,7 @@ public:
 	virtual void initBoxPhysic(b2World *world, Point pos);
 	virtual void makeMask();
 	virtual void updatePos();
+	
 };
 
 #endif // __ENEMY_H__

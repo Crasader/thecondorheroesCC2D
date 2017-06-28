@@ -1,91 +1,112 @@
 
 HLBa1.png
-size: 1024,512
+size: 2048,512
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 baokiem
   rotate: false
-  xy: 342, 71
+  xy: 1741, 370
   size: 135, 108
   orig: 135, 108
   offset: 0, 0
   index: -1
 buitoc
-  rotate: false
-  xy: 438, 13
+  rotate: true
+  xy: 963, 262
   size: 53, 56
   orig: 53, 56
   offset: 0, 0
   index: -1
 caidau
   rotate: false
-  xy: 603, 245
+  xy: 755, 254
   size: 102, 115
   orig: 102, 115
   offset: 0, 0
   index: -1
 caidau2
   rotate: false
-  xy: 707, 254
+  xy: 859, 274
   size: 102, 115
   orig: 102, 115
   offset: 0, 0
   index: -1
 canhtay1
   rotate: false
-  xy: 811, 294
+  xy: 963, 317
   size: 56, 72
   orig: 56, 72
   offset: 0, 0
   index: -1
 canhtay2
-  rotate: false
-  xy: 479, 81
+  rotate: true
+  xy: 643, 161
   size: 79, 86
   orig: 79, 86
   offset: 0, 0
   index: -1
 chansau1
   rotate: true
-  xy: 483, 169
-  size: 64, 100
-  orig: 64, 100
-  offset: 0, 0
-  index: -1
-chansau2
-  rotate: false
-  xy: 869, 295
-  size: 57, 71
-  orig: 57, 71
+  xy: 993, 405
+  size: 73, 162
+  orig: 73, 162
   offset: 0, 0
   index: -1
 chantruoc1
   rotate: true
-  xy: 342, 10
-  size: 59, 94
-  orig: 59, 94
-  offset: 0, 0
-  index: -1
-chantruoc2
-  rotate: false
-  xy: 952, 406
-  size: 70, 72
-  orig: 70, 72
+  xy: 832, 391
+  size: 87, 159
+  orig: 87, 159
   offset: 0, 0
   index: -1
 chuoikiem
-  rotate: true
-  xy: 952, 339
-  size: 65, 70
-  orig: 65, 70
+  rotate: false
+  xy: 342, 36
+  size: 154, 126
+  orig: 154, 126
   offset: 0, 0
   index: -1
 kiem
   rotate: false
-  xy: 342, 181
+  xy: 502, 181
   size: 139, 179
   orig: 139, 179
+  offset: 0, 0
+  index: -1
+kiem_eff
+  rotate: false
+  xy: 342, 164
+  size: 158, 196
+  orig: 158, 196
+  offset: 0, 0
+  index: -1
+lightning_1
+  rotate: true
+  xy: 1303, 379
+  size: 99, 144
+  orig: 99, 144
+  offset: 0, 0
+  index: -1
+lightning_2
+  rotate: true
+  xy: 1449, 379
+  size: 99, 144
+  orig: 99, 144
+  offset: 0, 0
+  index: -1
+lightning_3
+  rotate: true
+  xy: 1595, 379
+  size: 99, 144
+  orig: 99, 144
+  offset: 0, 0
+  index: -1
+lightning_4
+  rotate: true
+  xy: 1157, 379
+  size: 99, 144
+  orig: 99, 144
   offset: 0, 0
   index: -1
 mau1
@@ -111,21 +132,21 @@ slashenemy
   index: -1
 taysau
   rotate: false
-  xy: 493, 30
+  xy: 1021, 354
   size: 49, 49
   orig: 49, 49
   offset: 0, 0
   index: -1
 taytruoc
   rotate: false
-  xy: 811, 246
+  xy: 1072, 357
   size: 52, 46
   orig: 52, 46
   offset: 0, 0
   index: -1
 than
-  rotate: false
-  xy: 483, 235
+  rotate: true
+  xy: 1878, 360
   size: 118, 125
   orig: 118, 125
   offset: 0, 0
@@ -138,8 +159,8 @@ vatsau
   offset: 0, 0
   index: -1
 vattruoc
-  rotate: false
-  xy: 832, 368
+  rotate: true
+  xy: 643, 242
   size: 118, 110
   orig: 118, 110
   offset: 0, 0

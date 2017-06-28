@@ -35,9 +35,6 @@ bool MenuLayer::init(bool p_bOnlySelectStage, bool p_bGoToHeroesMenu) {
 	if (!Layer::init()) {
 		return false;
 	}
-
-	AudioManager::stopSoundandMusic();
-	AudioManager::playMusic(MUSIC_MENU);
 	initInputData();
 	Vec2 _v2Origin = Director::getInstance()->getVisibleOrigin();
 	this->setPosition(_v2Origin);
@@ -121,6 +118,10 @@ bool MenuLayer::init(bool p_bOnlySelectStage, bool p_bGoToHeroesMenu) {
 	sdkbox::PluginVungle::setListener(this);
 	sdkbox::IAP::setListener(this);
 #endif
+
+	createRequestToGoogle();
+	AudioManager::stopSoundandMusic();
+	AudioManager::playMusic(MUSIC_MENU);
 	return true;
 }
 
@@ -136,7 +137,7 @@ void MenuLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event * event)
 			if (backNumber == 0) {
 				backNumber++;
 				this->schedule(schedule_selector(MenuLayer::singlePress), 2.5f, 1, 0); // interval: 2s, repeate once, delay 0
-				CustomLayerToToast *_pToast = CustomLayerToToast::create("Press back again to exit", TOAST_SHORT);
+				CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(12), TOAST_SHORT);
 				_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
 				this->addChild(_pToast, 10);
 			}
@@ -198,12 +199,13 @@ void MenuLayer::disableListener()
 void MenuLayer::update(float p_fDelta) {
 	time_t _nCurrentTime = time(0);
 	if (m_nLifeNumber < 5) {
+		int _nTimeForLife = 3;
 		m_pTimeCounter->setVisible(true);
 		int _nDeltaTime = REF->getAnchorTime() - _nCurrentTime;
 		if (_nDeltaTime < 0) {
 			m_nLifeNumber++;
 			REF->setLife(m_nLifeNumber);
-			REF->setAnchorTime(REF->getAnchorTime() + 60 * m_nTimeForLife);
+			REF->setAnchorTime(REF->getAnchorTime() + 60 * _nTimeForLife);
 			initTopMainMenu();
 		}
 		int _nMinute = _nDeltaTime / 60;
@@ -464,7 +466,7 @@ void MenuLayer::initBottomMainMenu() {
 	m_pSpriteBuyHeroAttention->setPosition(_fXPositionCounter - m_pBottomMainLayer->getContentSize().height * 0.1f,
 		m_pBottomMainLayer->getContentSize().height * 0.7f);
 	m_pBottomMainLayer->addChild(m_pSpriteBuyHeroAttention, 2);
-	m_pSpriteBuyHeroAttention->setAnimation(0, "idle", true);
+	m_pSpriteBuyHeroAttention->setAnimation(0, "idle2", true);
 	if (REF->getMenuTutorialHero() == true) {
 		m_pSpriteBuyHeroAttention->setVisible(false);
 	}
@@ -670,7 +672,7 @@ void MenuLayer::initUpgradeBoard() {
 		_pSkillInfo->setPosition(_pBoardUpgrade->getContentSize().width * 0.1f, _pBoardUpgrade->getContentSize().height * (0.57f - i * 0.23f));
 		_pBoardUpgrade->addChild(_pSkillInfo, 1);
 
-		Sprite *_pSkillSprite = Sprite::createWithSpriteFrameName(_arSkillSpritePath[i]);
+		Sprite *_pSkillSprite = Sprite::create(_arSkillSpritePath[i]);
 		_pSkillSprite->setScale(_pSkillInfo->getContentSize().height / _pSkillSprite->getContentSize().height * 0.8f);
 		_pSkillSprite->setAnchorPoint(Vec2(0.0f, 0.5f));
 		_pSkillSprite->setPosition(0.0f, _pSkillInfo->getContentSize().height / 2);
@@ -983,7 +985,7 @@ void MenuLayer::initHeroInfoBoard() {
 	_pCurrentLevelSprite->setAnchorPoint(Vec2(0.0f, 0.0f));
 	_pCurrentLevelSprite->setPosition(_pInfoBoard->getContentSize().width * 0.1f, _pInfoBoard->getContentSize().height * 0.4f);
 	_pInfoBoard->addChild(_pCurrentLevelSprite, 0);
-	Label *_pLabelCurrentLevel = Label::createWithTTF(StringUtils::format(JSMENU->readMenuText(m_nLanguage, 0).c_str(), _nCurrentLevel),
+	Label *_pLabelCurrentLevel = Label::createWithTTF(StringUtils::format((JSMENU->readMenuText(m_nLanguage, 0) + "%d").c_str(), _nCurrentLevel),
 		"fontsDPM/UTM_DK_Drop_Dead.ttf", _pCurrentLevelSprite->getContentSize().height * 0.5f);
 	_pLabelCurrentLevel->setColor(Color3B::BLACK);
 	_pLabelCurrentLevel->setAlignment(TextHAlignment::CENTER, TextVAlignment::CENTER);
@@ -1053,7 +1055,7 @@ void MenuLayer::initHeroInfoBoard() {
 		_pNextLevelSprite->setAnchorPoint(Vec2(0.0f, 0.0f));
 		_pNextLevelSprite->setPosition(_pInfoBoard->getContentSize().width * 0.55f, _pInfoBoard->getContentSize().height * 0.4f);
 		_pInfoBoard->addChild(_pNextLevelSprite, 0);
-		Label *_pLabelNextLevel = Label::createWithTTF(StringUtils::format(JSMENU->readMenuText(m_nLanguage, 0).c_str(), _nCurrentLevel + 1),
+		Label *_pLabelNextLevel = Label::createWithTTF(StringUtils::format((JSMENU->readMenuText(m_nLanguage, 0) + "%d").c_str(), _nCurrentLevel + 1),
 			"fontsDPM/UTM_DK_Drop_Dead.ttf", _pNextLevelSprite->getContentSize().height * 0.5f);
 		_pLabelNextLevel->setColor(Color3B::BLACK);
 		_pLabelNextLevel->setAnchorPoint(Vec2(0.0f, 0.5f));
@@ -2826,10 +2828,12 @@ void MenuLayer::onVungleCacheAvailable()
 
 void MenuLayer::onVungleStarted()
 {
+	//experimental::AudioEngine::pauseAll();
 }
 
 void MenuLayer::onVungleFinished()
 {
+	//experimental::AudioEngine::resumeAll();
 }
 
 void MenuLayer::onVungleAdReward(const std::string & name)
@@ -2843,10 +2847,7 @@ void MenuLayer::onVungleAdReward(const std::string & name)
 		REF->setUpLife(5);
 		initTopMainMenu();
 		m_pTopMenu->setEnabled(true);
-
-		CustomLayerToToast *_pToast = CustomLayerToToast::create("Bonus 5 energies", TOAST_SHORT);
-		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
-		this->addChild(_pToast, 10);
+		actionToast(13, 5);
 	}
 	else {
 		float type = CCRANDOM_0_1();
@@ -2858,27 +2859,21 @@ void MenuLayer::onVungleAdReward(const std::string & name)
 				initTopMainMenu();
 				m_pTopMenu->setEnabled(true);
 
-				CustomLayerToToast *_pToast = CustomLayerToToast::create("300 gold for you!", TOAST_SHORT);
-				_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
-				this->addChild(_pToast, 10);
+				actionToast(14, 300);
 			}
 			else if (percent < 0.85f) {
 				m_nCurrentGold += 400;
 				REF->setUpGoldExplored(400);
 				initTopMainMenu();
 				m_pTopMenu->setEnabled(true);
-				CustomLayerToToast *_pToast = CustomLayerToToast::create("400 gold for you!", TOAST_SHORT);
-				_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
-				this->addChild(_pToast, 10);
+				actionToast(14, 400);
 			}
 			else {
 				m_nCurrentGold += 500;
 				REF->setUpGoldExplored(500);
 				initTopMainMenu();
 				m_pTopMenu->setEnabled(true);
-				CustomLayerToToast *_pToast = CustomLayerToToast::create("500 gold for you!", TOAST_SHORT);
-				_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
-				this->addChild(_pToast, 10);
+				actionToast(14, 500);
 			}
 		}
 		else {
@@ -2887,27 +2882,24 @@ void MenuLayer::onVungleAdReward(const std::string & name)
 				REF->setUpLife(3);
 				initTopMainMenu();
 				m_pTopMenu->setEnabled(true);
-				CustomLayerToToast *_pToast = CustomLayerToToast::create("Bonus 3 energies", TOAST_SHORT);
-				_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
-				this->addChild(_pToast, 10);
+				
+				actionToast(13, 3);
 			}
 			else if (percent < 0.85f) {
 				m_nLifeNumber += 4;
 				REF->setUpLife(4);
 				initTopMainMenu();
 				m_pTopMenu->setEnabled(true);
-				CustomLayerToToast *_pToast = CustomLayerToToast::create("Bonus 4 energies", TOAST_SHORT);
-				_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
-				this->addChild(_pToast, 10);
+
+				actionToast(13, 4);
 			}
 			else {
 				m_nLifeNumber += 5;
 				REF->setUpLife(5);
 				initTopMainMenu();
 				m_pTopMenu->setEnabled(true);
-				CustomLayerToToast *_pToast = CustomLayerToToast::create("Bonus 5 energies", TOAST_SHORT);
-				_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
-				this->addChild(_pToast, 10);
+
+				actionToast(13, 5);
 			}
 		}
 	}
@@ -2943,6 +2935,7 @@ string MenuLayer::indexHeroToName(int indexHero)
 				break;
 	}
 	default:
+		return "DuongQua";
 		break;
 	}
 }
@@ -2951,6 +2944,17 @@ void MenuLayer::singlePress(float dt)
 {
 	this->unschedule(schedule_selector(MenuLayer::singlePress));
 	backNumber = 0;
+}
+
+void MenuLayer::actionToast(int index, int value)
+{
+	auto action = CallFunc::create([=]() {
+		CustomLayerToToast *_pToast = CustomLayerToToast::create(StringUtils::format(JSHERO->getNotifyAtX(index).c_str(), value), TOAST_SHORT);
+		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
+		this->addChild(_pToast, 10);
+	});
+	
+	this->runAction(Sequence::createWithTwoActions(DelayTime::create(0.5f), action));
 }
 
 void MenuLayer::loadTwinkle(TMXTiledMap *p_pTMXTiledMap, float p_fMinScaleViaHeight, float p_fMaxScaleViaHeight) {

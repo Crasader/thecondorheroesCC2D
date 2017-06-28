@@ -21,6 +21,7 @@ Twinkle * Twinkle::create() {
 	return NULL;
 }
 
+
 void Twinkle::initTwinkle() {
 	ScaleBy *_pScaleDown = ScaleBy::create(0.3f, 0.01f);
 	RotateBy *_pRotate = RotateBy::create(1.0f, 360.0f);

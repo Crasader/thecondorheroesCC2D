@@ -196,9 +196,10 @@ void CollisionListener::BeginContact(b2Contact * contact)
 		B2Skeleton* sB = (B2Skeleton*)bodyB->GetUserData();
 		auto enemy = sA->getTag() == TAG_BOSS ? (EnemyBoss1 *)sA : (EnemyBoss1 *)sB;
 		auto hero  = sA->getTag() == TAG_BOSS ? (BaseHero *)sB : (BaseHero *)sA;
-		if(!hero->getIsInSpecialMode())
-		if (enemy->getControlState() < 0)
-			enemy->changeState(new BossAttacking1());
+		if (!hero->getIsInSpecialMode())
+			if(enemy->normalState->id == IdStateBoss::Stupiding)
+			//if (enemy->getControlState() < 0)
+			enemy->normalState->exit(enemy);
 
 	}
 

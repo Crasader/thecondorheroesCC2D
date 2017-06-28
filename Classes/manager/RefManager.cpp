@@ -19,8 +19,8 @@ RefManager::RefManager()
 	lastPickHero = ref->getIntegerForKey(KEY_LAST_PICK_HERO, 0);
 	isGetNewMap = ref->getBoolForKey(KEY_UNLOCK_MAP, false);
 
-	currentStageUnlocked = ref->getIntegerForKey(KEY_CUR_STAGE_UNLOCKED, 4);
-	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 4);
+	currentStageUnlocked = ref->getIntegerForKey(KEY_CUR_STAGE_UNLOCKED, 1);
+	currentMapUnLocked = ref->getIntegerForKey(KEY_CUR_MAP_UNLOCKED, 1);
 
 	anchorTime = ref->getIntegerForKey(KEY_ANCHORTIME, time(0) + 180);
 	lastDailyRewardTime = ref->getIntegerForKey(KEY_LAST_DAILY_REWARD_TIME, 0);

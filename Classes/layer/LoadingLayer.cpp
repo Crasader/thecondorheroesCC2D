@@ -101,9 +101,9 @@ void LoadingLayer::addStuff()
 		boardTime->getPositionY() + boardTime->getBoundingBox().size.height * 0.2f));
 	addChild(loading);
 
-	auto lbGuide = Label::createWithTTF("Guide here", "fonts/arial.ttf", 32);
+	auto lbGuide = Label::createWithTTF("Guide here", "fontsDPM/UTM_BRUSHSCI.ttf", 32);
 	lbGuide->setAnchorPoint(Vec2::ZERO);
-	lbGuide->setScale(boardTime->getBoundingBox().size.height * 0.6f / lbGuide->getContentSize().height);
+	lbGuide->setScale(boardTime->getBoundingBox().size.height * 0.8f / lbGuide->getContentSize().height);
 	lbGuide->setPosition(boardTime->getPositionX(), boardTime->getPositionY() - boardTime->getBoundingBox().size.height * 1.3f);
 	addChild(lbGuide);
 
@@ -123,7 +123,7 @@ void LoadingLayer::doLoading()
 		timer += 5;
 
 		if (timer >= 200) {
-			start = chrono::system_clock::now();
+			//start = chrono::system_clock::now();
 			timer = 0;
 			doProcess();
 			unschedule("Key_loading");
@@ -163,10 +163,10 @@ void LoadingLayer::doProcess()
 	}
 	
 
-	end = chrono::system_clock::now();
+	//end = chrono::system_clock::now();
 	
-	chrono::duration<double> elapsed_seconds = end - start;
-	log("%f", elapsed_seconds.count());
+	//chrono::duration<double> elapsed_seconds = end - start;
+	//log("%f", elapsed_seconds.count());
 
 	this->schedule([&](float dt) {
 		++percent;
@@ -179,7 +179,7 @@ void LoadingLayer::doProcess()
 			unschedule("key");
 
 			AdmobHelper::getInstance()->hide("top_banner");
-			Director::getInstance()->replaceScene(TransitionFade::create(0.43f, GameScene::createScene(mainScene, hud)));
+			Director::getInstance()->replaceScene(TransitionFade::create(0.67f, GameScene::createScene(mainScene, hud)));
 		}
 
 	}, 1.33f / (100.0f - percent), "key");

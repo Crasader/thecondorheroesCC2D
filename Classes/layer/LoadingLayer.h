@@ -36,7 +36,7 @@ private:
 	int map;
 	float charId;
 	float percent = 0.0f;
-	chrono::time_point<std::chrono::system_clock> start, end;
+	//chrono::time_point<std::chrono::system_clock> start, end;
 	int timer = 0;
 	void addStuff();
 	void doLoading();

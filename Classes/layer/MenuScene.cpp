@@ -95,13 +95,14 @@ bool MenuLayer::init(bool p_bOnlySelectStage, bool p_bGoToHeroesMenu) {
 	float _arPositionXHero[5] = { 0.28f, 0.3f, 0.3f, 0.29f, 0.27f };
 	float _arPositionYHero[5] = { 0.25f, 0.25f, 0.27f, 0.29f, 0.27f };
 	for (int i = 0; i < 5; i++) {
-		m_arPreviewHero[i] = new SkeletonAnimation(
+		m_arPreviewHero[i] = SkeletonAnimation::createWithFile(
 			StringUtils::format("UI/UI_main_menu/Preview%s/s_%s.json", _arNameHero[i].c_str(), _arNameHero[i].c_str()),
 			StringUtils::format("UI/UI_main_menu/Preview%s/s_%s.atlas", _arNameHero[i].c_str(), _arNameHero[i].c_str())
 			);
 		m_arPreviewHero[i]->update(0.0f);
 		m_arPreviewHero[i]->setScale(m_szVisibleSize.height / m_arPreviewHero[i]->getBoundingBox().size.height * _arScaleHero[i]);
 		m_arPreviewHero[i]->setPosition(Vec2(m_szVisibleSize.width * _arPositionXHero[i], m_szVisibleSize.height * _arPositionYHero[i]));
+		m_pGameScene->addChild(m_arPreviewHero[i], 1);
 	}
 	initSceneLayer();
 
@@ -284,8 +285,10 @@ void MenuLayer::initBackgroundLayer() {
 }
 
 void MenuLayer::initSceneLayer() {
-	m_pGameScene->removeAllChildrenWithCleanup(true);
-	m_pGameScene->addChild(m_arPreviewHero[m_nIndexHeroPicked], 1);
+	for (int i = 0; i < 5; i++) {
+		m_arPreviewHero[i]->setVisible(false);
+	}
+	m_arPreviewHero[m_nIndexHeroPicked]->setVisible(true);
 	m_arPreviewHero[m_nIndexHeroPicked]->setAnimation(0, "appear", false);
 	m_arPreviewHero[m_nIndexHeroPicked]->addAnimation(0, "idle", true);
 }

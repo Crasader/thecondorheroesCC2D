@@ -2838,7 +2838,28 @@ void GameScene::resumeAfterTut(int caseTut)
 
 void GameScene::onVungleAdViewed(bool isComplete)
 {
-	experimental::AudioEngine::resumeAll();
+	if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) {
+		AudioManager::stopMusic();
+		switch (stage)
+		{
+		case 1: {
+			AudioManager::playMusic(MUSIC_STAGE1);
+			break;
+		}
+		case 2: {
+			AudioManager::playMusic(MUSIC_STAGE2);
+			break;
+		}
+		case 3: {
+			AudioManager::playMusic(MUSIC_STAGE3);
+			break;
+		}
+		case 4: {
+			AudioManager::playMusic(MUSIC_STAGE4);
+			break;
+		}
+		}
+	}
 }
 void GameScene::onVungleCacheAvailable()
 {

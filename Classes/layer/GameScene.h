@@ -244,13 +244,12 @@ private:
 	TutorialLayer *tut;
 	bool isFirstPlay = false;
 
-	float posXJump1Tut = -1;
-	float posXJump2Tut = -1;
+	float posXJumpTut = -1;
 	float posXAttackTut = -1;
 	float posXSkillTut = -1;
 	float posXIntroBird = -1;
 
-	void introJump(int type);
+	void introJump();
 	void introAttack();
 	void introSkills();
 	void introBird();

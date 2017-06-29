@@ -159,7 +159,7 @@ void Hud::addButton()
 
 	auto pauseItemDisable = Sprite::create("UI/btn_pause.png");
 	pauseItemDisable->setColor(Color3B(128, 128, 128));
-	pauseItem = MenuItemImage::create("UI/btn_pause.png", "UI/btn_pause.png", CC_CALLBACK_0(Hud::doPause, this));
+	pauseItem = MenuItemImage::create("UI/btn_pause.png", "UI/btn_pause.png", CC_CALLBACK_1(Hud::doPause, this));
 	pauseItem->setDisabledImage(pauseItemDisable);
 	pauseItem->setAnchorPoint(Vec2::ZERO);
 	pauseItem->setScale(scoreBoard->getBoundingBox().size.height / scaleRatio / pauseItem->getContentSize().height);
@@ -349,7 +349,7 @@ void Hud::addBird()
 	Point origin_4 = Point(mObject_4["x"].asFloat() * tmxMap->getScaleX(), mObject_4["y"].asFloat()* tmxMap->getScaleY());
 
 	btnCalling = MenuItemImage::create("UI/Btn_skill/btn_callbird.png", "UI/Btn_skill/btn_callbird_off.png", 
-										CC_CALLBACK_0(Hud::doCalling, this));
+										CC_CALLBACK_1(Hud::doCalling, this));
 	btnCalling->setEnabled(false);
 	btnCalling->setDisabledImage(Sprite::create("UI/Btn_skill/btn_callbird_off.png"));
 	btnCalling->setPosition(origin_4);
@@ -366,7 +366,7 @@ void Hud::addBird()
 //	log("Doubling");
 //}
 
-void Hud::doCalling()
+void Hud::doCalling(Ref *pSender)
 {
 	if(!REF->getIsLockedHero())
 		REF->decreaseNumberItemBird();
@@ -376,14 +376,14 @@ void Hud::doCalling()
 	if (btnSkill_1->isVisible())
 		hideButton();
 
-	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
+	auto gameLayer = dynamic_cast<GameScene*> (this->getParent()->getChildByName("gameLayer"));
 	gameLayer->callingBird();
 }
 
-void Hud::doPause()
+void Hud::doPause(Ref *pSender)
 {
 	//log("do pause");
-	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
+	auto gameLayer = dynamic_cast<GameScene*> (this->getParent()->getChildByName("gameLayer"));
 	gameLayer->pauseGame();
 }
 

@@ -52,8 +52,8 @@ void Item::picked()
 void Item::updateMe(BaseHero *hero)
 {
 	if (body != nullptr) {
-		if (hero->getPositionX() + SCREEN_SIZE.width * 0.8f > this->getPositionX() && 
-			hero->getPositionY() + SCREEN_SIZE.height * 0.8f  > this->getPositionY()) {
+		if (hero->getPositionX() + SCREEN_SIZE.width * 0.8f > this->getPositionX() &&
+			hero->getPositionY() + SCREEN_SIZE.height * 0.8f > this->getPositionY()) {
 
 			if (this->isVisible() && hero->getB2Body()) {
 				if (((this->getPosition() -
@@ -72,8 +72,8 @@ void Item::updateMe(BaseHero *hero)
 					}
 
 					if (typeItem == Item_type::MAGNET) {
-						REF->getSelectedHero() == 1 ? 
-							parentGameScene->runnerItem(Item_type::MAGNET, DURATION_MAGNET * 1.15f) : 
+						REF->getSelectedHero() == 1 ?
+							parentGameScene->runnerItem(Item_type::MAGNET, DURATION_MAGNET * 1.15f) :
 							parentGameScene->runnerItem(Item_type::MAGNET, DURATION_MAGNET);
 					}
 
@@ -99,7 +99,6 @@ void Item::updateMe(BaseHero *hero)
 
 			if (alpha > 2 * PI) alpha = 0;
 		}
-	
 	}
 }
 

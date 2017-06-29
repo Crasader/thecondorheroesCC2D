@@ -77,11 +77,11 @@ void DialogPauseGame::overGame()
 
 void DialogPauseGame::replayGame(int goldRevive, bool isWatchVideo)
 {
-	menu->setEnabled(false);
 	//AdmobHelper::getInstance()->showFullAd();
 	//log("%i", goldRevive);
 	if (!isWatchVideo) {
 		if (REF->setDownGold(goldRevive)) {
+			menu->setEnabled(false);
 			auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
 			gameLayer->reviveHero();
 			GAHelper::getInstance()->logEvent("Button", "Revive", "By Coin", 1);
@@ -93,6 +93,7 @@ void DialogPauseGame::replayGame(int goldRevive, bool isWatchVideo)
 		}
 	}
 	else {
+		menu->setEnabled(false);
 		VungleHelper::getInstance()->showReward();
 		//auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
 		
@@ -530,7 +531,7 @@ void DialogStageClear::effect()
 		auto enableMenu = CallFunc::create([&]() {
 			menu->setEnabled(true);
 		});
-		this->runAction(Sequence::create(effect, DelayTime::create(0.5f), enableMenu, nullptr));
+		this->runAction(Sequence::create(effect, enableMenu, nullptr));
 	});
 
 	auto runParticle = CallFunc::create([&]() {

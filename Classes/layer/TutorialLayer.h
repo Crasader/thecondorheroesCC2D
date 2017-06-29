@@ -10,51 +10,22 @@ using namespace std;
 
 class TutorialLayer : public Layer
 {
-	
+public: 
+	int type = 1;
 protected:
-	int counter = 0;
-	EventListenerTouchOneByOne* listener;
-	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();
+	Sprite *main;
+	//EventListenerTouchOneByOne * m_listener;
 
 public:
 	virtual bool init();
 	static TutorialLayer* create();
-	virtual bool onTouchBegan(Touch *touch, Event *unused_event);
+	//virtual bool onTouchBegan(Touch *touch, Event *unused_event);
+
+	void showJump();
+	void showAttack();
+	void showSkills();
+	void showBird();
 };
 
-
-class TutorialJump : public TutorialLayer
-{
-
-public:
-	virtual bool init(int type);
-	static TutorialJump* create(int type);
-	bool onTouchBegan(Touch *touch, Event *unused_event);
-};
-
-class TutorialAttack : public TutorialLayer
-{
-
-public:
-	virtual bool init();
-	static TutorialAttack* create();
-};
-
-class TutorialSkill : public TutorialAttack
-{
-
-public:
-	virtual bool init();
-	static TutorialSkill* create();
-};
-
-class TutorialIntroBird : public TutorialLayer
-{
-
-public:
-	virtual bool init();
-	static TutorialIntroBird* create();
-	bool onTouchBegan(Touch *touch, Event *unused_event);
-};
 
 #endif // __TUT_H__

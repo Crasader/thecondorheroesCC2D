@@ -107,8 +107,8 @@ private:
 
 	//void doSuctionCoin(Ref *pSender);
 	//void doDoublingCoin(Ref *pSender);
-	void doCalling();
-	void doPause();
+	void doCalling(Ref* pSender);
+	void doPause(Ref *pSender);
 
 	//void showSpecialButton();
 	//void createButtonX(int index, Point position);

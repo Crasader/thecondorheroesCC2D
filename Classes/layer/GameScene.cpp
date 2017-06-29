@@ -21,17 +21,17 @@ Scene* GameScene::createScene(GameScene *layer, Hud* m_hud)
 	auto scene = Scene::create();
 
 	// 'layer' is an autorelease object
-	layer->onBegin();
 	m_hud->setPosition(Director::getInstance()->getVisibleOrigin());
-	
+
 	// add layer as a child to scene
 	scene->addChild(layer);
 	scene->addChild(m_hud);
-
-
+	
 	blur = LayerColor::create(Color4B(0, 0, 0, 170));
 	blur->setVisible(false);
 	scene->addChild(blur);
+
+	layer->onBegin();
 
 	// return the scene
 	return scene;
@@ -68,8 +68,9 @@ bool GameScene::init(int stage, int map, int charId)
 	if (isFirstPlay) {
 		if (REF->getLastPickHero() != charId)
 			isFirstPlay = false;
-		else
+		else {
 			createEagle(Point(Director::getInstance()->getVisibleOrigin().x - SCREEN_SIZE.width, SCREEN_SIZE.height / 2));
+		}
 	}
 
 	// cache batchnode
@@ -143,8 +144,8 @@ void GameScene::selectHero()
 		preload(SOUND_DQSKILL1);
 		preload(SOUND_DQSKILL2);
 		preload(SOUND_DQSKILL3);
-		hero = DuongQua::create("Animation/DuongQua/DuongQua.json", 
-								"Animation/DuongQua/DuongQua.atlas", SCREEN_SIZE.height / 5 / 350);
+		hero = DuongQua::create("Animation/DuongQua/DuongQua.json",
+			"Animation/DuongQua/DuongQua.atlas", SCREEN_SIZE.height / 5 / 350);
 		break;
 
 	case 1:
@@ -153,8 +154,8 @@ void GameScene::selectHero()
 		preload(SOUND_CLSKILL1);
 		preload(SOUND_CLSKILL2);
 		preload(SOUND_CLSKILL3);
-		hero = CoLong::create("Animation/CoLong/CoLong.json", 
-								"Animation/CoLong/CoLong.atlas", SCREEN_SIZE.height / 5 / 340);
+		hero = CoLong::create("Animation/CoLong/CoLong.json",
+			"Animation/CoLong/CoLong.atlas", SCREEN_SIZE.height / 5 / 340);
 		break;
 
 	case 2:
@@ -163,8 +164,8 @@ void GameScene::selectHero()
 		preload(SOUND_HD_SKILL1);
 		preload(SOUND_HD_SKILL2);
 		preload(SOUND_HD_SKILL3);
-		hero = HoangDung::create("Animation/HoangDung/HoangDung.json", 
-									"Animation/HoangDung/HoangDung.atlas", SCREEN_SIZE.height / 5 / 340);
+		hero = HoangDung::create("Animation/HoangDung/HoangDung.json",
+			"Animation/HoangDung/HoangDung.atlas", SCREEN_SIZE.height / 5 / 340);
 		break;
 
 	case 3:
@@ -173,8 +174,8 @@ void GameScene::selectHero()
 		preload(SOUND_HDS_SKILL1);
 		preload(SOUND_HDS_SKILL2);
 		preload(SOUND_HDS_SKILL3);
-		hero = HoangDuocSu::create("Animation/HoangDuocSu/HoangDuocSu.json", 
-								"Animation/HoangDuocSu/HoangDuocSu.atlas", SCREEN_SIZE.height / 5 / 300);
+		hero = HoangDuocSu::create("Animation/HoangDuocSu/HoangDuocSu.json",
+			"Animation/HoangDuocSu/HoangDuocSu.atlas", SCREEN_SIZE.height / 5 / 300);
 		break;
 
 	case 4:
@@ -183,8 +184,8 @@ void GameScene::selectHero()
 		preload(SOUND_QT_SKILL1);
 		preload(SOUND_QT_SKILL2);
 		preload(SOUND_QT_SKILL3);
-		hero = QuachTinh::create("Animation/QuachTinh/QuachTinh.json", 
-								"Animation/QuachTinh/QuachTinh.atlas", SCREEN_SIZE.height / 5 / 300);
+		hero = QuachTinh::create("Animation/QuachTinh/QuachTinh.json",
+			"Animation/QuachTinh/QuachTinh.atlas", SCREEN_SIZE.height / 5 / 300);
 		break;
 
 	default:
@@ -238,7 +239,7 @@ void GameScene::createEagle(Point position)
 		_aEagle->setStringHero("DuongQua");
 		break;
 	}
-	
+
 }
 
 void GameScene::onBegin()
@@ -296,6 +297,11 @@ void GameScene::onBegin()
 			touch_listener->onTouchMoved = CC_CALLBACK_2(GameScene::onTouchMoved, this);
 		}*/
 		_eventDispatcher->addEventListenerWithSceneGraphPriority(touch_listener, this);
+	}
+	else {
+		tut = TutorialLayer::create();
+		tut->setVisible(false);
+		this->getParent()->addChild(tut);
 	}
 }
 
@@ -461,7 +467,7 @@ void GameScene::listener()
 			hud->getPauseItem()->setEnabled(false);
 
 			hero->setItemValue(KEY_ITEM_MAGNET, 0);
-			if(hero->getItemValue(KEY_ITEM_DOUPLE_COIN) >= -1)
+			if (hero->getItemValue(KEY_ITEM_DOUPLE_COIN) >= -1)
 				hero->setItemValue(KEY_ITEM_DOUPLE_COIN, 0);
 
 			if (hero->getActiveSkill()->isVisible())
@@ -488,6 +494,7 @@ void GameScene::listener()
 		if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isEnabled()) {
 			hud->getBtnCalling()->setEnabled(false);
 		}
+
 		currentButton = 1;
 
 		hero->setIsDoneDuration1(false);
@@ -514,6 +521,7 @@ void GameScene::listener()
 		if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isEnabled()) {
 			hud->getBtnCalling()->setEnabled(false);
 		}
+
 		currentButton = 2;
 
 		hero->setIsDoneDuration2(false);
@@ -728,7 +736,7 @@ void GameScene::update(float dt)
 			this->getParent()->addChild(_pToast, 10);
 
 			if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isEnabled()) {
-				hud->getBtnCalling()->setEnabled(false);	
+				hud->getBtnCalling()->setEnabled(false);
 			}
 
 			posXComingBoss = -1;
@@ -857,11 +865,7 @@ void GameScene::loadBackground()
 			switch (mObjectX["order"].asInt())
 			{
 			case 1:
-				posXJump1Tut = origin_X;
-				break;
-
-			case 2:
-				posXJump2Tut = origin_X;
+				posXJumpTut = origin_X;
 				break;
 
 			case 3:
@@ -915,7 +919,7 @@ void GameScene::createInfiniteNode()
 		changebg = pos.x;
 	}
 
-	if ((stage == 3 && map == 2) || (stage == 4 && map == 2)|| (stage == 4 && map == 3)|| (stage == 4 && map == 4)) {}
+	if ((stage == 3 && map == 2) || (stage == 4 && map == 2) || (stage == 4 && map == 3) || (stage == 4 && map == 4)) {}
 	else {
 		auto bg2_1 = Sprite::create(StringUtils::format("Map/map%d/bg%d_2.png", stage, map));
 		//auto bg2_1 = Sprite::create("moon.png");
@@ -1828,7 +1832,8 @@ void GameScene::initUnderGroundPhysic(b2World * world, Point pos, Size size)
 
 	if (charId == 4) {
 		bodyDef.position.Set(pos.x / PTM_RATIO, (pos.y + SCREEN_SIZE.height / 18) / PTM_RATIO);
-	} else
+	}
+	else
 		bodyDef.position.Set(pos.x / PTM_RATIO, pos.y / PTM_RATIO);
 
 	body = world->CreateBody(&bodyDef);
@@ -1846,6 +1851,19 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 			return true;
 		}
 	}*/
+
+	if (isFirstPlay && tut->isVisible()) {
+		tut->setVisible(false);
+		if (tut->type == 1) {
+			resumeAfterTut(1);
+		}
+		else if (tut->type == 2)
+			resumeAfterTut(2);
+		else
+			resumeAfterTut(4);
+
+		return false;
+	}
 
 	if (left_corner.containsPoint(touch->getLocation())) {
 
@@ -2167,10 +2185,10 @@ void GameScene::reviveHero()
 
 void GameScene::callingBird()
 {
-	GAHelper::getInstance()->logEvent("Bird","Call","",1);
+	GAHelper::getInstance()->logEvent("Bird", "Call", "", 1);
 	AudioManager::playSound(SOUND_BIRD);
 
-	if(!REF->getIsLockedHero())
+	if (!REF->getIsLockedHero())
 		REF->setUpNumberQuest(INDEX_QUEST_CALL_BIRD, 1);
 	if (hero->getActiveSkill()->isVisible())
 		hero->getActiveSkill()->setVisible(false);
@@ -2601,26 +2619,30 @@ void GameScene::jump()
 	}
 }
 
-void GameScene::introJump(int type)
+void GameScene::introJump()
 {
 	blurScreen();
-	tut = TutorialJump::create(type);
-	this->getParent()->addChild(tut);
+	tut->setVisible(true);
+	tut->showJump();
 
 	hero->getSmokeRun()->pause();
 	hero->pause();
 	hud->getPauseItem()->setEnabled(false);
-	if (posXJump1Tut > 0)
-		posXJump1Tut = -1;
-	else
-		posXJump2Tut = -1;
+
 	this->pause();
+
+	touch_listener = EventListenerTouchOneByOne::create();
+	touch_listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(touch_listener, this);
 }
 
 void GameScene::introAttack()
 {
-	tut = TutorialAttack::create();
-	this->getParent()->addChild(tut);
+	Director::getInstance()->getEventDispatcher()->removeEventListener(touch_listener);
+	touch_listener = nullptr;
+
+	tut->type = 2;
+	tut->showAttack();
 
 	if (hero->getSmokeRun()->isVisible())
 		hero->getSmokeRun()->pause();
@@ -2629,14 +2651,19 @@ void GameScene::introAttack()
 	hud->getPauseItem()->setEnabled(false);
 	hud->introAttack();
 
-	posXAttackTut = -1;
 	this->pause();
+
+	touch_listener = EventListenerTouchOneByOne::create();
+	touch_listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(touch_listener, this);
 }
 
 void GameScene::introSkills()
 {
-	tut = TutorialSkill::create();
-	this->getParent()->addChild(tut);
+	Director::getInstance()->getEventDispatcher()->removeEventListener(touch_listener);
+	touch_listener = nullptr;
+
+	tut->showSkills();
 
 	if (hero->getSmokeRun()->isVisible())
 		hero->getSmokeRun()->pause();
@@ -2645,14 +2672,20 @@ void GameScene::introSkills()
 	hud->getPauseItem()->setEnabled(false);
 	hud->introSkills();
 
-	posXSkillTut = -1;
 	this->pause();
+
+	touch_listener = EventListenerTouchOneByOne::create();
+	touch_listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(touch_listener, this);
 }
 
 void GameScene::introBird()
 {
-	tut = TutorialIntroBird::create();
-	this->getParent()->addChild(tut);
+	Director::getInstance()->getEventDispatcher()->removeEventListener(touch_listener);
+	touch_listener = nullptr;
+
+	tut->type = 4;
+	tut->showBird();
 
 	if (hero->getSmokeRun()->isVisible())
 		hero->getSmokeRun()->pause();
@@ -2667,38 +2700,39 @@ void GameScene::introBird()
 	else
 		enableCalling();
 
-	posXIntroBird = -1;
 	this->pause();
+
+	touch_listener = EventListenerTouchOneByOne::create();
+	touch_listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(touch_listener, this);
 }
 
 void GameScene::tutorial()
 {
-	if (posXJump1Tut > 0) {	// no need boolean
-		if (hero->getPositionX() >= posXJump1Tut) {
-			introJump(1);
-		}
-	}
-
-	if (posXJump2Tut > 0) {	// no need boolean
-		if (hero->getPositionX() >= posXJump2Tut) {
-			introJump(2);
+	if (posXJumpTut > 0) {	// no need boolean
+		if (hero->getPositionX() >= posXJumpTut) {
+			posXJumpTut = -1;
+			introJump();
 		}
 	}
 
 	if (posXAttackTut > 0) {
 		if (hero->getPositionX() >= posXAttackTut) {
+			posXAttackTut = -1;
 			introAttack();
 		}
 	}
 
 	if (posXSkillTut > 0) {
 		if (hero->getPositionX() >= posXSkillTut) {
+			posXSkillTut = -1;
 			introSkills();
 		}
 	}
 
 	if (posXIntroBird > 0) {
 		if (hero->getPositionX() >= posXIntroBird) {
+			posXIntroBird = -1;
 			introBird();
 		}
 	}
@@ -2793,9 +2827,10 @@ void GameScene::resumeAfterTut(int caseTut)
 
 	hero->resume();
 
-	tut->removeFromParentAndCleanup(true);
-	tut = nullptr;
-
+	if (tut->type == 4) {
+		tut->removeFromParentAndCleanup(true);
+		tut = nullptr;
+	}
 
 	hud->getPauseItem()->setEnabled(true);
 
@@ -2803,16 +2838,12 @@ void GameScene::resumeAfterTut(int caseTut)
 	switch (caseTut)
 	{
 	case 1:
-		if (posXJump2Tut > 0) {
-			touch_listener = EventListenerTouchOneByOne::create();
-			touch_listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
-			_eventDispatcher->addEventListenerWithSceneGraphPriority(touch_listener, this);
-		}
 
 		this->resume();
 		break;
 
 	case 2:
+
 		if (hud->getCoverSkill()->isVisible()) {
 			hud->getCoverSkill()->resume();
 		}
@@ -2836,7 +2867,7 @@ void GameScene::resumeAfterTut(int caseTut)
 		break;
 	default:
 		break;
-	}
+}
 }
 #ifdef SDKBOX_ENABLED
 

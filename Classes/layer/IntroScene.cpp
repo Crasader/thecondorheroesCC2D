@@ -212,13 +212,4 @@ void SceneIntro::goToMainMenuScene(Ref* p_pSender) {
 	auto _aMainMenuScene = Scene::create();
 	_aMainMenuScene->addChild(_pMenuScene);
 	Director::getInstance()->replaceScene(TransitionFade::create(0.5f, _aMainMenuScene));
-
-	/*auto mainScene = GameScene::create(1, 1, 0);
-	mainScene->setName("gameLayer");
-	mainScene->retain();
-	auto hud = Hud::create();
-	hud->retain();
-
-	mainScene->setHud(hud);
-	Director::getInstance()->replaceScene(TransitionFade::create(0.43f, GameScene::createScene(mainScene, hud)));*/
 }

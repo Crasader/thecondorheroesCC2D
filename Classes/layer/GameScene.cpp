@@ -91,13 +91,13 @@ bool GameScene::init(int stage, int map, int charId)
 
 	loadPosAndTag();
 	createGroundBody();
-	createItem();
-	initLayerToAddAgent();
+	//createItem();
+	//initLayerToAddAgent();
 
 	if (this->haveboss)
 		createBoss();
 
-	createCoin();
+	//createCoin();
 	return true;
 }
 
@@ -266,7 +266,7 @@ void GameScene::onBegin()
 
 	if (hud->getBtnCalling() != nullptr) {
 		createEagle(Point(hero->getB2Body()->GetPosition().x - SCREEN_SIZE.width, SCREEN_SIZE.height / 2));
-		hud->getBtnCalling()->setEnabled(true);
+		//hud->getBtnCalling()->setEnabled(true);
 	}
 
 	this->scheduleUpdate();
@@ -479,6 +479,10 @@ void GameScene::listener()
 	}
 
 	if (hud->getBtnAttack() == nullptr) return;
+	auto d = hud->getBtnAttack();
+	auto a = hud->getBtnAttack()->getIsActive();
+	auto b = hud->getBtnAttack()->getIsBlocked();
+	auto c = hero->getFSM()->currentState;
 	if (hud->getBtnAttack()->getIsActive() && !hud->getBtnAttack()->getIsBlocked()
 		&& hero->getFSM()->currentState != MInjured) {
 

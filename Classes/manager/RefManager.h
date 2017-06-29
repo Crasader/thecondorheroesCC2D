@@ -15,6 +15,8 @@ public:
 
 protected:
 	CC_SYNTHESIZE_READONLY(int, language, Language);
+	//CC_SYNTHESIZE_READONLY(bool, menuTutorialHero, MenuTutorialHero);
+	CC_SYNTHESIZE_READONLY(bool, menuTutorialUpgrade, MenuTutorialUpgrade);
 	CC_SYNTHESIZE_READONLY(bool, isShowStory, IsShowStory);
 	CC_SYNTHESIZE_READONLY(bool, isFirstPlay, IsFirstPlay);
 	CC_SYNTHESIZE_READONLY(int, lastMapIdPlay, LastMapIdPlay);
@@ -79,6 +81,8 @@ public:
 	static RefManager* getInstance();
 
 	void setLanguage(int p_nLanguage);
+	void setupMenuTutorialHero();
+	void setupMenuTutorialUpgrate();
 
 	void pointToCurrentHero(int index);		// set props to get
 
@@ -157,6 +161,8 @@ public:
 #define REF RefManager::getInstance()
 // Ref
 
+#define KEY_MENU_TUT_UPGRADE				"MenuTutorialUpgrade"
+//#define KEY_MENU_TUT_HERO					"MenuTutorialHero"
 #define KEY_LANGUAGE						"Language"
 #define KEY_FIRST							"FirstPlay"
 #define KEY_STORY							"ShowedStory"

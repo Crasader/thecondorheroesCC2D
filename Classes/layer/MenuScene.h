@@ -56,9 +56,9 @@ class MenuLayer : public cocos2d::Layer
 #endif
 {
 public:
-	virtual bool init(bool p_bOnlySelectStage);
+	virtual bool init(bool p_bOnlySelectStage, bool p_bGoToHeroesMenu = false);
 	void update(float p_fDelta);
-	static MenuLayer* create(bool p_bOnlySelectStage);
+	static MenuLayer* create(bool p_bOnlySelectStage, bool p_bGoToHeroesMenu = false);
 	void onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
 
 	bool downLife();
@@ -73,6 +73,7 @@ private:
 
 	// input value
 	int m_nCurrentTimeFromGoogle = 0;						// time from google.com.vn (-7 hours from Viet Nam)
+	int m_nTimeForLife = 3;
 
 	int m_nIndexHeroSelected = 0;
 	int m_nIndexHeroPicked = 0;
@@ -91,6 +92,7 @@ private:
 	SkeletonAnimation *m_arPreviewHero[5];					// hero preview
 	Label *m_arLabelNumberItemOwning[5];					// 
 	Button *m_arBuyItemButton[5];
+	Button *m_arUpgradeSkillButton[3];
 	Sprite *m_arSpriteItemMax[5];
 	Sprite *m_arItemCoinSprite[5];
 	Label *m_arItemLabelCost[5];
@@ -98,6 +100,7 @@ private:
 	Sprite *m_iconLife;
 
 	SkeletonAnimation *m_pSpriteQuestAttention;						// 
+	SkeletonAnimation *m_pSpriteBuyHeroAttention;						// 
 	SkeletonAnimation *m_pSpriteFreeCoinAttention;						// 
 
 	ListView *m_pPacksZone;
@@ -130,7 +133,7 @@ private:
 	Menu *m_pTopMenu;
 	Menu *m_pBottomMainMenu;
 	Menu *m_pQuestBoardMenu;
-	Menu *m_pSkillBoardMenu;
+	//Menu *m_pSkillBoardMenu;
 	Menu *m_pBottomHeroMenu;
 	Menu *m_pShopMenu;
 	RadioButtonGroup *m_pLanguageButtonGroup;
@@ -184,7 +187,8 @@ private:
 
 	// buy items
 	void buttonBuyItemHandle(int p_nIndexItem);
-	void receiveButtonPressEvent(Ref *pSender, Widget::TouchEventType type, int p_nIndexItem);
+	void buyItemHandle(Ref *pSender, Widget::TouchEventType type, int p_nIndexItem);
+	void upgradeSkillHero(Ref *pSender, Widget::TouchEventType type, int p_nIndexSkill, int p_nCost);
 
 	// reward quest
 	void buttonRewardQuest(int p_nQuestIndex);
@@ -213,6 +217,8 @@ private:
 	void moveLayerViaDirection(Layer *p_pLayer, int p_nDirection);
 	void loadTwinkle(TMXTiledMap *p_pSprite, float p_fMinScaleViaHeight, float p_fMaxScaleViaHeight);
 	void buttonSpringy(MenuItemSprite *p_pButton);
+	void showPopupInfoDialog(string p_sMessage, bool p_bGoToHeroesMenu = false);
+	void GoToHeroesMenu();
 
 	Sprite * createSpriteOnParent(Layer *p_pLayerParent, Sprite *p_pSpriteParent, int p_nLayer, string p_sPath, float p_fScaleX, float p_fScaleY, bool p_bScaleByWidth, Vec2 p_v2Anchor, Vec2 p_v2Position);
 	MenuItemSprite * createButtonOnParent(Layer *p_pLayerParent, Sprite *p_pSpriteParent, string p_sPath, ccMenuCallback p_pCallback, float p_fScaleX, float p_fScaleY, bool p_bScaleByWidth, Vec2 p_v2Anchor, Vec2 p_v2Position);

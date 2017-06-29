@@ -39,6 +39,14 @@
 		{
 			"en" : " Tiếng Việt",
 			"vi" : " Tiếng Việt"
+		},
+		{
+			"en" : "Congratulation, you have unlocked a new hero",
+			"vi" : "Chúc mừng, bạn đã mở khóa một nhân vật mới"
+		},
+		{
+			"en" : "Use gold to unlock and upgrade heroes stronger",
+			"vi" : "Dùng vàng để mở khóa và nâng cấp nhân vật mạnh mẽ hơn"
 		}
 	],
 	"items": [

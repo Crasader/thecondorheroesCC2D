@@ -77,7 +77,8 @@ bool MenuLayer::init(bool p_bOnlySelectStage, bool p_bGoToHeroesMenu) {
 
 		if (REF->getCurrentMapUnLocked() > 1 && REF->getMenuTutorialUpgrade() == false) {
 			showPopupInfoDialog(JSMENU->readMenuText(m_nLanguage, 11).c_str(), true);
-			REF->setupMenuTutorialUpgrate();
+			m_pSelectStageLayer->getmScrollView()->setEnabled(false);
+			m_pSelectStageLayer->getmMenu()->setEnabled(false);
 		}
 
 		return true;
@@ -90,14 +91,15 @@ bool MenuLayer::init(bool p_bOnlySelectStage, bool p_bGoToHeroesMenu) {
 
 	m_pGameScene = Layer::create(); // layer 2 : scene
 	this->addChild(m_pGameScene, 2);
-	string _arNameHero[5] = { "DuongQua", "Coco", "HoangDung", "HoangDuocSu", "QuachTinh" };
+	string _arNameHero[5] = { "DuongQua", "CoCo", "HoangDung", "HoangDuocSu", "QuachTinh" };
 	float _arScaleHero[5] = { 0.7f, 0.6f, 0.65f, 0.6f, 0.75f };
 	float _arPositionXHero[5] = { 0.28f, 0.3f, 0.3f, 0.29f, 0.27f };
 	float _arPositionYHero[5] = { 0.25f, 0.25f, 0.27f, 0.29f, 0.27f };
 	for (int i = 0; i < 5; i++) {
+		auto _name = _arNameHero[i].c_str();
 		m_arPreviewHero[i] = SkeletonAnimation::createWithFile(
-			StringUtils::format("UI/UI_main_menu/Preview%s/s_%s.json", _arNameHero[i].c_str(), _arNameHero[i].c_str()),
-			StringUtils::format("UI/UI_main_menu/Preview%s/s_%s.atlas", _arNameHero[i].c_str(), _arNameHero[i].c_str())
+			StringUtils::format("UI/UI_main_menu/Preview%s/s_%s.json", _name, _name).c_str(),
+			StringUtils::format("UI/UI_main_menu/Preview%s/s_%s.atlas", _name, _name).c_str()
 			);
 		m_arPreviewHero[i]->update(0.0f);
 		m_arPreviewHero[i]->setScale(m_szVisibleSize.height / m_arPreviewHero[i]->getBoundingBox().size.height * _arScaleHero[i]);
@@ -2501,7 +2503,7 @@ void MenuLayer::buttonUnlockHeroHandle() {
 		initBottomMainMenu();
 		initBottomHeroMenu();
 		initUpgradeBoard();
-		showPopupInfoDialog(JSMENU->readMenuText(m_nLanguage, 10).c_str());
+		showPopupInfoDialog(JSMENU->readMenuText(m_nLanguage, 10).c_str(), false);
 	}
 	else {
 		CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(5), TOAST_SHORT);
@@ -2982,12 +2984,12 @@ void MenuLayer::singlePress(float dt)
 void MenuLayer::actionToast(int index, int value)
 {
 	auto action = CallFunc::create([=]() {
-		CustomLayerToToast *_pToast = CustomLayerToToast::create(StringUtils::format(JSHERO->getNotifyAtX(index).c_str(), value), TOAST_SHORT);
+		CustomLayerToToast *_pToast = CustomLayerToToast::create(StringUtils::format(JSHERO->getNotifyAtX(index).c_str(), value), TOAST_LONG);
 		_pToast->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 4));
 		this->addChild(_pToast, 10);
 	});
 	
-	this->runAction(Sequence::createWithTwoActions(DelayTime::create(0.5f), action));
+	this->runAction(Sequence::createWithTwoActions(DelayTime::create(1.0f), action));
 }
 
 void MenuLayer::loadTwinkle(TMXTiledMap *p_pTMXTiledMap, float p_fMinScaleViaHeight, float p_fMaxScaleViaHeight) {
@@ -3195,6 +3197,7 @@ void MenuLayer::showPopupInfoDialog(string p_sMessage, bool p_bGoToHeroesMenu) {
 }
 
 void MenuLayer::GoToHeroesMenu() {
+	REF->setupMenuTutorialUpgrate();
 	Layer *_pMenuScene = MenuLayer::create(false, true);
 	auto scene = Scene::create();
 	scene->addChild(_pMenuScene);

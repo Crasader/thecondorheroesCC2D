@@ -11,7 +11,7 @@ RefManager::RefManager()
 	ref = UserDefault::sharedUserDefault();
 
 	isFirstPlay = ref->getBoolForKey(KEY_FIRST, true);
-	menuTutorialUpgrade = ref->getIntegerForKey(KEY_MENU_TUT_UPGRADE, false);
+	menuTutorialUpgrade = ref->getBoolForKey(KEY_MENU_TUT_UPGRADE, false);
 	//menuTutorialHero = ref->getIntegerForKey(KEY_MENU_TUT_HERO, false);
 	isShowStory = ref->getBoolForKey(KEY_STORY, false);
 	lastMapIdPlay = ref->getIntegerForKey(KEY_LAST_MAP_ID, 1);

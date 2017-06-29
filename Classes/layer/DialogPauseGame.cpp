@@ -126,12 +126,12 @@ void DialogPauseGame::nextStage()
 
 void DialogPauseGame::restartGame()
 {
-	menu->setEnabled(false);
 	AdmobHelper::getInstance()->showAd("gameover");
 	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
 
 	if (!REF->getIsLockedHero()) {
 		if (REF->getNumberOfLife() > 0) {
+			menu->setEnabled(false);
 			REF->setDownLife(1);
 			gameLayer->restartGame();
 		}
@@ -142,6 +142,7 @@ void DialogPauseGame::restartGame()
 		}
 	}
 	else {
+		menu->setEnabled(false);
 		gameLayer->restartGame();
 	}
 }

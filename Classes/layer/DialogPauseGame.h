@@ -56,8 +56,8 @@ private:
 	ui::LoadingBar *loading;
 
 public:
-	bool init(int numberOfRevive);
-	static DialogRevive* create(int numberOfRevive);
+	bool init(int numberOfRevive, bool isWatchedVid);
+	static DialogRevive* create(int numberOfRevive, bool isWatchedVid);
 
 private:
 	int calGoldRevive(int number);

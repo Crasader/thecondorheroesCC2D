@@ -62,7 +62,10 @@
         "noti_8": "You don't have enough gold, get more to buy",
         "noti_9": "You don't have enough diamond, get more to buy",
         "noti_10": "Do you want to buy this pack?",
-        "noti_11": "You've taken free coin 3 times today, comeback on tomorrow to get more"
+        "noti_11": "You've taken free coin 1 time today, comeback on tomorrow to get more",
+        "noti_12": "Press back again to exit!",
+        "noti_13": "Bonus %d energies",
+        "noti_14": "%d gold for you"
       },
 
       "vi": {
@@ -76,7 +79,10 @@
         "noti_8": "Bạn không đủ vàng, cần nhiều hơn để mua",
         "noti_9": "Bạn không đủ kim cương, cần nhiều hơn để mua",
         "noti_10": "Bạn có muốn mua vật phẩm này?",
-        "noti_11": "Bạn đã nhận được 3 lần vàng miễn phí ngày hôm nay, quay lại vào ngày mai để nhận tiếp"
+        "noti_11": "Bạn đã nhận được 1 lần vàng miễn phí ngày hôm nay, quay lại vào ngày mai để nhận tiếp",
+        "noti_12": "Ấn nút Back lần nữa để thoát!",
+        "noti_13": "Cộng %d bánh bao",
+        "noti_14": "%d vàng cộng thêm"
       }
     }
   ],
@@ -96,11 +102,11 @@
         "en": "Raise 15% speed of the condor",
         "vi": "Tốc độ bay của chim điêu tăng 15%"
       },
-      "avatarPath": "avatar_DuongQua.png",
-      "characterPointPath": "character_point.png",
-      "selectCharacterPoint": "character_point_DQ.png",
+      "avatarPath": "UI/UI_info_ingame/avatar_DuongQua.png",
+      "characterPointPath": "UI/UI_info_ingame/character_point.png",
+      "selectCharacterPoint": "UI/Select_Stage/character_point_DQ.png",
       "avatarLoadingPath": "UI/Loading/DQ.png",
-      "pathButtonAttack": "DQ_attack1a.png",
+      "pathButtonAttack": "UI/Btn_attack/DQ_attack1a.png",
       "isLocked": false,
       "coolDownSkill1": 38,
       "durationSkill1": 5,
@@ -109,8 +115,8 @@
         "en": "Wind Blade",
         "vi": "Toàn Chân Kiếm Pháp"
       },
-      "pathMainImageSkill1": "btnDQ_skill1_up.png",
-      "pathSubImageSkill1": "btnDQ_skill1_down.png",
+      "pathMainImageSkill1": "UI/Btn_skill/btnDQ_skill1_up.png",
+      "pathSubImageSkill1": "UI/Btn_skill/btnDQ_skill1_down.png",
       "coolDownSkill2": 40,
       "durationSkill2": 4,
       "numberOfUseSkill2": 1,
@@ -118,8 +124,8 @@
         "en": "Sword Storem",
         "vi": "Độc Cô Kiếm Pháp"
       },
-      "pathMainImageSkill2": "btnDQ_skill2_up.png",
-      "pathSubImageSkill2": "btnDQ_skill2_down.png",
+      "pathMainImageSkill2": "UI/Btn_skill/btnDQ_skill2_up.png",
+      "pathSubImageSkill2": "UI/Btn_skill/btnDQ_skill2_down.png",
       "coolDownSkill3": 42,
       "durationSkill3": 4,
       "numberOfUseSkill3": 1,
@@ -127,8 +133,8 @@
         "en": "Hold of fire",
         "vi": "Ám Nhiên Tiêu Hồn Chưởng"
       },
-      "pathMainImageSkill3": "btnDQ_skill3_up.png",
-      "pathSubImageSkill3": "btnDQ_skill3_down.png",
+      "pathMainImageSkill3": "UI/Btn_skill/btnDQ_skill3_up.png",
+      "pathSubImageSkill3": "UI/Btn_skill/btnDQ_skill3_down.png",
       "baseHP": 4,
       "level": 1,
       "maxLevel": 20,
@@ -136,10 +142,10 @@
       "percentBonusCoin": 0,
       "goldPrice": 0,
       "diamondPrice": 0,
-      "iconUnlocked": "icon_hero_dq_2.png",
-      "iconUnlockedSelected": "icon_hero_dq_1.png",
-      "iconLocked": "icon_hero_dq_3.png",
-      "iconLockedSelected": "icon_hero_dq_4.png"
+      "iconUnlocked": "UI/UI_main_menu/HeroMenu/icon_hero_dq_2.png",
+      "iconUnlockedSelected": "UI/UI_main_menu/HeroMenu/icon_hero_dq_1.png",
+      "iconLocked": "UI/UI_main_menu/HeroMenu/icon_hero_dq_3.png",
+      "iconLockedSelected": "UI/UI_main_menu/HeroMenu/icon_hero_dq_4.png"
     },
     {
       "key": "132456789abc",
@@ -155,11 +161,11 @@
         "en": "Raise 15% magnet's item",
         "vi": "Tăng thời gian sử dụng vật phẩm hút vàng thêm 15%"
       },
-      "avatarPath": "avatar_CoCo.png",
-      "characterPointPath": "CoCo_point.png",
-      "selectCharacterPoint": "character_point_CL.png",
+      "avatarPath": "UI/UI_info_ingame/avatar_CoCo.png",
+      "characterPointPath": "UI/UI_info_ingame/CoCo_point.png",
+      "selectCharacterPoint": "UI/Select_Stage/character_point_CL.png",
       "avatarLoadingPath": "UI/Loading/CL.png",
-      "pathButtonAttack": "CC_attack1a.png",
+      "pathButtonAttack": "UI/Btn_attack/CC_attack1a.png",
       "isLocked": false,
       "coolDownSkill1": 38,
       "durationSkill1": 5,
@@ -168,8 +174,8 @@
         "en": "Shuriken",
         "vi": "Độc Phong Châm"
       },
-      "pathMainImageSkill1": "btnCC_skill1_up.png",
-      "pathSubImageSkill1": "btnCC_skill1_down.png",
+      "pathMainImageSkill1": "UI/Btn_skill/btnCC_skill1_up.png",
+      "pathSubImageSkill1": "UI/Btn_skill/btnCC_skill1_down.png",
       "coolDownSkill2": 40,
       "durationSkill2": 4,
       "numberOfUseSkill2": 1,
@@ -177,8 +183,8 @@
         "en": "Shadow",
         "vi": "Ngọc Nữ Tâm Kinh"
       },
-      "pathMainImageSkill2": "btnCC_skill2_up.png",
-      "pathSubImageSkill2": "btnCC_skill2_down.png",
+      "pathMainImageSkill2": "UI/Btn_skill/btnCC_skill2_up.png",
+      "pathSubImageSkill2": "UI/Btn_skill/btnCC_skill2_down.png",
       "coolDownSkill3": 42,
       "durationSkill3": 4,
       "numberOfUseSkill3": 1,
@@ -186,8 +192,8 @@
         "en": "Blade Fury",
         "vi": "Song Kiếm Hợp Bích"
       },
-      "pathMainImageSkill3": "btnCC_skill3_up.png",
-      "pathSubImageSkill3": "btnCC_skill3_down.png",
+      "pathMainImageSkill3": "UI/Btn_skill/btnCC_skill3_up.png",
+      "pathSubImageSkill3": "UI/Btn_skill/btnCC_skill3_down.png",
       "baseHP": 4,
       "level": 1,
       "maxLevel": 20,
@@ -195,10 +201,10 @@
       "percentBonusCoin": 2,
       "goldPrice": 2000,
       "diamondPrice": 0,
-      "iconUnlocked": "icon_hero_cc_2.png",
-      "iconUnlockedSelected": "icon_hero_cc_1.png",
-      "iconLocked": "icon_hero_cc_3.png",
-      "iconLockedSelected": "icon_hero_cc_4.png"
+      "iconUnlocked": "UI/UI_main_menu/HeroMenu/icon_hero_cc_2.png",
+      "iconUnlockedSelected": "UI/UI_main_menu/HeroMenu/icon_hero_cc_1.png",
+      "iconLocked": "UI/UI_main_menu/HeroMenu/icon_hero_cc_3.png",
+      "iconLockedSelected": "UI/UI_main_menu/HeroMenu/icon_hero_cc_4.png"
     },
     {
       "key": "124356789abc",
@@ -214,11 +220,11 @@
         "en": "Revive with one time usage of Marvel Shield",
         "vi": "Hồi sinh được sử dụng 1 lần chiêu thức Nhuyễn Vị Giáp"
       },
-      "avatarPath": "avatar_HoangDung.png",
-      "characterPointPath": "HoangDung_point.png",
-      "selectCharacterPoint": "character_point_HD.png",
+      "avatarPath": "UI/UI_info_ingame/avatar_HoangDung.png",
+      "characterPointPath": "UI/UI_info_ingame/HoangDung_point.png",
+      "selectCharacterPoint": "UI/Select_Stage/character_point_HD.png",
       "avatarLoadingPath": "UI/Loading/HD.png",
-      "pathButtonAttack": "HD_attack1a.png",
+      "pathButtonAttack": "UI/Btn_attack/HD_attack1a.png",
       "isLocked": true,
       "coolDownSkill1": 38,
       "durationSkill1": 5,
@@ -227,8 +233,8 @@
         "en": "Immortal Shield",
         "vi": "Nhuyễn Vị Giáp"
       },
-      "pathMainImageSkill1": "btnHD_skill1_up.png",
-      "pathSubImageSkill1": "btnHD_skill1_down.png",
+      "pathMainImageSkill1": "UI/Btn_skill/btnHD_skill1_up.png",
+      "pathSubImageSkill1": "UI/Btn_skill/btnHD_skill1_down.png",
       "coolDownSkill2": 40,
       "durationSkill2": 4,
       "numberOfUseSkill2": 1,
@@ -236,8 +242,8 @@
         "en": "Cherry Storm",
         "vi": "Màn Thiên Hoa Vũ"
       },
-      "pathMainImageSkill2": "btnHD_skill2_up.png",
-      "pathSubImageSkill2": "btnHD_skill2_down.png",
+      "pathMainImageSkill2": "UI/Btn_skill/btnHD_skill2_up.png",
+      "pathSubImageSkill2": "UI/Btn_skill/btnHD_skill2_down.png",
       "coolDownSkill3": 42,
       "durationSkill3": 4,
       "numberOfUseSkill3": 1,
@@ -245,8 +251,8 @@
         "en": "Jingu Mastery",
         "vi": "Đả Cẩu Bổng Pháp"
       },
-      "pathMainImageSkill3": "btnHD_skill3_up.png",
-      "pathSubImageSkill3": "btnHD_skill3_down.png",
+      "pathMainImageSkill3": "UI/Btn_skill/btnHD_skill3_up.png",
+      "pathSubImageSkill3": "UI/Btn_skill/btnHD_skill3_down.png",
       "baseHP": 4,
       "level": 1,
       "maxLevel": 25,
@@ -254,10 +260,10 @@
       "percentBonusCoin": 10,
       "goldPrice": 6000,
       "diamondPrice": 0,
-      "iconUnlocked": "icon_hero_hd_2.png",
-      "iconUnlockedSelected": "icon_hero_hd_1.png",
-      "iconLocked": "icon_hero_hd_3.png",
-      "iconLockedSelected": "icon_hero_hd_4.png"
+      "iconUnlocked": "UI/UI_main_menu/HeroMenu/icon_hero_hd_2.png",
+      "iconUnlockedSelected": "UI/UI_main_menu/HeroMenu/icon_hero_hd_1.png",
+      "iconLocked": "UI/UI_main_menu/HeroMenu/icon_hero_hd_3.png",
+      "iconLockedSelected": "UI/UI_main_menu/HeroMenu/icon_hero_hd_4.png"
     },
     {
       "key": "123457689abc",
@@ -273,11 +279,11 @@
         "en": "Double score when using skills",
         "vi": "Được nhân đôi điểm khi sử dụng kỹ năng"
       },
-      "avatarPath": "avatar_HoangDuocSu.png",
-      "characterPointPath": "HoangDuocSu_point.png",
-      "selectCharacterPoint": "character_point_HDS.png",
+      "avatarPath": "UI/UI_info_ingame/avatar_HoangDuocSu.png",
+      "characterPointPath": "UI/UI_info_ingame/HoangDuocSu_point.png",
+      "selectCharacterPoint": "UI/Select_Stage/character_point_HDS.png",
       "avatarLoadingPath": "UI/Loading/HDS.png",
-      "pathButtonAttack": "HDS_attack1a.png",
+      "pathButtonAttack": "UI/Btn_attack/HDS_attack1a.png",
       "isLocked": true,
       "coolDownSkill1": 38,
       "durationSkill1": 0.27,
@@ -286,8 +292,8 @@
         "en": "God of wind",
         "vi": "Toàn Phong Thoái Pháp"
       },
-      "pathMainImageSkill1": "btnHDS_skill1_up.png",
-      "pathSubImageSkill1": "btnHDS_skill1_down.png",
+      "pathMainImageSkill1": "UI/Btn_skill/btnHDS_skill1_up.png",
+      "pathSubImageSkill1": "UI/Btn_skill/btnHDS_skill1_down.png",
       "coolDownSkill2": 40,
       "durationSkill2": 4,
       "numberOfUseSkill2": 1,
@@ -295,8 +301,8 @@
         "en": "One shot",
         "vi": "Đàn Chỉ Thần Công"
       },
-      "pathMainImageSkill2": "btnHDS_skill2_up.png",
-      "pathSubImageSkill2": "btnHDS_skill2_down.png",
+      "pathMainImageSkill2": "UI/Btn_skill/btnHDS_skill2_up.png",
+      "pathSubImageSkill2": "UI/Btn_skill/btnHDS_skill2_down.png",
       "coolDownSkill3": 42,
       "durationSkill3": 5,
       "numberOfUseSkill3": 1,
@@ -304,8 +310,8 @@
         "en": "Super Sonic wave",
         "vi": "Bích Hải Chiều Sinh Khúc"
       },
-      "pathMainImageSkill3": "btnHDS_skill3_up.png",
-      "pathSubImageSkill3": "btnHDS_skill3_down.png",
+      "pathMainImageSkill3": "UI/Btn_skill/btnHDS_skill3_up.png",
+      "pathSubImageSkill3": "UI/Btn_skill/btnHDS_skill3_down.png",
       "baseHP": 5,
       "level": 1,
       "maxLevel": 30,
@@ -313,10 +319,10 @@
       "percentBonusCoin": 15,
       "goldPrice": 0,
       "diamondPrice": 100,
-      "iconUnlocked": "icon_hero_hds_2.png",
-      "iconUnlockedSelected": "icon_hero_hds_1.png",
-      "iconLocked": "icon_hero_hds_3.png",
-      "iconLockedSelected": "icon_hero_hds_4.png"
+      "iconUnlocked": "UI/UI_main_menu/HeroMenu/icon_hero_hds_2.png",
+      "iconUnlockedSelected": "UI/UI_main_menu/HeroMenu/icon_hero_hds_1.png",
+      "iconLocked": "UI/UI_main_menu/HeroMenu/icon_hero_hds_3.png",
+      "iconLockedSelected": "UI/UI_main_menu/HeroMenu/icon_hero_hds_4.png"
     },
     {
       "key": "123546789abc",
@@ -332,11 +338,11 @@
         "en": "Auto recover health skill after each 30 seconds",
         "vi": "Tự động hồi 1 máu sau 30s"
       },
-      "avatarPath": "avatar_QuachTinh.png",
-      "characterPointPath": "QuachTinh_point.png",
-      "selectCharacterPoint": "character_point_QT.png",
+      "avatarPath": "UI/UI_info_ingame/avatar_QuachTinh.png",
+      "characterPointPath": "UI/UI_info_ingame/QuachTinh_point.png",
+      "selectCharacterPoint": "UI/Select_Stage/character_point_QT.png",
       "avatarLoadingPath": "UI/Loading/QT.png",
-      "pathButtonAttack": "QT_attack1a.png",
+      "pathButtonAttack": "UI/Btn_attack/QT_attack1a.png",
       "isLocked": true,
       "coolDownSkill1": 38,
       "durationSkill1": 5,
@@ -345,8 +351,8 @@
         "en": "Age of Wushu",
         "vi": "Cửu Âm Chân Kinh"
       },
-      "pathMainImageSkill1": "btnQT_skill1_up.png",
-      "pathSubImageSkill1": "btnQT_skill1_down.png",
+      "pathMainImageSkill1": "UI/Btn_skill/btnQT_skill1_up.png",
+      "pathSubImageSkill1": "UI/Btn_skill/btnQT_skill1_down.png",
       "coolDownSkill2": 40,
       "durationSkill2": 0.8,
       "numberOfUseSkill2": 4,
@@ -354,8 +360,8 @@
         "en": "Amber of Dragon",
         "vi": "Thần Long Bãi Vĩ"
       },
-      "pathMainImageSkill2": "btnQT_skill2_up.png",
-      "pathSubImageSkill2": "btnQT_skill2_down.png",
+      "pathMainImageSkill2": "UI/Btn_skill/btnQT_skill2_up.png",
+      "pathSubImageSkill2": "UI/Btn_skill/btnQT_skill2_down.png",
       "coolDownSkill3": 42,
       "durationSkill3": 4,
       "numberOfUseSkill3": 1,
@@ -363,8 +369,8 @@
         "en": "Double Dragon",
         "vi": "Song Long Xuất Thủy"
       },
-      "pathMainImageSkill3": "btnQT_skill3_up.png",
-      "pathSubImageSkill3": "btnQT_skill3_down.png",
+      "pathMainImageSkill3": "UI/Btn_skill/btnQT_skill3_up.png",
+      "pathSubImageSkill3": "UI/Btn_skill/btnQT_skill3_down.png",
       "baseHP": 5,
       "level": 1,
       "maxLevel": 30,
@@ -372,10 +378,10 @@
       "percentBonusCoin": 20,
       "goldPrice": 0,
       "diamondPrice": 400,
-      "iconUnlocked": "icon_hero_qt_2.png",
-      "iconUnlockedSelected": "icon_hero_qt_1.png",
-      "iconLocked": "icon_hero_qt_3.png",
-      "iconLockedSelected": "icon_hero_qt_4.png"
+      "iconUnlocked": "UI/UI_main_menu/HeroMenu/icon_hero_qt_2.png",
+      "iconUnlockedSelected": "UI/UI_main_menu/HeroMenu/icon_hero_qt_1.png",
+      "iconLocked": "UI/UI_main_menu/HeroMenu/icon_hero_qt_3.png",
+      "iconLockedSelected": "UI/UI_main_menu/HeroMenu/icon_hero_qt_4.png"
     }
   ]
 }

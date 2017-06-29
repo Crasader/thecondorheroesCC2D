@@ -6,6 +6,7 @@
 #include "thirdsdkhelper\AdmobHelper.h"
 #include "thirdsdkhelper\FacebookHelper.h"
 #include "thirdsdkhelper\SdkboxPlay.h"
+#include "GameScene.h"
 
 Scene* SceneIntro::createScene() {
     auto scene = Scene::create();
@@ -38,6 +39,7 @@ void SceneIntro::showStoryLayer() {
 	LayerColor *_pBlackLayer = LayerColor::create(Color4B(0, 0, 0, 255));
 	this->addChild(_pBlackLayer, 1);
 
+	/*
 	auto _aStoryScene = TMXTiledMap::create("UI/UI_intro/intro_story/story_scenes.tmx");
 	_aStoryScene->setScaleX(m_szVisibleSize.width / _aStoryScene->getContentSize().width);
 	_aStoryScene->setScaleY(m_szVisibleSize.height / _aStoryScene->getContentSize().height);
@@ -50,8 +52,9 @@ void SceneIntro::showStoryLayer() {
 	auto _aScene5 = _aStoryScene->getLayer("Scene5"); _aScene5->setOpacity(0.5f);
 	_aStoryScene->update(0.0f);
 	_aStoryScene->retain();
+	*/
 
-	/*Sprite *_pScene1 = Sprite::create("UI/UI_intro/intro_story/scene_1.png");
+	Sprite *_pScene1 = Sprite::create("UI/UI_intro/intro_story/scene_1.png");
 	_pScene1->getTexture()->setAntiAliasTexParameters();
 	_pScene1->setScaleX(m_szVisibleSize.width / _pScene1->getContentSize().width);
 	_pScene1->setScaleY(m_szVisibleSize.height / _pScene1->getContentSize().height);
@@ -89,16 +92,16 @@ void SceneIntro::showStoryLayer() {
 	_pScene5->setScaleY(m_szVisibleSize.height / _pScene5->getContentSize().height);
 	_pScene5->setPosition(Vec2(m_szVisibleSize.width / 2, m_szVisibleSize.height / 2));
 	_pScene5->setOpacity(0.0f);
-	this->addChild(_pScene5, 2);*/
+	this->addChild(_pScene5, 2);
 
 	float _fStepTime = 0.5f;
 	FadeIn *_pSceneFadeIn = FadeIn::create(_fStepTime * 4);
 
-	/*_pScene1->runAction(Sequence::create(DelayTime::create(_fStepTime * 0), EaseIn::create(_pSceneFadeIn->clone(), 5.0f), NULL));
+	_pScene1->runAction(Sequence::create(DelayTime::create(_fStepTime * 0), EaseIn::create(_pSceneFadeIn->clone(), 5.0f), NULL));
 	_pScene2->runAction(Sequence::create(DelayTime::create(_fStepTime * 4), EaseIn::create(_pSceneFadeIn->clone(), 5.0f), NULL));
 	_pScene3->runAction(Sequence::create(DelayTime::create(_fStepTime * 8), EaseIn::create(_pSceneFadeIn->clone(), 5.0f), NULL));
 	_pScene4->runAction(Sequence::create(DelayTime::create(_fStepTime * 12), EaseIn::create(_pSceneFadeIn->clone(), 5.0f), NULL));
-	_pScene5->runAction(Sequence::create(DelayTime::create(_fStepTime * 16), EaseIn::create(_pSceneFadeIn->clone(), 5.0f), NULL));*/
+	_pScene5->runAction(Sequence::create(DelayTime::create(_fStepTime * 16), EaseIn::create(_pSceneFadeIn->clone(), 5.0f), NULL));
 	this->runAction(Sequence::create(DelayTime::create(_fStepTime * 40),
 		CCCallFunc::create(CC_CALLBACK_0(SceneIntro::hideStoryLayerAndInitIntroScene, this)), NULL));
 	
@@ -106,7 +109,7 @@ void SceneIntro::showStoryLayer() {
 	auto _pSkipSelected = Sprite::create("UI/UI_intro/intro_story/btn_skip.png");
 	_pSkipSelected->setColor(Color3B(128, 128, 128));
 	auto _aSkipButton = MenuItemSprite::create(_pSkipNormal, _pSkipSelected, CC_CALLBACK_0(SceneIntro::hideStoryLayerAndInitIntroScene, this));
-	_aSkipButton->setScale(m_szVisibleSize.height / _aSkipButton->getContentSize().height * 0.05f);
+	_aSkipButton->setScale(m_szVisibleSize.height / _aSkipButton->getContentSize().height * 0.1f);
 	_aSkipButton->setAnchorPoint(Vec2(1.0f, 0.0f));
 	_aSkipButton->setPosition(Vec2(m_szVisibleSize.width, 0.0f));
 
@@ -209,4 +212,13 @@ void SceneIntro::goToMainMenuScene(Ref* p_pSender) {
 	auto _aMainMenuScene = Scene::create();
 	_aMainMenuScene->addChild(_pMenuScene);
 	Director::getInstance()->replaceScene(TransitionFade::create(0.5f, _aMainMenuScene));
+
+	/*auto mainScene = GameScene::create(1, 1, 0);
+	mainScene->setName("gameLayer");
+	mainScene->retain();
+	auto hud = Hud::create();
+	hud->retain();
+
+	mainScene->setHud(hud);
+	Director::getInstance()->replaceScene(TransitionFade::create(0.43f, GameScene::createScene(mainScene, hud)));*/
 }

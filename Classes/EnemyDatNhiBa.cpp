@@ -52,7 +52,6 @@ EnemyDatNhiBa * EnemyDatNhiBa::create(string filename, float scale)
 
 void EnemyDatNhiBa::hit()
 {
-
 	health--;
 
 	if (health == 0) {

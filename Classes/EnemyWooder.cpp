@@ -104,3 +104,7 @@ void EnemyWooder::makeMask()
 	this->changeBodyMaskBits(BITMASK_SWORD);
 
 }
+
+void EnemyWooder::updatePos()
+{
+}

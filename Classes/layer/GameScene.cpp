@@ -49,10 +49,8 @@ bool GameScene::init(int stage, int map, int charId)
 
 	AudioManager::stopMusic();
 	GAHelper::getInstance()->logScreen(StringUtils::format("Stage: %d, Map: %d", stage, map));
-	isFirstPlay = REF->getIsFirstPlay();
-	
 
-	isModeDebug = false;
+	//isModeDebug = false;
 
 	changebg = 0;
 
@@ -65,12 +63,13 @@ bool GameScene::init(int stage, int map, int charId)
 
 	initB2World();
 
+	isFirstPlay = REF->getIsFirstPlay();
+
 	if (isFirstPlay) {
 		if (REF->getLastPickHero() != charId)
 			isFirstPlay = false;
 		else
-			createEagle(Point(Director::getInstance()->getVisibleOrigin().x - SCREEN_SIZE.width,
-				SCREEN_SIZE.height / 2));
+			createEagle(Point(Director::getInstance()->getVisibleOrigin().x - SCREEN_SIZE.width, SCREEN_SIZE.height / 2));
 	}
 
 	// cache batchnode
@@ -145,7 +144,7 @@ void GameScene::selectHero()
 		preload(SOUND_DQSKILL2);
 		preload(SOUND_DQSKILL3);
 		hero = DuongQua::create("Animation/DuongQua/DuongQua.json", 
-								"Animation/DuongQua/DuongQua.atlas", SCREEN_SIZE.height / 5 / 315);
+								"Animation/DuongQua/DuongQua.atlas", SCREEN_SIZE.height / 5 / 350);
 		break;
 
 	case 1:
@@ -195,7 +194,7 @@ void GameScene::selectHero()
 		preload(SOUND_DQSKILL2);
 		preload(SOUND_DQSKILL3);
 		hero = DuongQua::create("Animation/DuongQua/DuongQua.json",
-			"Animation/DuongQua/DuongQua.atlas", SCREEN_SIZE.height / 5 / 315);
+			"Animation/DuongQua/DuongQua.atlas", SCREEN_SIZE.height / 5 / 350);
 		break;
 	}
 
@@ -215,8 +214,8 @@ void GameScene::selectHero()
 
 void GameScene::createEagle(Point position)
 {
-	_aEagle = ChimDieu::create("Animation/ChimDieu/ChimDieu.json",
-		"Animation/ChimDieu/ChimDieu.atlas", SCREEN_SIZE.height / 2048);
+	_aEagle = ChimDieu::create("Animation/ChimDieu/ChimDieu", SCREEN_SIZE.height / 2048);
+	_aEagle->setPosition(position);
 	_aEagle->initCirclePhysic(world, position);
 	this->addChild(_aEagle, ZORDER_HERO);
 	switch (charId) {
@@ -596,11 +595,11 @@ void GameScene::update(float dt)
 	checkActiveButton();
 
 	if (_aEagle != nullptr) {
-		_aEagle->updateMe(dt);
 		if (_aEagle->getIsAbleToDropHero()) {
 			heroGetOffEagle();
 			_aEagle->setIsAbleToDropHero(false);
 		}
+		_aEagle->updateMe(dt);
 	}
 
 	if (hero->getIsDriverEagle()) {
@@ -723,14 +722,16 @@ void GameScene::update(float dt)
 
 	if (posXComingBoss > 0) {
 		if (hero->getPositionX() >= posXComingBoss) {
-			if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isEnabled()) {
-				CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(6), TOAST_LONG);
-				_pToast->setPosition(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 4));
-				this->getParent()->addChild(_pToast, 10);
 
-				hud->getBtnCalling()->setEnabled(false);
-				posXComingBoss = -1;
+			CustomLayerToToast *_pToast = CustomLayerToToast::create(JSHERO->getNotifyAtX(6), TOAST_LONG);
+			_pToast->setPosition(Vec2(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 4));
+			this->getParent()->addChild(_pToast, 10);
+
+			if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isEnabled()) {
+				hud->getBtnCalling()->setEnabled(false);	
 			}
+
+			posXComingBoss = -1;
 		}
 	}
 
@@ -746,7 +747,7 @@ void GameScene::initB2World()
 	world = new b2World(b2Vec2(0, -SCREEN_SIZE.height * 10.0f / 3.0f / PTM_RATIO));
 
 	// draw debug
-	if (isModeDebug) {
+	/*if (isModeDebug) {
 		auto debugDraw = new (std::nothrow) GLESDebugDraw(PTM_RATIO);
 		world->SetDebugDraw(debugDraw);
 		uint32 flags = 0;
@@ -754,7 +755,7 @@ void GameScene::initB2World()
 		flags += b2Draw::e_jointBit;
 
 		debugDraw->SetFlags(flags);
-	}
+	}*/
 
 	world->SetAllowSleeping(true);
 	world->SetContinuousPhysics(true);
@@ -771,39 +772,39 @@ void GameScene::updateB2World(float dt)
 	world->Step(dt, velocityIterations, positionIterations);
 }
 
-void GameScene::draw(Renderer * renderer, const Mat4 & transform, uint32_t flags)
-{
-	//
-	// IMPORTANT:
-	// This is only for debug purposes
-	// It is recommend to disable it
-	//
-	Layer::draw(renderer, transform, flags);
-
-	GL::enableVertexAttribs(cocos2d::GL::VERTEX_ATTRIB_FLAG_POSITION);
-	Director* director = Director::getInstance();
-	CCASSERT(nullptr != director, "Director is null when seting matrix stack");
-	director->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
-
-	_modelViewMV = director->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
-
-	_customCommand.init(_globalZOrder);
-	_customCommand.func = CC_CALLBACK_0(GameScene::onDraw, this);
-	renderer->addCommand(&_customCommand);
-
-	director->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
-}
-
-void GameScene::onDraw()
-{
-	Director* director = Director::getInstance();
-	CCASSERT(nullptr != director, "Director is null when seting matrix stack");
-
-	auto oldMV = director->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
-	director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, _modelViewMV);
-	world->DrawDebugData();
-	director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, oldMV);
-}
+//void GameScene::draw(Renderer * renderer, const Mat4 & transform, uint32_t flags)
+//{
+//	//
+//	// IMPORTANT:
+//	// This is only for debug purposes
+//	// It is recommend to disable it
+//	//
+//	Layer::draw(renderer, transform, flags);
+//
+//	GL::enableVertexAttribs(cocos2d::GL::VERTEX_ATTRIB_FLAG_POSITION);
+//	Director* director = Director::getInstance();
+//	CCASSERT(nullptr != director, "Director is null when seting matrix stack");
+//	director->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+//
+//	_modelViewMV = director->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+//
+//	_customCommand.init(_globalZOrder);
+//	_customCommand.func = CC_CALLBACK_0(GameScene::onDraw, this);
+//	renderer->addCommand(&_customCommand);
+//
+//	director->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+//}
+//
+//void GameScene::onDraw()
+//{
+//	Director* director = Director::getInstance();
+//	CCASSERT(nullptr != director, "Director is null when seting matrix stack");
+//
+//	auto oldMV = director->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+//	director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, _modelViewMV);
+//	world->DrawDebugData();
+//	director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, oldMV);
+//}
 
 
 void GameScene::loadBackground()
@@ -818,8 +819,8 @@ void GameScene::loadBackground()
 
 	tmx_map->setPosition(Point::ZERO);
 
-	if (isModeDebug)
-		tmx_map->setVisible(false);
+	//if (isModeDebug)
+		//tmx_map->setVisible(false);
 
 	this->haveboss = tmx_map->getObjectGroup("boss") != nullptr ? 1 : 0;
 
@@ -835,8 +836,8 @@ void GameScene::loadBackground()
 			tmx_mapboss[i] = TMXTiledMap::create(StringUtils::format("Map/map%d/mapboss.tmx", stage));
 			tmx_mapboss[i]->setAnchorPoint(Point::ZERO);
 			tmx_mapboss[i]->setScale(scaleOfMap);
-			if (isModeDebug)
-				tmx_mapboss[i]->setVisible(false);
+			//if (isModeDebug)
+				//tmx_mapboss[i]->setVisible(false);
 		}
 
 		tmx_mapboss[0]->setPosition(tmx_map->getPosition() + Vec2(tmx_map->getBoundingBox().size.width, 0));
@@ -936,8 +937,8 @@ void GameScene::createInfiniteNode()
 	//background->setPosition(Point(-SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2));
 	background->setPosition(Point(0, SCREEN_SIZE.height / 2));
 	background->setAnchorPoint(Point(0, 0.5f));
-	if (isModeDebug)
-		background->setVisible(false);
+	//if (isModeDebug)
+		//background->setVisible(false);
 	this->addChild(background, ZORDER_BG);
 
 	background2 = InfiniteParallaxNode::create();
@@ -1673,13 +1674,13 @@ void GameScene::createItem()
 		switch (type_val)
 		{
 		case 0:				// health
-			item = Item::create("item1_health.png", Item_type::HEALTH, origin);
+			item = Item::create("UI/UI_main_menu/ItemBoard/item1_health.png", Item_type::HEALTH, origin);
 			break;
 		case 1:
-			item = Item::create("tem4_doublecoin.png", Item_type::DOUBLE_COIN, origin);
+			item = Item::create("UI/UI_main_menu/ItemBoard/tem4_doublecoin.png", Item_type::DOUBLE_COIN, origin);
 			break;
 		case 2:
-			item = Item::create("item3_magnet.png", Item_type::MAGNET, origin);
+			item = Item::create("UI/UI_main_menu/ItemBoard/item3_magnet.png", Item_type::MAGNET, origin);
 			break;
 		}
 
@@ -1713,6 +1714,8 @@ void GameScene::updateQuest()
 
 void GameScene::reachNewMap()
 {
+	if (REF->getIsLockedHero()) return;		// cannot reach new map when you try hero
+
 	int stageUnlocked = REF->getCurrentStageUnlocked();
 	if (stageUnlocked == stage) {
 		int mapUnlocked = REF->getCurrentMapUnLocked();
@@ -2238,7 +2241,7 @@ void GameScene::pauseGame()
 void GameScene::dieGame()
 {
 	if (REF->getIsLockedHero() || hero->getB2Body()->GetLinearVelocity().y < 0
-		|| numberRevive >= 3) {	// if hero is locked
+		|| numberRevive >= 2) {	// if hero is locked
 		overGame();
 		return;
 	}
@@ -2258,9 +2261,10 @@ void GameScene::dieGame()
 		_aEagle->pause();
 
 #ifdef SDKBOX_ENABLED
-	sdkbox::PluginVungle::setListener(this);
+	//sdkbox::PluginVungle::setListener(this);
+	sdkbox::PluginAdMob::setListener(this);
 #endif
-	dialogPause = DialogRevive::create(++numberRevive);
+	dialogPause = DialogRevive::create(++numberRevive, isWatchedVid);
 	this->getParent()->addChild(dialogPause);
 
 	hud->getPauseItem()->setEnabled(false);
@@ -2313,7 +2317,7 @@ void GameScene::winGame()
 			this->removeChild(child, true);
 	}
 
-	//reachNewMap();
+	reachNewMap();
 
 	blurScreen();
 	if (hud->getBtnCalling() != nullptr && hud->getBtnCalling()->isVisible()) {
@@ -2701,6 +2705,7 @@ void GameScene::tutorial()
 	}
 }
 
+
 void GameScene::cacheEnemySound()
 {
 	if (tmx_map->getObjectGroup("wooder")) {
@@ -2836,45 +2841,46 @@ void GameScene::resumeAfterTut(int caseTut)
 }
 #ifdef SDKBOX_ENABLED
 
-void GameScene::onVungleAdViewed(bool isComplete)
-{
+void GameScene::adViewDidReceiveAd(const std::string &name) {
+	if (name == "rewarded") {
+		AdmobHelper::getInstance()->showAd("rewarded");
+		//CCLOG("====show rewarded");
+	}
+}
+void GameScene::adViewDidFailToReceiveAdWithError(const std::string &name, const std::string &msg) {
+	//CCLOG("======== Fail to load:");
+
+}
+void GameScene::adViewWillPresentScreen(const std::string &name) {
 	if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) {
-		AudioManager::stopMusic();
-		switch (stage)
-		{
-		case 1: {
-			AudioManager::playMusic(MUSIC_STAGE1);
-			break;
-		}
-		case 2: {
-			AudioManager::playMusic(MUSIC_STAGE2);
-			break;
-		}
-		case 3: {
-			AudioManager::playMusic(MUSIC_STAGE3);
-			break;
-		}
-		case 4: {
-			AudioManager::playMusic(MUSIC_STAGE4);
-			break;
-		}
+		if (name == "rewarded" || name == "gameover") {
+			Director::getInstance()->pause();
 		}
 	}
 }
-void GameScene::onVungleCacheAvailable()
-{
+void GameScene::adViewDidDismissScreen(const std::string &name) {
+
 }
-void GameScene::onVungleStarted()
-{
-	//experimental::AudioEngine::pauseAll();
+void GameScene::adViewWillDismissScreen(const std::string &name) {
+	if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) {
+		if (name == "rewarded" || name == "gameover") {
+			Director::getInstance()->resume();
+		}
+	}
+	if (name == "rewarded") {
+		if (isAdmobRewarded) {
+			this->reviveHero();
+			isAdmobRewarded = false;
+		}
+	}
 }
-void GameScene::onVungleFinished()
-{
-	//experimental::AudioEngine::resumeAll();
+void GameScene::adViewWillLeaveApplication(const std::string &name) {
+
 }
-void GameScene::onVungleAdReward(const std::string & name)
-{
-	this->reviveHero();
+void GameScene::reward(const std::string &name, const std::string &currency, double amount) {
+	isWatchedVid = true;
+	isAdmobRewarded = true;
+	// this->reviveHero();
 	GAHelper::getInstance()->logEvent("Button", "Revive", "By Vungle", 1);
 }
 #endif 

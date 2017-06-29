@@ -24,7 +24,7 @@
 #include "coin/CoinBullion.h"
 #include "CollisionListener.h"
 #include "utils/InfiniteParallaxNode.h"
-#include "utils/GLES-Render.h"
+//#include "utils/GLES-Render.h"
 #include "DialogPauseGame.h"
 #include "TutorialLayer.h"
 #include "datastructures/MyData.h"
@@ -34,11 +34,11 @@
 #include "Hud.h"
 #include "EnemyLinhTenThang.h"
 #include "EnemyLinhTenXien.h"
-#include "thirdsdkhelper\VungleHelper.h"
+#include "thirdsdkhelper\AdmobHelper.h"
 #include "thirdsdkhelper\GoogleAnalysticHelper.h"
 
 #ifdef SDKBOX_ENABLED
-class GameScene : public cocos2d::Layer, public sdkbox::VungleListener
+class GameScene : public cocos2d::Layer, public sdkbox::AdMobListener//public sdkbox::VungleListener
 #else
 class GameScene : public cocos2d::Layer
 #endif
@@ -58,7 +58,7 @@ public:
 
 private:
 
-	bool isModeDebug;
+	//bool isModeDebug;
 	
 	// props
 	int stage;
@@ -69,6 +69,7 @@ private:
 
 
 	int charId;	//Thinhnv Edited for select character
+	bool isWatchedVid = false;
 	int numberRevive = 0;
 
 	bool isWinGame;
@@ -97,9 +98,6 @@ public:
 
 
 private:
-	GLESDebugDraw *debugDraw;
-	Mat4 _modelViewMV;
-	CustomCommand _customCommand;
 
 	Follow *camera;
 	Node* follow;
@@ -161,8 +159,8 @@ private:
 
 
 	// function for process box2d
-	void draw(Renderer * renderer, const Mat4 & transform, uint32_t flags);
-	void onDraw();
+	/*void draw(Renderer * renderer, const Mat4 & transform, uint32_t flags);
+	void onDraw();*/
 	void initB2World();
 	void updateB2World(float dt);
 
@@ -269,11 +267,13 @@ public:
 
 #ifdef SDKBOX_ENABLED
 	// vungle
-	 void onVungleAdViewed(bool isComplete);
-	 void onVungleCacheAvailable();
-	 void onVungleStarted();
-	 void onVungleFinished();
-	 void onVungleAdReward(const std::string& name);
+	virtual void adViewDidReceiveAd(const std::string &name);
+	virtual void adViewDidFailToReceiveAdWithError(const std::string &name, const std::string &ms);
+	virtual void adViewWillPresentScreen(const std::string &name);
+	virtual void adViewDidDismissScreen(const std::string &name);
+	virtual void adViewWillDismissScreen(const std::string &name);
+	virtual void adViewWillLeaveApplication(const std::string &name);
+	virtual void reward(const std::string &name, const std::string &currency, double amount);
 	 // ia
 #endif 
 };

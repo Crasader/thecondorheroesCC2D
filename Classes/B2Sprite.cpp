@@ -62,18 +62,18 @@ void B2Sprite::initCirclePhysic(b2World * world, Point pos)
 	body->CreateFixture(&fixtureDef);
 }
 
-void B2Sprite::initPhysicWithShapeCache(b2World * world, Point pos, string key)
-{
-	b2BodyDef bodyDef;
-
-	bodyDef.userData = this;			// pass sprite to bodyDef with argument: userData
-
-	bodyDef.position.Set(pos.x/PTM_RATIO, pos.y / PTM_RATIO);
-	bodyDef.type = b2_dynamicBody;
-
-	body = world->CreateBody(&bodyDef);
-	GB2ShapeCache::sharedGB2ShapeCache()->addFixturesToBody(body, key);
-}
+//void B2Sprite::initPhysicWithShapeCache(b2World * world, Point pos, string key)
+//{
+//	b2BodyDef bodyDef;
+//
+//	bodyDef.userData = this;			// pass sprite to bodyDef with argument: userData
+//
+//	bodyDef.position.Set(pos.x/PTM_RATIO, pos.y / PTM_RATIO);
+//	bodyDef.type = b2_dynamicBody;
+//
+//	body = world->CreateBody(&bodyDef);
+//	GB2ShapeCache::sharedGB2ShapeCache()->addFixturesToBody(body, key);
+//}
 
 void B2Sprite::changeBodyCategoryBits(uint16 mask)
 {

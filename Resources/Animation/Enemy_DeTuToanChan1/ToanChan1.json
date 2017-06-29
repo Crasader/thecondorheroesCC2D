@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "ui9zLrrfm+CQfvgntrGhSys4vC8", "spine": "3.6.36", "width": 701.82, "height": 726, "images": "" },
+"skeleton": { "hash": "w2smY14SQCBNiCcE0pIQboYqui8", "spine": "3.6.36", "width": 671.95, "height": 726, "images": "" },
 "bones": [
 	{ "name": "root" },
 	{ "name": "body", "parent": "root", "length": 72.04, "rotation": 98.94, "y": 190.18 },
@@ -12,7 +12,7 @@
 	{ "name": "b-leg", "parent": "body", "length": 53.69, "rotation": 171.82, "x": -34.7, "y": 28.54 },
 	{ "name": "bone24", "parent": "b-leg", "length": 85, "rotation": 1.29, "x": 53.69 },
 	{ "name": "blood", "parent": "root", "length": 110.01, "x": -14.77, "y": 172.14, "scaleX": 0.4, "scaleY": 0.4 },
-	{ "name": "bone", "parent": "root", "length": 183.9, "rotation": 68.32, "x": -157.06, "y": 289.69 },
+	{ "name": "bone", "parent": "root", "length": 185.69, "rotation": 88.23, "x": -190.63, "y": 289.69 },
 	{ "name": "neck", "parent": "body", "length": 23.07, "rotation": 5.21, "x": 74.74, "y": 0.85 },
 	{ "name": "head", "parent": "neck", "length": 43.86, "rotation": 12.67, "x": 18.85, "y": 3.29 },
 	{ "name": "bone4", "parent": "head", "length": 23.86, "rotation": -29.95, "x": 88.5, "y": -25.94 },
@@ -2502,8 +2502,8 @@
 				"color": [
 					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
 					{ "time": 0.1333, "color": "ffffff00" },
-					{ "time": 0.1667, "color": "fffffffe", "curve": "stepped" },
-					{ "time": 0.3, "color": "fffffffe" },
+					{ "time": 0.1667, "color": "ffffff7a" },
+					{ "time": 0.3, "color": "ffffff00", "curve": "stepped" },
 					{ "time": 0.3333, "color": "ffffff00" }
 				],
 				"attachment": [

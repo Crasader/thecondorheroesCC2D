@@ -1248,7 +1248,7 @@ void MenuLayer::initBottomHeroMenu() {
 void MenuLayer::buttonLeaderBoardHandle() {
 	int a = 0;
 	//if(SPHelper::getInstance()->isSigned())
-	SPHelper::getInstance()->showBoard("score");
+	SPHelper::getInstance()->showBoard("Leaderboard");
 }
 
 void MenuLayer::showMainMenu() {

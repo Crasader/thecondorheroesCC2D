@@ -12,21 +12,21 @@
   "tip": [
     {
       "en": {
-        "tip_1": "Can jump again when you in the air",
-        "tip_2": "Slash a Gold Bag to take a lot of Gold",
-        "tip_3": "Magnet will automatic collect Gold on your road",
-        "tip_4": "After reborn, you will clear all enemy you can see",
-        "tip_5": "Don't let fall in a abyss on map",
-        "tip_6": "Let's call Cordon when you have scanty of health",
-        "tip_7": "Buy Heart item to increase health",
-        "tip_8": "You can take some Gold after complete a quest",
-        "tip_9": "You can exchange Gold by Diamond",
-        "tip_10": "Upgrade a skill will make it less time of cooldown",
-        "tip_11": "This hero is locked!",
-        "tip_12": "Get Johan to level 10 to unlock Hana",
-        "tip_13": "Get Hana to level 10 to unlock Kim",
-        "tip_14": "Get Kim to level 15 to unlock Athur",
-        "tip_15": "Get Athur to level 15 to unlock Robin"
+          "tip_1": "Double jump is a good way to avoid obstacles",
+          "tip_2": "Get more gold by slashing gold bags",
+          "tip_3": "Magnet helps to collect nearby gold automatically",
+          "tip_4": "All nearby enemies are eliminated after revival",
+          "tip_5": "Beware of falling into abysses",
+          "tip_6": "Call the Cordon in case of urgency",
+          "tip_7": "Each heart item increases 1 health ",
+          "tip_8": "Completing quests to achieve more gold",
+          "tip_9": "Use Diamond to exchange for gold and energies",
+          "tip_10": "Upgrading a skill to reduce its cool down time",
+          "tip_11": "This hero is locked!",
+          "tip_12": "Train Johan to level 10 to unlock Hana",
+          "tip_13": "Train Hana to level 10 to unlock Kim",
+          "tip_14": "Train Kim to level 15 to unlock Athur",
+          "tip_15": "Train Athur to level 15 to unlock Robin"
       },
 
       "vi": {
@@ -52,20 +52,20 @@
   "notification": [
     {
       "en": {
-        "noti_1": "Your cake for play is not enough",
-        "noti_2": "Your gold is not enough",
-        "noti_3": "Your diamond is not enough",
-        "noti_4": "Get more diamond to buy",
-        "noti_5": "Gold or diamond is not enough",
-        "noti_6": "Boss is coming",
-        "noti_7": "Come to Pipo game to get more",
-        "noti_8": "You don't have enough gold, get more to buy",
-        "noti_9": "You don't have enough diamond, get more to buy",
+        "noti_1": "Not enough energy",
+        "noti_2": "Not enough gold",
+        "noti_3": "Not enough diamond",
+        "noti_4": "Not enough diamond",
+        "noti_5": "Not enough gold/diamond",
+        "noti_6": "Boss approaching",
+        "noti_7": "Visit PiPoGame for more games",
+        "noti_8": "Not enough gold",
+        "noti_9": "Not enough diamond",
         "noti_10": "Do you want to buy this pack?",
-        "noti_11": "You've taken free coin 1 time today, comeback on tomorrow to get more",
+        "noti_11": "You took today's free coin, comeback tomorrow",
         "noti_12": "Press back again to exit!",
-        "noti_13": "+ %d energies",
-        "noti_14": "+ %d gold"
+        "noti_13": "%d energies increased",
+        "noti_14": "%d gold increased"
       },
 
       "vi": {
@@ -81,8 +81,8 @@
         "noti_10": "Bạn có muốn mua vật phẩm này?",
         "noti_11": "Bạn đã nhận được 1 lần vàng miễn phí ngày hôm nay, quay lại vào ngày mai để nhận tiếp",
         "noti_12": "Ấn nút Back lần nữa để thoát!",
-        "noti_13": "+ %d bánh bao",
-        "noti_14": "+ %d vàng"
+        "noti_13": "Cộng %d bánh bao",
+        "noti_14": "%d vàng cộng thêm"
       }
     }
   ],
@@ -99,7 +99,7 @@
         "vi": "Cao thủ dùng kiếm"
       },
       "intrinsicHero": {
-        "en": "Raise 15% speed of the condor",
+        "en": "Increase the Condor's speed by 15%",
         "vi": "Tốc độ bay của chim điêu tăng 15%"
       },
       "avatarPath": "UI/UI_info_ingame/avatar_DuongQua.png",
@@ -121,7 +121,7 @@
       "durationSkill2": 4,
       "numberOfUseSkill2": 1,
       "skill2Name": {
-        "en": "Sword Storem",
+        "en": "Sword Justice",
         "vi": "Độc Cô Kiếm Pháp"
       },
       "pathMainImageSkill2": "UI/Btn_skill/btnDQ_skill2_up.png",
@@ -158,7 +158,7 @@
         "vi": "Sư phụ của Dương Quá. Giỏi sử dụng ám khí"
       },
       "intrinsicHero": {
-        "en": "Raise 15% magnet's item",
+        "en": "Increase magnet's duration by 15%",
         "vi": "Tăng thời gian sử dụng vật phẩm hút vàng thêm 15%"
       },
       "avatarPath": "UI/UI_info_ingame/avatar_CoCo.png",
@@ -171,7 +171,7 @@
       "durationSkill1": 5,
       "numberOfUseSkill1": 1,
       "skill1Name": {
-        "en": "Shuriken",
+        "en": "Poisoned shuriken",
         "vi": "Độc Phong Châm"
       },
       "pathMainImageSkill1": "UI/Btn_skill/btnCC_skill1_up.png",
@@ -180,7 +180,7 @@
       "durationSkill2": 4,
       "numberOfUseSkill2": 1,
       "skill2Name": {
-        "en": "Shadow",
+        "en": "Rage shadow",
         "vi": "Ngọc Nữ Tâm Kinh"
       },
       "pathMainImageSkill2": "UI/Btn_skill/btnCC_skill2_up.png",
@@ -213,11 +213,11 @@
         "vi": "Hoàng Dung"
       },
       "inforHero": {
-        "en": "Robin's wife. Master of using stick",
+        "en": "Robin's mate. Master of using stick",
         "vi": "Vợ của Quách Tĩnh. Cao thủ dùng gậy"
       },
       "intrinsicHero": {
-        "en": "Revive with one time usage of Marvel Shield",
+        "en": "Use Immortal Shield automatically after revival",
         "vi": "Hồi sinh được sử dụng 1 lần chiêu thức Nhuyễn Vị Giáp"
       },
       "avatarPath": "UI/UI_info_ingame/avatar_HoangDung.png",
@@ -276,7 +276,7 @@
         "vi": "Cao thủ võ lâm. Cha của Hoàng Dung"
       },
       "intrinsicHero": {
-        "en": "Double score when using skills",
+        "en": "Double score while using skills",
         "vi": "Được nhân đôi điểm khi sử dụng kỹ năng"
       },
       "avatarPath": "UI/UI_info_ingame/avatar_HoangDuocSu.png",
@@ -331,11 +331,11 @@
         "vi": "Quách Tĩnh"
       },
       "inforHero": {
-        "en": "The best master of martial arts in the world. Having Wide-area damage skills",
+        "en": "The best in martial arts with wide-area damage skills",
         "vi": "Đệ nhất võ công thiên hạ. Kỹ năng gây sát thương diện rộng"
       },
       "intrinsicHero": {
-        "en": "Auto recover health skill after each 30 seconds",
+        "en": "Regenerate 1 health every 30 seconds",
         "vi": "Tự động hồi 1 máu sau 30s"
       },
       "avatarPath": "UI/UI_info_ingame/avatar_QuachTinh.png",

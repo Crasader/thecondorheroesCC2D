@@ -3,11 +3,13 @@
 
 
 #include "utils/MyButton.h"
+#include "thirdsdkhelper/AdmobHelper.h"
 #include <spine/spine-cocos2dx.h>
 
 USING_NS_CC;
 using namespace spine;
 
+class GameScene;
 
 class Hud : public Layer
 {
@@ -16,6 +18,8 @@ public:
 	virtual bool init();
 	const Size SCREEN_SIZE = Director::getInstance()->getVisibleSize();	
 	CREATE_FUNC(Hud);
+
+	void setGameLayer(GameScene* layer);
 
 	void addEvents();
 
@@ -79,9 +83,11 @@ protected:
 	CC_SYNTHESIZE(Sprite *, coverItemDC, CoverItemDC);
 
 private:
+	GameScene* gameLayer;
 	TMXTiledMap *tmxMap;
 	list<Sprite*> g_lTemp;
 	LayerColor *blur;
+
 
 	bool is43Ratio = false;
 	
@@ -107,8 +113,8 @@ private:
 
 	//void doSuctionCoin(Ref *pSender);
 	//void doDoublingCoin(Ref *pSender);
-	void doCalling(Ref* pSender);
-	void doPause(Ref *pSender);
+	void doCalling();
+	void doPause();
 
 	//void showSpecialButton();
 	//void createButtonX(int index, Point position);

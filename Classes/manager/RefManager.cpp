@@ -119,14 +119,6 @@ void RefManager::pointToCurrentHero(int index)
 
 }
 
-//void RefManager::setupMenuTutorialHero() {
-//	if (menuTutorialHero == false) {
-//		menuTutorialHero = true;
-//		ref->setBoolForKey(KEY_MENU_TUT_HERO, menuTutorialHero);
-//		ref->flush();
-//	}
-//}
-
 void RefManager::setupMenuTutorialUpgrate() {
 	menuTutorialUpgrade = true;
 	ref->setBoolForKey(KEY_MENU_TUT_UPGRADE, menuTutorialUpgrade);

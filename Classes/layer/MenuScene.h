@@ -14,7 +14,7 @@
 #include "thirdsdkhelper\GoogleAnalysticHelper.h"
 #include "thirdsdkhelper\GoogleAnalysticHelper.h"
 #include "thirdsdkhelper\IAPHelper.h"
-#include "thirdsdkhelper\VungleHelper.h"
+#include "thirdsdkhelper\AdmobHelper.h"
 #include "thirdsdkhelper\SdkboxPlay.h"
 
 USING_NS_CC;
@@ -23,34 +23,9 @@ using namespace std;
 using namespace ui;
 using namespace network;
 
-//#ifndef __MENUSCENE_H__
-//#define __MENUSCENE_H__
-//
-//#include "cocos2d.h"
-//#include "ui/CocosGUI.h"
-//#include <spine/spine-cocos2dx.h>
-//#include <vector>
-//#include <time.h>
-//#include "network/HttpClient.h"
-//
-//#include "CustomLayerToToast.h"
-//#include "SelectStageScene.h"
-//
-//#include "GoogleAnalysticHelper.h"
-//#include "GoogleAnalysticHelper.h"
-//#include "IAPHelper.h"
-//#include "VungleHelper.h"
-//#include "SdkboxPlay.h"
-//
-//
-//USING_NS_CC;
-//using namespace spine;
-//using namespace std;
-//using namespace ui;
-//using namespace network;
 
 #ifdef SDKBOX_ENABLED
-class MenuLayer : public cocos2d::Layer, public sdkbox::IAPListener, public sdkbox::VungleListener
+class MenuLayer : public cocos2d::Layer, public sdkbox::IAPListener, public sdkbox::AdMobListener//public sdkbox::VungleListener
 #else
 class MenuLayer : public cocos2d::Layer
 #endif
@@ -234,6 +209,8 @@ private:
 	void buttonSoundControlHandle(Ref* p_pSender);
 	void buttonMusicControlHandle(Ref* p_pSender);
 
+	virtual void onExit();
+
 	// for google analytic
 	void logButtonClickEvent(string button);
 	void logBuyItemEvent(string item);
@@ -261,12 +238,13 @@ private:
 	virtual void onProductRequestFailure(const std::string &msg) override;
 	void onRestoreComplete(bool ok, const std::string &msg) override;
 
-	void onVungleAdViewed(bool isComplete);
-	void onVungleCacheAvailable();
-	void onVungleStarted();
-	void onVungleFinished();
-	void onVungleAdReward(const std::string& name);
-
+	virtual void adViewDidReceiveAd(const std::string &name);
+	virtual void adViewDidFailToReceiveAdWithError(const std::string &name, const std::string &ms);
+	virtual void adViewWillPresentScreen(const std::string &name);
+	virtual void adViewDidDismissScreen(const std::string &name);
+	virtual void adViewWillDismissScreen(const std::string &name);
+	virtual void adViewWillLeaveApplication(const std::string &name);
+	virtual void reward(const std::string &name, const std::string &currency, double amount);
 #endif // DEBUG
 
 private:

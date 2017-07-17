@@ -15,13 +15,32 @@ BaseHero::BaseHero(string jsonFile, string atlasFile, float scale) : B2Skeleton(
 	move_vel = SCREEN_SIZE.width / PTM_RATIO / 2.3f;
 	jump_vel = SCREEN_SIZE.height * 1.4f / PTM_RATIO;
 
-	health = REF->getCurrentHealth();
+	//
+	float durS1 = REF->getDurationSkill_1();
+	float durS2 = REF->getDurationSkill_2();
+	float durS3 = REF->getDurationSkill_3();
+	int temp_health = REF->getCurrentHealth();
+
+	if (REF->getIsLockedHero()) {
+		temp_health++;
+
+		if (REF->getNumberUseSkill_1() == 1)
+			durS1 += 3;
+
+		if (REF->getNumberUseSkill_2() == 1)
+			durS2 += 3;
+
+		durS3 += 3;
+	}
+
+	health = temp_health;
 	maxHealth = health;
 
 	// set Duration here
-	durationSkill1 = REF->getDurationSkill_1();
-	durationSkill2 = REF->getDurationSkill_2();
-	durationSkill3 = REF->getDurationSkill_3();
+
+	durationSkill1 = durS1;
+	durationSkill2 = durS2;
+	durationSkill3 = durS3;
 
 	isDriverEagle = false;
 	currentRunDis = 0.0f;

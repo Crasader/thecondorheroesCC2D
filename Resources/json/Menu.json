@@ -18,7 +18,7 @@
 		},
 		{
 			"en" : "Level: ",
-			"vi" : "Cấp: "
+			"vi" : "Level: "
 		},
 		{
 			"en" : "Duration: ",
@@ -39,15 +39,15 @@
 		{
 			"en" : " Tiếng Việt",
 			"vi" : " Tiếng Việt"
-		},
-		{
-			"en" : "Congratulation, you have unlocked a new hero",
-			"vi" : "Chúc mừng, bạn đã mở khóa một nhân vật mới"
-		},
-		{
-			"en" : "Use gold to unlock and upgrade heroes stronger",
-			"vi" : "Dùng vàng để mở khóa và nâng cấp nhân vật mạnh mẽ hơn"
-		}
+        },
+        {
+            "en" : "Congratulation, you have unlocked a new hero",
+            "vi" : "Chúc mừng, bạn đã mở khóa một nhân vật mới"
+        },
+        {
+            "en" : "Use gold to unlock and upgrade powerful heroes",
+            "vi" : "Dùng vàng để mở khóa và nâng cấp nhân vật"
+        }
 	],
 	"items": [
 		{
@@ -70,7 +70,7 @@
 				"vi" : "Chim điêu"
 			},
 			"description": {
-				"en" : "Fly when dangerous",
+				"en" : "Help you get away from danger",
 				"vi" : "Gọi chim Điêu cứu nguy"
 			}
 		},
@@ -82,7 +82,7 @@
 				"vi" : "Nam châm"
 			},
 			"description": {
-				"en" : "Collect nearby golds",
+				"en" : "Collect nearby gold",
 				"vi" : "Sử dụng nam châm hút vàng xung quanh"
 			}
 		},
@@ -90,7 +90,7 @@
 			"iconFilePath": "UI/UI_main_menu/ItemBoard/item4_doublecoin.png",
 			"priceItem": 400,
 			"nameItem": {
-				"en" : "x2 Coin",
+				"en" : "x2 Gold",
 				"vi" : "Nhân đôi vàng"
 			},
 			"description": {
@@ -106,7 +106,7 @@
 				"vi" : "Hồi chiêu"
 			},
 			"description": {
-				"en" : "Skill colldown -15%",
+				"en" : "Skill cooldown -15%",
 				"vi" : "Giảm thời gian hồi chiêu 15%"
 			}
 		}

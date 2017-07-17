@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="470" height="20" tilewidth="80" tileheight="80" nextobjectid="260">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="470" height="20" tilewidth="80" tileheight="80" nextobjectid="263">
  <tileset firstgid="1" name="chonggo" tilewidth="80" tileheight="80" tilecount="9" columns="3">
   <image source="chonggo.png" width="240" height="240"/>
  </tileset>
@@ -252,5 +252,22 @@
  </objectgroup>
  <objectgroup name="under_ground">
   <object id="146" x="8" y="1532" width="35964"/>
+ </objectgroup>
+ <objectgroup name="item">
+  <object id="260" name="item_magnet" x="10484" y="888" width="72" height="72">
+   <properties>
+    <property name="type" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="261" name="item_magnet" x="25284" y="1044" width="72" height="72">
+   <properties>
+    <property name="type" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="262" name="item_health" x="22812" y="888" width="68" height="68">
+   <properties>
+    <property name="type" type="int" value="0"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

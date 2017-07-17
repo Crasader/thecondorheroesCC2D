@@ -68,7 +68,7 @@ void QuachTinh::initSwordPhysic(b2World * world, Point position)
 
 void QuachTinh::pause()
 {
-	Node::pause();
+	SkeletonAnimation::pause();
 	if (songLong->isVisible())
 		songLong->pause();
 }

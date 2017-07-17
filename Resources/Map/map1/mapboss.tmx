@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="10" tilewidth="80" tileheight="80" nextobjectid="3">
+<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="40" height="10" tilewidth="80" tileheight="80" nextobjectid="3">
  <tileset firstgid="1" name="Map_CungTrungDuong" tilewidth="80" tileheight="80" tilecount="99" columns="11">
   <image source="Map_CungTrungDuong/Map_CungTrungDuong.png" width="880" height="720"/>
  </tileset>
@@ -46,7 +46,7 @@
 </data>
  </layer>
  <objectgroup name="ground">
-  <object id="1" x="-124" y="625" width="3407.88" height="14"/>
+  <object id="1" x="-80" y="600" width="3360" height="10"/>
  </objectgroup>
  <objectgroup name="under_ground">
   <object id="2" x="-114" y="681" width="3385.82" height="10"/>

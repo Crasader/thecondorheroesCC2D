@@ -56,7 +56,7 @@ void DialogPauseGame::resumeGame()
 void DialogPauseGame::backHome()
 {
 	menu->setEnabled(false);
-	AdmobHelper::getInstance()->showAd("gameover");
+//	AdmobHelper::getInstance()->showAd("gameover");
 	auto gameScene = this->getParent();
 	gameScene->removeAllChildrenWithCleanup(true);
 	Layer *_pMenuScene = MenuLayer::create(false);
@@ -77,8 +77,6 @@ void DialogPauseGame::overGame()
 
 void DialogPauseGame::replayGame(int goldRevive, bool isWatchVideo)
 {
-	//AdmobHelper::getInstance()->showFullAd();
-	//log("%i", goldRevive);
 	if (!isWatchVideo) {
 		if (REF->setDownGold(goldRevive)) {
 			menu->setEnabled(false);
@@ -93,10 +91,18 @@ void DialogPauseGame::replayGame(int goldRevive, bool isWatchVideo)
 		}
 	}
 	else {
-		menu->setEnabled(false);
-		VungleHelper::getInstance()->showReward();
-		//auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
-		
+        auto videoBtn = (MenuItemSprite*) menu->getChildByTag(777);
+        videoBtn->setEnabled(false);
+        
+        if (AdmobHelper::getInstance()->isAvailable("rewarded")) {
+            AdmobHelper::getInstance()->showAd("rewarded");
+        } else {
+            if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) {
+                AdmobHelper::getInstance()->cacheAd("rewarded");
+            } else {
+                AdmobHelper::getInstance()->showAd("rewarded");
+            }
+        }
 	}
 }
 
@@ -105,10 +111,6 @@ void DialogPauseGame::nextStage()
 {	
 	menu->setEnabled(false);
 	Layer *_pMenuScene;
-	int checkAds = UserDefault::getInstance()->getBoolForKey(KEY_PRE_STAGE_STATUS, false);
-	if (checkAds) {
-		AdmobHelper::getInstance()->showAd("gameover");
-	}
 	//auto gameScene = this->getParent();
 	//gameScene->removeAllChildrenWithCleanup(true);
 
@@ -126,7 +128,6 @@ void DialogPauseGame::nextStage()
 
 void DialogPauseGame::restartGame()
 {
-	AdmobHelper::getInstance()->showAd("gameover");
 	auto gameLayer = (GameScene*) this->getParent()->getChildByName("gameLayer");
 
 	if (!REF->getIsLockedHero()) {
@@ -350,6 +351,7 @@ bool DialogRevive::init(int numberOfRevive, bool isWatchedVid)
 		auto videoBtnActive = Sprite::create("UI/UI_Endgame/btn_video.png");
 		videoBtnActive->setColor(Color3B(128, 128, 128));
 		auto videoBtn = MenuItemSprite::create(videoBtnNormal, videoBtnActive, CC_CALLBACK_0(DialogPauseGame::replayGame, this, gold, true));
+        videoBtn->setTag(777);
 		videoBtn->setAnchorPoint(Vec2(1, 0.5f));
 		videoBtn->setPosition(background->getContentSize().width, 0);
 
@@ -404,7 +406,18 @@ DialogRevive * DialogRevive::create(int numberOfRevive, bool isWatchedVid)
 
 bool DialogStageClear::init(int score, int gold)
 {
-	DialogPauseGame::init();
+	if (!Layer::init())
+	{
+		return false;
+	}
+	bool checkAds = UserDefault::getInstance()->getBoolForKey(KEY_PRE_STAGE_STATUS, false);
+//	CCLOG("==== checkad: %d", checkAds);
+	if (checkAds) {
+		AdmobHelper::getInstance()->showAd("gameover");
+		//CCLOG("====ShowGameOVer");
+
+	}
+	UserDefault::getInstance()->setBoolForKey(KEY_PRE_STAGE_STATUS, !checkAds);
 
 	auto origin = Director::getInstance()->getVisibleOrigin();
 
@@ -490,6 +503,7 @@ bool DialogStageClear::init(int score, int gold)
 		REF->setUpScore(score + bonusScore);
 		REF->setUpGoldExplored(gold + bonusGold);
 	}
+	
 	effect();
 
 	return true;
@@ -574,14 +588,21 @@ void DialogStageClear::effect()
 void DialogStageClear::onExit()
 {
 	DialogPauseGame::onExit();
-	UserDefault::getInstance()->setBoolForKey(KEY_PRE_STAGE_STATUS, true);
+	//UserDefault::getInstance()->setBoolForKey(KEY_PRE_STAGE_STATUS, true);
 }
 
 
 bool DialogOverGame::init(int score, int gold)
 {
 	DialogPauseGame::init();
-	UserDefault::getInstance()->setBoolForKey(KEY_PRE_STAGE_STATUS, true);
+	bool checkAds = UserDefault::getInstance()->getBoolForKey(KEY_PRE_STAGE_STATUS, false);
+	//CCLOG("==== checkad: %d", checkAds);
+	if (checkAds) {
+		AdmobHelper::getInstance()->showAd("gameover");
+		//CCLOG("==== show gameover");
+	}
+	UserDefault::getInstance()->setBoolForKey(KEY_PRE_STAGE_STATUS, !checkAds);
+
 	auto origin = Director::getInstance()->getVisibleOrigin();
 
 
@@ -689,5 +710,5 @@ void DialogOverGame::effect()
 void DialogOverGame::onExit()
 {
 	DialogPauseGame::onExit();
-	UserDefault::getInstance()->setBoolForKey(KEY_PRE_STAGE_STATUS, false);
+//	UserDefault::getInstance()->setBoolForKey(KEY_PRE_STAGE_STATUS, false);
 }

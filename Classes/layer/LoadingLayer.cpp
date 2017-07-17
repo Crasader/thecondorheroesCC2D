@@ -116,37 +116,17 @@ void LoadingLayer::addStuff()
 
 void LoadingLayer::doLoading()
 {
-	this->schedule([&](float dt) {
+	auto countDown = CallFunc::create([&]() {
 		++percent;
 		loading->setPercent(percent);
-
-		timer += 5;
-
-		if (timer >= 200) {
-			//start = chrono::system_clock::now();
-			timer = 0;
+		if (percent >= 40) {
+			this->stopAllActions();
 			doProcess();
-			unschedule("Key_loading");
 		}
+	});
 
-	}, 0.01f, "Key_loading");
+	this->runAction(Repeat::create(Sequence::createWithTwoActions(countDown, DelayTime::create(0.01f)), 40));
 }
-
-//void LoadingLayer::doOpen()
-//{
-//	/*auto actionLeftOpen = MoveBy::create(0.5f, Vec2(-leftDoor->getBoundingBox().size.width, 0));
-//	leftDoor->runAction(actionLeftOpen);
-//	auto actionRightOpen = MoveBy::create(0.5f, Vec2(rightDoor->getBoundingBox().size.width, 0));
-//	rightDoor->runAction(actionRightOpen);
-//
-//	auto removeAndPlay = CallFunc::create([&]() {
-//		
-//	});
-//
-//
-//	auto action = Sequence::createWithTwoActions(DelayTime::create(0.5f), removeAndPlay);
-//	this->runAction(action);*/
-//}
 
 void LoadingLayer::doProcess()
 {
@@ -157,30 +137,23 @@ void LoadingLayer::doProcess()
 	hud->retain();
 
 	mainScene->setHud(hud);
-	
+	hud->setGameLayer(mainScene);
 	if (charId != REF->getLastPickHero()) {	// try
 		hud->tryHud();
 	}
 	
 
-	//end = chrono::system_clock::now();
-	
-	//chrono::duration<double> elapsed_seconds = end - start;
-	//log("%f", elapsed_seconds.count());
-
-	this->schedule([&](float dt) {
+	auto countDown = CallFunc::create([&]() {
 		++percent;
 		loading->setPercent(percent);
 
 		if (percent >= 100.0f) {
-			percent = 0.0f;
-			loading->setVisible(false);
-
-			unschedule("key");
+			this->stopAllActions();
 
 			AdmobHelper::getInstance()->hide("top_banner");
 			Director::getInstance()->replaceScene(TransitionFade::create(0.67f, GameScene::createScene(mainScene, hud)));
 		}
+	});
 
-	}, 1.33f / (100.0f - percent), "key");
+	this->runAction(RepeatForever::create(Sequence::createWithTwoActions(countDown, DelayTime::create(0.022f))));
 }

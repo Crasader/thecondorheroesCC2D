@@ -1,6 +1,7 @@
 #include "AppDelegate.h"
 #include "layer/IntroScene.h"
 #include "layer/SplashScene.h"
+#include "layer/GameScene.h"
 #include "AudioEngine.h"
 
 #ifdef SDKBOX_ENABLED
@@ -85,7 +86,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     }
 
     // turn on display FPS
-    director->setDisplayStats(true);
+    director->setDisplayStats(false);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0f / 60);
@@ -121,17 +122,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/chidori_eff.plist");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Animation/QuachTinh/rock_eff.plist");
 
-	/*SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/BottomMenu/bottom_menu.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/DailyReward/daily_reward.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/HeroMenu/hero_menu.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/InfoBoard/info_board.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/ItemBoard/item_board.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/QuestBoard/quest_board.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/SettingBoard/setting_board.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/ShopBoard/shop_board.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/TopMenu/top_menu.plist");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("UI/UI_main_menu/UpgradeBoard/upgrade_board.plist");*/
-
     // create a scene. it's an autorelease object
 
 	Scene* scene;
@@ -149,6 +139,17 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 // This function will be called when the app is inactive. Note, when receiving a phone call it is invoked.
 void AppDelegate::applicationDidEnterBackground() {
+	auto _runningScene = Director::getInstance()->sharedDirector()->getRunningScene();
+	if (_runningScene->getChildByName("gameLayer")) {
+		auto blur = _runningScene->getChildByTag(TAG_BLUR_LAYER);
+		if (blur) {
+			if (!blur->isVisible()) {
+				auto gameScene = (GameScene*)_runningScene->getChildByName("gameLayer");
+				gameScene->pauseGame();
+			}
+		}
+	}
+
     Director::getInstance()->stopAnimation();
 	experimental::AudioEngine::pauseAll();
 	GAHelper::getInstance()->sendDataNow();

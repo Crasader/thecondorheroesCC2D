@@ -1,1 +1,0 @@
-gold_01.png.png 2 2, gold_02.png.png 107 8.

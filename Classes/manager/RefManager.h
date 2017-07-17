@@ -81,7 +81,6 @@ public:
 	static RefManager* getInstance();
 
 	void setLanguage(int p_nLanguage);
-	void setupMenuTutorialHero();
 	void setupMenuTutorialUpgrate();
 
 	void pointToCurrentHero(int index);		// set props to get

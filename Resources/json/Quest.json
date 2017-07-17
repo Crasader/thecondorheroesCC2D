@@ -32,11 +32,11 @@
 	"quests": [
 		{
 			"questName": {
-				"en" : "Call bird",
+				"en" : "Call the Condor",
 				"vi" : "Gọi chim điêu"
 			},
 			"questDescription": {
-				"en" : "Use item call bird 20 times",
+				"en" : "Use Condor item 20 times",
 				"vi" : "Sử dụng vật phẩm gọi chim điêu 20 lần"
 			},
 			"completeRequest": 20,
@@ -47,11 +47,11 @@
 		},
 		{
 			"questName": {
-				"en" : "Health",
+				"en" : "Increase health",
 				"vi" : "Thêm máu"
 			},
 			"questDescription": {
-				"en" : "Use item health 100 times",
+				"en" : "Use Health item 100 times",
 				"vi" : "Sử dụng vật phẩm thêm máu 100 lần"
 			},
 			"completeRequest": 100,
@@ -66,7 +66,7 @@
 				"vi" : "Hồi chiêu"
 			},
 			"questDescription": {
-				"en" : "Use item cooldown 100 times",
+				"en" : "Use Cooldown item 100 times",
 				"vi" : "Sử dụng vật phẩm hồi chiêu 100 lần"
 			},
 			"completeRequest": 100,
@@ -77,11 +77,11 @@
 		},
 		{
 			"questName": {
-				"en" : "Johan's score",
+				"en" : "Master in Johan",
 				"vi" : "Thông thạo Dương Quá"
 			},
 			"questDescription": {
-				"en" : "Get 50000 scores by using Johan",
+				"en" : "Get total 50000 scores when using Johan",
 				"vi" : "Đạt 50000 điểm với nhân vật Dương Quá"
 			},
 			"completeRequest": 50000,
@@ -92,11 +92,11 @@
 		},
 		{
 			"questName": {
-				"en" : "Hana's Score",
+				"en" : "Master in Hana",
 				"vi" : "Thông thạo Tiểu Long Nữ"
 			},
 			"questDescription": {
-				"en" : "Get 80000 scores by using Hana",
+				"en" : "Get total 80000 scores when using Hana",
 				"vi" : "Đạt 80000 điểm với nhân vật Tiểu Long Nữ"
 			},
 			"completeRequest": 80000,
@@ -107,11 +107,11 @@
 		},
 		{
 			"questName": {
-				"en" : "Kim's Score",
+				"en" : "Master in Kim",
 				"vi" : "Thông thạo Hoàng Dung"
 			},
 			"questDescription": {
-				"en" : "Get 120000 scores by using Kim",
+				"en" : "Get total 120000 scores when using Kim",
 				"vi" : "Đạt 120000 điểm với Hoàng Dung"
 			},
 			"completeRequest": 120000,
@@ -126,7 +126,7 @@
 				"vi" : "Giết người như ngóe"
 			},
 			"questDescription": {
-				"en" : "Kill multiple enemy in a short time to get rampages",
+				"en" : "Eliminate 7 enemies in a row",
 				"vi" : "Giết đối phương liên tiếp trong thời gian ngắn"
 			},
 			"completeRequest": 1,
@@ -137,11 +137,11 @@
 		},
 		{
 			"questName": {
-				"en" : "Woodmans",
+				"en" : "Wooden dummy",
 				"vi" : "Phá người gỗ"
 			},
 			"questDescription": {
-				"en" : "Destroy 20 woodmans",
+				"en" : "Destroy 20 wooden dummies",
 				"vi" : "Phá hủy 20 người gỗ"
 			},
 			"completeRequest": 20,
@@ -156,8 +156,8 @@
 				"vi" : "Đệ tử Toàn Chân 2"
 			},
 			"questDescription": {
-				"en" : "Kill 50 Fellow students 2",
-				"vi" : "Giết 50 đệ tử Toàn Chân 2"
+				"en" : "Kill 50 Fellow students 2 (level 2,3)",
+				"vi" : "Giết 50 đệ tử Toàn Chân 2 (màn 2,3)"
 			},
 			"completeRequest": 50,
 			"goldReward": 1000,
@@ -171,7 +171,7 @@
 				"vi" : "Quái chủ màn chơi 3"
 			},
 			"questDescription": {
-				"en" : "Kill boss level 3 10 times",
+				"en" : "Kill level 3 boss 10 times",
 				"vi" : "Giết quái chủ màn chơi 3 10 lần"
 			},
 			"completeRequest": 10,
@@ -197,11 +197,11 @@
 		},
 		{
 			"questName": {
-				"en" : "Ice Thorny",
+				"en" : "Ice Thorn",
 				"vi" : "Cột băng"
 			},
 			"questDescription": {
-				"en" : "Destroy 50 ice thornies",
+				"en" : "Destroy 50 ice thorns",
 				"vi" : "Phá hủy 50 cột băng"
 			},
 			"completeRequest": 50,
@@ -216,8 +216,8 @@
 				"vi" : "Nữ tu sĩ 1"
 			},
 			"questDescription": {
-				"en" : "Kill 20 female taoists 1",
-				"vi" : "Giết 20 nữ tu sĩ 1"
+				"en" : "Kill 20 female taoists 1 (level 4)",
+				"vi" : "Giết 20 nữ tu sĩ 1 (màn 4)"
 			},
 			"completeRequest": 20,
 			"goldReward": 2000,
@@ -231,8 +231,8 @@
 				"vi" : "Nữ tu sĩ 2"
 			},
 			"questDescription": {
-				"en" : "Kill 20 female taoists 2",
-				"vi" : "Giết 20 nữ tu sĩ 2"
+				"en" : "Kill 20 female taoists 2 (level 5)",
+				"vi" : "Giết 20 nữ tu sĩ 2 (màn 5)"
 			},
 			"completeRequest": 20,
 			"goldReward": 2000,
@@ -246,7 +246,7 @@
 				"vi" : "Quái chủ màn chơi 6"
 			},
 			"questDescription": {
-				"en" : "Kill boss level 6 10 times",
+				"en" : "Kill level 6 boss 10 times",
 				"vi" : "Giết quái chủ màn chơi 6 10 lần"
 			},
 			"completeRequest": 10,
@@ -261,8 +261,8 @@
 				"vi" : "Hoắc Đô 1"
 			},
 			"questDescription": {
-				"en" : "Kill 20 Houdos 1",
-				"vi" : "Giết 20 Hoắc Đô 1"
+				"en" : "Kill 20 Houdos 1 (level 7)",
+				"vi" : "Giết 20 Hoắc Đô 1 (màn 7)"
 			},
 			"completeRequest": 20,
 			"goldReward": 4000,
@@ -276,8 +276,8 @@
 				"vi" : "Hoắc Đô 2"
 			},
 			"questDescription": {
-				"en" : "Kill 20 Houdos 2",
-				"vi" : "Giết 20 Hoắc Đô 2"
+				"en" : "Kill 20 Houdos 2 (level 8)",
+				"vi" : "Giết 20 Hoắc Đô 2 (màn 8)"
 			},
 			"completeRequest": 20,
 			"goldReward": 4000,
@@ -291,8 +291,8 @@
 				"vi" : "Đạt Nhĩ Ba"
 			},
 			"questDescription": {
-				"en" : "Kill 20 Mongol masters",
-				"vi" : "Giết 20 Đạt Nhĩ Ba"
+				"en" : "Kill 20 Mongol masters (level 10)",
+				"vi" : "Giết 20 Đạt Nhĩ Ba (màn 10)"
 			},
 			"completeRequest": 20,
 			"goldReward": 6000,

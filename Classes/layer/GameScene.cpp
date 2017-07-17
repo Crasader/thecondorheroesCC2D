@@ -28,6 +28,7 @@ Scene* GameScene::createScene(GameScene *layer, Hud* m_hud)
 	scene->addChild(m_hud);
 	
 	blur = LayerColor::create(Color4B(0, 0, 0, 170));
+	blur->setTag(TAG_BLUR_LAYER);
 	blur->setVisible(false);
 	scene->addChild(blur);
 
@@ -46,7 +47,9 @@ bool GameScene::init(int stage, int map, int charId)
 	{
 		return false;
 	}
-
+    if(!AdmobHelper::getInstance()->isAvailable("rewarded")){
+        AdmobHelper::getInstance()->cacheAd("rewarded");
+    }
 	AudioManager::stopMusic();
 	GAHelper::getInstance()->logScreen(StringUtils::format("Stage: %d, Map: %d", stage, map));
 
@@ -271,14 +274,14 @@ void GameScene::onBegin()
 
 	this->scheduleUpdate();
 
-	if (REF->getNumberItemDoubleGold() > 0) {
+	if (!REF->getIsLockedHero() && REF->getNumberItemDoubleGold() > 0) {
 		runnerItem(Item_type::DOUBLE_COIN, -99);
 		REF->decreaseNumberItemDoubleGold();
 	}
 
-	if (REF->getNumberItemMagnet() > 0) {
+	if (!REF->getIsLockedHero() && REF->getNumberItemMagnet() > 0) {
 		charId == 1 ?
-			runnerItem(Item_type::MAGNET, DURATION_MAGNET * 1.15f) :
+			runnerItem(Item_type::MAGNET, DURATION_MAGNET * 1.3f) :
 			runnerItem(Item_type::MAGNET, DURATION_MAGNET);
 		REF->decreaseNumberItemMagnet();
 	}
@@ -299,6 +302,7 @@ void GameScene::onBegin()
 		_eventDispatcher->addEventListenerWithSceneGraphPriority(touch_listener, this);
 	}
 	else {
+		REF->setDoneFirstPlay();
 		tut = TutorialLayer::create();
 		tut->setVisible(false);
 		this->getParent()->addChild(tut);
@@ -316,6 +320,9 @@ void GameScene::onExit()
 		list = list->GetNext();
 		world->DestroyBody(tmp);
 	}
+#ifdef SDKBOX_ENABLED
+    sdkbox::PluginAdMob::removeListener();
+#endif
 	delete world;
 	//experimental::AudioEngine::uncache();
 }
@@ -891,18 +898,32 @@ void GameScene::loadBackground()
 }
 
 void GameScene::createInfiniteNode()
-{
+{//
 	background = InfiniteParallaxNode::create();
+	if (stage == 1) {
+		auto bg1_1 = Sprite::create("Map/map1/bg1.png");
+		bg1_1->setScale(SCREEN_SIZE.width / (bg1_1->getContentSize().width));
+		bg1_1->setAnchorPoint(Point(0, 0.5f));
 
-	auto bg1_1 = Sprite::create(StringUtils::format("Map/map%d/bg%d_1.png", stage, map));
-	bg1_1->setScale(SCREEN_SIZE.width / (bg1_1->getContentSize().width));
-	bg1_1->setAnchorPoint(Point(0, 0.5f));
+		auto bg1_2 = Sprite::create("Map/map1/bg1.png");
+		bg1_2->setScale(SCREEN_SIZE.width / (bg1_2->getContentSize().width));
+		bg1_2->setAnchorPoint(Point(0, 0.5f));
+		background->addChild(bg1_1, 1, Vec2(0.5f, 1), Vec2(0, 0));
+		background->addChild(bg1_2, 1, Vec2(0.5f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
+	}
+	else {
 
-	auto bg1_2 = Sprite::create(StringUtils::format("Map/map%d/bg%d_1.png", stage, map));
-	bg1_2->setScale(SCREEN_SIZE.width / (bg1_2->getContentSize().width));
-	bg1_2->setAnchorPoint(Point(0, 0.5f));
-	background->addChild(bg1_1, 1, Vec2(0.5f, 1), Vec2(0, 0));
-	background->addChild(bg1_2, 1, Vec2(0.5f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
+		auto bg1_1 = Sprite::create(StringUtils::format("Map/map%d/bg%d_1.png", stage, map));
+		bg1_1->setScale(SCREEN_SIZE.width / (bg1_1->getContentSize().width));
+		bg1_1->setAnchorPoint(Point(0, 0.5f));
+
+		auto bg1_2 = Sprite::create(StringUtils::format("Map/map%d/bg%d_1.png", stage, map));
+		bg1_2->setScale(SCREEN_SIZE.width / (bg1_2->getContentSize().width));
+		bg1_2->setAnchorPoint(Point(0, 0.5f));
+		background->addChild(bg1_1, 1, Vec2(0.5f, 1), Vec2(0, 0));
+		background->addChild(bg1_2, 1, Vec2(0.5f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
+	}
+
 
 	auto moonGr = tmx_map->getObjectGroup("moon");
 	if (moonGr) {
@@ -924,6 +945,23 @@ void GameScene::createInfiniteNode()
 	}
 
 	if ((stage == 3 && map == 2) || (stage == 4 && map == 2) || (stage == 4 && map == 3) || (stage == 4 && map == 4)) {}
+	else if (stage == 1) {
+		auto bg2_1 = Sprite::create("Map/map1/bg2.png");
+		//auto bg2_1 = Sprite::create("moon.png");
+		bg2_1->setScale(SCREEN_SIZE.width / (bg2_1->getContentSize().width));
+		bg2_1->setAnchorPoint(Point(0, 0.5f));
+		bg2_1->setTag(21);
+
+
+		auto bg2_2 = Sprite::create("Map/map1/bg2.png");
+		//auto bg2_2 = Sprite::create("moon.png");
+		bg2_2->setScale(SCREEN_SIZE.width / (bg2_2->getContentSize().width));
+		bg2_2->setAnchorPoint(Point(0, 0.5f));
+		bg2_2->setTag(22);
+		background->addChild(bg2_1, 3, Vec2(0.7f, 1), Vec2(0, 0));
+		background->addChild(bg2_2, 3, Vec2(0.7f, 1), Vec2(bg2_1->getBoundingBox().size.width, 0));
+
+	}
 	else {
 		auto bg2_1 = Sprite::create(StringUtils::format("Map/map%d/bg%d_2.png", stage, map));
 		//auto bg2_1 = Sprite::create("moon.png");
@@ -938,7 +976,7 @@ void GameScene::createInfiniteNode()
 		bg2_2->setAnchorPoint(Point(0, 0.5f));
 		bg2_2->setTag(22);
 		background->addChild(bg2_1, 3, Vec2(0.7f, 1), Vec2(0, 0));
-		background->addChild(bg2_2, 3, Vec2(0.7f, 1), Vec2(bg1_1->getBoundingBox().size.width, 0));
+		background->addChild(bg2_2, 3, Vec2(0.7f, 1), Vec2(bg2_1->getBoundingBox().size.width, 0));
 
 	}
 
@@ -946,7 +984,7 @@ void GameScene::createInfiniteNode()
 	background->setPosition(Point(0, SCREEN_SIZE.height / 2));
 	background->setAnchorPoint(Point(0, 0.5f));
 	//if (isModeDebug)
-		//background->setVisible(false);
+	//background->setVisible(false);
 	this->addChild(background, ZORDER_BG);
 
 	background2 = InfiniteParallaxNode::create();
@@ -1856,8 +1894,10 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 		}
 	}*/
 
-	if (isFirstPlay && tut->isVisible()) {
+	if (isFirstPlay && tut->accept && tut->isVisible()) {
 		tut->setVisible(false);
+        tut->accept = false;
+        
 		if (tut->type == 1) {
 			resumeAfterTut(1);
 		}
@@ -2168,6 +2208,7 @@ void GameScene::reviveHero()
 	}
 
 	hero->setDieHard(1);
+	//hero->setOnGround(false);
 	hero->setIsPriorInjured(false);
 	hero->getBloodScreen()->setVisible(false);
 	hero->setHealth(hero->getMaxHealth());
@@ -2283,7 +2324,8 @@ void GameScene::dieGame()
 		_aEagle->pause();
 
 #ifdef SDKBOX_ENABLED
-	sdkbox::PluginVungle::setListener(this);
+	//sdkbox::PluginVungle::setListener(this);
+	sdkbox::PluginAdMob::setListener(this);
 #endif
 	dialogPause = DialogRevive::create(++numberRevive, isWatchedVid);
 	this->getParent()->addChild(dialogPause);
@@ -2330,13 +2372,13 @@ void GameScene::winGame()
 	AudioManager::stopSoundandMusic();
 	AudioManager::playSound(SOUND_WIN);
 
-	auto children = this->getChildren();
-	auto iter = children.begin();
-	for (iter; iter != children.end(); iter++) {
-		auto child = (Node*)(*iter);
-		if (child->getTag() == TAG_COIN)
-			this->removeChild(child, true);
-	}
+//	auto children = this->getChildren();
+//	auto iter = children.begin();
+//	for (iter; iter != children.end(); iter++) {
+//		auto child = (Node*)(*iter);
+//		if (child->getTag() == TAG_COIN)
+//			this->removeChild(child, true);
+//	}
 
 	reachNewMap();
 
@@ -2835,7 +2877,7 @@ void GameScene::resumeAfterTut(int caseTut)
 		tut->removeFromParentAndCleanup(true);
 		tut = nullptr;
 	}
-
+	
 	hud->getPauseItem()->setEnabled(true);
 
 
@@ -2856,17 +2898,12 @@ void GameScene::resumeAfterTut(int caseTut)
 			hud->getCoverItemMagNet()->resume();
 		}
 
-		if (hud->getCoverItemDC()->isVisible()) {
-			hud->getCoverItemDC()->resume();
-		}
-
 		this->resume();
 		break;
 
 	case 4:
 		hud->resumeIfVisible();
 		isFirstPlay = false;
-		REF->setDoneFirstPlay();
 		this->resume();
 		break;
 	default:
@@ -2875,25 +2912,58 @@ void GameScene::resumeAfterTut(int caseTut)
 }
 #ifdef SDKBOX_ENABLED
 
-void GameScene::onVungleAdViewed(bool isComplete)
-{
-	experimental::AudioEngine::resumeAll();
+void GameScene::adViewDidReceiveAd(const std::string &name) {
+    if (name == "rewarded") {
+        if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) {
+            AdmobHelper::getInstance()->showAd("rewarded");
+        }
+    }
 }
-void GameScene::onVungleCacheAvailable()
-{
+void GameScene::adViewDidFailToReceiveAdWithError(const std::string &name, const std::string &msg) {
+    
 }
-void GameScene::onVungleStarted()
-{
-	//experimental::AudioEngine::pauseAll();
+void GameScene::adViewWillPresentScreen(const std::string &name) {
+    if(CC_TARGET_PLATFORM == CC_PLATFORM_IOS){
+        if(name == "rewarded" || name == "gameover"){
+            Director::getInstance()->pause();
+            experimental::AudioEngine::pauseAll();
+        }
+    }
 }
-void GameScene::onVungleFinished()
-{
-	//experimental::AudioEngine::resumeAll();
+void GameScene::adViewDidDismissScreen(const std::string &name) {
+    CCLOG("====== ADMOB Did DismissScreen");
+    if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID){
+        if(name == "rewarded"){
+            if(isAdmobRewarded){
+                this->reviveHero();
+                isAdmobRewarded = false;
+            }
+        }
+    }
 }
-void GameScene::onVungleAdReward(const std::string & name)
-{
-	isWatchedVid = true;
-	this->reviveHero();
-	GAHelper::getInstance()->logEvent("Button", "Revive", "By Vungle", 1);
+void GameScene::adViewWillDismissScreen(const std::string &name) {
+    if(CC_TARGET_PLATFORM == CC_PLATFORM_IOS){
+        if(name == "rewarded" || name == "gameover"){
+            Director::getInstance()->resume();
+            experimental::AudioEngine::resumeAll();
+        }
+    }
+    if(name == "rewarded"){
+        CCLOG("====== ADMOB adViewWillDismissScreen");
+        if(isAdmobRewarded){
+            this->reviveHero();
+            isAdmobRewarded = false;
+        }
+    }
+}
+void GameScene::adViewWillLeaveApplication(const std::string &name) {
+    
+}
+void GameScene::reward(const std::string &name, const std::string &currency, double amount) {
+    CCLOG("====== ADMOB reward");
+    isWatchedVid = true;
+    isAdmobRewarded = true;
+    // this->reviveHero();
+    GAHelper::getInstance()->logEvent("Button", "Revive", "By Vungle", 1);
 }
 #endif 

@@ -34,11 +34,13 @@
 #include "Hud.h"
 #include "EnemyLinhTenThang.h"
 #include "EnemyLinhTenXien.h"
-#include "thirdsdkhelper\VungleHelper.h"
+#include "thirdsdkhelper\AdmobHelper.h"
 #include "thirdsdkhelper\GoogleAnalysticHelper.h"
 
+#define TAG_BLUR_LAYER	501
+
 #ifdef SDKBOX_ENABLED
-class GameScene : public cocos2d::Layer, public sdkbox::VungleListener
+class GameScene : public cocos2d::Layer, public sdkbox::AdMobListener//public sdkbox::VungleListener
 #else
 class GameScene : public cocos2d::Layer
 #endif
@@ -92,6 +94,7 @@ private:
 	int previousScore = 0;
 
 	float previousPercentPosition = 0.0f;
+	bool isAdmobRewarded;
 	
 public:
 	b2World *world;
@@ -266,11 +269,13 @@ public:
 
 #ifdef SDKBOX_ENABLED
 	// vungle
-	 void onVungleAdViewed(bool isComplete);
-	 void onVungleCacheAvailable();
-	 void onVungleStarted();
-	 void onVungleFinished();
-	 void onVungleAdReward(const std::string& name);
+	virtual void adViewDidReceiveAd(const std::string &name);
+	virtual void adViewDidFailToReceiveAdWithError(const std::string &name, const std::string &ms);
+	virtual void adViewWillPresentScreen(const std::string &name);
+	virtual void adViewDidDismissScreen(const std::string &name);
+	virtual void adViewWillDismissScreen(const std::string &name);
+	virtual void adViewWillLeaveApplication(const std::string &name);
+	virtual void reward(const std::string &name, const std::string &currency, double amount);
 	 // ia
 #endif 
 };

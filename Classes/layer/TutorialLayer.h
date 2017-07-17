@@ -12,6 +12,7 @@ class TutorialLayer : public Layer
 {
 public: 
 	int type = 1;
+	bool accept = false;
 protected:
 	Sprite *main;
 	//EventListenerTouchOneByOne * m_listener;
@@ -19,12 +20,14 @@ protected:
 public:
 	virtual bool init();
 	static TutorialLayer* create();
-	//virtual bool onTouchBegan(Touch *touch, Event *unused_event);
 
 	void showJump();
 	void showAttack();
 	void showSkills();
 	void showBird();
+
+private:
+	void showTime(float dt);
 };
 
 
